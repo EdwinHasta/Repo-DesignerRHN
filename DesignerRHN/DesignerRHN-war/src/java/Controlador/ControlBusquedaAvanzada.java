@@ -372,10 +372,6 @@ public class ControlBusquedaAvanzada implements Serializable {
     private List<ColumnModel> columns = new ArrayList<ColumnModel>();
     //Lista de las columnas que seran agregadas a la tabla
     private String nuevaColumna;
-    //
-    private List<ColumnasEscenarios> lovColumnasEscenarios;
-    private List<ColumnasEscenarios> filtrarLovColumnasEscenarios;
-    private ColumnasEscenarios columnaEscenarioSeleccionada;
     // 
     private List<ParametrosQueryBusquedaAvanzada> listaParametrosQueryModulos;
     //
@@ -384,20 +380,11 @@ public class ControlBusquedaAvanzada implements Serializable {
     private boolean auxTabActivoCentroCosto;
     //
     private List<ColumnasEscenarios> listaColumnasEscenarios;
-    private List<ColumnasEscenarios> filtrarListaColumnasEscenarios;
-    private ColumnasEscenarios actualColumnaConfigDetalle;
-    //
-    private int indiceConfigDetalle, columnaConfigDetalle;
 
     public ControlBusquedaAvanzada() {
+        listaColumnasEscenarios = null;
         auxTabActivoCentroCosto = false;
         //
-        actualColumnaConfigDetalle = new ColumnasEscenarios();
-        indiceConfigDetalle = -1;
-        columnaConfigDetalle = -1;
-        listaColumnasEscenarios = null;
-        lovColumnasEscenarios = null;
-        columnaEscenarioSeleccionada = new ColumnasEscenarios();
         listaEmpleadosResultados = new ArrayList<Empleados>();
         listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
         //Fechas Modulos
@@ -615,10 +602,21 @@ public class ControlBusquedaAvanzada implements Serializable {
         tipoMetodoSets = "";
         //Resulatos de busqueda
         nuevaColumna = "";
-        columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre";
+        columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
         mapValoresColumnas = new HashMap<String, String>();
         listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
         createStaticColumns();
+    }
+
+    public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno) {
+        if (listaRetorno != null) {
+            listaColumnasEscenarios = new ArrayList<ColumnasEscenarios>();
+            listaColumnasEscenarios = listaRetorno;
+            System.out.println("listaColumnasEscenarios : " + listaColumnasEscenarios.size());
+        } else {
+            System.out.println("listaColumnasEscenarios : 0");
+        }
+
     }
 
     public void ejecutarQuery() {
@@ -1264,12 +1262,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         tipoFechaSets = 1;
         activarCasillasFechasSets();
         //
-        indiceConfigDetalle = -1;
-        columnaConfigDetalle = -1;
-        //
-        columnaEscenarioSeleccionada = null;
-        listaColumnasEscenarios = null;
-        //
         restaurar();
         //
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1290,9 +1282,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:tabViewJornadaLaboral");
         context.update("form:tabViewFechaRetiro");
         //
-        context.update("form:ConfiguracionDetalleDialogo");
-        context.update("form:lovConfiguracionDetalle");
-        context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
     }
 
     public void editarCelda() {
@@ -4473,10 +4462,27 @@ public class ControlBusquedaAvanzada implements Serializable {
         for (int i = 0; i < tamEmpleado; i++) {
             listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
         }
+        int tam = 0;
+        if (listaColumnasEscenarios != null) {
+            tam = listaColumnasEscenarios.size();
+        }
+        System.out.println("dsadsa listaColumnasEscenarios : " + tam);
+        if (tam > 0) {
+            for (int j = 0; j < listaColumnasEscenarios.size(); j++) {
+                String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
+                nuevaColumna = palabras[0];
+                for (int i = 1; i < palabras.length; i++) {
+                    nuevaColumna = nuevaColumna + "_" + palabras[i];
+                }
+                columnTemplate = columnTemplate + nuevaColumna + " ";
+                nuevaColumna = "";
+            }
+        }
         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
         columns.clear();
         mapValoresColumnas.clear();
         if (tamEmpleado > 0) {
+            System.out.println("valoresColumnasDeseadas.length : " + valoresColumnasDeseadas.length);
             if (valoresColumnasDeseadas.length == 4) {
                 createStaticColumns();
                 cargarTablaColumnasEstaticas();
@@ -4512,21 +4518,14 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void createDynamicColumns() {
-        if(listaColumnasEscenarios != null){
-        for(int j = 0;j<listaColumnasEscenarios.size();j++){
-        String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
-        nuevaColumna = palabras[0];
-        for(int i = 1;i<palabras.length;i++){
-            nuevaColumna = nuevaColumna +"_"+palabras[i];
-        }
-        columnTemplate = columnTemplate + nuevaColumna + " ";
-        nuevaColumna = "";
-        }
-        }
+        System.out.println("columnTemplate : " + columnTemplate);
         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
+        int numColumna = 0;
         for (int i = 4; i < valoresColumnasDeseadas.length; i++) {
-            String nameColumna = "columna" + String.valueOf(i);
+            String nameColumna = "columna" + String.valueOf(numColumna);
+            System.out.println("createDynamicColumns  : " + nameColumna);
             mapValoresColumnas.put(nameColumna, valoresColumnasDeseadas[i]);
+            numColumna = numColumna + 1;
         }
         int numeroColumnas = mapValoresColumnas.size();
         for (int i = 4; i < numeroColumnas; i++) {
@@ -4534,10 +4533,22 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
         for (Map.Entry<String, String> entry : mapValoresColumnas.entrySet()) {
             String numero = entry.getKey().charAt(entry.getKey().length() - 1) + "";
+            if(esNumero(numero) == true){
+            System.out.println("createDynamicColumns numero : " + numero);
             int numeroCol = Integer.parseInt(numero);
             if (VALID_COLUMN_KEYS.contains(entry.getKey())) {
-                columns.set(numeroCol + 4, new ColumnModel(entry.getValue().toUpperCase(), entry.getKey().toString()));
+               columns.set(numeroCol + 4, new ColumnModel(entry.getValue().toUpperCase(), entry.getKey().toString()));
             }
+            }
+        }
+    }
+    
+    public boolean esNumero(String valor){
+        try{
+            int numeroCol = Integer.parseInt(valor);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
         }
     }
 
@@ -4654,91 +4665,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:resultadoBusquedaAvanzada");
     }
 
-    public void dispararDialogoConfiguracionDetalle(){
-        getListaColumnasEscenarios();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:ConfiguracionDetalleDialogo");
-        context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
-        context.execute("ConfiguracionDetalleDialogo.show()");
-    }
-    
-    public void dispararDialogoNuevaColumna() {
-        String[] valoresColumnasDeseadas = columnTemplate.split(" ");
-        RequestContext context = RequestContext.getCurrentInstance();
-        if (valoresColumnasDeseadas.length < 14) {
-            nuevaColumna = "";
-            context.update("form:ColumnaEscenarioDialogo");
-            context.execute("ColumnaEscenarioDialogo.show()");
-        } else {
-            context.execute("errorNewColumna.show()");
-            System.out.println("No se peuden agregar mas columnas");
-        }
-    }
-    
-    public void eliminaRegistroConfiguracionDetalle(){
-        if(indiceConfigDetalle>=0){
-            listaColumnasEscenarios.remove(indiceConfigDetalle);
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:ConfiguracionDetalleDialogo");
-            context.update("form:lovConfiguracionDetalle");
-            context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
-        }
-    }
-
-    public void agregarColumna() {
-        if(listaColumnasEscenarios == null){
-            listaColumnasEscenarios = new ArrayList<ColumnasEscenarios>();
-        }
-        listaColumnasEscenarios.add(columnaEscenarioSeleccionada);
-        RequestContext context = RequestContext.getCurrentInstance();
-        columnaEscenarioSeleccionada = null;
-        filtrarLovColumnasEscenarios = null;
-        aceptar = true;
-        context.update("form:ColumnaEscenarioDialogo");
-        context.update("form:lovColumnaEscenario");
-        context.update("form:aceptarCE");
-        context.execute("ColumnaEscenarioDialogo.hide()");
-        getListaColumnasEscenarios();
-        context.update("form:ConfiguracionDetalleDialogo");
-        context.update("form:lovConfiguracionDetalle");
-        context.update("form:ConfiguracionDetalleDialogo:lovConfiguracionDetalle");
-        context.execute("ConfiguracionDetalleDialogo.show()");
-    }
-
-    public void cancelarColumna() {
-        nuevaColumna = "";
-        columnaEscenarioSeleccionada = null;
-        filtrarLovColumnasEscenarios = null;
-        aceptar = true;
-        dispararDialogoConfiguracionDetalle();
-    }
-    
-    public void posicionConfiguracionDetalle() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-        String name = map.get("n"); // name attribute of node
-        String type = map.get("t"); // type attribute of node
-        int indice = Integer.parseInt(type);
-        int columna = Integer.parseInt(name);
-        cambiarIndiceConfiguracionDetalle(indice, columna);
-    }
-    
-    public void cambiarIndiceConfiguracionDetalle(int i, int c){
-        columnaConfigDetalle = c;
-        indiceConfigDetalle = i;
-        System.out.println("cambiarIndiceConfiguracionDetalle : Indice = "+indiceConfigDetalle+" --- indiceConfigDetalle : "+indiceConfigDetalle);
-    }
-    
-    public void seleccionRegistroConfigDetalle(){
-        int indice = listaColumnasBusquedaAvanzada.indexOf(actualColumnaConfigDetalle);
-        indiceConfigDetalle = indice;
-    }
-
+    ////
     public List<ColumnasBusquedaAvanzada> getListaColumnasBusquedaAvanzada() {
         return listaColumnasBusquedaAvanzada;
     }
-    
-    public void setListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> lista){
+
+    public void setListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> lista) {
         this.listaColumnasBusquedaAvanzada = lista;
     }
 
@@ -4784,7 +4716,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             lovEstructuras = administrarVigenciaCargoBusquedaAvanzada.lovEstructura();
         }
         return lovEstructuras;
-    } 
+    }
 
     public void setLovEstructuras(List<Estructuras> lovEstructurasVigenciasCargos) {
         this.lovEstructuras = lovEstructurasVigenciasCargos;
@@ -4986,7 +4918,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void setTabActivaCentroCosto(int tabActivaCentroCosto) {
-        
+
         this.tabActivaCentroCosto = tabActivaCentroCosto;
     }
 
@@ -6201,58 +6133,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.motivoRetiroSeleccionado = motivoRetiroSeleccionado;
     }
 
-    public List<ColumnasEscenarios> getLovColumnasEscenarios() {
-        if(lovColumnasEscenarios == null){
-            lovColumnasEscenarios = administrarBusquedaAvanzada.buscarColumnasEscenarios();
-        }
-        return lovColumnasEscenarios;
-    }
-
-    public void setLovColumnasEscenarios(List<ColumnasEscenarios> listaColumnasEscenarios) {
-        this.lovColumnasEscenarios = listaColumnasEscenarios;
-    }
-
-    public List<ColumnasEscenarios> getFiltrarLovColumnasEscenarios() {
-        return filtrarLovColumnasEscenarios;
-    }
-
-    public void setFiltrarLovColumnasEscenarios(List<ColumnasEscenarios> filtrarListaColumnasEscenarios) {
-        this.filtrarLovColumnasEscenarios = filtrarListaColumnasEscenarios;
-    }
-
-    public ColumnasEscenarios getColumnaEscenarioSeleccionada() {
-        return columnaEscenarioSeleccionada;
-    }
-
-    public void setColumnaEscenarioSeleccionada(ColumnasEscenarios columnaEscenarioSeleccionada) {
-        this.columnaEscenarioSeleccionada = columnaEscenarioSeleccionada;
-    }
-
     public List<ColumnasEscenarios> getListaColumnasEscenarios() {
-        return listaColumnasEscenarios;
+        return this.listaColumnasEscenarios;
     }
 
-    public void setListaColumnasEscenarios(List<ColumnasEscenarios> listaColumnasEscenarios) {
-        this.listaColumnasEscenarios = listaColumnasEscenarios;
-    }    
-
-    public List<ColumnasEscenarios> getFiltrarListaColumnasEscenarios() {
-        return filtrarListaColumnasEscenarios;
+    public void setListaColumnasEscenarios(List<ColumnasEscenarios> setListColumnasEscenarios) {
+        this.listaColumnasEscenarios = setListColumnasEscenarios;
     }
-
-    public void setFiltrarListaColumnasEscenarios(List<ColumnasEscenarios> filtrarListaColumnasEscenarios) {
-        this.filtrarListaColumnasEscenarios = filtrarListaColumnasEscenarios;
-    }
-
-    public ColumnasEscenarios getActualColumnaConfigDetalle() {
-        return actualColumnaConfigDetalle;
-    }
-
-    public void setActualColumnaConfigDetalle(ColumnasEscenarios actualColumnaConfigDetalle) {
-        this.actualColumnaConfigDetalle = actualColumnaConfigDetalle;
-    }
-    
-    
-    
 
 }
