@@ -6,7 +6,10 @@
 
 package InterfacePersistencia;
 
+import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
+import Entidades.Empleados;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -16,5 +19,5 @@ import java.util.List;
 public interface PersistenciaColumnasEscenariosInterface {
     
     public List<ColumnasEscenarios> buscarColumnasEscenarios();
-    
+    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos);
 }

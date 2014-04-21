@@ -3,6 +3,7 @@
  */
 package Persistencia;
 
+import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import java.math.BigInteger;
@@ -20,7 +21,7 @@ import javax.persistence.Query;
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
+public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface { 
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;

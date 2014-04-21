@@ -54,9 +54,9 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
 
     @Override
     public List<Sucursales> consultarSucursales() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Sucursales.class));
-        return em.createQuery(cq).getResultList();
+        Query query = em.createQuery("SELECT m FROM Sucursales m");
+        List<Sucursales> lista = query.getResultList();
+        return lista;
     }
     
      public BigInteger contarVigenciasFormasPagosSucursal(BigInteger secuencia) {

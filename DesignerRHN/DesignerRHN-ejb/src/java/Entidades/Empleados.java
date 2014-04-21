@@ -42,42 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<EersPrestamos> eersPrestamosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<EersAuxilios> eersAuxiliosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<OtrosCertificados> otrosCertificadosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Mvrs> mvrsCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private List<Parametros> parametrosList;
-    @OneToMany(mappedBy = "nombregerente")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-    @OneToMany(mappedBy = "empleado")
-    private Collection<Pdgmetas> pdgmetasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<EvalResultadosConv> evalResultadosConvCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasIndicadores> vigenciasIndicadoresCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Demandas> demandasCollection;
-    @OneToMany(mappedBy = "reemplazado")
-    private Collection<Encargaturas> encargaturasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Encargaturas> encargaturasCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<InformacionesAdicionales> informacionesAdicionalesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasProyectos> vigenciasProyectosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasEventos> vigenciasEventosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
+    
     private Collection<VigenciasUbicaciones> vigenciasubicacionesCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
@@ -541,104 +506,6 @@ public class Empleados implements Serializable {
         this.vigenciasubicacionesCollection = vigenciasubicacionesCollection;
     }
 
-    @XmlTransient
-    public Collection<VigenciasIndicadores> getVigenciasIndicadoresCollection() {
-        return vigenciasIndicadoresCollection;
-    }
-
-    public void setVigenciasIndicadoresCollection(Collection<VigenciasIndicadores> vigenciasIndicadoresCollection) {
-        this.vigenciasIndicadoresCollection = vigenciasIndicadoresCollection;
-    }
-
-    @XmlTransient
-    public Collection<Demandas> getDemandasCollection() {
-        return demandasCollection;
-    }
-
-    public void setDemandasCollection(Collection<Demandas> demandasCollection) {
-        this.demandasCollection = demandasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Encargaturas> getEncargaturasCollection() {
-        return encargaturasCollection;
-    }
-
-    public void setEncargaturasCollection(Collection<Encargaturas> encargaturasCollection) {
-        this.encargaturasCollection = encargaturasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Encargaturas> getEncargaturasCollection1() {
-        return encargaturasCollection1;
-    }
-
-    public void setEncargaturasCollection1(Collection<Encargaturas> encargaturasCollection1) {
-        this.encargaturasCollection1 = encargaturasCollection1;
-    }
-
-    @XmlTransient
-    public Collection<InformacionesAdicionales> getInformacionesAdicionalesCollection() {
-        return informacionesAdicionalesCollection;
-    }
-
-    public void setInformacionesAdicionalesCollection(Collection<InformacionesAdicionales> informacionesAdicionalesCollection) {
-        this.informacionesAdicionalesCollection = informacionesAdicionalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasProyectos> getVigenciasProyectosCollection() {
-        return vigenciasProyectosCollection;
-    }
-
-    public void setVigenciasProyectosCollection(Collection<VigenciasProyectos> vigenciasProyectosCollection) {
-        this.vigenciasProyectosCollection = vigenciasProyectosCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasEventos> getVigenciasEventosCollection() {
-        return vigenciasEventosCollection;
-    }
-
-    public void setVigenciasEventosCollection(Collection<VigenciasEventos> vigenciasEventosCollection) {
-        this.vigenciasEventosCollection = vigenciasEventosCollection;
-    }
-
-    public Collection<EvalResultadosConv> getEvalResultadosConvCollection() {
-        return evalResultadosConvCollection;
-    }
-
-    public void setEvalResultadosConvCollection(Collection<EvalResultadosConv> evalResultadosConvCollection) {
-        this.evalResultadosConvCollection = evalResultadosConvCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Pdgmetas> getPdgmetasCollection() {
-        return pdgmetasCollection;
-    }
-
-    public void setPdgmetasCollection(Collection<Pdgmetas> pdgmetasCollection) {
-        this.pdgmetasCollection = pdgmetasCollection;
-    }
-
-    @XmlTransient
-    public List<Parametros> getParametrosList() {
-        return parametrosList;
-    }
-
-    public void setParametrosList(List<Parametros> parametrosList) {
-        this.parametrosList = parametrosList;
-    }
-
     public String getEstado() {
         return estado;
     }
@@ -663,57 +530,5 @@ public class Empleados implements Serializable {
         this.codigoempleadoSTR = codigoempleadoSTR;
     }
 
-    @XmlTransient
-    public Collection<OtrosCertificados> getOtrosCertificadosCollection() {
-        return otrosCertificadosCollection;
-    }
-
-    public void setOtrosCertificadosCollection(Collection<OtrosCertificados> otrosCertificadosCollection) {
-        this.otrosCertificadosCollection = otrosCertificadosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Mvrs> getMvrsCollection() {
-        return mvrsCollection;
-    }
-
-    public void setMvrsCollection(Collection<Mvrs> mvrsCollection) {
-        this.mvrsCollection = mvrsCollection;
-    }
-
-    @XmlTransient
-    public Collection<EnfermeadadesProfesionales> getEnfermeadadesProfesionalesCollection() {
-        return enfermeadadesProfesionalesCollection;
-    }
-
-    public void setEnfermeadadesProfesionalesCollection(Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection) {
-        this.enfermeadadesProfesionalesCollection = enfermeadadesProfesionalesCollection;
-    }
-
-    @XmlTransient
-    public Collection<IbcsAutoliquidaciones> getIbcsAutoliquidacionesCollection() {
-        return ibcsAutoliquidacionesCollection;
-    }
-
-    public void setIbcsAutoliquidacionesCollection(Collection<IbcsAutoliquidaciones> ibcsAutoliquidacionesCollection) {
-        this.ibcsAutoliquidacionesCollection = ibcsAutoliquidacionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersAuxilios> getEersAuxiliosCollection() {
-        return eersAuxiliosCollection;
-    }
-
-    public void setEersAuxiliosCollection(Collection<EersAuxilios> eersAuxiliosCollection) {
-        this.eersAuxiliosCollection = eersAuxiliosCollection;
-    }
-
-    @XmlTransient
-    public Collection<EersPrestamos> getEersPrestamosCollection() {
-        return eersPrestamosCollection;
-    }
-
-    public void setEersPrestamosCollection(Collection<EersPrestamos> eersPrestamosCollection) {
-        this.eersPrestamosCollection = eersPrestamosCollection;
-    }
+   
 }
