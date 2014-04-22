@@ -238,4 +238,16 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
+    
+    @Override 
+    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(String queryBusquedaAvanzada) {
+        try {
+            Query query = em.createNativeQuery(queryBusquedaAvanzada);
+            List<BigInteger> empleado = query.getResultList();
+            return empleado;
+        } catch (Exception e) {
+            System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzadaCodigo : " + e.toString());
+            return null;
+        }
+    }
 }

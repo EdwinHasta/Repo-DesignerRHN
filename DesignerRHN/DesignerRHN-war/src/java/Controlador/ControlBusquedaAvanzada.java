@@ -21,6 +21,7 @@ import Entidades.Mvrs;
 import Entidades.NormasLaborales;
 import Entidades.Papeles;
 import Entidades.Periodicidades;
+import Entidades.QVWEmpleadosCorte;
 import Entidades.ReformasLaborales;
 import Entidades.Sucursales;
 import Entidades.TercerosSucursales;
@@ -57,6 +58,7 @@ import InterfaceAdministrar.AdministrarVigenciasTiposTrabajadoresInterface;
 import InterfaceAdministrar.AdministrarVigenciasUbicacionesInterface;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -381,7 +383,13 @@ public class ControlBusquedaAvanzada implements Serializable {
     //
     private List<ColumnasEscenarios> listaColumnasEscenarios;
 
+    //PRUEBA
+    List<BigInteger> listaCodigosEmpleado;
+    List<QVWEmpleadosCorte> registros;
+    List<QVWEmpleadosCorte> registrosFiltrado;
+
     public ControlBusquedaAvanzada() {
+        registros = new ArrayList<QVWEmpleadosCorte>();
         listaColumnasEscenarios = null;
         auxTabActivoCentroCosto = false;
         //
@@ -605,6 +613,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
         mapValoresColumnas = new HashMap<String, String>();
         listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+        listaCodigosEmpleado = new ArrayList<BigInteger>();
         createStaticColumns();
     }
 
@@ -640,12 +649,18 @@ public class ControlBusquedaAvanzada implements Serializable {
         cargueParametrosModuloJornadaLaboral();
         String query = administrarBusquedaAvanzada.armarQueryModulosBusquedaAvanzada(listaParametrosQueryModulos);
         System.out.println("Query hecho por Administrar : " + query);
-        String queryEmpleado = "SELECT * FROM EMPLEADOS EM ";
+        //String queryEmpleado = "SELECT * FROM EMPLEADOS EM ";
+        String queryEmpleado = "SELECT codigoempleado FROM EMPLEADOS EM ";
         if (!query.isEmpty()) {
             queryEmpleado = queryEmpleado + query;
         }
         System.out.println("Query Final Busqueda Avanzada : " + queryEmpleado);
-        listaEmpleadosResultados = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulos(queryEmpleado);
+        listaCodigosEmpleado = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulosCodigo(queryEmpleado);
+        for (int i = 0; i < listaCodigosEmpleado.size(); i++) {
+            System.out.println("listaCodigosEmpleado Codigo : " + listaCodigosEmpleado.get(i));
+        }
+        System.out.println("Tamaño: " + listaCodigosEmpleado.size());
+        //listaEmpleadosResultados = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulos(queryEmpleado);
         updateColumns();
     }
 
@@ -4457,46 +4472,66 @@ public class ControlBusquedaAvanzada implements Serializable {
         UIComponent table = FacesContext.getCurrentInstance().getViewRoot().findComponent(":form:resultadoBusquedaAvanzada");
         table.setValueExpression("sortBy", null);
         //update columns
-        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
-        int tamEmpleado = listaEmpleadosResultados.size();
-        for (int i = 0; i < tamEmpleado; i++) {
-            listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
-        }
         int tam = 0;
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+
         if (listaColumnasEscenarios != null) {
             tam = listaColumnasEscenarios.size();
         }
-        System.out.println("dsadsa listaColumnasEscenarios : " + tam);
+        String camposBusqueda = " secuencia, codigoempleado, primerapellido, segundoapellido, nombre";
         if (tam > 0) {
-            for (int j = 0; j < listaColumnasEscenarios.size(); j++) {
-                String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
-                nuevaColumna = palabras[0];
-                for (int i = 1; i < palabras.length; i++) {
-                    nuevaColumna = nuevaColumna + "_" + palabras[i];
-                }
-                columnTemplate = columnTemplate + nuevaColumna + " ";
-                nuevaColumna = "";
+            for (int j = 0; j < tam; j++) {
+                camposBusqueda = camposBusqueda + ", " + listaColumnasEscenarios.get(j).getNombrecolumna();
             }
         }
-        String[] valoresColumnasDeseadas = columnTemplate.split(" ");
-        columns.clear();
-        mapValoresColumnas.clear();
-        if (tamEmpleado > 0) {
-            System.out.println("valoresColumnasDeseadas.length : " + valoresColumnasDeseadas.length);
-            if (valoresColumnasDeseadas.length == 4) {
-                createStaticColumns();
-                cargarTablaColumnasEstaticas();
-            }
-            if (valoresColumnasDeseadas.length >= 5) {
-                createStaticColumns();
-                createDynamicColumns();
-                cargarTablaColumnasEstaticas();
-                cargarTablaColumnasDinamicas();
-            }
-        } else {
-            listaColumnasBusquedaAvanzada = null;
-            createStaticColumns();
-        }
+        List<QVWEmpleadosCorte> registros = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleadoCodigo(listaCodigosEmpleado, camposBusqueda);
+        System.out.println("registros  : " + registros.size());
+        // createStaticColumns();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:resultadoBusquedaAvanzada");
+//        for (int i = 0; i < registros.size(); i++) {
+//            System.out.println("registros  : " + listaCodigosEmpleado.get(i));
+//        }
+
+        /*int tamEmpleado = listaEmpleadosResultados.size();
+         for (int i = 0; i < tamEmpleado; i++) {
+         listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
+         }
+         int tam = 0;
+         if (listaColumnasEscenarios != null) {
+         tam = listaColumnasEscenarios.size();
+         }
+         System.out.println("dsadsa listaColumnasEscenarios : " + tam);
+         if (tam > 0) {
+         for (int j = 0; j < listaColumnasEscenarios.size(); j++) {
+         String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
+         nuevaColumna = palabras[0];
+         for (int i = 1; i < palabras.length; i++) {
+         nuevaColumna = nuevaColumna + "_" + palabras[i];
+         }
+         columnTemplate = columnTemplate + nuevaColumna + " ";
+         nuevaColumna = "";
+         }
+         }
+         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
+         columns.clear();
+         mapValoresColumnas.clear();
+         if (tamEmpleado > 0) {
+         System.out.println("valoresColumnasDeseadas.length : " + valoresColumnasDeseadas.length);
+         if (valoresColumnasDeseadas.length == 4) {
+         createStaticColumns();
+         cargarTablaColumnasEstaticas();
+         }
+         if (valoresColumnasDeseadas.length >= 5) {
+         createStaticColumns();
+         createDynamicColumns();
+         cargarTablaColumnasEstaticas();
+         cargarTablaColumnasDinamicas();
+         }
+         } else {
+         listaColumnasBusquedaAvanzada = null;
+         createStaticColumns();
+         }*/
     }
 
     public void createStaticColumns() {
@@ -6116,4 +6151,21 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.listaColumnasEscenarios = setListColumnasEscenarios;
     }
 
+    public List<QVWEmpleadosCorte> getRegistros() {
+        return this.registros;
+    }
+
+    public void setRegistros(List<QVWEmpleadosCorte> setListColumnasEscenarios) {
+        this.registros = setListColumnasEscenarios;
+    }
+
+    public List<QVWEmpleadosCorte> getRegistrosFiltrado() {
+        return this.registrosFiltrado;
+    }
+
+    public void setRegistrosFiltrado(List<QVWEmpleadosCorte> setListColumnasEscenarios) {
+        this.registrosFiltrado = setListColumnasEscenarios;
+    }
+
+    
 }

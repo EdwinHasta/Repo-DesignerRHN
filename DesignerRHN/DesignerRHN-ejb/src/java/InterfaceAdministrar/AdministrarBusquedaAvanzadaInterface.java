@@ -9,6 +9,7 @@ import ClasesAyuda.ColumnasBusquedaAvanzada;
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
+import Entidades.QVWEmpleadosCorte;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -25,5 +26,8 @@ public interface AdministrarBusquedaAvanzadaInterface {
     public List<ColumnasEscenarios> buscarColumnasEscenarios();
     
     public List<ColumnasBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos);
-
+    
+    public List<BigInteger> ejecutarQueryBusquedaAvanzadaPorModulosCodigo(String query);
+    
+public List<QVWEmpleadosCorte> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos) ;
 }

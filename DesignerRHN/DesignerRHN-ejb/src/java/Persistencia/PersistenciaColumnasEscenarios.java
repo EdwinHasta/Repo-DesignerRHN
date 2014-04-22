@@ -8,7 +8,9 @@ package Persistencia;
 import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
+import Entidades.QVWEmpleadosCorte;
 import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -44,7 +46,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
             System.out.println("Entrto persistencia");
             List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
             for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
-                System.out.println("listaEmpleadosResultados : "+listaEmpleadosResultados.size());
+                System.out.println("listaEmpleadosResultados : " + listaEmpleadosResultados.size());
                 ColumnasBusquedaAvanzada obj = new ColumnasBusquedaAvanzada();
                 registro.add(obj);
                 for (int i = 0; i < campos.size(); i++) {
@@ -59,7 +61,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
                     String q = "SELECT " + campo + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado=" + listaEmpleadosResultados.get(j).getCodigoempleado();
                     Query query = em.createNativeQuery(q);
                     String valor = (String) query.getSingleResult();
-                    System.out.println("Valor : "+valor);
+                    System.out.println("Valor : " + valor);
                     if (i == 0) {
                         registro.get(j).setColumna0(valor);
                     }
@@ -100,4 +102,31 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
         }
     }
 
+    @Override
+    public List<QVWEmpleadosCorte> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(List<BigInteger> listaEmpleadosResultados, String campos) {
+        try {
+            System.out.println("Entro persistencia");
+            List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
+            List<QVWEmpleadosCorte> registroPrueba = new ArrayList<QVWEmpleadosCorte>();
+            for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
+                System.out.println("listaEmpleadosResultados : " + listaEmpleadosResultados.size());
+                ColumnasBusquedaAvanzada obj = new ColumnasBusquedaAvanzada();
+                QVWEmpleadosCorte obj2 = new QVWEmpleadosCorte();
+                String q = "SELECT " + campos + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado= ?";
+                System.out.println("Query: " + q);
+                //Query query = em.createNativeQuery(q, ColumnasBusquedaAvanzada.class);
+                Query query = em.createNativeQuery(q, QVWEmpleadosCorte.class);
+                query.setParameter(1, listaEmpleadosResultados.get(j));
+                obj2 = (QVWEmpleadosCorte) query.getSingleResult();
+                System.out.println("Paso esta gonorrea");
+                System.out.println(obj2.getNombre());
+                registroPrueba.add(obj2);
+            }
+            return registroPrueba;
+
+        } catch (Exception e) {
+            System.out.println("Error buscarQVWEmpleadosCorteCodigoEmpleado PersistenciaQVWEmpleadosCorte : " + e.toString());
+            return null;
+        }
+    }
 }

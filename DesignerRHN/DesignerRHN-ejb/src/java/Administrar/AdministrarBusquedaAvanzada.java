@@ -9,6 +9,7 @@ import ClasesAyuda.ColumnasBusquedaAvanzada;
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
+import Entidades.QVWEmpleadosCorte;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -50,6 +51,17 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     public List<Empleados> ejecutarQueryBusquedaAvanzadaPorModulos(String query) {
         try {
             List<Empleados> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzada(query);
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error ejecutarQueryBusquedaAvanzadaPorModulos Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<BigInteger> ejecutarQueryBusquedaAvanzadaPorModulosCodigo(String query) {
+        try {
+            List<BigInteger> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzadaCodigo(query);
             return lista;
         } catch (Exception e) {
             System.out.println("Error ejecutarQueryBusquedaAvanzadaPorModulos Admi : " + e.toString());
@@ -681,6 +693,19 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
         try {
             System.out.println("entro administrar");
             List<ColumnasBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleado(listaEmpleadosResultados, campos);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());
+            return null;
+        }
+
+    }
+    
+    //@Override
+    public List<QVWEmpleadosCorte> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos) {
+        try {
+            System.out.println("entro administrar");
+            List<QVWEmpleadosCorte> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(listaCodigosEmpleados, campos);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());
