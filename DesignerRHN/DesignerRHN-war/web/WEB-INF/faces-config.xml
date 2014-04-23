@@ -1,7 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-
-<!-- =========== FULL CONFIGURATION FILE ================================== -->
-
 <faces-config version="2.1"
               xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -2079,15 +2076,15 @@
     <navigation-rule>
         <from-view-id>/IbcAutoliquid.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <from-outcome>emplibcs</from-outcome>
+            <to-view-id>/emplibcs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/emplibcs.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>ibcs</from-outcome>
+            <from-outcome>ibcAuto</from-outcome>
             <to-view-id>/IbcAutoliquid.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -2427,7 +2424,7 @@
         </navigation-case>
     </navigation-rule> 
     <navigation-rule>
-        <from-view-id>/tipoformula.xhtml</from-view-id>
+         <from-view-id>/tipoformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>operando</from-outcome>
             <to-view-id>/operando.xhtml</to-view-id>
@@ -2508,7 +2505,7 @@
     <navigation-rule>
         <from-view-id>/emplviajero.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>vigenciaviajeroatras</from-outcome>
+            <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -2615,7 +2612,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>declarantes</from-outcome>
-            <to-view-id>/declarante.xhtml</to-view-id>
+            <to-view-id>/declarante</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2637,67 +2634,4 @@
         </navigation-case>
     </navigation-rule>
     
-    <navigation-rule>
-        <from-view-id>/conceptoredondeo.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>conceptosredondeos</from-outcome>
-            <to-view-id>/conceptoredondeo.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/operandogrupoconcepto.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>operandosgruposconceptos</from-outcome>
-            <to-view-id>/operandogrupoconcepto.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/grupoconcepto.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>rastro</from-outcome>
-            <to-view-id>/Rastro.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>gruposconceptos</from-outcome>
-            <to-view-id>/grupoconcepto.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    
-    <navigation-rule>
-        <from-view-id>/Rastro.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>vigenciasgruposconceptos</from-outcome>
-            <to-view-id>/grupoconcepto.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-   
 </faces-config>
