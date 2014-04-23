@@ -386,7 +386,7 @@
                         </p:dialog>
 
                         <p:commandButton id="aceptarN" value="Aceptar" icon="ui-icon-check" actionListener="#{cargarArchivoPlano.host()}" process="@this" style="position: absolute; top: 500px; left: 565px"/>
-                        <p:commandButton id="atrasN" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{cargarArchivoPlano.revisarNovedad(tNovedades.secuencia)}" process="@this" style="position: absolute; top: 500px; left: 650px" action="nomina"/>
+                        <p:commandButton id="atrasN" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{cargarArchivoPlano.revisarNovedad(tNovedades.secuencia)}" process="@this" style="position: absolute; top: 500px; left: 650px" action="novedad"/>
                         <p:commandButton id="borrarTodo" value="#{msg['borrartodo']}" process="@this" style="position: absolute; top: 460px;" oncomplete="borrarTodoDialogo.show();" update="pickListDocumentosSoporte" />
                         <p:commandButton id="borrarNoCargado" value="#{msg['borrarnocargado']}" actionListener="#{cargarArchivoPlano.borrarRegistrosNoCargados()}" update="tempNovedades, nombreArchivo" process="@this" style="position: absolute; top: 460px; left: 120px;"/>
                         <p:commandButton id="novedadPlanoOcacional" value="#{msg['novedadplanoocasional']}" actionListener="#{cargarArchivoPlano.revisarNovedad(tNovedades.secuencia)}" process="@this" style="position: absolute; top: 460px; left: 535px; width: 178px"/>
