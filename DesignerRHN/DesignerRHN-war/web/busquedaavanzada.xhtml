@@ -1201,8 +1201,8 @@
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['resultadoBusqueda']}</strong></legend>
                                             
                                     <p:dataTable id="resultadoBusquedaAvanzada" widgetVar="resultadoBusquedaAvanzada" var="busqueda" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 715px;position: relative"
-                                                 value="#{controlBusquedaAvanzada.registros}" scrollable="true" scrollWidth="733" scrollHeight="70"
-                                                 liveScroll="true" scrollRows="4" filteredValue="#{controlBusquedaAvanzada.registrosFiltrado}" emptyMessage="#{msg['vacio']}"
+                                                 value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}" scrollable="true" scrollWidth="733" scrollHeight="70"
+                                                 liveScroll="true" scrollRows="4" filteredValue="#{controlBusquedaAvanzada.filtrarListaColumnasBusquedaAvanzada}" emptyMessage="#{msg['vacio']}"
                                                  editable="true" editMode="cell">
                                         
                                    <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" width="120" columnIndexVar="colIndex" 
@@ -1210,7 +1210,8 @@
                                        <f:facet name="header">
                                            #{column.header}
                                        </f:facet>
-                                       <h:outputText value="#{busqueda[column.property]}"/>
+                                       <h:outputLabel value="#{busqueda[column.property]}" onclick="posicionTablaBusquedaAvanzada([{name: 'n', value: '#{colIndex}'}, {name: 't', value: '#{indice}'}]);"/>
+                                       
                                    </p:columns>
 
                                </p:dataTable>
@@ -1230,6 +1231,7 @@
                         <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" action="nominaf" process="@this" />
                         <p:commandButton style="position: absolute; left: 790px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" action="nominaf" icon="ui-icon-arrowreturnthick-1-w" process="@this" />
 
+                        <p:remoteCommand name="posicionTablaBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.posicionTablaBusquedaAvanzada()}"/>
 
 
                     </p:panel>
@@ -1931,13 +1933,15 @@
 
                             <p:separator />
 
-                            <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false"  />
+                            <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBusquedaAvanzada.exportXLS()}" ajax="false"  />
                             <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
-                            <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"/>
+                            <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
+                                    <p:dataExporter type="xml"  target=":formExportar:datosBusquedaAvanzadaExportar" fileName="ResultadosBusquedaAvanzada_XML" encoding="UTF-8"/> 
+                            </p:commandButton>
                             <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
-                            <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false"/>
+                            <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBusquedaAvanzada.exportPDF()}" ajax="false"/>
                             <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                             <p:separator /> 
@@ -1991,43 +1995,43 @@
                 <h:form id="formularioDialogos">
 
                     <!-- MODULO CARGOS -->
-                    <p:dialog id="editarCargoModCargo" header="#{msg['atencion']}" widgetVar="editarCargoModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCargoModCargo" header="#{msg['editarCargoModCargo']}" widgetVar="editarCargoModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaCargoBA.cargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCargoModCargo" value="#{msg['atras']}" onclick="editarCargoModCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEstructuraModCargo" header="#{msg['atencion']}" widgetVar="editarEstructuraModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarEstructuraModCargo" header="#{msg['editarEstructuraModCargo']}" widgetVar="editarEstructuraModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaCargoBA.estructura.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarEstructuraModCargo" value="#{msg['atras']}" onclick="editarEstructuraModCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarJefeModCargo" header="#{msg['atencion']}" widgetVar="editarJefeModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarJefeModCargo" header="#{msg['editarJefeModCargo']}" widgetVar="editarJefeModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaCargoBA.empleadojefe.persona.nombreCompleto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarJefeModCargo" value="#{msg['atras']}" onclick="editarJefeModCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMotivoModCargo" header="#{msg['atencion']}" widgetVar="editarMotivoModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarMotivoModCargo" header="#{msg['editarMotivoModCargo']}" widgetVar="editarMotivoModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaCargoBA.motivocambiocargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModCargo" value="#{msg['atras']}" onclick="editarMotivoModCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCentroCostoModCargo" header="#{msg['atencion']}" widgetVar="editarCentroCostoModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCentroCostoModCargo" header="#{msg['editarCentroCostoModCargo']}" widgetVar="editarCentroCostoModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaCargoBA.estructura.centrocosto.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCentroCostoModCargo" value="#{msg['atras']}" onclick="editarCentroCostoModCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarPapelModCargo" header="#{msg['atencion']}" widgetVar="editarPapelModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarPapelModCargo" header="#{msg['editarPapelModCargo']}" widgetVar="editarPapelModCargo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaCargoBA.papel.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPapelModCargoo" value="#{msg['atras']}" onclick="editarPapelModCargo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModCargo" header="#{msg['atencion']}" widgetVar="editarFechaInicialModCargo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModCargo" header="#{msg['editarFechaInicialModCargo']}" widgetVar="editarFechaInicialModCargo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialCargo}" id="editFechaInicialModCargo"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModCargo" value="#{msg['atras']}" onclick="editarFechaInicialModCargo.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="editarFechaFinalModCargo" header="#{msg['atencion']}" widgetVar="editarFechaFinalModCargo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModCargo" header="#{msg['editarFechaFinalModCargo']}" widgetVar="editarFechaFinalModCargo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalCargo}" id="editFechaFinalModCargo"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2036,23 +2040,23 @@
 
                     <!-- MODULO CENTROS COSTOS -->
 
-                    <p:dialog id="editarLocalizacionModCentroCosto" header="#{msg['atencion']}" widgetVar="editarLocalizacionModCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarLocalizacionModCentroCosto" header="#{msg['editarLocalizacionModCentroCosto']}" widgetVar="editarLocalizacionModCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaLocalizacionBA.localizacion.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarLocalizacionModCentroCosto" value="#{msg['atras']}" onclick="editarLocalizacionModCentroCosto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 d
-                    <p:dialog id="editarMotivoModCentroCosto" header="#{msg['atencion']}" widgetVar="editarMotivoModCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarMotivoModCentroCosto" header="#{msg['editarMotivoModCentroCosto']}" widgetVar="editarMotivoModCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaLocalizacionBA.motivo.descripcion}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModCentroCosto" value="#{msg['atras']}" onclick="editarMotivoModCentroCosto.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModCentroCosto" header="#{msg['atencion']}" widgetVar="editarFechaInicialModCentroCosto" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModCentroCosto" header="#{msg['editarFechaInicialModCentroCosto']}" widgetVar="editarFechaInicialModCentroCosto" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialCentroCosto}" id="editFechaInicialModCentroCosto"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModCentroCosto" value="#{msg['atras']}" onclick="editarFechaInicialModCentroCosto.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="editarFechaFinalModCentroCosto" header="#{msg['atencion']}" widgetVar="editarFechaFinalModCentroCosto" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModCentroCosto" header="#{msg['editarFechaFinalModCentroCosto']}" widgetVar="editarFechaFinalModCentroCosto" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalCentroCosto}" id="editFechaFinalModCentroCosto"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2061,38 +2065,38 @@ d
 
                     <!-- MODULO SUELDOS -->
 
-                    <p:dialog id="editarTipoSueldoModSueldo" header="#{msg['atencion']}" widgetVar="editarTipoSueldoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoSueldoModSueldo" header="#{msg['editarTipoSueldoModSueldo']}" widgetVar="editarTipoSueldoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaSueldoBA.tiposueldo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTipoSueldoModSueldo" value="#{msg['atras']}" onclick="editarTipoSueldoModSueldo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMotivoModSueldo" header="#{msg['atencion']}" widgetVar="editarMotivoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarMotivoModSueldo" header="#{msg['editarMotivoModSueldo']}" widgetVar="editarMotivoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaSueldoBA.motivocambiosueldo.nombre}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModSueldo" value="#{msg['atras']}" onclick="editarMotivoModSueldo.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMinimoModSueldo" header="#{msg['atencion']}" widgetVar="editarSueldoMinimoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMinimoModSueldo" header="#{msg['editarSueldoMinimoModSueldo']}" widgetVar="editarSueldoMinimoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.sueldoMinSueldo}" id="editSueldoMinSueldo" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" for="editSueldoMinSueldo" type="currency" />
                         </p:inputTextarea>
                         <p:commandButton id="cancelarSueldoMinimoModSueldo" value="#{msg['atras']}" onclick="editSueldoMinSueldo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMaximoModSueldo" header="#{msg['atencion']}" widgetVar="editarSueldoMaximoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMaximoModSueldo" header="#{msg['editarSueldoMaximoModSueldo']}" widgetVar="editarSueldoMaximoModSueldo" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.sueldoMaxSueldo}" id="editSueldoMaxSueldo" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" for="editSueldoMaxSueldo" type="currency" />
                         </p:inputTextarea>
                         <p:commandButton id="cancelarSueldoMaximoModSueldo" value="#{msg['atras']}" onclick="editarSueldoMaximoModSueldo.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModSueldo" header="#{msg['atencion']}" widgetVar="editarFechaInicialModSueldo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModSueldo" header="#{msg['editarFechaInicialModSueldo']}" widgetVar="editarFechaInicialModSueldo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialSueldo}" id="editFechaInicialModSueldo"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModSueldo" value="#{msg['atras']}" onclick="editarFechaInicialModSueldo.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalModSueldo" header="#{msg['atencion']}" widgetVar="editarFechaFinalModSueldo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModSueldo" header="#{msg['editarFechaFinalModSueldo']}" widgetVar="editarFechaFinalModSueldo" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalSueldo}" id="editFechaFinalModSueldo"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2102,24 +2106,24 @@ d
 
                     <!-- MODULO FECHA CONTRATO-->
 
-                    <p:dialog id="editarTipoContratoModFechaContrato" header="#{msg['atencion']}" widgetVar="editarTipoContratoModFechaContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoContratoModFechaContrato" header="#{msg['editarTipoContratoModFechaContrato']}" widgetVar="editarTipoContratoModFechaContrato" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaTipoContratoBA.tipocontrato.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTipoContratoModFechaContrato" value="#{msg['atras']}" onclick="editarTipoContratoModFechaContrato.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMotivoModFechaContrato" header="#{msg['atencion']}" widgetVar="editarMotivoModFechaContrato" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarMotivoModFechaContrato" header="#{msg['editarMotivoModFechaContrato']}" widgetVar="editarMotivoModFechaContrato" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaTipoContratoBA.motivocontrato.nombre}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModFechaContrato" value="#{msg['atras']}" onclick="editarMotivoModFechaContrato.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModFechaContrato" header="#{msg['atencion']}" widgetVar="editarFechaInicialModFechaContrato" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModFechaContrato" header="#{msg['editarFechaInicialModFechaContrato']}" widgetVar="editarFechaInicialModFechaContrato" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialFechaContrato}" id="editFechaInicialModFechaContrato"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModFechaContrato" value="#{msg['atras']}" onclick="editarFechaInicialModFechaContrato.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalModFechaContrato" header="#{msg['atencion']}" widgetVar="editarFechaFinalModFechaContrato" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModFechaContrato" header="#{msg['editarFechaFinalModFechaContrato']}" widgetVar="editarFechaFinalModFechaContrato" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalFechaContrato}" id="editFechaFinalModFechaContrato"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2128,19 +2132,19 @@ d
 
                     <!-- MODULO TIPO TRABAJADOR-->
 
-                    <p:dialog id="editarTipoTrabajadorModTipoTrabajador" header="#{msg['atencion']}" widgetVar="editarTipoTrabajadorModTipoTrabajador" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoTrabajadorModTipoTrabajador" header="#{msg['editarTipoTrabajadorModTipoTrabajador']}" widgetVar="editarTipoTrabajadorModTipoTrabajador" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaTipoTrabajadorBA.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTipoTrabajadorModTipoTrabajador" value="#{msg['atras']}" onclick="editarTipoTrabajadorModTipoTrabajador.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModTipoTrabajador" header="#{msg['atencion']}" widgetVar="editarFechaInicialModTipoTrabajador" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModTipoTrabajador" header="#{msg['editarFechaInicialModTipoTrabajador']}" widgetVar="editarFechaInicialModTipoTrabajador" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialTipoTrabajador}" id="editFechaInicialModTipoTrabajador"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModTipoTrabajador" value="#{msg['atras']}" onclick="editarFechaInicialModTipoTrabajador.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalModTipoTrabajador" header="#{msg['atencion']}" widgetVar="editarFechaFinalModTipoTrabajador" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModTipoTrabajador" header="#{msg['editarFechaFinalModTipoTrabajador']}" widgetVar="editarFechaFinalModTipoTrabajador" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalTipoTrabajador}" id="editFechaFinalModTipoTrabajador"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2149,19 +2153,19 @@ d
 
                     <!-- MODULO TIPO SALARIO-->
 
-                    <p:dialog id="editarReformaLaboralModTipoSalario" header="#{msg['atencion']}" widgetVar="editarReformaLaboralModTipoSalario" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarReformaLaboralModTipoSalario" header="#{msg['editarReformaLaboralModTipoSalario']}" widgetVar="editarReformaLaboralModTipoSalario" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaReformaLaboralBA.reformalaboral.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTReformaLaboralModTipoSalario" value="#{msg['atras']}" onclick="editarReformaLaboralModTipoSalario.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModTipoSalario" header="#{msg['atencion']}" widgetVar="editarFechaInicialModTipoSalario" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModTipoSalario" header="#{msg['editarFechaInicialModTipoSalario']}" widgetVar="editarFechaInicialModTipoSalario" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialTipoSalario}" id="editFechaInicialModTipoSalario"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModTipoSalario" value="#{msg['atras']}" onclick="editarFechaInicialModTipoSalario.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalModTipoSalario" header="#{msg['atencion']}" widgetVar="editarFechaFinalModTipoSalario" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModTipoSalario" header="#{msg['editarFechaFinalModTipoSalario']}" widgetVar="editarFechaFinalModTipoSalario" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalTipoSalario}" id="editFechaFinalModTipoSalario"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2170,19 +2174,19 @@ d
 
                     <!-- MODULO NORMA LABORAL -->
 
-                    <p:dialog id="editarNormaLaboralModNormaLaboral" header="#{msg['atencion']}" widgetVar="editarNormaLaboralModNormaLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNormaLaboralModNormaLaboral" header="#{msg['editarNormaLaboralModNormaLaboral']}" widgetVar="editarNormaLaboralModNormaLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaNormaEmpleadoBA.normalaboral.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTNormaLaboralModNormaLaboral" value="#{msg['atras']}" onclick="editarNormaLaboralModNormaLaboral.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModNormaLaboral" header="#{msg['atencion']}" widgetVar="editarFechaInicialModNormaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModNormaLaboral" header="#{msg['editarFechaInicialModNormaLaboral']}" widgetVar="editarFechaInicialModNormaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialNormaLaboral}" id="editFechaInicialModNormaLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModNormaLaboral" value="#{msg['atras']}" onclick="editarFechaInicialModNormaLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalModNormaLaboral" header="#{msg['atencion']}" widgetVar="editarFechaFinalModNormaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModNormaLaboral" header="#{msg['editarFechaFinalModNormaLaboral']}" widgetVar="editarFechaFinalModNormaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalNormaLaboral}" id="editFechaFinalModNormaLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2191,33 +2195,33 @@ d
 
                     <!-- MODULO LEGISLACION LABORAL -->
 
-                    <p:dialog id="editarLegislacionModLegislacionLaboral" header="#{msg['atencion']}" widgetVar="editarLegislacionModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarLegislacionModLegislacionLaboral" header="#{msg['editarLegislacionModLegislacionLaboral']}" widgetVar="editarLegislacionModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaNormaEmpleadoBA.normalaboral.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarLegislacionModLegislacionLaboral" value="#{msg['atras']}" onclick="editarLegislacionModLegislacionLaboral.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMIInicialModLegislacionLaboral" header="#{msg['atencion']}" widgetVar="editarFechaMIInicialModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMIInicialModLegislacionLaboral" header="#{msg['editarFechaMIInicialModLegislacionLaboral']}" widgetVar="editarFechaMIInicialModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIInicialLegislacionLaboral}" id="editFechaMIInicialModLegislacionLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMIInicialModLegislacionLaboral" value="#{msg['atras']}" onclick="editarFechaMIInicialModLegislacionLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMIFinalModLegislacionLaboral" header="#{msg['atencion']}" widgetVar="editarFechaMIFinalModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMIFinalModLegislacionLaboral" header="#{msg['editarFechaMIFinalModLegislacionLaboral']}" widgetVar="editarFechaMIFinalModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIFinalLegislacionLaboral}" id="editFechaMIFinalModLegislacionLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMIFinalModLegislacionLaboral" value="#{msg['atras']}" onclick="editarFechaMIFinalModLegislacionLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMFInicialModLegislacionLaboral" header="#{msg['atencion']}" widgetVar="editarFechaMFInicialModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMFInicialModLegislacionLaboral" header="#{msg['editarFechaMFInicialModLegislacionLaboral']}" widgetVar="editarFechaMFInicialModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMFInicialLegislacionLaboral}" id="editFechaMFInicialModLegislacionLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMFInicialModLegislacionLaboral" value="#{msg['atras']}" onclick="editarFechaMFInicialModLegislacionLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMFFinalModLegislacionLaboral" header="#{msg['atencion']}" widgetVar="editarFechaMFFinalModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMFFinalModLegislacionLaboral" header="#{msg['editarFechaMFFinalModLegislacionLaboral']}" widgetVar="editarFechaMFFinalModLegislacionLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMFFinalLegislacionLaboral}" id="editFechaMFFinalModLegislacionLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2226,23 +2230,23 @@ d
 
                     <!-- MODULO UBICACION GEOGRAFICA -->
 
-                    <p:dialog id="editarUbicacionModUbicacion" header="#{msg['atencion']}" widgetVar="editarUbicacionModUbicacion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarUbicacionModUbicacion" header="#{msg['editarUbicacionModUbicacion']}" widgetVar="editarUbicacionModUbicacion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaUbicacionBA.ubicacion.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarUbicacionModUbicacion" value="#{msg['atras']}" onclick="editarUbicacionModUbicacion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCiudadModUbicacion" header="#{msg['atencion']}" widgetVar="editarCiudadModUbicacion" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarCiudadModUbicacion" header="#{msg['editarCiudadModUbicacion']}" widgetVar="editarCiudadModUbicacion" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaUbicacionBA.ubicacion.ciudad.nombre}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCiudadModUbicacion" value="#{msg['atras']}" onclick="editarCiudadModUbicacion.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModUbicacion" header="#{msg['atencion']}" widgetVar="editarFechaInicialModUbicacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModUbicacion" header="#{msg['editarFechaInicialModUbicacion']}" widgetVar="editarFechaInicialModUbicacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialUbicacion}" id="editFechaInicialModUbicacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModUbicacion" value="#{msg['atras']}" onclick="editarFechaInicialModUbicacion.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="editarFechaFinalModUbicacion" header="#{msg['atencion']}" widgetVar="editarFechaFinalModUbicacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModUbicacion" header="#{msg['editarFechaFinalModUbicacion']}" widgetVar="editarFechaFinalModUbicacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalUbicacion}" id="editFechaFinalModUbicacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2251,28 +2255,28 @@ d
 
                     <!-- MODULO AFILIACION -->
 
-                    <p:dialog id="editarTerceroModAfiliacion" header="#{msg['atencion']}" widgetVar="editarTerceroModAfiliacion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTerceroModAfiliacion" header="#{msg['editarTerceroModAfiliacion']}" widgetVar="editarTerceroModAfiliacion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaAfiliacionBA.tercerosucursal.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTerceroModAfiliacion" value="#{msg['atras']}" onclick="editarTerceroModAfiliacion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTipoEntidadModAfiliacion" header="#{msg['atencion']}" widgetVar="editarTipoEntidadModAfiliacion" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarTipoEntidadModAfiliacion" header="#{msg['editarTipoEntidadModAfiliacion']}" widgetVar="editarTipoEntidadModAfiliacion" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaAfiliacionBA.tipoentidad.nombre}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTipoEntidadModAfiliacion" value="#{msg['atras']}" onclick="editarTipoEntidadModAfiliacion.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEstadoModAfiliacion" header="#{msg['atencion']}" widgetVar="editarEstadoModAfiliacion" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarEstadoModAfiliacion" header="#{msg['editarEstadoModAfiliacion']}" widgetVar="editarEstadoModAfiliacion" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaAfiliacionBA.estadoafiliacion.nombre}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarEstadoModAfiliacion" value="#{msg['atras']}" onclick="editarEstadoModAfiliacion.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModAfiliacion" header="#{msg['atencion']}" widgetVar="editarFechaInicialModAfiliacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModAfiliacion" header="#{msg['editarFechaInicialModAfiliacion']}" widgetVar="editarFechaInicialModAfiliacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialAfiliacion}" id="editFechaInicialModAfiliacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModAfiliacion" value="#{msg['atras']}" onclick="editarFechaInicialModAfiliacion.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="editarFechaFinalModAfiliacion" header="#{msg['atencion']}" widgetVar="editarFechaFinalModAfiliacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModAfiliacion" header="#{msg['editarFechaFinalModAfiliacion']}" widgetVar="editarFechaFinalModAfiliacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalAfiliacion}" id="editFechaFinalModAfiliacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2281,23 +2285,23 @@ d
 
                     <!-- MODULO FORMA PAGO -->
 
-                    <p:dialog id="editarFormaPagoModFormaPago" header="#{msg['atencion']}" widgetVar="editarFormaPagoModFormaPago" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarFormaPagoModFormaPago" header="#{msg['editarFormaPagoModFormaPago']}" widgetVar="editarFormaPagoModFormaPago" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaFormaPagoBA.formapago.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarFormaPagoModFormaPago" value="#{msg['atras']}" onclick="editarFormaPagoModFormaPago.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSucursalModFormaPago" header="#{msg['atencion']}" widgetVar="editarSucursalModFormaPago" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarSucursalModFormaPago" header="#{msg['editarSucursalModFormaPago']}" widgetVar="editarSucursalModFormaPago" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaFormaPagoBA.sucursal.nombre}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarSucursalModFormaPago" value="#{msg['atras']}" onclick="editarSucursalModFormaPago.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModFormaPago" header="#{msg['atencion']}" widgetVar="editarFechaInicialModFormaPago" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModFormaPago" header="#{msg['editarFechaInicialModFormaPago']}" widgetVar="editarFechaInicialModFormaPago" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialFormaPago}" id="editFechaInicialModFormaPago"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModFormaPago" value="#{msg['atras']}" onclick="editarFechaInicialModFormaPago.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="editarFechaFinalModFormaPago" header="#{msg['atencion']}" widgetVar="editarFechaFinalModFormaPago" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModFormaPago" header="#{msg['editarFechaFinalModFormaPago']}" widgetVar="editarFechaFinalModFormaPago" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalFormaPago}" id="editFechaFinalModFormaPago"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2306,29 +2310,29 @@ d
                     
                     <!-- MODULO MVRS -->
 
-                    <p:dialog id="editarMotivoModMvrs" header="#{msg['atencion']}" widgetVar="editarMotivoModMvrs" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarMotivoModMvrs" header="#{msg['editarMotivoModMvrs']}" widgetVar="editarMotivoModMvrs" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.mvrsBA.motivo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModMvrs" value="#{msg['atras']}" onclick="editarMotivoModMvrs.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMinModMvrs" header="#{msg['atencion']}" widgetVar="editarSueldoMinModMvrs" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMinModMvrs" header="#{msg['editarSueldoMinModMvrs']}" widgetVar="editarSueldoMinModMvrs" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.sueldoMinMvrs}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarSueldoMinModMvrs" value="#{msg['atras']}" onclick="editarSueldoMinModMvrs.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     
-                    <p:dialog id="editarSueldoMaxModMvrs" header="#{msg['atencion']}" widgetVar="editarSueldoMaxModMvrs" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMaxModMvrs" header="#{msg['editarSueldoMaxModMvrs']}" widgetVar="editarSueldoMaxModMvrs" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.sueldoMaxMvrs}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarSueldoMaxModMvrs" value="#{msg['atras']}" onclick="editarSueldoMaxModMvrs.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModMvrs" header="#{msg['atencion']}" widgetVar="editarFechaInicialModMvrs" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModMvrs" header="#{msg['editarFechaInicialModMvrs']}" widgetVar="editarFechaInicialModMvrs" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialMvrs}" id="editFechaInicialModMvrs"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModMvrs" value="#{msg['atras']}" onclick="editarFechaInicialModMvrs.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
                     
-                    <p:dialog id="editarFechaFinalModMvrs" header="#{msg['atencion']}" widgetVar="editarFechaFinalModMvrs" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModMvrs" header="#{msg['editarFechaFinalModMvrs']}" widgetVar="editarFechaFinalModMvrs" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalMvrs}" id="editFechaFinalModMvrs"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2337,38 +2341,38 @@ d
 
                      <!-- MODULO SETS -->
 
-                    <p:dialog id="editarPromedioMinModSets" header="#{msg['atencion']}" widgetVar="editarPromedioMinModSets" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarPromedioMinModSets" header="#{msg['editarPromedioMinModSets']}" widgetVar="editarPromedioMinModSets" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.promedioMinimoSets}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPromedioMinModSets" value="#{msg['atras']}" onclick="editarPromedioMinModSets.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
                      
-                    <p:dialog id="editarPromedioMaxModSets" header="#{msg['atencion']}" widgetVar="editarPromedioMaxModSets" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarPromedioMaxModSets" header="#{msg['editarPromedioMaxModSets']}" widgetVar="editarPromedioMaxModSets" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.promedioMaximoSets}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPromedioMaxModSets" value="#{msg['atras']}" onclick="editarPromedioMaxModSets.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMIInicialModSets" header="#{msg['atencion']}" widgetVar="editarFechaMIInicialModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMIInicialModSets" header="#{msg['editarFechaMIInicialModSets']}" widgetVar="editarFechaMIInicialModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIInicialSets}" id="editFechaMIInicialModSets"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMIInicialModSets" value="#{msg['atras']}" onclick="editarFechaMIInicialModSets.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMIFinalModSets" header="#{msg['atencion']}" widgetVar="editarFechaMIFinalModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMIFinalModSets" header="#{msg['editarFechaMIFinalModSets']}" widgetVar="editarFechaMIFinalModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIFinalSets}" id="editFechaMIFinalModSets"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMIFinalModSets" value="#{msg['atras']}" onclick="editarFechaMIFinalModSets.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMFInicialModSets" header="#{msg['atencion']}" widgetVar="editarFechaMFInicialModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMFInicialModSets" header="#{msg['editarFechaMFInicialModSets']}" widgetVar="editarFechaMFInicialModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMFInicialSets}" id="editFechaMFInicialModSets"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMFInicialModSets" value="#{msg['atras']}" onclick="editarFechaMFInicialModSets.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMFFinalModSets" header="#{msg['atencion']}" widgetVar="editarFechaMFFinalModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMFFinalModSets" header="#{msg['editarFechaMFFinalModSets']}" widgetVar="editarFechaMFFinalModSets" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMFFinalSets}" id="editFechaMFFinalModSets"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2377,28 +2381,28 @@ d
                      
                      <!-- MODULO VACACIONES -->
                      
-                     <p:dialog id="editarFechaMIInicialModVacacion" header="#{msg['atencion']}" widgetVar="editarFechaMIInicialModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                     <p:dialog id="editarFechaMIInicialModVacacion" header="#{msg['editarFechaMIInicialModVacacion']}" widgetVar="editarFechaMIInicialModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIInicialVacacion}" id="editFechaMIInicialModVacacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMIInicialModVacacion" value="#{msg['atras']}" onclick="editarFechaMIInicialModVacacion.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMIFinalModVacacion" header="#{msg['atencion']}" widgetVar="editarFechaMIFinalModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMIFinalModVacacion" header="#{msg['editarFechaMIFinalModVacacion']}" widgetVar="editarFechaMIFinalModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIFinalVacacion}" id="editFechaMIFinalModVacacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMIFinalModVacacion" value="#{msg['atras']}" onclick="editarFechaMIFinalModVacacion.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMFInicialModVacacion" header="#{msg['atencion']}" widgetVar="editarFechaMFInicialModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMFInicialModVacacion" header="#{msg['editarFechaMFInicialModVacacion']}" widgetVar="editarFechaMFInicialModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMFInicialVacacion}" id="editFechaMFInicialModVacacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMFInicialModVacacion" value="#{msg['atras']}" onclick="editarFechaMFInicialModVacacion.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaMFFinalModVacacion" header="#{msg['atencion']}" widgetVar="editarFechaMFFinalModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaMFFinalModVacacion" header="#{msg['editarFechaMFFinalModVacacion']}" widgetVar="editarFechaMFFinalModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMFFinalVacacion}" id="editFechaMFFinalModVacacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2407,19 +2411,19 @@ d
                      
                      <!-- MODULO JORNADA LABORAL -->
 
-                    <p:dialog id="editarJornadaModJornadaLaboral" header="#{msg['atencion']}" widgetVar="editarJornadaModJornadaLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarJornadaModJornadaLaboral" header="#{msg['editarJornadaModJornadaLaboral']}" widgetVar="editarJornadaModJornadaLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaJornadaBA.jornadatrabajo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarJornadaModJornadaLaboral" value="#{msg['atras']}" onclick="editarJornadaModJornadaLaboral.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModJornadaLaboral" header="#{msg['atencion']}" widgetVar="editarFechaInicialModJornadaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModJornadaLaboral" header="#{msg['editarFechaInicialModJornadaLaboral']}" widgetVar="editarFechaInicialModJornadaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialJornadaLaboral}" id="editFechaInicialModJornadaLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModJornadaLaboral" value="#{msg['atras']}" onclick="editarFechaInicialModJornadaLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
                     
-                    <p:dialog id="editarFechaFinalModJornadaLaboral" header="#{msg['atencion']}" widgetVar="editarFechaFinalModJornadaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModJornadaLaboral" header="#{msg['editarFechaFinalModJornadaLaboral']}" widgetVar="editarFechaFinalModJornadaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalJornadaLaboral}" id="editFechaFinalModJornadaLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2428,24 +2432,48 @@ d
                      
                      <!-- MODULO FECHA RETIRO -->
 
-                    <p:dialog id="editarMotivoModFechaRetiro" header="#{msg['atencion']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarMotivoModFechaRetiro" header="#{msg['editarMotivoModFechaRetiro']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.motivoRetiroBA.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModFechaRetiro" value="#{msg['atras']}" onclick="editarMotivoModFechaRetiro.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModFechaRetiro" header="#{msg['atencion']}" widgetVar="editarFechaInicialModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaInicialModFechaRetiro" header="#{msg['editarFechaInicialModFechaRetiro']}" widgetVar="editarFechaInicialModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialFechaRetiro}" id="editFechaInicialModFechaRetiro"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaInicialModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
                     
-                    <p:dialog id="editarFechaFinalModFechaRetiro" header="#{msg['atencion']}" widgetVar="editarFechaFinalModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarFechaFinalModFechaRetiro" header="#{msg['editarFechaFinalModFechaRetiro']}" widgetVar="editarFechaFinalModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalFechaRetiro}" id="editFechaFinalModFechaRetiro"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaFinalModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaFinalModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
+                    
+                     <!-- TABLA BUSQUEDA AVANZADA -->
+                     
+                     <p:dialog id="editarTablaBusquedaAvanzada" header="#{controlBusquedaAvanzada.cabeceraEditarCelda}" widgetVar="editarTablaBusquedaAvanzada" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.infoVariableEditarCelda}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarTablaBusquedaAvanzada" value="#{msg['atras']}" onclick="editarTablaBusquedaAvanzada.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                     
+                </h:form>
+                
+                <h:form id="formExportar">
+                    
+                    <p:dataTable id="datosBusquedaAvanzadaExportar"  var="exportarBA" style="visibility: hidden; display: none;"
+                                 value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}">
+                                        
+                        <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" headerText="#{column.header}"  width="120" columnIndexVar="colIndex" 
+                                              sortBy="#{column.property}" filterBy="#{column.property}">
+                                       <f:facet name="header">
+                                          <h:outputText value="#{column.header}"/> 
+                                       </f:facet>
+                                       <h:outputText value="#{exportarBA[column.property]}"/>
+                                   </p:columns>
+
+                               </p:dataTable>
                     
                 </h:form>
 

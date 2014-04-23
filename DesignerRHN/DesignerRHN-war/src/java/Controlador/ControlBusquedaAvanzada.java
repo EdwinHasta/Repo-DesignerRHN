@@ -23,6 +23,7 @@ import Entidades.Papeles;
 import Entidades.Periodicidades;
 import Entidades.QVWEmpleadosCorte;
 import Entidades.ReformasLaborales;
+import Entidades.ResultadoBusquedaAvanzada;
 import Entidades.Sucursales;
 import Entidades.TercerosSucursales;
 import Entidades.TiposContratos;
@@ -42,6 +43,8 @@ import Entidades.VigenciasSueldos;
 import Entidades.VigenciasTiposContratos;
 import Entidades.VigenciasTiposTrabajadores;
 import Entidades.VigenciasUbicaciones;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfaceAdministrar.AdministrarEmplMvrsInterface;
 import InterfaceAdministrar.AdministrarEmplVigenciasFormasPagosInterface;
@@ -56,6 +59,7 @@ import InterfaceAdministrar.AdministrarVigenciasSueldosInterface;
 import InterfaceAdministrar.AdministrarVigenciasTiposContratosInterface;
 import InterfaceAdministrar.AdministrarVigenciasTiposTrabajadoresInterface;
 import InterfaceAdministrar.AdministrarVigenciasUbicacionesInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -70,6 +74,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -367,9 +373,9 @@ public class ControlBusquedaAvanzada implements Serializable {
     //Valores que seran mostrados en los header de cada columna
     private Map<String, String> mapValoresColumnas;
     //Cargue de los valores static de los arreglos color y manufactura
-    private List<ColumnasBusquedaAvanzada> filteredListaColumnasBusquedaAvanzada;
+    private List<ResultadoBusquedaAvanzada> filteredListaResultadoBusquedaAvanzada;
     //Lista de filtrado
-    private List<ColumnasBusquedaAvanzada> listaColumnasBusquedaAvanzada;
+    private List<ResultadoBusquedaAvanzada> listaResultadoBusquedaAvanzada;
     //Lista de carros que sera cargada por la tabla
     private List<ColumnModel> columns = new ArrayList<ColumnModel>();
     //Lista de las columnas que seran agregadas a la tabla
@@ -382,13 +388,23 @@ public class ControlBusquedaAvanzada implements Serializable {
     private boolean auxTabActivoCentroCosto;
     //
     private List<ColumnasEscenarios> listaColumnasEscenarios;
-
+    //
+    private List<ColumnasBusquedaAvanzada> listaColumnasBusquedaAvanzada;
+    private List<ColumnasBusquedaAvanzada> filtrarListaColumnasBusquedaAvanzada;
     //PRUEBA
     List<BigInteger> listaCodigosEmpleado;
     List<QVWEmpleadosCorte> registros;
     List<QVWEmpleadosCorte> registrosFiltrado;
 
+    private int indice, cualCelda;
+    private String cabeceraEditarCelda, infoVariableEditarCelda;
+
     public ControlBusquedaAvanzada() {
+        cabeceraEditarCelda = "";
+        infoVariableEditarCelda = "";
+        indice = -1;
+        cualCelda = -1;
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
         registros = new ArrayList<QVWEmpleadosCorte>();
         listaColumnasEscenarios = null;
         auxTabActivoCentroCosto = false;
@@ -612,7 +628,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         nuevaColumna = "";
         columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
         mapValoresColumnas = new HashMap<String, String>();
-        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+        listaResultadoBusquedaAvanzada = new ArrayList<ResultadoBusquedaAvanzada>();
         listaCodigosEmpleado = new ArrayList<BigInteger>();
         createStaticColumns();
     }
@@ -629,6 +645,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void ejecutarQuery() {
+        restaurar();
         System.out.println("Inicio el ejecutarQuery");
         listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
         cargueParametrosModuloCargo();
@@ -649,7 +666,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         cargueParametrosModuloJornadaLaboral();
         String query = administrarBusquedaAvanzada.armarQueryModulosBusquedaAvanzada(listaParametrosQueryModulos);
         System.out.println("Query hecho por Administrar : " + query);
-        //String queryEmpleado = "SELECT * FROM EMPLEADOS EM ";
         String queryEmpleado = "SELECT codigoempleado FROM EMPLEADOS EM ";
         if (!query.isEmpty()) {
             queryEmpleado = queryEmpleado + query;
@@ -660,7 +676,6 @@ public class ControlBusquedaAvanzada implements Serializable {
             System.out.println("listaCodigosEmpleado Codigo : " + listaCodigosEmpleado.get(i));
         }
         System.out.println("Tamaño: " + listaCodigosEmpleado.size());
-        //listaEmpleadosResultados = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulos(queryEmpleado);
         updateColumns();
     }
 
@@ -1100,6 +1115,9 @@ public class ControlBusquedaAvanzada implements Serializable {
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void cancelarModificaciones() {
         //
+        indice = -1;
+        cualCelda = -1;
+        //
         vigenciaCargoBA = new VigenciasCargos();
         vigenciaCargoBA.setEstructura(new Estructuras());
         vigenciaCargoBA.getEstructura().setCentrocosto(new CentrosCostos());
@@ -1301,332 +1319,381 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void editarCelda() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (casillaVigenciaCargo >= 0) {
-            if (casillaVigenciaCargo == 0) {
-                context.update("formularioDialogos:editarCargoModCargo");
-                context.execute("editarCargoModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 1) {
-                context.update("formularioDialogos:editarEstructuraModCargo");
-                context.execute("editarEstructuraModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 2) {
-                context.update("formularioDialogos:editarJefeModCargo");
-                context.execute("editarJefeModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 3) {
-                context.update("formularioDialogos:editarMotivoModCargo");
-                context.execute("editarMotivoModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 4) {
-                context.update("formularioDialogos:editarCentroCostoModCargo");
-                context.execute("editarCentroCostoModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 5) {
-                context.update("formularioDialogos:editarPapelModCargo");
-                context.execute("editarPapelModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 6) {
-                context.update("formularioDialogos:editarFechaInicialModCargo");
-                context.execute("editarFechaInicialModCargo.show()");
-                casillaVigenciaCargo = -1;
-            } else if (casillaVigenciaCargo == 7) {
-                context.update("formularioDialogos:editarFechaFinalModCargo");
-                context.execute("editarFechaFinalModCargo.show()");
-                casillaVigenciaCargo = -1;
+        if (indice >= 0) {
+            String[] columnas = columnTemplate.split(" ");
+            cabeceraEditarCelda = columnas[cualCelda];
+            if (cualCelda == 0) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getCodigo();
             }
-        }
-        if (casillaVigenciaLocalizacion >= 0) {
-            if (casillaVigenciaLocalizacion == 0) {
-                context.update("formularioDialogos:editarLocalizacionModCentroCosto");
-                context.execute("editarLocalizacionModCentroCosto.show()");
-                casillaVigenciaLocalizacion = -1;
-            } else if (casillaVigenciaLocalizacion == 1) {
-                context.update("formularioDialogos:editarMotivoModCentroCosto");
-                context.execute("editarMotivoModCentroCosto.show()");
-                casillaVigenciaLocalizacion = -1;
-            } else if (casillaVigenciaLocalizacion == 2) {
-                context.update("formularioDialogos:editarFechaInicialModCentroCosto");
-                context.execute("editarFechaInicialModCentroCosto.show()");
-                casillaVigenciaLocalizacion = -1;
-            } else if (casillaVigenciaLocalizacion == 3) {
-                context.update("formularioDialogos:editarFechaFinalModCentroCosto");
-                context.execute("editarFechaFinalModCentroCosto.show()");
-                casillaVigenciaLocalizacion = -1;
+            if (cualCelda == 1) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getPrimeroApellido();
             }
-        }
-        if (casillaVigenciaSueldo >= 0) {
-            if (casillaVigenciaSueldo == 0) {
-                context.update("formularioDialogos:editarTipoSueldoModSueldo");
-                context.execute("editarTipoSueldoModSueldo.show()");
-                casillaVigenciaSueldo = -1;
-            } else if (casillaVigenciaSueldo == 1) {
-                context.update("formularioDialogos:editarMotivoModSueldo");
-                context.execute("editarMotivoModSueldo.show()");
-                casillaVigenciaSueldo = -1;
-            } else if (casillaVigenciaSueldo == 2) {
-                context.update("formularioDialogos:editarSueldoMinimoModSueldo");
-                context.execute("editarSueldoMinimoModSueldo.show()");
-                casillaVigenciaSueldo = -1;
-            } else if (casillaVigenciaSueldo == 3) {
-                context.update("formularioDialogos:editarSueldoMaximoModSueldo");
-                context.execute("editarSueldoMaximoModSueldo.show()");
-                casillaVigenciaSueldo = -1;
-            } else if (casillaVigenciaSueldo == 4) {
-                context.update("formularioDialogos:editarFechaInicialModSueldo");
-                context.execute("editarFechaInicialModSueldo.show()");
-                casillaVigenciaSueldo = -1;
-            } else if (casillaVigenciaSueldo == 5) {
-                context.update("formularioDialogos:editarFechaFinalModSueldo");
-                context.execute("editarFechaFinalModSueldo.show()");
-                casillaVigenciaSueldo = -1;
+            if (cualCelda == 2) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getSegundoApellido();
             }
-        }
-        if (casillaVigenciaTipoContrato >= 0) {
-            if (casillaVigenciaTipoContrato == 0) {
-                context.update("formularioDialogos:editarTipoContratoModFechaContrato");
-                context.execute("editarTipoContratoModFechaContrato.show()");
-                casillaVigenciaTipoContrato = -1;
-            } else if (casillaVigenciaTipoContrato == 1) {
-                context.update("formularioDialogos:editarMotivoModFechaContrato");
-                context.execute("editarMotivoModFechaContrato.show()");
-                casillaVigenciaTipoContrato = -1;
-            } else if (casillaVigenciaTipoContrato == 2) {
-                context.update("formularioDialogos:editarFechaInicialModFechaContrato");
-                context.execute("editarFechaInicialModFechaContrato.show()");
-                casillaVigenciaTipoContrato = -1;
-            } else if (casillaVigenciaTipoContrato == 3) {
-                context.update("formularioDialogos:editarFechaFinalModFechaContrato");
-                context.execute("editarFechaFinalModFechaContrato.show()");
-                casillaVigenciaTipoContrato = -1;
+            if (cualCelda == 3) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getNombre();
             }
-        }
-        if (casillaVigenciaTipoTrabajador >= 0) {
-            if (casillaVigenciaTipoTrabajador == 0) {
-                context.update("formularioDialogos:editarTipoTrabajadorModTipoTrabajador");
-                context.execute("editarTipoTrabajadorModTipoTrabajador.show()");
-                casillaVigenciaTipoTrabajador = -1;
-            } else if (casillaVigenciaTipoTrabajador == 1) {
-                context.update("formularioDialogos:editarFechaInicialModTipoTrabajador");
-                context.execute("editarFechaInicialModTipoTrabajador.show()");
-                casillaVigenciaTipoTrabajador = -1;
-            } else if (casillaVigenciaTipoTrabajador == 2) {
-                context.update("formularioDialogos:editarFechaFinalModTipoTrabajador");
-                context.execute("editarFechaFinalModTipoTrabajador.show()");
-                casillaVigenciaTipoTrabajador = -1;
+            if (cualCelda == 4) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna0();
             }
-        }
-        if (casillaVigenciaReformaLaboral >= 0) {
-            if (casillaVigenciaReformaLaboral == 0) {
-                context.update("formularioDialogos:editarReformaLaboralModTipoSalario");
-                context.execute("editarReformaLaboralModTipoSalario.show()");
-                casillaVigenciaReformaLaboral = -1;
-            } else if (casillaVigenciaReformaLaboral == 1) {
-                context.update("formularioDialogos:editarFechaInicialModTipoSalario");
-                context.execute("editarFechaInicialModTipoSalario.show()");
-                casillaVigenciaReformaLaboral = -1;
-            } else if (casillaVigenciaReformaLaboral == 2) {
-                context.update("formularioDialogos:editarFechaFinalModTipoSalario");
-                context.execute("editarFechaFinalModTipoSalario.show()");
-                casillaVigenciaReformaLaboral = -1;
+            if (cualCelda == 5) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna1();
             }
-        }
-        if (casillaVigenciaNormaLaboral >= 0) {
-            if (casillaVigenciaNormaLaboral == 0) {
-                context.update("formularioDialogos:editarNormaLaboralModNormaLaboral");
-                context.execute("editarNormaLaboralModNormaLaboral.show()");
-                casillaVigenciaNormaLaboral = -1;
-            } else if (casillaVigenciaNormaLaboral == 1) {
-                context.update("formularioDialogos:editarFechaInicialModNormaLaboral");
-                context.execute("editarFechaInicialModNormaLaboral.show()");
-                casillaVigenciaNormaLaboral = -1;
-            } else if (casillaVigenciaNormaLaboral == 2) {
-                context.update("formularioDialogos:editarFechaFinalModNormaLaboral");
-                context.execute("editarFechaFinalModNormaLaboral.show()");
-                casillaVigenciaNormaLaboral = -1;
+            if (cualCelda == 6) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna2();
             }
-        }
-        if (casillaVigenciaContrato >= 0) {
-            if (casillaVigenciaContrato == 0) {
-                context.update("formularioDialogos:editarLegislacionModLegislacionLaboral");
-                context.execute("editarLegislacionModLegislacionLaboral.show()");
-                casillaVigenciaContrato = -1;
-            } else if (casillaVigenciaContrato == 1) {
-                context.update("formularioDialogos:editarFechaMIInicialModLegislacionLaboral");
-                context.execute("editarFechaMIInicialModLegislacionLaboral.show()");
-                casillaVigenciaContrato = -1;
-            } else if (casillaVigenciaContrato == 2) {
-                context.update("formularioDialogos:editarFechaMIFinalModLegislacionLaboral");
-                context.execute("editarFechaMIFinalModLegislacionLaboral.show()");
-                casillaVigenciaContrato = -1;
-            } else if (casillaVigenciaContrato == 3) {
-                context.update("formularioDialogos:editarFechaMFInicialModLegislacionLaboral");
-                context.execute("editarFechaMFInicialModLegislacionLaboral.show()");
-                casillaVigenciaContrato = -1;
-            } else if (casillaVigenciaContrato == 4) {
-                context.update("formularioDialogos:editarFechaMFFinalModLegislacionLaboral");
-                context.execute("editarFechaMFFinalModLegislacionLaboral.show()");
-                casillaVigenciaContrato = -1;
+            if (cualCelda == 7) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna3();
             }
-        }
-        if (casillaVigenciaUbicacion >= 0) {
-            if (casillaVigenciaUbicacion == 0) {
-                context.update("formularioDialogos:editarUbicacionModUbicacion");
-                context.execute("editarUbicacionModUbicacion.show()");
-                casillaVigenciaUbicacion = -1;
-            } else if (casillaVigenciaUbicacion == 1) {
-                context.update("formularioDialogos:editarCiudadModUbicacion");
-                context.execute("editarCiudadModUbicacion.show()");
-                casillaVigenciaUbicacion = -1;
-            } else if (casillaVigenciaUbicacion == 2) {
-                context.update("formularioDialogos:editarFechaInicialModUbicacion");
-                context.execute("editarFechaInicialModUbicacion.show()");
-                casillaVigenciaUbicacion = -1;
-            } else if (casillaVigenciaUbicacion == 3) {
-                context.update("formularioDialogos:editarFechaFinalModUbicacion");
-                context.execute("editarFechaFinalModUbicacion.show()");
-                casillaVigenciaUbicacion = -1;
+            if (cualCelda == 8) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna4();
             }
-        }
-        if (casillaVigenciaAfiliacion >= 0) {
-            if (casillaVigenciaAfiliacion == 0) {
-                context.update("formularioDialogos:editarTerceroModAfiliacion");
-                context.execute("editarTerceroModAfiliacion.show()");
-                casillaVigenciaAfiliacion = -1;
-            } else if (casillaVigenciaAfiliacion == 1) {
-                context.update("formularioDialogos:editarTipoEntidadModAfiliacion");
-                context.execute("editarTipoEntidadModAfiliacion.show()");
-                casillaVigenciaAfiliacion = -1;
-            } else if (casillaVigenciaAfiliacion == 2) {
-                context.update("formularioDialogos:editarEstadoModAfiliacion");
-                context.execute("editarEstadoModAfiliacion.show()");
-                casillaVigenciaAfiliacion = -1;
-            } else if (casillaVigenciaAfiliacion == 3) {
-                context.update("formularioDialogos:editarFechaInicialModAfiliacion");
-                context.execute("editarFechaInicialModAfiliacion.show()");
-                casillaVigenciaAfiliacion = -1;
-            } else if (casillaVigenciaAfiliacion == 4) {
-                context.update("formularioDialogos:editarFechaFinalModAfiliacion");
-                context.execute("editarFechaFinalModAfiliacion.show()");
-                casillaVigenciaAfiliacion = -1;
+            if (cualCelda == 8) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna5();
             }
-        }
-        if (casillaVigenciaFormaPago >= 0) {
-            if (casillaVigenciaFormaPago == 0) {
-                context.update("formularioDialogos:editarFormaPagoModFormaPago");
-                context.execute("editarFormaPagoModFormaPago.show()");
-                casillaVigenciaFormaPago = -1;
-            } else if (casillaVigenciaFormaPago == 1) {
-                context.update("formularioDialogos:editarSucursalModFormaPago");
-                context.execute("editarSucursalModFormaPago.show()");
-                casillaVigenciaFormaPago = -1;
-            } else if (casillaVigenciaFormaPago == 2) {
-                context.update("formularioDialogos:editarFechaInicialModFormaPago");
-                context.execute("editarFechaInicialModFormaPago.show()");
-                casillaVigenciaFormaPago = -1;
-            } else if (casillaVigenciaFormaPago == 3) {
-                context.update("formularioDialogos:editarFechaFinalModFormaPago");
-                context.execute("editarFechaFinalModFormaPago.show()");
-                casillaVigenciaFormaPago = -1;
+            if (cualCelda == 10) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna6();
             }
-        }
-        if (casillaMvrs >= 0) {
-            if (casillaMvrs == 0) {
-                context.update("formularioDialogos:editarMotivoModMvrs");
-                context.execute("editarMotivoModMvrs.show()");
-                casillaMvrs = -1;
-            } else if (casillaMvrs == 1) {
-                context.update("formularioDialogos:editarSueldoMinModMvrs");
-                context.execute("editarSueldoMinModMvrs.show()");
-                casillaMvrs = -1;
-            } else if (casillaMvrs == 2) {
-                context.update("formularioDialogos:editarSueldoMaxModMvrs");
-                context.execute("editarSueldoMaxModMvrs.show()");
-                casillaMvrs = -1;
-            } else if (casillaMvrs == 3) {
-                context.update("formularioDialogos:editarFechaInicialModMvrs");
-                context.execute("editarFechaInicialModMvrs.show()");
-                casillaMvrs = -1;
-            } else if (casillaMvrs == 4) {
-                context.update("formularioDialogos:editarFechaFinalModMvrs");
-                context.execute("editarFechaFinalModMvrs.show()");
-                casillaMvrs = -1;
+            if (cualCelda == 11) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna7();
             }
-        }
-        if (casillaSets >= 0) {
-            if (casillaSets == 0) {
-                context.update("formularioDialogos:editarPromedioMinModSets");
-                context.execute("editarPromedioMinModSets.show()");
-                casillaSets = -1;
-            } else if (casillaSets == 1) {
-                context.update("formularioDialogos:editarPromedioMaxModSets");
-                context.execute("editarPromedioMaxModSets.show()");
-                casillaSets = -1;
-            } else if (casillaSets == 2) {
-                context.update("formularioDialogos:editarFechaMIInicialModSets");
-                context.execute("editarFechaMIInicialModSets.show()");
-                casillaSets = -1;
-            } else if (casillaSets == 3) {
-                context.update("formularioDialogos:editarFechaMIFinalModSets");
-                context.execute("editarFechaMIFinalModSets.show()");
-                casillaSets = -1;
-            } else if (casillaSets == 4) {
-                context.update("formularioDialogos:editarFechaMFInicialModSets");
-                context.execute("editarFechaMFInicialModSets.show()");
-                casillaSets = -1;
-            } else if (casillaSets == 5) {
-                context.update("formularioDialogos:editarFechaMFFinalModSets");
-                context.execute("editarFechaMFFinalModSets.show()");
-                casillaSets = -1;
+            if (cualCelda == 12) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna8();
             }
-        }
-        if (casillaVacacion >= 0) {
-            if (casillaVacacion == 0) {
-                context.update("formularioDialogos:editarFechaMIInicialModVacacion");
-                context.execute("editarFechaMIInicialModVacacion.show()");
-                casillaVacacion = -1;
-            } else if (casillaVacacion == 1) {
-                context.update("formularioDialogos:editarFechaMIFinalModVacacion");
-                context.execute("editarFechaMIFinalModVacacion.show()");
-                casillaVacacion = -1;
-            } else if (casillaVacacion == 2) {
-                context.update("formularioDialogos:editarFechaMFInicialModVacacion");
-                context.execute("editarFechaMFInicialModVacacion.show()");
-                casillaVacacion = -1;
-            } else if (casillaVacacion == 3) {
-                context.update("formularioDialogos:editarFechaMFFinalModVacacion");
-                context.execute("editarFechaMFFinalModVacacion.show()");
-                casillaVacacion = -1;
+            if (cualCelda == 13) {
+                infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna9();
             }
-        }
-        if (casillaVigenciaJornadaLaboral >= 0) {
-            if (casillaVigenciaJornadaLaboral == 0) {
-                context.update("formularioDialogos:editarJornadaModJornadaLaboral");
-                context.execute("editarJornadaModJornadaLaboral.show()");
-                casillaVigenciaJornadaLaboral = -1;
-            } else if (casillaVigenciaJornadaLaboral == 1) {
-                context.update("formularioDialogos:editarFechaInicialModJornadaLaboral");
-                context.execute("editarFechaInicialModJornadaLaboral.show()");
-                casillaVigenciaJornadaLaboral = -1;
-            } else if (casillaVigenciaJornadaLaboral == 2) {
-                context.update("formularioDialogos:editarFechaFinalModJornadaLaboral");
-                context.execute("editarFechaFinalModJornadaLaboral.show()");
-                casillaVigenciaJornadaLaboral = -1;
+            context.update("formularioDialogos:editarTablaBusquedaAvanzada");
+                    context.execute("editarTablaBusquedaAvanzada.show()");
+        } else {
+            if (casillaVigenciaCargo >= 0) {
+                if (casillaVigenciaCargo == 0) {
+                    context.update("formularioDialogos:editarCargoModCargo");
+                    context.execute("editarCargoModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 1) {
+                    context.update("formularioDialogos:editarEstructuraModCargo");
+                    context.execute("editarEstructuraModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 2) {
+                    context.update("formularioDialogos:editarJefeModCargo");
+                    context.execute("editarJefeModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 3) {
+                    context.update("formularioDialogos:editarMotivoModCargo");
+                    context.execute("editarMotivoModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 4) {
+                    context.update("formularioDialogos:editarCentroCostoModCargo");
+                    context.execute("editarCentroCostoModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 5) {
+                    context.update("formularioDialogos:editarPapelModCargo");
+                    context.execute("editarPapelModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 6) {
+                    context.update("formularioDialogos:editarFechaInicialModCargo");
+                    context.execute("editarFechaInicialModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                } else if (casillaVigenciaCargo == 7) {
+                    context.update("formularioDialogos:editarFechaFinalModCargo");
+                    context.execute("editarFechaFinalModCargo.show()");
+                    casillaVigenciaCargo = -1;
+                }
             }
-        }
-        if (casillaMotivoRetiro >= 0) {
-            if (casillaMotivoRetiro == 0) {
-                context.update("formularioDialogos:editarMotivoModFechaRetiro");
-                context.execute("editarMotivoModFechaRetiro.show()");
-                casillaMotivoRetiro = -1;
-            } else if (casillaMotivoRetiro == 1) {
-                context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
-                context.execute("editarFechaInicialModFechaRetiro.show()");
-                casillaMotivoRetiro = -1;
-            } else if (casillaMotivoRetiro == 2) {
-                context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
-                context.execute("editarFechaFinalModFechaRetiro.show()");
-                casillaMotivoRetiro = -1;
+            if (casillaVigenciaLocalizacion >= 0) {
+                if (casillaVigenciaLocalizacion == 0) {
+                    context.update("formularioDialogos:editarLocalizacionModCentroCosto");
+                    context.execute("editarLocalizacionModCentroCosto.show()");
+                    casillaVigenciaLocalizacion = -1;
+                } else if (casillaVigenciaLocalizacion == 1) {
+                    context.update("formularioDialogos:editarMotivoModCentroCosto");
+                    context.execute("editarMotivoModCentroCosto.show()");
+                    casillaVigenciaLocalizacion = -1;
+                } else if (casillaVigenciaLocalizacion == 2) {
+                    context.update("formularioDialogos:editarFechaInicialModCentroCosto");
+                    context.execute("editarFechaInicialModCentroCosto.show()");
+                    casillaVigenciaLocalizacion = -1;
+                } else if (casillaVigenciaLocalizacion == 3) {
+                    context.update("formularioDialogos:editarFechaFinalModCentroCosto");
+                    context.execute("editarFechaFinalModCentroCosto.show()");
+                    casillaVigenciaLocalizacion = -1;
+                }
+            }
+            if (casillaVigenciaSueldo >= 0) {
+                if (casillaVigenciaSueldo == 0) {
+                    context.update("formularioDialogos:editarTipoSueldoModSueldo");
+                    context.execute("editarTipoSueldoModSueldo.show()");
+                    casillaVigenciaSueldo = -1;
+                } else if (casillaVigenciaSueldo == 1) {
+                    context.update("formularioDialogos:editarMotivoModSueldo");
+                    context.execute("editarMotivoModSueldo.show()");
+                    casillaVigenciaSueldo = -1;
+                } else if (casillaVigenciaSueldo == 2) {
+                    context.update("formularioDialogos:editarSueldoMinimoModSueldo");
+                    context.execute("editarSueldoMinimoModSueldo.show()");
+                    casillaVigenciaSueldo = -1;
+                } else if (casillaVigenciaSueldo == 3) {
+                    context.update("formularioDialogos:editarSueldoMaximoModSueldo");
+                    context.execute("editarSueldoMaximoModSueldo.show()");
+                    casillaVigenciaSueldo = -1;
+                } else if (casillaVigenciaSueldo == 4) {
+                    context.update("formularioDialogos:editarFechaInicialModSueldo");
+                    context.execute("editarFechaInicialModSueldo.show()");
+                    casillaVigenciaSueldo = -1;
+                } else if (casillaVigenciaSueldo == 5) {
+                    context.update("formularioDialogos:editarFechaFinalModSueldo");
+                    context.execute("editarFechaFinalModSueldo.show()");
+                    casillaVigenciaSueldo = -1;
+                }
+            }
+            if (casillaVigenciaTipoContrato >= 0) {
+                if (casillaVigenciaTipoContrato == 0) {
+                    context.update("formularioDialogos:editarTipoContratoModFechaContrato");
+                    context.execute("editarTipoContratoModFechaContrato.show()");
+                    casillaVigenciaTipoContrato = -1;
+                } else if (casillaVigenciaTipoContrato == 1) {
+                    context.update("formularioDialogos:editarMotivoModFechaContrato");
+                    context.execute("editarMotivoModFechaContrato.show()");
+                    casillaVigenciaTipoContrato = -1;
+                } else if (casillaVigenciaTipoContrato == 2) {
+                    context.update("formularioDialogos:editarFechaInicialModFechaContrato");
+                    context.execute("editarFechaInicialModFechaContrato.show()");
+                    casillaVigenciaTipoContrato = -1;
+                } else if (casillaVigenciaTipoContrato == 3) {
+                    context.update("formularioDialogos:editarFechaFinalModFechaContrato");
+                    context.execute("editarFechaFinalModFechaContrato.show()");
+                    casillaVigenciaTipoContrato = -1;
+                }
+            }
+            if (casillaVigenciaTipoTrabajador >= 0) {
+                if (casillaVigenciaTipoTrabajador == 0) {
+                    context.update("formularioDialogos:editarTipoTrabajadorModTipoTrabajador");
+                    context.execute("editarTipoTrabajadorModTipoTrabajador.show()");
+                    casillaVigenciaTipoTrabajador = -1;
+                } else if (casillaVigenciaTipoTrabajador == 1) {
+                    context.update("formularioDialogos:editarFechaInicialModTipoTrabajador");
+                    context.execute("editarFechaInicialModTipoTrabajador.show()");
+                    casillaVigenciaTipoTrabajador = -1;
+                } else if (casillaVigenciaTipoTrabajador == 2) {
+                    context.update("formularioDialogos:editarFechaFinalModTipoTrabajador");
+                    context.execute("editarFechaFinalModTipoTrabajador.show()");
+                    casillaVigenciaTipoTrabajador = -1;
+                }
+            }
+            if (casillaVigenciaReformaLaboral >= 0) {
+                if (casillaVigenciaReformaLaboral == 0) {
+                    context.update("formularioDialogos:editarReformaLaboralModTipoSalario");
+                    context.execute("editarReformaLaboralModTipoSalario.show()");
+                    casillaVigenciaReformaLaboral = -1;
+                } else if (casillaVigenciaReformaLaboral == 1) {
+                    context.update("formularioDialogos:editarFechaInicialModTipoSalario");
+                    context.execute("editarFechaInicialModTipoSalario.show()");
+                    casillaVigenciaReformaLaboral = -1;
+                } else if (casillaVigenciaReformaLaboral == 2) {
+                    context.update("formularioDialogos:editarFechaFinalModTipoSalario");
+                    context.execute("editarFechaFinalModTipoSalario.show()");
+                    casillaVigenciaReformaLaboral = -1;
+                }
+            }
+            if (casillaVigenciaNormaLaboral >= 0) {
+                if (casillaVigenciaNormaLaboral == 0) {
+                    context.update("formularioDialogos:editarNormaLaboralModNormaLaboral");
+                    context.execute("editarNormaLaboralModNormaLaboral.show()");
+                    casillaVigenciaNormaLaboral = -1;
+                } else if (casillaVigenciaNormaLaboral == 1) {
+                    context.update("formularioDialogos:editarFechaInicialModNormaLaboral");
+                    context.execute("editarFechaInicialModNormaLaboral.show()");
+                    casillaVigenciaNormaLaboral = -1;
+                } else if (casillaVigenciaNormaLaboral == 2) {
+                    context.update("formularioDialogos:editarFechaFinalModNormaLaboral");
+                    context.execute("editarFechaFinalModNormaLaboral.show()");
+                    casillaVigenciaNormaLaboral = -1;
+                }
+            }
+            if (casillaVigenciaContrato >= 0) {
+                if (casillaVigenciaContrato == 0) {
+                    context.update("formularioDialogos:editarLegislacionModLegislacionLaboral");
+                    context.execute("editarLegislacionModLegislacionLaboral.show()");
+                    casillaVigenciaContrato = -1;
+                } else if (casillaVigenciaContrato == 1) {
+                    context.update("formularioDialogos:editarFechaMIInicialModLegislacionLaboral");
+                    context.execute("editarFechaMIInicialModLegislacionLaboral.show()");
+                    casillaVigenciaContrato = -1;
+                } else if (casillaVigenciaContrato == 2) {
+                    context.update("formularioDialogos:editarFechaMIFinalModLegislacionLaboral");
+                    context.execute("editarFechaMIFinalModLegislacionLaboral.show()");
+                    casillaVigenciaContrato = -1;
+                } else if (casillaVigenciaContrato == 3) {
+                    context.update("formularioDialogos:editarFechaMFInicialModLegislacionLaboral");
+                    context.execute("editarFechaMFInicialModLegislacionLaboral.show()");
+                    casillaVigenciaContrato = -1;
+                } else if (casillaVigenciaContrato == 4) {
+                    context.update("formularioDialogos:editarFechaMFFinalModLegislacionLaboral");
+                    context.execute("editarFechaMFFinalModLegislacionLaboral.show()");
+                    casillaVigenciaContrato = -1;
+                }
+            }
+            if (casillaVigenciaUbicacion >= 0) {
+                if (casillaVigenciaUbicacion == 0) {
+                    context.update("formularioDialogos:editarUbicacionModUbicacion");
+                    context.execute("editarUbicacionModUbicacion.show()");
+                    casillaVigenciaUbicacion = -1;
+                } else if (casillaVigenciaUbicacion == 1) {
+                    context.update("formularioDialogos:editarCiudadModUbicacion");
+                    context.execute("editarCiudadModUbicacion.show()");
+                    casillaVigenciaUbicacion = -1;
+                } else if (casillaVigenciaUbicacion == 2) {
+                    context.update("formularioDialogos:editarFechaInicialModUbicacion");
+                    context.execute("editarFechaInicialModUbicacion.show()");
+                    casillaVigenciaUbicacion = -1;
+                } else if (casillaVigenciaUbicacion == 3) {
+                    context.update("formularioDialogos:editarFechaFinalModUbicacion");
+                    context.execute("editarFechaFinalModUbicacion.show()");
+                    casillaVigenciaUbicacion = -1;
+                }
+            }
+            if (casillaVigenciaAfiliacion >= 0) {
+                if (casillaVigenciaAfiliacion == 0) {
+                    context.update("formularioDialogos:editarTerceroModAfiliacion");
+                    context.execute("editarTerceroModAfiliacion.show()");
+                    casillaVigenciaAfiliacion = -1;
+                } else if (casillaVigenciaAfiliacion == 1) {
+                    context.update("formularioDialogos:editarTipoEntidadModAfiliacion");
+                    context.execute("editarTipoEntidadModAfiliacion.show()");
+                    casillaVigenciaAfiliacion = -1;
+                } else if (casillaVigenciaAfiliacion == 2) {
+                    context.update("formularioDialogos:editarEstadoModAfiliacion");
+                    context.execute("editarEstadoModAfiliacion.show()");
+                    casillaVigenciaAfiliacion = -1;
+                } else if (casillaVigenciaAfiliacion == 3) {
+                    context.update("formularioDialogos:editarFechaInicialModAfiliacion");
+                    context.execute("editarFechaInicialModAfiliacion.show()");
+                    casillaVigenciaAfiliacion = -1;
+                } else if (casillaVigenciaAfiliacion == 4) {
+                    context.update("formularioDialogos:editarFechaFinalModAfiliacion");
+                    context.execute("editarFechaFinalModAfiliacion.show()");
+                    casillaVigenciaAfiliacion = -1;
+                }
+            }
+            if (casillaVigenciaFormaPago >= 0) {
+                if (casillaVigenciaFormaPago == 0) {
+                    context.update("formularioDialogos:editarFormaPagoModFormaPago");
+                    context.execute("editarFormaPagoModFormaPago.show()");
+                    casillaVigenciaFormaPago = -1;
+                } else if (casillaVigenciaFormaPago == 1) {
+                    context.update("formularioDialogos:editarSucursalModFormaPago");
+                    context.execute("editarSucursalModFormaPago.show()");
+                    casillaVigenciaFormaPago = -1;
+                } else if (casillaVigenciaFormaPago == 2) {
+                    context.update("formularioDialogos:editarFechaInicialModFormaPago");
+                    context.execute("editarFechaInicialModFormaPago.show()");
+                    casillaVigenciaFormaPago = -1;
+                } else if (casillaVigenciaFormaPago == 3) {
+                    context.update("formularioDialogos:editarFechaFinalModFormaPago");
+                    context.execute("editarFechaFinalModFormaPago.show()");
+                    casillaVigenciaFormaPago = -1;
+                }
+            }
+            if (casillaMvrs >= 0) {
+                if (casillaMvrs == 0) {
+                    context.update("formularioDialogos:editarMotivoModMvrs");
+                    context.execute("editarMotivoModMvrs.show()");
+                    casillaMvrs = -1;
+                } else if (casillaMvrs == 1) {
+                    context.update("formularioDialogos:editarSueldoMinModMvrs");
+                    context.execute("editarSueldoMinModMvrs.show()");
+                    casillaMvrs = -1;
+                } else if (casillaMvrs == 2) {
+                    context.update("formularioDialogos:editarSueldoMaxModMvrs");
+                    context.execute("editarSueldoMaxModMvrs.show()");
+                    casillaMvrs = -1;
+                } else if (casillaMvrs == 3) {
+                    context.update("formularioDialogos:editarFechaInicialModMvrs");
+                    context.execute("editarFechaInicialModMvrs.show()");
+                    casillaMvrs = -1;
+                } else if (casillaMvrs == 4) {
+                    context.update("formularioDialogos:editarFechaFinalModMvrs");
+                    context.execute("editarFechaFinalModMvrs.show()");
+                    casillaMvrs = -1;
+                }
+            }
+            if (casillaSets >= 0) {
+                if (casillaSets == 0) {
+                    context.update("formularioDialogos:editarPromedioMinModSets");
+                    context.execute("editarPromedioMinModSets.show()");
+                    casillaSets = -1;
+                } else if (casillaSets == 1) {
+                    context.update("formularioDialogos:editarPromedioMaxModSets");
+                    context.execute("editarPromedioMaxModSets.show()");
+                    casillaSets = -1;
+                } else if (casillaSets == 2) {
+                    context.update("formularioDialogos:editarFechaMIInicialModSets");
+                    context.execute("editarFechaMIInicialModSets.show()");
+                    casillaSets = -1;
+                } else if (casillaSets == 3) {
+                    context.update("formularioDialogos:editarFechaMIFinalModSets");
+                    context.execute("editarFechaMIFinalModSets.show()");
+                    casillaSets = -1;
+                } else if (casillaSets == 4) {
+                    context.update("formularioDialogos:editarFechaMFInicialModSets");
+                    context.execute("editarFechaMFInicialModSets.show()");
+                    casillaSets = -1;
+                } else if (casillaSets == 5) {
+                    context.update("formularioDialogos:editarFechaMFFinalModSets");
+                    context.execute("editarFechaMFFinalModSets.show()");
+                    casillaSets = -1;
+                }
+            }
+            if (casillaVacacion >= 0) {
+                if (casillaVacacion == 0) {
+                    context.update("formularioDialogos:editarFechaMIInicialModVacacion");
+                    context.execute("editarFechaMIInicialModVacacion.show()");
+                    casillaVacacion = -1;
+                } else if (casillaVacacion == 1) {
+                    context.update("formularioDialogos:editarFechaMIFinalModVacacion");
+                    context.execute("editarFechaMIFinalModVacacion.show()");
+                    casillaVacacion = -1;
+                } else if (casillaVacacion == 2) {
+                    context.update("formularioDialogos:editarFechaMFInicialModVacacion");
+                    context.execute("editarFechaMFInicialModVacacion.show()");
+                    casillaVacacion = -1;
+                } else if (casillaVacacion == 3) {
+                    context.update("formularioDialogos:editarFechaMFFinalModVacacion");
+                    context.execute("editarFechaMFFinalModVacacion.show()");
+                    casillaVacacion = -1;
+                }
+            }
+            if (casillaVigenciaJornadaLaboral >= 0) {
+                if (casillaVigenciaJornadaLaboral == 0) {
+                    context.update("formularioDialogos:editarJornadaModJornadaLaboral");
+                    context.execute("editarJornadaModJornadaLaboral.show()");
+                    casillaVigenciaJornadaLaboral = -1;
+                } else if (casillaVigenciaJornadaLaboral == 1) {
+                    context.update("formularioDialogos:editarFechaInicialModJornadaLaboral");
+                    context.execute("editarFechaInicialModJornadaLaboral.show()");
+                    casillaVigenciaJornadaLaboral = -1;
+                } else if (casillaVigenciaJornadaLaboral == 2) {
+                    context.update("formularioDialogos:editarFechaFinalModJornadaLaboral");
+                    context.execute("editarFechaFinalModJornadaLaboral.show()");
+                    casillaVigenciaJornadaLaboral = -1;
+                }
+            }
+            if (casillaMotivoRetiro >= 0) {
+                if (casillaMotivoRetiro == 0) {
+                    context.update("formularioDialogos:editarMotivoModFechaRetiro");
+                    context.execute("editarMotivoModFechaRetiro.show()");
+                    casillaMotivoRetiro = -1;
+                } else if (casillaMotivoRetiro == 1) {
+                    context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
+                    context.execute("editarFechaInicialModFechaRetiro.show()");
+                    casillaMotivoRetiro = -1;
+                } else if (casillaMotivoRetiro == 2) {
+                    context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
+                    context.execute("editarFechaFinalModFechaRetiro.show()");
+                    casillaMotivoRetiro = -1;
+                }
             }
         }
     }
@@ -4473,8 +4540,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         table.setValueExpression("sortBy", null);
         //update columns
         int tam = 0;
-        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
-
+        listaResultadoBusquedaAvanzada = new ArrayList<ResultadoBusquedaAvanzada>();
         if (listaColumnasEscenarios != null) {
             tam = listaColumnasEscenarios.size();
         }
@@ -4484,15 +4550,44 @@ public class ControlBusquedaAvanzada implements Serializable {
                 camposBusqueda = camposBusqueda + ", " + listaColumnasEscenarios.get(j).getNombrecolumna();
             }
         }
-        List<QVWEmpleadosCorte> registros = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleadoCodigo(listaCodigosEmpleado, camposBusqueda);
-        System.out.println("registros  : " + registros.size());
-        // createStaticColumns();
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:resultadoBusquedaAvanzada");
-//        for (int i = 0; i < registros.size(); i++) {
-//            System.out.println("registros  : " + listaCodigosEmpleado.get(i));
-//        }
-
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+        listaResultadoBusquedaAvanzada = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleadoCodigo(listaCodigosEmpleado, camposBusqueda);
+        System.out.println("listaResultadoBusquedaAvanzada  : " + listaResultadoBusquedaAvanzada.size());
+        int tamanoLista = 0;
+        if (listaResultadoBusquedaAvanzada != null) {
+            tamanoLista = listaResultadoBusquedaAvanzada.size();
+        }
+        for (int i = 0; i < tamanoLista; i++) {
+            listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
+        }
+        for (int j = 0; j < tam; j++) {
+            String[] palabras = listaColumnasEscenarios.get(j).getNombrecolumna().split(" ");
+            nuevaColumna = palabras[0];
+            for (int i = 1; i < palabras.length; i++) {
+                nuevaColumna = nuevaColumna + "_" + palabras[i];
+            }
+            System.out.println("nuevaColumna : " + nuevaColumna);
+            columnTemplate = columnTemplate + nuevaColumna + " ";
+            nuevaColumna = "";
+        }
+        columns.clear();
+        String[] valoresColumnasDeseadas = camposBusqueda.split(",");
+        mapValoresColumnas.clear();
+        if (tamanoLista > 0) {
+            System.out.println("valoresColumnasDeseadas.length : " + valoresColumnasDeseadas.length);
+            if (valoresColumnasDeseadas.length == 5) {
+                createStaticColumns();
+                cargarTablaColumnasEstaticas();
+            }
+            if (valoresColumnasDeseadas.length >= 6) {
+                createStaticColumns();
+                createDynamicColumns();
+                cargarTablaColumnasEstaticas();
+                cargarTablaColumnasDinamicas();
+            }
+        } else {
+            createStaticColumns();
+        }
         /*int tamEmpleado = listaEmpleadosResultados.size();
          for (int i = 0; i < tamEmpleado; i++) {
          listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
@@ -4589,30 +4684,27 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cargarTablaColumnasEstaticas() {
         for (int i = 0; i < 4; i++) {
-            int tamEmpleado = listaEmpleadosResultados.size();
+            int tamEmpleado = listaResultadoBusquedaAvanzada.size();
             System.out.println("tamEmpleado : " + tamEmpleado);
             if (columns.get(i).getProperty().equalsIgnoreCase("codigo")) {
-                String aux = columns.get(i).getHeader();
                 for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setCodigo(listaEmpleadosResultados.get(j).getCodigoempleado().toString());
+                    System.out.println("listaResultadoBusquedaAvanzada.get(j).getCodigo() : " + listaResultadoBusquedaAvanzada.get(j).getCodigoEmpleado());
+                    listaColumnasBusquedaAvanzada.get(j).setCodigo(listaResultadoBusquedaAvanzada.get(j).getCodigoEmpleado().toString().toUpperCase());
                 }
             }
             if (columns.get(i).getProperty().equalsIgnoreCase("primeroApellido")) {
-                String aux = columns.get(i).getHeader();
                 for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setPrimeroApellido(listaEmpleadosResultados.get(j).getPersona().getPrimerapellido().toUpperCase());
+                    listaColumnasBusquedaAvanzada.get(j).setPrimeroApellido(listaResultadoBusquedaAvanzada.get(j).getPrimerApellido().toUpperCase());
                 }
             }
             if (columns.get(i).getProperty().equalsIgnoreCase("segundoApellido")) {
-                String aux = columns.get(i).getHeader();
                 for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setSegundoApellido(listaEmpleadosResultados.get(j).getPersona().getSegundoapellido().toUpperCase());
+                    listaColumnasBusquedaAvanzada.get(j).setSegundoApellido(listaResultadoBusquedaAvanzada.get(j).getSegundoApellido().toUpperCase());
                 }
             }
             if (columns.get(i).getProperty().equalsIgnoreCase("nombre")) {
-                String aux = columns.get(i).getHeader();
                 for (int j = 0; j < tamEmpleado; j++) {
-                    listaColumnasBusquedaAvanzada.get(j).setNombre(listaEmpleadosResultados.get(j).getPersona().getNombre().toUpperCase());
+                    listaColumnasBusquedaAvanzada.get(j).setNombre(listaResultadoBusquedaAvanzada.get(j).getNombre().toUpperCase());
                 }
             }
         }
@@ -4620,43 +4712,86 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void cargarTablaColumnasDinamicas() {
+        System.out.println("cargarTablaColumnasDinamicas");
         List<String> campos = new ArrayList<String>();
         for (int i = 4; i < columns.size(); i++) {
+            System.out.println("columns.get(i).getHeader() : " + columns.get(i).getHeader());
+            System.out.println("columns.get(i).getProperty() : " + columns.get(i).getProperty());
             campos.add(columns.get(i).getHeader());
         }
         int tam = columns.size();
+        System.out.println("tam : " + tam);
         for (int i = 4; i < tam; i++) {
-            List<ColumnasBusquedaAvanzada> registro = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleado(listaEmpleadosResultados, campos);
-            for (int j = 0; j < registro.size(); j++) {
+            for (int j = 0; j < listaColumnasBusquedaAvanzada.size(); j++) {
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna0")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna0(registro.get(j).getColumna0());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(listaResultadoBusquedaAvanzada.get(j).getColumna0().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna1")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna1(registro.get(j).getColumna1());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna1(listaResultadoBusquedaAvanzada.get(j).getColumna1().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna2")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna2(registro.get(j).getColumna2());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna2(listaResultadoBusquedaAvanzada.get(j).getColumna2().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna3")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna3(registro.get(j).getColumna3());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna3(listaResultadoBusquedaAvanzada.get(j).getColumna3().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna4")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna4(registro.get(j).getColumna4());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna4(listaResultadoBusquedaAvanzada.get(j).getColumna4().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna5")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna5(registro.get(j).getColumna5());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna5(listaResultadoBusquedaAvanzada.get(j).getColumna5().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna6")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna6(registro.get(j).getColumna6());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna6(listaResultadoBusquedaAvanzada.get(j).getColumna6().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna7")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna7(registro.get(j).getColumna7());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna7(listaResultadoBusquedaAvanzada.get(j).getColumna7().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna8")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna8(registro.get(j).getColumna8());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna8(listaResultadoBusquedaAvanzada.get(j).getColumna8().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna9")) {
-                    listaColumnasBusquedaAvanzada.get(j).setColumna9(registro.get(j).getColumna9());
+                    if (listaResultadoBusquedaAvanzada.get(j).getColumna0() != null) {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna9(listaResultadoBusquedaAvanzada.get(j).getColumna9().toUpperCase());
+                    } else {
+                        listaColumnasBusquedaAvanzada.get(j).setColumna0(" ");
+                    }
                 }
             }
         }
@@ -4669,31 +4804,71 @@ public class ControlBusquedaAvanzada implements Serializable {
         System.out.println("mapValoresColumnas : " + mapValoresColumnas.size());
         columnTemplate = "";
         columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
-        listaColumnasBusquedaAvanzada = null;
+        listaResultadoBusquedaAvanzada = null;
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
         createStaticColumns();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:resultadoBusquedaAvanzada");
     }
 
-    ////
-    public List<ColumnasBusquedaAvanzada> getListaColumnasBusquedaAvanzada() {
-        return listaColumnasBusquedaAvanzada;
+    public void exportPDF() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosBusquedaAvanzadaExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "ResultadosBusquedaAvanzada_PDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+
     }
 
-    public void setListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> lista) {
-        this.listaColumnasBusquedaAvanzada = lista;
+    /**
+     * Metodo que exporta datos a XLS
+     *
+     * @throws IOException Excepcion de In-Out de datos
+     */
+    public void exportXLS() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosBusquedaAvanzadaExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "ResultadosBusquedaAvanzada_XLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+
+    }
+
+    public void posicionTablaBusquedaAvanzada() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndice(indice, columna);
+    }
+
+    public void cambiarIndice(int i, int c) {
+        indice = i;
+        cualCelda = c;
+        System.out.println("Indice : " + i + " -- Celda : " + c);
+    }
+
+    ////
+    public List<ResultadoBusquedaAvanzada> getListaResultadoBusquedaAvanzada() {
+        return listaResultadoBusquedaAvanzada;
+    }
+
+    public void setListaResultadoBusquedaAvanzada(List<ResultadoBusquedaAvanzada> lista) {
+        this.listaResultadoBusquedaAvanzada = lista;
     }
 
     public List<ColumnModel> getColumns() {
         return columns;
     }
 
-    public List<ColumnasBusquedaAvanzada> getFilteredListaColumnasBusquedaAvanzada() {
-        return filteredListaColumnasBusquedaAvanzada;
+    public List<ResultadoBusquedaAvanzada> getFilteredListaResultadoBusquedaAvanzada() {
+        return filteredListaResultadoBusquedaAvanzada;
     }
 
-    public void setFilteredListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> filteredCars) {
-        this.filteredListaColumnasBusquedaAvanzada = filteredCars;
+    public void setFilteredListaResultadoBusquedaAvanzada(List<ResultadoBusquedaAvanzada> filteredCars) {
+        this.filteredListaResultadoBusquedaAvanzada = filteredCars;
     }
 
     public String getNuevaColumna() {
@@ -6167,5 +6342,36 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.registrosFiltrado = setListColumnasEscenarios;
     }
 
-    
+    public List<ColumnasBusquedaAvanzada> getFiltrarListaColumnasBusquedaAvanzada() {
+        return filtrarListaColumnasBusquedaAvanzada;
+    }
+
+    public void setFiltrarListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> filtrarListaColumnasBusquedaAvanzada) {
+        this.filtrarListaColumnasBusquedaAvanzada = filtrarListaColumnasBusquedaAvanzada;
+    }
+
+    public List<ColumnasBusquedaAvanzada> getListaColumnasBusquedaAvanzada() {
+        return listaColumnasBusquedaAvanzada;
+    }
+
+    public void setListaColumnasBusquedaAvanzada(List<ColumnasBusquedaAvanzada> listaColumnasBusquedaAvanzada) {
+        this.listaColumnasBusquedaAvanzada = listaColumnasBusquedaAvanzada;
+    }
+
+    public String getCabeceraEditarCelda() {
+        return cabeceraEditarCelda;
+    }
+
+    public void setCabeceraEditarCelda(String cabeceraEditarCelda) {
+        this.cabeceraEditarCelda = cabeceraEditarCelda;
+    }
+
+    public String getInfoVariableEditarCelda() {
+        return infoVariableEditarCelda;
+    }
+
+    public void setInfoVariableEditarCelda(String infoVariableEditarCelda) {
+        this.infoVariableEditarCelda = infoVariableEditarCelda;
+    }
+
 }
