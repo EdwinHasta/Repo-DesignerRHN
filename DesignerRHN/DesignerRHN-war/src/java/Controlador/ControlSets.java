@@ -101,7 +101,6 @@ public class ControlSets implements Serializable {
     }
 
     public void recibirEmpleado(Empleados empl) {
-        
         listSets = null;
         empleado = empl;
         per = empleado.getPersona();

@@ -2363,7 +2363,7 @@
         </navigation-case>
     </navigation-rule> 
     <navigation-rule>
-         <from-view-id>/tipoformula.xhtml</from-view-id>
+        <from-view-id>/tipoformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>operando</from-outcome>
             <to-view-id>/operando.xhtml</to-view-id>
@@ -2551,7 +2551,7 @@
         <from-view-id>/Rastro.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>declarantes</from-outcome>
-            <to-view-id>/declarante</to-view-id>
+            <to-view-id>/declarante.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2565,5 +2565,67 @@
         </navigation-case>
     </navigation-rule>
     
- 
+    <navigation-rule>
+        <from-view-id>/conceptoredondeo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>conceptosredondeos</from-outcome>
+            <to-view-id>/conceptoredondeo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/operandogrupoconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>operandosgruposconceptos</from-outcome>
+            <to-view-id>/operandogrupoconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/grupoconcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>gruposconceptos</from-outcome>
+            <to-view-id>/grupoconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasgruposconceptos</from-outcome>
+            <to-view-id>/grupoconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+   
 </faces-config>

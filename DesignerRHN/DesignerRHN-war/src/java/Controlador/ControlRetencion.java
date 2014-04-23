@@ -7,7 +7,6 @@ package Controlador;
 
 import Entidades.VigenciasRetenciones;
 import Entidades.Retenciones;
-import Exportar.ExportarPDF;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
@@ -1322,7 +1321,7 @@ public class ControlRetencion implements Serializable {
         } else {
             DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosRetencionesExportar");
             FacesContext context = FacesContext.getCurrentInstance();
-            Exporter exporter = new ExportarPDF();
+            Exporter exporter = new ExportarXLS();
             exporter.export(context, tabla, "RetencionesXLS", false, false, "UTF-8", null, null);
             context.responseComplete();
             indexD = -1;

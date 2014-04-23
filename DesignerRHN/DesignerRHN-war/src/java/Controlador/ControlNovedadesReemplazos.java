@@ -213,8 +213,8 @@ public class ControlNovedadesReemplazos implements Serializable {
                 filtradosListaEncargaturas.get(indice).getReemplazado().getPersona().setNombreCompleto(Reemplazado);
             }
 
-            for (int i = 0; i < listaEncargaturas.size(); i++) {
-                if (listaEncargaturas.get(i).getEmpleado().getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                if (listaEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }

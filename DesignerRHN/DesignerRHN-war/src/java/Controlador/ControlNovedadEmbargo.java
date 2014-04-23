@@ -2142,8 +2142,8 @@ public class ControlNovedadEmbargo implements Serializable {
                 filtradoListaEmbargos.get(indice).getTipoembargo().setDescripcion(TipoEmbargo);
             }
 
-            for (int i = 0; i < listaEmbargos.size(); i++) {
-                if (listaEmbargos.get(i).getTipoembargo().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovlistaTiposEmbargos.size(); i++) {
+                if (lovlistaTiposEmbargos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -2169,8 +2169,8 @@ public class ControlNovedadEmbargo implements Serializable {
                 filtradoListaEmbargos.get(indice).getJuzgado().setNombre(Juzgado);
             }
 
-            for (int i = 0; i < listaEmbargos.size(); i++) {
-                if (listaEmbargos.get(i).getJuzgado().getNombre().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovlistaJuzgados.size(); i++) {
+                if (lovlistaJuzgados.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -2196,8 +2196,8 @@ public class ControlNovedadEmbargo implements Serializable {
                 filtradoListaEmbargos.get(indice).getMotivoembargo().setNombre(Motivo);
             }
 
-            for (int i = 0; i < listaEmbargos.size(); i++) {
-                if (listaEmbargos.get(i).getMotivoembargo().getNombre().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovlistaMotivos.size(); i++) {
+                if (lovlistaMotivos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -2223,8 +2223,8 @@ public class ControlNovedadEmbargo implements Serializable {
                 filtradoListaEmbargos.get(indice).getDemandante().setNombre(Demandante);
             }
 
-            for (int i = 0; i < listaEmbargos.size(); i++) {
-                if (listaEmbargos.get(i).getDemandante().getNombre().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovlistaDemandantes.size(); i++) {
+                if (lovlistaDemandantes.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -2327,8 +2327,8 @@ public class ControlNovedadEmbargo implements Serializable {
                 filtradoListaDetallesEmbargos.get(indexD).getDetalleformadto().setDescripcion(Pago);
             }
 
-            for (int i = 0; i < listaDetallesEmbargos.size(); i++) {
-                if (listaDetallesEmbargos.get(i).getDetalleformadto().getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovlistaDetallesFormasDtos.size(); i++) {
+                if (lovlistaDetallesFormasDtos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -2355,8 +2355,8 @@ public class ControlNovedadEmbargo implements Serializable {
                 filtradoListaDetallesEmbargos.get(indexD).getPeriodicidad().setCodigoStr(Periodicidad);
             }
 
-            for (int i = 0; i < listaDetallesEmbargos.size(); i++) {
-                if (listaDetallesEmbargos.get(i).getPeriodicidad().getCodigoStr().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovlistaPeriodicidades.size(); i++) {
+                if (lovlistaPeriodicidades.get(i).getCodigoStr().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
