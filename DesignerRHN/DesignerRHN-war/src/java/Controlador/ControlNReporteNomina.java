@@ -145,8 +145,9 @@ public class ControlNReporteNomina implements Serializable {
     //BANDERAS
     private boolean estadoReporte;
     private String resultadoReporte;
+    FileInputStream prueba;
 
-    public ControlNReporteNomina() {
+    public ControlNReporteNomina() throws FileNotFoundException {
         activoMostrarTodos = true;
         activoBuscarReporte = false;
         color = "black";
@@ -192,6 +193,8 @@ public class ControlNReporteNomina implements Serializable {
         permitirIndex = true;
         altoTabla = "185";
         indice = -1;
+        prueba = new FileInputStream(new File("C:\\Users\\Administrador\\Documents\\Guia JasperReport.pdf"));
+        reporte = new DefaultStreamedContent(prueba, "application/pdf");
         reporte = new DefaultStreamedContent();
         cabezeraVisor = null;
         estadoReporte = false;
@@ -1443,10 +1446,47 @@ public class ControlNReporteNomina implements Serializable {
         }
     }
 
+    public void generarReporte() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("cambiosReporte = " + cambiosReporte);
+        if (cambiosReporte == true) {
+            if (tipoLista == 0) {
+                nombreReporte = listaIR.get(indice).getNombrereporte();
+                tipoReporte = listaIR.get(indice).getTipo();
+            } else {
+                nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
+                tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
+            }
+            if (nombreReporte != null && tipoReporte != null) {
+                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+            }
+            if (pathReporteGenerado != null) {
+                //context.execute("exportarReporte();");
+                System.out.println("Pasooo");
+                try {
+                    exportarReporte();
+                    context.execute("validarDescargaReporte();");
+                } catch (IOException ex) {
+                    Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            System.out.println("Syso antes ");
+            
+            context.update("form:confirmarGuardarSinSalida");
+            context.execute("confirmarGuardarSinSalida.show()");
+        }
+        //context.execute("dlg.hide()");
+    }
     /*public void generarReporte() {
-     System.out.println("cambiosReporte = " + cambiosReporte);
-     if (cambiosReporte == true) {
-     String nombreReporte, tipoReporte;
+     /*HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+     HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+     FacesContext con = getFacesContext(request, response);*/
+        //System.out.println("Faces: " + con);
+    //FacesContext f = FacesContext.getCurrentInstance();
+    ///System.out.println("Estado respuesta: " + f.getResponseComplete());
+      /*  RequestContext context = RequestContext.getCurrentInstance();
+     //System.out.println("Context: " + f);
      if (tipoLista == 0) {
      nombreReporte = listaIR.get(indice).getNombrereporte();
      tipoReporte = listaIR.get(indice).getTipo();
@@ -1454,64 +1494,28 @@ public class ControlNReporteNomina implements Serializable {
      nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
      tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
      }
-     if (nombreReporte != null && tipoReporte != null) {
-     pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+     if (asistenteReporte == null) {
+     asistenteReporte = listener();
+     System.out.println("Creo el listener. :D");
      }
-     if (pathReporteGenerado != null) {
+     /*if (nombreReporte != null && tipoReporte != null) {
+     pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte, asistenteReporte);
+     }*/
+    /* if (nombreReporte != null) {
+     administarReportes.iniciarLlenadoReporte(nombreReporte, asistenteReporte);
+     }
+     /* if (pathReporteGenerado != null) {
      //context.execute("exportarReporte();");
      System.out.println("Pasooo");
-     try {
-     exportarReporte();
+     /* try {
+     //exportarReporte();
      } catch (IOException ex) {
      Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
-     }
-     }
-     } else {
-     System.out.println("Syso antes ");
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.update("form:confirmarGuardarSinSalida");
-     context.execute("confirmarGuardarSinSalida.show()");
-     }
-     //context.execute("dlg.hide()");
      }*/
-    public void generarReporte() {
-        /*HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-         HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
-         FacesContext con = getFacesContext(request, response);*/
-        //System.out.println("Faces: " + con);
-        //FacesContext f = FacesContext.getCurrentInstance();
-        ///System.out.println("Estado respuesta: " + f.getResponseComplete());
-        RequestContext context = RequestContext.getCurrentInstance();
-        //System.out.println("Context: " + f);
-        if (tipoLista == 0) {
-            nombreReporte = listaIR.get(indice).getNombrereporte();
-            tipoReporte = listaIR.get(indice).getTipo();
-        } else {
-            nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
-            tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
-        }
-        if (asistenteReporte == null) {
-            asistenteReporte = listener();
-            System.out.println("Creo el listener. :D");
-        }
-        /*if (nombreReporte != null && tipoReporte != null) {
-         pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte, asistenteReporte);
-         }*/
-        if (nombreReporte != null) {
-            administarReportes.iniciarLlenadoReporte(nombreReporte, asistenteReporte);
-        }
-        /* if (pathReporteGenerado != null) {
-         //context.execute("exportarReporte();");
-         System.out.println("Pasooo");
-         /* try {
-         //exportarReporte();
-         } catch (IOException ex) {
-         Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
-         }*/
-        //}
-        //context.execute("dlg.hide()");
-        // context.execute("esperarReporte();");
-    }
+    //}
+    //context.execute("dlg.hide()");
+    // context.execute("esperarReporte();");
+    // }
 
     public AsynchronousFilllListener listener() {
         return new AsynchronousFilllListener() {
@@ -1618,6 +1622,7 @@ public class ControlNReporteNomina implements Serializable {
                 if (reporte != null) {
                     cabezeraVisor = "Reporte - " + listaIR.get(indice).getNombre();
                     context.update("formDialogos:verReportePDF");
+                    System.out.println("3");
                     context.execute("verReportePDF.show();");
                 }
             }

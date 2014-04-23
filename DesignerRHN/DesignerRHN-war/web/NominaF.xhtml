@@ -252,7 +252,7 @@
                                             #{msg['Ubicacion1']}<br/> #{msg['Ubicacion2']}
                                         </p:tooltip>
 
-                                        <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/Iconos/formaPago.png); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"/>
+                                        <p:commandButton id="FormaDePago" value="" style="position: absolute; background-image: url(Imagenes/Iconos/formaPago.png); width: 29px; height: 35px; top: 123px; background-repeat: no-repeat; background-size: 100% 100%; left: 550px; border: outset; border-width: 2px;" disabled="#{controlRemoto.acumulado}"  action="emplvigenciaformapago" actionListener="#{controlVigenciasFormasPagos.recibirEmpleado(item.empleado.secuencia) }"/>
                                         <p:tooltip  for="FormaDePago">
                                             #{msg['FormaDePago1']}<br/> #{msg['FormaDePago2']}
                                         </p:tooltip>
@@ -388,7 +388,7 @@
                                         </fieldset>
 
 
-                                        <p:commandButton value="" style="position: absolute; background-image: url(Imagenes/Designer.GIF); width: 200px; height: 42px; top: 426px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" />
+                                        <p:commandButton value="" style="position: absolute; background-image: url(Imagenes/Designer.GIF); width: 200px; height: 42px; top: 426px; background-repeat: no-repeat; background-size: 100% 100%; left: 643px;" action="acercade" />
 
                                         <em><h:outputText style="position: absolute; top: 474px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
 
@@ -412,7 +412,7 @@
                                     <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 439px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['formulasdeliquidacion']}"/>
                                     <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 642px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['legislacionlaboral']}"/>
 
-                                    <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 50px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedadPlano"/>
+                                    <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 50px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedad"/>
                                     <p:tooltip  for="NovedadesNomina">
                                         #{msg['toolTipNovedades1']}<br/>#{msg['toolTipNovedades2']}
                                     </p:tooltip>
@@ -536,7 +536,7 @@
                                     <legend style=" font-weight: bold; color: #00F;">#{msg['herramientascontables']}</legend>
 
                                     <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="cuenta" actionListener="#{controlCuenta.obtenerEmpresa()}"/>
-                                    <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                    <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="centrocosto" />
                                     <p:commandButton id="btnTerceros" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 213px; background-image: url(Imagenes/IntInfotercero.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="tercero" actionListener="#{controlTercero.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnRepCont" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 310px; background-image: url(Imagenes/reportesboton.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="ReporteContabilidad" actionListener="#{controlNReporteContabilidad.iniciarPagina()}"/>
                                     <h:outputText value="#{msg['plandecuentaspuc']}" style="width: 199px; height: 12px; position: absolute; left: 110px; top: 18px; color:blue;  font-weight: bold" />

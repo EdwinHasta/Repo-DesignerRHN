@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +47,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     private VigenciasNormasEmpleados nuevoEmplVigenciaNormaLaboral;
     private VigenciasNormasEmpleados duplicarEmplVigenciaNormaLaboral;
     private VigenciasNormasEmpleados editarEmplVigenciaNormaLaboral;
+    private VigenciasNormasEmpleados vigenciaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -67,6 +69,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     private List<NormasLaborales> filtradoNormasLaborales;
     private NormasLaborales normaLaboralSeleccionada;
     private String nuevoYduplicarCompletarNormaLaboral;
+    //ALTO TABLA
+    private String altoTabla;
 
     public ControlBetaEmplVigenciaNormaLaboral() {
         listEmplVigenciaNormaLaboralPorEmpleado = null;
@@ -79,10 +83,11 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         nuevoEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
         duplicarEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
         empleadoSeleccionado = null;
-        secuenciaEmpleado = BigInteger.valueOf(10664356);
+        secuenciaEmpleado = null;
         listaNormasLaborales = null;
         filtradoNormasLaborales = null;
         guardado = true;
+        altoTabla = "270";
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -272,11 +277,13 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
             filtrarEmplVigenciaNormaLaboralPorEmplado = null;
@@ -298,20 +305,23 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 60px");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("width: 600px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
             filtrarEmplVigenciaNormaLaboralPorEmplado = null;
@@ -811,6 +821,9 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             context.update("form:datosHvEntrevista");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -890,12 +903,13 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
                 parentesco.setFilterStyle("display: none; visibility: hidden;");
-
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
                 filtrarEmplVigenciaNormaLaboralPorEmplado = null;
@@ -1033,11 +1047,12 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                FacesContext c = FacesContext.getCurrentInstance();
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
                 parentesco.setFilterStyle("display: none; visibility: hidden;");
-
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
                 filtrarEmplVigenciaNormaLaboralPorEmplado = null;
@@ -1218,6 +1233,14 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         this.normaLaboralSeleccionada = normaLaboralSeleccionada;
     }
 
+    public VigenciasNormasEmpleados getVigenciaSeleccionada() {
+        return vigenciaSeleccionada;
+    }
+
+    public void setVigenciaSeleccionada(VigenciasNormasEmpleados vigenciaSeleccionada) {
+        this.vigenciaSeleccionada = vigenciaSeleccionada;
+    }
+
     public boolean isGuardado() {
         return guardado;
     }
@@ -1226,4 +1249,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         this.guardado = guardado;
     }
 
+    public String getAltoTabla() {
+        return altoTabla;
+    }    
 }

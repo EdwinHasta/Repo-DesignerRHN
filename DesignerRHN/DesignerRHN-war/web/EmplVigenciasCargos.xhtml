@@ -16,7 +16,7 @@
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
+                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
 
                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">   
                             <p:toolbarGroup align="left"> 
@@ -72,7 +72,8 @@
                             <p:commandButton id="btnPrimerRegistro" disabled="#{controlVigenciasCargos.botonPrimero}" value=" " icon="ui-icon-arrowstop-1-w" actionListener="#{controlVigenciasCargos.primerRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
                             <p:commandButton id="btnAnteriorRegistro" disabled="#{controlVigenciasCargos.botonAnterior}" value=" " icon="ui-icon-arrow-1-w" actionListener="#{controlVigenciasCargos.anteriorRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
                             <p:commandButton id="btnSiguienteRegistro" disabled="#{controlVigenciasCargos.botonSiguiente}" value=" "  icon="ui-icon-arrow-1-e" actionListener="#{controlVigenciasCargos.siguienteRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
-                            <p:commandButton id="btnUltimoRegistro" disabled="#{controlVigenciasCargos.botonUltimo}" value=" " icon="ui-icon-arrowstop-1-e" actionListener="#{controlVigenciasCargos.ultimoRegistro()}" process="@this" onclick="triggerHiddenEvent();return false;"/>
+                            <p:commandButton id="btnUltimoRegistro" disabled="#{controlVigenciasCargos.botonUltimo}" value=" " icon="ui-icon-arrowstop-1-e" actionListener="#{controlVigenciasCargos.ultimoRegistro()}" process="@this" onclick="triggerHiddenEvent();
+                                    return false;"/>
 
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice"
                                          value="#{controlVigenciasCargos.vigenciasCargosEmpleado}"
@@ -95,7 +96,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <lnk:calendar id="editFecha" value="#{info.fechavigencia}" height="12">
+                                            <lnk:calendar id="editFecha" value="#{info.fechavigencia}" height="12" width="99">
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciasCargos.modificarVC(indice, 'N', info.fechavigencia)}" update="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice, 'N', info.fechavigencia)}" update="@this" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, 0)}" process="@this"/> 
@@ -389,18 +390,18 @@
                         <p:commandButton style="position: absolute; left: 688px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasCargos.guardado}"/>
                         <p:commandButton style="position: absolute; left: 785px; top: 470px;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this" />
                     </p:panel>
-
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 110px; top: 20px; width: 300px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasCargos.guardarCambiosVC()}" action="nomina" style="position: absolute; top: 60px; left: 200px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" style="position: absolute; top: 60px; left: 240px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 285px" process="@this" />
+                    
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasCargos.guardarCambiosVC()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasCargos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-
-                    <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasCargos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                    
+                    <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasCargos.mensajeValidacion}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
@@ -455,15 +456,17 @@
                 </h:form>
                 <h:form id="formularioDialogos">
 
-                    <p:dialog id="NuevoRegistroVC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="300" style=" padding: 0px">  
+                    <p:dialog id="NuevoRegistroVC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="300" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVC" style="border: none;">
                             <strong><h:outputText value="#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
-                            <lnk:calendar id="nuevaFecha" value="#{controlVigenciasCargos.nuevaVigencia.fechavigencia}" height="12">
-                                <p:ajax event="dateSelect" update="@this"/>
-                                <p:ajax event="change" update="@this"/>
-                            </lnk:calendar>
+                            <div style=" position: absolute; top: 80px; left: 120px;">
+                                <lnk:calendar id="nuevaFecha" value="#{controlVigenciasCargos.nuevaVigencia.fechavigencia}" height="12" width="60">
+                                    <p:ajax event="dateSelect" update="@this"/>
+                                    <p:ajax event="change" update="@this"/>
+                                </lnk:calendar>
+                            </div>
 
                             <strong><h:outputText value="#{msg['estructuraN']}" style=" position: absolute; top: 120px" /></strong>
                             <p:inputText id="nuevaEstructura" value="#{controlVigenciasCargos.nuevaVigencia.estructura.nombre}" style=" width: 99px; position: absolute; left: 120px; top: 115px; text-transform: uppercase" onclick="select();">
@@ -505,24 +508,24 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 230px; top: 255px;  " id="NuevoEmplJ" actionListener="#{controlVigenciasCargos.asignarVariableEmpleadoJefeNuevo(0)}" icon="ui-icon-search" process="@this" />
                             <p:watermark for="nuevoJefe" value="#{msg['nombrejefe']}"/>
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" process="@this"/>
-                            <p:commandButton id="agregarVC" value="#{msg['agregar']}" style="position: absolute; left: 140px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.agregarNuevaVC()}" />
-                            <p:commandButton id="cancelarVC" value="#{msg['cancelar']}" style=" position: absolute; left: 210px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style="position: absolute; left: 10px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarVC" value="#{msg['agregar']}" style="position: absolute; left: 110px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.agregarNuevaVC()}" icon="ui-icon-circle-check"/>
+                            <p:commandButton id="cancelarVC" value="#{msg['cancelar']}" style=" position: absolute; left: 200px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarNuevaVC()}" update="nuevaVC" onclick="NuevoRegistroVC.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="duplicarRegistroVC" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="300" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroVC" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="300" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVC" style="border: none;">
                             <strong><h:outputText value="#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
-                            <strong><h:outputText value="#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
-                            <lnk:calendar id="duplicarFecha" value="#{controlVigenciasCargos.duplicarVC.fechavigencia}" height="12">
-                                <p:ajax event="dateSelect" update="@this"/>
-                                <p:ajax event="change" update="@this"/>
-                            </lnk:calendar>
-
+                            <div style=" position: absolute; top: 80px; left: 120px;">
+                                <lnk:calendar id="duplicarFecha" value="#{controlVigenciasCargos.duplicarVC.fechavigencia}" height="12" width="60">
+                                    <p:ajax event="dateSelect" update="@this"/>
+                                    <p:ajax event="change" update="@this"/>
+                                </lnk:calendar>
+                            </div>
                             <strong><h:outputText value="#{msg['estructuraN']}" style=" position: absolute; top: 120px" /></strong>
                             <p:inputText id="duplicarEstructura" value="#{controlVigenciasCargos.duplicarVC.estructura.nombre}" style=" width: 99px; position: absolute; left: 120px; top: 115px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasCargos.valoresBackupAutocompletar(2, 'ESTRUCTURA')}" />
@@ -564,9 +567,9 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 230px; top: 255px;  " id="btnduplicarJefe" actionListener="#{controlVigenciasCargos.asignarVariableEmpleadoJefeNuevo(1)}" icon="ui-icon-search" process="@this" />
                             <p:watermark for="duplicarJefe" value="#{msg['nombrejefe']}"/>
 
-                            <p:commandButton id="limpiarDuplicado" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVC" value="#{msg['agregar']}" style="position: absolute; left: 140px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.confirmarDuplicar()}" onclick="duplicarRegistroVC.hide();"  />
-                            <p:commandButton id="cancelarDuplicadoVC" value="#{msg['cancelar']}" style="position: absolute; left: 210px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" onclick="duplicarRegistroVC.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicado" value="#{msg['limpiar']}" style="position: absolute; left: 10px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" process="@this" icon="ui-icon-trash"/>
+                            <p:commandButton id="agregarDuplicadoVC" value="#{msg['agregar']}" style="position: absolute; left: 110px; top: 290px;"  process="@this" actionListener="#{controlVigenciasCargos.confirmarDuplicar()}" onclick="duplicarRegistroVC.hide();" icon="ui-icon-circle-check" />
+                            <p:commandButton id="cancelarDuplicadoVC" value="#{msg['cancelar']}" style="position: absolute; left: 200px; top: 290px;" actionListener="#{controlVigenciasCargos.limpiarduplicarVC()}" update="duplicarVC" onclick="duplicarRegistroVC.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel> 
                     </p:dialog>  
 
