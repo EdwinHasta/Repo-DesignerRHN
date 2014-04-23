@@ -2079,15 +2079,15 @@
     <navigation-rule>
         <from-view-id>/IbcAutoliquid.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <from-outcome>emplibcs</from-outcome>
+            <to-view-id>/emplibcs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/emplibcs.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>ibcs</from-outcome>
+            <from-outcome>ibcAuto</from-outcome>
             <to-view-id>/IbcAutoliquid.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -2508,7 +2508,7 @@
     <navigation-rule>
         <from-view-id>/emplviajero.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>vigenciaviajeroatras</from-outcome>
+            <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
             <redirect />
         </navigation-case>
