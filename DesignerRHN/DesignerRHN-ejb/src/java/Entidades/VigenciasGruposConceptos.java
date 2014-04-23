@@ -105,6 +105,9 @@ public class VigenciasGruposConceptos implements Serializable {
     }
 
     public Conceptos getConcepto() {
+        if(concepto == null){
+            concepto = new Conceptos();
+        }
         return concepto;
     }
 
