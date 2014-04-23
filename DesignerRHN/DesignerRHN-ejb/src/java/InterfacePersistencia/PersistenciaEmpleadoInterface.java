@@ -154,4 +154,6 @@ public interface PersistenciaEmpleadoInterface {
     public List<Empleados> empleadosNovedadEmbargo();
 
     public List<Empleados> buscarEmpleadosBusquedaAvanzada(String queryBusquedaAvanzada);
+    
+    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(String queryBusquedaAvanzada);
 }

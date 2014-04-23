@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
@@ -77,7 +78,7 @@ public class ControlVigenciasCargos implements Serializable {
     private List<VigenciasCargos> listVCModificar;
     private VigenciasCargos vC;
     private String a;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     //crear VC
     public VigenciasCargos nuevaVigencia;
     private Integer max;
@@ -107,12 +108,14 @@ public class ControlVigenciasCargos implements Serializable {
     private String registroFoco;
     //INFORMACION DEL REGISTRO QUE TIENE EL FOCO
     private String infoRegistro;
+    private String altoTabla;
     //------------------------------------------------------------------------------------------
     //CONSTRUCTOR(ES)
     //------------------------------------------------------------------------------------------
 
     public ControlVigenciasCargos() {
         System.out.println("Se creo un nuevo BakingBean YUPI!");
+        
         empleado = new Empleados();
         bandera = 0;
         //Vigencias Cargos
@@ -157,6 +160,7 @@ public class ControlVigenciasCargos implements Serializable {
         secRegistro = null;
         //INICIALIZAR FOCO PARA EL PRIMER REGISTRO
         registroFoco = "form:datosVCEmpleado:editFecha";
+        altoTabla = "270";
 
     }
 //------------------------------------------------------------------------------------------
@@ -369,10 +373,6 @@ public class ControlVigenciasCargos implements Serializable {
         return guardado;
     }
 
-    public void setGuardado(boolean guardado) {
-        this.guardado = guardado;
-    }
-
     //DUPLICAR
     public VigenciasCargos getDuplicarVC() {
         return duplicarVC;
@@ -438,11 +438,15 @@ public class ControlVigenciasCargos implements Serializable {
     public String getInfoRegistro() {
         return infoRegistro;
     }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
     //------------------------------------------------------------------------------------------
     //METODOS DE MANEJO DE INFORMACION
     //------------------------------------------------------------------------------------------
     //VIGENCIASCARGOS----------------------------------------------------
-
     public void recibirEmpleado(BigInteger sec) {
         vigenciasCargosEmpleado = null;
         secuencia = sec;
@@ -554,6 +558,7 @@ public class ControlVigenciasCargos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosVCEmpleado");
@@ -629,6 +634,7 @@ public class ControlVigenciasCargos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosVCEmpleado");
@@ -690,6 +696,7 @@ public class ControlVigenciasCargos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosVCEmpleado");
@@ -746,6 +753,7 @@ public class ControlVigenciasCargos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosVCEmpleado");
@@ -871,18 +879,20 @@ public class ControlVigenciasCargos implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
             vcFecha.setFilterStyle("display: none; visibility: hidden;");
-            vcEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
             vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-            vcMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
             vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreCargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
             vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-            vcCentrosC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
@@ -900,23 +910,26 @@ public class ControlVigenciasCargos implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVCEmpleado");
+        context.update("form:ACEPTAR");
     }
 
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
             vcFecha.setFilterStyle("display: none; visibility: hidden;");
-            vcEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
             vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-            vcMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
             vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreCargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
             vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-            vcCentrosC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
@@ -1004,9 +1017,6 @@ public class ControlVigenciasCargos implements Serializable {
                     } else if (!listVCModificar.contains(vigenciasCargosEmpleado.get(indice))) {
                         listVCModificar.add(vigenciasCargosEmpleado.get(indice));
                     }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
                 }
                 index = -1;
                 secRegistro = null;
@@ -1018,14 +1028,15 @@ public class ControlVigenciasCargos implements Serializable {
                     } else if (!listVCModificar.contains(filterVC.get(indice))) {
                         listVCModificar.add(filterVC.get(indice));
                     }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
                 }
                 index = -1;
                 secRegistro = null;
             }
-            context.update("form:datosVCEmpleado");
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+            //context.update("form:datosVCEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("ESTRUCTURA")) {
             if (tipoLista == 0) {
                 vigenciasCargosEmpleado.get(indice).getEstructura().setNombre(nombreEstructura);
@@ -1051,6 +1062,7 @@ public class ControlVigenciasCargos implements Serializable {
                 permitirIndex = false;
                 context.update("form:estructurasDialog");
                 context.execute("estructurasDialog.show()");
+                context.update("form:datosVCEmpleado");
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("MOTIVOC")) {
@@ -1144,9 +1156,6 @@ public class ControlVigenciasCargos implements Serializable {
                     } else if (!listVCModificar.contains(vigenciasCargosEmpleado.get(indice))) {
                         listVCModificar.add(vigenciasCargosEmpleado.get(indice));
                     }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
                 }
                 index = -1;
                 secRegistro = null;
@@ -1158,15 +1167,16 @@ public class ControlVigenciasCargos implements Serializable {
                     } else if (!listVCModificar.contains(filterVC.get(indice))) {
                         listVCModificar.add(filterVC.get(indice));
                     }
-                    if (guardado == true) {
-                        guardado = false;
-                    }
                 }
                 index = -1;
                 secRegistro = null;
             }
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+            context.update("form:datosVCEmpleado");
         }
-        context.update("form:datosVCEmpleado");
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
@@ -1395,8 +1405,12 @@ public class ControlVigenciasCargos implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVCEmpleado");
             guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
             k = 0;
+            permitirIndex = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         secRegistro = null;
@@ -1434,8 +1448,6 @@ public class ControlVigenciasCargos implements Serializable {
                 }
             }
         }
-
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     //PRIMER REGISTRO
@@ -1509,7 +1521,7 @@ public class ControlVigenciasCargos implements Serializable {
             //context.execute("('" + registroFoco + "').trigger('click'); return false;");
             context.execute("$('form:ATRAS').trigger('click');");
 
-           //context.execute("{PrimeFaces.focus('" + registroFoco + "');}");
+            //context.execute("{PrimeFaces.focus('" + registroFoco + "');}");
         }
     }
     //CREAR VC
@@ -1545,18 +1557,20 @@ public class ControlVigenciasCargos implements Serializable {
         if (pasa == true) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                vcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+                FacesContext c = FacesContext.getCurrentInstance();
+                vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
                 vcFecha.setFilterStyle("display: none; visibility: hidden;");
-                vcEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+                vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
                 vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-                vcMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+                vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
                 vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-                vcNombreCargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+                vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
                 vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-                vcCentrosC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+                vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
                 vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-                vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+                vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
                 vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
                 bandera = 0;
                 filterVC = null;
@@ -1580,7 +1594,7 @@ public class ControlVigenciasCargos implements Serializable {
             context.update("form:datosVCEmpleado");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroVC.hide()");
             index = -1;
@@ -1607,7 +1621,6 @@ public class ControlVigenciasCargos implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFecha");
                 context.execute("editarFecha.show()");
@@ -1671,7 +1684,7 @@ public class ControlVigenciasCargos implements Serializable {
             aceptarEditar = true;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                //RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -1689,7 +1702,6 @@ public class ControlVigenciasCargos implements Serializable {
         if (index >= 0) {
 
             if (tipoLista == 0) {
-                System.out.println("Entro a vcempleado");
                 if (!listVCModificar.isEmpty() && listVCModificar.contains(vigenciasCargosEmpleado.get(index))) {
                     int modIndex = listVCModificar.indexOf(vigenciasCargosEmpleado.get(index));
                     listVCModificar.remove(modIndex);
@@ -1703,7 +1715,6 @@ public class ControlVigenciasCargos implements Serializable {
                 vigenciasCargosEmpleado.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("Entro filterVc");
                 if (!listVCModificar.isEmpty() && listVCModificar.contains(filterVC.get(index))) {
                     int modIndex = listVCModificar.indexOf(filterVC.get(index));
                     listVCModificar.remove(modIndex);
@@ -1726,7 +1737,7 @@ public class ControlVigenciasCargos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
 
@@ -1776,35 +1787,37 @@ public class ControlVigenciasCargos implements Serializable {
 
     public void confirmarDuplicar() {
 
-        System.out.println("Datos del duplicado: " + duplicarVC.getSecuencia() + "  " + duplicarVC.getFechavigencia());
-        if (listVCCrear.contains(duplicarVC)) {
-            System.out.println("Ya lo contengo.");
-        }
         vigenciasCargosEmpleado.add(duplicarVC);
         listVCCrear.add(duplicarVC);
         RequestContext context = RequestContext.getCurrentInstance();
+        if (guardado == true) {
+            guardado = false;
+            context.update("form:ACEPTAR");
+        }
         context.update("form:datosVCEmpleado");
         index = -1;
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            //RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
             vcFecha.setFilterStyle("display: none; visibility: hidden;");
-            vcEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
             vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-            vcMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
             vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreCargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
             vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-            vcCentrosC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
+            altoTabla = "270";
+            context.update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;
             tipoLista = 0;
@@ -1861,9 +1874,8 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVCEmpleadoExportar");
-        //DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:aficiones");
         FacesContext context = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) context.getViewRoot().findComponent("formExportar:datosVCEmpleadoExportar");
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "VigenciasCargosPDF", false, false, "UTF-8", null, null);
         //exporter.export(context, tabla, "AficionesPDF", false, false, "UTF-8", null, null);
@@ -1873,9 +1885,9 @@ public class ControlVigenciasCargos implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVCEmpleadoExportar");
-        //DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:aficiones");
         FacesContext context = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) context.getViewRoot().findComponent("formExportar:datosVCEmpleadoExportar");
+        //DataTable tabla = (DataTable) context.getViewRoot().findComponent("form:aficiones");
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "VigenciasCargosXLS", false, false, "UTF-8", null, null);
         //exporter.export(context, tabla, "AficionesPDF", false, false, "UTF-8", null, null);
@@ -1896,36 +1908,39 @@ public class ControlVigenciasCargos implements Serializable {
 
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             System.out.println("Activar");
-            vcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
             vcFecha.setFilterStyle("width: 60px");
-            vcEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
             vcEstructura.setFilterStyle("");
-            vcMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
             vcMotivo.setFilterStyle("");
-            vcNombreCargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
             vcNombreCargo.setFilterStyle("");
-            vcCentrosC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
             vcCentrosC.setFilterStyle("");
-            vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            vcFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
             vcFecha.setFilterStyle("display: none; visibility: hidden;");
-            vcEstructura = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
             vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-            vcMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
             vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreCargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
             vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-            vcCentrosC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
             vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
             vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
             bandera = 0;
             filterVC = null;

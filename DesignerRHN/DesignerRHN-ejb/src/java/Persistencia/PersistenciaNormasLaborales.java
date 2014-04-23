@@ -58,9 +58,9 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
 
     @Override
     public List<NormasLaborales> consultarNormasLaborales() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(NormasLaborales.class));
-        return em.createQuery(cq).getResultList();
+        Query query = em.createQuery("SELECT m FROM NormasLaborales m");
+        List<NormasLaborales> lista = query.getResultList();
+        return lista;
     }
 
     @Override

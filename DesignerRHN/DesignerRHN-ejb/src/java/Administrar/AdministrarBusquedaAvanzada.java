@@ -5,13 +5,17 @@
  */
 package Administrar;
 
+import ClasesAyuda.ColumnasBusquedaAvanzada;
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
+import Entidades.QVWEmpleadosCorte;
+import Entidades.ResultadoBusquedaAvanzada;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,14 +36,14 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     PersistenciaColumnasEscenariosInterface persistenciaColumnasEscenarios;
 
     private boolean usoWhere = false;
-    
+
     @Override
-    public List<ColumnasEscenarios> buscarColumnasEscenarios(){
-        try{
+    public List<ColumnasEscenarios> buscarColumnasEscenarios() {
+        try {
             List<ColumnasEscenarios> lista = persistenciaColumnasEscenarios.buscarColumnasEscenarios();
             return lista;
-        }catch(Exception e){
-            System.out.println("Error buscarColumnasEscenarios Admi : "+e.toString());
+        } catch (Exception e) {
+            System.out.println("Error buscarColumnasEscenarios Admi : " + e.toString());
             return null;
         }
     }
@@ -48,6 +52,17 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     public List<Empleados> ejecutarQueryBusquedaAvanzadaPorModulos(String query) {
         try {
             List<Empleados> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzada(query);
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error ejecutarQueryBusquedaAvanzadaPorModulos Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public List<BigInteger> ejecutarQueryBusquedaAvanzadaPorModulosCodigo(String query) {
+        try {
+            List<BigInteger> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzadaCodigo(query);
             return lista;
         } catch (Exception e) {
             System.out.println("Error ejecutarQueryBusquedaAvanzadaPorModulos Admi : " + e.toString());
@@ -674,6 +689,30 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
         return retorno;
     }
 
-    // public List<Vista> ejecutarQueryColumnasAdicionadas(String query)
-    // public String armarQueryColumnasAdicionadas(){} 
+    @Override
+    public List<ColumnasBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos) {
+        try {
+            System.out.println("entro administrar");
+            List<ColumnasBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleado(listaEmpleadosResultados, campos);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());
+            return null;
+        }
+
+    }
+    
+    //@Override 
+    public List<ResultadoBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos) {
+        try {
+            System.out.println("entro administrar");
+            List<ResultadoBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(listaCodigosEmpleados, campos);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());
+            return null;
+        }
+
+    }
+
 }

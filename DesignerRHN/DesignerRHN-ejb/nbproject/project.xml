@@ -11,7 +11,6 @@
             <included-library dirs="200">file.reference.poi-ooxml-3.9-20121203.jar</included-library>
             <included-library dirs="200">file.reference.poi-ooxml-schemas-3.9-20121203.jar</included-library>
             <included-library dirs="200">file.reference.ojdbc6.jar</included-library>
-            <included-library dirs="200">file.reference.primefaces-3.5.jar</included-library>
             <included-library dirs="200">file.reference.commons-beanutils-1.8.3.jar</included-library>
             <included-library dirs="200">file.reference.commons-collections-3.2.1.jar</included-library>
             <included-library dirs="200">file.reference.commons-digester-2.1.jar</included-library>
@@ -22,6 +21,7 @@
             <included-library dirs="200">file.reference.jasperreports-5.5.0.jar</included-library>
             <included-library dirs="200">file.reference.jxl.jar</included-library>
             <included-library dirs="200">file.reference.jfreechart-1.0.17.jar</included-library>
+            <included-library dirs="200">file.reference.primefaces-3.5-V1.0.jar</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
