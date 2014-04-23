@@ -9,6 +9,7 @@ import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
 import Entidades.QVWEmpleadosCorte;
+import Entidades.ResultadoBusquedaAvanzada;
 import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -103,24 +104,43 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     }
 
     @Override
-    public List<QVWEmpleadosCorte> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(List<BigInteger> listaEmpleadosResultados, String campos) {
+    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(List<BigInteger> listaEmpleadosResultados, String campos) {
         try {
             System.out.println("Entro persistencia");
-            List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
-            List<QVWEmpleadosCorte> registroPrueba = new ArrayList<QVWEmpleadosCorte>();
+            String[] nnn = campos.split(",");
+            String camposAux = "";
+            int numColumna = 0;
+            camposAux = "secuencia SECUENCIA, NVL(TO_CHAR(codigoempleado),' ') CODIGOEMPLEADO, NVL(primerapellido,' ') PRIMERAPELLIDO, NVL(segundoapellido,' ') SEGUNDOAPELLIDO, NVL(nombre ,' ') NOMBREEMPLEADO ";
+            int i = 5;
+            while (i < nnn.length) {
+                String aux = nnn[i];
+                if (aux.contains("FECHA")) {
+                    camposAux = camposAux + ", NVL(TO_CHAR(" + nnn[i] + ",'DD/MM/YYYY'),' ') COLUMNA" + String.valueOf(numColumna) + " ";
+                } else {
+                    camposAux = camposAux + ", NVL(TO_CHAR(" + nnn[i] + "),' ') COLUMNA" + String.valueOf(numColumna) + " ";
+                }
+                i++;
+                numColumna++;
+            }
+            String queryMap = "SELECT " + camposAux + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado= ?";
+            System.out.println("Query MAP : " + queryMap);
+            List<ResultadoBusquedaAvanzada> registroPrueba = new ArrayList<ResultadoBusquedaAvanzada>();
             for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
                 System.out.println("listaEmpleadosResultados : " + listaEmpleadosResultados.size());
-                ColumnasBusquedaAvanzada obj = new ColumnasBusquedaAvanzada();
-                QVWEmpleadosCorte obj2 = new QVWEmpleadosCorte();
-                String q = "SELECT " + campos + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado= ?";
-                System.out.println("Query: " + q);
-                //Query query = em.createNativeQuery(q, ColumnasBusquedaAvanzada.class);
-                Query query = em.createNativeQuery(q, QVWEmpleadosCorte.class);
+                ResultadoBusquedaAvanzada resultado = new ResultadoBusquedaAvanzada();
+                Query query = em.createNativeQuery(queryMap, "ConsultaBusquedaAvanzada");
                 query.setParameter(1, listaEmpleadosResultados.get(j));
-                obj2 = (QVWEmpleadosCorte) query.getSingleResult();
+                resultado = (ResultadoBusquedaAvanzada) query.getSingleResult();
                 System.out.println("Paso esta gonorrea");
-                System.out.println(obj2.getNombre());
-                registroPrueba.add(obj2);
+
+                System.out.println("-----------");
+                System.out.println("ResultadoBusquedaAvanzada sec: " + resultado.getSecuencia());
+                System.out.println("ResultadoBusquedaAvanzada cod: " + resultado.getCodigoEmpleado());
+                System.out.println("ResultadoBusquedaAvanzada primer ap: " + resultado.getPrimerApellido());
+                System.out.println("ResultadoBusquedaAvanzada segundo ap: " + resultado.getSegundoApellido());
+                System.out.println("ResultadoBusquedaAvanzada name: " + resultado.getNombre());
+                System.out.println("ResultadoBusquedaAvanzada columna0: " + resultado.getColumna0());
+                registroPrueba.add(resultado);
             }
             return registroPrueba;
 

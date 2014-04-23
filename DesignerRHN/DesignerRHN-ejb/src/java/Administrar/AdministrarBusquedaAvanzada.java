@@ -10,6 +10,7 @@ import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
 import Entidades.QVWEmpleadosCorte;
+import Entidades.ResultadoBusquedaAvanzada;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -701,11 +702,11 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
 
     }
     
-    //@Override
-    public List<QVWEmpleadosCorte> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos) {
+    //@Override 
+    public List<ResultadoBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos) {
         try {
             System.out.println("entro administrar");
-            List<QVWEmpleadosCorte> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(listaCodigosEmpleados, campos);
+            List<ResultadoBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(listaCodigosEmpleados, campos);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());
