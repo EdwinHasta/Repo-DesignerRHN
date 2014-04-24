@@ -1269,7 +1269,6 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             }
             listVigenciasAfiliaciones = null;
             guardado = true;
-
             permitirIndexVA = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
