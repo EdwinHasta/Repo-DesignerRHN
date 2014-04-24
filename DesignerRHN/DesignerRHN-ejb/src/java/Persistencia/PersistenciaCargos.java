@@ -39,6 +39,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
         em.merge(cargos);
     }
 
+
     @Override
     public void borrar(Cargos cargos) {
         em.remove(em.merge(cargos));
