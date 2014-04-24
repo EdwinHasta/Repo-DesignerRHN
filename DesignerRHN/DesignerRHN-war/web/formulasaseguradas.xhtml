@@ -122,6 +122,8 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlFormulasAseguradas.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 100px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARCENTROCOSTO" value="#{msg['buscarFormulasAseguradas']}" actionListener="#{controlFormulasAseguradas.llamadoDialogoBuscarFormulas()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 213px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}" actionListener="#{controlFormulasAseguradas.cancelarModificacion()}" process="@this"/>
                         <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlFormulasAseguradas.revisarDialogoGuardar()}" disabled="#{controlFormulasAseguradas.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 808px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"    />
 
@@ -197,9 +199,9 @@
 
 
 
-                        <p:dialog header="#{msg['periodicidadesD']}" widgetVar="periodicidadesDialogo" draggable="false" resizable="false" closable="false" id="periodicidadesDialogo"  
+                        <p:dialog header="#{msg['perdiodicidadesD']}" widgetVar="periodicidadesDialogo" draggable="false" resizable="false" closable="false" id="periodicidadesDialogo"  
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovPeriodicidades" style="font-size: 11px; width: 430px" var="periodicidadesdia" value="#{controlFormulasAseguradas.listaPeriodicidades}" rowKey="#{periodicidadesdia.secuencia}"
+                            <p:dataTable id="lovPeriodicidades" style="font-size: 11px; width: 420px" var="periodicidadesdia" value="#{controlFormulasAseguradas.listaPeriodicidades}" rowKey="#{periodicidadesdia.secuencia}"
                                          selection="#{controlFormulasAseguradas.periodicidadSeleccionado}" selectionMode="single" widgetVar="lovPeriodicidades" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlFormulasAseguradas.filtradoPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlFormulasAseguradas.activarAceptar()}" update=":form:aceptarPerio"/>
@@ -222,10 +224,10 @@
                                     <h:outputText value="#{periodicidadesdia.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarPerio" style="position: relative; left: 303px" value="#{msg['aceptar']}"  onclick="periodicidadesDialogo.hide(), lovPeriodicidades.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarPeriocidades()}" update="lovPeriodicidades, aceptarPerio" process="@this">
+                            <p:commandButton id="aceptarPerio" style="position: relative; left: 325px" value="#{msg['aceptar']}"  onclick="periodicidadesDialogo.hide(), lovPeriodicidades.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarPeriocidades()}" update="lovPeriodicidades, aceptarPerio" process="@this">
                                 <p:resetInput target=":form:lovPeriodicidades:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasPerio" style="position: relative; left: 303px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioPeriodicidades()}" onclick="periodicidadesDialogo.hide();
+                            <p:commandButton id="atrasPerio" style="position: relative; left: 325px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioPeriodicidades()}" onclick="periodicidadesDialogo.hide();
                                     lovPeriodicidades.clearFilters();" update="lovPeriodicidades" process="@this">
                                 <p:resetInput target=":form:lovPeriodicidades:globalFilter"/>
                             </p:commandButton>
@@ -234,12 +236,19 @@
                         <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
                                   showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
                             <h:graphicImage value="Imagenes/alerta.jpg" width="60" height="70" style="position: absolute; left: 30px; top: 10px;"  />
-                            <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <h:outputText value=" #{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlFormulasAseguradas.guardarFormulasAseguradas()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-
+                        <p:dialog header="#{msg['atencion']}" widgetVar="confirmarGuardarFormulas" draggable="false" resizable="false" closable="false" id="confirmarGuardarFormulas"  
+                                  showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 11px;">
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="60" height="70" style="position: absolute; left: 30px; top: 10px;"  />
+                            <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarFormulas.hide();" actionListener="#{controlFormulasAseguradas.guardarFormulasCambios()}" style="position: absolute; top: 60px; left: 215px " process="@this" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarFormulas.hide();" actionListener="#{controlFormulasAseguradas.cancelarModificacionCambio()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                            <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarFormulas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        </p:dialog>
 
                     </p:panel>
 
@@ -382,6 +391,32 @@
                     </p:dialog>
 
 
+                    <p:dialog header="#{msg['formulaD']}" widgetVar="buscarCentrosCostosDialogo" draggable="false" resizable="false" closable="false" id="buscarCentrosCostosDialogo"  
+                              showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
+                        <p:dataTable  id="lovCentrosCostos" style="font-size: 11px; width: 420px" var="centroscostosporempresa" value="#{controlFormulasAseguradas.listFormulasAseguradasBoton}" rowKey="#{centroscostosporempresa.secuencia}"
+                                      selection="#{controlFormulasAseguradas.formulaAseguradaSeleccionada}" selectionMode="single" widgetVar="lovCentrosCostos" scrollable="true" scrollWidth="450" scrollHeight="250"
+                                      filteredValue="#{controlFormulasAseguradas.filterFormulasAseguradasBoton}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlFormulasAseguradas.activarAceptar()}" update=":formularioDialogos:aceptarNCC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlFormulasAseguradas.seleccionFormulaAsegurada()}" process="@this" onstart="lovCentrosCostos.clearFilters()" update="lovCentrosCostos, :form:datosFormulasAseguradas"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarFormulasD']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCentrosCostos.filter();" style="width:150px; position: relative; left: 50px;" />  
+                            </f:facet>
+
+                            <p:column filterBy="#{centroscostosporempresa.formula.nombrelargo}" width="200"  filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nombre']}" />
+                                </f:facet>
+                                <h:outputText value="#{centroscostosporempresa.formula.nombrelargo}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarNCC" style="position: relative; left: 320px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}" actionListener="#{controlFormulasAseguradas.seleccionFormulaAsegurada()}" update="lovCentrosCostos, aceptarNCC, :form:datosFormulasAseguradas" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovCentrosCostos:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTCC" style="position: relative; left: 320px" value="#{msg['atras']}" onclick="buscarCentrosCostosDialogo.hide(), lovCentrosCostos.clearFilters();" actionListener="#{controlFormulasAseguradas.cancelarSeleccionConceptoSoporte()}" update="lovCentrosCostos" process="@this">
+                            <p:resetInput target=":formularioDialogos:lovCentrosCostos:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog> 
 
                     <p:dialog id="duplicarRegistroFormulasAseguradas" header="#{msg['duplicarD']}" widgetVar="duplicarRegistroFormulasAseguradas" closable="false" resizable="false"  draggable="false" modal="true" height="260" width="340" style="font-size: 12px; padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['duplicarDD']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 

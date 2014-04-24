@@ -41,6 +41,18 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
         }
     }
 
+    public List<Operandos> operandoPorConceptoSoporte(BigInteger secConceptoSoporte) {
+        try {
+            Query query = em.createQuery("SELECT o FROM Operandos o, ConceptosSoportes cs WHERE cs.operando.secuencia = o.secuencia AND cs.concepto.secuencia = :secConceptoSoporte ");
+            query.setParameter("secConceptoSoporte", secConceptoSoporte);
+            List<Operandos> operandos = query.getResultList();
+            return operandos;
+        } catch (Exception e) {
+            System.out.println("Error Persistencia PersistenciaOperandos operandoPorConceptoSoporte : " + e.toString());
+            return null;
+        }
+    }
+
     @Override
     public void crear(Operandos operandos) {
         try {
@@ -78,11 +90,11 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
             valor = (String) query.getSingleResult();
             return valor;
         } catch (Exception e) {
-            
+
             return null;
         }
     }
-    
+
     @Override
     public Operandos operandosPorSecuencia(BigInteger secOperando) {
         try {

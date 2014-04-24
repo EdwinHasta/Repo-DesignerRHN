@@ -134,13 +134,13 @@
 
                         <p:dialog header="#{msg['bancoD']}" widgetVar="personasDialogo" draggable="false" resizable="false" closable="false" id="personasDialogo"  
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovBancos" style="font-size: 11px; width: 430px" var="personaFirmas" value="#{controlSucursales.listaBancos}" rowKey="#{personaFirmas.secuencia}"
+                            <p:dataTable id="lovBancos" style="font-size: 11px; width: 420px" var="personaFirmas" value="#{controlSucursales.listaBancos}" rowKey="#{personaFirmas.secuencia}"
                                          selection="#{controlSucursales.bancoSeleccionado}" selectionMode="single" widgetVar="lovBancos" scrollable="true" scrollWidth="450" scrollHeight="300"
                                          filteredValue="#{controlSucursales.filtradoBancos}" emptyMessage="#{msg['lovvacioD']}">              
                                 <p:ajax event="rowSelect" listener="#{controlSucursales.activarAceptar()}" update=":form:aceptarPer"/>
                                 <p:ajax event="rowDblselect" listener="#{controlSucursales.actualizarBancos()}" process="@this" onstart="lovBancos.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Bancos"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarBancoD']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovBancos.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
 
@@ -157,25 +157,25 @@
                                     <h:outputText value="#{personaFirmas.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarPer" style="position: relative; left: 303px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovBancos.clearFilters();"  actionListener="#{controlSucursales.actualizarBancos()}" update="lovBancos, aceptarPer" process="@this">
+                            <p:commandButton id="aceptarPer" style="position: relative; left: 325px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovBancos.clearFilters();"  actionListener="#{controlSucursales.actualizarBancos()}" update="lovBancos, aceptarPer" process="@this">
                                 <p:resetInput target=":form:lovBancos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasPer" style="position: relative; left: 303px" value="#{msg['atras']}"  actionListener="#{controlSucursales.cancelarCambioBancos()}" onclick="personasDialogo.hide();
+                            <p:commandButton id="atrasPer" style="position: relative; left: 325px" value="#{msg['atras']}"  actionListener="#{controlSucursales.cancelarCambioBancos()}" onclick="personasDialogo.hide();
                                     lovBancos.clearFilters();" update="lovBancos" process="@this">
                                 <p:resetInput target=":form:lovBancos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
 
-                        <p:dialog header="Ciudades" widgetVar="cargosDialogo" draggable="false" resizable="false" closable="false" id="cargosDialogo"  
+                        <p:dialog header="#{msg['ciudadesD']}" widgetVar="cargosDialogo" draggable="false" resizable="false" closable="false" id="cargosDialogo"  
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="personaCiudades" value="#{controlSucursales.listaCiudades}" rowKey="#{personaCiudades.secuencia}"
+                            <p:dataTable id="lovCiudades" style="font-size: 11px; width: 420px" var="personaCiudades" value="#{controlSucursales.listaCiudades}" rowKey="#{personaCiudades.secuencia}"
                                          selection="#{controlSucursales.ciudadSeleccionado}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="450" scrollHeight="280"
                                          filteredValue="#{controlSucursales.filtradoCiudades}" emptyMessage="#{msg['lovvacioD']}">              
                                 <p:ajax event="rowSelect" listener="#{controlSucursales.activarAceptar()}" update=":form:aceptarCar"/>
                                 <p:ajax event="rowDblselect" listener="#{controlSucursales.actualizarCiudades()}" process="@this" onstart="lovCiudades.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Ciudad"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarCiudad']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: 50px;" />  
                                 </f:facet>
 
@@ -192,10 +192,10 @@
                                     <h:outputText value="#{personaCiudades.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarCar" style="position: relative; left: 303px" value="#{msg['aceptar']}"  onclick="cargosDialogo.hide(), lovCiudades.clearFilters();"  actionListener="#{controlSucursales.actualizarCiudades()}" update="lovCiudades, aceptarCar" process="@this">
+                            <p:commandButton id="aceptarCar" style="position: relative; left: 325px" value="#{msg['aceptar']}"  onclick="cargosDialogo.hide(), lovCiudades.clearFilters();"  actionListener="#{controlSucursales.actualizarCiudades()}" update="lovCiudades, aceptarCar" process="@this">
                                 <p:resetInput target=":form:lovCiudades:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasCar" style="position: relative; left: 303px" value="#{msg['atras']}"  actionListener="#{controlSucursales.cancelarCambioCiudades()}" onclick="cargosDialogo.hide();
+                            <p:commandButton id="atrasCar" style="position: relative; left: 325px" value="#{msg['atras']}"  actionListener="#{controlSucursales.cancelarCambioCiudades()}" onclick="cargosDialogo.hide();
                                     lovCiudades.clearFilters();" update="lovCiudades" process="@this">
                                 <p:resetInput target=":form:lovCiudades:globalFilter"/>
                             </p:commandButton>
