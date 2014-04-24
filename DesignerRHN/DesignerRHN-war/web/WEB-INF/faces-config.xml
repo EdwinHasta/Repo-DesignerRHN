@@ -1,7 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-
-<!-- =========== FULL CONFIGURATION FILE ================================== -->
-
 <faces-config version="2.1"
               xmlns="http://java.sun.com/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -35,6 +32,26 @@
         <navigation-case>
             <from-outcome>liquidacion</from-outcome>
             <to-view-id>/Barra.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>acercade</from-outcome>
+            <to-view-id>/acercade.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>emplvigenciaformapago</from-outcome>
+            <to-view-id>/emplvigenciaformapago.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>centrocosto</from-outcome>
+            <to-view-id>/centrocosto.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>    
@@ -1099,18 +1116,23 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/novedad.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadPlano</from-outcome>
             <to-view-id>/NovedadPlano.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/NovedadPlano.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2054,15 +2076,15 @@
     <navigation-rule>
         <from-view-id>/IbcAutoliquid.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
+            <from-outcome>emplibcs</from-outcome>
+            <to-view-id>/emplibcs.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
+        <from-view-id>/emplibcs.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>ibcs</from-outcome>
+            <from-outcome>ibcAuto</from-outcome>
             <to-view-id>/IbcAutoliquid.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -2211,6 +2233,11 @@
         <navigation-case>
             <from-outcome>cambioTipoCentroCosto</from-outcome>
             <to-view-id>/tiposcentroscostos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
@@ -2478,7 +2505,7 @@
     <navigation-rule>
         <from-view-id>/emplviajero.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>vigenciaviajeroatras</from-outcome>
+            <from-outcome>nomina</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -2598,6 +2625,13 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplvigenciaformapago.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
     
- 
 </faces-config>

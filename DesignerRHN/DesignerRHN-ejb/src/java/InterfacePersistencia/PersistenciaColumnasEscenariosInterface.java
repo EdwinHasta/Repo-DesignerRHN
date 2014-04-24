@@ -6,7 +6,12 @@
 
 package InterfacePersistencia;
 
+import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
+import Entidades.Empleados;
+import Entidades.QVWEmpleadosCorte;
+import Entidades.ResultadoBusquedaAvanzada;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -16,5 +21,7 @@ import java.util.List;
 public interface PersistenciaColumnasEscenariosInterface {
     
     public List<ColumnasEscenarios> buscarColumnasEscenarios();
+    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos);
+    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(List<BigInteger> listaEmpleadosResultados, String campos);
     
 }

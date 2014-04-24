@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposConceptos.findAll", query = "SELECT g FROM GruposConceptos g")})
 public class GruposConceptos implements Serializable {
+
     @OneToMany(mappedBy = "basegrupo")
     private Collection<DetallesFormasDtos> detallesFormasDtosCollection;
     @OneToMany(mappedBy = "grupodisparador")
@@ -60,7 +61,7 @@ public class GruposConceptos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private int codigo;
+    private Integer codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -73,6 +74,8 @@ public class GruposConceptos implements Serializable {
      private Collection<VigenciasGruposConceptos> vigenciasgruposconceptosCollection;*/
     @Transient
     private String strCodigo;
+    @Transient
+    private String estadoFundamental;
 
     public GruposConceptos() {
     }
@@ -81,7 +84,7 @@ public class GruposConceptos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public GruposConceptos(BigInteger secuencia, int codigo, String descripcion) {
+    public GruposConceptos(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -95,29 +98,27 @@ public class GruposConceptos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public int getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getStrCodigo() {
-        if(codigo>0){
+        if (codigo > 0) {
             strCodigo = String.valueOf(codigo);
-        }
-        else {
+        } else {
             strCodigo = " ";
         }
         return strCodigo;
     }
 
     public void setStrCodigo(String strCodigo) {
-        if(!strCodigo.isEmpty()){
+        if (!strCodigo.isEmpty()) {
             codigo = Integer.parseInt(strCodigo);
-        }
-        else {
+        } else {
             codigo = 0;
         }
         this.strCodigo = strCodigo;
@@ -135,12 +136,35 @@ public class GruposConceptos implements Serializable {
     }
 
     public String getFundamental() {
+
+        if (fundamental == null) {
+            fundamental = "N";
+        }
+
         return fundamental;
     }
 
     public void setFundamental(String fundamental) {
         this.fundamental = fundamental;
     }
+
+    public String getEstadoFundamental() {
+        if (estadoFundamental == null) {
+            if (fundamental == null || fundamental.equals("N")) {
+                estadoFundamental = "NO ES PERSONALIZABLE";
+
+            } else if (fundamental.equalsIgnoreCase("S")) {
+                estadoFundamental = "SI ES PERSONALIZABLE";
+            }
+
+        }
+        return estadoFundamental;
+    }
+
+    public void setEstadoFundamental(String estadoFundamental) {
+        this.estadoFundamental = estadoFundamental;
+    }
+
     /*
      public Collection<VigenciasGruposConceptos> getVigenciasgruposconceptosCollection() {
      return vigenciasgruposconceptosCollection;
@@ -150,7 +174,6 @@ public class GruposConceptos implements Serializable {
      this.vigenciasgruposconceptosCollection = vigenciasgruposconceptosCollection;
      }
      */
-
     @Override
     public int hashCode() {
         int hash = 0;

@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlSucursales implements Serializable {
     private Sucursales nuevoSucursales;
     private Sucursales duplicarSucursales;
     private Sucursales editarSucursales;
+    private Sucursales sucursalSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -93,7 +95,8 @@ public class ControlSucursales implements Serializable {
         listaCiudades = null;
         filtradoCiudades = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
+        
     }
 
     public void eventoFiltrar() {
@@ -208,13 +211,14 @@ public class ControlSucursales implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSucursales:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSucursales:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosSucursales:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosSucursales:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSucursales");
             bandera = 0;
@@ -237,29 +241,30 @@ public class ControlSucursales implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSucursales:codigo");
             codigo.setFilterStyle("width: 20px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSucursales:descripcion");
             descripcion.setFilterStyle("width: 130px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosSucursales:personafir");
             personafir.setFilterStyle("width: 130px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosSucursales:cargo");
             cargo.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosSucursales");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSucursales:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSucursales:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosSucursales:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosSucursales:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosSucursales");
@@ -1196,6 +1201,9 @@ public class ControlSucursales implements Serializable {
             context.update("form:datosSucursales");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1300,14 +1308,15 @@ public class ControlSucursales implements Serializable {
         if (contador == 4) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSucursales:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSucursales:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosSucursales:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosSucursales:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarSucursales = null;
@@ -1475,13 +1484,14 @@ public class ControlSucursales implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:codigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSucursales:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSucursales:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosSucursales:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursales:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosSucursales:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSucursales");
                 bandera = 0;
@@ -1696,6 +1706,14 @@ public class ControlSucursales implements Serializable {
 
     public void setCiudadSeleccionado(Ciudades cargoSeleccionado) {
         this.cargoSeleccionado = cargoSeleccionado;
+    }
+
+    public Sucursales getSucursalSeleccionada() {
+        return sucursalSeleccionada;
+    }
+
+    public void setSucursalSeleccionada(Sucursales sucursalSeleccionada) {
+        this.sucursalSeleccionada = sucursalSeleccionada;
     }
 
 }

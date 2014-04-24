@@ -1069,7 +1069,7 @@
 
                         <p:dataTable  id="LOVClasesAusentismos" style="font-size: 11px; width: 300px" var="clase" value="#{controlAusentismos.listaClasesAusentismos}"
                                       scrollable="true" scrollWidth="300" widgetVar="LOVClasesAusentismos" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaClasesAusentismos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaClasesAusentismos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{clase.secuencia}" selection="#{controlAusentismos.seleccionClasesAusentismos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarCA"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarClasesAusentismos()}" process="@this" onstart="LOVClasesAusentismos.clearFilters()"/>
@@ -1108,7 +1108,7 @@
 
                         <p:dataTable  id="LOVCausasAusentismos" style="font-size: 11px; width: 300px" var="causa" value="#{controlAusentismos.listaCausasAusentismos}"
                                       scrollable="true" scrollWidth="300" scrollHeight="200" widgetVar="LOVCausasAusentismos" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaCausasAusentismos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaCausasAusentismos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{causa.secuencia}" selection="#{controlAusentismos.seleccionCausasAusentismos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarCAS"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarCausasAusentismos()}" process="@this" onstart="LOVCausasAusentismos.clearFilters()"/>
@@ -1146,7 +1146,7 @@
 
                         <p:dataTable  id="LOVEmpleados" style="font-size: 11px; width: 600px" var="emp" value="#{controlAusentismos.listaEmpleados}"
                                       scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVEmpleados" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaEmpleados}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaEmpleados}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{emp.secuencia}" selection="#{controlAusentismos.seleccionEmpleados}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEmpleados()}" process="@this" onstart="LOVEmpleados.clearFilters()"/>
@@ -1185,7 +1185,7 @@
 
                         <p:dataTable  id="LOVPorcentajes" style="font-size: 11px; width: 300px" var="por" value="#{controlAusentismos.listaPorcentaje}"
                                       scrollable="true" scrollHeight="200" scrollWidth="300" widgetVar="LOVPorcentajes" 
-                                      filteredValue="#{controlAusentismos.filtradosListaPorcentajes}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradosListaPorcentajes}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{por}" selection="#{controlAusentismos.seleccionPorcentajes}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarP"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" onstart="LOVPorcentajes.clearFilters()"/>
@@ -1217,7 +1217,7 @@
 
                         <p:dataTable  id="LOVIbcs" style="font-size: 11px; width: 600px" var="ibcs" value="#{controlAusentismos.listaIBCS}"
                                       scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVIbcs" 
-                                      filteredValue="#{controlAusentismos.filtradosListaIBCS}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradosListaIBCS}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{ibcs.secuencia}" selection="#{controlAusentismos.seleccionIBCS}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarI"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarIBCS()}" process="@this" onstart="LOVIbcs.clearFilters()"/>
@@ -1268,7 +1268,7 @@
 
                         <p:dataTable  id="LOVFormas" style="font-size: 11px; width: 300px" var="for" value="#{controlAusentismos.listaForma}"
                                       scrollable="true" scrollHeight="200" scrollWidth="300" widgetVar="LOVFormas" 
-                                      filteredValue="#{controlAusentismos.filtradosListaForma}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradosListaForma}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{for}" selection="#{controlAusentismos.seleccionForma}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarFP"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarPorcentajes()}" process="@this" onstart="LOVFormas.clearFilters()"/>
@@ -1299,7 +1299,7 @@
 
                         <p:dataTable  id="LOVAccidentes" style="font-size: 11px; width: 700px" var="accidentes" value="#{controlAusentismos.listaAccidentes}"
                                       scrollable="true" scrollHeight="200" scrollWidth="700" widgetVar="LOVAccidentes" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaAccidentes}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaAccidentes}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{accidentes.secuencia}" selection="#{controlAusentismos.seleccionAccidentes}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarAD"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVAccidentes.clearFilters()"/>
@@ -1354,7 +1354,7 @@
 
                         <p:dataTable  id="LOVDiagnosticos" style="font-size: 11px; width: 600px" var="diagnosticos" value="#{controlAusentismos.listaDiagnosticos}"
                                       scrollable="true" scrollHeight="200" scrollWidth="620" widgetVar="LOVDiagnosticos" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaDiagnosticos}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaDiagnosticos}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{diagnosticos.secuencia}" selection="#{controlAusentismos.seleccionDiagnosticos}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarD"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarDiagnosticos()}" process="@this" onstart="LOVDiagnosticos.clearFilters()"/>
@@ -1394,7 +1394,7 @@
 
                         <p:dataTable  id="LOVProrrogas" style="font-size: 11px; width: 600px" var="prorrogas" value="#{controlAusentismos.listaProrrogas}"
                                       scrollable="true" scrollHeight="200" scrollWidth="600" widgetVar="LOVProrrogas" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaProrrogas}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaProrrogas}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{prorrogas.secuencia}" selection="#{controlAusentismos.seleccionProrrogas}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarPR"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEnfermedades()}" process="@this" onstart="LOVProrrogas.clearFilters()"/>
@@ -1478,7 +1478,7 @@
 
                         <p:dataTable  id="LOVTerceros" style="font-size: 11px; width: 320px" var="terceros" value="#{controlAusentismos.listaTerceros}"
                                       scrollable="true" scrollHeight="200" scrollWidth="320" widgetVar="LOVTerceros" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaTerceros}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaTerceros}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{terceros.secuencia}" selection="#{controlAusentismos.seleccionTerceros}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarTER"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarAD()}" process="@this" onstart="LOVTerceros.clearFilters()"/>
@@ -1509,7 +1509,7 @@
 
                         <p:dataTable  id="LOVEnfermedades" style="font-size: 11px; width: 600px" var="enfermedades" value="#{controlAusentismos.listaEnfermeadadesProfesionales}"
                                       scrollable="true" scrollHeight="200" scrollWidth="610" widgetVar="LOVEnfermedades" 
-                                      filteredValue="#{controlAusentismos.filtradoslistaEnfermeadadesProfesionales}" emptyMessage="No se encontraron resultados con el criterio de busqueda."
+                                      filteredValue="#{controlAusentismos.filtradoslistaEnfermeadadesProfesionales}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{enfermedades.secuencia}" selection="#{controlAusentismos.seleccionEnfermeadadesProfesionales}" selectionMode="single">
                             <p:ajax event="rowSelect" listener="#{controlAusentismos.activarAceptar()}" update=":formularioDialogos:aceptarEP"/>
                             <p:ajax event="rowDblselect" listener="#{controlAusentismos.actualizarEnfermedades()}" process="@this" onstart="LOVEnfermedades.clearFilters()"/>

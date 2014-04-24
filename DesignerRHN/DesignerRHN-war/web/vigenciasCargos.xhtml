@@ -33,11 +33,8 @@
                             <legend style="font-size: 14px; color: blue"><strong>Cargos del empleado</strong></legend>
 
                             <p:growl id="msgs" showDetail="true"/> 
-                            <p:dataTable id="datosVCEmpleado"
-                                         style="font-size: 10px; "                           
-                                         var="info" value="#{ctrlVigenciasCargos.vigenciasCargosEmpleados}" 
-                                         rowKey="#{info.secuencia}" 
-                                         filteredValue="#{ctrlVigenciasCargos.filtradoVigenciasCargosEmpleados}"
+                            <p:dataTable id="datosVCEmpleado" style="font-size: 10px; " var="info" value="#{ctrlVigenciasCargos.vigenciasCargosEmpleados}" 
+                                         rowKey="#{info.secuencia}" filteredValue="#{ctrlVigenciasCargos.filtradoVigenciasCargosEmpleados}"
                                          widgetVar="tablaVC" scrollable="true" scrollWidth="645" scrollHeight="150" >                     
 
                                 <p:column id="vcFecha" width="150" sortBy="#{info.fechavigencia}"  filterBy="#{info.fechavigencia}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >  

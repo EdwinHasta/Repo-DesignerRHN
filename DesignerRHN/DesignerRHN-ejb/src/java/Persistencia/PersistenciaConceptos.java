@@ -187,4 +187,20 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
+    public List<Conceptos> conceptoEmpresa() {
+        try {
+            String sqlQuery = "SELECT  C.*,\n"
+                    + "decode(c.naturaleza,'P','PAGO','D','DESCUENTO','L','PASIVO','G','GASTO','N','NETO') NATURALEZA\n"
+                    + "FROM CONCEPTOS C, EMPRESAS S\n"
+                    + "WHERE C.EMPRESA = S.SECUENCIA\n"
+                    + "ORDER BY C.DESCRIPCION";
+            Query query = em.createNativeQuery(sqlQuery,Conceptos.class);
+            List<Conceptos> listaConceptos = query.getResultList();
+            return listaConceptos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaConceptos.conceptoEmpresa " + e.toString());
+            return null;
+        }
+    }
+
 }

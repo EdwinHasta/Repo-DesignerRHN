@@ -172,8 +172,8 @@ public class ControlNovedadOperando implements Serializable {
                 filtradosListaNovedadesOperandos.get(indice).getOperando().setNombre(Operando);
             }
 
-            for (int i = 0; i < listaNovedadesOperandos.size(); i++) {
-                if (listaNovedadesOperandos.get(i).getOperando().getNombre().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < lovListaOperandos.size(); i++) {
+                if (lovListaOperandos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }

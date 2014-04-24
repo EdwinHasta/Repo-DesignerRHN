@@ -16,7 +16,7 @@
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 13px; height: 22px">   
+                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 13px; height: 24px">   
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlEmpleadoIndividual.guardarCambios()}" process="@this" />
@@ -71,7 +71,7 @@
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
 
-                            <h:outputText value="#{msg['identificacion']}" style="position: absolute; left: 146px; font-weight: bold; color: #14388B; top: 40px" />
+                            <h:outputText value="#{msg['identificacion']}" style="position: absolute; left: 144px; font-weight: bold; color: #14388B; top: 40px" />
                             <p:inputText id="tipo" value="#{controlEmpleadoIndividual.empleado.persona.tipodocumento.nombrecorto}" style="position: absolute; left: 223px; top: 36px; width: 22px; top: 36px; text-transform: uppercase" onclick="select();" maxlength="3">
                                 <p:ajax event="dblclick" onstart="TiposDocumentosDialogo.show()"/>
                                 <p:ajax event="select" listener="#{controlEmpleadoIndividual.valoresBackupAutocompletar('TIPODOCUMENTO')}"/>
@@ -133,7 +133,7 @@
                                 <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
                             <h:outputText value="#{msg['factorrh']}" style="position: absolute; left: 528px; font-weight: bold; color: #14388B; top: 67px" />
-                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.factorrh}" id="factorRH" style="position: absolute; top: 62px; left: 582px; width: 45px;" panelStyle="font-size: 14px">  
+                            <p:selectOneMenu value="#{controlEmpleadoIndividual.empleado.persona.factorrh}" id="factorRH" style="position: absolute; top: 62px; left: 586px; width: 45px;" panelStyle="font-size: 14px">  
                                 <f:selectItem itemLabel="" itemValue="" />  
                                 <f:selectItem itemLabel="+" itemValue="POSITIVO" />  
                                 <f:selectItem itemLabel="-" itemValue="NEGATIVO" />
@@ -149,7 +149,7 @@
                             <hr width="727" style="position: absolute; left: 115px; top: 83px; border-color: #817E7E"/>
 
                             <h:outputText value="#{msg['certificadojudicial']}" style="position: absolute; left: 115px; font-weight: bold; color: #14388B; top: 98px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.certificadojudicial}" id="certificadoJudicial" style="position: absolute; left: 223px; top: 93px; width: 104px; text-transform: uppercase" onclick="select();">
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.certificadojudicial}" id="certificadoJudicial" style="position: absolute; left: 223px; top: 93px; width: 104px;" onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
@@ -164,13 +164,13 @@
                             </p:calendar> 
                             <p:watermark for="fechaVencimientoCJ" value="#{msg['fechavencimientowm']}" />
                             <h:outputText value="#{msg['libretamilitar']}" style="position: absolute; left: 514px; font-weight: bold; color: #14388B; top: 98px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.numerolibretamilitar}" id="libretaMilitar" style="position: absolute; left: 592px; top: 93px; width: 80px; text-transform: uppercase" onclick="select();">
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.numerolibretamilitar}" id="libretaMilitar" style="position: absolute; left: 595px; top: 93px; width: 80px; " onclick="select();">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="libretaMilitar" value="#{msg['libretamilitarwm']}"/>
                             <h:outputText value="#{msg['distritomilitar']}" style="position: absolute; left: 685px; font-weight: bold; color: #14388B; top: 98px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.distritomilitar}" style="position: absolute; left: 765px; top: 93px; width: 12px; text-transform: uppercase" onclick="select();" maxlength="2">
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.persona.distritomilitar}" style="position: absolute; left: 769px; top: 93px; width: 12px;" onclick="select();" maxlength="2">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Personas')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:inputText>
@@ -202,13 +202,13 @@
                             </p:inputText>
                             <p:watermark for="placa" value="#{msg['placawm']}" />
                             <h:outputText value="#{msg['parqueo']}" style="position: absolute; left: 547px; font-weight: bold; color: #14388B; top: 128px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.parqueadero}" id="parqueo" style="position: absolute; left: 600px; top: 123px; width: 40px; text-transform: uppercase" onclick="select();" maxlength="6">
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.parqueadero}" id="parqueo" style="position: absolute; left: 600px; top: 123px; width: 40px;" onclick="select();" maxlength="6">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Empleados')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('E')}" update="@this"/>
                             </p:inputText>
                             <p:watermark for="parqueo" value="#{msg['parqueowm']}" />
-                            <h:outputText value="#{msg['rutadetransporte']}" style="position: absolute; left: 660px; font-weight: bold; color: #14388B; top: 128px" />
-                            <p:inputText value="#{controlEmpleadoIndividual.empleado.rutatransporte}" id="ruta" style="position: absolute; left: 770px; top: 123px; width: 65px; text-transform: uppercase" onclick="select();" maxlength="6">
+                            <h:outputText value="#{msg['rutadetransporte']}" style="position: absolute; left: 655px; font-weight: bold; color: #14388B; top: 128px" />
+                            <p:inputText value="#{controlEmpleadoIndividual.empleado.rutatransporte}" id="ruta" style="position: absolute; left: 770px; top: 123px; width: 65px;" onclick="select();" maxlength="6">
                                 <p:ajax event="click" listener="#{controlEmpleadoIndividual.cambiarTablaRastro('Empleados')}"/>
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('E')}" update="@this"/>
                             </p:inputText>
@@ -228,7 +228,7 @@
                                 <f:selectItem itemLabel="#{msg['noo']}" itemValue="N" />
                                 <p:ajax listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this" />
                             </p:selectOneMenu>
-                            <h:outputText value="#{msg['fechafallecimiento']}" style="position: absolute; left: 523px; font-weight: bold; color: #14388B; top: 155px" />
+                            <h:outputText value="#{msg['fechafallecimiento']}" style="position: absolute; left: 518px; font-weight: bold; color: #14388B; top: 155px" />
                             <p:calendar value="#{controlEmpleadoIndividual.empleado.persona.fechafallecimiento}" style="position: absolute; left: 633px; top: 149px;" onclick="select();" id="fechaFallecimiento"   styleClass="ui-datepicker, calendarEmpleadoPersonal"  
                                         navigator="true" maxlength="10" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -368,7 +368,7 @@
 
                 <h:form id="formDialogos">
                     <p:dialog header="#{msg['tiposdedocumentosTD']}" widgetVar="TiposDocumentosDialogo" draggable="false" resizable="false" closable="false" id="TiposDocumentosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 12px;">
+                              showEffect="fade" hideEffect="fade" width="466" modal="true" style="font-size: 12px;">
                         <p:dataTable id="lovTiposDocumentos" style="font-size: 11px; width: 430px" var="tipoDocumento" value="#{controlEmpleadoIndividual.listaTiposDocumentos}" rowKey="#{tipoDocumento.secuencia}"
                                      selection="#{controlEmpleadoIndividual.seleccionTipoDocumento}" selectionMode="single" widgetVar="lovTiposDocumentos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaTiposDocumentos}" emptyMessage="#{msg['lovvacio']}">              
@@ -400,7 +400,7 @@
                     </p:dialog>
 
                     <p:dialog header="#{controlEmpleadoIndividual.cabezeraDialogoCiudad}" widgetVar="CiudadesDialogo" draggable="false" resizable="false" closable="false" id="CiudadesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 12px;">
+                              showEffect="fade" hideEffect="fade" width="466" modal="true" style="font-size: 12px;">
                         <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="ciudad" value="#{controlEmpleadoIndividual.listaCiudades}" rowKey="#{ciudad.secuencia}"
                                      selection="#{controlEmpleadoIndividual.seleccionCiudades}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaCiudades}" emptyMessage="#{msg['lovvacio']}" liveScroll="true"
@@ -433,7 +433,7 @@
                     </p:dialog> 
 
                     <p:dialog header="#{msg['cargopostuladoCP']}" widgetVar="CargosDialogo" draggable="false" resizable="false" closable="false" id="CargosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 12px;">
+                              showEffect="fade" hideEffect="fade" width="466" modal="true" style="font-size: 12px;">
                         <p:dataTable id="lovCargos" style="font-size: 11px; width: 430px" var="cargo" value="#{controlEmpleadoIndividual.listaCargos}" rowKey="#{cargo.secuencia}"
                                      selection="#{controlEmpleadoIndividual.seleccionCargo}" selectionMode="single" widgetVar="lovCargos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlEmpleadoIndividual.filtradoListaCargos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              

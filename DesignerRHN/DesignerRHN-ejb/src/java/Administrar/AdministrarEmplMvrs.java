@@ -146,7 +146,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
         }
     }
 
-    @Override
+    //@Override
     public List<Motivosmvrs> listMotivos() {
         try {
             List<Motivosmvrs> listMotivos;

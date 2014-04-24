@@ -132,5 +132,7 @@ public interface PersistenciaConceptosInterface {
     public boolean eliminarConcepto(BigInteger secuenciaConcepto);
 
     public String conceptoParaFormulaContrato(BigInteger secuencia, Date fechaFin);
+    
+    public List<Conceptos> conceptoEmpresa();
 
 }

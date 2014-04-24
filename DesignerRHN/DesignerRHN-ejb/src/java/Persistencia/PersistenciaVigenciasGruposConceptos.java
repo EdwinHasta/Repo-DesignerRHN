@@ -77,4 +77,20 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
             return null;
         }
     }
+    
+    @Override
+    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorGrupoConcepto(BigInteger secuenciaG) {
+        try {
+            String sqlQuery = ("SELECT *\n"
+                    + "FROM VIGENCIASGRUPOSCONCEPTOS V\n"
+                    + "WHERE V.GRUPOCONCEPTO = ? AND EXISTS (SELECT 1 FROM CONCEPTOS C WHERE C.SECUENCIA = V.CONCEPTO)");
+            Query query = em.createNativeQuery(sqlQuery,VigenciasGruposConceptos.class);
+            query.setParameter(1, secuenciaG);
+            List<VigenciasGruposConceptos> resultado = query.getResultList();
+            return resultado;
+        } catch (Exception e) {
+            System.out.println("Error: (prorrogaMostrar)" + e);
+            return null;
+        }
+    }
 }

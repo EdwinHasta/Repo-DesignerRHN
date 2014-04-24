@@ -65,9 +65,9 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
 
     @Override
     public List<MotivosCambiosCargos> buscarMotivosCambiosCargos() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(MotivosCambiosCargos.class));
-        return em.createQuery(cq).getResultList();
+        Query query = em.createQuery("SELECT m FROM MotivosCambiosCargos m");
+        List<MotivosCambiosCargos> lista = query.getResultList();
+        return lista;
     }
 
     @Override

@@ -68,9 +68,9 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     public List<Periodicidades> consultarPeriodicidades() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Periodicidades.class));
-        return em.createQuery(cq).getResultList();
+        Query query = em.createQuery("SELECT m FROM Periodicidades m");
+        List<Periodicidades> lista = query.getResultList();
+        return lista;
     }
 
     @Override

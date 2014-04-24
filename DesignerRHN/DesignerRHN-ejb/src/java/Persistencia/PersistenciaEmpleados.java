@@ -3,6 +3,7 @@
  */
 package Persistencia;
 
+import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import java.math.BigInteger;
@@ -20,7 +21,7 @@ import javax.persistence.Query;
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
+public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface { 
 
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
@@ -234,6 +235,18 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return empleado;
         } catch (Exception e) {
             System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzada : " + e.toString());
+            return null;
+        }
+    }
+    
+    @Override 
+    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(String queryBusquedaAvanzada) {
+        try {
+            Query query = em.createNativeQuery(queryBusquedaAvanzada);
+            List<BigInteger> empleado = query.getResultList();
+            return empleado;
+        } catch (Exception e) {
+            System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzadaCodigo : " + e.toString());
             return null;
         }
     }

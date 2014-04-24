@@ -810,7 +810,7 @@ public class ControlEmplMvr implements Serializable {
                 listMvrsBorrar.clear();
             }
             if (!listMvrsCrear.isEmpty()) {
-                administrarEmplMvrs.borrarMvrs(listMvrsCrear);
+                administrarEmplMvrs.crearMvrs(listMvrsCrear);
                 listMvrsCrear.clear();
             }
             if (!listMvrsModificar.isEmpty()) {
