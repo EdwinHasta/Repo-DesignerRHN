@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -43,12 +44,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
     //Vigencias Localizaciones
     private List<VigenciasLocalizaciones> vigenciaLocalizaciones;
     private List<VigenciasLocalizaciones> filtrarVL;
+    private VigenciasLocalizaciones vigenciaLocalizacionSeleccionada;
     //Vigencias Prorrateos
     private List<VigenciasProrrateos> vigenciasProrrateosVigencia;
     private List<VigenciasProrrateos> filtradoVigenciasProrrateosVigencia;
+    private VigenciasProrrateos vigenciaProrrateoSeleccionada;
     // Vigencia Prorrateos Proyectos
     private List<VigenciasProrrateosProyectos> vigenciasProrrateosProyectosVigencia;
     private List<VigenciasProrrateosProyectos> filtradoVigenciasProrrateosProyectosVigencia;
+    private VigenciasProrrateosProyectos vigenciaProrrateoProyectoSeleccionada;
     //Centros Costos
     private List<CentrosCostos> centrosCostos;
     private CentrosCostos centroCostoSeleccionado;
@@ -143,6 +147,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
     private String nombreTablaRastro;
     private Date fechaParametro;
     private Date fechaVigencia, fechaIniVP, fechaFinVP, fechaIniVPP, fechaFinVPP;
+    private String altoTabla1, altoTabla2, altoTabla3;
 
     public ControlVigenciaLocalizacion() {
 
@@ -222,6 +227,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
         cambioVigenciaP = false;
         cambioVigenciaPP = false;
+        altoTabla1 = "115";
+        altoTabla2 = "115";
+        altoTabla3 = "115";
     }
 
     //EMPLEADO DE LA VIGENCIA
@@ -244,6 +252,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVL(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoLista == 0) {
             if (!listVLCrear.contains(vigenciaLocalizaciones.get(indice))) {
 
@@ -254,6 +263,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -268,6 +278,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -454,6 +465,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -468,6 +480,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -485,6 +498,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVP(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoListaVP == 0) {
             if (!listVPCrear.contains(vigenciasProrrateosVigencia.get(indice))) {
 
@@ -495,6 +509,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             cambioVigenciaP = true;
@@ -510,6 +525,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             cambioVigenciaP = true;
@@ -704,6 +720,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 cambioVigenciaP = true;
@@ -719,6 +736,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 cambioVigenciaP = true;
@@ -737,6 +755,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVPP(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoListaVPP == 0) {
             if (!listVPPCrear.contains(vigenciasProrrateosProyectosVigencia.get(indice))) {
 
@@ -747,6 +766,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             cambioVigenciaPP = true;
@@ -762,6 +782,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             cambioVigenciaPP = true;
@@ -928,6 +949,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 cambioVigenciaPP = true;
@@ -943,6 +965,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 cambioVigenciaPP = true;
@@ -1271,6 +1294,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * @param celda Columna de la tabla
      */
     public void cambiarIndice(int indice, int celda) {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (permitirIndex == true) {
             if ((cambioVigenciaP == false) && (cambioVigenciaPP == false)) {
                 cualCelda = celda;
@@ -1306,32 +1330,34 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
         if (banderaVP == 1) {
-            vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+            vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
             vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+            vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
             vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+            vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
             vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+            vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
             vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+            vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
             vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+            vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
             vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPVigencia");
             banderaVP = 0;
             filtradoVigenciasProrrateosVigencia = null;
             tipoListaVP = 0;
         }
         if (banderaVPP == 1) {
-            vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+            vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
             vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+            vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
             vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+            vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
             vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+            vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
             vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
             banderaVPP = 0;
             filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -1352,6 +1378,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * @param celda Columna de la tabla
      */
     public void cambiarIndiceVP(int indice, int celda) {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (permitirIndexVP == true) {
             indexVP = indice;
             cualCeldaVP = celda;
@@ -1369,30 +1396,32 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
         }
         if (bandera == 1) {
-            vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+            vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
             vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+            vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
             vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+            vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
             vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-            vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+            vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
             vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+            vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
             vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
             bandera = 0;
             filtrarVL = null;
             tipoLista = 0;
         }
         if (banderaVPP == 1) {
-            vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+            vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
             vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+            vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
             vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+            vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
             vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+            vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
             vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
             banderaVPP = 0;
             filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -1413,9 +1442,11 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * @param celda Columna de la tabla
      */
     public void cambiarIndiceVPP(int indice, int celda) {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (permitirIndexVPP == true) {
             indexVPP = indice;
             cualCeldaVPP = celda;
+            System.out.println("valor: " + indexVPP);
             secRegistroVPP = vigenciasProrrateosProyectosVigencia.get(indexVPP).getSecuencia();
             if (cambioVigenciaP == false) {
                 if (cualCeldaVP == 0) {
@@ -1428,34 +1459,36 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
         }
         if (bandera == 1) {
-            vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+            vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
             vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+            vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
             vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+            vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
             vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-            vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+            vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
             vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+            vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
             vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
             bandera = 0;
             filtrarVL = null;
             tipoLista = 0;
         }
         if (banderaVP == 1) {
-            vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+            vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
             vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+            vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
             vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+            vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
             vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+            vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
             vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+            vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
             vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+            vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
             vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPVigencia");
             banderaVP = 0;
             filtradoVigenciasProrrateosVigencia = null;
@@ -1480,7 +1513,11 @@ public class ControlVigenciaLocalizacion implements Serializable {
             guardarCambiosVPP();
         }
         guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
     }
 
     /**
@@ -1566,9 +1603,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 administrarVigenciaLocalizacion.modificarVP(listVPModificar);
                 listVPModificar.clear();
             }
-            vigenciasProrrateosVigencia = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosVPVigencia");
+            vigenciasProrrateosVigencia = null;;
             k = 0;
         }
         cambioVigenciaP = false;
@@ -1620,50 +1655,54 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+            vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
             vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+            vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
             vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+            vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
             vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-            vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+            vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
             vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+            vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
             vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
             bandera = 0;
             filtrarVL = null;
             tipoLista = 0;
         }
         if (banderaVP == 1) {
-            vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+            vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
             vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+            vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
             vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+            vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
             vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+            vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
             vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+            vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
             vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+            vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
             vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPVigencia");
             banderaVP = 0;
             filtradoVigenciasProrrateosVigencia = null;
             tipoListaVP = 0;
         }
         if (banderaVPP == 1) {
-            vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+            vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
             vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+            vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
             vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+            vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
             vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+            vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
             vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
             banderaVPP = 0;
             filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -1690,6 +1729,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vigenciasProrrateosProyectosVigencia = null;
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosVLEmpleado");
         context.update("form:datosVPVigencia");
         context.update("form:datosVPPVigencia");
@@ -1701,19 +1741,21 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Cancela las modifaciones de la tabla vigencias prorrateos
      */
     public void cancelarModificacionVP() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVP == 1) {
-            vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+            vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
             vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+            vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
             vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+            vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
             vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+            vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
             vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+            vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
             vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+            vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
             vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPVigencia");
             banderaVP = 0;
             filtradoVigenciasProrrateosVigencia = null;
@@ -1728,6 +1770,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vigenciasProrrateosVigencia = null;
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosVPVigencia");
         cambioVigenciaP = false;
     }
@@ -1736,15 +1779,17 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Cancela las modifaciones de la tabla vigencias prorrateos proyectos
      */
     public void cancelarModificacionVPP() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVPP == 1) {
-            vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+            vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
             vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-            vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+            vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
             vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+            vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
             vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+            vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
             vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
             banderaVPP = 0;
             filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -1759,6 +1804,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         vigenciasProrrateosProyectosVigencia = null;
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosVPPVigencia");
         cambioVigenciaPP = false;
     }
@@ -1872,20 +1918,22 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que se encarga de agregar un nueva VigenciasLocalizaciones
      */
     public void agregarNuevaVL() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (nuevaVigencia.getFechavigencia() != null && nuevaVigencia.getLocalizacion().getSecuencia() != null && nuevaVigencia.getMotivo().getSecuencia() != null) {
             if (validarFechasRegistro(1) == true) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+                    vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
                     vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                    vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+                    vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
                     vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+                    vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
                     vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-                    vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+                    vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
                     vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-                    vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+                    vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
                     vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla1 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
                     bandera = 0;
                     filtrarVL = null;
@@ -1908,7 +1956,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 context.update("form:datosVLEmpleado");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 context.execute("NuevoRegistroVL.hide()");
                 index = -1;
@@ -1947,18 +1995,20 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 cambioVigenciaP = true;
                 //CERRAR FILTRADO
                 if (banderaVP == 1) {
-                    vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
                     vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                    vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
                     vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                    vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+                    vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
                     vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+                    vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
                     vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+                    vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
                     vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-                    vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+                    vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
                     vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla2 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVPVigencia");
                     banderaVP = 0;
                     filtradoVigenciasProrrateosVigencia = null;
@@ -1982,7 +2032,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 context.execute("NuevoRegistroVP.hide();");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 indexVP = -1;
                 secRegistroVP = null;
@@ -2017,14 +2067,16 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 cambioVigenciaPP = true;
                 //CERRAR FILTRADO
                 if (banderaVP == 1) {
-                    vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
                     vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-                    vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                    vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
                     vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                    vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+                    vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
                     vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+                    vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
                     vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla3 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
                     banderaVPP = 0;
                     filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -2046,7 +2098,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 context.execute("NuevoRegistroVPP.hide();");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 indexVPP = -1;
                 secRegistroVPP = null;
@@ -2142,20 +2194,22 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 secRegistroVL = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
                     vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                    vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+                    vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
                     vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+                    vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
                     vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-                    vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+                    vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
                     vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-                    vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+                    vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
                     vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla1 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
                     bandera = 0;
                     filtrarVL = null;
@@ -2240,22 +2294,24 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 secRegistroVP = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 if (banderaVP == 1) {
                     //CERRAR FILTRADO
-                    vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
                     vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                    vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
                     vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                    vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+                    vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
                     vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+                    vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
                     vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+                    vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
                     vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-                    vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+                    vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
                     vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla2 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVPVigencia");
                     banderaVP = 0;
                     filtradoVigenciasProrrateosVigencia = null;
@@ -2333,18 +2389,20 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 secRegistroVPP = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 if (banderaVPP == 1) {
                     //CERRAR FILTRADO
-                    vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
                     vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-                    vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                    vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
                     vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                    vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+                    vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
                     vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+                    vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
                     vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla3 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
                     banderaVPP = 0;
                     filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -2432,6 +2490,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             secRegistroVL = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -2477,6 +2536,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             secRegistroVP = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -2522,6 +2582,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             secRegistroVPP = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -2548,30 +2609,33 @@ public class ControlVigenciaLocalizacion implements Serializable {
      */
     public void filtradoVigenciaLocalizacion() {
         if (index >= 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
-                vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+                vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
                 vlFechaVigencia.setFilterStyle("width: 60px");
-                vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+                vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
                 vlCentroCosto.setFilterStyle("width: 100px");
-                vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+                vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
                 vlLocalizacion.setFilterStyle("width: 100px");
-                vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+                vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
                 vlMotivo.setFilterStyle("width: 100px");
-                vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+                vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
                 vlProyecto.setFilterStyle("width: 100px");
+                altoTabla1 = "91";
                 RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
                 bandera = 1;
             } else if (bandera == 1) {
-                vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+                vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
                 vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+                vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
                 vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+                vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
                 vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-                vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+                vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
                 vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-                vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+                vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
                 vlProyecto.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla1 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
                 bandera = 0;
                 filtrarVL = null;
@@ -2584,36 +2648,39 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia prorrateo
      */
     public void filtradoVigenciaProrrateo() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (indexVP >= 0) {
             if (banderaVP == 0) {
                 //Columnas Tabla VPP
-                vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+                vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
                 vPCentroCosto.setFilterStyle("width: 60px");
-                vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
                 vPPorcentaje.setFilterStyle("width: 25px");
-                vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+                vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
                 vPFechaInicial.setFilterStyle("width: 50px");
-                vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+                vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
                 vPFechaFinal.setFilterStyle("width: 50px");
-                vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+                vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
                 vPProyecto.setFilterStyle("width: 50px");
-                vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+                vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
                 vPSubPorcentaje.setFilterStyle("width: 50px");
+                altoTabla2 = "91";
                 RequestContext.getCurrentInstance().update("form:datosVPVigencia");
                 banderaVP = 1;
             } else if (banderaVP == 1) {
-                vPCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
+                vPCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPCentroCosto");
                 vPCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                vPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
+                vPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPPorcentaje");
                 vPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                vPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
+                vPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaInicial");
                 vPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                vPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
+                vPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPFechaFinal");
                 vPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                vPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
+                vPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPProyecto");
                 vPProyecto.setFilterStyle("display: none; visibility: hidden;");
-                vPSubPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
+                vPSubPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPVigencia:vPSubPorcentaje");
                 vPSubPorcentaje.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla2 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVPVigencia");
                 banderaVP = 0;
                 filtradoVigenciasProrrateosVigencia = null;
@@ -2626,28 +2693,31 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia prorrateo proyecto
      */
     public void filtradoVigenciaProrrateoProyecto() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (indexVPP >= 0) {
             //Columnas Tabla VPP
             if (banderaVPP == 0) {
-                vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+                vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
                 vPPProyecto.setFilterStyle("width: 60px");
-                vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
                 vPPPorcentaje.setFilterStyle("width: 25px");
-                vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+                vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
                 vPPFechaInicial.setFilterStyle("width: 50px");
-                vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+                vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
                 vPPFechaFinal.setFilterStyle("width: 50px");
+                altoTabla3 = "91";
                 RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
                 banderaVPP = 1;
             } else if (banderaVPP == 1) {
-                vPPProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
+                vPPProyecto = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPProyecto");
                 vPPProyecto.setFilterStyle("display: none; visibility: hidden;");
-                vPPPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
+                vPPPorcentaje = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPPorcentaje");
                 vPPPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                vPPFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
+                vPPFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaInicial");
                 vPPFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                vPPFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
+                vPPFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVPPVigencia:vPPFechaFinal");
                 vPPFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla3 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVPPVigencia");
                 banderaVPP = 0;
                 filtradoVigenciasProrrateosProyectosVigencia = null;
@@ -2661,18 +2731,20 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            vlFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vlFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlFechaVigencia");
             vlFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vlCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
+            vlCentroCosto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlCentroCosto");
             vlCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-            vlLocalizacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
+            vlLocalizacion = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlLocalizacion");
             vlLocalizacion.setFilterStyle("display: none; visibility: hidden;");
-            vlMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
+            vlMotivo = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlMotivo");
             vlMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vlProyecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
+            vlProyecto = (Column) c.getViewRoot().findComponent("form:datosVLEmpleado:vlProyecto");
             vlProyecto.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVLEmpleado");
+            context.update("form:datosVLEmpleado");
             bandera = 0;
             filtrarVL = null;
             tipoLista = 0;
@@ -2690,6 +2762,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
         k = 0;
         vigenciaLocalizaciones = null;
         guardado = true;
+        context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
 
@@ -2770,6 +2843,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que actualiza la estructura seleccionada (vigencia localizacion)
      */
     public void actualizarEstructura() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 vigenciaLocalizaciones.get(index).setLocalizacion(estructuraSelecionada);
@@ -2792,17 +2866,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCentroCosto");
+            context.update("form:editarCentroCosto");
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setLocalizacion(estructuraSelecionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVL");
         } else if (tipoActualizacion == 2) {
             duplicarVL.setLocalizacion(estructuraSelecionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVL");
         }
         filtradoEstructura = null;
@@ -2832,6 +2904,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * localizacion)
      */
     public void actualizarMotivoLocalizacion() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 vigenciaLocalizaciones.get(index).setMotivo(motivoLocalizacionSelecionado);
@@ -2854,17 +2927,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarMotivo");
+            context.update("form:editarMotivo");
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setMotivo(motivoLocalizacionSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVL");
         } else if (tipoActualizacion == 2) {
             duplicarVL.setMotivo(motivoLocalizacionSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVL");
         }
         filtradoMotivosLocalizaciones = null;
@@ -2894,6 +2965,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que actualiza el proyecto seleccionado (vigencia localizacion)
      */
     public void actualizarProyecto() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 vigenciaLocalizaciones.get(index).setProyecto(proyectoSelecionado);
@@ -2916,17 +2988,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarProyecto");
+            context.update("form:editarProyecto");
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setProyecto(proyectoSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVL");
         } else if (tipoActualizacion == 2) {
             duplicarVL.setProyecto(proyectoSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVL");
         }
         filtradoProyectos = null;
@@ -2955,6 +3025,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Metodo que actualiza el centro costo seleccionado (vigencia prorrateo)
      */
     public void actualizarCentroCostoVP() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVP == 0) {
                 vigenciasProrrateosVigencia.get(indexVP).setCentrocosto(centroCostoSeleccionado);
@@ -2977,17 +3048,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCentroCostoVP");
+            context.update("form:editarCentroCostoVP");
             permitirIndexVP = true;
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaP.setCentrocosto(centroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVP");
         } else if (tipoActualizacion == 2) {
             duplicarVP.setCentrocosto(centroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVP");
         }
         cambioVigenciaP = true;
@@ -3017,6 +3086,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Actualiza el proyeecto seleccionado (vigencia prorrateo)
      */
     public void actualizarProyectoVP() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVP == 0) {
                 vigenciasProrrateosVigencia.get(indexVP).setProyecto(proyectoSelecionado);
@@ -3039,17 +3109,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndexVP = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarProyectoVP");
+            context.update("form:editarProyectoVP");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaP.setProyecto(proyectoSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVP");
         } else if (tipoActualizacion == 2) {
             duplicarVP.setProyecto(proyectoSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVP");
         }
         cambioVigenciaP = true;
@@ -3079,6 +3147,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
      * Actualiza el proyecto seleccionado (vigencia prorrateo proyecto)
      */
     public void actualizarProyectoVPP() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVPP == 0) {
                 vigenciasProrrateosProyectosVigencia.get(indexVPP).setProyecto(proyectoSelecionado);
@@ -3101,17 +3170,15 @@ public class ControlVigenciaLocalizacion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndexVPP = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarProyectoVPP");
+            context.update("form:editarProyectoVPP");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaPP.setProyecto(proyectoSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVPP");
         } else if (tipoActualizacion == 2) {
             duplicarVPP.setProyecto(proyectoSelecionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVPP");
         }
         cambioVigenciaPP = true;
@@ -4054,5 +4121,45 @@ public class ControlVigenciaLocalizacion implements Serializable {
 
     public void setBackUp(BigInteger backUp) {
         this.backUp = backUp;
+    }
+
+    public String getAltoTabla1() {
+        return altoTabla1;
+    }
+
+    public String getAltoTabla2() {
+        return altoTabla2;
+    }
+
+    public String getAltoTabla3() {
+        return altoTabla3;
+    }
+
+    public VigenciasLocalizaciones getVigenciaLocalizacionSeleccionada() {
+        return vigenciaLocalizacionSeleccionada;
+    }
+
+    public void setVigenciaLocalizacionSeleccionada(VigenciasLocalizaciones vigenciaLocalizacionSeleccionada) {
+        this.vigenciaLocalizacionSeleccionada = vigenciaLocalizacionSeleccionada;
+    }
+
+    public VigenciasProrrateos getVigenciaProrrateoSeleccionada() {
+        return vigenciaProrrateoSeleccionada;
+    }
+
+    public void setVigenciaProrrateoSeleccionada(VigenciasProrrateos vigenciaProrrateoSeleccionada) {
+        this.vigenciaProrrateoSeleccionada = vigenciaProrrateoSeleccionada;
+    }
+
+    public VigenciasProrrateosProyectos getVigenciaProrrateoProyectoSeleccionada() {
+        return vigenciaProrrateoProyectoSeleccionada;
+    }
+
+    public void setVigenciaProrrateoProyectoSeleccionada(VigenciasProrrateosProyectos vigenciaProrrateoProyectoSeleccionada) {
+        this.vigenciaProrrateoProyectoSeleccionada = vigenciaProrrateoProyectoSeleccionada;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
     }
 }

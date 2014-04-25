@@ -677,8 +677,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 filtradosListaNovedades.get(indice).getFormula().setNombresFormula(Formula);
             }
 
-            for (int i = 0; i < listaNovedades.size(); i++) {
-                if (listaNovedades.get(i).getFormula().getNombresFormula().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaFormulas.size(); i++) {
+                if (listaFormulas.get(i).getNombresFormula().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -704,8 +704,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 filtradosListaNovedades.get(indice).getTercero().setNitalternativo(NitTercero);
             }
 
-            for (int i = 0; i < listaNovedades.size(); i++) {
-                if (listaNovedades.get(i).getTercero().getNitalternativo().startsWith(valorConfirmar.toUpperCase())) {
+            for (int i = 0; i < listaTerceros.size(); i++) {
+                if (listaTerceros.get(i).getNitalternativo().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -732,8 +732,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 filtradosListaNovedades.get(indice).getEmpleado().setCodigoempleadoSTR(CodigoEmpleado);
             }
 
-            for (int i = 0; i < listaNovedades.size(); i++) {
-                if (listaNovedades.get(i).getEmpleado().getCodigoempleadoSTR().startsWith(valorConfirmar.toString().toUpperCase())) {
+            for (int i = 0; i < listaEmpleados.size(); i++) {
+                if (listaEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toString().toUpperCase())) {
 
                     indiceUnicoElemento = i;
                     coincidencias++;
@@ -761,8 +761,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 filtradosListaNovedades.get(indice).getPeriodicidad().setCodigoStr(CodigoPeriodicidad);
             }
 
-            for (int i = 0; i < listaNovedades.size(); i++) {
-                if ((listaNovedades.get(i).getPeriodicidad().getCodigoStr()).startsWith(valorConfirmar.toString().toUpperCase())) {
+            for (int i = 0; i < listaPeriodicidades.size(); i++) {
+                if ((listaPeriodicidades.get(i).getCodigoStr()).startsWith(valorConfirmar.toString().toUpperCase())) {
 
                     indiceUnicoElemento = i;
                     coincidencias++;
@@ -790,9 +790,8 @@ public class ControlNovedadesTerceros implements Serializable {
                 filtradosListaNovedades.get(indice).getConcepto().setCodigoSTR(CodigoConcepto);
             }
 
-            for (int i = 0; i < listaNovedades.size(); i++) {
-                if (listaNovedades.get(i).getConcepto().getCodigoSTR().startsWith(valorConfirmar.toString().toUpperCase())) {
-
+            for (int i = 0; i < listaConceptos.size(); i++) {
+                if (listaConceptos.get(i).getCodigoSTR().startsWith(valorConfirmar.toString().toUpperCase())) {
                     indiceUnicoElemento = i;
                     coincidencias++;
                 }
@@ -1556,7 +1555,7 @@ public class ControlNovedadesTerceros implements Serializable {
         context.update("form:datosTerceros");
         context.update("form:datosNovedadesTercero");
         filtradosListaTercerosNovedad = null;
-        seleccionEmpleados = null;
+        seleccionTerceros = null;
         aceptar = true;
         index = -1;
         secRegistro = null;

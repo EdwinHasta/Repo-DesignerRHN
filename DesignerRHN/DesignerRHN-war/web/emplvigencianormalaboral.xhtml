@@ -300,8 +300,13 @@
 
                             <strong><h:outputText value="Norma laboral: " style=" position: absolute; top: 85px" /></strong>
                             <p:inputText id="duplicarTipoCentroCostos" value="#{controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.normalaboral.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
+<<<<<<< HEAD
                                 <p:ajax event="click" listener="#{controlBetaEmplVigenciaNormaLaboral.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.autocompletarDuplicado('NORMASLABORALES',controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.normalaboral.nombre, 1)}" />
+=======
+                                <p:ajax event="click" listener="#{controlBetaEmplVigenciaNormaLaboral.valoresBackupAutocompletar(2)}" />
+                                <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.autocompletarDuplicado('NORMASLABORALES',controlBetaEmplVigenciaNormaLaboral.duplicarEmplVigenciaNormaLaboral.normalaboral.nombre, 2)}" />
+>>>>>>> origin/master
                                 <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(1)}"/>   

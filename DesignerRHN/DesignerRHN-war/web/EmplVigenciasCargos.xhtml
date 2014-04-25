@@ -13,7 +13,7 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.emplvigenciascargos" var="msg" />
-                    <p:growl id="growl" showDetail="true"/> 
+                    <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasCargos.empleado.persona.nombreCompleto}"/>
@@ -72,8 +72,7 @@
                             <p:commandButton id="btnPrimerRegistro" disabled="#{controlVigenciasCargos.botonPrimero}" value=" " icon="ui-icon-arrowstop-1-w" actionListener="#{controlVigenciasCargos.primerRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
                             <p:commandButton id="btnAnteriorRegistro" disabled="#{controlVigenciasCargos.botonAnterior}" value=" " icon="ui-icon-arrow-1-w" actionListener="#{controlVigenciasCargos.anteriorRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
                             <p:commandButton id="btnSiguienteRegistro" disabled="#{controlVigenciasCargos.botonSiguiente}" value=" "  icon="ui-icon-arrow-1-e" actionListener="#{controlVigenciasCargos.siguienteRegistro()}" process="@this" oncomplete="{PrimeFaces.focus('#{controlVigenciasCargos.registroFoco}');}"/>
-                            <p:commandButton id="btnUltimoRegistro" disabled="#{controlVigenciasCargos.botonUltimo}" value=" " icon="ui-icon-arrowstop-1-e" actionListener="#{controlVigenciasCargos.ultimoRegistro()}" process="@this" onclick="triggerHiddenEvent();
-                                    return false;"/>
+                            <p:commandButton id="btnUltimoRegistro" disabled="#{controlVigenciasCargos.botonUltimo}" value=" " icon="ui-icon-arrowstop-1-e" actionListener="#{controlVigenciasCargos.ultimoRegistro()}" process="@this" onclick="triggerHiddenEvent(); return false;"/>
 
                             <p:dataTable id="datosVCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice"
                                          value="#{controlVigenciasCargos.vigenciasCargosEmpleado}"

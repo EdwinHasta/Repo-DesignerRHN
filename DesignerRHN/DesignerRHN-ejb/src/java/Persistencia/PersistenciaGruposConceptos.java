@@ -56,7 +56,7 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
     @Override
     public List<GruposConceptos> buscarGruposConceptos() {
         try {
-            Query query = em.createQuery("SELECT e FROM GruposConceptos e");
+            Query query = em.createQuery("SELECT e FROM GruposConceptos e ORDER BY e.codigo ASC");
             List<GruposConceptos> gruposConceptos = (List<GruposConceptos>) query.getResultList();
             return gruposConceptos;
         } catch (Exception e) {

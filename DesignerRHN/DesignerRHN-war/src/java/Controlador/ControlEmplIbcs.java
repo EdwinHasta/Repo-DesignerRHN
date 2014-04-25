@@ -36,6 +36,7 @@ public class ControlEmplIbcs implements Serializable {
     private List<Ibcs> filtrarIbcsPorEmpleado;
     private Ibcs editarIbcsPorEmpleado;
     private Ibcs nuevaIbcsPorEmpleado;
+    private Ibcs ibcSeleccionado;
     private Ibcs dialogoIbcsPorEmpleado;
     private BigInteger secuenciaEmpleado;
     private Empleados empleadoSeleccionado;
@@ -44,6 +45,7 @@ public class ControlEmplIbcs implements Serializable {
     private boolean aceptar, guardado;
     private BigInteger secRegistro;
     private Column fechaFinal, fechaInicial, valor;
+    private String altoTabla;
 //*****************************************************************
     //prueba
     private Ibcs selecionIbcs;
@@ -63,7 +65,7 @@ public class ControlEmplIbcs implements Serializable {
         editarIbcsPorEmpleado = new Ibcs();
         empleadoSeleccionado = null;
         selecionIbcs = new Ibcs();
-
+        altoTabla = "270";
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -79,13 +81,15 @@ public class ControlEmplIbcs implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
             System.out.println("CancelarModificacion");
-            fechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaInicial");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            fechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaFinal");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
             fechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            valor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:valor");
+            valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
             valor.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosIbcs");
             bandera = 0;
             filtrarIbcsPorEmpleado = null;
@@ -135,26 +139,28 @@ public class ControlEmplIbcs implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            fechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaInicial");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("width: 50px");
-            fechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaFinal");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
             fechaFinal.setFilterStyle("width: 50px");
-            valor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:valor");
+            valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
             valor.setFilterStyle("width: 40px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosIbcs");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
 
-            fechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaInicial");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            fechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:fechaFinal");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
             fechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            valor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIbcs:valor");
+            valor = (Column) c.getViewRoot().findComponent("form:datosIbcs:valor");
             valor.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosIbcs");
             bandera = 0;
             filtrarIbcsPorEmpleado = null;
@@ -286,5 +292,21 @@ public class ControlEmplIbcs implements Serializable {
 
     public void setDialogoIbcsPorEmpleado(Ibcs dialogoIbcsPorEmpleado) {
         this.dialogoIbcsPorEmpleado = dialogoIbcsPorEmpleado;
+    }
+
+    public Ibcs getIbcSeleccionado() {
+        return ibcSeleccionado;
+    }
+
+    public void setIbcSeleccionado(Ibcs ibcSeleccionado) {
+        this.ibcSeleccionado = ibcSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
     }
 }
