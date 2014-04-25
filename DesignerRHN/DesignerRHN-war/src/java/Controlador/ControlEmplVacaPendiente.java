@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -33,8 +34,10 @@ public class ControlEmplVacaPendiente implements Serializable {
     AdministrarVWVacaPendientesEmpleadosInterface administrarVWVacaPendientesEmpleados;
     private List<VWVacaPendientesEmpleados> listVacaPendientes;
     private List<VWVacaPendientesEmpleados> filtrarListVacaPendientes;
+    private VWVacaPendientesEmpleados vacaPendienteSeleccionada;
     private List<VWVacaPendientesEmpleados> listVacaDisfrutadas;
     private List<VWVacaPendientesEmpleados> filtrarListVacaDisfrutadas;
+    private VWVacaPendientesEmpleados vacaDisfrutadaSeleccionada;
     private int tipoTabla, filtrarListaPendientes, filtrarListaDisfrutadas;
     private int banderaPendientes, banderaDisfrutadas;
     private int casillaPendiente, casillaDisfrutada;
@@ -66,6 +69,7 @@ public class ControlEmplVacaPendiente implements Serializable {
     private Date fechaParametro;
     private Date fechaIniP, fechaFinP;
     private Date fechaIniD, fechaFinD;
+    private String altoTabla1, altoTabla2;
 
     public ControlEmplVacaPendiente() {
         listVacaDisfrutadas = null;
@@ -92,6 +96,8 @@ public class ControlEmplVacaPendiente implements Serializable {
         nombreXML = "VacacionesPendientesXML";
         totalDiasPendientes = BigInteger.valueOf(0);
         diasProvisionados = BigDecimal.valueOf(0);
+        altoTabla1 = "115";
+        altoTabla2 = "115";
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -281,15 +287,17 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void validarNuevoRegistroPendientes() {
-        if (nuevaVacacion.getInicialcausacion()!= null && nuevaVacacion.getFinalcausacion()!= null && nuevaVacacion.getEstado() != null && nuevaVacacion.getDiaspendientes() != null) {
+        if (nuevaVacacion.getInicialcausacion() != null && nuevaVacacion.getFinalcausacion() != null && nuevaVacacion.getEstado() != null && nuevaVacacion.getDiaspendientes() != null) {
             if (validarFechasRegistroPendientes(1) == true) {
                 if (filtrarListaPendientes == 1) {
-                    vacacionesDP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
                     vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+                    vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
                     vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+                    vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
                     vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla1 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
                     banderaPendientes = 0;
                     filtrarListVacaPendientes = null;
@@ -345,15 +353,17 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void validarDuplicadoVacaPendientes() {
-        if (duplicarVacacion.getInicialcausacion()!= null && duplicarVacacion.getFinalcausacion()!= null && duplicarVacacion.getEstado() != null && duplicarVacacion.getDiaspendientes() != null) {
+        if (duplicarVacacion.getInicialcausacion() != null && duplicarVacacion.getFinalcausacion() != null && duplicarVacacion.getEstado() != null && duplicarVacacion.getDiaspendientes() != null) {
             if (validarFechasRegistroPendientes(2) == true) {
                 if (filtrarListaPendientes == 1) {
-                    vacacionesDP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
                     vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+                    vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
                     vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+                    vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
                     vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla1 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
                     banderaPendientes = 0;
                     filtrarListVacaPendientes = null;
@@ -417,25 +427,28 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void cancelarModificaciones() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (filtrarListaDisfrutadas == 1) {
-            vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
+            vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
             vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
+            vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
             vacacionesFechaInicialD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
+            vacacionesFechaFinalD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
             vacacionesFechaFinalD.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 0;
             filtrarListVacaDisfrutadas = null;
             filtrarListaDisfrutadas = 0;
         }
         if (filtrarListaPendientes == 1) {
-            vacacionesDP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+            vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
             vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+            vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
             vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+            vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
             vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
             banderaPendientes = 0;
             filtrarListVacaPendientes = null;
@@ -472,22 +485,25 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void filtradoVacacionesPendientes() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaPendientes == 0) {
-            vacacionesDP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+            vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
             vacacionesDP.setFilterStyle("width: 100px");
-            vacacionesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+            vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
             vacacionesFechaFinal.setFilterStyle("width: 100px");
-            vacacionesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+            vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
             vacacionesFechaInicial.setFilterStyle("width: 100px");
+            altoTabla1 = "91";
             RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
             banderaPendientes = 1;
         } else if (banderaPendientes == 1) {
-            vacacionesDP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+            vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
             vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+            vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
             vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+            vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
             vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
             banderaPendientes = 0;
             filtrarListVacaPendientes = null;
@@ -496,22 +512,25 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void filtradoVacacionesDisfrutadas() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaDisfrutadas == 0) {
-            vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
+            vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
             vacacionesDPD.setFilterStyle("width: 100px");
-            vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
+            vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
             vacacionesFechaInicialD.setFilterStyle("width: 100px");
-            vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
+            vacacionesFechaFinalD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
             vacacionesFechaFinalD.setFilterStyle("width: 100px");
+            altoTabla2 = "91";
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 1;
         } else if (banderaDisfrutadas == 1) {
-            vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
+            vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
             vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
+            vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
             vacacionesFechaInicialD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
+            vacacionesFechaFinalD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
             vacacionesFechaFinalD.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 0;
             filtrarListVacaDisfrutadas = null;
@@ -535,12 +554,14 @@ public class ControlEmplVacaPendiente implements Serializable {
                 fechaFinP = filtrarListVacaPendientes.get(indexVPendientes).getFinalcausacion();
             }
             if (banderaDisfrutadas == 1) {
-                vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
+                FacesContext c = FacesContext.getCurrentInstance();
+                vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
                 vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
-                vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
+                vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
                 vacacionesFechaInicialD.setFilterStyle("display: none; visibility: hidden;");
-                vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
+                vacacionesFechaFinalD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
                 vacacionesFechaFinalD.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla2 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
                 banderaDisfrutadas = 0;
                 filtrarListVacaDisfrutadas = null;
@@ -554,12 +575,14 @@ public class ControlEmplVacaPendiente implements Serializable {
             casillaPendiente = -1;
             indexVPendientes = -1;
             if (banderaPendientes == 1) {
-                vacacionesDP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+                FacesContext c = FacesContext.getCurrentInstance();
+                vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
                 vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-                vacacionesFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+                vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
                 vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                vacacionesFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+                vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
                 vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla1 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
                 banderaPendientes = 0;
                 filtrarListVacaPendientes = null;
@@ -569,32 +592,39 @@ public class ControlEmplVacaPendiente implements Serializable {
     }
 
     public void guardarGeneral() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        RequestContext context = RequestContext.getCurrentInstance();
         if (banderaPendientes == 1) {
-            vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
-            vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
+            vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDP");
+            vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
+            vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
             vacacionesFechaInicialD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
+            vacacionesFechaFinalD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
             vacacionesFechaFinalD.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
             banderaPendientes = 0;
             filtrarListVacaPendientes = null;
             filtrarListaPendientes = 0;
         }
         if (banderaDisfrutadas == 1) {
-            vacacionesDPD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
+            vacacionesDPD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesDPD");
             vacacionesDPD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaInicialD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
+            vacacionesFechaInicialD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaInicialD");
             vacacionesFechaInicialD.setFilterStyle("display: none; visibility: hidden;");
-            vacacionesFechaFinalD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
+            vacacionesFechaFinalD = (Column) c.getViewRoot().findComponent("form:datosVacacionesDEmpleado:vacacionesFechaFinalD");
             vacacionesFechaFinalD.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVacacionesDEmpleado");
+            altoTabla2 = "115";
+            context.update("form:datosVacacionesDEmpleado");
             banderaDisfrutadas = 0;
             filtrarListVacaDisfrutadas = null;
             filtrarListaDisfrutadas = 0;
         }
         guardarCambiosVPendientes();
         guardarCambiosVDisfrutadas();
+        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
     }
 
     public void guardarCambiosVPendientes() {
@@ -945,5 +975,29 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public void setDiasProvisionados(BigDecimal diasProvisionados) {
         this.diasProvisionados = diasProvisionados;
+    }
+
+    public VWVacaPendientesEmpleados getVacaPendienteSeleccionada() {
+        return vacaPendienteSeleccionada;
+    }
+
+    public void setVacaPendienteSeleccionada(VWVacaPendientesEmpleados vacaPendienteSeleccionada) {
+        this.vacaPendienteSeleccionada = vacaPendienteSeleccionada;
+    }
+
+    public VWVacaPendientesEmpleados getVacaDisfrutadaSeleccionada() {
+        return vacaDisfrutadaSeleccionada;
+    }
+
+    public void setVacaDisfrutadaSeleccionada(VWVacaPendientesEmpleados vacaDisfrutadaSeleccionada) {
+        this.vacaDisfrutadaSeleccionada = vacaDisfrutadaSeleccionada;
+    }
+
+    public String getAltoTabla1() {
+        return altoTabla1;
+    }
+
+    public String getAltoTabla2() {
+        return altoTabla2;
     }
 }

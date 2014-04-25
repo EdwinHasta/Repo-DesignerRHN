@@ -263,46 +263,46 @@
 
                         <!-- Dialogo Jornadas Laborales -->
                         <p:dialog header="#{msg['jornadaJ']}" widgetVar="JornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaLaboralDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="720" modal="true" >
-                            <p:dataTable id="lovJornadaLaboral" style=" width: 700px" var="jLaboral" value="#{controlVigenciaJornada.listJornadasLaborales}" rowKey="#{jLaboral.secuencia}"
-                                         selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="700" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" width="340" modal="true" >
+                            <p:dataTable id="lovJornadaLaboral" style=" width: 290px" var="jLaboral" value="#{controlVigenciaJornada.listJornadasLaborales}" rowKey="#{jLaboral.secuencia}"
+                                         selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="308" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtrarJornadasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarJL"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarJ']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                    <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:100px; position: relative; left: 80px;" />  
                                 </f:facet>
-                                <p:column filterBy="#{jLaboral.descripcion}" width="200" filterMatchMode="contains" >
+                                <p:column filterBy="#{jLaboral.descripcion}" width="200" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText style="text-align: center" value="#{msg['jornadalaboralJ']}" />
                                     </f:facet>
                                     <h:outputText  value="#{jLaboral.descripcion}" />
                                 </p:column>
-                                <p:column filterBy="#{jLaboral.codigo}" width="200"  filterMatchMode="contains">
+                                <p:column filterBy="#{jLaboral.codigo}" width="50"  filterMatchMode="contains" filterStyle="width:40px">
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['codigoJ']}" />
                                     </f:facet>
                                     <h:outputText value="#{jLaboral.codigo}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarJL" style="position: relative; left: 450px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this">
+                            <p:commandButton id="aceptarJL" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasJL" style="position: relative; left: 500px" value="#{msg['atras']}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" update="lovJornadaLaboral" process="@this">
+                            <p:commandButton id="atrasJL" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" update="lovJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
                                 <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
                         <!-- Dialogo Tipo Descanso-->
                         <p:dialog header="#{msg['descripcionD']}" widgetVar="TiposDescansosDialogo" draggable="false" resizable="false" closable="false" id="TiposDescansosDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="720" modal="true" >
-                            <p:dataTable id="lovTipoDescanso" style=" width: 700px" var="tDescanso" value="#{controlVigenciaJornada.listTiposDescansos}" rowKey="#{tDescanso.secuencia}"
-                                         selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="700" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" width="340" modal="true" >
+                            <p:dataTable id="lovTipoDescanso" style=" width: 290px" var="tDescanso" value="#{controlVigenciaJornada.listTiposDescansos}" rowKey="#{tDescanso.secuencia}"
+                                         selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="308" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtradoTiposDescansos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarTD"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="#{msg['buscarD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:150px; position: relative; left: 20px;" />  
+                                    <h:outputText value="#{msg['buscarD']}:"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:100px; position: relative; left: 70px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{tDescanso.descripcion}" width="200" filterMatchMode="contains" >
                                     <f:facet name="header">
@@ -310,17 +310,17 @@
                                     </f:facet>
                                     <h:outputText  value="#{tDescanso.descripcion}" />
                                 </p:column>
-                                <p:column filterBy="#{tDescanso.codigo}" width="200"  filterMatchMode="contains">
+                                <p:column filterBy="#{tDescanso.codigo}" width="50"  filterMatchMode="contains" filterStyle="width:40px">
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['codigoD']}" />
                                     </f:facet>
                                     <h:outputText value="#{tDescanso.codigo}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTD" style="position: relative; left: 450px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this">
+                            <p:commandButton id="aceptarTD" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTD" style="position: relative; left: 500px" value="#{msg['atras']}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters()" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}" update="lovTipoDescanso" process="@this">
+                            <p:commandButton id="atrasTD" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters()" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}" update="lovTipoDescanso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                                 <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
@@ -329,21 +329,21 @@
                         <p:commandButton style="position: absolute; left: 15px; top: 478px;  " id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 478px;  " id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" action="nomina" process="@this" />
                     </p:panel>
-
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaJornada.guardadoGeneral()}" action="nomina" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" action="nomina" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaJornada.guardadoGeneral()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
-
-                    <p:dialog id="confirmarGuardarVJ" header="#{msg['atencion']}" widgetVar="confirmarGuardarVJ"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarVJ.hide();" actionListener="#{controlVigenciaJornada.guardarCambiosVJ()}" action="nomina" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    
+                    <p:dialog id="confirmarGuardarVJ" header="#{msg['atencion']}" widgetVar="confirmarGuardarVJ"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarVJ.hide();" actionListener="#{controlVigenciaJornada.guardarCambiosVJ()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarVJ.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="Rastros Para Tablas Historicos Jornadas" resizable="false" draggable="false" modal="true" height="95" width="470px"  >
