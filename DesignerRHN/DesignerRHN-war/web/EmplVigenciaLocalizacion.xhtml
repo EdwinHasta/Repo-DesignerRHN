@@ -420,7 +420,7 @@
                                             <lnk:calendar id="dateFechaFinalVPP" value="#{info2.fechafinal}" > 
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciaLocalizacion.modificarFechasVigenciasProrrateosProyecto(indiceVPP,3)}" update="dateFechaFinalVPP" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaLocalizacion.modificarFechasVigenciasProrrateosProyecto(indiceVPP,3)}" update="dateFechaFinalVPP" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVP,3)}" process="@this"/> 
+                                                <p:ajax event="select" listener="#{controlVigenciaLocalizacion.cambiarIndiceVPP(indiceVPP,3)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
