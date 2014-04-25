@@ -21,6 +21,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -136,6 +137,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         backUpSecRegistro = null;
         listaPensionados = new ArrayList<Pensionados>();
         pensionVigencia = new Pensionados();
+        pensionVigencia.setClase(new ClasesPensiones());
+        pensionVigencia.setCausabiente(new Empleados());
+        pensionVigencia.setTipopensionado(new TiposPensionados());
+        pensionVigencia.setTutor(new Personas());
         listaPersonas = new ArrayList<Personas>();
         personaSeleccionada = new Personas();
         clasesPensiones = new ArrayList<ClasesPensiones>();
@@ -154,6 +159,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         operacionRetiro = false;
         almacenarRetirado = false;
         retiroVigencia = new Retirados();
+        retiroVigencia.setMotivoretiro(new MotivosRetiros());
         motivosRetiros = new ArrayList<MotivosRetiros>();
         motivoRetiroSeleccionado = new MotivosRetiros();
 
@@ -447,6 +453,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         }
     }
 
+    public void posicionTabla() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        System.out.println("indice : " + indice + " -- " + columna);
+        cambiarIndice(indice, columna);
+    }
+
     //Ubicacion Celda.
     /**
      * Metodo que obtiene la posicion dentro de la tabla
@@ -518,8 +535,13 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             }
 
             vigenciasTiposTrabajadores = null;
-            retiroVigencia = null;
-            pensionVigencia = null;
+            retiroVigencia = new Retirados();
+            retiroVigencia.setMotivoretiro(new MotivosRetiros());
+            pensionVigencia = new Pensionados();
+            pensionVigencia.setClase(new ClasesPensiones());
+            pensionVigencia.setCausabiente(new Empleados());
+            pensionVigencia.setTipopensionado(new TiposPensionados());
+            pensionVigencia.setTutor(new Personas());
             RequestContext context = RequestContext.getCurrentInstance();
             FacesContext c = FacesContext.getCurrentInstance();
             panelRetiradosInput = (Panel) c.getViewRoot().findComponent("form:panelRetiradosInput");
@@ -1364,11 +1386,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         if (pensionVigencia.getSecuencia() == null) {
             operacionPension = true;
             pensionVigencia = new Pensionados();
-            pensionVigencia.setSecuencia(l);
-            pensionVigencia.setCausabiente(new Empleados());
             pensionVigencia.setClase(new ClasesPensiones());
+            pensionVigencia.setCausabiente(new Empleados());
             pensionVigencia.setTipopensionado(new TiposPensionados());
             pensionVigencia.setTutor(new Personas());
+            pensionVigencia.setSecuencia(l);
+
         }
     }
 
@@ -1378,7 +1401,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void guardarDatosRetiros() {
         if (retiroVigencia.getFecharetiro() != null) {
-            retiroVigencia.setVigenciatipotrabajador(vigenciasTiposTrabajadores.get(indexRetiro));
+            if (tipoLista == 0) {
+                retiroVigencia.setVigenciatipotrabajador(vigenciasTiposTrabajadores.get(indexRetiro));
+            }
+            if (tipoLista == 1) {
+                retiroVigencia.setVigenciatipotrabajador(filtrarVTT.get(indexRetiro));
+            }
+            k++;
+            l = BigInteger.valueOf(k);
+            retiroVigencia.setSecuencia(l);
             if (operacionRetiro == false) {
                 if (banderaLimpiarRetiro == true) {
                     administrarVigenciasTiposTrabajadores.borrarRetirado(retiroCopia);
@@ -1425,7 +1456,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             index = -1;
             secRegistro = null;
 
-            retiroVigencia = null;
+            retiroVigencia = new Retirados();
+            retiroVigencia.setMotivoretiro(new MotivosRetiros());
             banderaLimpiarRetiro = false;
 
             operacionRetiro = false;
@@ -1453,7 +1485,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         indexRetiro = -1;
         // limpiarRetiro();
-        retiroVigencia = null;
+        retiroVigencia = new Retirados();
+        retiroVigencia.setMotivoretiro(new MotivosRetiros());
         FacesContext c = FacesContext.getCurrentInstance();
         panelRetiradosInput = (Panel) c.getViewRoot().findComponent("form:panelRetiradosInput");
         panelRetiradosInput.setStyle("position: absolute; left: 440px; top: 280px; font-size: 12px; width: 415px; height: 195px; border-radius: 10px; text-align: left; visibility: hidden; display: none;");
@@ -1479,7 +1512,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void guardarDatosPensiones() {
         if (pensionVigencia.getFechainiciopension() != null && pensionVigencia.getClase().getSecuencia() != null) {
-            pensionVigencia.setVigenciatipotrabajador(vigenciasTiposTrabajadores.get(indexPension));
+            if (tipoLista == 0) {
+                pensionVigencia.setVigenciatipotrabajador(vigenciasTiposTrabajadores.get(indexPension));
+            }
+            if (tipoLista == 1) {
+                pensionVigencia.setVigenciatipotrabajador(filtrarVTT.get(indexPension));
+            }
+            k++;
+            l = BigInteger.valueOf(k);
+            pensionVigencia.setSecuencia(l);
             if (operacionPension == false) {
                 if (banderaLimpiarPension == true) {
                     administrarVigenciasTiposTrabajadores.borrarPensionado(pensionCopia);
@@ -1495,6 +1536,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 }
                 if (pensionVigencia.getTutor().getSecuencia() == null) {
                     pensionVigencia.setTutor(null);
+                }
+                if (pensionVigencia.getClase().getSecuencia() == null) {
+                    pensionVigencia.setClase(null);
                 }
                 administrarVigenciasTiposTrabajadores.crearPensionado(pensionVigencia);
             }
@@ -1520,7 +1564,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             index = -1;
             secRegistro = null;
 
-            pensionVigencia = null;
+            pensionVigencia = new Pensionados();
+            pensionVigencia.setClase(new ClasesPensiones());
+            pensionVigencia.setCausabiente(new Empleados());
+            pensionVigencia.setTipopensionado(new TiposPensionados());
+            pensionVigencia.setTutor(new Personas());
             banderaLimpiarPension = false;
 
             operacionPension = false;
@@ -1539,7 +1587,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         index = -1;
         secRegistro = null;
         indexPension = -1;
-        pensionVigencia = null;
+        pensionVigencia = new Pensionados();
+        pensionVigencia.setClase(new ClasesPensiones());
+        pensionVigencia.setCausabiente(new Empleados());
+        pensionVigencia.setTipopensionado(new TiposPensionados());
+        pensionVigencia.setTutor(new Personas());
         FacesContext c = FacesContext.getCurrentInstance();
         panelRetiradosInput = (Panel) c.getViewRoot().findComponent("form:panelRetiradosInput");
         panelRetiradosInput.setStyle("position: absolute; left: 440px; top: 280px; font-size: 12px; width: 415px; height: 195px; border-radius: 10px; text-align: left; visibility: hidden; display: none;");
@@ -1926,7 +1978,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * Guardar el nuevo registro de pensionado
      */
     public void guardarNuevoRegistroPension() {
-        guardarDatosRetiros();
+        guardarCambiosVTT();
         almacenarPensionado = true;
     }
 
@@ -1940,9 +1992,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         if ((almacenarPensionado == true) && (banderaEliminarPension == false)) {
             guardarDatosPensiones();
         }
-
         guardarCambiosVTT();
-
         FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         RequestContext.getCurrentInstance().update("form:growl");
