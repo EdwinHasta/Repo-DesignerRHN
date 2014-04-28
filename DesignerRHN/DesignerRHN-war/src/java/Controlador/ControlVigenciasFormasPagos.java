@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +47,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     private VigenciasFormasPagos editarVigenciaFormasPagoPorEmpleado;
     private VigenciasFormasPagos nuevaVigenciaFormasPago;
     private VigenciasFormasPagos duplicarVigenciaFormasPago;
+    private VigenciasFormasPagos vigenciaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -61,7 +63,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     private List<MetodosPagos> filtradoMetodosPagos;
     private MetodosPagos metodoPagoSeleccionado;
     //Variables Autompletar
-    private String sucursales, periodicidad, metodosPagos, mensajeValidacion;
+    private String backUpSucursales, periodicidad, metodosPagos, mensajeValidacion;
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
@@ -86,11 +88,9 @@ public class ControlVigenciasFormasPagos implements Serializable {
         //
         nuevaVigenciaFormasPago = new VigenciasFormasPagos();
         nuevaVigenciaFormasPago.setFormapago(new Periodicidades());
-        //nuevaVigenciaFormasPago.getFormapago().setNombre(" ");
         nuevaVigenciaFormasPago.setSucursal(new Sucursales());
-        //nuevaVigenciaFormasPago.getSucursal().setNombre(" ");
         nuevaVigenciaFormasPago.setMetodopago(new MetodosPagos());
-        //nuevaVigenciaFormasPago.getMetodopago().setDescripcion(" ");
+        guardado = true;
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -128,9 +128,9 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
             if (cualCelda == 3) {
                 if (tipoLista == 0) {
-                    sucursales = listVigenciasFormasPagosPorEmpleado.get(index).getSucursal().getNombre();
+                    backUpSucursales = listVigenciasFormasPagosPorEmpleado.get(index).getSucursal().getNombre();
                 } else {
-                    sucursales = filtrarVigenciasFormasPagosPorEmpleado.get(index).getSucursal().getNombre();
+                    backUpSucursales = filtrarVigenciasFormasPagosPorEmpleado.get(index).getSucursal().getNombre();
                 }
             } else if (cualCelda == 4) {
                 if (tipoLista == 0) {
@@ -230,7 +230,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             if (!crearVigenciasFormasPagosPorEmpleado.isEmpty()) {
                 for (int i = 0; i < crearVigenciasFormasPagosPorEmpleado.size(); i++) {
-                    if (crearVigenciasFormasPagosPorEmpleado.get(i).getFechavigencia() != null) {
+                    if (crearVigenciasFormasPagosPorEmpleado.get(i).getSucursal() != null) {
                         if (crearVigenciasFormasPagosPorEmpleado.get(i).getSucursal().getSecuencia() == null) {
                             crearVigenciasFormasPagosPorEmpleado.get(i).setSucursal(null);
                         }
@@ -246,6 +246,9 @@ public class ControlVigenciasFormasPagos implements Serializable {
                 crearVigenciasFormasPagosPorEmpleado.clear();
             }
             if (!modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
+                for (int i = 0; i < modificarVigenciasFormasPagosPorEmpleado.size(); i++) {
+                    System.out.println("Modificar : " + modificarVigenciasFormasPagosPorEmpleado.get(i).getFechavigencia());
+                }
                 administrarEmplVigenciasFormasPagos.modificarVigenciasFormasPagos(modificarVigenciasFormasPagosPorEmpleado);
                 modificarVigenciasFormasPagosPorEmpleado.clear();
             }
@@ -253,10 +256,14 @@ public class ControlVigenciasFormasPagos implements Serializable {
             listVigenciasFormasPagosPorEmpleado = null;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciasFormasPagos");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             k = 0;
+            guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -281,7 +288,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
                 for (int z = 0; z < listVigenciasFormasPagosPorEmpleado.size(); z++) {
                     System.err.println("Contador vigenciasformas pagos modificar " + z);
                     if (indice == z) {
-                        System.err.println("z == indice");
+                        System.err.println("z == indice " + indice);
                     } else {
                         if (listVigenciasFormasPagosPorEmpleado.get(indice).getFechavigencia().equals(listVigenciasFormasPagosPorEmpleado.get(z).getFechavigencia())) {
                             contador++;
@@ -326,9 +333,12 @@ public class ControlVigenciasFormasPagos implements Serializable {
                             modificarVigenciasFormasPagosPorEmpleado.add(listVigenciasFormasPagosPorEmpleado.get(indice));
                         } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(listVigenciasFormasPagosPorEmpleado.get(indice))) {
                             modificarVigenciasFormasPagosPorEmpleado.add(listVigenciasFormasPagosPorEmpleado.get(indice));
+                            System.out.println("Si guardo la fecha : " + listVigenciasFormasPagosPorEmpleado.get(indice).getFechavigencia().toString());
                         }
                         if (guardado == true) {
                             guardado = false;
+                            context.update("form:ACEPTAR");
+
                         }
                     }
                 }
@@ -387,6 +397,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            context.update("form:ACEPTAR");
                         }
                     }
                 }
@@ -395,33 +406,89 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             context.update("form:datosVigenciasFormasPagos");
         } else if (confirmarCambio.equalsIgnoreCase("SUCURSAL")) {
-            if (tipoLista == 0) {
-                listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().setNombre(sucursales);
+            System.out.println("MODIFICANDO SUCURSAL : " + listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().getNombre());
+            if (!listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().getNombre().equals("")) {
+                if (tipoLista == 0) {
+                    listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().setNombre(backUpSucursales);
+                } else {
+                    listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().setNombre(backUpSucursales);
+                }
+
+                for (int i = 0; i < listaPeriodicidades.size(); i++) {
+                    if (listaPeriodicidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listVigenciasFormasPagosPorEmpleado.get(indice).setSucursal(listaSucursales.get(indiceUnicoElemento));
+                    } else {
+                        filtrarVigenciasFormasPagosPorEmpleado.get(indice).setSucursal(listaSucursales.get(indiceUnicoElemento));
+                    }
+                    listaPeriodicidades.clear();
+                    listaPeriodicidades = null;
+                    //getListaTiposFamiliares();
+
+                } else {
+                    permitirIndex = false;
+                    context.update("form:sucursalesDialogo");
+                    context.execute("sucursalesDialogo.show()");
+                    tipoActualizacion = 0;
+                }
             } else {
-                filtrarVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().setNombre(sucursales);
+                System.out.println("BackUpSucursales : " + backUpSucursales);
+
+                if (tipoLista == 0) {
+                    listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().setNombre(backUpSucursales);
+                    listVigenciasFormasPagosPorEmpleado.get(indice).setSucursal(new Sucursales());
+                    System.out.println("listVigenciasFormasPagosPorEmpleado.get(" + indice + ").getSucursal() : = " + listVigenciasFormasPagosPorEmpleado.get(indice).getSucursal());
+                } else {
+                    filtrarVigenciasFormasPagosPorEmpleado.get(indice).getSucursal().setNombre(backUpSucursales);
+                    filtrarVigenciasFormasPagosPorEmpleado.get(indice).setSucursal(new Sucursales());
+                }
+                coincidencias = 1;
+
+                tipoActualizacion = 0;
+
             }
 
-            for (int i = 0; i < listaSucursales.size(); i++) {
-                if (listaSucursales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    listVigenciasFormasPagosPorEmpleado.get(indice).setSucursal(listaSucursales.get(indiceUnicoElemento));
+                    if (!crearVigenciasFormasPagosPorEmpleado.contains(listVigenciasFormasPagosPorEmpleado.get(indice))) {
+
+                        if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
+                            modificarVigenciasFormasPagosPorEmpleado.add(listVigenciasFormasPagosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(listVigenciasFormasPagosPorEmpleado.get(indice))) {
+                            modificarVigenciasFormasPagosPorEmpleado.add(listVigenciasFormasPagosPorEmpleado.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    }
+                    index = -1;
+                    secRegistro = null;
                 } else {
-                    filtrarVigenciasFormasPagosPorEmpleado.get(indice).setSucursal(listaSucursales.get(indiceUnicoElemento));
+                    if (!crearVigenciasFormasPagosPorEmpleado.contains(filtrarVigenciasFormasPagosPorEmpleado.get(indice))) {
+
+                        if (modificarVigenciasFormasPagosPorEmpleado.isEmpty()) {
+                            modificarVigenciasFormasPagosPorEmpleado.add(filtrarVigenciasFormasPagosPorEmpleado.get(indice));
+                        } else if (!modificarVigenciasFormasPagosPorEmpleado.contains(filtrarVigenciasFormasPagosPorEmpleado.get(indice))) {
+                            modificarVigenciasFormasPagosPorEmpleado.add(filtrarVigenciasFormasPagosPorEmpleado.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    }
+                    index = -1;
+                    secRegistro = null;
                 }
-                listaSucursales.clear();
-                listaSucursales = null;
-                getListaSucursales();
-            } else {
-                permitirIndex = false;
-                context.update("form:sucursalesDialogo");
-                context.execute("sucursalesDialogo.show()");
-                tipoActualizacion = 0;
             }
+
+            context.update("form:datosVigenciasFormasPagos");
+            context.update("form:ACEPTAR");
+
         } else if (confirmarCambio.equalsIgnoreCase("FORMAPAGO")) {
 
             if (tipoLista == 0) {
@@ -491,6 +558,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -505,6 +573,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -542,21 +611,22 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            fechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
+            fechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
             fechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            cuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
+            cuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
             cuenta.setFilterStyle("display: none; visibility: hidden;");
-            fechaCuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
+            fechaCuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
             fechaCuenta.setFilterStyle("display: none; visibility: hidden;");
-            sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
+            sucursal = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
             sucursal.setFilterStyle("display: none; visibility: hidden;");
-            formaPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
+            formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
             formaPago.setFilterStyle("display: none; visibility: hidden;");
-            tc = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
+            tc = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
             tc.setFilterStyle("display: none; visibility: hidden;");
-            metodoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
+            metodoPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
             metodoPago.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciasFormasPagos");
             bandera = 0;
@@ -572,6 +642,8 @@ public class ControlVigenciasFormasPagos implements Serializable {
         k = 0;
         listVigenciasFormasPagosPorEmpleado = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciasFormasPagos");
@@ -603,6 +675,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosVigenciasFormasPagos");
@@ -626,6 +699,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
     }
 
     public void cancelarCambioSucursal() {
+        RequestContext context = RequestContext.getCurrentInstance();
         filtradoSucursales = null;
         sucursalSeleccionada = null;
         aceptar = true;
@@ -633,6 +707,10 @@ public class ControlVigenciasFormasPagos implements Serializable {
         secRegistro = null;
         tipoActualizacion = -1;
         permitirIndex = true;
+
+        guardado = true;
+        context.update("form:ACEPTAR");
+
     }
 
     public void actualizarPeriodicidad() {
@@ -661,6 +739,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosVigenciasFormasPagos");
@@ -719,6 +798,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             mensajeValidacion = "";
@@ -782,39 +862,41 @@ public class ControlVigenciasFormasPagos implements Serializable {
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
         if (bandera == 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
 
-            fechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
+            fechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
             fechaVigencia.setFilterStyle("width: 50px");
-            cuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
+            cuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
             cuenta.setFilterStyle("width: 60px");
-            fechaCuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
+            fechaCuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
             fechaCuenta.setFilterStyle("width: 70px");
-            sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
+            sucursal = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
             sucursal.setFilterStyle("width: 190px");
-            formaPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
+            formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
             formaPago.setFilterStyle("width: 190px");
-            tc = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
+            tc = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
             tc.setFilterStyle("width: 15px");
-            metodoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
+            metodoPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
             metodoPago.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:datosVigenciasFormasPagos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             System.out.println("Desactivar");
-            fechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
+            fechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
             fechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            cuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
+            cuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
             cuenta.setFilterStyle("display: none; visibility: hidden;");
-            fechaCuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
+            fechaCuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
             fechaCuenta.setFilterStyle("display: none; visibility: hidden;");
-            sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
+            sucursal = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
             sucursal.setFilterStyle("display: none; visibility: hidden;");
-            formaPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
+            formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
             formaPago.setFilterStyle("display: none; visibility: hidden;");
-            tc = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
+            tc = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
             tc.setFilterStyle("display: none; visibility: hidden;");
-            metodoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
+            metodoPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
             metodoPago.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciasFormasPagos");
             bandera = 0;
@@ -964,19 +1046,20 @@ public class ControlVigenciasFormasPagos implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             System.out.println("Desactivar");
-            fechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
+            FacesContext c = FacesContext.getCurrentInstance();
+            fechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
             fechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            cuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
+            cuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
             cuenta.setFilterStyle("display: none; visibility: hidden;");
-            fechaCuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
+            fechaCuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
             fechaCuenta.setFilterStyle("display: none; visibility: hidden;");
-            sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
+            sucursal = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
             sucursal.setFilterStyle("display: none; visibility: hidden;");
-            formaPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
+            formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
             formaPago.setFilterStyle("display: none; visibility: hidden;");
-            tc = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
+            tc = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
             tc.setFilterStyle("display: none; visibility: hidden;");
-            metodoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
+            metodoPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
             metodoPago.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciasFormasPagos");
             bandera = 0;
@@ -1003,7 +1086,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
         context.update("form:datosVigenciasFormasPagos");
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         context.execute("NuevoRegistroVigenciasFormasPagos.hide()");
         index = -1;
@@ -1283,7 +1366,7 @@ public class ControlVigenciasFormasPagos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
 
@@ -1409,23 +1492,24 @@ public class ControlVigenciasFormasPagos implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                fechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
+                FacesContext c = FacesContext.getCurrentInstance();
+                fechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaVigencia");
                 fechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                cuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
+                cuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:cuenta");
                 cuenta.setFilterStyle("display: none; visibility: hidden;");
-                fechaCuenta = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
+                fechaCuenta = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:fechaCuenta");
                 fechaCuenta.setFilterStyle("display: none; visibility: hidden;");
-                sucursal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
+                sucursal = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:sucursal");
                 sucursal.setFilterStyle("display: none; visibility: hidden;");
-                formaPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
+                formaPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:formaPago");
                 formaPago.setFilterStyle("display: none; visibility: hidden;");
-                tc = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
+                tc = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:tc");
                 tc.setFilterStyle("display: none; visibility: hidden;");
-                metodoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
+                metodoPago = (Column) c.getViewRoot().findComponent("form:datosVigenciasFormasPagos:metodoPago");
                 metodoPago.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosVigenciasFormasPagos");
                 bandera = 0;
@@ -1629,4 +1713,21 @@ public class ControlVigenciasFormasPagos implements Serializable {
     public void setDuplicarVigenciaFormasPago(VigenciasFormasPagos duplicarVigenciaFormasPago) {
         this.duplicarVigenciaFormasPago = duplicarVigenciaFormasPago;
     }
+
+    public VigenciasFormasPagos getVigenciaSeleccionada() {
+        return vigenciaSeleccionada;
+    }
+
+    public void setVigenciaSeleccionada(VigenciasFormasPagos vigenciaSeleccionada) {
+        this.vigenciaSeleccionada = vigenciaSeleccionada;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }

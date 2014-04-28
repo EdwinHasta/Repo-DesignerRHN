@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlConceptosSoportes implements Serializable {
     private ConceptosSoportes nuevoConceptosSoportes;
     private ConceptosSoportes duplicarConceptosSoportes;
     private ConceptosSoportes editarConceptosSoportes;
+    private ConceptosSoportes conceptoSoporteSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -71,15 +73,18 @@ public class ControlConceptosSoportes implements Serializable {
     private String backupConcepto;
     private List<Operandos> listaOperandos;
     private List<Operandos> filtradoOperandos;
-    private Operandos cargoSeleccionado;
+    private Operandos operandoSeleccionado;
     private String nuevoYduplicarCompletarCargo;
 
     //---------------------------------
     private List<ConceptosSoportes> listConceptosSoportesBoton;
     private List<ConceptosSoportes> filterConceptosSoportesBoton;
-    private ConceptosSoportes conceptoSoporteSeleccionado;
+    private ConceptosSoportes conceptoSoporteMostrado;
+
+    private BigInteger secConceptoSeleccionado;
 
     public ControlConceptosSoportes() {
+        banderaConceptoEscogido = true;
         listConceptosSoportesBoton = null;
         listConceptosSoportes = null;
         crearConceptosSoportes = new ArrayList<ConceptosSoportes>();
@@ -98,7 +103,7 @@ public class ControlConceptosSoportes implements Serializable {
         listaOperandos = null;
         filtradoOperandos = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
 
     }
 
@@ -180,6 +185,13 @@ public class ControlConceptosSoportes implements Serializable {
                 dig = -1;
             }
             if (dig == 2) {
+                if (tipoLista == 0) {
+                    secConceptoSeleccionado = listConceptosSoportes.get(indice).getConcepto().getSecuencia();
+                } else {
+                    secConceptoSeleccionado = filtrarConceptosSoportes.get(indice).getConcepto().getSecuencia();
+                }
+                listaOperandos = null;
+                getListaOperandos();
                 context.update("form:cargosDialogo");
                 context.execute("cargosDialogo.show()");
                 dig = -1;
@@ -217,6 +229,7 @@ public class ControlConceptosSoportes implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
@@ -246,6 +259,7 @@ public class ControlConceptosSoportes implements Serializable {
     public void cancelarModificacionCambio() {
         if (bandera == 1) {
             //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
@@ -275,24 +289,26 @@ public class ControlConceptosSoportes implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+            tamano = 246;
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("width: 20px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
             personafir.setFilterStyle("width: 130px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
             cargo.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
@@ -340,11 +356,23 @@ public class ControlConceptosSoportes implements Serializable {
         } else if (tipoActualizacion == 1) {
             System.out.println("ACTUALIZAR CONCEPTO NUEVO DEPARTAMENTO: " + conceptoSeleccionado.getDescripcion());
             nuevoConceptosSoportes.setConcepto(conceptoSeleccionado);
+            secConceptoSeleccionado = nuevoConceptosSoportes.getConcepto().getSecuencia();
+            listaOperandos = null;
+            banderaConceptoEscogido = false;
+            context.update("formularioDialogos:nuevoCargo");
+            context.update("formularioDialogos:btnnuevoCargo");
+            getListaOperandos();
             context.update("formularioDialogos:nuevoPersona");
             context.update("formularioDialogos:nuevoCodigo");
         } else if (tipoActualizacion == 2) {
             System.out.println("ACTUALIZAR CONCEPTO DUPLICAR DEPARTAMENO: " + conceptoSeleccionado.getDescripcion());
             duplicarConceptosSoportes.setConcepto(conceptoSeleccionado);
+            secConceptoSeleccionado = nuevoConceptosSoportes.getConcepto().getSecuencia();
+            listaOperandos = null;
+            banderaConceptoEscogido = false;
+            RequestContext.getCurrentInstance().update("formularioDialogos:duplicarCargo");
+            RequestContext.getCurrentInstance().update("formularioDialogos:btnduplicarCargo");
+            getListaOperandos();
             context.update("formularioDialogos:duplicarPersona");
             context.update("formularioDialogos:duplicarCodigo");
         }
@@ -363,13 +391,13 @@ public class ControlConceptosSoportes implements Serializable {
 
     public void actualizarOperandos() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("ciudad seleccionado : " + cargoSeleccionado.getNombre());
+        System.out.println("ciudad seleccionado : " + operandoSeleccionado.getNombre());
         System.out.println("tipo Actualizacion : " + tipoActualizacion);
         System.out.println("tipo Lista : " + tipoLista);
 
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listConceptosSoportes.get(index).setOperando(cargoSeleccionado);
+                listConceptosSoportes.get(index).setOperando(operandoSeleccionado);
 
                 if (!crearConceptosSoportes.contains(listConceptosSoportes.get(index))) {
                     if (modificarConceptosSoportes.isEmpty()) {
@@ -379,7 +407,7 @@ public class ControlConceptosSoportes implements Serializable {
                     }
                 }
             } else {
-                filtrarConceptosSoportes.get(index).setOperando(cargoSeleccionado);
+                filtrarConceptosSoportes.get(index).setOperando(operandoSeleccionado);
 
                 if (!crearConceptosSoportes.contains(filtrarConceptosSoportes.get(index))) {
                     if (modificarConceptosSoportes.isEmpty()) {
@@ -393,16 +421,16 @@ public class ControlConceptosSoportes implements Serializable {
                 guardado = false;
             }
             permitirIndex = true;
-            System.out.println("ACTUALIZAR OPERANDOS CARGO SELECCIONADO : " + cargoSeleccionado.getNombre());
+            System.out.println("ACTUALIZAR OPERANDOS CARGO SELECCIONADO : " + operandoSeleccionado.getNombre());
             context.update("form:datosConceptosSoportes");
             context.update("form:ACEPTAR");
         } else if (tipoActualizacion == 1) {
-            System.out.println("ACTUALIZAR OPERANDOS NUEVO DEPARTAMENTO: " + cargoSeleccionado.getNombre());
-            nuevoConceptosSoportes.setOperando(cargoSeleccionado);
+            System.out.println("ACTUALIZAR OPERANDOS NUEVO DEPARTAMENTO: " + operandoSeleccionado.getNombre());
+            nuevoConceptosSoportes.setOperando(operandoSeleccionado);
             context.update("formularioDialogos:nuevoCargo");
         } else if (tipoActualizacion == 2) {
-            System.out.println("ACTUALIZAR OPERANDOS DUPLICAR DEPARTAMENO: " + cargoSeleccionado.getNombre());
-            duplicarConceptosSoportes.setOperando(cargoSeleccionado);
+            System.out.println("ACTUALIZAR OPERANDOS DUPLICAR DEPARTAMENO: " + operandoSeleccionado.getNombre());
+            duplicarConceptosSoportes.setOperando(operandoSeleccionado);
             context.update("formularioDialogos:duplicarCargo");
         }
         filtradoConceptos = null;
@@ -433,7 +461,7 @@ public class ControlConceptosSoportes implements Serializable {
 
     public void cancelarCambioOperandos() {
         filtradoOperandos = null;
-        cargoSeleccionado = null;
+        operandoSeleccionado = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -901,6 +929,13 @@ public class ControlConceptosSoportes implements Serializable {
                 if (coincidencias == 1) {
                     nuevoConceptosSoportes.setConcepto(listaConceptos.get(indiceUnicoElemento));
                     listaConceptos = null;
+                    secConceptoSeleccionado = nuevoConceptosSoportes.getConcepto().getSecuencia();
+                    listaOperandos = null;
+                    banderaConceptoEscogido = false;
+                    context.update("formularioDialogos:nuevoCargo");
+                    context.update("formularioDialogos:btnnuevoCargo");
+                    getListaOperandos();
+
                     System.err.println("PERSONA GUARDADA :-----> " + nuevoConceptosSoportes.getConcepto().getDescripcion());
                 } else {
                     context.update("form:personasDialogo");
@@ -917,6 +952,8 @@ public class ControlConceptosSoportes implements Serializable {
         }
 
     }
+
+    private boolean banderaConceptoEscogido = true;
 
     public void autocompletarNuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
 
@@ -941,9 +978,15 @@ public class ControlConceptosSoportes implements Serializable {
                 }
                 System.out.println("Coincidencias: " + coincidencias);
                 if (coincidencias == 1) {
+                    System.err.println("CONCEPTO OPERANDO GUARDADA :-----> " + nuevoConceptosSoportes.getConcepto().getDescripcion());
                     nuevoConceptosSoportes.setConcepto(listaConceptos.get(indiceUnicoElemento));
                     listaConceptos = null;
-                    System.err.println("PERSONA GUARDADA :-----> " + nuevoConceptosSoportes.getConcepto().getDescripcion());
+                    secConceptoSeleccionado = nuevoConceptosSoportes.getConcepto().getSecuencia();
+                    listaOperandos = null;
+                    banderaConceptoEscogido = false;
+                    context.update("formularioDialogos:nuevoCargo");
+                    context.update("formularioDialogos:btnnuevoCargo");
+                    getListaOperandos();
                 } else {
                     context.update("form:personasDialogo");
                     context.execute("personasDialogo.show()");
@@ -1044,6 +1087,11 @@ public class ControlConceptosSoportes implements Serializable {
                 if (coincidencias == 1) {
                     duplicarConceptosSoportes.setConcepto(listaConceptos.get(indiceUnicoElemento));
                     listaConceptos = null;
+                    secConceptoSeleccionado = duplicarConceptosSoportes.getConcepto().getSecuencia();
+                    listaOperandos = null;
+                    banderaConceptoEscogido = false;
+                    context.update("formularioDialogos:duplicarCargo");
+                    context.update("formularioDialogos:btnduplicarCargo");
                 } else {
                     context.update("form:personasDialogo");
                     context.execute("personasDialogo.show()");
@@ -1098,6 +1146,11 @@ public class ControlConceptosSoportes implements Serializable {
                 if (coincidencias == 1) {
                     duplicarConceptosSoportes.setConcepto(listaConceptos.get(indiceUnicoElemento));
                     listaConceptos = null;
+                    secConceptoSeleccionado = duplicarConceptosSoportes.getConcepto().getSecuencia();
+                    listaOperandos = null;
+                    banderaConceptoEscogido = false;
+                    context.update("formularioDialogos:duplicarCargo");
+                    context.update("formularioDialogos:btnduplicarCargo");
                 } else {
                     context.update("form:personasDialogo");
                     context.execute("personasDialogo.show()");
@@ -1254,11 +1307,11 @@ public class ControlConceptosSoportes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listConceptosSoportes = null;
-            context.execute("mostrarGuardar.show()");
-            context.update("form:datosConceptosSoportes");
             k = 0;
             guardado = true;
-
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1288,11 +1341,11 @@ public class ControlConceptosSoportes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listConceptosSoportes = null;
-            context.execute("mostrarGuardar.show()");
-            context.update("form:datosConceptosSoportes");
             k = 0;
             guardado = true;
-            seleccionConceptoSoporte();
+            //seleccionConceptoSoporte();
+            context.update("formularioDialogos:lovCentrosCostos");
+            context.execute("buscarCentrosCostosDialogo.show()");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1365,12 +1418,13 @@ public class ControlConceptosSoportes implements Serializable {
         if (contador == 2 && contarConceptosOperandos.equals(new BigInteger("0"))) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarConceptosSoportes = null;
@@ -1414,6 +1468,11 @@ public class ControlConceptosSoportes implements Serializable {
         nuevoConceptosSoportes = new ConceptosSoportes();
         nuevoConceptosSoportes.setConcepto(new Conceptos());
         nuevoConceptosSoportes.setOperando(new Operandos());
+        banderaConceptoEscogido = true;
+        RequestContext.getCurrentInstance().update("formularioDialogos:nuevoCargo");
+        RequestContext.getCurrentInstance().update("formularioDialogos:btnnuevoCargo");
+        RequestContext.getCurrentInstance().update("formularioDialogos:nuevaTipoempresa");
+
         secRegistro = null;
         index = -1;
 
@@ -1453,7 +1512,7 @@ public class ControlConceptosSoportes implements Serializable {
                 duplicarConceptosSoportes.setTipo(filtrarConceptosSoportes.get(index).getTipo());
 
             }
-
+            banderaConceptoEscogido = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroConceptosSoportes.show()");
@@ -1508,11 +1567,12 @@ public class ControlConceptosSoportes implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
                 bandera = 0;
@@ -1539,6 +1599,10 @@ public class ControlConceptosSoportes implements Serializable {
         duplicarConceptosSoportes = new ConceptosSoportes();
         duplicarConceptosSoportes.setConcepto(new Conceptos());
         duplicarConceptosSoportes.setOperando(new Operandos());
+        banderaConceptoEscogido = true;
+        RequestContext.getCurrentInstance().update("formularioDialogos:duplicarCargo");
+        RequestContext.getCurrentInstance().update("formularioDialogos:btnduplicarCargo");
+        RequestContext.getCurrentInstance().update("formularioDialogos:duplicarTE");
     }
 
     public void exportPDF() throws IOException {
@@ -1638,7 +1702,7 @@ public class ControlConceptosSoportes implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.seleccionaVigencia ERROR====" + e.getMessage());
+            System.out.println("ERROR CONTROLCONCEPTOSSOPORTES.seleccionaVigencia ERROR====" + e.getMessage());
         }
     }
 
@@ -1659,7 +1723,7 @@ public class ControlConceptosSoportes implements Serializable {
 
     public List<ConceptosSoportes> getListConceptosSoportesBoton() {
         if (listConceptosSoportesBoton == null) {
-            listConceptosSoportesBoton = listConceptosSoportes;
+            listConceptosSoportesBoton = administrarConceptosSoportes.consultarConceptosSoportes();
         }
         return listConceptosSoportesBoton;
     }
@@ -1805,7 +1869,7 @@ public class ControlConceptosSoportes implements Serializable {
 
     public List<Operandos> getListaOperandos() {
         if (listaOperandos == null) {
-            listaOperandos = administrarConceptosSoportes.consultarLOVOperandos();
+            listaOperandos = administrarConceptosSoportes.consultarLOVOperandosPorConcepto(secConceptoSeleccionado);
         }
         return listaOperandos;
     }
@@ -1823,11 +1887,26 @@ public class ControlConceptosSoportes implements Serializable {
     }
 
     public Operandos getOperandoSeleccionado() {
-        return cargoSeleccionado;
+        return operandoSeleccionado;
     }
 
-    public void setOperandoSeleccionado(Operandos cargoSeleccionado) {
-        this.cargoSeleccionado = cargoSeleccionado;
+    public void setOperandoSeleccionado(Operandos operandoSeleccionado) {
+        this.operandoSeleccionado = operandoSeleccionado;
     }
 
+    public boolean isBanderaConceptoEscogido() {
+        return banderaConceptoEscogido;
+    }
+
+    public void setBanderaConceptoEscogido(boolean banderaConceptoEscogido) {
+        this.banderaConceptoEscogido = banderaConceptoEscogido;
+    }
+
+    public ConceptosSoportes getConceptoSoporteMostrado() {
+        return conceptoSoporteMostrado;
+    }
+
+    public void setConceptoSoporteMostrado(ConceptosSoportes conceptoSoporteMostrado) {
+        this.conceptoSoporteMostrado = conceptoSoporteMostrado;
+    }
 }

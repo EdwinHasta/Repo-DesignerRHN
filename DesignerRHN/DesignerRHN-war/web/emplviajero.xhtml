@@ -61,7 +61,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" value="Nombre Norma Laboral"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" value="Tipo Viajero"/>
                                     </f:facet>
                                 </p:column>
 
@@ -121,7 +121,7 @@
 
                         <p:dialog header="Tipos Viajeros" widgetVar="sucursalesDialogo" draggable="false" resizable="false" closable="false" id="sucursalesDialogo"  
                                   showEffect="fade" hideEffect="fade" width="470" modal="true" style="">
-                            <p:dataTable id="lovTiposFamiliares" style=" width: 430px" var="tipofamiliar" value="#{controlVigenciasViajeros.listaTiposviajeros}" rowKey="#{tipofamiliar.secuencia}"
+                            <p:dataTable id="lovTiposFamiliares" style=" width: 430px" var="tipoviajeroD" value="#{controlVigenciasViajeros.listaTiposviajeros}" rowKey="#{tipoviajeroD.secuencia}"
                                          selection="#{controlVigenciasViajeros.normaLaboralSeleccionada}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasViajeros.filtradoTiposviajeros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasViajeros.activarAceptar()}" update=":form:aceptarS"/>
@@ -130,17 +130,17 @@
                                     <h:outputText value="Buscar Tipo Viajero: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposFamiliares.filter();" style="width:150px; position: relative; left: 10px;" />  
                                 </f:facet>
-                                <p:column filterBy="#{tipofamiliar.codigo}" width="60" filterStyle="width:50px;" filterMatchMode="contains">
+                                <p:column filterBy="#{tipoviajeroD.codigo}" width="60" filterStyle="width:50px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Codigo" />
                                     </f:facet>
-                                    <h:outputText value="#{tipofamiliar.codigo}" />
+                                    <h:outputText value="#{tipoviajeroD.codigo}" />
                                 </p:column>
-                                <p:column filterBy="#{tipofamiliar.nombre}" width="160px" filterStyle="width:140px;" filterMatchMode="contains">
+                                <p:column filterBy="#{tipoviajeroD.nombre}" width="160px" filterStyle="width:140px;" filterMatchMode="contains">
                                     <f:facet name="header">
                                         <h:outputText value="Nombre" />
                                     </f:facet>
-                                    <h:outputText value="#{tipofamiliar.nombre}" />
+                                    <h:outputText value="#{tipoviajeroD.nombre}" />
                                 </p:column>
 
                             </p:dataTable>
