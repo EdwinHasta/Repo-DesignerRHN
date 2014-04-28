@@ -20,31 +20,13 @@
         <Node id="novedad.xhtml" x="2900" y="600" zoom="true"/>
         <Node id="NReporteLaboral.xhtml" x="650" y="1350" zoom="true"/>
         <Node id="configurarcolumnas.xhtml" x="3400" y="600" zoom="true"/>
-        <Node id="novedad.xhtml" x="2900" y="600" zoom="true"/>
         <Node id="Comprobante.xhtml" x="900" y="1800" zoom="true"/>
         <Node id="PersonaEducacion.xhtml" x="3650" y="600" zoom="true"/>
-        <Node id="formulaconcepto.xhtml" x="2400" y="750" zoom="true"/>
         <Node id="Formula.xhtml" x="3400" y="450" zoom="true"/>
-<<<<<<< HEAD
+        <Node id="formulaconcepto.xhtml" x="2400" y="750" zoom="true"/>
+<?xml version="1.0" encoding="UTF-8"?>
 =======
         <Node id="formulaconcepto.xhtml" x="2400" y="750" zoom="true"/>
->>>>>>> origin/master
-        <Node id="emplvigenciaformapago.xhtml" x="650" y="300" zoom="true"/>
-        <Node id="Parametro.xhtml" x="650" y="1050" zoom="true"/>
-        <Node id="EmplVigenciaReformaLaboral.xhtml" x="650" y="2550" zoom="true"/>
-        <Node id="iniciored.xhtml" x="4150" y="600" zoom="true"/>
-        <Node id="detallelegislacion.xhtml" x="2650" y="1500" zoom="true"/>
-        <Node id="formulaproceso.xhtml" x="2400" y="1200" zoom="true"/>
-        <Node id="tipocotizante.xhtml" x="900" y="2100" zoom="true"/>
-        <Node id="tipoconstante.xhtml" x="150" y="450" zoom="true"/>
-        <Node id="detalleempresa.xhtml" x="400" y="750" zoom="true"/>
-        <Node id="EmplVigenciaJornada.xhtml" x="150" y="600" zoom="true"/>
-        <Node id="proverbio.xhtml" x="2150" y="1350" zoom="true"/>
-        <Node id="GrupoSalarial.xhtml" x="1150" y="1950" zoom="true"/>
-        <Node id="acercade.xhtml" x="900" y="1350" zoom="true"/>
-        <Node id="emplviajero.xhtml" x="400" y="600" zoom="true"/>
-        <Node id="Cuenta.xhtml" x="3150" y="600" zoom="true"/>
-        <Node id="TiposTelefonos.xhtml" x="2900" y="1350" zoom="true"/>
         <Node id="PerTelefono.xhtml" x="650" y="2400" zoom="true"/>
         <Node id="EmplVigenciaEvento.xhtml" x="650" y="150" zoom="true"/>
         <Node id="operando.xhtml" x="2150" y="750" zoom="true"/>
@@ -61,17 +43,11 @@
         <Node id="EmplLegislacionLaboral.xhtml" x="1650" y="1350" zoom="true"/>
         <Node id="tiposcentroscostos.xhtml" x="1400" y="1500" zoom="true"/>
         <Node id="perexperiencialaboral.xhtml" x="4650" y="300" zoom="true"/>
-<<<<<<< HEAD
         <Node id="PerDirecciones.xhtml" x="150" y="150" zoom="true"/>
         <Node id="vigenciadeporte.xhtml" x="1650" y="2100" zoom="true"/>
 =======
->>>>>>> origin/master
-        <Node id="novedadoperando.xhtml" x="150" y="2550" zoom="true"/>
-<<<<<<< HEAD
-=======
         <Node id="PerDirecciones.xhtml" x="150" y="150" zoom="true"/>
         <Node id="vigenciadeporte.xhtml" x="1650" y="2100" zoom="true"/>
->>>>>>> origin/master
         <Node id="ReportesBancos.xhtml" x="1150" y="300" zoom="true"/>
         <Node id="adminreportes.xhtml" x="2150" y="1050" zoom="true"/>
         <Node id="novedadembargo.xhtml" x="1150" y="450" zoom="true"/>
@@ -83,6 +59,7 @@
         <Node id="NovedadConcepto.xhtml" x="650" y="1500" zoom="true"/>
         <Node id="tipotelefono.xhtml" x="150" y="2850" zoom="true"/>
         <Node id="Concepto.xhtml" x="3400" y="900" zoom="true"/>
+
         <Node id="Atausentismos.xhtml" x="3400" y="1050" zoom="true"/>
         <Node id="busquedaavanzada.xhtml" x="2400" y="1800" zoom="true"/>
         <Node id="normalaboral.xhtml" x="150" y="1500" zoom="true"/>
@@ -112,11 +89,9 @@
         <Node id="EmplInformacionAdicional.xhtml" x="1900" y="600" zoom="true"/>
         <Node id="Tercero.xhtml" x="1650" y="1950" zoom="true"/>
         <Node id="Rastro.xhtml" x="1150" y="2400" zoom="true"/>
-<<<<<<< HEAD
         <Node id="Tercero.xhtml" x="1650" y="1950" zoom="true"/>
 =======
 
->>>>>>> origin/master
         <Node id="DetalleCuenta.xhtml" x="1400" y="1950" zoom="true"/>
         <Node id="page1.xhtml" x="400" y="2250" zoom="true"/>
         <Node id="estructuraplanta.xhtml" x="1150" y="1800" zoom="true"/>
@@ -367,3 +342,10 @@
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>
+<<<<<<< HEAD
+        <Node id="PerDirecciones.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="vigenciadeporte.xhtml" x="1650" y="2100" zoom="true"/>
+=======
+        <Node id="PerDirecciones.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="vigenciadeporte.xhtml" x="1650" y="2100" zoom="true"/>
+>>>>>>> origin/master
