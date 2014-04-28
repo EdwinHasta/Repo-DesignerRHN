@@ -116,7 +116,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
                     + "where v.fechapago > :fechaInicial "
                     + "AND v.empleado.secuencia = :secuencia "
                     + "AND v.estado ='CERRADO' "
-                    + "AND v.tercero.secuencia != :secuenciaTer "
+                    + "AND v.nit.secuencia != :secuenciaTer "
                     + "AND exists (SELECT cs "
                     + "FROM ConceptosSoportes cs "
                     + "WHERE cs.concepto.secuencia = v.concepto.secuencia "
