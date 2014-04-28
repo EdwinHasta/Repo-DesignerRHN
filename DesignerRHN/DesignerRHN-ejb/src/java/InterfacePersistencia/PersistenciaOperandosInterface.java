@@ -26,10 +26,12 @@ public interface PersistenciaOperandosInterface {
     public void crear(Operandos operandos);
 
     public void editar(Operandos operandos);
-    
+
     public void borrar(Operandos operandos);
-    
-    public String valores(BigInteger secuenciaOperando) ;
-    
+
+    public String valores(BigInteger secuenciaOperando);
+
     public Operandos operandosPorSecuencia(BigInteger secuencia);
+
+    public List<Operandos> operandoPorConceptoSoporte(BigInteger secConceptoSoporte);
 }

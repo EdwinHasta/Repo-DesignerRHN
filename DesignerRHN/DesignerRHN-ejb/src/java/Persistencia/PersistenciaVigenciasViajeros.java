@@ -52,6 +52,7 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
             Query query = em.createQuery("SELECT vrl FROM VigenciasViajeros vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
             List<VigenciasViajeros> vigenciasRefLab = query.getResultList();
+            System.out.println("TIPO VIAJERO: " + vigenciasRefLab.get(0).getTipoViajero().getNombre());
             return vigenciasRefLab;
         } catch (Exception e) {
             System.out.println("Error en Persistencia Vigencias Reforma Laboral " + e);
