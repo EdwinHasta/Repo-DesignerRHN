@@ -96,7 +96,7 @@ public class ControlSucursales implements Serializable {
         filtradoCiudades = null;
         guardado = true;
         tamano = 270;
-        
+
     }
 
     public void eventoFiltrar() {
@@ -1197,8 +1197,6 @@ public class ControlSucursales implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listSucursales = null;
-            context.execute("mostrarGuardar.show()");
-            context.update("form:datosSucursales");
             k = 0;
             guardado = true;
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");

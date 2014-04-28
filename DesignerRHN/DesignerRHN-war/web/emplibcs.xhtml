@@ -12,9 +12,9 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/>
-                     <p:panel  id="PanelTotal" header="Historico IBCS" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                    <p:panel  id="PanelTotal" header="Historico IBCS" style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplIbcs.empleadoSeleccionado.persona.nombreCompleto}"/>
-                        
+
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Consulta de los IBCSs</strong></legend>
 
@@ -69,8 +69,11 @@
 
                                 <p:column headerText="Valor" sortBy="#{info.valor}" filterBy="#{info.valor}" filterMatchMode="contains" id="valor" width="230" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.valor}" /></f:facet>  
-                                        <f:facet name="input">
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.valor}">
+                                                <f:convertNumber currencySymbol="$" type="currency" />
+                                            </h:outputText>
+                                        </f:facet>                                         <f:facet name="input">
                                             <p:inputText  value="#{info.valor}" id="editarUnidades" style="  border-radius: 0px; width: 300px; text-transform: uppercase; height: 12px"  > 
                                                 <p:ajax event="select" listener="#{controlEmplIbcs.cambiarIndice(indice, 2)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlEmplIbcs.revisarCambios()}"  update="editarUnidades"/>
@@ -130,7 +133,7 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh"  actionListener="#{controlEmplIbcs.cancelarModificacion()}" id="REFRESCAR" value="Refrescar" process="@this" disabled="true" />
-                        <p:commandButton style=" position: absolute; left: 115px; top: 470px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" id="detallesIbcs" value="Detalles IBCS" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 115px; top: 470px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(controlEmplIbcs.empleadoSeleccionado.secuencia)}" id="detallesIbcs" value="Detalles IBCS" process="@this" />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrasEmplIbcs"   />
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplIbcs.activarCtrlF11()}"  /> 

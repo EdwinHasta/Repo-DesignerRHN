@@ -44,6 +44,7 @@ public class ControlValoresConceptos implements Serializable {
     private ValoresConceptos nuevoValoresConceptos;
     private ValoresConceptos duplicarValoresConceptos;
     private ValoresConceptos editarValoresConceptos;
+    private ValoresConceptos valorConceptoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -1527,6 +1528,14 @@ public class ControlValoresConceptos implements Serializable {
 
     public void setConceptoSeleccionado(Conceptos conceptoSeleccionado) {
         this.conceptoSeleccionado = conceptoSeleccionado;
+    }
+
+    public ValoresConceptos getValorConceptoSeleccionado() {
+        return valorConceptoSeleccionado;
+    }
+
+    public void setValorConceptoSeleccionado(ValoresConceptos valorConceptoSeleccionado) {
+        this.valorConceptoSeleccionado = valorConceptoSeleccionado;
     }
 
 }

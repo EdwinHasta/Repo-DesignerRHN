@@ -89,7 +89,7 @@
 
                         <p:commandButton style="position: absolute; left: 670px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlNovedadesConceptos.guardado}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosNovedadesConcepto" process="@this" />
                         <p:commandButton style="position: absolute; left: 510px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesConceptos.salir()}" action="individual" />
+                        <p:commandButton style="position: absolute; left: 760px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlNovedadesConceptos.salir()}" action="novedad" />
                         <p:commandButton style="position: absolute; left: 10px; top: 470px; " id="TODAS" value="#{msg['todas']}" actionListener="#{controlNovedadesConceptos.todasNovedades()}" disabled="#{controlNovedadesConceptos.todas}" process="@this" />
                         <p:commandButton style="position: absolute; left: 165px; top: 470px;" id="ACTUALES" value="#{msg['actuales']}" actionListener="#{controlNovedadesConceptos.actualesNovedades()}" disabled="#{controlNovedadesConceptos.actuales}" process="@this" />
 

@@ -12,8 +12,8 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.bienestar" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']} #{controlBienestar.bienestar}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
-                        <fieldset style="position: absolute; left: 10px; top: 35px; font-size: 10px; width: 835px; height: 440px; border-radius: 10px; ">
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']} #{controlBienestar.bienestar}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                        <fieldset style="position: absolute; left: 10px; top: 35px;  width: 835px; height: 440px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['plan']}</strong></legend>
                             <p:commandButton style="background: url(Imagenes/interrogante.gif)  ;border-color:#045491; width:70px ; height: 80px ; border-width: 2px; position: absolute;top: 20px;left: 10px" value=" "></p:commandButton>
                             <h:outputText value="#{msg['necesidades']}" style="position: absolute;left: 95px ; top: 20px; color: #045491; font-size: 16px"/>
@@ -37,8 +37,8 @@
                             <h:outputText value="#{msg['reportestexto']}" style="position: absolute;left: 100px ; top: 390px; color: #000000; font-size: 14px"/>
 
                         </fieldset>
-                        <p:commandButton style=" position: absolute; left: 698px; top: 500px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 500px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"/>
+                        <p:commandButton style=" position: absolute; left: 698px; top: 500px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 500px;  " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"/>
 
                     </p:panel>
                 </h:form>
