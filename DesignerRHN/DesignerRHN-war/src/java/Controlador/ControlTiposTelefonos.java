@@ -647,11 +647,14 @@ public class ControlTiposTelefonos implements Serializable{
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
-    
-    
 
- 
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
 
-       
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+    
     
 }

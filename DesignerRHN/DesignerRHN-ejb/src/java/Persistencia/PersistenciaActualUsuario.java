@@ -38,7 +38,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     @Override
     public String actualAliasBD() {
         try {
-            String sqlQuery = "SELECT au.ALIAS FROM ActualUsuario au";
+            String sqlQuery = "SELECT au.ALIAS FROM VWActualUsuario au";
             Query query = em.createNativeQuery(sqlQuery);
             String alias;
             alias = (String) query.getSingleResult();
@@ -51,7 +51,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     
     public String actualAliasBD_EM(EntityManager emg) {
         try {
-            String sqlQuery = "SELECT au.ALIAS FROM ActualUsuario au";
+            String sqlQuery = "SELECT au.ALIAS FROM VWActualUsuario au";
             Query query = emg.createNativeQuery(sqlQuery);
             String alias;
             alias = (String) query.getSingleResult();

@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,6 +42,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     //Vigencias Cargos
     private List<VigenciasReformasLaborales> vigenciasReformasLaborales;
     private List<VigenciasReformasLaborales> filtrarVRL;
+    private VigenciasReformasLaborales vigenciaSeleccionada;
     private List<ReformasLaborales> listaReformasLaborales;
     private ReformasLaborales reformaLaboralSelecionada;
     private List<ReformasLaborales> filtradoReformasLaborales;
@@ -75,6 +77,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     private BigInteger backUpSecRegistro;
     private Date fechaParametro;
     private Date fechaIni;
+    private String altoTabla;
 
     /**
      * Constructor de la clases Controlador
@@ -107,6 +110,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         backUpSecRegistro = null;
+        altoTabla = "270";
 
     }
 
@@ -123,6 +127,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     }
 
     public void modificarVRL(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoLista == 0) {
             if (!listVRLCrear.contains(vigenciasReformasLaborales.get(indice))) {
 
@@ -133,6 +138,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -147,6 +153,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -275,6 +282,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -289,6 +297,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -403,7 +412,10 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVRLEmpleado");
             guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             k = 0;
         }
         index = -1;
@@ -417,10 +429,12 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vrlFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
             vrlFecha.setFilterStyle("display: none; visibility: hidden;");
-            vrlNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
+            vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
             vrlNombre.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
             bandera = 0;
             filtrarVRL = null;
@@ -437,6 +451,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVRLEmpleado");
+        context.update("form:ACEPTAR");
     }
 
     //MOSTRAR DATOS CELDA
@@ -477,10 +492,12 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             if (validarFechasRegistro(1) == true) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    vrlFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
                     vrlFecha.setFilterStyle("display: none; visibility: hidden;");
-                    vrlNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
+                    vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
                     vrlNombre.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla = "270";
                     RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
                     bandera = 0;
                     filtrarVRL = null;
@@ -501,7 +518,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 context.execute("NuevoRegistroVRL.hide()");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -574,14 +591,16 @@ public class ControlVigenciasReformasLaborales implements Serializable {
                 secRegistro = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    vrlFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
                     vrlFecha.setFilterStyle("display: none; visibility: hidden;");
-                    vrlNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
+                    vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
                     vrlNombre.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla = "270";
                     RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
                     bandera = 0;
                     filtrarVRL = null;
@@ -650,7 +669,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -661,18 +680,21 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            vrlFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
+            vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
             vrlFecha.setFilterStyle("width: 60px");
-            vrlNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
-            vrlNombre.setFilterStyle("width: 60px");
+            vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
+            vrlNombre.setFilterStyle("width: 500px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
-            vrlFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
+            vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
             vrlFecha.setFilterStyle("display: none; visibility: hidden;");
-            vrlNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
+            vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
             vrlNombre.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
             bandera = 0;
             filtrarVRL = null;
@@ -685,12 +707,15 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            vrlFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vrlFecha = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlFecha");
             vrlFecha.setFilterStyle("display: none; visibility: hidden;");
-            vrlNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
+            vrlNombre = (Column) c.getViewRoot().findComponent("form:datosVRLEmpleado:vrlNombre");
             vrlNombre.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVRLEmpleado");
+            altoTabla = "270";
+            context.update("form:datosVRLEmpleado");
             bandera = 0;
             filtrarVRL = null;
             tipoLista = 0;
@@ -704,7 +729,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         k = 0;
         vigenciasReformasLaborales = null;
         guardado = true;
-
+        context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
@@ -735,6 +760,7 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * Metodo que actualiza la reforma laboral seleccionada
      */
     public void actualizarReformaLaboral() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 vigenciasReformasLaborales.get(index).setReformalaboral(reformaLaboralSelecionada);
@@ -757,16 +783,14 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setReformalaboral(reformaLaboralSelecionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVRL");
         } else if (tipoActualizacion == 2) {
             duplicarVRL.setReformalaboral(reformaLaboralSelecionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVRL");
         }
         filtradoReformasLaborales = null;
@@ -820,8 +844,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVRLEmpleadoExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosVRLEmpleadoExportar");
+        FacesContext context = c;
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "VigenciasReformasLaboralesPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
@@ -835,8 +860,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVRLEmpleadoExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosVRLEmpleadoExportar");
+        FacesContext context = c;
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "VigenciasReformasLaboralesXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
@@ -1006,4 +1032,19 @@ public class ControlVigenciasReformasLaborales implements Serializable {
         this.backUpSecRegistro = backUpSecRegistro;
     }
 
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public VigenciasReformasLaborales getVigenciaSeleccionada() {
+        return vigenciaSeleccionada;
+    }
+
+    public void setVigenciaSeleccionada(VigenciasReformasLaborales vigenciaSeleccionada) {
+        this.vigenciaSeleccionada = vigenciaSeleccionada;
+    }
 }

@@ -8,6 +8,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigInteger;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -25,6 +26,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "ACTIVIDADES")
 @XmlRootElement
+@Cacheable(true)
 @NamedQueries({
     @NamedQuery(name = "Actividades.findAll", query = "SELECT a FROM Actividades a"),
     @NamedQuery(name = "Actividades.findBySecuencia", query = "SELECT a FROM Actividades a WHERE a.secuencia = :secuencia"),

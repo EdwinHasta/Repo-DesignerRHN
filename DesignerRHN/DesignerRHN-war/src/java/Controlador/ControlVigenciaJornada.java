@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -40,12 +41,15 @@ public class ControlVigenciaJornada implements Serializable {
     //Vigencias Localizaciones
     private List<VigenciasJornadas> listVigenciasJornadas;
     private List<VigenciasJornadas> filtrarVigenciasJornadas;
+    private VigenciasJornadas vigenciaJornadaSeleccionada;
     //VigenciasCompensaciones Tiempo
     private List<VigenciasCompensaciones> listVigenciasCompensacionesTiempo;
     private List<VigenciasCompensaciones> filtrarVigenciasCompensacionesTiempo;
+    private VigenciasCompensaciones vigenciaTiempoSeleccionada;
     // VigenciasCompensaciones Dinero
     private List<VigenciasCompensaciones> listVigenciasCompensacionesDinero;
     private List<VigenciasCompensaciones> filtrarVigenciasCompensacionesDinero;
+    private VigenciasCompensaciones vigenciaDineroSeleccionada;
     //Tipos Descansos
     private List<TiposDescansos> listTiposDescansos;
     private TiposDescansos tipoDescansoSeleccionado;
@@ -134,6 +138,10 @@ public class ControlVigenciaJornada implements Serializable {
     private String nombreTablaRastro;
     private Date fechaParametro;
     private Date fechaVigenciaVJ;
+    //ALTO TABLAS
+    private String altoTabla1;
+    private String altoTabla2;
+    private String altoTabla3;
 
     public ControlVigenciaJornada() {
 
@@ -208,6 +216,10 @@ public class ControlVigenciaJornada implements Serializable {
 
         existeVCT = false;
         existeVCD = false;
+
+        altoTabla1 = "115";
+        altoTabla2 = "115";
+        altoTabla3 = "115";
     }
 
     //EMPLEADO DE LA VIGENCIA
@@ -229,6 +241,7 @@ public class ControlVigenciaJornada implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVJ(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoLista == 0) {
             if (!listVJCrear.contains(listVigenciasJornadas.get(indice))) {
                 if (listVJModificar.isEmpty()) {
@@ -238,6 +251,7 @@ public class ControlVigenciaJornada implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -252,6 +266,7 @@ public class ControlVigenciaJornada implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -412,6 +427,7 @@ public class ControlVigenciaJornada implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -426,6 +442,7 @@ public class ControlVigenciaJornada implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -443,6 +460,7 @@ public class ControlVigenciaJornada implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVCT(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoListaVCT == 0) {
             if (!listVCTCrear.contains(listVigenciasCompensacionesTiempo.get(indice))) {
 
@@ -453,6 +471,7 @@ public class ControlVigenciaJornada implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             String auxiliar = listVigenciasCompensacionesTiempo.get(indice).getComentario();
@@ -470,6 +489,7 @@ public class ControlVigenciaJornada implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             String auxiliar = filtrarVigenciasCompensacionesTiempo.get(indice).getComentario();
@@ -493,6 +513,7 @@ public class ControlVigenciaJornada implements Serializable {
      * @param indice Fila donde se efectu el cambio
      */
     public void modificarVCD(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoListaVCD == 0) {
             if (!listVCDCrear.contains(listVigenciasCompensacionesDinero.get(indice))) {
 
@@ -503,6 +524,7 @@ public class ControlVigenciaJornada implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             String auxiliar = listVigenciasCompensacionesDinero.get(indice).getComentario();
@@ -520,6 +542,7 @@ public class ControlVigenciaJornada implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
             }
             String auxiliar = filtrarVigenciasCompensacionesDinero.get(indice).getComentario();
@@ -534,7 +557,7 @@ public class ControlVigenciaJornada implements Serializable {
         cambiarIndiceVCD(i, c);
         modificarVCD(i);
     }
-    
+
     /**
      * Metodo que obtiene los valores de los dialogos para realizar los
      * autocomplete de los campos (VigenciaLocalizacion)
@@ -687,26 +710,28 @@ public class ControlVigenciaJornada implements Serializable {
 
             }
         }
-
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVCT == 1) {
-            vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
             vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
             vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
             vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
             banderaVCT = 0;
             filtrarVigenciasCompensacionesTiempo = null;
             tipoListaVCT = 0;
         }
         if (banderaVCD == 1) {
-            vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
             vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
             vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
@@ -731,11 +756,11 @@ public class ControlVigenciaJornada implements Serializable {
             if (cambioVigenciaCD == false) {
                 indexVCT = indice;
                 cualCeldaVCT = celda;
-                if(tipoListaVCT==0){
-                secRegistroVCT = listVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
+                if (tipoListaVCT == 0) {
+                    secRegistroVCT = listVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
                 }
-                if(tipoListaVCT==1){
-                secRegistroVCT = filtrarVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
+                if (tipoListaVCT == 1) {
+                    secRegistroVCT = filtrarVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
                 }
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -743,25 +768,28 @@ public class ControlVigenciaJornada implements Serializable {
                 context.execute("guardarCambiosVigenciaCompensacionDinero.show()");
             }
         }
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+            vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
             vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+            vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
             vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-            vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+            vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
             vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
             bandera = 0;
             filtrarVigenciasJornadas = null;
             tipoLista = 0;
         }
         if (banderaVCD == 1) {
-            vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
             vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
             vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
@@ -793,25 +821,28 @@ public class ControlVigenciaJornada implements Serializable {
                 context.execute("guardarCambiosVigenciaCompensacionTiempo.show()");
             }
         }
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+            vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
             vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+            vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
             vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-            vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+            vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
             vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
             bandera = 0;
             filtrarVigenciasJornadas = null;
             tipoLista = 0;
         }
         if (banderaVCT == 1) {
-            vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
             vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
             vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
             vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
             banderaVCT = 0;
             filtrarVigenciasCompensacionesTiempo = null;
@@ -836,7 +867,11 @@ public class ControlVigenciaJornada implements Serializable {
             guardarCambiosVCD();
         }
         guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
     }
 
     /**
@@ -877,6 +912,8 @@ public class ControlVigenciaJornada implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVJEmpleado");
             k = 0;
+            guardado = true;
+            context.update("form:ACEPTAR");
         }
         index = -1;
         secRegistroVJ = null;
@@ -907,6 +944,8 @@ public class ControlVigenciaJornada implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciaCT");
             k = 0;
+            guardado = true;
+            context.update("form:ACEPTAR");
         }
         cambioVigenciaCT = false;
         indexVCT = -1;
@@ -939,6 +978,8 @@ public class ControlVigenciaJornada implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciaCD");
             k = 0;
+            guardado = true;
+            context.update("form:ACEPTAR");
         }
         cambioVigenciaCD = false;
         indexVCD = -1;
@@ -950,38 +991,42 @@ public class ControlVigenciaJornada implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+            vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
             vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+            vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
             vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-            vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+            vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
             vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla1 = "115";
             RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
             bandera = 0;
             filtrarVigenciasJornadas = null;
             tipoLista = 0;
         }
         if (banderaVCT == 1) {
-            vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
             vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
             vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
             vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
             banderaVCT = 0;
             filtrarVigenciasCompensacionesTiempo = null;
             tipoListaVCT = 0;
         }
         if (banderaVCD == 1) {
-            vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
             vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
             vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
@@ -1011,6 +1056,7 @@ public class ControlVigenciaJornada implements Serializable {
         context.update("form:datosVJEmpleado");
         context.update("form:datosVigenciaCT");
         context.update("form:datosVigenciaCD");
+        context.update("form:ACEPTAR");
         cambioVigenciaCT = false;
         cambioVigenciaCD = false;
         existeVCD = false;
@@ -1021,13 +1067,15 @@ public class ControlVigenciaJornada implements Serializable {
      * Cancela las modifaciones de la tabla vigencias prorrateos
      */
     public void cancelarModificacionVCT() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVCT == 1) {
-            vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
             vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
             vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
             vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
             banderaVCT = 0;
             filtrarVigenciasCompensacionesTiempo = null;
@@ -1043,6 +1091,7 @@ public class ControlVigenciaJornada implements Serializable {
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciaCT");
+        context.update("form:ACEPTAR");
         cambioVigenciaCT = false;
         existeVCT = false;
     }
@@ -1052,12 +1101,14 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void cancelarModificacionVCD() {
         if (banderaVCD == 1) {
-            vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
             vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
             vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
@@ -1073,6 +1124,7 @@ public class ControlVigenciaJornada implements Serializable {
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciaCD");
+        context.update("form:ACEPTAR");
         cambioVigenciaCD = false;
         existeVCD = false;
     }
@@ -1166,12 +1218,14 @@ public class ControlVigenciaJornada implements Serializable {
             if (validarFechasRegistroVJ(1) == true) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
                     vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                    vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+                    vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
                     vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-                    vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+                    vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
                     vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla1 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
                     bandera = 0;
                     filtrarVigenciasJornadas = null;
@@ -1188,7 +1242,7 @@ public class ControlVigenciaJornada implements Serializable {
                 context.update("form:datosVJEmpleado");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    context.update("form:ACEPTAR");
                 }
                 context.execute("NuevoRegistroVJ.hide()");
                 index = -1;
@@ -1226,12 +1280,14 @@ public class ControlVigenciaJornada implements Serializable {
         cambioVigenciaCT = true;
         //CERRAR FILTRADO
         if (banderaVCT == 1) {
-            vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
             vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
             vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
             vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
             banderaVCT = 0;
             filtrarVigenciasCompensacionesTiempo = null;
@@ -1255,7 +1311,7 @@ public class ControlVigenciaJornada implements Serializable {
         context.update("form:datosVigenciaCT");
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         indexVCT = -1;
         secRegistroVCT = null;
@@ -1278,12 +1334,14 @@ public class ControlVigenciaJornada implements Serializable {
         cambioVigenciaCD = true;
         //CERRAR FILTRADO
         if (banderaVCT == 1) {
-            vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
             vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
             vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
@@ -1307,7 +1365,7 @@ public class ControlVigenciaJornada implements Serializable {
         context.update("form:datosVigenciaCD");
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         indexVCD = -1;
         secRegistroVCD = null;
@@ -1392,15 +1450,18 @@ public class ControlVigenciaJornada implements Serializable {
                 secRegistroVJ = null;
                 if (guardado == true) {
                     guardado = false;
+                    context.update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
                     vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                    vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+                    vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
                     vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-                    vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+                    vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
                     vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla1 = "115";
                     RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
                     bandera = 0;
                     filtrarVigenciasJornadas = null;
@@ -1472,16 +1533,18 @@ public class ControlVigenciaJornada implements Serializable {
         secRegistroVCT = null;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (banderaVCT == 1) {
             //CERRAR FILTRADO
-            vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
             vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
             vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
             vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla2 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
             banderaVCT = 0;
             filtrarVigenciasCompensacionesTiempo = null;
@@ -1542,16 +1605,18 @@ public class ControlVigenciaJornada implements Serializable {
         secRegistroVCD = null;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (banderaVCD == 1) {
             //CERRAR FILTRADO
-            vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
             vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
             vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
             vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla3 = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
             banderaVCD = 0;
             filtrarVigenciasCompensacionesDinero = null;
@@ -1641,6 +1706,7 @@ public class ControlVigenciaJornada implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -1686,6 +1752,7 @@ public class ControlVigenciaJornada implements Serializable {
             secRegistroVCT = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -1731,6 +1798,7 @@ public class ControlVigenciaJornada implements Serializable {
             secRegistroVCD = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -1756,23 +1824,26 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia localizacion
      */
     public void filtradoVigenciaJornada() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (index >= 0) {
             if (bandera == 0) {
-                vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+                vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
                 vJFechaVigencia.setFilterStyle("width: 60px");
-                vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+                vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
                 vJNombreJornada.setFilterStyle("width: 100px");
-                vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+                vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
                 vJTipoDescanso.setFilterStyle("width: 100px");
+                altoTabla1 = "91";
                 RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
                 bandera = 1;
             } else if (bandera == 1) {
-                vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+                vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
                 vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-                vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+                vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
                 vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-                vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+                vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
                 vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla1 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
                 bandera = 0;
                 filtrarVigenciasJornadas = null;
@@ -1785,24 +1856,27 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia prorrateo
      */
     public void filtradoVigenciaCompensacionTiempo() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (indexVCT >= 0) {
             if (banderaVCT == 0) {
                 //Columnas Tabla VPP
-                vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+                vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
                 vCTFechaInicial.setFilterStyle("width: 50px");
-                vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+                vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
                 vCTFechaFinal.setFilterStyle("width: 50px");
-                vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+                vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
                 vCTComentario.setFilterStyle("width: 50px");
+                altoTabla2 = "91";
                 RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
                 banderaVCT = 1;
             } else if (banderaVCT == 1) {
-                vCTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+                vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
                 vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                vCTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+                vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
                 vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                vCTComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+                vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
                 vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla2 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
                 banderaVCT = 0;
                 filtrarVigenciasCompensacionesTiempo = null;
@@ -1815,24 +1889,27 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que acciona el filtrado de la tabla vigencia prorrateo proyecto
      */
     public void filtradoVigenciaCompensacionDinero() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (indexVCD >= 0) {
             //Columnas Tabla VPP
             if (banderaVCD == 0) {
-                vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+                vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
                 vCDComentario.setFilterStyle("width: 25px");
-                vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+                vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
                 vCDFechaInicial.setFilterStyle("width: 50px");
-                vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+                vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
                 vCDFechaFinal.setFilterStyle("width: 50px");
+                altoTabla3 = "91";
                 RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
                 banderaVCD = 1;
             } else if (banderaVCD == 1) {
-                vCDComentario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+                vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
                 vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-                vCDFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+                vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
                 vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                vCDFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+                vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
                 vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla3 = "115";
                 RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
                 banderaVCD = 0;
                 filtrarVigenciasCompensacionesDinero = null;
@@ -1846,19 +1923,21 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            vJFechaVigencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vJFechaVigencia = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJFechaVigencia");
             vJFechaVigencia.setFilterStyle("display: none; visibility: hidden;");
-            vJNombreJornada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
+            vJNombreJornada = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJNombreJornada");
             vJNombreJornada.setFilterStyle("display: none; visibility: hidden;");
-            vJTipoDescanso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
+            vJTipoDescanso = (Column) c.getViewRoot().findComponent("form:datosVJEmpleado:vJTipoDescanso");
             vJTipoDescanso.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVJEmpleado");
+            altoTabla1 = "115";
+            context.update("form:datosVJEmpleado");
             bandera = 0;
             filtrarVigenciasJornadas = null;
             tipoLista = 0;
         }
-
         listVJBorrar.clear();
         listVJCrear.clear();
         listVJModificar.clear();
@@ -1871,6 +1950,7 @@ public class ControlVigenciaJornada implements Serializable {
         k = 0;
         listVigenciasJornadas = null;
         guardado = true;
+        context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
 
@@ -1911,6 +1991,7 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que actualiza la estructura seleccionada (vigencia localizacion)
      */
     public void actualizarJornadaLaboral() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listVigenciasJornadas.get(index).setJornadatrabajo(jornadaLaboralSeleccionada);
@@ -1933,17 +2014,15 @@ public class ControlVigenciaJornada implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:editarCentroCosto");
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setJornadatrabajo(jornadaLaboralSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVJ");
         } else if (tipoActualizacion == 2) {
             duplicarVJ.setJornadatrabajo(jornadaLaboralSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVJ");
         }
         filtrarJornadasLaborales = null;
@@ -1973,6 +2052,7 @@ public class ControlVigenciaJornada implements Serializable {
      * localizacion)
      */
     public void actualizarTipoDescanso() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listVigenciasJornadas.get(index).setTipodescanso(tipoDescansoSeleccionado);
@@ -1995,17 +2075,15 @@ public class ControlVigenciaJornada implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:editarMotivo");
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setTipodescanso(tipoDescansoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVJ");
         } else if (tipoActualizacion == 2) {
             duplicarVJ.setTipodescanso(tipoDescansoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVJ");
         }
         filtrarTiposDescansos = null;
@@ -2921,5 +2999,45 @@ public class ControlVigenciaJornada implements Serializable {
 
     public void setBackUp(BigInteger backUp) {
         this.backUp = backUp;
+    }
+
+    public VigenciasJornadas getVigenciaJornadaSeleccionada() {
+        return vigenciaJornadaSeleccionada;
+    }
+
+    public void setVigenciaJornadaSeleccionada(VigenciasJornadas vigenciaJornadaSeleccionada) {
+        this.vigenciaJornadaSeleccionada = vigenciaJornadaSeleccionada;
+    }
+
+    public VigenciasCompensaciones getVigenciaTiempoSeleccionada() {
+        return vigenciaTiempoSeleccionada;
+    }
+
+    public void setVigenciaTiempoSeleccionada(VigenciasCompensaciones vigenciaTiempoSeleccionada) {
+        this.vigenciaTiempoSeleccionada = vigenciaTiempoSeleccionada;
+    }
+
+    public VigenciasCompensaciones getVigenciaDineroSeleccionada() {
+        return vigenciaDineroSeleccionada;
+    }
+
+    public void setVigenciaDineroSeleccionada(VigenciasCompensaciones vigenciaDineroSeleccionada) {
+        this.vigenciaDineroSeleccionada = vigenciaDineroSeleccionada;
+    }
+
+    public String getAltoTabla1() {
+        return altoTabla1;
+    }
+
+    public String getAltoTabla2() {
+        return altoTabla2;
+    }
+
+    public String getAltoTabla3() {
+        return altoTabla3;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
     }
 }

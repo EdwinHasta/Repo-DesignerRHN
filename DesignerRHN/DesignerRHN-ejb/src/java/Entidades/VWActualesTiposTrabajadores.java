@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
  * @author Administrator
  */
 @Entity
-@Cacheable(true)
+@Cacheable(false)
 @NamedQueries({
     @NamedQuery(name = "VWActualesTiposTrabajadores.findAll", query = "SELECT vwatt FROM VWActualesTiposTrabajadores vwatt"),
     @NamedQuery(name = "VWActualesTiposTrabajadores.findBySecuencia", query = "SELECT vwatt FROM VWActualesTiposTrabajadores vwatt WHERE vwatt.secuencia = :secuencia"),
