@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -30,6 +31,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
     private List<VigenciasUbicaciones> vigenciasUbicaciones;
     private List<VigenciasUbicaciones> filtrarVU;
     private List<UbicacionesGeograficas> listaUbicaciones;
+    private UbicacionesGeograficas vigenciaSeleccionada;
     private UbicacionesGeograficas UbicacionSelecionada;
     private List<UbicacionesGeograficas> filtradoUbicaciones;
     private BigInteger secuenciaEmpleado;
@@ -63,6 +65,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
     private String ubicacion;
     //MENSAJE VALIDACION NUEVA VIGENCIA UBICACION
     private String mensajeValidacion;
+    private String altoTabla;
 
     public ControlVigenciasUbicaciones() {
         vigenciasUbicaciones = null;
@@ -91,6 +94,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         nuevaVigencia.setUbicacion(new UbicacionesGeograficas());
         //Autocompletar
         permitirIndex = true;
+        altoTabla = "270";
     }
 
     //EMPLEADO DE LA VIGENCIA
@@ -116,6 +120,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -129,6 +134,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -183,6 +189,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             index = -1;
         }
@@ -282,8 +289,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVUEmpleado");
             guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
             k = 0;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
     }
@@ -292,12 +302,14 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vuFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
             vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
             vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
             vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
             bandera = 0;
             filtrarVU = null;
@@ -313,6 +325,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVUEmpleado");
+        context.update("form:ACEPTAR");
     }
 
     //MOSTRAR DATOS CELDA
@@ -364,12 +377,14 @@ public class ControlVigenciasUbicaciones implements Serializable {
         if (pasa == true) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                vuFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+                FacesContext c = FacesContext.getCurrentInstance();
+                vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
                 vuFecha.setFilterStyle("display: none; visibility: hidden;");
-                vuDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+                vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
                 vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                vuCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+                vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
                 vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
                 bandera = 0;
                 filtrarVU = null;
@@ -388,7 +403,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             context.update("form:datosVUEmpleado");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroVU.hide()");
             index = -1;
@@ -441,16 +456,18 @@ public class ControlVigenciasUbicaciones implements Serializable {
         index = -1;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vuFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
             vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
             vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
             vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
             bandera = 0;
             filtrarVU = null;
@@ -503,31 +520,34 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
     }
     //CTRL + F11 ACTIVAR/DESACTIVAR
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             System.out.println("Activar");
-            vuFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
             vuFecha.setFilterStyle("width: 60px");
-            vuDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
             vuDescripcion.setFilterStyle("");
-            vuCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
             vuCiudad.setFilterStyle("");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            vuFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
             vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
             vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
             vuCiudad.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
             bandera = 0;
             filtrarVU = null;
@@ -537,14 +557,17 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
     //SALIR
     public void salir() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
-            vuFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vuFecha = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuFecha");
             vuFecha.setFilterStyle("display: none; visibility: hidden;");
-            vuDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
+            vuDescripcion = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuDescripcion");
             vuDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            vuCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
+            vuCiudad = (Column) c.getViewRoot().findComponent("form:datosVUEmpleado:vuCiudad");
             vuCiudad.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosVUEmpleado");
+            altoTabla = "270";
+            context.update("form:datosVUEmpleado");
             bandera = 0;
             filtrarVU = null;
             tipoLista = 0;
@@ -557,7 +580,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         k = 0;
         vigenciasUbicaciones = null;
         guardado = true;
-
+        context.update("form:ACEPTAR");
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
@@ -602,6 +625,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             context.update("form:datosVUEmpleado");
             permitirIndex = true;
@@ -650,8 +674,9 @@ public class ControlVigenciasUbicaciones implements Serializable {
     //EXPORTAR
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVUEmpleadoExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosVUEmpleadoExportar");
+        FacesContext context = c;
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "VigenciasUbicacionesGeograficasPDF", false, false, "UTF-8", null, null);
         context.responseComplete();
@@ -659,8 +684,9 @@ public class ControlVigenciasUbicaciones implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVUEmpleadoExportar");
-        FacesContext context = FacesContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosVUEmpleadoExportar");
+        FacesContext context = c;
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "VigenciasUbicacionesGeograficasXLS", false, false, "UTF-8", null, null);
         context.responseComplete();
@@ -787,5 +813,21 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
     public String getMensajeValidacion() {
         return mensajeValidacion;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public UbicacionesGeograficas getVigenciaSeleccionada() {
+        return vigenciaSeleccionada;
+    }
+
+    public void setVigenciaSeleccionada(UbicacionesGeograficas vigenciaSeleccionada) {
+        this.vigenciaSeleccionada = vigenciaSeleccionada;
     }
 }

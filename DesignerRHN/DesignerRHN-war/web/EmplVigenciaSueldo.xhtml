@@ -17,8 +17,8 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciaSueldo.empleado.persona.nombreCompleto}"/> 
 
-                        <h:outputText id="totalConsultarActual" value="#{msg['total']}" style="position: absolute; top: 75px;left: 500px; visibility: #{controlVigenciaSueldo.visibilidadTotal()};" />
-                        <h:outputText id="valorConsultarActual" value="#{controlVigenciaSueldo.valorTotal}" style="position: absolute; top: 75px;left: 580px; visibility: #{controlVigenciaSueldo.visibilidadTotal()}">
+                        <h:outputText id="totalConsultarActual" value="#{msg['total']}" style="position: absolute; top: 68px;left: 717px; visibility: #{controlVigenciaSueldo.visibilidadTotal()}; font-weight: bold" />
+                        <h:outputText id="valorConsultarActual" value="#{controlVigenciaSueldo.valorTotal}" style="position: absolute; top: 68px;left: 797px; visibility: #{controlVigenciaSueldo.visibilidadTotal()}">
                             <f:convertNumber type="number" />
                         </h:outputText>
 
@@ -102,7 +102,7 @@
                                 </p:column>
 
                                 <p:column  headerText="#{msg['motivocambiosueldo']}" sortBy="#{infoDVS.motivocambiosueldo.nombre}" filterBy="#{infoDVS.motivocambiosueldo.nombre}" 
-                                           filterMatchMode="contains" id="vSMotivoCambioSueldo" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                           filterMatchMode="contains" id="vSMotivoCambioSueldo" width="150" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVS.motivocambiosueldo.nombre}"/></f:facet>  
                                         <f:facet name="input">
@@ -114,16 +114,16 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 26px;  border: none; color: blue" id="fooMotivoCambioSueldo" value="#{msg['motivocambiosueldo']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooMotivoCambioSueldo" value="#{msg['motivocambiosueldo']}"/>
                                     </f:facet>
                                 </p:column>
 
                                 <p:column  headerText="#{msg['tiposueldo']}" sortBy="#{infoDVS.tiposueldo.descripcion}" filterBy="#{infoDVS.tiposueldo.descripcion}" filterMatchMode="contains" 
-                                           id="vSTipoSueldo" width="133" filterStyle="display: none; visibility: hidden" >                                  
+                                           id="vSTipoSueldo" width="150" filterStyle="display: none; visibility: hidden" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoDVS.tiposueldo.descripcion}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoDVS.tiposueldo.descripcion}"  id="editarTipoSueldo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText value="#{infoDVS.tiposueldo.descripcion}"  id="editarTipoSueldo" style=" border-radius: 0px; width: 94%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice, 'TIPOSUELDO', infoDVS.tiposueldo.descripcion)}" update="editarTipoSueldo" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indice,1,0,0)}" process="@this" update="editarTipoSueldo"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice,2)}" process="@this"/>
@@ -131,12 +131,12 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTipoSueldo" value="#{msg['tiposueldo']}" action="tipossueldos" actionListener="#{controlTipoSueldo.inicializarPagina('emplVigSueldo')}" />
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTipoSueldo" value="#{msg['tiposueldo']}" action="tipossueldos" actionListener="#{controlTipoSueldo.inicializarPagina('emplVigSueldo')}" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  headerText="..." id="vSRetroactivo" width="15" sortBy="#{infoDVS.retroactivo}" filterBy="#{infoDVS.retroactivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">                                  
-                                    <p:selectBooleanCheckbox id="editarRetroactivo" style="alignment-adjust: central;" value="#{infoDVS.checkRetroactivo}">
+                                <p:column  headerText="..." id="vSRetroactivo" width="15" sortBy="#{infoDVS.retroactivo}" filterBy="#{infoDVS.retroactivo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-top: 0px; padding-left: 2px; padding-right: 6px">                                  
+                                    <p:selectBooleanCheckbox id="editarRetroactivo" style="alignment-adjust: central; height: 12px;" value="#{infoDVS.checkRetroactivo}">
                                         <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVS(indice)}" process="@this"/>
                                     </p:selectBooleanCheckbox>  
                                     <f:facet name="footer">
@@ -144,7 +144,7 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  headerText="#{msg['vigenciaretroactivo']}" sortBy="#{infoDVS.fechavigenciaretroactivo}" filterBy="#{infoDVS.fechavigenciaretroactivo}" filterMatchMode="contains" id="vSVigenciaRetroactivo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['vigenciaretroactivo']}" sortBy="#{infoDVS.fechavigenciaretroactivo}" filterBy="#{infoDVS.fechavigenciaretroactivo}" filterMatchMode="contains" id="vSVigenciaRetroactivo" width="148" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoDVS.fechavigenciaretroactivo}">
@@ -152,7 +152,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <lnk:calendar id="editFechaVigenciaRetroactivo" value="#{infoDVS.fechavigenciaretroactivo}" >  
+                                            <lnk:calendar id="editFechaVigenciaRetroactivo" value="#{infoDVS.fechavigenciaretroactivo}" width="99">  
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(indice,4)}" update="editFechaVigenciaRetroactivo" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarFechasVigenciaSueldo(indice,4)}" update="editFechaVigenciaRetroactivo" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndice(indice,4)}" process="@this"/> 
@@ -208,14 +208,14 @@
                             <legend style=" color: blue"><strong>#{msg['distribucion']}</strong></legend>
                             <p:dataTable id="datosVAVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVA" value="#{controlVigenciaSueldo.listVigenciasAfiliaciones}" 
                                          filteredValue="#{controlVigenciaSueldo.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" 
-                                         scrollable="true" scrollHeight="#{controlVigenciaSueldo.altoTabla2}" scrollWidth="830" emptyMessage="#{msg['vacio']}" style=" border: 1px;"
+                                         scrollable="true" scrollHeight="#{controlVigenciaSueldo.altoTabla2}" scrollWidth="830" emptyMessage="#{msg['vacio']}" style=" border: 1px; width: 830px;"
                                          selection="#{controlVigenciaSueldo.vigenciaAfiliacioneSeleccionada}" selectionMode="single">
 
-                                <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="60"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="100"
+                                          filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechainicial}" style="width: 100px; ">
+                                            <h:outputText value="#{info.fechainicial}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -232,11 +232,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vAFechaFinal" width="60"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                <p:column headerText="#{msg['final']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains" id="vAFechaFinal" width="100"
+                                          filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechafinal}" style="width: 100px; ">
+                                            <h:outputText value="#{info.fechafinal}">
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -253,12 +253,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['tercero']}" sortBy="#{info.tercerosucursal.tercero.nombre}" filterBy="#{info.tercerosucursal.tercero.nombre}" width="133"
-                                          filterMatchMode="contains" id="vATercero" filterStyle="display: none; visibility: hidden;"  style="width: 110px; " >                                  
+                                <p:column headerText="#{msg['tercero']}" sortBy="#{info.tercerosucursal.tercero.nombre}" filterBy="#{info.tercerosucursal.tercero.nombre}" width="200"
+                                          filterMatchMode="contains" id="vATercero" filterStyle="display: none; visibility: hidden;"   >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.tercerosucursal.tercero.nombre}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.tercerosucursal.tercero.nombre}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tercerosucursal.tercero.nombre}" id="editarTerceroVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText value="#{info.tercerosucursal.tercero.nombre}" id="editarTerceroVA" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,2)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indiceVA,0,0,1)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(indiceVA, 'TERCEROS', info.tercerosucursal.tercero.nombre)}" process="@this" update="editarTerceroVA"/>                                                
@@ -266,16 +266,16 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTerceroVA" value="#{msg['tercero']}"/>
+                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTerceroVA" value="#{msg['tercero']}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['tipodeentidad']}" sortBy="#{info.tipoentidad.nombre}" filterBy="#{info.tipoentidad.nombre}" filterMatchMode="contains" width="133"
-                                          id="vATipoEntidad" filterStyle="display: none; visibility: hidden;"  style="width: 70px; ">                                  
+                                <p:column headerText="#{msg['tipodeentidad']}" sortBy="#{info.tipoentidad.nombre}" filterBy="#{info.tipoentidad.nombre}" filterMatchMode="contains" width="200"
+                                          id="vATipoEntidad" filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tipoentidad.nombre}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tipoentidad.nombre}" id="editarTipoEntidadVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText value="#{info.tipoentidad.nombre}" id="editarTipoEntidadVA" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,3)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaSueldo.asignarIndex(indiceVA,1,0,1)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(indiceVA, 'TIPOENTIDAD', info.tipoentidad.nombre)}" process="@this" update="editarTipoEntidadVA"/>
@@ -283,18 +283,23 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTipoEntidadVA" value="#{msg['tipodeentidad']}"/>
+                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTipoEntidadVA" value="#{msg['tipodeentidad']}"/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['valor']}" sortBy="#{info.valor}" filterBy="#{info.valor}" filterMatchMode="contains" id="vAValor" width="133"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 90px; ">                                  
+                                <p:column headerText="#{msg['valor']}" sortBy="#{info.valor}" filterBy="#{info.valor}" filterMatchMode="contains" id="vAValor" 
+                                          filterStyle="display: none; visibility: hidden;">                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.valor}" style="width: 100px; "/></f:facet>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{info.valor}">
+                                                <f:convertNumber currencySymbol="$" type="currency" />
+                                            </h:outputText>
+                                        </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.valor}" id="editarValorVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText value="#{info.valor}" id="editarValorVA" style=" border-radius: 0px; width: 97%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlVigenciaSueldo.cambiarIndiceVA(indiceVA,4)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlVigenciaSueldo.modificarVA(indiceVA)}" process="@this" update="editarValorVA"/>
+                                                <f:convertNumber currencySymbol="$" type="currency" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -305,12 +310,6 @@
 
                             </p:dataTable>
                         </fieldset>
-
-                        <fieldset style="position: absolute; top: 500px;height: 24px;width: 320px; border-radius: 10px; text-align: left">
-                            <p:commandButton style="position: absolute; top: 2px;left: 12px" value="#{msg['consultar']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />
-                            <p:commandButton style="position: absolute; top: 2px;left: 200px" value="#{msg['todos']}" actionListener="#{controlVigenciaSueldo.cambioConsultaGlobal()}"/>
-                        </fieldset>
-
 
                         <!-- DIALOGO L.O.V ESTATICO MOTIVO CAMBIO SUELDO     -->
                         <p:dialog header="#{msg['motivoM']}" widgetVar="MotivoCambioSueldoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioSueldoDialogo"  
@@ -447,7 +446,10 @@
                             </p:commandButton>
                         </p:dialog>
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" />
+                        <p:commandButton style="position: absolute; top: 478px;left: 115px" value="#{msg['consultar']}" actionListener="#{controlVigenciaSueldo.cambioConsultaActual()}" />
+                        <p:commandButton style="position: absolute; top: 478px;left: 293px" value="#{msg['todos']}" actionListener="#{controlVigenciaSueldo.cambioConsultaGlobal()}"/>
+
+                        <p:commandButton style="position: absolute; left: 688px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVSEmpleado" process="@this" disabled="#{controlVigenciaSueldo.guardado}"/>
                         <p:commandButton style="position: absolute; left: 15px; top: 478px;  " id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciaSueldo.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 478px;  " id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciaSueldo.salir()}" action="nomina" process="@this" />
 
