@@ -62,10 +62,19 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
 
     @Override
     public void modificarVigenciasFormasPagos(List<VigenciasFormasPagos> listaVigenciasFormasPagos) {
+        System.out.println("Administrar Modificando... Tamaño :" + listaVigenciasFormasPagos.size());
         for (int i = 0; i < listaVigenciasFormasPagos.size(); i++) {
-            System.out.println("Administrar Modificando...");
-            if (vigenciaFormaPagoPorEmpleado.getSucursal().getSecuencia() == null) {
-                vigenciaFormaPagoPorEmpleado.setSucursal(null);
+            System.out.println("AdministrarEmplVigenciasFormasPagos FECHA INICIAL : " + listaVigenciasFormasPagos.get(i).getFechavigencia());
+            System.out.println("AdministrarEmplVigenciasFormasPagos CUENTA : " + listaVigenciasFormasPagos.get(i).getCuenta());
+            System.out.println("AdministrarEmplVigenciasFormasPagos FECHA CUENTA : " + listaVigenciasFormasPagos.get(i).getFechacuenta());
+            System.out.println("AdministrarEmplVigenciasFormasPagos SUCURSAL : " + listaVigenciasFormasPagos.get(i).getSucursal().getNombre());
+            System.out.println("AdministrarEmplVigenciasFormasPagos FORMA PAGO : " + listaVigenciasFormasPagos.get(i).getFormapago().getNombre());
+            System.out.println("AdministrarEmplVigenciasFormasPagos TIPO CUENTA : " + listaVigenciasFormasPagos.get(i).getTipocuenta());
+            System.out.println("AdministrarEmplVigenciasFormasPagos METODO PAGO : " + listaVigenciasFormasPagos.get(i).getMetodopago().getDescripcion());
+
+            if (listaVigenciasFormasPagos.get(i).getSucursal().getSecuencia() == null) {
+                System.out.println("ADMINISTRAR EMPLVIGENCIASFORMASPAGOS ES NULO...");
+                listaVigenciasFormasPagos.get(i).setSucursal(null);
             }
             PersistenciaVigenciasFormasPagos.editar(listaVigenciasFormasPagos.get(i));
         }
@@ -75,8 +84,9 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     public void borrarVigenciasFormasPagos(List<VigenciasFormasPagos> listaVigenciasFormasPagos) {
         for (int i = 0; i < listaVigenciasFormasPagos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            if (vigenciaFormaPagoPorEmpleado.getSucursal().getSecuencia() == null) {
-                vigenciaFormaPagoPorEmpleado.setSucursal(null);
+            if (listaVigenciasFormasPagos.get(i).getSucursal().getSecuencia() == null) {
+                System.out.println("ADMINISTRAR EMPLVIGENCIASFORMASPAGOS ES NULO...");
+                listaVigenciasFormasPagos.get(i).setSucursal(null);
             }
             PersistenciaVigenciasFormasPagos.borrar(listaVigenciasFormasPagos.get(i));
         }

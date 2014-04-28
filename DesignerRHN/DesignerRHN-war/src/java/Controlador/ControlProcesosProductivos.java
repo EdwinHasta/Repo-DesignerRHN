@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,6 +45,7 @@ public class ControlProcesosProductivos implements Serializable {
     private ProcesosProductivos nuevoProcesosProductivos;
     private ProcesosProductivos duplicarProcesosProductivos;
     private ProcesosProductivos editarProcesosProductivos;
+    private ProcesosProductivos procesoProductivoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -84,7 +86,7 @@ public class ControlProcesosProductivos implements Serializable {
         listaCentrosCostos = null;
         filtradoCentrosCostos = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
 
     public void eventoFiltrar() {
@@ -205,25 +207,27 @@ public class ControlProcesosProductivos implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
             codigo.setFilterStyle("width: 20px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
             descripcion.setFilterStyle("width: 130px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
             personafir.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosProcesosProductivos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProcesosProductivos");
             bandera = 0;
@@ -923,12 +927,13 @@ public class ControlProcesosProductivos implements Serializable {
                 administrarProcesosProductivos.crearProcesosProductivos(crearProcesosProductivos);
                 crearProcesosProductivos.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             listProcesosProductivos = null;
-            context.execute("mostrarGuardar.show()");
-            context.update("form:datosProcesosProductivos");
             k = 0;
             guardado = true;
+
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1024,12 +1029,14 @@ public class ControlProcesosProductivos implements Serializable {
         if (contador == 3) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarProcesosProductivos = null;
@@ -1181,12 +1188,14 @@ public class ControlProcesosProductivos implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosProcesosProductivos");
                 bandera = 0;
@@ -1374,4 +1383,11 @@ public class ControlProcesosProductivos implements Serializable {
         this.centrocostoSeleccionado = centrocostoSeleccionado;
     }
 
+    public ProcesosProductivos getProcesoProductivoSeleccionado() {
+        return procesoProductivoSeleccionado;
+    }
+
+    public void setProcesoProductivoSeleccionado(ProcesosProductivos procesoProductivoSeleccionado) {
+        this.procesoProductivoSeleccionado = procesoProductivoSeleccionado;
+    }
 }

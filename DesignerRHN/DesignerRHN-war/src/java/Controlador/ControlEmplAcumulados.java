@@ -11,9 +11,7 @@ import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarEmplAcumuladosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -41,6 +39,7 @@ public class ControlEmplAcumulados implements Serializable {
     private List<VWAcumulados> filtrarVWAcumuladosPorEmpleado;
     private VWAcumulados nuevaEmplAcumulados;
     private VWAcumulados editarVWAcumuladosPorEmpleado;
+    private VWAcumulados acumuladosPorEmpleadoSeleccionado;
 //otros
     private int tipoLista, bandera, index, cualCelda;
     //revisarcambios
@@ -50,6 +49,7 @@ public class ControlEmplAcumulados implements Serializable {
             valor, saldo, tipo, corteProceso, tercero, formula, debito, centroCostoDebito,
             credito, centroCostoCredito, ultimaModificacion, observaciones, motivoNovedad;
     private BigInteger secRegistro;
+    private int tamano;
 
     public ControlEmplAcumulados() {
         empleadoSeleccionado = null;
@@ -57,6 +57,7 @@ public class ControlEmplAcumulados implements Serializable {
         listVWAcumuladosPorEmpleado = null;
         editarVWAcumuladosPorEmpleado = new VWAcumulados();
         secRegistro = null;
+        tamano = 270;
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -81,7 +82,7 @@ public class ControlEmplAcumulados implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
+            tamano = 246;
             conceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmplAcumulados:conceptoCodigo");
             conceptoCodigo.setFilterStyle("width: 90px");
             conceptoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmplAcumulados:conceptoDescripcion");
@@ -122,6 +123,7 @@ public class ControlEmplAcumulados implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
             conceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmplAcumulados:conceptoCodigo");
             conceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
@@ -386,8 +388,6 @@ public class ControlEmplAcumulados implements Serializable {
             tipoLista = 0;
         }
 
-
-
         index = -1;
         secRegistro = null;
         listVWAcumuladosPorEmpleado = null;
@@ -439,4 +439,21 @@ public class ControlEmplAcumulados implements Serializable {
     public void setEditarVWAcumuladosPorEmpleado(VWAcumulados editarVWAcumuladosPorEmpleado) {
         this.editarVWAcumuladosPorEmpleado = editarVWAcumuladosPorEmpleado;
     }
+
+    public VWAcumulados getAcumuladosPorEmpleadoSeleccionado() {
+        return acumuladosPorEmpleadoSeleccionado;
+    }
+
+    public void setAcumuladosPorEmpleadoSeleccionado(VWAcumulados acumuladosPorEmpleadoSeleccionado) {
+        this.acumuladosPorEmpleadoSeleccionado = acumuladosPorEmpleadoSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
 }

@@ -31,13 +31,14 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     @Override
     public void crear(CentrosCostos centrosCostos) {
         try {
-            System.out.println("PersistenciaCentrosCostos mano de obra " + centrosCostos.getManoobra());
-            if (centrosCostos.getManoobra().isEmpty() || centrosCostos.getManoobra().equals("") || centrosCostos.getManoobra().equals(" ")) {
+            if (centrosCostos.getManoobra() == null) {
+                System.out.println("PERSISTENCIA CENTROSCOSTOS MANO DE OBRA ES NULA ");
+            } else if (centrosCostos.getManoobra().isEmpty() || centrosCostos.getManoobra().equals("") || centrosCostos.getManoobra().equals(" ")) {
                 centrosCostos.setManoobra(null);
             }
             em.persist(centrosCostos);
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaCentrosCostos");
+            System.out.println("Error crear PersistenciaCentrosCostos E " + e);
         }
     }
 
@@ -470,6 +471,6 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
             System.out.println("Error buscarCentroCostoSecuencia PersistenciaCentrosCostos : " + e.toString());
             List<CentrosCostos> centrosCostos = null;
             return centrosCostos;
-        } 
+        }
     }
 }

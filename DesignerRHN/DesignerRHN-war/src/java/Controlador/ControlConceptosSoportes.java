@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlConceptosSoportes implements Serializable {
     private ConceptosSoportes nuevoConceptosSoportes;
     private ConceptosSoportes duplicarConceptosSoportes;
     private ConceptosSoportes editarConceptosSoportes;
+    private ConceptosSoportes conceptoSoporteSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -77,7 +79,7 @@ public class ControlConceptosSoportes implements Serializable {
     //---------------------------------
     private List<ConceptosSoportes> listConceptosSoportesBoton;
     private List<ConceptosSoportes> filterConceptosSoportesBoton;
-    private ConceptosSoportes conceptoSoporteSeleccionado;
+    private ConceptosSoportes conceptoSoporteMostrado;
 
     private BigInteger secConceptoSeleccionado;
 
@@ -101,7 +103,7 @@ public class ControlConceptosSoportes implements Serializable {
         listaOperandos = null;
         filtradoOperandos = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
 
     }
 
@@ -227,6 +229,7 @@ public class ControlConceptosSoportes implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
@@ -256,6 +259,7 @@ public class ControlConceptosSoportes implements Serializable {
     public void cancelarModificacionCambio() {
         if (bandera == 1) {
             //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
@@ -285,24 +289,26 @@ public class ControlConceptosSoportes implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+            tamano = 246;
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("width: 20px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
             personafir.setFilterStyle("width: 130px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
             cargo.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
@@ -1301,11 +1307,11 @@ public class ControlConceptosSoportes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listConceptosSoportes = null;
-            context.execute("mostrarGuardar.show()");
-            context.update("form:datosConceptosSoportes");
             k = 0;
             guardado = true;
-
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1335,11 +1341,11 @@ public class ControlConceptosSoportes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listConceptosSoportes = null;
-            context.execute("mostrarGuardar.show()");
-            context.update("form:datosConceptosSoportes");
             k = 0;
             guardado = true;
-            seleccionConceptoSoporte();
+            //seleccionConceptoSoporte();
+            context.update("formularioDialogos:lovCentrosCostos");
+            context.execute("buscarCentrosCostosDialogo.show()");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1412,12 +1418,13 @@ public class ControlConceptosSoportes implements Serializable {
         if (contador == 2 && contarConceptosOperandos.equals(new BigInteger("0"))) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarConceptosSoportes = null;
@@ -1560,11 +1567,12 @@ public class ControlConceptosSoportes implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
                 bandera = 0;
@@ -1894,4 +1902,11 @@ public class ControlConceptosSoportes implements Serializable {
         this.banderaConceptoEscogido = banderaConceptoEscogido;
     }
 
+    public ConceptosSoportes getConceptoSoporteMostrado() {
+        return conceptoSoporteMostrado;
+    }
+
+    public void setConceptoSoporteMostrado(ConceptosSoportes conceptoSoporteMostrado) {
+        this.conceptoSoporteMostrado = conceptoSoporteMostrado;
+    }
 }
