@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -39,6 +40,7 @@ public class ControlPerDirecciones implements Serializable {
     //LISTA TELEFONOS
     private List<Direcciones> listaDirecciones;
     private List<Direcciones> filtradosListaDirecciones;
+    private Direcciones direccionSeleccionada;
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaPersona;
     private Personas persona;
@@ -76,6 +78,7 @@ public class ControlPerDirecciones implements Serializable {
     private List<Direcciones> listaDireccionesBorrar;
     //Duplicar
     private Direcciones duplicarDireccion;
+    private String altoTabla;
 
     public ControlPerDirecciones() {
         permitirIndex = true;
@@ -96,6 +99,7 @@ public class ControlPerDirecciones implements Serializable {
         nuevaDireccion.setTiposecundario("K");
         nuevaDireccion.setTipovivienda("CASA");
         nuevaDireccion.setHipoteca("N");
+        altoTabla = "270";
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -199,26 +203,28 @@ public class ControlPerDirecciones implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
-                dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
+                FacesContext c = FacesContext.getCurrentInstance();
+                dFecha = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
                 dFecha.setFilterStyle("display: none; visibility: hidden;");
-                dUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
+                dUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
                 dUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-                dDescripcionUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
+                dDescripcionUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
                 dDescripcionUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-                dUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
+                dUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
                 dUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-                dDescripcionUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
+                dDescripcionUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
                 dDescripcionUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-                dInterior = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
+                dInterior = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
                 dInterior.setFilterStyle("display: none; visibility: hidden;");
-                dCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
+                dCiudad = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
                 dCiudad.setFilterStyle("display: none; visibility: hidden;");
-                dTipoVivienda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
+                dTipoVivienda = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
                 dTipoVivienda.setFilterStyle("display: none; visibility: hidden;");
-                dHipoteca = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
+                dHipoteca = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
                 dHipoteca.setFilterStyle("display: none; visibility: hidden;");
-                dDireccionAlternativa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
+                dDireccionAlternativa = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
                 dDireccionAlternativa.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
                 bandera = 0;
                 filtradosListaDirecciones = null;
@@ -237,8 +243,7 @@ public class ControlPerDirecciones implements Serializable {
             context.update("form:datosDireccionesPersona");
             if (guardado == true) {
                 guardado = false;
-
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroDireccion.hide()");
             index = -1;
@@ -398,55 +403,60 @@ public class ControlPerDirecciones implements Serializable {
 
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0) {
+
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
+            dFecha = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
             dFecha.setFilterStyle("width: 60px");
-            dUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
+            dUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
             dUbicacionPrincipal.setFilterStyle("");
-            dDescripcionUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
+            dDescripcionUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
             dDescripcionUbicacionPrincipal.setFilterStyle("");
-            dUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
+            dUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
             dUbicacionSecundaria.setFilterStyle("width: 60px");
-            dDescripcionUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
+            dDescripcionUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
             dDescripcionUbicacionSecundaria.setFilterStyle("width: 60px");
-            dInterior = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
+            dInterior = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
             dInterior.setFilterStyle("");
-            dCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
+            dCiudad = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
             dCiudad.setFilterStyle("");
-            dTipoVivienda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
+            dTipoVivienda = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
             dTipoVivienda.setFilterStyle("width: 60px");
-            dHipoteca = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
+            dHipoteca = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
             dHipoteca.setFilterStyle("");
-            dDireccionAlternativa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
+            dDireccionAlternativa = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
             dDireccionAlternativa.setFilterStyle("width: 60px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
+            dFecha = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
             dFecha.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
+            dUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
             dUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
+            dDescripcionUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
             dDescripcionUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
+            dUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
             dUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
+            dDescripcionUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
             dDescripcionUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dInterior = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
+            dInterior = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
             dInterior.setFilterStyle("display: none; visibility: hidden;");
-            dCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
+            dCiudad = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
             dCiudad.setFilterStyle("display: none; visibility: hidden;");
-            dTipoVivienda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
+            dTipoVivienda = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
             dTipoVivienda.setFilterStyle("display: none; visibility: hidden;");
-            dHipoteca = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
+            dHipoteca = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
             dHipoteca.setFilterStyle("display: none; visibility: hidden;");
-            dDireccionAlternativa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
+            dDireccionAlternativa = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
             dDireccionAlternativa.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
             bandera = 0;
             filtradosListaDirecciones = null;
@@ -612,7 +622,10 @@ public class ControlPerDirecciones implements Serializable {
             context.update("form:datosDireccionesPersona");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             // k = 0;
         }
         index = -1;
@@ -621,26 +634,28 @@ public class ControlPerDirecciones implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
+            FacesContext c = FacesContext.getCurrentInstance();
+            dFecha = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
             dFecha.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
+            dUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
             dUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
+            dDescripcionUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
             dDescripcionUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
+            dUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
             dUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
+            dDescripcionUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
             dDescripcionUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dInterior = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
+            dInterior = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
             dInterior.setFilterStyle("display: none; visibility: hidden;");
-            dCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
+            dCiudad = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
             dCiudad.setFilterStyle("display: none; visibility: hidden;");
-            dTipoVivienda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
+            dTipoVivienda = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
             dTipoVivienda.setFilterStyle("display: none; visibility: hidden;");
-            dHipoteca = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
+            dHipoteca = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
             dHipoteca.setFilterStyle("display: none; visibility: hidden;");
-            dDireccionAlternativa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
+            dDireccionAlternativa = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
             dDireccionAlternativa.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
             bandera = 0;
             filtradosListaDirecciones = null;
@@ -654,6 +669,7 @@ public class ControlPerDirecciones implements Serializable {
         //    k = 0;
         listaDirecciones = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         permitirIndex = true;
     }
 
@@ -670,27 +686,29 @@ public class ControlPerDirecciones implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
+            dFecha = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
             dFecha.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
+            dUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
             dUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
+            dDescripcionUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
             dDescripcionUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
+            dUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
             dUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
+            dDescripcionUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
             dDescripcionUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dInterior = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
+            dInterior = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
             dInterior.setFilterStyle("display: none; visibility: hidden;");
-            dCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
+            dCiudad = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
             dCiudad.setFilterStyle("display: none; visibility: hidden;");
-            dTipoVivienda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
+            dTipoVivienda = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
             dTipoVivienda.setFilterStyle("display: none; visibility: hidden;");
-            dHipoteca = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
+            dHipoteca = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
             dHipoteca.setFilterStyle("display: none; visibility: hidden;");
-            dDireccionAlternativa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
+            dDireccionAlternativa = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
             dDireccionAlternativa.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
             bandera = 0;
             filtradosListaDirecciones = null;
@@ -708,6 +726,7 @@ public class ControlPerDirecciones implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosDireccionesPersona");
     }
 
@@ -721,31 +740,33 @@ public class ControlPerDirecciones implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            dFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
+            dFecha = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dFecha");
             dFecha.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
+            dUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionPrincipal");
             dUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionPrincipal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
+            dDescripcionUbicacionPrincipal = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionPrincipal");
             dDescripcionUbicacionPrincipal.setFilterStyle("display: none; visibility: hidden;");
-            dUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
+            dUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dUbicacionSecundaria");
             dUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dDescripcionUbicacionSecundaria = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
+            dDescripcionUbicacionSecundaria = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDescripcionUbicacionSecundaria");
             dDescripcionUbicacionSecundaria.setFilterStyle("display: none; visibility: hidden;");
-            dInterior = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
+            dInterior = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dInterior");
             dInterior.setFilterStyle("display: none; visibility: hidden;");
-            dCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
+            dCiudad = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dCiudad");
             dCiudad.setFilterStyle("display: none; visibility: hidden;");
-            dTipoVivienda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
+            dTipoVivienda = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dTipoVivienda");
             dTipoVivienda.setFilterStyle("display: none; visibility: hidden;");
-            dHipoteca = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
+            dHipoteca = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dHipoteca");
             dHipoteca.setFilterStyle("display: none; visibility: hidden;");
-            dDireccionAlternativa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
+            dDireccionAlternativa = (Column) c.getViewRoot().findComponent("form:datosDireccionesPersona:dDireccionAlternativa");
             dDireccionAlternativa.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
             bandera = 0;
             filtradosListaDirecciones = null;
@@ -859,7 +880,7 @@ public class ControlPerDirecciones implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -970,6 +991,7 @@ public class ControlPerDirecciones implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
     }
@@ -1065,6 +1087,7 @@ public class ControlPerDirecciones implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
     }
@@ -1144,6 +1167,7 @@ public class ControlPerDirecciones implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
     }
@@ -1202,6 +1226,7 @@ public class ControlPerDirecciones implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosDireccionesPersona");
     }
@@ -1339,4 +1364,31 @@ public class ControlPerDirecciones implements Serializable {
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
+
+    public Direcciones getDireccionSeleccionada() {
+        return direccionSeleccionada;
+    }
+
+    public void setDireccionSeleccionada(Direcciones direccionSeleccionada) {
+        this.direccionSeleccionada = direccionSeleccionada;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
+    
+
 }

@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,6 +42,7 @@ public class ControlCiudades implements Serializable {
     private Departamentos seleccionDepartamento;
     private List<Ciudades> listaCiudades;
     private List<Ciudades> filtradoListaCiudades;
+    private Ciudades ciudadSeleccionada;
     //Otros
     private boolean aceptar;
     private int index;
@@ -74,6 +76,8 @@ public class ControlCiudades implements Serializable {
     private BigInteger secRegistro;
     //VALIDAR SI EL QUE SE VA A BORRAR ESTÁ EN SOLUCIONES FORMULAS
     private int resultado;
+    public String altoTabla;
+    public String nombreCiudad;
 
     public ControlCiudades() {
         permitirIndex = true;
@@ -95,6 +99,8 @@ public class ControlCiudades implements Serializable {
         nuevaCiudad.getDepartamento().setNombre(" ");
         secRegistro = null;
         k = 0;
+        altoTabla = "270";
+        guardado = true;
     }
 
     public void asignarIndex(Integer indice) {
@@ -151,7 +157,6 @@ public class ControlCiudades implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         int pasa = 0;
 
-
         for (int i = 0; i < listaCiudades.size(); i++) {
             if (duplicarCiudad.getNombre().equals(listaCiudades.get(i).getNombre())) {
                 System.out.println("Entro al IF");
@@ -170,20 +175,22 @@ public class ControlCiudades implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+                ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
                 ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
-                ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+                ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
                 ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
-                nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+                nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
                 nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
-                ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+                ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
                 ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtradoListaCiudades = null;
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosCiudades");
                 tipoLista = 0;
             }
@@ -205,6 +212,7 @@ public class ControlCiudades implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            nombreCiudad = listaCiudades.get(index).getNombre();
             if (tipoLista == 0) {
                 secRegistro = listaCiudades.get(index).getSecuencia();
                 if (cualCelda == 1) {
@@ -222,9 +230,17 @@ public class ControlCiudades implements Serializable {
     //AUTOCOMPLETAR
     public void modificarCiudades(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
+        RequestContext context = RequestContext.getCurrentInstance();
+
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
-        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaCiudades.get(index).getNombre().isEmpty()) {
+            context.update("formularioDialogos:nombreVacio");
+            context.execute("nombreVacio.show()");
+            listaCiudades.get(index).setNombre(nombreCiudad);
+            context.update("form:datosCiudades");
+
+        }
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
                 if (!listaCiudadesCrear.contains(listaCiudades.get(indice))) {
@@ -236,6 +252,7 @@ public class ControlCiudades implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -251,6 +268,7 @@ public class ControlCiudades implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -295,6 +313,7 @@ public class ControlCiudades implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -309,6 +328,7 @@ public class ControlCiudades implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -366,32 +386,35 @@ public class ControlCiudades implements Serializable {
 
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("width: 60px");
-            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
             ciudadesNombres.setFilterStyle("");
-            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
             nombresDepartamentos.setFilterStyle("");
-            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
             ciudadesCodigosAlternativos.setFilterStyle("width: 60px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
             ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
-            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
             nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
-            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
             ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCiudades");
+            altoTabla = "270";
             bandera = 0;
             filtradoListaCiudades = null;
             tipoLista = 0;
@@ -405,8 +428,7 @@ public class ControlCiudades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-
-        if ((nuevaCiudad.getNombre().equals(" ")) || (nuevaCiudad.getNombre().equals("")) ) {
+        if ((nuevaCiudad.getNombre().equals(" ")) || (nuevaCiudad.getNombre().equals(""))) {
             System.out.println("Entra");
             mensajeValidacion = mensajeValidacion + " * Nombre de la Ciudad \n";
             pasa++;
@@ -435,15 +457,17 @@ public class ControlCiudades implements Serializable {
 
         if (pasa == 0 && pasaA == 0) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+                ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
                 ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
-                ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+                ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
                 ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
-                nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+                nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
                 nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
-                ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+                ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
                 ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosCiudades");
                 bandera = 0;
                 filtradoListaCiudades = null;
@@ -462,16 +486,15 @@ public class ControlCiudades implements Serializable {
             context.update("form:datosCiudades");
             if (guardado == true) {
                 guardado = false;
-
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
 
             context.execute("NuevoRegistroCiudad.hide()");
             index = -1;
             secRegistro = null;
         } else {
-           //  context.update("formularioDialogos:validacionNuevaCiudad");
-           //  context.execute("validacionNuevaCiudad.show()");
+            //  context.update("formularioDialogos:validacionNuevaCiudad");
+            //  context.execute("validacionNuevaCiudad.show()");
         }
     }
     //LIMPIAR NUEVO REGISTRO CIUDAD
@@ -482,7 +505,7 @@ public class ControlCiudades implements Serializable {
         nuevaCiudad.getDepartamento().setNombre(" ");
         index = -1;
         secRegistro = null;
-        resultado=0;
+        resultado = 0;
     }
 
     //EXPORTAR
@@ -557,7 +580,7 @@ public class ControlCiudades implements Serializable {
 
         if (guardado == false) {
             System.out.println("Realizando Operaciones Ciudades");
-            
+
             getResultado();
             System.out.println("Resultado: " + resultado);
             if (resultado > 0) {
@@ -585,7 +608,10 @@ public class ControlCiudades implements Serializable {
             context.update("form:datosCiudades");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             k = 0;
         }
         index = -1;
@@ -594,21 +620,22 @@ public class ControlCiudades implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            FacesContext c = FacesContext.getCurrentInstance();
+            ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
             ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
-            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
             nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
-            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
             ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 0;
             filtradoListaCiudades = null;
             tipoLista = 0;
-
         }
-        resultado=0;
+        resultado = 0;
         listaCiudadesBorrar.clear();
         listaCiudadesCrear.clear();
         listaCiudadesModificar.clear();
@@ -624,14 +651,16 @@ public class ControlCiudades implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            ciudadesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
+            FacesContext c = FacesContext.getCurrentInstance();
+            ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
             ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            ciudadesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
+            ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
             ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
-            nombresDepartamentos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
+            nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
             nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
-            ciudadesCodigosAlternativos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
+            ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
             ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 0;
             filtradoListaCiudades = null;
@@ -643,7 +672,7 @@ public class ControlCiudades implements Serializable {
         listaCiudadesCrear.clear();
         listaCiudadesModificar.clear();
         index = -1;
-        resultado=0;
+        resultado = 0;
         secRegistro = null;
         k = 0;
         listaCiudades = null;
@@ -651,6 +680,13 @@ public class ControlCiudades implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosCiudades");
+    }
+
+    //EVENTO FILTRAR
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
     }
 
     //METODOS L.O.V CIUDADES
@@ -678,6 +714,7 @@ public class ControlCiudades implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosCiudades");
@@ -758,7 +795,7 @@ public class ControlCiudades implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -907,12 +944,35 @@ public class ControlCiudades implements Serializable {
     public int getResultado() {
         if (!listaCiudadesBorrar.isEmpty()) {
             for (int i = 0; i < listaCiudadesBorrar.size(); i++) {
-      //          resultado = administrarNovedadesEmpleados.solucionesFormulas(listaNovedadesBorrar.get(i).getSecuencia());
+                //          resultado = administrarNovedadesEmpleados.solucionesFormulas(listaNovedadesBorrar.get(i).getSecuencia());
 
             }
         }
         return resultado;
     }
-    
-    
+
+    public Ciudades getCiudadSeleccionada() {
+        return ciudadSeleccionada;
+    }
+
+    public void setCiudadSeleccionada(Ciudades ciudadSeleccionada) {
+        this.ciudadSeleccionada = ciudadSeleccionada;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }

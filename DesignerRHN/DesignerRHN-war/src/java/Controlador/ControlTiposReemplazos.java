@@ -60,6 +60,8 @@ public class ControlTiposReemplazos implements Serializable {
     BigDecimal verificarBorrandoEncargaturas;
     BigDecimal verificarBorradoProgramacionesTiempos;
     BigDecimal verificarBorradoReemplazos;
+    //Redireccionamiento de pantallas
+    private String paginaAnterior;
 
     public ControlTiposReemplazos() {
         listTiposReemplazos = null;
@@ -71,6 +73,14 @@ public class ControlTiposReemplazos implements Serializable {
         nuevoTipoReemplazo = new TiposReemplazos();
         duplicarTipoReemplazo = new TiposReemplazos();
         guardado = true;
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;  
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {

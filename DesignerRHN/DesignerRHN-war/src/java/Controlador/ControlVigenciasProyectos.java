@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,13 +39,14 @@ public class ControlVigenciasProyectos implements Serializable {
     AdministrarProyectosInterface administrarProyectos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //SECUENCIA DE LA PERSONA
     private BigInteger secuenciaEmpleado;
     private Empleados empleado;
     //LISTA VIGENCIAS FORMALES
     private List<VigenciasProyectos> listaVigenciasProyectos;
     private List<VigenciasProyectos> filtradosListaVigenciasProyectos;
+    private VigenciasProyectos vigenciaProyectoSeleccionado;
     //Columnas Tabla Vigencias Proyectos
     private Column vPFechasIniciales, vPFechasFinales, vPProyectos, vPPryRoles, vPCargos, vPCantidadPersonas;
     //L.O.V Proyectos
@@ -90,6 +92,7 @@ public class ControlVigenciasProyectos implements Serializable {
     private Proyectos proyectoParametro;
     private String clienteParametroProyecto;
     private String plataformaParametroProyecto;
+    private String altoTabla;
 
     public ControlVigenciasProyectos() {
         permitirIndex = true;
@@ -110,6 +113,7 @@ public class ControlVigenciasProyectos implements Serializable {
         nuevaVigenciaProyectos.setPryCargoproyecto(new Cargos());
         proyectoParametro = new Proyectos();
         index = 0;
+        altoTabla = "115";
     }
 
     public void recibirEmpleado(BigInteger secEmpleado) {
@@ -144,6 +148,8 @@ public class ControlVigenciasProyectos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 index = -1;
@@ -159,6 +165,8 @@ public class ControlVigenciasProyectos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 index = -1;
@@ -255,6 +263,8 @@ public class ControlVigenciasProyectos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 index = -1;
@@ -269,6 +279,8 @@ public class ControlVigenciasProyectos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 index = -1;
@@ -353,40 +365,46 @@ public class ControlVigenciasProyectos implements Serializable {
     }
 
     public void activarCtrlF11() {
+
+        FacesContext c = FacesContext.getCurrentInstance();
+
         System.out.println("TipoLista= " + tipoLista);
         if (bandera == 0) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            vPFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
+            vPFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
             vPFechasIniciales.setFilterStyle("width: 60px");
-            vPFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
+            vPFechasFinales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
             vPFechasFinales.setFilterStyle("");
-            vPProyectos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
+            vPProyectos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
             vPProyectos.setFilterStyle("width: 60px");
-            vPPryRoles = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
+            vPPryRoles = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
             vPPryRoles.setFilterStyle("width: 60px");
-            vPCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
+            vPCargos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
             vPCargos.setFilterStyle("width: 60px");
-            vPCantidadPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
+            vPCantidadPersonas = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
             vPCantidadPersonas.setFilterStyle("width: 60px");
+            altoTabla = "91";
             RequestContext.getCurrentInstance().update("form:datosVigenciasProyectosPersona");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            vPFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
+            vPFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
             vPFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            vPFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
+            vPFechasFinales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
             vPFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            vPProyectos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
+            vPProyectos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
             vPProyectos.setFilterStyle("display: none; visibility: hidden;");
-            vPPryRoles = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
+            vPPryRoles = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
             vPPryRoles.setFilterStyle("display: none; visibility: hidden;");
-            vPCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
+            vPCargos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
             vPCargos.setFilterStyle("display: none; visibility: hidden;");
-            vPCantidadPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
+            vPCantidadPersonas = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
             vPCantidadPersonas.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "115";
+
             RequestContext.getCurrentInstance().update("form:datosVigenciasProyectosPersona");
             bandera = 0;
             filtradosListaVigenciasProyectos = null;
@@ -497,18 +515,21 @@ public class ControlVigenciasProyectos implements Serializable {
             if (bandera == 1) {
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                vPFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                vPFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
                 vPFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-                vPFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
+                vPFechasFinales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
                 vPFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-                vPProyectos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
+                vPProyectos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
                 vPProyectos.setFilterStyle("display: none; visibility: hidden;");
-                vPPryRoles = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
+                vPPryRoles = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
                 vPPryRoles.setFilterStyle("display: none; visibility: hidden;");
-                vPCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
+                vPCargos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
                 vPCargos.setFilterStyle("display: none; visibility: hidden;");
-                vPCantidadPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
+                vPCantidadPersonas = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
                 vPCantidadPersonas.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "115";
                 RequestContext.getCurrentInstance().update("form:datosVigenciasProyectosPersona");
                 bandera = 0;
                 filtradosListaVigenciasProyectos = null;
@@ -533,7 +554,7 @@ public class ControlVigenciasProyectos implements Serializable {
             context.update("form:datosVigenciasProyectosPersona");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroVigenciaProyecto.hide()");
             index = -1;
@@ -589,22 +610,24 @@ public class ControlVigenciasProyectos implements Serializable {
         index = -1;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (bandera == 1) {
             //CERRAR FILTRADO
-            vPFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
+            FacesContext c = FacesContext.getCurrentInstance();
+            vPFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
             vPFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            vPFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
+            vPFechasFinales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
             vPFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            vPProyectos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
+            vPProyectos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
             vPProyectos.setFilterStyle("display: none; visibility: hidden;");
-            vPPryRoles = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
+            vPPryRoles = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
             vPPryRoles.setFilterStyle("display: none; visibility: hidden;");
-            vPCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
+            vPCargos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
             vPCargos.setFilterStyle("display: none; visibility: hidden;");
-            vPCantidadPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
+            vPCantidadPersonas = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
             vPCantidadPersonas.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciasProyectosPersona");
             bandera = 0;
             filtradosListaVigenciasProyectos = null;
@@ -678,18 +701,21 @@ public class ControlVigenciasProyectos implements Serializable {
         if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            vPFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            vPFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
             vPFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            vPFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
+            vPFechasFinales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
             vPFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            vPProyectos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
+            vPProyectos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
             vPProyectos.setFilterStyle("display: none; visibility: hidden;");
-            vPPryRoles = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
+            vPPryRoles = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
             vPPryRoles.setFilterStyle("display: none; visibility: hidden;");
-            vPCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
+            vPCargos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
             vPCargos.setFilterStyle("display: none; visibility: hidden;");
-            vPCantidadPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
+            vPCantidadPersonas = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
             vPCantidadPersonas.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciasProyectosPersona");
             bandera = 0;
             filtradosListaVigenciasProyectos = null;
@@ -714,18 +740,21 @@ public class ControlVigenciasProyectos implements Serializable {
         if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            vPFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            vPFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasIniciales");
             vPFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            vPFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
+            vPFechasFinales = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPFechasFinales");
             vPFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            vPProyectos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
+            vPProyectos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPProyectos");
             vPProyectos.setFilterStyle("display: none; visibility: hidden;");
-            vPPryRoles = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
+            vPPryRoles = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPPryRoles");
             vPPryRoles.setFilterStyle("display: none; visibility: hidden;");
-            vPCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
+            vPCargos = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCargos");
             vPCargos.setFilterStyle("display: none; visibility: hidden;");
-            vPCantidadPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
+            vPCantidadPersonas = (Column) c.getViewRoot().findComponent("form:datosVigenciasProyectosPersona:vPCantidadPersonas");
             vPCantidadPersonas.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "115";
             RequestContext.getCurrentInstance().update("form:datosVigenciasProyectosPersona");
             bandera = 0;
             filtradosListaVigenciasProyectos = null;
@@ -799,6 +828,9 @@ public class ControlVigenciasProyectos implements Serializable {
             context.update("form:datosVigenciasProyectosPersona");
             guardado = true;
             permitirIndex = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             RequestContext.getCurrentInstance().update("form:aceptar");
             //  k = 0;
         }
@@ -980,6 +1012,8 @@ public class ControlVigenciasProyectos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
             }
             permitirIndex = true;
             context.update("form:datosVigenciasProyectosPersona");
@@ -1026,6 +1060,8 @@ public class ControlVigenciasProyectos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
             }
             permitirIndex = true;
             context.update("form:datosVigenciasProyectosPersona");
@@ -1073,6 +1109,8 @@ public class ControlVigenciasProyectos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
             }
             permitirIndex = true;
             context.update("form:datosVigenciasProyectosPersona");
@@ -1390,4 +1428,29 @@ public class ControlVigenciasProyectos implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
+
+    public VigenciasProyectos getVigenciaProyectoSeleccionado() {
+        return vigenciaProyectoSeleccionado;
+    }
+
+    public void setVigenciaProyectoSeleccionado(VigenciasProyectos vigenciaProyectoSeleccionado) {
+        this.vigenciaProyectoSeleccionado = vigenciaProyectoSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
 }

@@ -446,7 +446,7 @@
                         <p:commandButton style="position: absolute;left: 150px;top: 430px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" process="@this" value="#{msg['mostrar']}" actionListener="#{controlProyecto.mostrarTodos()}" update=":form:datosProyectos"/>
                         <p:commandButton style="position: absolute; left: 710px; top: 475px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosProyectos" process="@this" />
                         <p:commandButton style="position: absolute; left: 20px; top: 475px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlProyecto.cancelarModificacionP()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 475px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlProyecto.salir()}" action="proyects" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 475px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlProyecto.salir()}" action="#{controlProyecto.redirigir()}" process="@this" />
                   
                     </p:panel>
 

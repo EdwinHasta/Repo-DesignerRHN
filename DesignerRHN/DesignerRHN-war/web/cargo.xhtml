@@ -32,7 +32,7 @@
                         <p:separator style="position: absolute; left: 230px; top: 520px; width: 3px; height: 23px" />
                         <p:commandButton style="position: absolute; left: 235px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlCargo.cancelarModificacionGeneral()}"  process="@this" />
                         <p:commandButton style="position: absolute; left: 710px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlCargo.salir()}" action="#{controlCargo.valorPaginaAnterior()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 10px; width: 830px; height: 180px; border-radius: 10px; ">

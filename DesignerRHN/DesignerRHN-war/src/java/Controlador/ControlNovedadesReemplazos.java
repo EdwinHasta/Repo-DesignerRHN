@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -42,6 +43,7 @@ public class ControlNovedadesReemplazos implements Serializable {
     //LISTA ENCARGATURAS
     private List<Encargaturas> listaEncargaturas;
     private List<Encargaturas> filtradosListaEncargaturas;
+    private Encargaturas encargaturaSeleccionada;
     //OTROS
     private boolean aceptar;
     private int index;
@@ -104,6 +106,7 @@ public class ControlNovedadesReemplazos implements Serializable {
     private String Reemplazado, TipoReemplazo, MotivoReemplazo, Cargo, Estructura;
     //Columnas Tabla Encargaturas
     private Column nREmpleadoReemplazado, nRTiposReemplazos, nRFechasPagos, nRFechasIniciales, nRFechasFinales, nRCargos, nRMotivosReemplazos, nREstructuras;
+    private String altoTabla;
 
     public ControlNovedadesReemplazos() {
         permitirIndex = true;
@@ -129,6 +132,7 @@ public class ControlNovedadesReemplazos implements Serializable {
         nuevaEncargatura.setCargo(new Cargos());
         nuevaEncargatura.setMotivoreemplazo(new MotivosReemplazos());
         nuevaEncargatura.setEstructura(new Estructuras());
+        altoTabla = "155";
     }
 
     public void recibirEmpleado(BigInteger secEmpleado) {
@@ -157,7 +161,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             getListaEncargaturas();
             listaEmpleados = new ArrayList<Empleados>();
         }
-        
+
         listaTiposReemplazos = null;
         getListaTiposReemplazos();
         listaMotivosReemplazos = null;
@@ -186,6 +190,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -201,6 +206,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -348,6 +354,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -362,6 +369,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -535,6 +543,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             for (int i = 0; i < listaEncargaturas.size(); i++) {
@@ -586,6 +595,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEncargaturasEmpleado");
@@ -635,13 +645,13 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             /*for (int i = 0; i < listaEncargaturas.size(); i++) {
              System.out.println("En la lista encargaturas está:" + listaEncargaturas.get(i).getReemplazado().getPersona().getNombreCompleto());
              System.out.println("Seleccionado: " + seleccionEmpleadosReemplazados.getPersona().getNombreCompleto());
              }*/
-
             permitirIndex = true;
             context.update("form:datosEncargaturasEmpleado");
         } else if (tipoActualizacion == 1) {
@@ -687,6 +697,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEncargaturasEmpleado");
@@ -734,6 +745,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEncargaturasEmpleado");
@@ -826,47 +838,50 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+            nREmpleadoReemplazado = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
             nREmpleadoReemplazado.setFilterStyle("width: 60px");
-            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+            nRTiposReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
             nRTiposReemplazos.setFilterStyle("");
-            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+            nRFechasPagos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
             nRFechasPagos.setFilterStyle("width: 60px");
-            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+            nRFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
             nRFechasIniciales.setFilterStyle("width: 60px");
-            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+            nRFechasFinales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
             nRFechasFinales.setFilterStyle("width: 60px");
-            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+            nRCargos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
             nRCargos.setFilterStyle("width: 60px");
-            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+            nRMotivosReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
             nRMotivosReemplazos.setFilterStyle("width: 60px");
-            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+            nREstructuras = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
             nREstructuras.setFilterStyle("width: 60px");
+            altoTabla = "131";
             RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+            nREmpleadoReemplazado = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
             nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
-            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+            nRTiposReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
             nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+            nRFechasPagos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
             nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+            nRFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
             nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+            nRFechasFinales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
             nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+            nRCargos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
             nRCargos.setFilterStyle("display: none; visibility: hidden;");
-            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+            nRMotivosReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
             nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+            nREstructuras = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
             nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "155";
             RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
             bandera = 0;
             filtradosListaEncargaturas = null;
@@ -928,33 +943,36 @@ public class ControlNovedadesReemplazos implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Fecha Final\n";
             pasa++;
         }
-        
+
         System.out.println("Valor Pasa: " + pasa);
-        if(pasa!= 0){    
-        context.update("formularioDialogos:validacionNuevaNovedadReemplazo");
-        context.execute("validacionNuevaNovedadReemplazo.show()");
+        if (pasa != 0) {
+            context.update("formularioDialogos:validacionNuevaNovedadReemplazo");
+            context.execute("validacionNuevaNovedadReemplazo.show()");
         }
-        
+
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+                nREmpleadoReemplazado = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
                 nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
-                nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+                nRTiposReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
                 nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
-                nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+                nRFechasPagos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
                 nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
-                nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+                nRFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
                 nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-                nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+                nRFechasFinales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
                 nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-                nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+                nRCargos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
                 nRCargos.setFilterStyle("display: none; visibility: hidden;");
-                nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+                nRMotivosReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
                 nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
-                nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+                nREstructuras = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
                 nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "155";
                 RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
                 bandera = 0;
                 filtradosListaEncargaturas = null;
@@ -977,13 +995,13 @@ public class ControlNovedadesReemplazos implements Serializable {
             context.update("form:datosEncargaturasEmpleado");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevaNovedadReemplazo.hide()");
             index = -1;
             secRegistro = null;
         } else {
-            
+
         }
     }
 
@@ -1065,7 +1083,7 @@ public class ControlNovedadesReemplazos implements Serializable {
             if (!listaEncargaturasCrear.isEmpty()) {
                 for (int i = 0; i < listaEncargaturasCrear.size(); i++) {
                     System.out.println("Creando...");
-                    
+
                     if (listaEncargaturasCrear.get(i).getMotivoreemplazo().getSecuencia() == null) {
                         listaEncargaturasCrear.get(i).setMotivoreemplazo(null);
                     }
@@ -1079,7 +1097,7 @@ public class ControlNovedadesReemplazos implements Serializable {
                         listaEncargaturasCrear.get(i).setEstructura(null);
                     }
                     administrarNovedadesReemplazos.crearEncargaturas(listaEncargaturasCrear.get(i));
-                    
+
                 }
                 System.out.println("LimpiaLista");
                 listaEncargaturasCrear.clear();
@@ -1094,7 +1112,11 @@ public class ControlNovedadesReemplazos implements Serializable {
             context.update("form:datosEncargaturasEmpleado");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+
             //  k = 0;
         }
         System.out.println("Tamaño lista: " + listaEncargaturasCrear.size());
@@ -1145,7 +1167,7 @@ public class ControlNovedadesReemplazos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -1361,22 +1383,25 @@ public class ControlNovedadesReemplazos implements Serializable {
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
-            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            nREmpleadoReemplazado = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
             nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
-            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+            nRTiposReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
             nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+            nRFechasPagos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
             nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+            nRFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
             nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+            nRFechasFinales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
             nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+            nRCargos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
             nRCargos.setFilterStyle("display: none; visibility: hidden;");
-            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+            nRMotivosReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
             nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+            nREstructuras = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
             nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "155";
             RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
             bandera = 0;
             filtradosListaEncargaturas = null;
@@ -1399,22 +1424,25 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void salir() {
 
         if (bandera == 1) {
-            nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            nREmpleadoReemplazado = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
             nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
-            nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+            nRTiposReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
             nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+            nRFechasPagos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
             nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+            nRFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
             nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+            nRFechasFinales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
             nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-            nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+            nRCargos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
             nRCargos.setFilterStyle("display: none; visibility: hidden;");
-            nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+            nRMotivosReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
             nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
-            nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+            nREstructuras = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
             nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "155";
             RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
             bandera = 0;
             filtradosListaEncargaturas = null;
@@ -1541,25 +1569,28 @@ public class ControlNovedadesReemplazos implements Serializable {
             index = -1;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
-                nREmpleadoReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                nREmpleadoReemplazado = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREmpleadoReemplazado");
                 nREmpleadoReemplazado.setFilterStyle("display: none; visibility: hidden;");
-                nRTiposReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
+                nRTiposReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRTiposReemplazos");
                 nRTiposReemplazos.setFilterStyle("display: none; visibility: hidden;");
-                nRFechasPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
+                nRFechasPagos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasPagos");
                 nRFechasPagos.setFilterStyle("display: none; visibility: hidden;");
-                nRFechasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
+                nRFechasIniciales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasIniciales");
                 nRFechasIniciales.setFilterStyle("display: none; visibility: hidden;");
-                nRFechasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
+                nRFechasFinales = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRFechasFinales");
                 nRFechasFinales.setFilterStyle("display: none; visibility: hidden;");
-                nRCargos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
+                nRCargos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRCargos");
                 nRCargos.setFilterStyle("display: none; visibility: hidden;");
-                nRMotivosReemplazos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
+                nRMotivosReemplazos = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nRMotivosReemplazos");
                 nRMotivosReemplazos.setFilterStyle("display: none; visibility: hidden;");
-                nREstructuras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
+                nREstructuras = (Column) c.getViewRoot().findComponent("form:datosEncargaturasEmpleado:nREstructuras");
                 nREstructuras.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "155";
                 RequestContext.getCurrentInstance().update("form:datosEncargaturasEmpleado");
                 bandera = 0;
                 filtradosListaEncargaturas = null;
@@ -1609,7 +1640,7 @@ public class ControlNovedadesReemplazos implements Serializable {
 
     //Getter & Setter
     public Empleados getEmpleado() {
-        if (tipoPantalla.equals("UNO") && empleado == null) {
+        if (tipoPantalla != null && tipoPantalla.equals("UNO") && empleado == null) {
             empleado = administrarNovedadesReemplazos.encontrarEmpleado(secuenciaEmpleado);
         } else {
             empleado = new Empleados();
@@ -1623,7 +1654,7 @@ public class ControlNovedadesReemplazos implements Serializable {
     }
 
     public List<Encargaturas> getListaEncargaturas() {
-        if (listaEncargaturas == null) {
+        if (listaEncargaturas == null && seleccionMostrar != null) {
             listaEncargaturas = administrarNovedadesReemplazos.encargaturasEmpleado(seleccionMostrar.getSecuencia());
         }
         return listaEncargaturas;
@@ -1859,4 +1890,29 @@ public class ControlNovedadesReemplazos implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
+
+    public Encargaturas getEncargaturaSeleccionada() {
+        return encargaturaSeleccionada;
+    }
+
+    public void setEncargaturaSeleccionada(Encargaturas encargaturaSeleccionada) {
+        this.encargaturaSeleccionada = encargaturaSeleccionada;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
 }

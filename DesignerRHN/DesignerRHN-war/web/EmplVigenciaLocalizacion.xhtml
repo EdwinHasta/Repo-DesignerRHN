@@ -70,7 +70,8 @@
                             <p:dataTable id="datosVLEmpleado" var="infoDVL" rowKey="#{infoDVL.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"   
                                          value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}" scrollable="true" scrollHeight="#{controlVigenciaLocalizacion.altoTabla1}" scrollWidth="820"
                                          filteredValue="#{controlVigenciaLocalizacion.filtrarVL}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" selection="#{controlVigenciaLocalizacion.vigenciaLocalizacionSeleccionada}" selectionMode="single" >
+                                         editable="true" editMode="cell" 
+                                         selection="#{controlVigenciaLocalizacion.vigenciaLocalizacionSeleccionada}" selectionMode="single" >
 
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
 

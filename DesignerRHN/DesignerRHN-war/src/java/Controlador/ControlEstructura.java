@@ -75,6 +75,8 @@ public class ControlEstructura implements Serializable {
     //AUTOCOMPLETAR
     private String nombreEmpresa;
     private String mensajeValidacion;
+    //Redireccionamiento a paginas
+    private String paginaAnterior;
     //CODIGO EMPRESA PARA ESTRUCTURAS HIJAS 
     Short codigoEmpresa;
 
@@ -117,6 +119,14 @@ public class ControlEstructura implements Serializable {
         nuevoOrganigrama.setEmpresa(new Empresas());
         nuevoOrganigrama.setEstado("A");
         index = -1;
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;        
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
 
     //Ubicacion Celda.
