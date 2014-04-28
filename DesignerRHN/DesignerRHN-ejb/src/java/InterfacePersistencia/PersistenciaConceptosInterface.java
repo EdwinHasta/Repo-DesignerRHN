@@ -134,5 +134,7 @@ public interface PersistenciaConceptosInterface {
     public String conceptoParaFormulaContrato(BigInteger secuencia, Date fechaFin);
     
     public List<Conceptos> conceptoEmpresa();
+    
+    public List<Conceptos> novedadConceptos();
 
 }
