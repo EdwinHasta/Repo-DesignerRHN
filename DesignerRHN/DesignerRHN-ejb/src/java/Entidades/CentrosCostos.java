@@ -131,11 +131,15 @@ public class CentrosCostos implements Serializable {
         if (nombre == null) {
             nombre = " ";
         }
-        return nombre;
+        return nombre.toUpperCase();
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null && !nombre.isEmpty()) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     public String getComodin() {
