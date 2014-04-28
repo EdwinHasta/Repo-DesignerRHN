@@ -7,6 +7,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigInteger;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -22,8 +23,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Administrator
  */
 @Entity
-@Table(name = "ACTUALUSUARIO")
+@Table(name = "VWACTUALUSUARIO")
 @XmlRootElement
+@Cacheable(true)
 @NamedQueries({
     @NamedQuery(name = "ActualUsuario.findAll", query = "SELECT a FROM ActualUsuario a"),
     @NamedQuery(name = "ActualUsuario.findBySecuencia", query = "SELECT a FROM ActualUsuario a WHERE a.secuencia = :secuencia"),

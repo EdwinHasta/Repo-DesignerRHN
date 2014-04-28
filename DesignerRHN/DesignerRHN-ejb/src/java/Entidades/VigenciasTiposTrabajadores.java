@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -29,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "VIGENCIASTIPOSTRABAJADORES")
 @XmlRootElement
+@Cacheable(true)
 @NamedQueries({
     @NamedQuery(name = "VigenciasTiposTrabajadores.findAll", query = "SELECT v FROM VigenciasTiposTrabajadores v")})
 public class VigenciasTiposTrabajadores implements Serializable {

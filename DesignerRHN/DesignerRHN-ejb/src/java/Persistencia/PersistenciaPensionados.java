@@ -30,6 +30,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     @Override
     public void crear(Pensionados pensionados) {
         try {
+            System.out.println("Persistencia pensionados : "+pensionados.getSecuencia());
             em.persist(pensionados);
         } catch (Exception e) {
             System.out.println("El registro Pensionados no exite o esta reservada por lo cual no puede ser modificada (Pensionados)");

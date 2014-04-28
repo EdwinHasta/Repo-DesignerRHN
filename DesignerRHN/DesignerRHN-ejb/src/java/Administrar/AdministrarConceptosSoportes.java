@@ -75,6 +75,13 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
         return listLOVOperandos;
     }
 
+    @Override
+    public List<Operandos> consultarLOVOperandosPorConcepto(BigInteger secConceptoSoporte) {
+        List<Operandos> listLOVOperandos;
+        listLOVOperandos = persistenciaOperandos.operandoPorConceptoSoporte(secConceptoSoporte);
+        return listLOVOperandos;
+    }
+
     public List<Conceptos> consultarLOVConceptos() {
         List<Conceptos> listLOVConceptos;
         listLOVConceptos = persistenciaConceptos.buscarConceptos();
