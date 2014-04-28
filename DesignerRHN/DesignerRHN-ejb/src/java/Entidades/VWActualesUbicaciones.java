@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ import javax.validation.constraints.NotNull;
  * @author Administrator
  */
 @Entity
+@Cacheable(false)
 public class VWActualesUbicaciones implements Serializable {
 
     private static final long serialVersionUID = 1L;

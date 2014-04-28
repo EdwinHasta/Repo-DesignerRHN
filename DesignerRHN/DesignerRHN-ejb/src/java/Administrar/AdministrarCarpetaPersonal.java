@@ -215,6 +215,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public VWActualesCargos consultarActualCargoEmpleado(BigInteger secuenciaEmpleado) {
         try {
+            System.out.println("em: " + em);
             VWActualesCargos vwActualesCargos = persistenciaVWActualesCargos.buscarCargoEmpleado(em, secuenciaEmpleado);
             return vwActualesCargos;
         } catch (Exception e) {

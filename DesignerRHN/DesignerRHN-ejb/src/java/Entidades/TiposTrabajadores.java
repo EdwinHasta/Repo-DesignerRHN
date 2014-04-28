@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "TIPOSTRABAJADORES")
 @XmlRootElement
+@Cacheable(true)
 @NamedQueries({
     @NamedQuery(name = "TiposTrabajadores.findAll", query = "SELECT t FROM TiposTrabajadores t ORDER BY t.nombre"),
     @NamedQuery(name = "TiposTrabajadores.findByCodigo", query = "SELECT t FROM TiposTrabajadores t WHERE t.codigo = :codigo")})
