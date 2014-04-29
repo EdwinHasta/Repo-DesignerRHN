@@ -1737,7 +1737,9 @@ public class ControlNovedadesConceptos implements Serializable {
         listaNovedadesBorrar.clear();
         listaNovedadesCrear.clear();
         listaNovedadesModificar.clear();
-        seleccionMostrar = listaConceptosNovedad.get(0);
+        if (!listaConceptosNovedad.isEmpty()) {
+            seleccionMostrar = listaConceptosNovedad.get(0);
+        }
         index = -1;
         secRegistro = null;
 //        k = 0;
@@ -1828,8 +1830,8 @@ public class ControlNovedadesConceptos implements Serializable {
     public List<Conceptos> getListaConceptosNovedad() {
         if (listaConceptosNovedad == null) {
             listaConceptosNovedad = administrarNovedadesConceptos.Conceptos();
-            if(!listaConceptosNovedad.isEmpty()){
-            seleccionMostrar = listaConceptosNovedad.get(0);
+            if (!listaConceptosNovedad.isEmpty()) {
+                seleccionMostrar = listaConceptosNovedad.get(0);
             }
         }
         return listaConceptosNovedad;
@@ -2155,6 +2157,5 @@ public class ControlNovedadesConceptos implements Serializable {
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
     }
-    
-    
+
 }

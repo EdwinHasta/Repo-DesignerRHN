@@ -51,6 +51,18 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             System.out.println("Error borrar PersistenciaTerceros");
         }
     }
+    
+    @Override
+    public List<Terceros> todosTerceros() {
+        try {
+            Query query = em.createQuery("SELECT t FROM Terceros t ORDER BY t.nombre");
+            List<Terceros> terceros = (List<Terceros>) query.getResultList();
+            return terceros;
+        } catch (Exception e) {
+            System.out.println("Error buscarTerceros");
+            return null;
+        }
+    }
 
     @Override
     public List<Terceros> buscarTerceros() {

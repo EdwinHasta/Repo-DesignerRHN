@@ -77,4 +77,6 @@ public interface PersistenciaNovedadesInterface {
     
     public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto);
     
+     public List<Novedades> novedadesTercero(BigInteger secuenciaTercero);
+    
 }

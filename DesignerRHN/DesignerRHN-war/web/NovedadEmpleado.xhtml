@@ -11,7 +11,6 @@
         <title></title>
     </h:head>
     <h:body>
-
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
@@ -128,7 +127,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooConcepto" actionListener="#{controlConcepto.recibirPaginaEntrante('novedadempleado')}" value="#{msg['concepto']}" action="concepto" />
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooConcepto" actionListener="#{controlConcepto.recibirPaginaEntrante('novedadempleado')}" action="concepto" value="#{msg['concepto']}"  />
                                     </f:facet>
                                 </p:column>
 
@@ -573,27 +572,27 @@
                     <p:dialog id="validacionNuevaNovedadEmpleado" header="#{msg['atencion']}" widgetVar="validacionNuevaNovedadEmpleado"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlNovedadesEmpleados.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaNovedadEmpleado.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaNovedadEmpleado.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesEmpleados.guardarCambiosNovedades()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesConceptos.cancelarModificacion()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesEmpleados.guardarCambiosNovedades()}" style="position: absolute; top: 50px; left: 215px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlNovedadesEmpleados.cancelarModificacion()}" style="position: absolute; top: 50px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="inconsistencia" header="#{msg['atencion']}" widgetVar="inconsistencia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['inconsistencia']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="inconsistencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['inconsistencia']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="inconsistencia.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="fechas" header="#{msg['atencion']}" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['fecha']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="fechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <h:outputText value="#{msg['fecha']}" style="position: absolute; left: 100px; top: 10px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="fechas.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- DIALOGOS EDITAR -->

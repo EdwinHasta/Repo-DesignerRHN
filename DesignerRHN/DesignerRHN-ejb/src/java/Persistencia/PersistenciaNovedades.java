@@ -162,4 +162,23 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             return null;
         }
     }
+
+    public List<Novedades> novedadesTercero(BigInteger secuenciaTercero) {
+        try {
+            List<Novedades> listaNovedades;
+            String sqlQuery = "SELECT N.* from novedades N where N.tercero = ? and tipo in ('FIJA','PAGO POR FUERA','OCASIONAL' )\n"
+                    + "AND EXISTS (SELECT 'X' FROM EMPLEADOS E WHERE E.SECUENCIA=N.EMPLEADO)\n"
+                    + "and exists (select 'x' from empresas empr, conceptos conc \n"
+                    + "where empr.secuencia=conc.empresa\n"
+                    + "and conc.secuencia=n.concepto) AND ((FECHAFINAL IS NULL AND NVL(SALDO,99999)>0) OR (SALDO>0 and fechainicial>=(SELECT FECHADESDECAUSADO FROM VWACTUALESFECHAS)) OR FECHAFINAL>(SELECT FECHADESDECAUSADO FROM VWACTUALESFECHAS))";
+            Query query = em.createNativeQuery(sqlQuery, Novedades.class);
+            query.setParameter(1, secuenciaTercero);
+            listaNovedades = query.getResultList();
+            return listaNovedades;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNovedades.novedadesConcepto" + e);
+            return null;
+        }
+    }
+
 }
