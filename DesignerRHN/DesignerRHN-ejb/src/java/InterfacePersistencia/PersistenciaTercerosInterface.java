@@ -67,4 +67,6 @@ public interface PersistenciaTercerosInterface {
      * @return Retorna una lista de Terceros.
      */
     public List<Terceros> tercerosEmbargos();
+    
+    public List<Terceros> todosTerceros();
 }

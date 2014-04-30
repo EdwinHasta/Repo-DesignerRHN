@@ -103,6 +103,7 @@ public class ControlTercero implements Serializable {
     private TercerosSucursales nuevoTerceroSucursal, duplicarTerceroSucursal;
     private String terceroConsolidador, ciudad, ciudadTS;
     private long nitConsolidado;
+    private String paginaAnterior;
 
     /**
      * Creates a new instance of ControlTercero
@@ -174,6 +175,14 @@ public class ControlTercero implements Serializable {
         listTerceros = null;
         listTercerosSucursales = null;
         empresaActual = getEmpresaActual();
+    }
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
     }
 
     /**
@@ -441,7 +450,6 @@ public class ControlTercero implements Serializable {
             secRegistroTerceroSucursal = null;
             getListTercerosSucursales();
             RequestContext.getCurrentInstance().update("form:datosTercerosSucursales");
-
 
             if (cualCelda == 7) {
                 terceroConsolidador = listTerceros.get(index).getTerceroconsolidador().getNombre();

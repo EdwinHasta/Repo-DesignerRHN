@@ -74,6 +74,7 @@ public class ControlPeriodicidades implements Serializable {
     private Periodicidades PericiodidadesSeleccionado;
     private boolean banderaSeleccionPericiodidades;
     private int tamano;
+    private String paginaAnterior;
 
     public ControlPeriodicidades() {
         permitirIndex = true;
@@ -94,6 +95,14 @@ public class ControlPeriodicidades implements Serializable {
         tamano = 307;
     }
 
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
+    }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLPERIODICIDADES eventoFiltrar \n");
@@ -104,6 +113,41 @@ public class ControlPeriodicidades implements Serializable {
         } catch (Exception e) {
             System.out.println("ERROR CONTROLPERIODICIDADES eventoFiltrar ERROR===" + e);
         }
+    }
+
+    public void refrescar() {
+        if (bandera == 1) {
+            tamano = 307;
+            codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoCC");
+            codigoCC.setFilterStyle("display: none; visibility: hidden;");
+            nombreUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:nombreUnidad");
+            nombreUnidad.setFilterStyle("display: none; visibility: hidden;");
+            tipoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:tipoUnidad");
+            tipoUnidad.setFilterStyle("display: none; visibility: hidden;");
+            codigoUnidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidad");
+            codigoUnidad.setFilterStyle("display: none; visibility: hidden;");
+            codigoUnidadbase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:codigoUnidadbase");
+            codigoUnidadbase.setFilterStyle("display: none; visibility: hidden;");
+            unidadBase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPeriodicidades:unidadBase");
+            unidadBase.setFilterStyle("display: none; visibility: hidden;");
+
+            RequestContext.getCurrentInstance().update("form:datosPeriodicidades");
+            bandera = 0;
+            filtrarPeriodicidades = null;
+            tipoLista = 0;
+        }
+        crearPeriodicidades.clear();
+        borrarPeriodicidades.clear();
+        modificarPeriodicidades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listPeriodicidades = null;
+        guardado = true;
+        permitirIndex = true;
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosPeriodicidades");
     }
 
     public void cambiarIndice(int indice, int celda) {

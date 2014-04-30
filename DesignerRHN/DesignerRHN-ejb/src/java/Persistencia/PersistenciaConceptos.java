@@ -202,5 +202,17 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
             return null;
         }
     }
+    
+    public List<Conceptos> novedadConceptos(){
+        try {
+            String sqlQuery = "SELECT  V.* FROM Conceptos V WHERE EXISTS (select 'x' from empresas e where v.empresa=e.secuencia) AND NVL(V.ACTIVO,'S')='S'";
+            Query query = em.createNativeQuery(sqlQuery,Conceptos.class);
+            List<Conceptos> listaConceptos = query.getResultList();
+            return listaConceptos;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaConceptos.novedadConceptos " + e.toString());
+            return null;
+        }
+    }
 
 }

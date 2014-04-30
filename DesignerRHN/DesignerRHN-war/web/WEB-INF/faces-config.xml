@@ -2668,4 +2668,328 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/tipotelefono.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>pertelefono</from-outcome>
+            <to-view-id>/PerTelefono.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/PerTelefono.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>individual</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/VigenciasProyectos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cargos</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasproyectos</from-outcome>
+            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Proyecto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasproyectos</from-outcome>
+            <to-view-id>/VigenciasProyectos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cargos</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadesreemplazos</from-outcome>
+            <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>estructura</from-outcome>
+            <to-view-id>/Estructura.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Estructura.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadesreemplazos</from-outcome>
+            <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadesReemplazos.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tiporeemplazo</from-outcome>
+            <to-view-id>/tiporeemplazo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tiporeemplazo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadesreemplazos</from-outcome>
+            <to-view-id>/NovedadesReemplazos.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadempleado</from-outcome>
+            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>concepto</from-outcome>
+            <to-view-id>/Concepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Concepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadempleado</from-outcome>
+            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>periodicidades</from-outcome>
+            <to-view-id>/periodicidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/periodicidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadempleado</from-outcome>
+            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>terceros</from-outcome>
+            <to-view-id>/Tercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Tercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadempleado</from-outcome>
+            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formulas</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadempleado</from-outcome>
+            <to-view-id>/NovedadEmpleado.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadEmpleado.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/novedad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadconcepto</from-outcome>
+            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>periodicidades</from-outcome>
+            <to-view-id>/periodicidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/periodicidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadconcepto</from-outcome>
+            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>terceros</from-outcome>
+            <to-view-id>/Tercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Tercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadconcepto</from-outcome>
+            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadConcepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formulas</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadconcepto</from-outcome>
+            <to-view-id>/NovedadConcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>periodicidades</from-outcome>
+            <to-view-id>/periodicidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/periodicidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadtercero</from-outcome>
+            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>formulas</from-outcome>
+            <to-view-id>/Formula.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Formula.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadtercero</from-outcome>
+            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>concepto</from-outcome>
+            <to-view-id>/Concepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Concepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedadtercero</from-outcome>
+            <to-view-id>/NovedadTercero.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/NovedadTercero.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>novedad</from-outcome>
+            <to-view-id>/novedad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
 </faces-config>
