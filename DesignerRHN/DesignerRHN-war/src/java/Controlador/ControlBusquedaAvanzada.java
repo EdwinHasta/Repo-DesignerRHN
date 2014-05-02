@@ -1792,24 +1792,24 @@ public class ControlBusquedaAvanzada implements Serializable {
             if (numeroTipoBusqueda == 2) {
                 if (casillaEmpleado >= 0) {
                     if (casillaEmpleado == 0) {
-                        context.update("formularioDialogos:editarMotivoModFechaRetiro");
-                        context.execute("editarMotivoModFechaRetiro.show()");
+                        context.update("formularioDialogos:editarNumeroDocumentoModDatosPersonales");
+                        context.execute("editarNumeroDocumentoModDatosPersonales.show()");
                         casillaEmpleado = -1;
                     } else if (casillaEmpleado == 1) {
-                        context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
-                        context.execute("editarFechaInicialModFechaRetiro.show()");
+                        context.update("formularioDialogos:editarCiudadDocumentoModDatosPersonales");
+                        context.execute("editarCiudadDocumentoModDatosPersonales.show()");
                         casillaEmpleado = -1;
                     } else if (casillaEmpleado == 2) {
-                        context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
-                        context.execute("editarFechaFinalModFechaRetiro.show()");
+                        context.update("formularioDialogos:editarCiudadNacimientoModDatosPersonales");
+                        context.execute("editarCiudadNacimientoModDatosPersonales.show()");
                         casillaEmpleado = -1;
                     } else if (casillaEmpleado == 3) {
-                        context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
-                        context.execute("editarFechaInicialModFechaRetiro.show()");
+                        context.update("formularioDialogos:editarFechaInicialModDatosPersonales");
+                        context.execute("editarFechaInicialModDatosPersonales.show()");
                         casillaEmpleado = -1;
                     } else if (casillaEmpleado == 4) {
-                        context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
-                        context.execute("editarFechaFinalModFechaRetiro.show()");
+                        context.update("formularioDialogos:editarFechaFinalModDatosPersonales");
+                        context.execute("editarFechaFinalModDatosPersonales.show()");
                         casillaEmpleado = -1;
                     }
                 }
@@ -1972,13 +1972,13 @@ public class ControlBusquedaAvanzada implements Serializable {
         if (numeroTipoBusqueda == 2) {
             if (casillaEmpleado >= 0) {
                 if (casillaEmpleado == 1) {
-                    context.update("form:MotivoFechaRetiroDialogo");
-                    context.execute("MotivoFechaRetiroDialogo.show()");
+                    context.update("form:CiudadDocumentoDatosPersonalesDialogo");
+                    context.execute("CiudadDocumentoDatosPersonalesDialogo.show()");
                     casillaEmpleado = -1;
                 }
                 if (casillaEmpleado == 2) {
-                    context.update("form:MotivoFechaRetiroDialogo");
-                    context.execute("MotivoFechaRetiroDialogo.show()");
+                    context.update("form:CiudadNacimientoDatosPersonalesDialogo");
+                    context.execute("CiudadNacimientoDatosPersonalesDialogo.show()");
                     casillaEmpleado = -1;
                 }
             }

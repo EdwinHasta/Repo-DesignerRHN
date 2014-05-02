@@ -1219,23 +1219,23 @@
 
                                         <p:tab id="tabDatosDatosPersonales" title="#{msg['tabDatosDatosPersonales']}">
                                             <div style="height: 65px;">
-                                                <h:outputText value="#{msg['numeroDocumento']}" style="position: absolute; left: 10px; top: 40px;color: #14388B;font-weight: bold"/>
-                                                <p:inputText onclick="select();" style="position: absolute; left: 110px; top: 35px;width: 170px"
+                                                <h:outputText value="#{msg['numeroDocumento']}" style="position: absolute; left: 10px; top: 50px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 140px; top: 45px;width: 140px"
                                                              id="parametroNumeroDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.numerodocumento}">
                                                     <p:ajax event="change"  process="@this" update="parametroNumeroDocumentoModDatosPersonales"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(0)}" process="@this"/>
                                                 </p:inputText>
 
-                                                <h:outputText value="#{msg['ciudadDocumento']}" style="position: absolute; left: 10px; top: 65px;color: #14388B;font-weight: bold"/>
-                                                <p:inputText onclick="select();" style="position: absolute; left: 110px; top: 60px;text-transform: uppercase;width: 170px"
+                                                <h:outputText value="#{msg['ciudadDocumento']}" style="position: absolute; left: 10px; top: 85px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 140px; top: 80px;text-transform: uppercase;width: 140px"
                                                              id="parametroCiudadDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre}">
                                                     <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosDatosPersonales('ESTRUCTURA', controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre)}" process="@this" update="parametroCiudadDocumentoModDatosPersonales"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(1)}" process="@this"/>
                                                     <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
                                                 </p:inputText>
 
-                                                <h:outputText value="#{msg['ciudadNacimiento']}" style="position: absolute; left: 300px; top: 40px;color: #14388B;font-weight: bold"/>
-                                                <p:inputText onclick="select();" style="position: absolute; left: 410px; top: 35px;text-transform: uppercase;width: 170px"
+                                                <h:outputText value="#{msg['ciudadNacimiento']}" style="position: absolute; left: 300px; top: 50px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 440px; top: 45px;text-transform: uppercase;width: 140px"
                                                              id="parametroCiudadNacimientoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre}">
                                                     <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosCargo('NACIMIENTO', controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre)}" process="@this" update="parametroCiudadNacimientoModDatosPersonales"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(2)}" process="@this"/>
@@ -1243,16 +1243,16 @@
 
                                                 </p:inputText>
 
-                                                <h:outputText value="#{msg['sexo']}" style="position: absolute; left: 300px; top: 65px;color: #14388B;font-weight: bold"/>
-                                                <p:selectOneMenu id="parametroSexoModDatosPersonales"  style="position: absolute; left: 410px; top: 60px;width: 90px" value="#{controlBusquedaAvanzada.empleadoBA.persona.sexo}">
+                                                <h:outputText value="#{msg['sexo']}" style="position: absolute; left: 300px; top: 85px;color: #14388B;font-weight: bold"/>
+                                                <p:selectOneMenu id="parametroSexoModDatosPersonales"  style="position: absolute; left: 440px; top: 80px;width: 110px" value="#{controlBusquedaAvanzada.empleadoBA.persona.sexo}">
                                                     <f:selectItem itemLabel="" itemValue="null" />
                                                     <f:selectItem itemLabel="#{msg['masculino']}" itemValue="M" />
                                                     <f:selectItem itemLabel="#{msg['femenino']}" itemValue="F" />
                                                     <p:ajax event="change" update="parametroSexoModDatosPersonales" process="@this"/>
                                                 </p:selectOneMenu>
 
-                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 630px; top: 65px;color: #14388B;font-weight: bold"/>
-                                                <div id="posicionFechaInicialModDatosPersonales" style="font-size: 10px; position: absolute; top: 60px; left: 680px">
+                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 630px; top: 55px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaInicialModDatosPersonales" style="font-size: 10px; position: absolute; top: 50px; left: 680px">
                                                     <lnk:calendar id="parametroFechaInicialModDatosPersonales" value="#{controlBusquedaAvanzada.fechaInicialDatosPersonales}" >
                                                         <p:ajax event="dateSelect" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(3)}" process="@this" />
                                                         <p:ajax event="change" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(3)}" process="@this"/>
@@ -1260,8 +1260,8 @@
                                                     </lnk:calendar>
                                                 </div>
 
-                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 630px; top: 90px;color: #14388B;font-weight: bold"/>
-                                                <div id="posicionFechaFinalModDatosPersonales" style="font-size: 10px; position: absolute; top: 85px; left: 680px">
+                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 630px; top: 80px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaFinalModDatosPersonales" style="font-size: 10px; position: absolute; top: 75px; left: 680px">
                                                     <lnk:calendar id="parametroFechaFinalModDatosPersonales" value="#{controlBusquedaAvanzada.fechaFinalDatosPersonales}" >
                                                         <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
                                                         <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
@@ -2606,25 +2606,35 @@
                     
                     <!-- MODULO DATOS PERSONALES -->
 
-                    <p:dialog id="editarMotivoModFechaRetiro" header="#{msg['editarMotivoModFechaRetiro']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlBusquedaAvanzada.motivoRetiroBA.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarMotivoModFechaRetiro" value="#{msg['atras']}" onclick="editarMotivoModFechaRetiro.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    <p:dialog id="editarNumeroDocumentoModDatosPersonales" header="#{msg['editarNumeroDocumentoModDatosPersonales']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.persona.numerodocumento}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarNumeroDocumentoModDatosPersonales" value="#{msg['atras']}" onclick="editarNumeroDocumentoModDatosPersonales.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarCiudadDocumentoModDatosPersonales" header="#{msg['editarCiudadDocumentoModDatosPersonales']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.ciudaddocumento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCiudadDocumentoModDatosPersonales" value="#{msg['atras']}" onclick="editarCiudadDocumentoModDatosPersonales.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarCiudadNacimientoModDatosPersonales" header="#{msg['editarCiudadNacimientoModDatosPersonales']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarCiudadNacimientoModDatosPersonaless" value="#{msg['atras']}" onclick="editarCiudadNacimientoModDatosPersonales.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialModFechaRetiro" header="#{msg['editarFechaInicialModFechaRetiro']}" widgetVar="editarFechaInicialModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialFechaRetiro}" id="editFechaInicialModFechaRetiro"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaInicialModDatosPersonales" header="#{msg['editarFechaInicialModDatosPersonales']}" widgetVar="editarFechaInicialModDatosPersonales" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialDatosPersonales}" id="editFechaInicialModFechaRetiro"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaInicialModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaInicialModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaInicialModDatosPersonales" value="#{msg['atras']}" onclick="editarFechaInicialModDatosPersonales.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalModFechaRetiro" header="#{msg['editarFechaFinalModFechaRetiro']}" widgetVar="editarFechaFinalModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalFechaRetiro}" id="editFechaFinalModFechaRetiro"  styleClass="ui-datepicker, myClass"  
+                    <p:dialog id="editarFechaFinalModDatosPersonales" header="#{msg['editarFechaFinalModDatosPersonales']}" widgetVar="editarFechaFinalModDatosPersonales" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalDatosPersonales}" id="editFechaFinalModFechaRetiro"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
-                        <p:commandButton id="cancelarFechaFinalModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaFinalModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                        <p:commandButton id="cancelarFechaFinalModDatosPersonales" value="#{msg['atras']}" onclick="editarFechaFinalModDatosPersonales.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-
+                 
                     <!-- TABLA BUSQUEDA AVANZADA -->
 
                     <p:dialog id="editarTablaBusquedaAvanzada" header="#{controlBusquedaAvanzada.cabeceraEditarCelda}" widgetVar="editarTablaBusquedaAvanzada" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
