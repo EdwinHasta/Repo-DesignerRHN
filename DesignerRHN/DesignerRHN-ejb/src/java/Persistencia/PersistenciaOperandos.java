@@ -84,13 +84,12 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     public String valores(BigInteger secuenciaOperando) {
         try {
             String valor;
-            Query query = em.createNativeQuery("SELECT DECODE(tc.tipo,'C',tc.valorstring,'N',to_char(tc.valorreal),to_char(tc.valordate)) FROM TIPOSCONSTANTES tc WHERE tc.operando=? AND tc.fechainicial=(select max(tci.fechainicial) from tiposconstantes tci WHERE tci.operando= ?)");
+            Query query = em.createNativeQuery("SELECT DECODE(tc.tipo,'C',tc.valorstring,'N',to_char(tc.valorreal),to_char(tc.valordate,'DD/MM/YYYY')) FROM TIPOSCONSTANTES tc WHERE tc.operando=? AND tc.fechainicial=(select max(tci.fechainicial) from tiposconstantes tci WHERE tci.operando= ?)");
             query.setParameter(1, secuenciaOperando);
             query.setParameter(2, secuenciaOperando);
             valor = (String) query.getSingleResult();
             return valor;
         } catch (Exception e) {
-
             return null;
         }
     }

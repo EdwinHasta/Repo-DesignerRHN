@@ -18,6 +18,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -42,6 +43,7 @@ public class ControlAdminreportes implements Serializable {
     //LISTA INFOREPORTES
     private List<Inforeportes> listaInforeportes;
     private List<Inforeportes> filtradosListaInforeportes;
+    private Inforeportes inforeporteSeleccionado;
     //L.O.V INFOREPORTES
     private List<Inforeportes> lovlistaInforeportes;
     private List<Inforeportes> lovfiltradoslistaInforeportes;
@@ -96,7 +98,7 @@ public class ControlAdminreportes implements Serializable {
         listaInforeportesBorrar = new ArrayList<Inforeportes>();
         listaInforeportesCrear = new ArrayList<Inforeportes>();
         listaInforeportesModificar = new ArrayList<Inforeportes>();
-        altoTabla = "250";
+        altoTabla = "270";
         duplicarInforeporte = new Inforeportes();
     }
 
@@ -136,9 +138,10 @@ public class ControlAdminreportes implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
 
                 index = -1;
@@ -154,9 +157,10 @@ public class ControlAdminreportes implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -202,6 +206,8 @@ public class ControlAdminreportes implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -216,6 +222,8 @@ public class ControlAdminreportes implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -232,6 +240,8 @@ public class ControlAdminreportes implements Serializable {
     }
 
     public void seleccionarTipo(String estadoTipo, int indice, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
+
         if (tipoLista == 0) {
             if (estadoTipo.equals("PDF")) {
                 listaInforeportes.get(indice).setTipo("PDF");
@@ -279,6 +289,8 @@ public class ControlAdminreportes implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            cambiosPagina = false;
+            context.update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosInforeportes");
     }
@@ -376,23 +388,27 @@ public class ControlAdminreportes implements Serializable {
         index = -1;
         if (guardado == true) {
             guardado = false;
+            cambiosPagina = false;
+            context.update("form:ACEPTAR");
             //RequestContext.getCurrentInstance().update("form:aceptar");
         }
         if (bandera == 1) {
-            altoTabla = "250";
+            altoTabla = "270";
+            FacesContext c = FacesContext.getCurrentInstance();
+
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            inforeportesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
             inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
             inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
             inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
             inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
             inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
             inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosInforeportes");
             bandera = 0;
@@ -459,6 +475,8 @@ public class ControlAdminreportes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
             cambiosPagina = false;
             context.update("form:ACEPTAR");
@@ -547,40 +565,42 @@ public class ControlAdminreportes implements Serializable {
 
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0) {
-            altoTabla = "228";
+            altoTabla = "246";
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            inforeportesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
-            inforeportesCodigos.setFilterStyle("width: 60px");
-            inforeportesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+            inforeportesCodigos.setFilterStyle("width: 20px");
+            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
             inforeportesNombres.setFilterStyle("");
-            inforeportesContadores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
-            inforeportesContadores.setFilterStyle("");
-            inforeportesNombresReportes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
-            inforeportesNombresReportes.setFilterStyle("width: 60px");
-            inforeportesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
-            inforeportesTipos.setFilterStyle("width: 60px");
-            inforeportesModulos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
-            inforeportesModulos.setFilterStyle("width: 60px");
+            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+            inforeportesContadores.setFilterStyle("width: 30px");
+            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+            inforeportesNombresReportes.setFilterStyle("");
+            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+            inforeportesTipos.setFilterStyle("width: 30px");
+            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+            inforeportesModulos.setFilterStyle("width: 30px");
             RequestContext.getCurrentInstance().update("form:datosInforeportes");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            altoTabla = "250";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            inforeportesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
             inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
             inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
             inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
             inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
             inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
             inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosInforeportes");
             bandera = 0;
@@ -592,18 +612,20 @@ public class ControlAdminreportes implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "250";
-            inforeportesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            altoTabla = "270";
+            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
             inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
             inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
             inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
             inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
             inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
             inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosInforeportes");
             bandera = 0;
@@ -724,18 +746,20 @@ public class ControlAdminreportes implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (bandera == 1) {
-            altoTabla = "250";
-            inforeportesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            altoTabla = "270";
+            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
             inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
             inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
             inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
             inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
             inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
             inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosInforeportes");
             bandera = 0;
@@ -896,7 +920,8 @@ public class ControlAdminreportes implements Serializable {
         context.update("form:datosInforeportes");
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            cambiosPagina = false;
+            context.update("form:ACEPTAR");
         }
         context.execute("NuevoInforeporte.hide()");
         index = -1;
@@ -946,7 +971,8 @@ public class ControlAdminreportes implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -1146,7 +1172,10 @@ public class ControlAdminreportes implements Serializable {
             context.update("form:datosInforeportes");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             //  k = 0;
         }
         index = -1;
@@ -1263,24 +1292,24 @@ public class ControlAdminreportes implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            altoTabla = "250";
-            inforeportesCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "270";
+            inforeportesCodigos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesCodigos");
             inforeportesCodigos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
+            inforeportesNombres = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombres");
             inforeportesNombres.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesContadores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
+            inforeportesContadores = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesContadores");
             inforeportesContadores.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesNombresReportes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
+            inforeportesNombresReportes = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesNombresReportes");
             inforeportesNombresReportes.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
+            inforeportesTipos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesTipos");
             inforeportesTipos.setFilterStyle("display: none; visibility: hidden;");
-            inforeportesModulos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
+            inforeportesModulos = (Column) c.getViewRoot().findComponent("form:datosInforeportes:inforeportesModulos");
             inforeportesModulos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosInforeportes");
             bandera = 0;
             filtradosListaInforeportes = null;
             tipoLista = 0;
-
         }
 
         listaInforeportesBorrar.clear();
@@ -1416,6 +1445,14 @@ public class ControlAdminreportes implements Serializable {
 
     public void setCambiosPagina(boolean cambiosPagina) {
         this.cambiosPagina = cambiosPagina;
+    }
+
+    public Inforeportes getInforeporteSeleccionado() {
+        return inforeporteSeleccionado;
+    }
+
+    public void setInforeporteSeleccionado(Inforeportes inforeporteSeleccionado) {
+        this.inforeporteSeleccionado = inforeporteSeleccionado;
     }
 
 }

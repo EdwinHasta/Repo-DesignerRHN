@@ -2,343 +2,127 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
     </h:head>
-    <h:body>
+    <h:body> 
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form"> 
-                    <f:loadBundle basename="Recursos.emplvigenciatipocontrato" var="msg" />
-                    <p:growl id="growl" showDetail="true"/>
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlVigenciasTiposContratos.empleado.persona.nombreCompleto}"/>
+                <h:form id="form">
 
-                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
-                            <p:toolbarGroup align="left"> 
+                    <p:dataTable liveScroll="true" scrollRows="15" id="datosOperandos" var="op" rowKey="#{op.secuencia}" rowIndexVar="indice"  style="border: 1px;width: 820px; position: relative"
+                                 value="#{controlOperando.listaOperandos}" scrollable="true" scrollWidth="835" scrollHeight="#{controlOperando.altoTabla}"
+                                 filteredValue="#{controlOperando.filtradosListaOperandos}"  
+                                 emptyMessage="#{msg['vacio']}" selection="#{controlOperando.operandoSeleccionado}" selectionMode="single"
+                                 editable="true" editMode="cell"  >
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" process="@this" />
-                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="#{msg['editar']}" />
+                        <p:ajax listener="#{controlOperando.eventoFiltrar()}" event="filter"/>
 
-                                <p:separator style="position: relative; top: -9px"/>
+                        <p:column headerText="#{msg['nombre']}" width="180" sortBy="#{op.nombre}" filterBy="#{op.nombre}"  filterMatchMode="contains" id="operandosNombres" filterStyle="display: none; visibility: hidden;"  >  
+                            <p:cellEditor>  
+                                <f:facet name="output">
+                                    <h:outputText value="#{op.nombre}"  style="text-transform: uppercase;">
+                                    </h:outputText>
+                                </f:facet>  
+                                <f:facet name="input">
+                                    <p:inputText value="#{op.nombre}" id="editarNombres" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 1)}" />
+                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.nombre)}" update="@this" />
+                                    </p:inputText> 
+                                </f:facet>   
+                            </p:cellEditor>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
-
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlVigenciasTiposContratos.exportXLS()}" />
-                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
-
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.limpiarNuevaVTC()}" ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosVTCEmpleadoExportar" fileName="VigenciasTiposContratosXML" encoding="UTF-8"/> 
-                                </p:commandButton> 
-                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
-
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.exportPDF()}" ajax="false"/>
-                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/> 
-                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
-
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.borrarVTC()}" process="@this"/>  
-                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
-
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.duplicarVigenciaC()}"  process="@this"/>  
-                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
-
-                                <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasTiposContratos.verificarRastro()}" process="@this"/>  
-                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                            </p:toolbarGroup>
-                        </p:toolbar> 
-
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>#{msg['contratos']}</strong></legend>
-                            <!-- TABLA EMPLVIGENCIACARGO -->
-
-                            <p:dataTable id="datosVTCEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" 
-                                         value="#{controlVigenciasTiposContratos.vigenciasTiposContratoEmpleado}" filteredValue="#{controlVigenciasTiposContratos.filtrarVTC}"
-                                         emptyMessage="#{msg['vacio']}" editable="true" editMode="cell" scrollable="true" 
-                                         scrollWidth="830" scrollHeight="#{controlVigenciasTiposContratos.altoTabla}" style=" border: 1px;width: 830px;"
-                                         selection="#{controlVigenciasTiposContratos.vigenciaSeleccionada}" selectionMode="single">
-
-                                <p:ajax event="filter" listener="#{controlVigenciasTiposContratos.eventoFiltrar()}"/>
-
-                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="68" id="vtcFecha" filterStyle="display: none; visibility: hidden;"  >  
-                                    <f:facet name="header">
-                                        <h:outputText value="#{msg['fecha']}" />
-                                    </f:facet>
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.fechavigencia}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">                                            
-                                            <lnk:calendar id="editFecha" value="#{info.fechavigencia}" height="12">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.fechavigencia)}" update="@this"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.fechavigencia)}" update="@this" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 0)}" process="@this"/> 
-                                            </lnk:calendar>
-                                        </f:facet>   
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['fecha']}" />
-                                    </f:facet>
-                                </p:column>
-
-                                <p:column headerText="#{msg['motivo']}" sortBy="#{info.motivocontrato.nombre}" filterBy="#{info.motivocontrato.nombre}" filterMatchMode="contains" id="vtcContrato" width="150" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <f:facet name="header"><h:outputText value="#{msg['motivo']}"/> </f:facet> 
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.motivocontrato.nombre}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.motivocontrato.nombre}" id="editarContrato" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'MOTIVOC', info.motivocontrato.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 1)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasTiposContratos.asignarIndex(indice, 0, 0)}"/>
-                                            </p:inputText> 
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooContrato" value="#{msg['motivo']}"/>
-                                    </f:facet>
-                                </p:column>  
-
-                                <p:column headerText="#{msg['tipo']}" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains"  id="vtcTipoContrato" width="150" filterStyle="display: none; visibility: hidden;" >      
-                                    <f:facet name="header"><h:outputText value="#{msg['tipo']}"/></f:facet>
-
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.tipocontrato.nombre}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText id="editarTipoContrato" value="#{info.tipocontrato.nombre}" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase">
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'TIPOC', info.tipocontrato.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 2)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasTiposContratos.asignarIndex(indice, 1, 0)}"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooMotivos" value="#{msg['tipo']}" />
-                                    </f:facet>
-                                </p:column>
-
-                                <p:column headerText="#{msg['ciudad']}" sortBy="#{info.ciudad.nombre}" filterBy="#{info.ciudad.nombre}" filterMatchMode="contains" id="vtcCiudad" width="100" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <f:facet name="header"> <h:outputText value="#{msg['ciudad']}" /></f:facet>
-
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText id="outCiudad" value="#{info.ciudad.nombre}"/></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.ciudad.nombre}" widgetVar="editCiudad" id="editCiudad" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase"  >
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'CIUDAD', info.ciudad.nombre)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 3)}" />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasTiposContratos.asignarIndex(indice, 2, 0)}" />
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue;" id="fooCargos" value="#{msg['ciudad']}"/>
-                                    </f:facet>
-                                </p:column>  
-
-                                <p:column sortBy="#{info.iniciosustitucion}" filterBy="#{info.iniciosustitucion}" filterMatchMode="contains" id="vtcFechaSP" width="68" filterStyle="display: none; visibility: hidden;" >                                                                                              
-                                    <f:facet name="header">
-                                        <h:outputText id="headFisp" value="#{msg['fispH']}"/>
-                                        <p:tooltip for="headFisp" value="#{msg['fisp']}"/>
-                                    </f:facet>
-
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.iniciosustitucion}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:calendar  value="#{info.iniciosustitucion}" id="editarFechaInicialSP"   styleClass="ui-datepicker, myClass"  
-                                                         navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N',info.iniciosustitucion)}" update="editarFechaInicialSP"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N',info.iniciosustitucion)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 4)}"/>
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
-                                        </f:facet> 
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer"><h:outputText value="#{msg['fispH']}" /></f:facet>
-                                </p:column>  
-
-                                <p:column sortBy="#{info.inicioflexibiliza}" filterBy="#{info.inicioflexibiliza}" filterMatchMode="contains" id="vtcInicioFlexibilizacion" width="68" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <f:facet name="header">
-                                        <h:outputText id="headFif" value="#{msg['fifH']}"/>
-                                        <p:tooltip for="headFif" value="#{msg['fif']}"/>
-                                    </f:facet>
-
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.inicioflexibiliza}" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:calendar   value="#{info.inicioflexibiliza}" id="editarFechaInicialFlexi"   styleClass="ui-datepicker, myClass"  
-                                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" autocomplete="true">                                         
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.inicioflexibiliza)}" update="editarFechaInicialFlexi"/>
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.inicioflexibiliza)}" />
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 5)}" />
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:calendar>
-                                        </f:facet> 
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer"><h:outputText value="#{msg['fifH']}" /></f:facet>
-                                </p:column>
-
-                                <p:column headerText="#{msg['observaciones']}" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="vtcObservacion" width="150" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <f:facet name="header"> <h:outputText value="#{msg['observaciones']}" /></f:facet>
-
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.observaciones}" style="text-transform: uppercase" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.observaciones}" id="editarObservacion" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase" >
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.inicioflexibiliza)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 6)}" />
-                                            </p:inputText> 
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="Observaciones" />
-                                    </f:facet>
-                                </p:column> 
-
-                                <p:column headerText="P" width="25" style="height: 16px; padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="#{msg['p']}" /></f:facet>
-                                    <p:commandButton style="background-image: url(Imagenes/revertir.gif); width:23px; height: 21px; background-repeat: no-repeat; background-size: 100% 100%;"/>                                
-                                    <f:facet name="footer"><h:outputText value="#{msg['p']}" /></f:facet>
-                                </p:column>
-
-                                <p:column headerText="S" width="25" style="height: 16px;padding: 0px;" exportable="false">  
-                                    <f:facet name="header"><h:outputText value="#{msg['s']}" /></f:facet>
-                                    <p:commandButton  style="width: 23px; height: 21px;padding: 0px; padding: 0px; padding-bottom: 0px; padding-top: 0px" id="selectButton" />
-                                    <f:facet name="footer"><h:outputText value="#{msg['s']}" /></f:facet>
-                                </p:column>     
-                            </p:dataTable> 
-                        </fieldset>
-                        <p:commandButton style="position: absolute; left: 15px; top: 470px;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciasTiposContratos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVTCEmpleado" process="@this" disabled="#{controlVigenciasTiposContratos.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasTiposContratos.salir()}" action="nomina" process="@this" />
-
-                    </p:panel>
-
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlVigenciasTiposContratos.guardarCambiosVTC()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
-                    </p:dialog>
-                    <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasTiposContratos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasTiposContratos.secRegistro, 'VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
-                    </p:dialog>
-
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
-                    </p:dialog>
-
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlVigenciasTiposContratos.secRegistro, 'VigenciasTiposContratos', 'vigenciasTC')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
-                    </p:dialog>
-
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 28px; width: 195px; font-weight:bold" />
-                    </p:dialog>
-
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-
-                    <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}"/> 
-                </h:form>
-
-                <h:form id="formularioDialogos" >
-
-                    <!-- DIALOGO L.O.V ESTATICO DE CIUDADES -->
-                    <p:dialog header="#{msg['ciudadesC']}" widgetVar="ciudadesDialogo" draggable="false" resizable="false" closable="false" id="ciudadesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="470" modal="true" >
-                        <p:dataTable id="lovCiudades" style=" width: 425px" var="ItemCiudad" value="#{controlVigenciasTiposContratos.listaCiudades}" rowKey="#{ItemCiudad.secuencia}"
-                                     selection="#{controlVigenciasTiposContratos.ciudadSelecionada}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="445" scrollHeight="250"
-                                     filteredValue="#{controlVigenciasTiposContratos.filtradoCiudades}" emptyMessage="#{msg['lovvacio']}">              
-                            <p:ajax event="rowSelect" listener="#{controlVigenciasTiposContratos.activarAceptar()}" update=":formularioDialogos:aceptarC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlVigenciasTiposContratos.actualizarCiudad()}" onstart="lovCiudades.clearFilters()"/>
-                            <f:facet name="header">  
-                                <h:outputText value="#{msg['buscarC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCiudades.filter();" style="width:150px; position: relative; left: -30px;" />  
+                            <f:facet name="footer">
+                                <h:outputText value="#{msg['nombre']}" />
                             </f:facet>
-                            <p:column filterBy="#{ItemCiudad.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
-                                <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="#{msg['codigoC']}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['tipo']}" style="padding: 0px;" sortBy="#{op.tipo}" filterBy="#{op.tipo}" filterMatchMode="contains" id="operandosTipos" width="120" filterStyle="display: none; visibility: hidden;" >                                  
+                            <p:cellEditor>  
+                                <f:facet name="output">
+                                    <h:outputText value="#{op.nombre}"  style="text-transform: uppercase;">
+                                    </h:outputText>
                                 </f:facet>
-                                <h:outputText  value="#{ItemCiudad.codigo}" />
-                            </p:column>
-                            <p:column filterBy="#{ItemCiudad.nombre}" width="200"  filterMatchMode="contains">
-                                <f:facet name="header">
-                                    <h:outputText value="#{msg['ciudadC']}" />
+                                <f:facet name="input">
+                                    <p:selectOneMenu  id="editarTipos" value="#{op.estadoTipo}" style="width: 99.9%; height: 22px">  
+                                        <f:selectItem itemLabel="#{msg['formula']}" itemValue="FORMULA" />  
+                                        <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
+                                        <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
+                                        <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
+                                        <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
+                                        <p:ajax listener="#{controlOperando.seleccionarTipo(op.estadoTipo, indice, celda)}" event="change" update="editarTipos" />
+                                    </p:selectOneMenu>
                                 </f:facet>
-                                <h:outputText value="#{ItemCiudad.nombre}" />
-                            </p:column>
-                        </p:dataTable>
-                        <p:commandButton id="aceptarC" style="position: relative; left: 303px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" update="aceptarC" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCiudades:globalFilter"/>
-                        </p:commandButton>
-                        <p:commandButton id="atrasC" style="position: relative; left: 303px" value="#{msg['atras']}" onclick="ciudadesDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlVigenciasTiposContratos.cancelarCambioCiudad()}" update="lovCiudades" process="@this">
-                            <p:resetInput target=":formularioDialogos:lovCiudades:globalFilter"/>
-                        </p:commandButton>
-                    </p:dialog> 
+                            </p:cellEditor>
+                            <f:facet name="footer">
+                                <h:outputText value="#{msg['tipo']}" />
+                            </f:facet>
+                        </p:column>
+
+                        <p:column headerText="#{msg['valorconstante']}" width="40" disabledSelection="true" sortBy="#{op.valor}" filterBy="#{op.valor}"  filterMatchMode="contains" id="operandosValores" filterStyle="display: none; visibility: hidden;"  >  
+                            <p:cellEditor>  
+                                <f:facet name="output">
+                                    <h:outputText value="#{op.valor}"  style="text-transform: uppercase;">
+                                    </h:outputText>
+                                </f:facet>  
+                                <f:facet name="input">
+                                    <p:inputText readonly="true" value="#{op.valor}" id="editarValores" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 3)}" />
+                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.valor)}" update="@this" />
+                                    </p:inputText> 
+                                </f:facet>   
+
+                            </p:cellEditor>
+                            <f:facet name="footer">
+                                <h:outputText value="#{msg['valorconstante']}" />
+                            </f:facet>
+                        </p:column>
+
+                        <p:column headerText="#{msg['descripcion']}" width="180" sortBy="#{op.descripcion}" filterBy="#{op.descripcion}"  filterMatchMode="contains" id="operandosDescripciones" filterStyle="display: none; visibility: hidden;"  >  
+                            <p:cellEditor>  
+                                <f:facet name="output">
+                                    <h:outputText value="#{op.descripcion}"  style="text-transform: uppercase;">
+                                    </h:outputText>
+                                </f:facet>  
+                                <f:facet name="input">
+                                    <p:inputText value="#{op.descripcion}" id="editarDescripcion" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 4)}" />
+                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.descripcion)}" update="@this" />
+                                    </p:inputText> 
+                                </f:facet>   
+                            </p:cellEditor>
+
+                            <f:facet name="footer">
+                                <h:outputText value="#{msg['descripcion']}" />
+                            </f:facet>
+                        </p:column>
+
+
+
+                        <p:column headerText="#{msg['codigo']}" width="50" sortBy="#{op.codigo}" filterBy="#{op.codigo}"  filterMatchMode="contains" id="operandosCodigos" filterStyle="display: none; visibility: hidden;"  >  
+                            <p:cellEditor>  
+                                <f:facet name="output">
+                                    <h:outputText value="#{op.codigo}"  style="text-transform: uppercase;">
+                                    </h:outputText>
+                                </f:facet>  
+                                <f:facet name="input">
+                                    <p:inputText readonly="true" value="#{op.codigo}" id="editarCodigos" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 7)}" />
+                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.codigo)}" update="@this" />
+                                    </p:inputText> 
+                                </f:facet>   
+                            </p:cellEditor>
+
+                            <f:facet name="footer">
+                                <h:outputText value="#{msg['codigo']}" />
+                            </f:facet>
+                        </p:column>
+
+                    </p:dataTable>
                 </h:form>
+
             </ui:define>
         </ui:composition>
     </h:body>
