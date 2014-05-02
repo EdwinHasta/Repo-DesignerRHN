@@ -166,7 +166,7 @@
                             <p:commandButton id="btnReportePlanta" value="#{msg['reporteplantapersonal']}" style="position: relative; top: 215px;"/>
                         </fieldset>
                         <p:commandButton id="btnAceptar" value="#{msg['aceptar']}" icon="ui-icon-check" style="position: relative; top: 302px; left: 500px" onclick="confirmarGuardar.show();" update=":form:datosOrganigramas" process="@this" />
-                        <p:commandButton id="btnAtras" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; top: 302px; left: 500px" actionListener="#{controlEstructura.salir()}"  process="@this" action="nomina" />
+                        <p:commandButton id="btnAtras" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; top: 302px; left: 500px" actionListener="#{controlEstructura.salir()}"  process="@this" action="#{controlEstructura.redirigir()}" />
                         <p:commandButton style="position: relative; left: -160px; top: 302px;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlEstructura.cancelarModificacion()}" process="@this" />
                     </p:panel>
 

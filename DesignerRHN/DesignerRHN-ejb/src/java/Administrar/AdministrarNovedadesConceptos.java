@@ -58,10 +58,9 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
 
 
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
-    @Override
     public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto) {
         try {
-            return persistenciaNovedades.todasNovedadesConcepto(secuenciaConcepto);
+            return persistenciaNovedades.novedadesConcepto(secuenciaConcepto);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesConceptos.conceptosNovedades" + e);
             return null;
@@ -71,7 +70,7 @@ public class AdministrarNovedadesConceptos implements AdministrarNovedadesConcep
     //Listas de Conceptos, Formulas, Periodicidades, Terceros
 
     public List<Conceptos> Conceptos() {
-        return persistenciaConceptos.buscarConceptos();
+        return persistenciaConceptos.novedadConceptos();
     }
     
     public List<Terceros> Terceros() {

@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,6 +38,7 @@ public class ControlPerTelefonos implements Serializable {
     //LISTA TELEFONOS
     private List<Telefonos> listaTelefonos;
     private List<Telefonos> filtradosListaTelefonos;
+    private Telefonos telefonoSeleccionado;
     //L.O.V TIPOS TELEFONOS
     private List<TiposTelefonos> listaTiposTelefonos;
     private List<TiposTelefonos> filtradoslistaTiposTelefonos;
@@ -74,6 +76,7 @@ public class ControlPerTelefonos implements Serializable {
     private Telefonos duplicarTelefono;
     //RASTRO
     private BigInteger secRegistro;
+    private String altoTabla;
 
     public ControlPerTelefonos() {
         permitirIndex = true;
@@ -100,6 +103,9 @@ public class ControlPerTelefonos implements Serializable {
         secRegistro = null;
         permitirIndex = true;
         k = 0;
+        altoTabla = "270";
+        guardado = true;
+
     }
 
     public void recibirPersona(BigInteger secPersona) {
@@ -123,17 +129,19 @@ public class ControlPerTelefonos implements Serializable {
 
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
             tFecha.setFilterStyle("display: none; visibility: hidden;");
-            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
             tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
-            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
             tNumero.setFilterStyle("display: none; visibility: hidden;");
-            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
             tCiudad.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             bandera = 0;
             filtradosListaTelefonos = null;
@@ -150,6 +158,7 @@ public class ControlPerTelefonos implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosTelefonosPersona");
     }
 
@@ -177,6 +186,7 @@ public class ControlPerTelefonos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosTelefonosPersona");
@@ -302,7 +312,7 @@ public class ControlPerTelefonos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -383,19 +393,21 @@ public class ControlPerTelefonos implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+                tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
                 tFecha.setFilterStyle("display: none; visibility: hidden;");
-                tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+                tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
                 tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
-                tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+                tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
                 tNumero.setFilterStyle("display: none; visibility: hidden;");
-                tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+                tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
                 tCiudad.setFilterStyle("display: none; visibility: hidden;");
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
                 bandera = 0;
                 filtradosListaTelefonos = null;
@@ -444,31 +456,35 @@ public class ControlPerTelefonos implements Serializable {
 
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
             tFecha.setFilterStyle("width: 60px");
-            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
             tTipoTelefono.setFilterStyle("");
-            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
             tNumero.setFilterStyle("");
-            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
             tCiudad.setFilterStyle("width: 60px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             bandera = 1;
 
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
             tFecha.setFilterStyle("display: none; visibility: hidden;");
-            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
             tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
-            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
             tNumero.setFilterStyle("display: none; visibility: hidden;");
-            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
             tCiudad.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             bandera = 0;
             filtradosListaTelefonos = null;
@@ -513,22 +529,25 @@ public class ControlPerTelefonos implements Serializable {
         }
 
         if (pasa == 0 && pasaA == 0) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 //System.out.println("Desactivar");
                 //System.out.println("TipoLista= " + tipoLista);
-                tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+                tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
                 tFecha.setFilterStyle("display: none; visibility: hidden;");
-                tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+                tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
                 tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
-                tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+                tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
                 tNumero.setFilterStyle("display: none; visibility: hidden;");
-                tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+                tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
                 tCiudad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
                 bandera = 0;
                 filtradosListaTelefonos = null;
                 tipoLista = 0;
+                altoTabla = "270";
 
             }
             //AGREGAR REGISTRO A LA LISTA TELEFONOS.
@@ -548,7 +567,7 @@ public class ControlPerTelefonos implements Serializable {
             context.update("form:datosTelefonosPersona");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroTelefono.hide()");
             index = -1;
@@ -584,6 +603,7 @@ public class ControlPerTelefonos implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosTelefonosPersona");
@@ -657,6 +677,7 @@ public class ControlPerTelefonos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -672,6 +693,7 @@ public class ControlPerTelefonos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -742,6 +764,7 @@ public class ControlPerTelefonos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -756,6 +779,7 @@ public class ControlPerTelefonos implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -820,7 +844,10 @@ public class ControlPerTelefonos implements Serializable {
             context.update("form:datosTelefonosPersona");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             //  k = 0;
         }
         System.out.println("Tamaño lista: " + listaTelefonosCrear.size());
@@ -830,18 +857,20 @@ public class ControlPerTelefonos implements Serializable {
     }
 
     public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 1) {
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
+            tFecha = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tFecha");
             tFecha.setFilterStyle("display: none; visibility: hidden;");
-            tTipoTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
+            tTipoTelefono = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tTipoTelefono");
             tTipoTelefono.setFilterStyle("display: none; visibility: hidden;");
-            tNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
+            tNumero = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tNumero");
             tNumero.setFilterStyle("display: none; visibility: hidden;");
-            tCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
+            tCiudad = (Column) c.getViewRoot().findComponent("form:datosTelefonosPersona:tCiudad");
             tCiudad.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosTelefonosPersona");
             bandera = 0;
             filtradosListaTelefonos = null;
@@ -1142,4 +1171,27 @@ public class ControlPerTelefonos implements Serializable {
     public void setDuplicarTelefono(Telefonos duplicarTelefono) {
         this.duplicarTelefono = duplicarTelefono;
     }
+
+    public Telefonos getTelefonoSeleccionado() {
+        return telefonoSeleccionado;
+    }
+
+    public void setTelefonoSeleccionado(Telefonos telefonoSeleccionado) {
+        this.telefonoSeleccionado = telefonoSeleccionado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
+    
+
 }

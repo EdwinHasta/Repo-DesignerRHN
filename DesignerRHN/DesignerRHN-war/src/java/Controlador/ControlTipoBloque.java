@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -49,6 +50,7 @@ public class ControlTipoBloque implements Serializable {
     //LISTA INFOREPORTES
     private List<TiposBloques> listaTiposBloques;
     private List<TiposBloques> filtradosListaTiposBloques;
+    private TiposBloques tipoBloqueSeleccionado;
     //L.O.V INFOREPORTES
     private List<TiposBloques> lovlistaTiposBloques;
     private List<TiposBloques> lovfiltradoslistaTiposBloques;
@@ -116,7 +118,7 @@ public class ControlTipoBloque implements Serializable {
         listaTiposBloquesBorrar = new ArrayList<TiposBloques>();
         listaTiposBloquesCrear = new ArrayList<TiposBloques>();
         listaTiposBloquesModificar = new ArrayList<TiposBloques>();
-        altoTabla = "245";
+        altoTabla = "270";
         duplicarTipoBloque = new TiposBloques();
         nuevoTipoBloque.setFechainicial(new Date());
     }
@@ -245,37 +247,39 @@ public class ControlTipoBloque implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 0) {
-            altoTabla = "223";
-            tiposBloquesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
+            altoTabla = "246";
+            tiposBloquesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
             tiposBloquesIniciales.setFilterStyle("width: 60px");
-            tiposBloquesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
+            tiposBloquesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
             tiposBloquesFinales.setFilterStyle("width: 60px");
-            tiposBloquesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
+            tiposBloquesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
             tiposBloquesTipos.setFilterStyle("width: 60px");
-            tiposBloquesSQL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
+            tiposBloquesSQL = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
             tiposBloquesSQL.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosTiposBloques");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposBloquesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
+            tiposBloquesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
             tiposBloquesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
+            tiposBloquesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
             tiposBloquesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
+            tiposBloquesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
             tiposBloquesTipos.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesSQL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
+            tiposBloquesSQL = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
             tiposBloquesSQL.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposBloques");
             bandera = 0;
@@ -286,17 +290,19 @@ public class ControlTipoBloque implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposBloquesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
+            tiposBloquesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
             tiposBloquesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
+            tiposBloquesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
             tiposBloquesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
+            tiposBloquesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
             tiposBloquesTipos.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesSQL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
+            tiposBloquesSQL = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
             tiposBloquesSQL.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposBloques");
             bandera = 0;
@@ -317,17 +323,19 @@ public class ControlTipoBloque implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposBloquesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
+            tiposBloquesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
             tiposBloquesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
+            tiposBloquesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
             tiposBloquesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
+            tiposBloquesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
             tiposBloquesTipos.setFilterStyle("display: none; visibility: hidden;");
-            tiposBloquesSQL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
+            tiposBloquesSQL = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
             tiposBloquesSQL.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposBloques");
             bandera = 0;
@@ -454,7 +462,10 @@ public class ControlTipoBloque implements Serializable {
             context.update("form:datosTiposBloques");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+
             //  k = 0;
         }
         index = -1;
@@ -462,6 +473,8 @@ public class ControlTipoBloque implements Serializable {
     }
 
     public void seleccionarTipo(String estadoTipo, int indice, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
+
         if (tipoLista == 0) {
             if (estadoTipo.equals("NUMERICO")) {
                 listaTiposBloques.get(indice).setTipo("NUMBER");
@@ -497,6 +510,8 @@ public class ControlTipoBloque implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            cambiosPagina = false;
+            context.update("form:ACEPTAR");
         }
         RequestContext.getCurrentInstance().update("form:datosTiposBloques");
     }
@@ -540,9 +555,9 @@ public class ControlTipoBloque implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -556,9 +571,10 @@ public class ControlTipoBloque implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -604,16 +620,18 @@ public class ControlTipoBloque implements Serializable {
 
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
-                altoTabla = "245";
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                altoTabla = "270";
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tiposBloquesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
+                tiposBloquesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
                 tiposBloquesIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposBloquesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
+                tiposBloquesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
                 tiposBloquesFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposBloquesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
+                tiposBloquesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
                 tiposBloquesTipos.setFilterStyle("display: none; visibility: hidden;");
-                tiposBloquesSQL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
+                tiposBloquesSQL = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
                 tiposBloquesSQL.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposBloques");
                 bandera = 0;
@@ -635,7 +653,8 @@ public class ControlTipoBloque implements Serializable {
             context.update("form:datosTiposBloques");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoTipoBloque.hide()");
             index = -1;
@@ -660,17 +679,18 @@ public class ControlTipoBloque implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                altoTabla = "245";
+                altoTabla = "270";
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tiposBloquesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
+                tiposBloquesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesIniciales");
                 tiposBloquesIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposBloquesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
+                tiposBloquesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesFinales");
                 tiposBloquesFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposBloquesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
+                tiposBloquesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesTipos");
                 tiposBloquesTipos.setFilterStyle("display: none; visibility: hidden;");
-                tiposBloquesSQL = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
+                tiposBloquesSQL = (Column) c.getViewRoot().findComponent("form:datosTiposBloques:tiposBloquesSQL");
                 tiposBloquesSQL.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposBloques");
                 bandera = 0;
@@ -687,7 +707,8 @@ public class ControlTipoBloque implements Serializable {
             index = -1;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
             context.update("form:datosTiposFormulas");
             duplicarTipoBloque = new TiposBloques();
@@ -968,6 +989,14 @@ public class ControlTipoBloque implements Serializable {
 
     public void setOperando2(Operandos operando2) {
         this.operando2 = operando2;
+    }
+
+    public TiposBloques getTipoBloqueSeleccionado() {
+        return tipoBloqueSeleccionado;
+    }
+
+    public void setTipoBloqueSeleccionado(TiposBloques tipoBloqueSeleccionado) {
+        this.tipoBloqueSeleccionado = tipoBloqueSeleccionado;
     }
 
 }

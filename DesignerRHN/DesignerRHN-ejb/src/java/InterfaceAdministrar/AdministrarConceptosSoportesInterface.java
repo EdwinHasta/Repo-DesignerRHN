@@ -31,5 +31,7 @@ public interface AdministrarConceptosSoportesInterface {
 
     public List<Conceptos> consultarLOVConceptos();
 
+    public List<Operandos> consultarLOVOperandosPorConcepto(BigInteger secConceptoSoporte);
+
     public BigInteger contarConceptosOperandos(BigInteger concepto, BigInteger operando);
 }

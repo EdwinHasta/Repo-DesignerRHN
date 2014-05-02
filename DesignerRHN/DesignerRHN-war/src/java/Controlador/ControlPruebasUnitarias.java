@@ -9,6 +9,8 @@ import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.faces.component.UIComponent;
 import java.util.*;
+import org.primefaces.component.panel.Panel;
+import org.primefaces.component.scrollpanel.ScrollPanel;
 import org.primefaces.context.RequestContext;
 
 @ManagedBean
@@ -35,7 +37,12 @@ public class ControlPruebasUnitarias implements Serializable {
 
     private String nuevaColumna;
 
+    private int numeroBtnPrueba;
+
+    private ScrollPanel panel;
+
     public ControlPruebasUnitarias() {
+        numeroBtnPrueba = 1;
         nuevaColumna = "";
         columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre";
         valoresColumnas = new HashMap<String, String>();
@@ -228,4 +235,26 @@ public class ControlPruebasUnitarias implements Serializable {
         context.update("form:nuevaColumna");
         context.update("form:template");
     }
+
+    public void cambioBtnPrueba() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        panel = (ScrollPanel) c.getViewRoot().findComponent("form:panelPrueba");
+        if (numeroBtnPrueba == 1) {
+            panel.setStyle("position: absolute; top: 100px; left: 20px;");
+        }
+        if (numeroBtnPrueba == 2) {
+            panel.setStyle("position: absolute; top: 100px; left: 20px; visibility: hidden; display: none;");
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:panelPrueba");
+    }
+
+    public int getNumeroBtnPrueba() {
+        return numeroBtnPrueba;
+    }
+
+    public void setNumeroBtnPrueba(int numeroBtnPrueba) {
+        this.numeroBtnPrueba = numeroBtnPrueba;
+    }
+
 }

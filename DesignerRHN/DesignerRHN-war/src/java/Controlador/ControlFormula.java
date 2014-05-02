@@ -80,6 +80,7 @@ public class ControlFormula implements Serializable {
     //0 - Detalle Concepto / 1 - Nomina
     private int llamadoPrevioPagina;
     private Formulas actualFormula;
+    private String paginaAnterior;
 
     public ControlFormula() {
         actualFormula = new Formulas();
@@ -111,6 +112,14 @@ public class ControlFormula implements Serializable {
         altoTabla = "184";
         tiposFormulas = null;
 
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;  
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
 
     //OBTENER FORMULA POR SECUENCIA

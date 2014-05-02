@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -40,9 +41,11 @@ public class ControlProverbio implements Serializable {
     //LISTA PROVERBIOS
     private List<Recordatorios> listaProverbios;
     private List<Recordatorios> filtradosListaProverbios;
+    private Recordatorios proverbioSeleccionado;
     //LISTA MENSAJES
     private List<Recordatorios> listaMensajesUsuario;
     private List<Recordatorios> filtradosListaMensajesUsuario;
+    private Recordatorios mensajeUsuarioSeleccionado;
     //OTROS
     private boolean aceptar;
     private int index;
@@ -105,8 +108,8 @@ public class ControlProverbio implements Serializable {
         secRegistro = null;
         guardado = true;
         tipoLista = 0;
-        altoTabla = "95";
-        altoTablaNF = "95";
+        altoTabla = "115";
+        altoTablaNF = "115";
         tipoListaNF = 0;
         tablaImprimir = ":formExportar:datosProverbiosExportar";
         nombreArchivo = "ProverbiosXML";
@@ -135,69 +138,64 @@ public class ControlProverbio implements Serializable {
 
     //GUARDAR
     public void guardarCambiosProverbios() {
-        if (CualTabla == 0) {
-            if (guardado == false) {
-                if (!listaProverbiosBorrar.isEmpty()) {
-                    for (int i = 0; i < listaProverbiosBorrar.size(); i++) {
-                        administrarRecordatorios.borrar(listaProverbiosBorrar.get(i));
-                    }
 
-                    listaProverbiosBorrar.clear();
-                }
-            }
-            if (!listaProverbiosCrear.isEmpty()) {
-                for (int i = 0; i < listaProverbiosCrear.size(); i++) {
-                    administrarRecordatorios.crear(listaProverbiosCrear.get(i));
+        if (guardado == false) {
+            if (!listaProverbiosBorrar.isEmpty()) {
+                for (int i = 0; i < listaProverbiosBorrar.size(); i++) {
+                    administrarRecordatorios.borrar(listaProverbiosBorrar.get(i));
                 }
 
+                listaProverbiosBorrar.clear();
             }
-
-            listaProverbiosCrear.clear();
-
-            if (!listaProverbiosModificar.isEmpty()) {
-                administrarRecordatorios.modificar(listaProverbiosModificar);
-                listaProverbiosModificar.clear();
-            }
-
-            listaProverbios = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProverbios");
-            guardado = true;
-            permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            index = -1;
-            secRegistro = null;
-            //  k = 0;
-        } else {
-
-            if (guardado == false) {
-                if (!listaMensajesUsuariosBorrar.isEmpty()) {
-                    for (int i = 0; i < listaMensajesUsuariosBorrar.size(); i++) {
-                        administrarRecordatorios.borrarMU(listaMensajesUsuariosBorrar.get(i));
-                        listaMensajesUsuariosBorrar.clear();
-                    }
-                }
-                if (!listaMensajesUsuariosCrear.isEmpty()) {
-                    for (int i = 0; i < listaMensajesUsuariosCrear.size(); i++) {
-                        administrarRecordatorios.crearMU(listaMensajesUsuariosCrear.get(i));
-                    }
-                }
-
-                listaMensajesUsuariosCrear.clear();
-            }
-            if (!listaMensajesUsuariosModificar.isEmpty()) {
-                administrarRecordatorios.modificarMU(listaMensajesUsuariosModificar);
-                listaMensajesUsuariosModificar.clear();
-            }
-
-            listaMensajesUsuario = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosMensajesUsuarios");
-            guardado = true;
-            permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            //  k = 0;
         }
+        if (!listaProverbiosCrear.isEmpty()) {
+            for (int i = 0; i < listaProverbiosCrear.size(); i++) {
+                administrarRecordatorios.crear(listaProverbiosCrear.get(i));
+            }
+
+        }
+
+        listaProverbiosCrear.clear();
+
+        if (!listaProverbiosModificar.isEmpty()) {
+            administrarRecordatorios.modificar(listaProverbiosModificar);
+            listaProverbiosModificar.clear();
+        }
+//  k = 0;
+
+        if (guardado == false) {
+            if (!listaMensajesUsuariosBorrar.isEmpty()) {
+                for (int i = 0; i < listaMensajesUsuariosBorrar.size(); i++) {
+                    administrarRecordatorios.borrarMU(listaMensajesUsuariosBorrar.get(i));
+                    listaMensajesUsuariosBorrar.clear();
+                }
+            }
+            if (!listaMensajesUsuariosCrear.isEmpty()) {
+                for (int i = 0; i < listaMensajesUsuariosCrear.size(); i++) {
+                    administrarRecordatorios.crearMU(listaMensajesUsuariosCrear.get(i));
+                }
+            }
+
+            listaMensajesUsuariosCrear.clear();
+        }
+        if (!listaMensajesUsuariosModificar.isEmpty()) {
+            administrarRecordatorios.modificarMU(listaMensajesUsuariosModificar);
+            listaMensajesUsuariosModificar.clear();
+        }
+
+        listaMensajesUsuario = null;
+        listaProverbios = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosProverbios");
+        index = -1;
+        secRegistro = null;
+        context.update("form:datosMensajesUsuarios");
+        guardado = true;
+        permitirIndex = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
         indexNF = -1;
         secRegistro = null;
     }
@@ -260,44 +258,45 @@ public class ControlProverbio implements Serializable {
 
     //FILTRADO
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0 && CualTabla == 0) {
-            altoTabla = "73";
-            pMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProverbios:pMensaje");
+            altoTabla = "91";
+            pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
             pMensaje.setFilterStyle("width: 60px");
 
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 1;
 
         } else if (bandera == 1 && CualTabla == 0) {
-            altoTabla = "95";
-            pMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProverbios:pMensaje");
+            altoTabla = "115";
+            pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
             pMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 0;
             filtradosListaProverbios = null;
             tipoLista = 0;
         } else if (banderaNF == 0 && CualTabla == 1) {
-            altoTablaNF = "73";
-            mAno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+            altoTablaNF = "91";
+            mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
             mAno.setFilterStyle("width: 60px");
-            mMes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+            mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
             mMes.setFilterStyle("width: 60px");
-            mDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+            mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
             mDia.setFilterStyle("width: 60px");
-            mMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
+            mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
             mMensaje.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 1;
 
         } else if (banderaNF == 1 && CualTabla == 1) {
-            altoTablaNF = "95";
-            mAno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+            altoTablaNF = "115";
+            mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
             mAno.setFilterStyle("display: none; visibility: hidden;");
-            mMes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+            mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
             mMes.setFilterStyle("display: none; visibility: hidden;");
-            mDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+            mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
             mDia.setFilterStyle("display: none; visibility: hidden;");
-            mMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
+            mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
             mMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 0;
@@ -386,6 +385,8 @@ public class ControlProverbio implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 index = -1;
@@ -401,6 +402,8 @@ public class ControlProverbio implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 index = -1;
@@ -427,6 +430,8 @@ public class ControlProverbio implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 indexNF = -1;
@@ -442,6 +447,8 @@ public class ControlProverbio implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
                     }
                 }
                 indexNF = -1;
@@ -477,7 +484,7 @@ public class ControlProverbio implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-        
+
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarAños");
                 context.execute("editarAños.show()");
@@ -519,11 +526,11 @@ public class ControlProverbio implements Serializable {
         int pasa = 0;
 
         RequestContext context = RequestContext.getCurrentInstance();
-
+        FacesContext c = FacesContext.getCurrentInstance();
         if (pasa == 0) {
             if (bandera == 1 && CualTabla == 0) {
-                altoTabla = "95";
-                pMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProverbios:pMensaje");
+                altoTabla = "115";
+                pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
                 pMensaje.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosProverbios");
                 bandera = 0;
@@ -544,7 +551,7 @@ public class ControlProverbio implements Serializable {
             context.update("form:datosProverbios");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             cambiosPagina = false;
             context.update("form:ACEPTAR");
@@ -565,14 +572,15 @@ public class ControlProverbio implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1 && CualTabla == 0) {
-                altoTablaNF = "95";
-                mAno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTablaNF = "115";
+                mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
                 mAno.setFilterStyle("display: none; visibility: hidden;");
-                mMes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+                mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
                 mMes.setFilterStyle("display: none; visibility: hidden;");
-                mDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+                mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
                 mDia.setFilterStyle("display: none; visibility: hidden;");
-                mMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
+                mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
                 mMensaje.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
                 banderaNF = 0;
@@ -593,7 +601,7 @@ public class ControlProverbio implements Serializable {
             context.update("form:datosMensajesUsuarios");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             cambiosPagina = false;
             context.update("form:ACEPTAR");
@@ -781,6 +789,8 @@ public class ControlProverbio implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
         }
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
@@ -873,6 +883,8 @@ public class ControlProverbio implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
         }
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
@@ -1041,6 +1053,8 @@ public class ControlProverbio implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
         }
         RequestContext context = RequestContext.getCurrentInstance();
         cambiosPagina = false;
@@ -1435,7 +1449,7 @@ public class ControlProverbio implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         } else if (indexNF >= 0 && CualTabla == 1) {
 
@@ -1478,7 +1492,7 @@ public class ControlProverbio implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -1575,11 +1589,12 @@ public class ControlProverbio implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (bandera == 1) {
-            altoTabla = "73";
-            pMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProverbios:pMensaje");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "115";
+            pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
             pMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 0;
@@ -1604,17 +1619,18 @@ public class ControlProverbio implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (bandera == 1) {
-            altoTablaNF = "95";
-            mAno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaNF = "115";
+            mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
             mAno.setFilterStyle("display: none; visibility: hidden;");
-            mMes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+            mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
             mMes.setFilterStyle("display: none; visibility: hidden;");
-            mDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+            mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
             mDia.setFilterStyle("display: none; visibility: hidden;");
-            mMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
+            mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
             mMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 0;
@@ -1633,9 +1649,9 @@ public class ControlProverbio implements Serializable {
     public void cancelarModificacion() {
 
         if (bandera == 1) {
-            altoTabla = "95";
-            altoTabla = "95";
-            pMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProverbios:pMensaje");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "115";
+            pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
             pMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 0;
@@ -1644,14 +1660,15 @@ public class ControlProverbio implements Serializable {
         }
 
         if (banderaNF == 1) {
-            altoTablaNF = "95";
-            mAno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaNF = "115";
+            mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
             mAno.setFilterStyle("display: none; visibility: hidden;");
-            mMes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+            mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
             mMes.setFilterStyle("display: none; visibility: hidden;");
-            mDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+            mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
             mDia.setFilterStyle("display: none; visibility: hidden;");
-            mMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
+            mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
             mMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 0;
@@ -1684,9 +1701,9 @@ public class ControlProverbio implements Serializable {
     public void salir() {
 
         if (bandera == 1) {
-            altoTabla = "95";
-            altoTabla = "95";
-            pMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProverbios:pMensaje");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "115";
+            pMensaje = (Column) c.getViewRoot().findComponent("form:datosProverbios:pMensaje");
             pMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProverbios");
             bandera = 0;
@@ -1695,14 +1712,15 @@ public class ControlProverbio implements Serializable {
         }
 
         if (banderaNF == 1) {
-            altoTablaNF = "95";
-            mAno = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTablaNF = "115";
+            mAno = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mAno");
             mAno.setFilterStyle("display: none; visibility: hidden;");
-            mMes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
+            mMes = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMes");
             mMes.setFilterStyle("display: none; visibility: hidden;");
-            mDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
+            mDia = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mDia");
             mDia.setFilterStyle("display: none; visibility: hidden;");
-            mMensaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
+            mMensaje = (Column) c.getViewRoot().findComponent("form:datosMensajesUsuarios:mMensaje");
             mMensaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMensajesUsuarios");
             banderaNF = 0;
@@ -1741,6 +1759,9 @@ public class ControlProverbio implements Serializable {
     public List<Recordatorios> getListaProverbios() {
         if (listaProverbios == null) {
             listaProverbios = administrarRecordatorios.recordatorios();
+            if (!listaProverbios.isEmpty()) {
+                proverbioSeleccionado = listaProverbios.get(0);
+            }
         }
         return listaProverbios;
     }
@@ -1760,6 +1781,9 @@ public class ControlProverbio implements Serializable {
     public List<Recordatorios> getListaMensajesUsuario() {
         if (listaMensajesUsuario == null) {
             listaMensajesUsuario = administrarRecordatorios.mensajesRecordatorios();
+            if (!listaMensajesUsuario.isEmpty()) {
+                mensajeUsuarioSeleccionado = listaMensajesUsuario.get(0);
+            }
         }
         return listaMensajesUsuario;
     }
@@ -1842,6 +1866,30 @@ public class ControlProverbio implements Serializable {
 
     public boolean isCambiosPagina() {
         return cambiosPagina;
+    }
+
+    public Recordatorios getProverbioSeleccionado() {
+        return proverbioSeleccionado;
+    }
+
+    public void setProverbioSeleccionado(Recordatorios proverbioSeleccionado) {
+        this.proverbioSeleccionado = proverbioSeleccionado;
+    }
+
+    public Recordatorios getMensajeUsuarioSeleccionado() {
+        return mensajeUsuarioSeleccionado;
+    }
+
+    public void setMensajeUsuarioSeleccionado(Recordatorios mensajeUsuarioSeleccionado) {
+        this.mensajeUsuarioSeleccionado = mensajeUsuarioSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
 }

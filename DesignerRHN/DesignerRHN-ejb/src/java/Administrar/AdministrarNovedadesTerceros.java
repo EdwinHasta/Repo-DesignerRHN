@@ -55,7 +55,7 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
     @Override
     public List<Novedades> novedadesTercero(BigInteger secuenciaTercero) {
         try {
-            return persistenciaNovedades.todasNovedadesTercero(secuenciaTercero);
+            return persistenciaNovedades.novedadesTercero(secuenciaTercero);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesTerceros.novedadesTercero" + e);
             return null;
@@ -64,7 +64,7 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
 
     //Listas de Conceptos, Formulas, Periodicidades, Terceros
     public List<Terceros> Terceros() {
-        return persistenciaTerceros.buscarTerceros();
+        return persistenciaTerceros.todosTerceros();
     }
 
     @Override

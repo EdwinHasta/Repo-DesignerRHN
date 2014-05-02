@@ -12,21 +12,23 @@
             <ui:define name="body">                  
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.operando" var="msg" />
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 500px;" >
-                        <p:commandButton style="position: absolute; left: 25px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlOperando.cancelarModificacion()}" process="@this" />
-                        <fieldset style="position: absolute; left: 10px; top: 80px; font-size: 10px; width: 100px; height: 330px; border-radius: 10px; ">
-                            <legend style="font-size: 13px; color: #14388B"><strong>#{msg['operandos']}</strong></legend>
+                        <p:commandButton style="position: absolute; left: 565px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlOperando.cancelarModificacion()}" process="@this" />
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: #14388B"><strong>#{msg['operandos']}</strong></legend>
 
-                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 100px; top: 350px;  " id="btnBuscar" actionListener="#{controlOperando.asignarIndex(indice, 0, 0)}" value="Buscar Operando" process="@this"/>
-                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 310px; top: 350px;  " id="btnMostrarTodos" actionListener="#{controlOperando.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
+                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 130px; top: 390px;  " id="btnBuscar" actionListener="#{controlOperando.asignarIndex(indice, 0, 0)}" value="Buscar Operando" process="@this"/>
+                            <p:commandButton style="width: 180px; height: 25px; position: absolute; left: 340px; top: 390px;  " id="btnMostrarTodos" actionListener="#{controlOperando.mostrarTodos()}" value="Mostrar Todos" process="@this"/>
 
 
-                            <p:dataTable id="datosOperandos" var="op" rowKey="#{op.secuencia}" rowIndexVar="indice"  style="border: 1px;width: 840px;"                         
-                                         value="#{controlOperando.listaOperandos}" scrollable="true" scrollWidth="845" scrollHeight="#{controlOperando.altoTabla}"
-                                         filteredValue="#{controlOperando.filtradosListaOperandos}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell"  paginator="true" paginatorPosition="top" rows="8"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:dataTable id="datosOperandos" var="op" rowKey="#{op.secuencia}" rowIndexVar="indice"  style="border: 1px;width: 820px; position: relative"
+                                         value="#{controlOperando.listaOperandos}" scrollable="true" scrollWidth="835" scrollHeight="#{controlOperando.altoTabla}"
+                                         filteredValue="#{controlOperando.filtradosListaOperandos}"  
+                                         emptyMessage="#{msg['vacio']}" selection="#{controlOperando.operandoSeleccionado}" selectionMode="single"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="15" >
+
                                 <p:ajax listener="#{controlOperando.eventoFiltrar()}" event="filter"/>
 
                                 <p:column headerText="#{msg['nombre']}" width="180" sortBy="#{op.nombre}" filterBy="#{op.nombre}"  filterMatchMode="contains" id="operandosNombres" filterStyle="display: none; visibility: hidden;"  >  
@@ -36,7 +38,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{op.nombre}" id="editarNombres" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                            <p:inputText value="#{op.nombre}" id="editarNombres" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 1)}" />
                                                 <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.nombre)}" update="@this" />
                                             </p:inputText> 
@@ -48,20 +50,27 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['tipo']}" style="padding: 0px;" sortBy="#{op.tipo}" filterBy="#{op.tipo}" filterMatchMode="contains" id="operandosTipos" width="145" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['tipo']}" style="padding: 0px;" sortBy="#{op.tipo}" filterBy="#{op.tipo}" filterMatchMode="contains" id="operandosTipos" width="150" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output">
+                                            <h:outputText value="#{op.estadoTipo}"  style="text-transform: uppercase; margin-left:10px">
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:selectOneMenu  id="editarTipos" value="#{op.estadoTipo}" style="width: 99.9%; height: 22px">  
+                                                <f:selectItem itemLabel="#{msg['formula']}" itemValue="FORMULA" />  
+                                                <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
+                                                <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
+                                                <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
+                                                <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
+                                                <p:ajax listener="#{controlOperando.seleccionarTipo(op.estadoTipo, indice, celda)}" event="change" update="editarTipos" />
+                                            </p:selectOneMenu>
+                                        </f:facet>
 
-                                    <p:selectOneMenu  id="editarTipos" value="#{op.estadoTipo}" style="width: 145px; height: 22px">  
-                                        <f:selectItem itemLabel="#{msg['formula']}" itemValue="FORMULA" />  
-                                        <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
-                                        <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
-                                        <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
-                                        <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
-                                        <p:ajax listener="#{controlOperando.seleccionarTipo(op.estadoTipo, indice, celda)}" event="change" update="editarTipos" />
-                                    </p:selectOneMenu>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['tipo']}" />
-                                    </f:facet>
+                                        <f:facet name="footer">
+                                            <h:outputText value="#{msg['tipo']}" />
+                                        </f:facet>
+                                    </p:cellEditor>
                                 </p:column>
 
                                 <p:column headerText="#{msg['valorconstante']}" width="40" disabledSelection="true" sortBy="#{op.valor}" filterBy="#{op.valor}"  filterMatchMode="contains" id="operandosValores" filterStyle="display: none; visibility: hidden;"  >  
@@ -71,7 +80,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{op.valor}" id="editarValores" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                            <p:inputText readonly="true" value="#{op.valor}" id="editarValores" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 3)}" />
                                                 <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.valor)}" update="@this" />
                                             </p:inputText> 
@@ -83,14 +92,14 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="#{msg['descripcion']}" width="210" sortBy="#{op.descripcion}" filterBy="#{op.descripcion}"  filterMatchMode="contains" id="operandosDescripciones" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['descripcion']}" width="180" sortBy="#{op.descripcion}" filterBy="#{op.descripcion}"  filterMatchMode="contains" id="operandosDescripciones" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{op.descripcion}"  style="text-transform: uppercase;">
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{op.descripcion}" id="editarDescripcion" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                            <p:inputText value="#{op.descripcion}" id="editarDescripcion" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 4)}" />
                                                 <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.descripcion)}" update="@this" />
                                             </p:inputText> 
@@ -105,7 +114,7 @@
                                 <p:column headerText="..." style="width:12px" sortBy="#{op.cambioanual}" filterBy="#{op.cambioanual}" filterMatchMode="contains" id="operandosCambios" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerCambio" value="..." />
-                                        <p:tooltip style="font-size: 12px" for="headerCambio" value="#{msg['cambioanual']}" />
+                                        <p:tooltip  for="headerCambio" value="#{msg['cambioanual']}" />
                                     </f:facet>  
 
                                     <p:selectBooleanCheckbox value="#{op.estadoCambio}">  
@@ -117,7 +126,7 @@
                                 <p:column headerText="..." style="width:12px" sortBy="#{op.actualizable}" filterBy="#{op.actualizable}" filterMatchMode="contains" id="operandosActualizables" filterStyle="display: none; visibility: hidden;" >                                  
                                     <f:facet name="header">
                                         <h:outputText id="headerActualizable" value="..." />
-                                        <p:tooltip style="font-size: 12px" for="headerActualizable" value="#{msg['actualizable']}" />
+                                        <p:tooltip  for="headerActualizable" value="#{msg['actualizable']}" />
                                     </f:facet>  
 
                                     <p:selectBooleanCheckbox value="#{op.estadoActualizable}">  
@@ -133,7 +142,7 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{op.codigo}" id="editarCodigos" style="font-size: 10px; border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                            <p:inputText readonly="true" value="#{op.codigo}" id="editarCodigos" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 7)}" />
                                                 <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.codigo)}" update="@this" />
                                             </p:inputText> 
@@ -148,48 +157,48 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 12px; height: 23px">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">   
                             <p:toolbarGroup align="left">
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlOperando.guardarCambiosOperandos()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
 
-                                <p:separator style="position: relative; top: -10px;"/>
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true" actionListener="#{controlAdminreportes.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
-                                <p:separator style="position: relative; top: -10px;"/>
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlOperando.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.limpiarNuevoOperando()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosOperandosExportar" fileName="OperandosXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
-                                <p:separator style="position: relative; top: -10px;"/> 
+                                <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoOperando.show()" update=":formularioDialogos:nuevoOperando" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.borrarOperandos()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.duplicarO()}"  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
-                                <p:separator style="position: relative; top: -10px;"/> 
+                                <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlOperando.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
                             </p:toolbarGroup> 
                         </p:toolbar>
                         <p:remoteCommand name="dirigirTipoFuncion" actionListener="#{controlTipoFuncion.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="funcion" process="@this"/>
@@ -197,12 +206,12 @@
                         <p:remoteCommand name="dirigirTipoConstante" actionListener="#{controlTipoConstante.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="constante" process="@this"/>
                         <p:remoteCommand name="dirigirTipoBloque" actionListener="#{controlTipoBloque.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.tipoOperando,controlOperando.operandoRegistro)}" action="bloque" process="@this"/>
                         <p:remoteCommand name="dirigirDetalle" actionListener="#{controlNovedadOperando.recibirDatosOperando(controlOperando.secuenciaOperando,controlOperando.operandoRegistro)}" action="novedadoperando" process="@this"/>
-                        <p:commandButton style="position: absolute; left: 700px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlOperando.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosOperandos" process="@this" />
-                        <p:commandButton style="position: absolute; left: 783px; top: 470px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlOperando.salir()}" action="nomina" process="@this" />
-                        <p:commandButton style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 800px; top: 430px;" id="DETALLES" value="" process="@this" actionListener="#{controlOperando.guardarVariables(controlOperando.operandoRegistro.secuencia)}" />
-                        <p:tooltip style="font-size: 12px" for="DETALLES" value="#{msg['identificacion']}" />
-                        <p:commandButton style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 50px; top: 430px;" id="PRIMERA" value="" process="@this" actionListener="#{controlOperando.verificarTipo(controlOperando.operandoRegistro.secuencia)}" />
-                        <p:tooltip style="font-size: 12px" for="PRIMERA" value="#{msg['detalles']}" />
+                        <p:commandButton style="position: absolute; left: 700px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" disabled="#{controlOperando.cambiosPagina}" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosOperandos" process="@this" />
+                        <p:commandButton style="position: absolute; left: 783px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlOperando.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="background-image: url(Imagenes/proceso.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 100px; top: 470px;" id="DETALLES" value="" process="@this" actionListener="#{controlOperando.guardarVariables(controlOperando.operandoRegistro.secuencia)}" />
+                        <p:tooltip  for="DETALLES" value="#{msg['identificacion']}" />
+                        <p:commandButton style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat;position: absolute; width: 28px; height: 28px; left: 50px; top: 470px;" id="PRIMERA" value="" process="@this" actionListener="#{controlOperando.verificarTipo(controlOperando.operandoRegistro.secuencia)}" />
+                        <p:tooltip  for="PRIMERA" value="#{msg['detalles']}" />
                     </p:panel>
                 </h:form>
 
@@ -213,49 +222,45 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlOperando.activarCtrlF11()}" process="@this"/> 
 
                     <!-- DIALOGOS EDITAR -->
-                    <p:dialog id="editarNombres" header="#{msg['editarNombres']}" widgetVar="editarNombres" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="editarNombres" header="#{msg['editarNombres']}" widgetVar="editarNombres" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlOperando.editarOperandos.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarNombres" value="#{msg['atras']}" onclick="editarNombres.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarValor" header="#{msg['editarValor']}" widgetVar="editarValor" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarValor" header="#{msg['editarValor']}" widgetVar="editarValor" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlOperando.editarOperandos.valor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarValores" value="#{msg['atras']}" onclick="editarValor.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarDescripciones" header="#{msg['editarDescripciones']}" widgetVar="editarDescripciones" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarDescripciones" header="#{msg['editarDescripciones']}" widgetVar="editarDescripciones" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlOperando.editarOperandos.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarDescripciones" value="#{msg['atras']}" onclick="editarDescripciones.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigos" header="#{msg['editarCodigos']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px" >  
+                    <p:dialog id="editarCodigos" header="#{msg['editarCodigos']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="55" width="240"  >  
                         <p:inputTextarea value="#{controlOperando.editarOperandos.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigos" value="#{msg['atras']}" onclick="editarCodigos.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlOperando.guardarCambiosOperandos()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlOperando.cancelarModificacion()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- Nuevo Registro --> 
 
-                    <p:dialog id="NuevoOperando" header="#{msg['nuevoregistro']}" widgetVar="NuevoOperando" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="NuevoOperando" header="#{msg['nuevoregistro']}" widgetVar="NuevoOperando" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="350" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoOperando" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['nombreN']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="nuevoNombre" value="#{controlOperando.nuevoOperando.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 180px; top: 65px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['nombreN']}" style=" position: absolute; top: 85px" /></strong>
+                            <p:inputText id="nuevoNombre" value="#{controlOperando.nuevoOperando.nombre}" style=" width: 122px; position: absolute; left: 180px; top: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['tipoN']}" style="font-size: 12px; position: absolute; top: 105px" /></strong>
-                            <p:selectOneMenu  id="nuevoTipo" value="#{controlOperando.nuevoOperando.estadoTipo}" style="position:absolute; top:105px; left:180px;width: 145px; height: 22px">  
+                            <strong><h:outputText value="#{msg['tipoN']}" style=" position: absolute; top: 125px" /></strong>
+                            <p:selectOneMenu  id="nuevoTipo" value="#{controlOperando.nuevoOperando.estadoTipo}" style="position:absolute; top:120px; left:180px;width: 145px; height: 22px">  
                                 <f:selectItem itemLabel="#{msg['formula']}" itemValue="FORMULA" />  
                                 <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
                                 <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
@@ -264,42 +269,42 @@
                                 <p:ajax listener="#{controlOperando.seleccionarTipoNuevoOperando(controlOperando.nuevoOperando.estadoTipo, 1)}" event="change" update="nuevoTipo" />
                             </p:selectOneMenu>
 
-                            <strong><h:outputText value="#{msg['descripcionN']}" style="font-size: 12px; position: absolute; top: 145px" /></strong>
-                            <p:inputText id="nuevoDescripcion" value="#{controlOperando.nuevoOperando.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 180px; top: 145px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['descripcionN']}" style=" position: absolute; top: 165px" /></strong>
+                            <p:inputText id="nuevoDescripcion" value="#{controlOperando.nuevoOperando.descripcion}" style=" width: 122px; position: absolute; left: 180px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['cambioanualN']}" style="font-size: 12px; position: absolute; top: 185px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlOperando.nuevoOperando.estadoCambio}" style="position: absolute; left: 180px; top: 185px;">
+                            <strong><h:outputText value="#{msg['cambioanualN']}" style=" position: absolute; top: 205px" /></strong>
+                            <p:selectBooleanCheckbox value="#{controlOperando.nuevoOperando.estadoCambio}" style="position: absolute; left: 180px; top: 200px;">
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 
-                            <strong><h:outputText value="#{msg['actualizableN']}" style="font-size: 12px; position: absolute; top: 225px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlOperando.nuevoOperando.estadoActualizable}" style="position: absolute; left: 180px; top: 225px;">
+                            <strong><h:outputText value="#{msg['actualizableN']}" style=" position: absolute; top: 245px" /></strong>
+                            <p:selectBooleanCheckbox value="#{controlOperando.nuevoOperando.estadoActualizable}" style="position: absolute; left: 180px; top: 240px;">
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 50px; top: 300px;" actionListener="#{controlOperando.limpiarNuevoOperando()}" update="nuevoOperando" process="@this"/>
-                            <p:commandButton id="agregarN" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 250px; top: 300px;"  actionListener="#{controlOperando.agregarNuevoOperando()}" process="@this"/>
-                            <p:commandButton id="cancelarN" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 320px; top: 300px;" actionListener="#{controlOperando.limpiarNuevoOperando()}" update="nuevoOperando" onclick="NuevoOperando.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 280px;" actionListener="#{controlOperando.limpiarNuevoOperando()}" update="nuevoOperando" process="@this"/>
+                            <p:commandButton id="agregarN" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 150px; top: 280px;"  actionListener="#{controlOperando.agregarNuevoOperando()}" process="@this"/>
+                            <p:commandButton id="cancelarN" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 240px; top: 280px;" actionListener="#{controlOperando.limpiarNuevoOperando()}" update="nuevoOperando" onclick="NuevoOperando.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- Duplicar Registro --> 
 
-                    <p:dialog id="DuplicarOperando" header="#{msg['duplicarregistro']}" widgetVar="DuplicarOperando" closable="false" resizable="false"  draggable="false" modal="true" height="350" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarOperando" header="#{msg['duplicarregistro']}" widgetVar="DuplicarOperando" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="350" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarOperando" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['nombreN']}" style="font-size: 12px; position: absolute; top: 65px" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlOperando.duplicarOperando.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 180px; top: 65px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['nombreN']}" style=" position: absolute; top: 85px" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlOperando.duplicarOperando.nombre}" style=" width: 122px; position: absolute; left: 180px; top: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['tipoN']}" style="font-size: 12px; position: absolute; top: 105px" /></strong>
-                            <p:selectOneMenu  id="duplicarTipo" value="#{controlOperando.duplicarOperando.estadoTipo}" style="position:absolute; top:105px; left:180px;width: 145px; height: 22px">  
+                            <strong><h:outputText value="#{msg['tipoN']}" style=" position: absolute; top: 125px" /></strong>
+                            <p:selectOneMenu  id="duplicarTipo" value="#{controlOperando.duplicarOperando.estadoTipo}" style="position:absolute; top:120px; left:180px;width: 145px; height: 22px">  
                                 <f:selectItem itemLabel="#{msg['formula']}" itemValue="FORMULA" />  
                                 <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
                                 <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
@@ -308,28 +313,28 @@
                                 <p:ajax listener="#{controlOperando.seleccionarTipoNuevoOperando(controlOperando.duplicarOperando.estadoTipo, 2)}" event="change" update="duplicarTipo" />
                             </p:selectOneMenu>
 
-                            <strong><h:outputText value="#{msg['descripcionN']}" style="font-size: 12px; position: absolute; top: 145px" /></strong>
-                            <p:inputText id="duplicarDescripcion" value="#{controlOperando.duplicarOperando.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 180px; top: 145px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['descripcionN']}" style=" position: absolute; top: 165px" /></strong>
+                            <p:inputText id="duplicarDescripcion" value="#{controlOperando.duplicarOperando.descripcion}" style=" width: 122px; position: absolute; left: 180px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
-                            <strong><h:outputText value="#{msg['cambioanualN']}" style="font-size: 12px; position: absolute; top: 185px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlOperando.duplicarOperando.estadoCambio}" style="position: absolute; left: 180px; top: 185px;">
+                            <strong><h:outputText value="#{msg['cambioanualN']}" style=" position: absolute; top: 205px" /></strong>
+                            <p:selectBooleanCheckbox value="#{controlOperando.duplicarOperando.estadoCambio}" style="position: absolute; left: 180px; top: 200px;">
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 
-                            <strong><h:outputText value="#{msg['actualizableN']}" style="font-size: 12px; position: absolute; top: 225px" /></strong>
-                            <p:selectBooleanCheckbox value="#{controlOperando.duplicarOperando.estadoActualizable}" style="position: absolute; left: 180px; top: 225px;">
+                            <strong><h:outputText value="#{msg['actualizableN']}" style=" position: absolute; top: 245px" /></strong>
+                            <p:selectBooleanCheckbox value="#{controlOperando.duplicarOperando.estadoActualizable}" style="position: absolute; left: 180px; top: 240px;">
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 
-                            <p:commandButton id="limpiarDO" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 50px; top: 300px;" actionListener="#{controlOperando.limpiarduplicarOperandos()}" update="duplicarOperando" process="@this"/>
-                            <p:commandButton id="agregarDO" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 250px; top: 300px;"  actionListener="#{controlOperando.confirmarDuplicar()}" process="@this"/>
-                            <p:commandButton id="cancelarDO" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 320px; top: 300px;" actionListener="#{controlOperando.limpiarduplicarOperandos()}" update="duplicarOperando" onclick="DuplicarOperando.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDO" value="#{msg['limpiar']}" icon="ui-icon-trash" style=" position: absolute; left: 20px; top: 280px;" actionListener="#{controlOperando.limpiarduplicarOperandos()}" update="duplicarOperando" process="@this"/>
+                            <p:commandButton id="agregarDO" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 150px; top: 280px;"  actionListener="#{controlOperando.confirmarDuplicar()}" process="@this"/>
+                            <p:commandButton id="cancelarDO" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 240px; top: 280px;" actionListener="#{controlOperando.limpiarduplicarOperandos()}" update="duplicarOperando" onclick="DuplicarOperando.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="validacionNuevoOperando" header="#{msg['atencion']}" widgetVar="validacionNuevoOperando"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="validacionNuevoOperando" header="#{msg['atencion']}" widgetVar="validacionNuevoOperando"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlOperando.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevoOperando.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
@@ -337,56 +342,56 @@
 
                     <!-- DIALOGOS RASTROS -->
 
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlOperando.secRegistro, 'Operandos', 'operandos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Operandos', 'operandos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlOperando.secRegistro, 'Operandos', 'operandos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
                     <!-- DIALOGO L.O.V OPERANDOS-->
                     <p:dialog header="#{msg['operandosO']}"  widgetVar="operandosDialogo" draggable="false" resizable="false" closable="false" id="operandosDialogo"  
-                              showEffect="fade" hideEffect="fade" width="470" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="LOVOperandos" style="font-size: 11px; width: 430px" var="o" value="#{controlOperando.lovlistaOperandos}" rowKey="#{o.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="470" modal="true" >
+                        <p:dataTable id="LOVOperandos" style=" width: 430px" var="o" value="#{controlOperando.lovlistaOperandos}" rowKey="#{o.secuencia}"
                                      selection="#{controlOperando.operandosSeleccionado}" selectionMode="single" widgetVar="LOVOperandos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlOperando.lovfiltradoslistaOperandos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlOperando.activarAceptar()}" update=":formularioDialogos:aceptarO"/>
@@ -420,10 +425,10 @@
                                 <h:outputText value="#{o.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarO" value="#{msg['aceptar']}" disabled="#{controlOperando.aceptar}" style="position: absolute; top: 336px; left: 232px; font-size: 12px" actionListener="#{controlOperando.actualizarOperandos()}" onclick="LOVOperandos.clearFilters();" update="aceptarO" process="@this">
+                        <p:commandButton id="aceptarO" value="#{msg['aceptar']}" disabled="#{controlOperando.aceptar}" style="position: absolute; top: 336px; left: 232px; " actionListener="#{controlOperando.actualizarOperandos()}" onclick="LOVOperandos.clearFilters();" update="aceptarO" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVOperandos:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasO" style="position: relative; left: 303px; font-size: 12px" value="#{msg['atras']}" actionListener="#{controlOperando.cancelarCambioOperandos()}" onclick="operandosDialogo.hide(), LOVOperandos.clearFilters();"  update="LOVOperandos" process="@this">
+                        <p:commandButton id="atrasO" style="position: relative; left: 303px; " value="#{msg['atras']}" actionListener="#{controlOperando.cancelarCambioOperandos()}" onclick="operandosDialogo.hide(), LOVOperandos.clearFilters();"  update="LOVOperandos" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVOperandos:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

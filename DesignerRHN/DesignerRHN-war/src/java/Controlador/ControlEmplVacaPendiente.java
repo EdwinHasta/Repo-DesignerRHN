@@ -893,7 +893,7 @@ public class ControlEmplVacaPendiente implements Serializable {
     public BigInteger getTotalDiasPendientes() {
         if (totalDiasPendientes.compareTo(BigInteger.valueOf(0)) == 0) {
             totalDiasPendientes = BigInteger.valueOf(0);
-            if (!listVacaPendientes.isEmpty()) {
+            if (listVacaPendientes != null) {
                 for (int i = 0; i < listVacaPendientes.size(); i++) {
                     totalDiasPendientes = totalDiasPendientes.add(listVacaPendientes.get(i).getDiaspendientes());
                 }
@@ -917,8 +917,10 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public List<VWVacaPendientesEmpleados> getListVacaPendientes() {
         try {
-            if (listVacaPendientes == null) {
-                listVacaPendientes = administrarVWVacaPendientesEmpleados.vacaPendientesPendientes(empleado);
+            if (empleado != null) {
+                if (listVacaPendientes == null) {
+                    listVacaPendientes = administrarVWVacaPendientesEmpleados.vacaPendientesPendientes(empleado);
+                }
             }
             return listVacaPendientes;
         } catch (Exception e) {
@@ -933,8 +935,10 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public List<VWVacaPendientesEmpleados> getListVacaDisfrutadas() {
         try {
-            if (listVacaDisfrutadas == null) {
-                listVacaDisfrutadas = administrarVWVacaPendientesEmpleados.vacaPendientesDisfrutadas(empleado);
+            if (empleado != null) {
+                if (listVacaDisfrutadas == null) {
+                    listVacaDisfrutadas = administrarVWVacaPendientesEmpleados.vacaPendientesDisfrutadas(empleado);
+                }
             }
             return listVacaDisfrutadas;
         } catch (Exception e) {
@@ -965,7 +969,9 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public BigDecimal getDiasProvisionados() {
         try {
-            diasProvisionados = administrarVWVacaPendientesEmpleados.diasProvisionadosEmpleado(empleado);
+            if (empleado != null) {
+                diasProvisionados = administrarVWVacaPendientesEmpleados.diasProvisionadosEmpleado(empleado);
+            }
             return diasProvisionados;
         } catch (Exception e) {
             System.out.println("Error getDiasProvisionados : " + e.toString());

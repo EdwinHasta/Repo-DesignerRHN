@@ -3302,11 +3302,19 @@ public class ControlVigenciaLocalizacion implements Serializable {
             context.execute("confirmarGuardarSinSalir.show()");
         } else {
             if (index >= 0) {
-                int tam = 0;
+                int tamVL = 0;
+                int tab1 = 0;
+                int tab2 = 0;
                 if (vigenciaLocalizaciones != null) {
-                    tam = vigenciaLocalizaciones.size();
+                    tamVL = vigenciaLocalizaciones.size();
                 }
-                if (tam == 0) {
+                if (vigenciasProrrateosVigencia != null) {
+                    tab1 = vigenciasProrrateosVigencia.size();
+                }
+                if (vigenciasProrrateosProyectosVigencia != null) {
+                    tab2 = vigenciasProrrateosProyectosVigencia.size();
+                }
+                if (tamVL == 0 || tab1 == 0 || tab2 == 0) {
                     //Dialogo de nuevo registro multiple
                     context.update("form:NuevoRegistroPagina");
                     context.execute("NuevoRegistroPagina.show()");

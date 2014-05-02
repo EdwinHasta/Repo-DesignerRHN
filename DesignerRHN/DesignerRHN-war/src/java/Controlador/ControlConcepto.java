@@ -92,6 +92,7 @@ public class ControlConcepto implements Serializable {
     private Conceptos conceptoClon;
     private int cambioConcepto;
     private Conceptos conceptoRegistro;
+    private String paginaAnterior;
 
     public ControlConcepto() {
         conceptoRegistro = new Conceptos();
@@ -187,6 +188,14 @@ public class ControlConcepto implements Serializable {
         index = -1;
         secRegistro = null;
         cualCelda = -1;
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;  
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
     //SELECCIONAR NATURALEZA
 

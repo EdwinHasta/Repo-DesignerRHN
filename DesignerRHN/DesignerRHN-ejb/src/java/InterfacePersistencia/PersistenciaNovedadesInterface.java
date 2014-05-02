@@ -75,4 +75,8 @@ public interface PersistenciaNovedadesInterface {
      */
     public Novedades buscarNovedad(BigInteger secNovedad);
     
+    public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto);
+    
+     public List<Novedades> novedadesTercero(BigInteger secuenciaTercero);
+    
 }
