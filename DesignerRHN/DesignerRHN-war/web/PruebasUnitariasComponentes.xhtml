@@ -10,117 +10,28 @@
     <h:body> 
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form">
-
-                    <p:dataTable liveScroll="true" scrollRows="15" id="datosOperandos" var="op" rowKey="#{op.secuencia}" rowIndexVar="indice"  style="border: 1px;width: 820px; position: relative"
-                                 value="#{controlOperando.listaOperandos}" scrollable="true" scrollWidth="835" scrollHeight="#{controlOperando.altoTabla}"
-                                 filteredValue="#{controlOperando.filtradosListaOperandos}"  
-                                 emptyMessage="#{msg['vacio']}" selection="#{controlOperando.operandoSeleccionado}" selectionMode="single"
-                                 editable="true" editMode="cell"  >
-
-                        <p:ajax listener="#{controlOperando.eventoFiltrar()}" event="filter"/>
-
-                        <p:column headerText="#{msg['nombre']}" width="180" sortBy="#{op.nombre}" filterBy="#{op.nombre}"  filterMatchMode="contains" id="operandosNombres" filterStyle="display: none; visibility: hidden;"  >  
-                            <p:cellEditor>  
-                                <f:facet name="output">
-                                    <h:outputText value="#{op.nombre}"  style="text-transform: uppercase;">
-                                    </h:outputText>
-                                </f:facet>  
-                                <f:facet name="input">
-                                    <p:inputText value="#{op.nombre}" id="editarNombres" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
-                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 1)}" />
-                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.nombre)}" update="@this" />
-                                    </p:inputText> 
-                                </f:facet>   
-                            </p:cellEditor>
-
-                            <f:facet name="footer">
-                                <h:outputText value="#{msg['nombre']}" />
-                            </f:facet>
-                        </p:column>
-
-                        <p:column headerText="#{msg['tipo']}" style="padding: 0px;" sortBy="#{op.tipo}" filterBy="#{op.tipo}" filterMatchMode="contains" id="operandosTipos" width="120" filterStyle="display: none; visibility: hidden;" >                                  
-                            <p:cellEditor>  
-                                <f:facet name="output">
-                                    <h:outputText value="#{op.nombre}"  style="text-transform: uppercase;">
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:selectOneMenu  id="editarTipos" value="#{op.estadoTipo}" style="width: 99.9%; height: 22px">  
-                                        <f:selectItem itemLabel="#{msg['formula']}" itemValue="FORMULA" />  
-                                        <f:selectItem itemLabel="#{msg['bloque']}" itemValue="BLOQUE PL/SQL" />  
-                                        <f:selectItem itemLabel="#{msg['constante']}" itemValue="CONSTANTE" />  
-                                        <f:selectItem itemLabel="#{msg['funcion']}" itemValue="FUNCION" />  
-                                        <f:selectItem itemLabel="#{msg['relacion']}" itemValue="RELACIONAL" />    
-                                        <p:ajax listener="#{controlOperando.seleccionarTipo(op.estadoTipo, indice, celda)}" event="change" update="editarTipos" />
-                                    </p:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                            <f:facet name="footer">
-                                <h:outputText value="#{msg['tipo']}" />
-                            </f:facet>
-                        </p:column>
-
-                        <p:column headerText="#{msg['valorconstante']}" width="40" disabledSelection="true" sortBy="#{op.valor}" filterBy="#{op.valor}"  filterMatchMode="contains" id="operandosValores" filterStyle="display: none; visibility: hidden;"  >  
-                            <p:cellEditor>  
-                                <f:facet name="output">
-                                    <h:outputText value="#{op.valor}"  style="text-transform: uppercase;">
-                                    </h:outputText>
-                                </f:facet>  
-                                <f:facet name="input">
-                                    <p:inputText readonly="true" value="#{op.valor}" id="editarValores" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
-                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 3)}" />
-                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.valor)}" update="@this" />
-                                    </p:inputText> 
-                                </f:facet>   
-
-                            </p:cellEditor>
-                            <f:facet name="footer">
-                                <h:outputText value="#{msg['valorconstante']}" />
-                            </f:facet>
-                        </p:column>
-
-                        <p:column headerText="#{msg['descripcion']}" width="180" sortBy="#{op.descripcion}" filterBy="#{op.descripcion}"  filterMatchMode="contains" id="operandosDescripciones" filterStyle="display: none; visibility: hidden;"  >  
-                            <p:cellEditor>  
-                                <f:facet name="output">
-                                    <h:outputText value="#{op.descripcion}"  style="text-transform: uppercase;">
-                                    </h:outputText>
-                                </f:facet>  
-                                <f:facet name="input">
-                                    <p:inputText value="#{op.descripcion}" id="editarDescripcion" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
-                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 4)}" />
-                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.descripcion)}" update="@this" />
-                                    </p:inputText> 
-                                </f:facet>   
-                            </p:cellEditor>
-
-                            <f:facet name="footer">
-                                <h:outputText value="#{msg['descripcion']}" />
-                            </f:facet>
-                        </p:column>
+                <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:panel  id="PanelTotal" header="Prueba" style="position: absolute; width: 874px; height: 510px; text-align: left" >  
 
 
 
-                        <p:column headerText="#{msg['codigo']}" width="50" sortBy="#{op.codigo}" filterBy="#{op.codigo}"  filterMatchMode="contains" id="operandosCodigos" filterStyle="display: none; visibility: hidden;"  >  
-                            <p:cellEditor>  
-                                <f:facet name="output">
-                                    <h:outputText value="#{op.codigo}"  style="text-transform: uppercase;">
-                                    </h:outputText>
-                                </f:facet>  
-                                <f:facet name="input">
-                                    <p:inputText readonly="true" value="#{op.codigo}" id="editarCodigos" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
-                                        <p:ajax event="select" listener="#{controlOperando.cambiarIndice(indice, 7)}" />
-                                        <p:ajax event="change" listener="#{controlOperando.modificarOperandos(indice, 'N', op.codigo)}" update="@this" />
-                                    </p:inputText> 
-                                </f:facet>   
-                            </p:cellEditor>
+                        <p:selectOneRadio id="pruebaActivo" style="position: absolute; top: 50px; left: 20px" value="#{controlPruebasUnitarias.numeroBtnPrueba}">
+                            <f:selectItem itemLabel="Visible" itemValue="1" />
+                            <f:selectItem itemLabel="No Visible" itemValue="2" />
+                            <p:ajax event="change" listener="#{controlPruebasUnitarias.cambioBtnPrueba()}" process="@this"/>
+                        </p:selectOneRadio>  
 
-                            <f:facet name="footer">
-                                <h:outputText value="#{msg['codigo']}" />
-                            </f:facet>
-                        </p:column>
+                        <p:scrollPanel id="panelPrueba" style="position: absolute; top: 100px; left: 20px">
+                            <h:inputText/>
+                            <h:inputText/>
+                            <h:inputText/>
+                            <h:inputText/>
+                            <h:inputText/>
 
-                    </p:dataTable>
+                        </p:scrollPanel>
+
+                    </p:panel>
                 </h:form>
 
             </ui:define>

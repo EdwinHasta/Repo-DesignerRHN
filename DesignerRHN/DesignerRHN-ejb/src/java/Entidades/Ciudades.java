@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Ciudades.findAll", query = "SELECT c FROM Ciudades c")})
 public class Ciudades implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
     private Collection<Juzgados> juzgadosCollection;
     @OneToMany(mappedBy = "ciudad")
@@ -101,12 +102,10 @@ public class Ciudades implements Serializable {
     }
 
     public String getNombre() {
-        //if (nombre == null) {
-       //     nombre = " ";
-            return nombre;
-        //} else {
-         //   return nombre.toUpperCase();
-       // }
+        if (nombre == null) {
+            nombre = " ";
+        }
+        return nombre;
     }
 
     public void setNombre(String nombre) {

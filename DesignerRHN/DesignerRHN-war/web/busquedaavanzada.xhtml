@@ -13,11 +13,11 @@
                 <h:form id="form">
                     <f:loadBundle basename="Recursos.busquedaavanzada" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 555px; text-align: left;" >  
-                        
+
                         <fieldset style="position: absolute; left: 5px; top: 75px; font-size: 11px; width: 845px; height: 300px; border-radius: 10px; ">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['subTitulo']}</strong></legend>
 
-                            <p:scrollPanel mode="native" id="scrollPanelParametros" style="position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none" >
+                            <p:scrollPanel mode="native" id="scrollPanelNomina" style="position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none" >
 
                                 <fieldset style="position: absolute; left: 5px; top: 2px; font-size: 11px; width: 810px; height: 135px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['cargo']}</strong></legend>
@@ -29,7 +29,7 @@
                                             <div style="height: 65px;">
                                                 <p:scrollPanel style="width: 800px; height: 80px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textCargo"
-                                                    value="#{msg['textCargo']}" /><br></br>
+                                                                  value="#{msg['textCargo']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -129,13 +129,13 @@
                                             <div style="height: 55px;">
                                                 <p:scrollPanel style="width: 800px; height: 70px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textCentroCosto"
-                                                    value="#{msg['textCentroCosto']}" />
+                                                                  value="#{msg['textCentroCosto']}" />
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
                                                     <h:outputText value="#{msg['textCentroCosto2']}"/>
                                                 </p:scrollPanel>
-                                                
+
                                             </div>
                                         </p:tab>
 
@@ -198,7 +198,7 @@
                                             <div style="height: 65px;">
                                                 <p:scrollPanel style="width: 800px; height: 80px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textSueldo"
-                                                    value="#{msg['textSueldo']}" /><br></br>
+                                                                  value="#{msg['textSueldo']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -285,7 +285,7 @@
                                             <div style="height: 65px;">
                                                 <p:scrollPanel style="width: 800px; height: 80px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textFechaContrato"
-                                                    value="#{msg['textFechaContrato']}" /><br></br>
+                                                                  value="#{msg['textFechaContrato']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -353,7 +353,7 @@
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textTipoTrabajador"
-                                                    value="#{msg['textTipoTrabajador']}En éste bloque usted podrá realizar la búsqueda por tipo de contrato con o sin fechas para filtrar históricos. Los parametros de fechas funcionan asi:" /><br></br>
+                                                                  value="#{msg['textTipoTrabajador']}En éste bloque usted podrá realizar la búsqueda por tipo de contrato con o sin fechas para filtrar históricos. Los parametros de fechas funcionan asi:" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -413,7 +413,7 @@
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textTipoSalario"
-                                                    value="#{msg['textTipoSalario']}" /><br></br>
+                                                                  value="#{msg['textTipoSalario']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -473,7 +473,7 @@
                                             <div style="height: 55px;">
                                                 <p:scrollPanel style="width: 800px; height: 70px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textLegislacionLaboral"
-                                                    value="#{msg['textLegislacionLaboral']}" /><br></br>
+                                                                  value="#{msg['textLegislacionLaboral']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -562,7 +562,7 @@
                                             <div style="height: 55px;">
                                                 <p:scrollPanel style="width: 800px; height: 70px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textUbicacion"
-                                                    value="#{msg['textUbicacion']}" /><br></br>
+                                                                  value="#{msg['textUbicacion']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -628,7 +628,7 @@
                                             <div style="height: 55px;">
                                                 <p:scrollPanel style="width: 800px; height: 70px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textAfiliacion"
-                                                    value="#{msg['textAfiliacion']}" /><br></br>
+                                                                  value="#{msg['textAfiliacion']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -705,7 +705,7 @@
                                             <div style="height: 60px;">
                                                 <p:scrollPanel style="width: 800px; height: 85px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textFormaPago"
-                                                    value="#{msg['textFormaPago']}" /><br></br>
+                                                                  value="#{msg['textFormaPago']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -774,7 +774,7 @@
                                             <div style="height: 65px;">
                                                 <p:scrollPanel style="width: 800px; height: 80px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textMvr"
-                                                    value="#{msg['textMvr']}" /><br></br>
+                                                                  value="#{msg['textMvr']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -842,8 +842,8 @@
 
                                     </p:tabView>
                                 </fieldset>
-                                
-                                 <fieldset style="position: absolute; left: 5px; top: 1490px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
+
+                                <fieldset style="position: absolute; left: 5px; top: 1490px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['set']}</strong></legend>
 
                                     <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewSets" activeIndex="#{controlBusquedaAvanzada.tabActivaSets}" onTabChange="#{controlBusquedaAvanzada.changeTapSets()}">
@@ -852,7 +852,7 @@
                                             <div style="height: 55px;">
                                                 <p:scrollPanel style="width: 800px; height: 70px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textSet"
-                                                    value="#{msg['textSet']}" /><br></br>
+                                                                  value="#{msg['textSet']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
@@ -869,14 +869,14 @@
                                                     <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarPromediosModuloSets()}" process="@this" update="parametroPromedioMinModSets"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceSets(0)}" process="@this"/>
                                                 </p:inputText>
-                                                
+
                                                 <h:outputText value="#{msg['promedioMaximo']}" style="position: absolute; left: 227px; top: 40px;color: #14388B;font-weight: bold"/>
                                                 <p:inputText onclick="select();" style="position: absolute; left: 210px; top: 55px;text-transform: uppercase;width: 140px"
                                                              id="parametroPromedioMaxModSets" value="#{controlBusquedaAvanzada.promedioMaximoSets}">
                                                     <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarPromediosModuloSets()}" process="@this" update="parametroPromedioMinModSets"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceSets(1)}" process="@this"/>
                                                 </p:inputText>
-                                                
+
                                                 <h:outputText value="#{msg['metodo']}" style="position: absolute; left: 110px; top: 90px;color: #14388B;font-weight: bold"/>
                                                 <p:selectOneMenu id="parametroMetodoModSets"  style="position: absolute; left: 170px; top: 85px;width: 90px" value="#{controlBusquedaAvanzada.tipoMetodoSets}">
                                                     <f:selectItem itemLabel="" itemValue="null" />
@@ -945,8 +945,8 @@
 
                                     </p:tabView>
                                 </fieldset>
-                                
-                                 <fieldset style="position: absolute; left: 5px; top: 1635px; font-size: 11px; width: 395px; height: 115px; border-radius: 5px; ">
+
+                                <fieldset style="position: absolute; left: 5px; top: 1635px; font-size: 11px; width: 395px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['normaLaboral']}</strong></legend>
 
                                     <p:tabView style="position: absolute; top: 15px; left: 5px; width: 395px;font-size: 11px;border: none" id="tabViewNormaLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaNormaLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapNormaLaboral()}">
@@ -955,13 +955,13 @@
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textNormaLaboral"
-                                                    value="#{msg['textNormaLaboral']}" /><br></br>
+                                                                  value="#{msg['textNormaLaboral']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
                                                     <h:outputText value="#{msg['textNormaLaboral2']}" />
                                                 </p:scrollPanel>
-                                                
+
                                             </div>
                                         </p:tab>
 
@@ -1006,8 +1006,8 @@
 
                                     </p:tabView>
                                 </fieldset>
-                                
-                                  <fieldset style="position: absolute; left: 435px; top: 1635px; font-size: 11px; width: 380px; height: 115px; border-radius: 5px; ">
+
+                                <fieldset style="position: absolute; left: 435px; top: 1635px; font-size: 11px; width: 380px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['vacaciones']}</strong></legend>
 
                                     <p:tabView style="position: absolute; top: 15px; left: 5px; width: 375px;font-size: 11px;border: none" id="tabViewVacacion" activeIndex="#{controlBusquedaAvanzada.tabActivaVacacion}" onTabChange="#{controlBusquedaAvanzada.changeTapVacacion()}">
@@ -1016,13 +1016,13 @@
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textVacacion"
-                                                    value="#{msg['textVacacion']}" /><br></br>
+                                                                  value="#{msg['textVacacion']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
                                                     <h:outputText value="#{msg['textVacacion2']}" />
                                                 </p:scrollPanel>
-                                                
+
                                             </div>
                                         </p:tab>
 
@@ -1052,8 +1052,8 @@
                                                     </div>
 
                                                 </fieldset>
-                                                
-                                                
+
+
                                                 <fieldset style="position: absolute; left: 190px; top: 40px; font-size: 11px; width: 165px; height: 50px; border-radius: 5px; ">
                                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaRegreso']}</strong></legend>
 
@@ -1078,13 +1078,13 @@
                                                 </fieldset>
                                             </div>
                                         </p:tab>
-                                        
-                                        
+
+
 
                                     </p:tabView>
                                 </fieldset>
-                                
-                                 <fieldset style="position: absolute; left: 5px; top: 1770px; font-size: 11px; width: 395px; height: 115px; border-radius: 5px; ">
+
+                                <fieldset style="position: absolute; left: 5px; top: 1770px; font-size: 11px; width: 395px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['jornadaLaboral']}</strong></legend>
 
                                     <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border: none" id="tabViewJornadaLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaJornadaLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapJornadaLaboral()}">
@@ -1093,13 +1093,13 @@
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textJornadaLaboral"
-                                                    value="#{msg['textJornadaLaboral']}" /><br></br>
+                                                                  value="#{msg['textJornadaLaboral']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
                                                     <h:outputText value="#{msg['textJornadaLaboral2']}" />
                                                 </p:scrollPanel>
-                                                
+
                                             </div>
                                         </p:tab>
 
@@ -1136,7 +1136,7 @@
 
                                     </p:tabView>
                                 </fieldset>
-                                
+
                                 <fieldset style="position: absolute; left: 430px; top: 1770px; font-size: 11px; width: 385px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaRetiro']}</strong></legend>
 
@@ -1146,13 +1146,13 @@
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textFechaRetiro"
-                                                    value="#{msg['textFechaRetiro']}" /><br></br>
+                                                                  value="#{msg['textFechaRetiro']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
                                                     <h:outputText value="#{msg['textFechaRetiro2']}" />
                                                 </p:scrollPanel>
-                                                
+
                                             </div>
                                         </p:tab>
 
@@ -1189,35 +1189,118 @@
 
                                     </p:tabView>
                                 </fieldset>
-                                
-                                 
+
+
 
                                 <p:remoteCommand name="posicionModuloCargo" actionListener="#{controlBusquedaAvanzada.posicionModuloCargo()}"/>
                                 <p:remoteCommand name="posicionModuloUbicacion" actionListener="#{controlBusquedaAvanzada.posicionModuloUbicacion()}"/>
                             </p:scrollPanel>
+
+                            <p:scrollPanel mode="native" id="scrollPanelPersonal" style="position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none" >
+
+                                <fieldset style="position: absolute; left: 5px; top: 2px; font-size: 11px; width: 810px; height: 135px; border-radius: 5px; ">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['datosPersonales']}</strong></legend>
+
+
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewDatosPersonal" activeIndex="#{controlBusquedaAvanzada.tabActivaDatosPersonales}" onTabChange="#{controlBusquedaAvanzada.changeTapDatosPersonales()}">
+                                        <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapDatosPersonales()}" process="@this" />
+                                        <p:tab id="tabMensajeDatosPersonales" title="#{msg['infoBasica']}" >
+                                            <div style="height: 65px;">
+                                                <p:scrollPanel style="width: 800px; height: 80px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
+                                                    <h:outputText id="textDatosPersonales"
+                                                                  value="#{msg['textDatosPersonales']}" /><br></br>
+                                                    <h:outputText value="#{msg['opcion1Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion2Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion3Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['textDatosPersonales2']}"/>
+                                                </p:scrollPanel>
+                                            </div>
+                                        </p:tab>
+
+                                        <p:tab id="tabDatosDatosPersonales" title="#{msg['tabDatosDatosPersonales']}">
+                                            <div style="height: 65px;">
+                                                <h:outputText value="#{msg['numeroDocumento']}" style="position: absolute; left: 10px; top: 40px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 110px; top: 35px;width: 170px"
+                                                             id="parametroNumeroDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.numerodocumento}">
+                                                    <p:ajax event="change"  process="@this" update="parametroNumeroDocumentoModDatosPersonales"/>
+                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(0)}" process="@this"/>
+                                                </p:inputText>
+
+                                                <h:outputText value="#{msg['ciudadDocumento']}" style="position: absolute; left: 10px; top: 65px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 110px; top: 60px;text-transform: uppercase;width: 170px"
+                                                             id="parametroCiudadDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre}">
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosDatosPersonales('ESTRUCTURA', controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre)}" process="@this" update="parametroCiudadDocumentoModDatosPersonales"/>
+                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(1)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
+                                                </p:inputText>
+
+                                                <h:outputText value="#{msg['ciudadNacimiento']}" style="position: absolute; left: 300px; top: 40px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 410px; top: 35px;text-transform: uppercase;width: 170px"
+                                                             id="parametroCiudadNacimientoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre}">
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosCargo('NACIMIENTO', controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre)}" process="@this" update="parametroCiudadNacimientoModDatosPersonales"/>
+                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(2)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
+
+                                                </p:inputText>
+
+                                                <h:outputText value="#{msg['sexo']}" style="position: absolute; left: 300px; top: 65px;color: #14388B;font-weight: bold"/>
+                                                <p:selectOneMenu id="parametroSexoModDatosPersonales"  style="position: absolute; left: 410px; top: 60px;width: 90px" value="#{controlBusquedaAvanzada.empleadoBA.persona.sexo}">
+                                                    <f:selectItem itemLabel="" itemValue="null" />
+                                                    <f:selectItem itemLabel="#{msg['masculino']}" itemValue="M" />
+                                                    <f:selectItem itemLabel="#{msg['femenino']}" itemValue="F" />
+                                                    <p:ajax event="change" update="parametroSexoModDatosPersonales" process="@this"/>
+                                                </p:selectOneMenu>
+
+                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 630px; top: 65px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaInicialModDatosPersonales" style="font-size: 10px; position: absolute; top: 60px; left: 680px">
+                                                    <lnk:calendar id="parametroFechaInicialModDatosPersonales" value="#{controlBusquedaAvanzada.fechaInicialDatosPersonales}" >
+                                                        <p:ajax event="dateSelect" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(3)}" process="@this" />
+                                                        <p:ajax event="change" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(3)}" process="@this"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(3)}" process="@this"/>
+                                                    </lnk:calendar>
+                                                </div>
+
+                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 630px; top: 90px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaFinalModDatosPersonales" style="font-size: 10px; position: absolute; top: 85px; left: 680px">
+                                                    <lnk:calendar id="parametroFechaFinalModDatosPersonales" value="#{controlBusquedaAvanzada.fechaFinalDatosPersonales}" >
+                                                        <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(4)}" process="@this" />
+                                                    </lnk:calendar>
+                                                </div>
+
+                                            </div>
+                                        </p:tab>
+
+                                    </p:tabView>
+                                </fieldset>
+
+
+                            </p:scrollPanel>
+
                         </fieldset>
-                        
+
                         <fieldset style="position: absolute; left: 10px; top: 390px; font-size: 11px; width: 730px; height: 125px; border-radius: 5px; ">
-                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['resultadoBusqueda']}</strong></legend>
-                                            
-                                    <p:dataTable id="resultadoBusquedaAvanzada" widgetVar="resultadoBusquedaAvanzada" var="busqueda" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 715px;position: relative"
-                                                 value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}" scrollable="true" scrollWidth="733" scrollHeight="70"
-                                                 liveScroll="true" scrollRows="4" filteredValue="#{controlBusquedaAvanzada.filtrarListaColumnasBusquedaAvanzada}" emptyMessage="#{msg['vacio']}"
-                                                 editable="true" editMode="cell">
-                                        
-                                   <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" width="120" columnIndexVar="colIndex" 
-                                              sortBy="#{column.property}" filterBy="#{column.property}">
-                                       <f:facet name="header">
-                                           #{column.header}
-                                       </f:facet>
-                                       <h:outputLabel value="#{busqueda[column.property]}" onclick="posicionTablaBusquedaAvanzada([{name: 'n', value: '#{colIndex}'}, {name: 't', value: '#{indice}'}]);"/>
-                                       
-                                   </p:columns>
+                            <legend style="font-size: 12px; color: blue"><strong>#{msg['resultadoBusqueda']}</strong></legend>
 
-                               </p:dataTable>
+                            <p:dataTable id="resultadoBusquedaAvanzada" widgetVar="resultadoBusquedaAvanzada" var="busqueda" rowIndexVar="indice" style="font-size: 10px; border: 1px;width: 715px;position: relative"
+                                         value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}" scrollable="true" scrollWidth="733" scrollHeight="70"
+                                         liveScroll="true" scrollRows="4" filteredValue="#{controlBusquedaAvanzada.filtrarListaColumnasBusquedaAvanzada}" emptyMessage="#{msg['vacio']}"
+                                         editable="true" editMode="cell">
 
-                               
-                                    
+                                <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" width="120" columnIndexVar="colIndex" 
+                                           sortBy="#{column.property}" filterBy="#{column.property}">
+                                    <f:facet name="header">
+                                        #{column.header}
+                                    </f:facet>
+                                    <h:outputLabel value="#{busqueda[column.property]}" onclick="posicionTablaBusquedaAvanzada([{name: 'n', value: '#{colIndex}'}, {name: 't', value: '#{indice}'}]);"/>
+
+                                </p:columns>
+
+                            </p:dataTable>
+
+
+
                         </fieldset>
                         <p:commandButton id="detalles" style="position: absolute; left: 780px; top: 395px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['detalle']}" action="configurarColumnas" actionListener="#{controlConfigurarColumnas.recibirListaColumnasEscenarios(controlBusquedaAvanzada.listaColumnasEscenarios)}"/>
                         <p:tooltip style="font-size: 12px" for="detalles" value="#{msg['textDetalles']}" />
@@ -1225,8 +1308,9 @@
                         <p:tooltip style="font-size: 12px" for="ejecutarbnt" value="#{msg['textEjecutar']}" />
                         <p:commandButton id="btnbuscar" style="position: absolute; left: 780px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;width: 90px" value="#{msg['buscar']}"  update="resultadoBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.ejecutarQuery}" process="@parent"/>
                         <p:tooltip style="font-size: 12px" for="btnbuscar" value="#{msg['textEjecutar']}" />
-                        
+
                         <p:commandButton style="position: absolute; left: 25px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ANADIRAPARAMETROS" value="#{msg['anadirParametros']}"  process="@this" />
+                        <p:tooltip style="font-size: 12px" for="ANADIRAPARAMETROS" value="#{msg['textAnadirParametros']}" />
                         <p:commandButton style="position: absolute; left: 285px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlBusquedaAvanzada.cancelarModificaciones()}" icon="ui-icon-refresh" process="@this" />
                         <p:commandButton style="position: absolute; left: 700px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" action="nominaf" process="@this" />
                         <p:commandButton style="position: absolute; left: 790px; top: 530px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" action="nominaf" icon="ui-icon-arrowreturnthick-1-w" process="@this" />
@@ -1235,11 +1319,75 @@
 
 
                     </p:panel>
-                    
+
                     <!-- Dialogos de la #$%& cantidad de listas de valores que hay !-->
 
-                    
-                     <p:dialog header="#{msg['motivoRetiroD']}" widgetVar="MotivoFechaRetiroDialogo" draggable="false" resizable="false" closable="false" id="MotivoFechaRetiroDialogo"  
+
+                    <p:dialog header="Ciudades" widgetVar="CiudadDocumentoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoDatosPersonalesDialogo"  
+                              showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovCiudadDocumentoDatosPersonales" style="font-size: 11px; width: 490px" var="documentoDP" value="#{controlBusquedaAvanzada.lovCiudades}" rowKey="#{documentoDP.secuencia}"
+                                     selection="#{controlBusquedaAvanzada.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadDocumentoDatosPersonales" scrollable="true" scrollWidth="505" scrollHeight="250"
+                                     filteredValue="#{controlBusquedaAvanzada.filtrarLovCiudades}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCDDP"/>
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}"  process="@this" onstart="lovCiudadDocumentoDatosPersonales.clearFilters()" />
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadDocumentoDatosPersonales.filter();" style="width:150px; position: relative; left: 20px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{documentoDP.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Nombre" />
+                                </f:facet>
+                                <h:outputText  value="#{documentoDP.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{documentoDP.departamento.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Departamento" />
+                                </f:facet>
+                                <h:outputText value="#{documentoDP.departamento.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCDDP" style="position: relative; left: 360px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CiudadDocumentoDatosPersonalesDialogo.hide(), lovCiudadDocumentoDatosPersonales.clearFilters();" update="lovCiudadDocumentoDatosPersonales, aceptarCDDP" process="@this">
+                            <p:resetInput target=":form:lovCiudadDocumentoDatosPersonales:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCDDP" style="position: relative; left: 360px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCiudadDocumentoDatosPersonales()}" onclick="CiudadDocumentoDatosPersonalesDialogo.hide(), lovCiudadDocumentoDatosPersonales.clearFilters();" update="lovCiudadDocumentoDatosPersonales" process="@this">
+                            <p:resetInput target=":form:lovCiudadDocumentoDatosPersonales:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="Ciudades" widgetVar="CiudadNacimientoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoDatosPersonalesDialogo"  
+                              showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovCiudadNacimientoDatosPersonales" style="font-size: 11px; width: 490px" var="nacimientoDP" value="#{controlBusquedaAvanzada.lovCiudades}" rowKey="#{nacimientoDP.secuencia}"
+                                     selection="#{controlBusquedaAvanzada.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadNacimientoDatosPersonales" scrollable="true" scrollWidth="505" scrollHeight="250"
+                                     filteredValue="#{controlBusquedaAvanzada.filtrarLovCiudades}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCNDP"/>
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}"  process="@this" onstart="lovCiudadNacimientoDatosPersonales.clearFilters()" />
+                            <f:facet name="header">  
+                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadNacimientoDatosPersonales.filter();" style="width:150px; position: relative; left: 20px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{nacimientoDP.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="Nombre" />
+                                </f:facet>
+                                <h:outputText  value="#{nacimientoDP.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{nacimientoDP.departamento.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="Departamento" />
+                                </f:facet>
+                                <h:outputText value="#{nacimientoDP.departamento.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCNDP" style="position: relative; left: 360px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroCiudadNacimientoDatosPersonales()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="CiudadNacimientoDatosPersonalesDialogo.hide(), lovCiudadNacimientoDatosPersonales.clearFilters();" update="lovCiudadNacimientoDatosPersonales, aceptarCNDP" process="@this">
+                            <p:resetInput target=":form:lovCiudadNacimientoDatosPersonales:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCNDP" style="position: relative; left: 360px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroCiudadNacimientoDatosPersonales()}" onclick="CiudadNacimientoDatosPersonalesDialogo.hide(), lovCiudadNacimientoDatosPersonales.clearFilters();" update="lovCiudadNacimientoDatosPersonales" process="@this">
+                            <p:resetInput target=":form:lovCiudadNacimientoDatosPersonales:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog header="#{msg['motivoRetiroD']}" widgetVar="MotivoFechaRetiroDialogo" draggable="false" resizable="false" closable="false" id="MotivoFechaRetiroDialogo"  
                               showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovMotivoFechaRetiro" style="font-size: 11px; width: 490px" var="motivoFR" value="#{controlBusquedaAvanzada.lovMotivosRetiros}" rowKey="#{motivoFR.secuencia}"
                                      selection="#{controlBusquedaAvanzada.motivoRetiroSeleccionado}" selectionMode="single" widgetVar="lovMotivoFechaRetiro" scrollable="true" scrollWidth="505" scrollHeight="250"
@@ -1270,7 +1418,7 @@
                             <p:resetInput target=":form:lovMotivoFechaRetiro:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog header="#{msg['jornadaLaboralD']}" widgetVar="JornadaJornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaJornadaLaboralDialogo"  
                               showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovJornadaJornadaLaboral" style="font-size: 11px; width: 490px" var="jornadaJL" value="#{controlBusquedaAvanzada.lovJornadasLaborales}" rowKey="#{jornadaJL.secuencia}"
@@ -1328,7 +1476,7 @@
                             <p:resetInput target=":form:lovMotivoMvrs:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog header="#{msg['formaPagoD']}" widgetVar="PeriodicidadFormaPagoDialogo" draggable="false" resizable="false" closable="false" id="PeriodicidadFormaPagoDialogo"  
                               showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovPeriodicidadFormaPago" style="font-size: 11px; width: 405px" scrollWidth="420" var="periodicidadFP" value="#{controlBusquedaAvanzada.lovPeriodicidades}" rowKey="#{periodicidadFP.secuencia}"
@@ -1911,11 +2059,41 @@
                         </p:commandButton>
                     </p:dialog>
 
+                    <p:dialog id="errorFechasIngresadas" header="#{msg['atencion']}" widgetVar="errorFechasIngresadas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechasIngresadas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorFechasRequeridas" header="#{msg['atencion']}" widgetVar="errorFechasRequeridas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechasRequeridas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorExceptionFechas" header="#{msg['atencion']}" widgetVar="errorExceptionFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorExceptionFechas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorSueldos" header="#{msg['atencion']}" widgetVar="errorSueldos"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorSueldos']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorPromedios" header="#{msg['atencion']}" widgetVar="errorPromedios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorPromedios']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorNewColumna" header="#{msg['atencion']}" widgetVar="errorNewColumna"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorNewColumna']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
                 </h:form>
 
+
                 <h:form style="position: relative">
-                    <p:toolbar style="font-size: 12px; position: absolute; top: 35px; left: 10px;">
+                    <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 24px">
                         <p:toolbarGroup align="left"> 
                             <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this"/>
                             <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
@@ -1923,7 +2101,7 @@
                             <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBusquedaAvanzada.editarCelda()}" process="@this"/>
                             <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
-                            <p:separator />
+                            <p:separator style="position: relative; top: -9px"/>
 
                             <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
                             <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
@@ -1931,20 +2109,20 @@
                             <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>
                             <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
-                            <p:separator />
+                            <p:separator style="position: relative; top: -9px"/>
 
                             <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBusquedaAvanzada.exportXLS()}" ajax="false"  />
                             <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
                             <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
-                                    <p:dataExporter type="xml"  target=":formExportar:datosBusquedaAvanzadaExportar" fileName="ResultadosBusquedaAvanzada_XML" encoding="UTF-8"/> 
+                                <p:dataExporter type="xml"  target=":formExportar:datosBusquedaAvanzadaExportar" fileName="ResultadosBusquedaAvanzada_XML" encoding="UTF-8"/> 
                             </p:commandButton>
                             <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
                             <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBusquedaAvanzada.exportPDF()}" ajax="false"/>
                             <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
-                            <p:separator /> 
+                            <p:separator style="position: relative; top: -9px"/>
                             <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/> 
                             <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
@@ -1954,44 +2132,19 @@
                             <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/>  
                             <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
 
-                            <p:separator /> 
+                            <p:separator style="position: relative; top: -9px"/>
                             <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
                             <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
                         </p:toolbarGroup>  
                     </p:toolbar> 
-                    
-                    <p:dialog id="errorFechasIngresadas" header="#{msg['atencion']}" widgetVar="errorFechasIngresadas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorFechasIngresadas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-                    
-                    <p:dialog id="errorFechasRequeridas" header="#{msg['atencion']}" widgetVar="errorFechasRequeridas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorFechasRequeridas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-                    
-                    <p:dialog id="errorExceptionFechas" header="#{msg['atencion']}" widgetVar="errorExceptionFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorExceptionFechas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-                    
-                    <p:dialog id="errorSueldos" header="#{msg['atencion']}" widgetVar="errorSueldos"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorSueldos']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-                    
-                    <p:dialog id="errorPromedios" header="#{msg['atencion']}" widgetVar="errorPromedios"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorPromedios']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-                    
-                    <p:dialog id="errorNewColumna" header="#{msg['atencion']}" widgetVar="errorNewColumna"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorNewColumna']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
-                    </p:dialog>
-                    
+
+                    <p:selectOneRadio id="pruebaActivo" style="position: absolute; top: 37px; left: 570px; height: 24px" value="#{controlBusquedaAvanzada.numeroTipoBusqueda}">
+                        <f:selectItem itemLabel="NOMINA" itemValue="1" />
+                        <f:selectItem itemLabel="PERSONAL" itemValue="2" />
+                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.cambioBtnPrueba()}" process="@this"/>
+                    </p:selectOneRadio>  
                 </h:form>
-                
+
                 <h:form id="formularioDialogos">
 
                     <!-- MODULO CARGOS -->
@@ -2044,7 +2197,7 @@
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaLocalizacionBA.localizacion.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarLocalizacionModCentroCosto" value="#{msg['atras']}" onclick="editarLocalizacionModCentroCosto.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-d
+                    
                     <p:dialog id="editarMotivoModCentroCosto" header="#{msg['editarMotivoModCentroCosto']}" widgetVar="editarMotivoModCentroCosto" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaLocalizacionBA.motivo.descripcion}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarMotivoModCentroCosto" value="#{msg['atras']}" onclick="editarMotivoModCentroCosto.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
@@ -2307,7 +2460,7 @@ d
                         </p:calendar>
                         <p:commandButton id="cancelarFechaFinalModFormaPago" value="#{msg['atras']}" onclick="editarFechaFinalModFormaPago.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    
+
                     <!-- MODULO MVRS -->
 
                     <p:dialog id="editarMotivoModMvrs" header="#{msg['editarMotivoModMvrs']}" widgetVar="editarMotivoModMvrs" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
@@ -2319,7 +2472,7 @@ d
                         <p:inputTextarea value="#{controlBusquedaAvanzada.sueldoMinMvrs}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarSueldoMinModMvrs" value="#{msg['atras']}" onclick="editarSueldoMinModMvrs.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    
+
                     <p:dialog id="editarSueldoMaxModMvrs" header="#{msg['editarSueldoMaxModMvrs']}" widgetVar="editarSueldoMaxModMvrs" resizable="false" draggable="false" modal="true" height="93" width="280" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.sueldoMaxMvrs}" style="overflow: auto; width: 240px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarSueldoMaxModMvrs" value="#{msg['atras']}" onclick="editarSueldoMaxModMvrs.hide();" style="position: absolute; top: 60px; left: 188px; font-size: 11px" process="@this"/>
@@ -2331,7 +2484,7 @@ d
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModMvrs" value="#{msg['atras']}" onclick="editarFechaInicialModMvrs.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="editarFechaFinalModMvrs" header="#{msg['editarFechaFinalModMvrs']}" widgetVar="editarFechaFinalModMvrs" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalMvrs}" id="editFechaFinalModMvrs"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
@@ -2339,13 +2492,13 @@ d
                         <p:commandButton id="cancelarFechaFinalModMvrs" value="#{msg['atras']}" onclick="editarFechaFinalModMvrs.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
-                     <!-- MODULO SETS -->
+                    <!-- MODULO SETS -->
 
                     <p:dialog id="editarPromedioMinModSets" header="#{msg['editarPromedioMinModSets']}" widgetVar="editarPromedioMinModSets" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.promedioMinimoSets}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPromedioMinModSets" value="#{msg['atras']}" onclick="editarPromedioMinModSets.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                     
+
                     <p:dialog id="editarPromedioMaxModSets" header="#{msg['editarPromedioMaxModSets']}" widgetVar="editarPromedioMaxModSets" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.promedioMaximoSets}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarPromedioMaxModSets" value="#{msg['atras']}" onclick="editarPromedioMaxModSets.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
@@ -2378,10 +2531,10 @@ d
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMFFinalModSets" value="#{msg['atras']}" onclick="editarFechaMFFinalModSets.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                     
-                     <!-- MODULO VACACIONES -->
-                     
-                     <p:dialog id="editarFechaMIInicialModVacacion" header="#{msg['editarFechaMIInicialModVacacion']}" widgetVar="editarFechaMIInicialModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+
+                    <!-- MODULO VACACIONES -->
+
+                    <p:dialog id="editarFechaMIInicialModVacacion" header="#{msg['editarFechaMIInicialModVacacion']}" widgetVar="editarFechaMIInicialModVacacion" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaMIInicialVacacion}" id="editFechaMIInicialModVacacion"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
@@ -2408,8 +2561,8 @@ d
                         </p:calendar>
                         <p:commandButton id="cancelarFechaMFFinalModVacacion" value="#{msg['atras']}" onclick="editarFechaMFFinalModVacacion.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                     
-                     <!-- MODULO JORNADA LABORAL -->
+
+                    <!-- MODULO JORNADA LABORAL -->
 
                     <p:dialog id="editarJornadaModJornadaLaboral" header="#{msg['editarJornadaModJornadaLaboral']}" widgetVar="editarJornadaModJornadaLaboral" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.vigenciaJornadaBA.jornadatrabajo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
@@ -2422,15 +2575,15 @@ d
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModJornadaLaboral" value="#{msg['atras']}" onclick="editarFechaInicialModJornadaLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="editarFechaFinalModJornadaLaboral" header="#{msg['editarFechaFinalModJornadaLaboral']}" widgetVar="editarFechaFinalModJornadaLaboral" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalJornadaLaboral}" id="editFechaFinalModJornadaLaboral"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaFinalModJornadaLaboral" value="#{msg['atras']}" onclick="editarFechaFinalModJornadaLaboral.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                     
-                     <!-- MODULO FECHA RETIRO -->
+
+                    <!-- MODULO FECHA RETIRO -->
 
                     <p:dialog id="editarMotivoModFechaRetiro" header="#{msg['editarMotivoModFechaRetiro']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.motivoRetiroBA.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
@@ -2443,7 +2596,7 @@ d
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaInicialModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="editarFechaFinalModFechaRetiro" header="#{msg['editarFechaFinalModFechaRetiro']}" widgetVar="editarFechaFinalModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
                         <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalFechaRetiro}" id="editFechaFinalModFechaRetiro"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
@@ -2451,30 +2604,51 @@ d
                         <p:commandButton id="cancelarFechaFinalModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaFinalModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
                     
-                     <!-- TABLA BUSQUEDA AVANZADA -->
-                     
-                     <p:dialog id="editarTablaBusquedaAvanzada" header="#{controlBusquedaAvanzada.cabeceraEditarCelda}" widgetVar="editarTablaBusquedaAvanzada" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <!-- MODULO DATOS PERSONALES -->
+
+                    <p:dialog id="editarMotivoModFechaRetiro" header="#{msg['editarMotivoModFechaRetiro']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.motivoRetiroBA.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarMotivoModFechaRetiro" value="#{msg['atras']}" onclick="editarMotivoModFechaRetiro.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialModFechaRetiro" header="#{msg['editarFechaInicialModFechaRetiro']}" widgetVar="editarFechaInicialModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialFechaRetiro}" id="editFechaInicialModFechaRetiro"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicialModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaInicialModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalModFechaRetiro" header="#{msg['editarFechaFinalModFechaRetiro']}" widgetVar="editarFechaFinalModFechaRetiro" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalFechaRetiro}" id="editFechaFinalModFechaRetiro"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinalModFechaRetiro" value="#{msg['atras']}" onclick="editarFechaFinalModFechaRetiro.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <!-- TABLA BUSQUEDA AVANZADA -->
+
+                    <p:dialog id="editarTablaBusquedaAvanzada" header="#{controlBusquedaAvanzada.cabeceraEditarCelda}" widgetVar="editarTablaBusquedaAvanzada" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.infoVariableEditarCelda}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTablaBusquedaAvanzada" value="#{msg['atras']}" onclick="editarTablaBusquedaAvanzada.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                     
+
                 </h:form>
-                
+
                 <h:form id="formExportar">
-                    
+
                     <p:dataTable id="datosBusquedaAvanzadaExportar"  var="exportarBA" style="visibility: hidden; display: none;"
                                  value="#{controlBusquedaAvanzada.listaColumnasBusquedaAvanzada}">
-                                        
-                        <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" headerText="#{column.header}"  width="120" columnIndexVar="colIndex" 
-                                              sortBy="#{column.property}" filterBy="#{column.property}">
-                                       <f:facet name="header">
-                                          <h:outputText value="#{column.header}"/> 
-                                       </f:facet>
-                                       <h:outputText value="#{exportarBA[column.property]}"/>
-                                   </p:columns>
 
-                               </p:dataTable>
-                    
+                        <p:columns value="#{controlBusquedaAvanzada.columns}" var="column" headerText="#{column.header}"  width="120" columnIndexVar="colIndex" 
+                                   sortBy="#{column.property}" filterBy="#{column.property}">
+                            <f:facet name="header">
+                                <h:outputText value="#{column.header}"/> 
+                            </f:facet>
+                            <h:outputText value="#{exportarBA[column.property]}"/>
+                        </p:columns>
+
+                    </p:dataTable>
+
                 </h:form>
 
             </ui:define>

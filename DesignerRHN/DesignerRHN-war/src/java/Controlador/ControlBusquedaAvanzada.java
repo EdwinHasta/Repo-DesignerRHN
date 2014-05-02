@@ -21,6 +21,7 @@ import Entidades.Mvrs;
 import Entidades.NormasLaborales;
 import Entidades.Papeles;
 import Entidades.Periodicidades;
+import Entidades.Personas;
 import Entidades.QVWEmpleadosCorte;
 import Entidades.ReformasLaborales;
 import Entidades.ResultadoBusquedaAvanzada;
@@ -48,6 +49,7 @@ import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfaceAdministrar.AdministrarEmplMvrsInterface;
 import InterfaceAdministrar.AdministrarEmplVigenciasFormasPagosInterface;
+import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
 import InterfaceAdministrar.AdministrarVigenciaLocalizacionInterface;
 import InterfaceAdministrar.AdministrarVigenciaNormaLaboralInterface;
 import InterfaceAdministrar.AdministrarVigenciasAfiliaciones3Interface;
@@ -76,6 +78,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
+import org.primefaces.component.scrollpanel.ScrollPanel;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -86,6 +89,9 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlBusquedaAvanzada implements Serializable {
 
+    /*
+     MODULO DE BUSQUEDA AVANZADA NOMINA
+     */
     //Inyeccion EJB Administrar de cada modulo
     @EJB
     AdministrarVigenciasCargosBusquedaAvanzadaInterface administrarVigenciaCargoBusquedaAvanzada;
@@ -357,8 +363,6 @@ public class ControlBusquedaAvanzada implements Serializable {
     private String auxJornadaJornadaLaboral;
     private String auxMotivoMotivoRetiro;
     //Otros
-    private boolean aceptar;
-    private Date fechaParametro;
     private boolean activoFechasCargos, activoFechasCentroCosto, activoFechasSueldo, activoFechasFechaContrato, activoFechasTipoTrabajador;
     private boolean activoFechasTipoSalario, activoFechasNormaLaboral, activoFechasLegislacionLaboral, activoFechasUbicacion;
     private boolean activoFechasAfiliacion, activoFechasFormaPago, activoFechasMvrs, activoFechasSets;
@@ -366,6 +370,40 @@ public class ControlBusquedaAvanzada implements Serializable {
     private BigDecimal sueldoMaxMvrs, sueldoMinMvrs;
     private BigDecimal promedioMinimoSets, promedioMaximoSets;
     private String tipoMetodoSets;
+    /*
+     MODULO DE BUSQUEDA AVANZADA NOMINA
+     */
+    /*
+     MODULO DE BUSQUEDA AVANZADA PERSONAL
+     */
+    //Inyeccion EJB Para Busqueda Avanzada Personal
+    @EJB
+    AdministrarEmpleadoIndividualInterface administrarEmpleadoIndividual;
+    //Objetos para realizar el proceso de busqueda avanzada
+    //Modulo Datos Personales
+    private Empleados empleadoBA;
+    private int tabActivaDatosPersonales;
+    private int casillaEmpleado;
+    private boolean permitirIndexEmpleado;
+    private Date fechaInicialDatosPersonales, fechaFinalDatosPersonales;
+    private Date auxFechaInicialDatosPersonales, auxFechaFinalDatosPersonales;
+    //LOVS
+    //Ciudades
+    private List<Ciudades> lovCiudades;
+    private List<Ciudades> filtrarLovCiudades;
+    private Ciudades ciudadSeleccionada;
+    ////////
+    private String auxCiudadDocumentoEmpleado, auxCiudadNacimientoEmpleado;
+
+    //Otros
+    /*
+     MODULO DE BUSQUEDA AVANZADA PERSONAL
+     */
+    /*
+     VARIABLES TABLA DINAMICA
+     */
+    private boolean aceptar;
+    private Date fechaParametro;
     //Resulatos de busqueda
     private final static List<String> VALID_COLUMN_KEYS = Arrays.asList("codigo", "primeroApellido", "segundoApellido", "nombre", "columna0", "columna1", "columna2", "columna3", "columna4", "columna5", "columna6", "columna7", "columna8", "columna9");
     //Nombres de los valores en la clase que tomaran lo valores correspondientes de las columnas que se desean agregar
@@ -395,11 +433,17 @@ public class ControlBusquedaAvanzada implements Serializable {
     List<BigInteger> listaCodigosEmpleado;
     List<QVWEmpleadosCorte> registros;
     List<QVWEmpleadosCorte> registrosFiltrado;
-
     private int indice, cualCelda;
     private String cabeceraEditarCelda, infoVariableEditarCelda;
+    /*
+     VARIABLES TABLA DINAMICA
+     */
+    private int numeroTipoBusqueda;
+
+    private ScrollPanel scrollPanelNomina, scrollPanelPersonal;
 
     public ControlBusquedaAvanzada() {
+        numeroTipoBusqueda = 2;
         cabeceraEditarCelda = "";
         infoVariableEditarCelda = "";
         indice = -1;
@@ -412,6 +456,10 @@ public class ControlBusquedaAvanzada implements Serializable {
         listaEmpleadosResultados = new ArrayList<Empleados>();
         listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
         //Fechas Modulos
+        //PERSONALO
+        auxFechaFinalDatosPersonales = null;
+        auxFechaInicialDatosPersonales = null;
+        //NOMINA
         auxFechaFinalCargo = null;
         auxFechaInicialCargo = null;
         auxFechaFinalCentroCosto = null;
@@ -451,6 +499,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         auxFechaFinalFechaRetiro = null;
         auxFechaInicialFechaRetiro = null;
         //Tipo Fecha
+        //PERSONAL
+
+        //NOMINA
         tipoFechaCargo = 1;
         tipoFechaCentroCosto = 1;
         tipoFechaSueldo = 1;
@@ -465,6 +516,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         tipoFechaMvrs = 1;
         tipoFechaSets = 1;
         //Activo Fechas
+        //PERSONAL
+
+        //NOMINA
         activoFechasCargos = true;
         activoFechasCentroCosto = true;
         activoFechasSueldo = true;
@@ -479,6 +533,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         activoFechasMvrs = true;
         activoFechasSets = true;
         //POSICION MODULOS
+        //PERSONAL
+        casillaEmpleado = -1;
+        //NOMINA
         casillaVigenciaSueldo = -1;
         casillaVigenciaCargo = -1;
         casillaVigenciaLocalizacion = -1;
@@ -496,6 +553,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         casillaVigenciaJornadaLaboral = -1;
         casillaMotivoRetiro = -1;
         //
+        //PERSONAL
+        tabActivaDatosPersonales = 0;
+        //NOMINA
         auxTabActivoCentroCosto = false;
         tabActivaCentroCosto = 0;
         tabActivaCargos = 0;
@@ -514,6 +574,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         tabActivaJornadaLaboral = 0;
         tabActivaFechaRetiro = 0;
         //PERMITIR INDEX
+        //PERSONAL
+        permitirIndexEmpleado = true;
+        //NOMINA
         permitirIndexVigenciaCargo = true;
         permitirIndexVigenciaLocalizacion = true;
         permitirIndexVigenciaSueldo = true;
@@ -529,6 +592,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         permitirIndexVigenciaJornada = true;
         permitirIndexMotivoRetiro = true;
         //MODULOS
+        //PERSONAL
+        empleadoBA = new Empleados();
+        empleadoBA.setPersona(new Personas());
+        empleadoBA.getPersona().setCiudaddocumento(new Ciudades());
+        empleadoBA.getPersona().setCiudadnacimiento(new Ciudades());
+        //NOMINA
         vigenciaCargoBA = new VigenciasCargos();
         vigenciaCargoBA.setEstructura(new Estructuras());
         vigenciaCargoBA.getEstructura().setCentrocosto(new CentrosCostos());
@@ -569,6 +638,10 @@ public class ControlBusquedaAvanzada implements Serializable {
         vigenciaJornadaBA.setJornadatrabajo(new JornadasLaborales());
         motivoRetiroBA = new MotivosRetiros();
         //LOVS
+        //PERSONAL
+        lovCiudades = null;
+        ciudadSeleccionada = new Ciudades();
+        //NOMINA
         lovMotivosRetiros = null;
         motivoRetiroSeleccionado = new MotivosRetiros();
         lovJornadasLaborales = null;
@@ -631,6 +704,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         listaResultadoBusquedaAvanzada = new ArrayList<ResultadoBusquedaAvanzada>();
         listaCodigosEmpleado = new ArrayList<BigInteger>();
         createStaticColumns();
+        cambioBtnPrueba();
     }
 
     public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno) {
@@ -1118,202 +1192,220 @@ public class ControlBusquedaAvanzada implements Serializable {
         indice = -1;
         cualCelda = -1;
         //
-        vigenciaCargoBA = new VigenciasCargos();
-        vigenciaCargoBA.setEstructura(new Estructuras());
-        vigenciaCargoBA.getEstructura().setCentrocosto(new CentrosCostos());
-        vigenciaCargoBA.setMotivocambiocargo(new MotivosCambiosCargos());
-        vigenciaCargoBA.setPapel(new Papeles());
-        vigenciaCargoBA.setCargo(new Cargos());
-        vigenciaCargoBA.setEmpleadojefe(new Empleados());
-        vigenciaLocalizacionBA = new VigenciasLocalizaciones();
-        vigenciaLocalizacionBA.setLocalizacion(new Estructuras());
-        vigenciaLocalizacionBA.setMotivo(new MotivosLocalizaciones());
-        vigenciaSueldoBA = new VigenciasSueldos();
-        vigenciaSueldoBA.setTiposueldo(new TiposSueldos());
-        vigenciaSueldoBA.setMotivocambiosueldo(new MotivosCambiosSueldos());
-        vigenciaTipoContratoBA = new VigenciasTiposContratos();
-        vigenciaTipoContratoBA.setTipocontrato(new TiposContratos());
-        vigenciaTipoContratoBA.setMotivocontrato(new MotivosContratos());
-        vigenciaTipoTrabajadorBA = new VigenciasTiposTrabajadores();
-        vigenciaTipoTrabajadorBA.setTipotrabajador(new TiposTrabajadores());
-        vigenciaReformaLaboralBA = new VigenciasReformasLaborales();
-        vigenciaReformaLaboralBA.setReformalaboral(new ReformasLaborales());
-        vigenciaNormaEmpleadoBA = new VigenciasNormasEmpleados();
-        vigenciaNormaEmpleadoBA.setNormalaboral(new NormasLaborales());
-        vigenciaContratoBA = new VigenciasContratos();
-        vigenciaContratoBA.setContrato(new Contratos());
-        vigenciaUbicacionBA = new VigenciasUbicaciones();
-        vigenciaUbicacionBA.setUbicacion(new UbicacionesGeograficas());
-        vigenciaUbicacionBA.getUbicacion().setCiudad(new Ciudades());
-        vigenciaAfiliacionBA = new VigenciasAfiliaciones();
-        vigenciaAfiliacionBA.setTercerosucursal(new TercerosSucursales());
-        vigenciaAfiliacionBA.setTipoentidad(new TiposEntidades());
-        vigenciaAfiliacionBA.setEstadoafiliacion(new EstadosAfiliaciones());
-        vigenciaFormaPagoBA = new VigenciasFormasPagos();
-        vigenciaFormaPagoBA.setFormapago(new Periodicidades());
-        vigenciaFormaPagoBA.setSucursal(new Sucursales());
-        mvrsBA = new Mvrs();
-        mvrsBA.setMotivo(new Motivosmvrs());
-        vigenciaJornadaBA = new VigenciasJornadas();
-        vigenciaJornadaBA.setJornadatrabajo(new JornadasLaborales());
-        motivoRetiroBA = new MotivosRetiros();
-        //
-        auxTabActivoCentroCosto = false;
-        tabActivaFechaContrato = 0;
-        tabActivaCargos = 0;
-        tabActivaCentroCosto = 0;
-        tabActivaSueldo = 0;
-        tabActivaTipoTrabajador = 0;
-        tabActivaTipoSalario = 0;
-        tabActivaNormaLaboral = 0;
-        tabActivaLegislacionLaboral = 0;
-        tabActivaUbicacion = 0;
-        tabActivaAfiliacion = 0;
-        tabActivaFormaPago = 0;
-        tabActivaMvrs = 0;
-        tabActivaSets = 0;
-        tabActivaVacacion = 0;
-        tabActivaJornadaLaboral = 0;
-        tabActivaFechaRetiro = 0;
-        //
-        auxFechaFinalFechaContrato = null;
-        fechaFinalFechaContrato = null;
-        auxFechaInicialFechaContrato = null;
-        fechaInicialFechaContrato = null;
-        auxFechaFinalCargo = null;
-        fechaFinalCargo = null;
-        auxFechaInicialCargo = null;
-        fechaInicialCargo = null;
-        auxFechaFinalCentroCosto = null;
-        fechaFinalCentroCosto = null;
-        auxFechaInicialCentroCosto = null;
-        fechaInicialCentroCosto = null;
-        auxFechaFinalSueldo = null;
-        fechaFinalSueldo = null;
-        auxFechaInicialSueldo = null;
-        fechaInicialSueldo = null;
-        auxFechaInicialTipoTrabajador = null;
-        fechaInicialTipoTrabajador = null;
-        auxFechaFinalTipoTrabajador = null;
-        fechaFinalTipoTrabajador = null;
-        auxFechaFinalTipoSalario = null;
-        fechaFinalTipoSalario = null;
-        auxFechaInicialTipoSalario = null;
-        fechaInicialTipoSalario = null;
-        auxFechaFinalNormaLaboral = null;
-        fechaFinalNormaLaboral = null;
-        auxFechaInicialNormaLaboral = null;
-        fechaInicialNormaLaboral = null;
-        auxFechaMIInicialLegislacionLaboral = null;
-        auxFechaMIFinalLegislacionLaboral = null;
-        auxFechaMFInicialLegislacionLaboral = null;
-        auxFechaMFFinalLegislacionLaboral = null;
-        fechaMFFinalLegislacionLaboral = null;
-        fechaMFInicialLegislacionLaboral = null;
-        fechaMIFinalLegislacionLaboral = null;
-        fechaMIInicialLegislacionLaboral = null;
-        auxFechaFinalUbicacion = null;
-        fechaFinalUbicacion = null;
-        auxFechaInicialUbicacion = null;
-        fechaInicialUbicacion = null;
-        auxFechaInicialAfiliacion = null;
-        fechaInicialAfiliacion = null;
-        auxFechaFinalAfiliacion = null;
-        fechaFinalAfiliacion = null;
-        auxFechaFinalFormaPago = null;
-        fechaFinalFormaPago = null;
-        auxFechaInicialFormaPago = null;
-        fechaInicialFormaPago = null;
-        auxFechaInicialMvrs = null;
-        fechaInicialMvrs = null;
-        auxFechaFinalMvrs = null;
-        fechaFinalMvrs = null;
-        auxFechaMFInicialSets = null;
-        fechaMFInicialSets = null;
-        auxFechaMFFinalSets = null;
-        fechaMFFinalSets = null;
-        auxFechaMIFinalSets = null;
-        fechaMIFinalSets = null;
-        auxFechaMIInicialSets = null;
-        fechaMIInicialSets = null;
-        auxFechaMFInicialVacacion = null;
-        fechaMFInicialVacacion = null;
-        auxFechaMFFinalVacacion = null;
-        fechaMFFinalVacacion = null;
-        auxFechaMIFinalVacacion = null;
-        fechaMIFinalVacacion = null;
-        auxFechaMIInicialVacacion = null;
-        fechaMIInicialVacacion = null;
-        auxFechaFinalJornadaLaboral = null;
-        fechaFinalJornadaLaboral = null;
-        auxFechaInicialJornadaLaboral = null;
-        fechaInicialJornadaLaboral = null;
-        auxFechaFinalFechaRetiro = null;
-        fechaFinalFechaRetiro = null;
-        auxFechaInicialFechaRetiro = null;
-        fechaInicialFechaRetiro = null;
-        //
-        sueldoMaxSueldo = null;
-        sueldoMinSueldo = null;
-        auxSueldoMaximoSueldo = null;
-        auxSueldoMinimoSueldo = null;
-        sueldoMaxMvrs = null;
-        sueldoMinMvrs = null;
-        auxSueldoMaximoMvrs = null;
-        auxSueldoMinimoMvrs = null;
-        auxPromedioMaximoSets = null;
-        promedioMaximoSets = null;
-        auxPromedioMinimoSets = null;
-        promedioMinimoSets = null;
-        //
-        tipoMetodoSets = "";
-        //
-        tipoFechaCargo = 1;
-        activarCasillasFechasCargo();
-        tipoFechaCentroCosto = 1;
-        activarCasillasFechasCentroCosto();
-        tipoFechaSueldo = 1;
-        activarCasillasFechasSueldo();
-        tipoFechaFechaContrato = 1;
-        activarCasillasFechasFechaContrato();
-        tipoFechaTipoTrabajador = 1;
-        activarCasillasFechasTipoTrabajador();
-        tipoFechaTipoSalario = 1;
-        activarCasillasFechasTipoSalario();
-        tipoFechaNormaLaboral = 1;
-        activarCasillasFechasNormaLaboral();
-        tipoFechaLegislacionLaboral = 1;
-        activarCasillasFechasLegislacionLaboral();
-        tipoFechaUbicacion = 1;
-        activarCasillasFechasUbicacion();
-        tipoFechaAfiliacion = 1;
-        activarCasillasFechasAfiliacion();
-        tipoFechaFormaPago = 1;
-        activarCasillasFechasFormaPago();
-        tipoFechaMvrs = 1;
-        activarCasillasFechasMvrs();
-        tipoFechaSets = 1;
-        activarCasillasFechasSets();
-        //
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (numeroTipoBusqueda == 1) {
+            vigenciaCargoBA = new VigenciasCargos();
+            vigenciaCargoBA.setEstructura(new Estructuras());
+            vigenciaCargoBA.getEstructura().setCentrocosto(new CentrosCostos());
+            vigenciaCargoBA.setMotivocambiocargo(new MotivosCambiosCargos());
+            vigenciaCargoBA.setPapel(new Papeles());
+            vigenciaCargoBA.setCargo(new Cargos());
+            vigenciaCargoBA.setEmpleadojefe(new Empleados());
+            vigenciaLocalizacionBA = new VigenciasLocalizaciones();
+            vigenciaLocalizacionBA.setLocalizacion(new Estructuras());
+            vigenciaLocalizacionBA.setMotivo(new MotivosLocalizaciones());
+            vigenciaSueldoBA = new VigenciasSueldos();
+            vigenciaSueldoBA.setTiposueldo(new TiposSueldos());
+            vigenciaSueldoBA.setMotivocambiosueldo(new MotivosCambiosSueldos());
+            vigenciaTipoContratoBA = new VigenciasTiposContratos();
+            vigenciaTipoContratoBA.setTipocontrato(new TiposContratos());
+            vigenciaTipoContratoBA.setMotivocontrato(new MotivosContratos());
+            vigenciaTipoTrabajadorBA = new VigenciasTiposTrabajadores();
+            vigenciaTipoTrabajadorBA.setTipotrabajador(new TiposTrabajadores());
+            vigenciaReformaLaboralBA = new VigenciasReformasLaborales();
+            vigenciaReformaLaboralBA.setReformalaboral(new ReformasLaborales());
+            vigenciaNormaEmpleadoBA = new VigenciasNormasEmpleados();
+            vigenciaNormaEmpleadoBA.setNormalaboral(new NormasLaborales());
+            vigenciaContratoBA = new VigenciasContratos();
+            vigenciaContratoBA.setContrato(new Contratos());
+            vigenciaUbicacionBA = new VigenciasUbicaciones();
+            vigenciaUbicacionBA.setUbicacion(new UbicacionesGeograficas());
+            vigenciaUbicacionBA.getUbicacion().setCiudad(new Ciudades());
+            vigenciaAfiliacionBA = new VigenciasAfiliaciones();
+            vigenciaAfiliacionBA.setTercerosucursal(new TercerosSucursales());
+            vigenciaAfiliacionBA.setTipoentidad(new TiposEntidades());
+            vigenciaAfiliacionBA.setEstadoafiliacion(new EstadosAfiliaciones());
+            vigenciaFormaPagoBA = new VigenciasFormasPagos();
+            vigenciaFormaPagoBA.setFormapago(new Periodicidades());
+            vigenciaFormaPagoBA.setSucursal(new Sucursales());
+            mvrsBA = new Mvrs();
+            mvrsBA.setMotivo(new Motivosmvrs());
+            vigenciaJornadaBA = new VigenciasJornadas();
+            vigenciaJornadaBA.setJornadatrabajo(new JornadasLaborales());
+            motivoRetiroBA = new MotivosRetiros();
+            //
+            auxTabActivoCentroCosto = false;
+            tabActivaFechaContrato = 0;
+            tabActivaCargos = 0;
+            tabActivaCentroCosto = 0;
+            tabActivaSueldo = 0;
+            tabActivaTipoTrabajador = 0;
+            tabActivaTipoSalario = 0;
+            tabActivaNormaLaboral = 0;
+            tabActivaLegislacionLaboral = 0;
+            tabActivaUbicacion = 0;
+            tabActivaAfiliacion = 0;
+            tabActivaFormaPago = 0;
+            tabActivaMvrs = 0;
+            tabActivaSets = 0;
+            tabActivaVacacion = 0;
+            tabActivaJornadaLaboral = 0;
+            tabActivaFechaRetiro = 0;
+            //
+            auxFechaFinalFechaContrato = null;
+            fechaFinalFechaContrato = null;
+            auxFechaInicialFechaContrato = null;
+            fechaInicialFechaContrato = null;
+            auxFechaFinalCargo = null;
+            fechaFinalCargo = null;
+            auxFechaInicialCargo = null;
+            fechaInicialCargo = null;
+            auxFechaFinalCentroCosto = null;
+            fechaFinalCentroCosto = null;
+            auxFechaInicialCentroCosto = null;
+            fechaInicialCentroCosto = null;
+            auxFechaFinalSueldo = null;
+            fechaFinalSueldo = null;
+            auxFechaInicialSueldo = null;
+            fechaInicialSueldo = null;
+            auxFechaInicialTipoTrabajador = null;
+            fechaInicialTipoTrabajador = null;
+            auxFechaFinalTipoTrabajador = null;
+            fechaFinalTipoTrabajador = null;
+            auxFechaFinalTipoSalario = null;
+            fechaFinalTipoSalario = null;
+            auxFechaInicialTipoSalario = null;
+            fechaInicialTipoSalario = null;
+            auxFechaFinalNormaLaboral = null;
+            fechaFinalNormaLaboral = null;
+            auxFechaInicialNormaLaboral = null;
+            fechaInicialNormaLaboral = null;
+            auxFechaMIInicialLegislacionLaboral = null;
+            auxFechaMIFinalLegislacionLaboral = null;
+            auxFechaMFInicialLegislacionLaboral = null;
+            auxFechaMFFinalLegislacionLaboral = null;
+            fechaMFFinalLegislacionLaboral = null;
+            fechaMFInicialLegislacionLaboral = null;
+            fechaMIFinalLegislacionLaboral = null;
+            fechaMIInicialLegislacionLaboral = null;
+            auxFechaFinalUbicacion = null;
+            fechaFinalUbicacion = null;
+            auxFechaInicialUbicacion = null;
+            fechaInicialUbicacion = null;
+            auxFechaInicialAfiliacion = null;
+            fechaInicialAfiliacion = null;
+            auxFechaFinalAfiliacion = null;
+            fechaFinalAfiliacion = null;
+            auxFechaFinalFormaPago = null;
+            fechaFinalFormaPago = null;
+            auxFechaInicialFormaPago = null;
+            fechaInicialFormaPago = null;
+            auxFechaInicialMvrs = null;
+            fechaInicialMvrs = null;
+            auxFechaFinalMvrs = null;
+            fechaFinalMvrs = null;
+            auxFechaMFInicialSets = null;
+            fechaMFInicialSets = null;
+            auxFechaMFFinalSets = null;
+            fechaMFFinalSets = null;
+            auxFechaMIFinalSets = null;
+            fechaMIFinalSets = null;
+            auxFechaMIInicialSets = null;
+            fechaMIInicialSets = null;
+            auxFechaMFInicialVacacion = null;
+            fechaMFInicialVacacion = null;
+            auxFechaMFFinalVacacion = null;
+            fechaMFFinalVacacion = null;
+            auxFechaMIFinalVacacion = null;
+            fechaMIFinalVacacion = null;
+            auxFechaMIInicialVacacion = null;
+            fechaMIInicialVacacion = null;
+            auxFechaFinalJornadaLaboral = null;
+            fechaFinalJornadaLaboral = null;
+            auxFechaInicialJornadaLaboral = null;
+            fechaInicialJornadaLaboral = null;
+            auxFechaFinalFechaRetiro = null;
+            fechaFinalFechaRetiro = null;
+            auxFechaInicialFechaRetiro = null;
+            fechaInicialFechaRetiro = null;
+            //
+            sueldoMaxSueldo = null;
+            sueldoMinSueldo = null;
+            auxSueldoMaximoSueldo = null;
+            auxSueldoMinimoSueldo = null;
+            sueldoMaxMvrs = null;
+            sueldoMinMvrs = null;
+            auxSueldoMaximoMvrs = null;
+            auxSueldoMinimoMvrs = null;
+            auxPromedioMaximoSets = null;
+            promedioMaximoSets = null;
+            auxPromedioMinimoSets = null;
+            promedioMinimoSets = null;
+            //
+            tipoMetodoSets = "";
+            //
+            tipoFechaCargo = 1;
+            activarCasillasFechasCargo();
+            tipoFechaCentroCosto = 1;
+            activarCasillasFechasCentroCosto();
+            tipoFechaSueldo = 1;
+            activarCasillasFechasSueldo();
+            tipoFechaFechaContrato = 1;
+            activarCasillasFechasFechaContrato();
+            tipoFechaTipoTrabajador = 1;
+            activarCasillasFechasTipoTrabajador();
+            tipoFechaTipoSalario = 1;
+            activarCasillasFechasTipoSalario();
+            tipoFechaNormaLaboral = 1;
+            activarCasillasFechasNormaLaboral();
+            tipoFechaLegislacionLaboral = 1;
+            activarCasillasFechasLegislacionLaboral();
+            tipoFechaUbicacion = 1;
+            activarCasillasFechasUbicacion();
+            tipoFechaAfiliacion = 1;
+            activarCasillasFechasAfiliacion();
+            tipoFechaFormaPago = 1;
+            activarCasillasFechasFormaPago();
+            tipoFechaMvrs = 1;
+            activarCasillasFechasMvrs();
+            tipoFechaSets = 1;
+            activarCasillasFechasSets();
+            //
+            context.update("form:tabViewCosto");
+            context.update("form:tabViewCentroCosto");
+            context.update("form:tabViewSueldo");
+            context.update("form:tabViewFechaContrato");
+            context.update("form:tabViewTipoTrabajador");
+            context.update("form:tabViewTipoSalario");
+            context.update("form:tabViewNormaLaboral");
+            context.update("form:tabViewLegislacionLaboral");
+            context.update("form:tabViewUbicacion");
+            context.update("form:tabViewAfiliacion");
+            context.update("form:tabViewFormaPago");
+            context.update("form:tabViewMvrs");
+            context.update("form:tabViewSets");
+            context.update("form:tabViewVacacion");
+            context.update("form:tabViewJornadaLaboral");
+            context.update("form:tabViewFechaRetiro");
+        }
+        if (numeroTipoBusqueda == 2) {
+            empleadoBA = new Empleados();
+            empleadoBA.setPersona(new Personas());
+            empleadoBA.getPersona().setCiudaddocumento(new Ciudades());
+            empleadoBA.getPersona().setCiudadnacimiento(new Ciudades());
+            //
+            tabActivaDatosPersonales = 0;
+            //
+            fechaInicialDatosPersonales = null;
+            auxFechaInicialDatosPersonales = null;
+            fechaFinalDatosPersonales = null;
+            auxFechaFinalDatosPersonales = null;
+            //
+            context.update("form:tabViewDatosPersonales");
+        }
         restaurar();
         //
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:tabViewCosto");
-        context.update("form:tabViewCentroCosto");
-        context.update("form:tabViewSueldo");
-        context.update("form:tabViewFechaContrato");
-        context.update("form:tabViewTipoTrabajador");
-        context.update("form:tabViewTipoSalario");
-        context.update("form:tabViewNormaLaboral");
-        context.update("form:tabViewLegislacionLaboral");
-        context.update("form:tabViewUbicacion");
-        context.update("form:tabViewAfiliacion");
-        context.update("form:tabViewFormaPago");
-        context.update("form:tabViewMvrs");
-        context.update("form:tabViewSets");
-        context.update("form:tabViewVacacion");
-        context.update("form:tabViewJornadaLaboral");
-        context.update("form:tabViewFechaRetiro");
+
         //
     }
 
@@ -1365,334 +1457,361 @@ public class ControlBusquedaAvanzada implements Serializable {
                 infoVariableEditarCelda = listaColumnasBusquedaAvanzada.get(indice).getColumna9();
             }
             context.update("formularioDialogos:editarTablaBusquedaAvanzada");
-                    context.execute("editarTablaBusquedaAvanzada.show()");
+            context.execute("editarTablaBusquedaAvanzada.show()");
         } else {
-            if (casillaVigenciaCargo >= 0) {
-                if (casillaVigenciaCargo == 0) {
-                    context.update("formularioDialogos:editarCargoModCargo");
-                    context.execute("editarCargoModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 1) {
-                    context.update("formularioDialogos:editarEstructuraModCargo");
-                    context.execute("editarEstructuraModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 2) {
-                    context.update("formularioDialogos:editarJefeModCargo");
-                    context.execute("editarJefeModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 3) {
-                    context.update("formularioDialogos:editarMotivoModCargo");
-                    context.execute("editarMotivoModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 4) {
-                    context.update("formularioDialogos:editarCentroCostoModCargo");
-                    context.execute("editarCentroCostoModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 5) {
-                    context.update("formularioDialogos:editarPapelModCargo");
-                    context.execute("editarPapelModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 6) {
-                    context.update("formularioDialogos:editarFechaInicialModCargo");
-                    context.execute("editarFechaInicialModCargo.show()");
-                    casillaVigenciaCargo = -1;
-                } else if (casillaVigenciaCargo == 7) {
-                    context.update("formularioDialogos:editarFechaFinalModCargo");
-                    context.execute("editarFechaFinalModCargo.show()");
-                    casillaVigenciaCargo = -1;
+            if (numeroTipoBusqueda == 1) {
+                if (casillaVigenciaCargo >= 0) {
+                    if (casillaVigenciaCargo == 0) {
+                        context.update("formularioDialogos:editarCargoModCargo");
+                        context.execute("editarCargoModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 1) {
+                        context.update("formularioDialogos:editarEstructuraModCargo");
+                        context.execute("editarEstructuraModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 2) {
+                        context.update("formularioDialogos:editarJefeModCargo");
+                        context.execute("editarJefeModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 3) {
+                        context.update("formularioDialogos:editarMotivoModCargo");
+                        context.execute("editarMotivoModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 4) {
+                        context.update("formularioDialogos:editarCentroCostoModCargo");
+                        context.execute("editarCentroCostoModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 5) {
+                        context.update("formularioDialogos:editarPapelModCargo");
+                        context.execute("editarPapelModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 6) {
+                        context.update("formularioDialogos:editarFechaInicialModCargo");
+                        context.execute("editarFechaInicialModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    } else if (casillaVigenciaCargo == 7) {
+                        context.update("formularioDialogos:editarFechaFinalModCargo");
+                        context.execute("editarFechaFinalModCargo.show()");
+                        casillaVigenciaCargo = -1;
+                    }
+                }
+                if (casillaVigenciaLocalizacion >= 0) {
+                    if (casillaVigenciaLocalizacion == 0) {
+                        context.update("formularioDialogos:editarLocalizacionModCentroCosto");
+                        context.execute("editarLocalizacionModCentroCosto.show()");
+                        casillaVigenciaLocalizacion = -1;
+                    } else if (casillaVigenciaLocalizacion == 1) {
+                        context.update("formularioDialogos:editarMotivoModCentroCosto");
+                        context.execute("editarMotivoModCentroCosto.show()");
+                        casillaVigenciaLocalizacion = -1;
+                    } else if (casillaVigenciaLocalizacion == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModCentroCosto");
+                        context.execute("editarFechaInicialModCentroCosto.show()");
+                        casillaVigenciaLocalizacion = -1;
+                    } else if (casillaVigenciaLocalizacion == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModCentroCosto");
+                        context.execute("editarFechaFinalModCentroCosto.show()");
+                        casillaVigenciaLocalizacion = -1;
+                    }
+                }
+                if (casillaVigenciaSueldo >= 0) {
+                    if (casillaVigenciaSueldo == 0) {
+                        context.update("formularioDialogos:editarTipoSueldoModSueldo");
+                        context.execute("editarTipoSueldoModSueldo.show()");
+                        casillaVigenciaSueldo = -1;
+                    } else if (casillaVigenciaSueldo == 1) {
+                        context.update("formularioDialogos:editarMotivoModSueldo");
+                        context.execute("editarMotivoModSueldo.show()");
+                        casillaVigenciaSueldo = -1;
+                    } else if (casillaVigenciaSueldo == 2) {
+                        context.update("formularioDialogos:editarSueldoMinimoModSueldo");
+                        context.execute("editarSueldoMinimoModSueldo.show()");
+                        casillaVigenciaSueldo = -1;
+                    } else if (casillaVigenciaSueldo == 3) {
+                        context.update("formularioDialogos:editarSueldoMaximoModSueldo");
+                        context.execute("editarSueldoMaximoModSueldo.show()");
+                        casillaVigenciaSueldo = -1;
+                    } else if (casillaVigenciaSueldo == 4) {
+                        context.update("formularioDialogos:editarFechaInicialModSueldo");
+                        context.execute("editarFechaInicialModSueldo.show()");
+                        casillaVigenciaSueldo = -1;
+                    } else if (casillaVigenciaSueldo == 5) {
+                        context.update("formularioDialogos:editarFechaFinalModSueldo");
+                        context.execute("editarFechaFinalModSueldo.show()");
+                        casillaVigenciaSueldo = -1;
+                    }
+                }
+                if (casillaVigenciaTipoContrato >= 0) {
+                    if (casillaVigenciaTipoContrato == 0) {
+                        context.update("formularioDialogos:editarTipoContratoModFechaContrato");
+                        context.execute("editarTipoContratoModFechaContrato.show()");
+                        casillaVigenciaTipoContrato = -1;
+                    } else if (casillaVigenciaTipoContrato == 1) {
+                        context.update("formularioDialogos:editarMotivoModFechaContrato");
+                        context.execute("editarMotivoModFechaContrato.show()");
+                        casillaVigenciaTipoContrato = -1;
+                    } else if (casillaVigenciaTipoContrato == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModFechaContrato");
+                        context.execute("editarFechaInicialModFechaContrato.show()");
+                        casillaVigenciaTipoContrato = -1;
+                    } else if (casillaVigenciaTipoContrato == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModFechaContrato");
+                        context.execute("editarFechaFinalModFechaContrato.show()");
+                        casillaVigenciaTipoContrato = -1;
+                    }
+                }
+                if (casillaVigenciaTipoTrabajador >= 0) {
+                    if (casillaVigenciaTipoTrabajador == 0) {
+                        context.update("formularioDialogos:editarTipoTrabajadorModTipoTrabajador");
+                        context.execute("editarTipoTrabajadorModTipoTrabajador.show()");
+                        casillaVigenciaTipoTrabajador = -1;
+                    } else if (casillaVigenciaTipoTrabajador == 1) {
+                        context.update("formularioDialogos:editarFechaInicialModTipoTrabajador");
+                        context.execute("editarFechaInicialModTipoTrabajador.show()");
+                        casillaVigenciaTipoTrabajador = -1;
+                    } else if (casillaVigenciaTipoTrabajador == 2) {
+                        context.update("formularioDialogos:editarFechaFinalModTipoTrabajador");
+                        context.execute("editarFechaFinalModTipoTrabajador.show()");
+                        casillaVigenciaTipoTrabajador = -1;
+                    }
+                }
+                if (casillaVigenciaReformaLaboral >= 0) {
+                    if (casillaVigenciaReformaLaboral == 0) {
+                        context.update("formularioDialogos:editarReformaLaboralModTipoSalario");
+                        context.execute("editarReformaLaboralModTipoSalario.show()");
+                        casillaVigenciaReformaLaboral = -1;
+                    } else if (casillaVigenciaReformaLaboral == 1) {
+                        context.update("formularioDialogos:editarFechaInicialModTipoSalario");
+                        context.execute("editarFechaInicialModTipoSalario.show()");
+                        casillaVigenciaReformaLaboral = -1;
+                    } else if (casillaVigenciaReformaLaboral == 2) {
+                        context.update("formularioDialogos:editarFechaFinalModTipoSalario");
+                        context.execute("editarFechaFinalModTipoSalario.show()");
+                        casillaVigenciaReformaLaboral = -1;
+                    }
+                }
+                if (casillaVigenciaNormaLaboral >= 0) {
+                    if (casillaVigenciaNormaLaboral == 0) {
+                        context.update("formularioDialogos:editarNormaLaboralModNormaLaboral");
+                        context.execute("editarNormaLaboralModNormaLaboral.show()");
+                        casillaVigenciaNormaLaboral = -1;
+                    } else if (casillaVigenciaNormaLaboral == 1) {
+                        context.update("formularioDialogos:editarFechaInicialModNormaLaboral");
+                        context.execute("editarFechaInicialModNormaLaboral.show()");
+                        casillaVigenciaNormaLaboral = -1;
+                    } else if (casillaVigenciaNormaLaboral == 2) {
+                        context.update("formularioDialogos:editarFechaFinalModNormaLaboral");
+                        context.execute("editarFechaFinalModNormaLaboral.show()");
+                        casillaVigenciaNormaLaboral = -1;
+                    }
+                }
+                if (casillaVigenciaContrato >= 0) {
+                    if (casillaVigenciaContrato == 0) {
+                        context.update("formularioDialogos:editarLegislacionModLegislacionLaboral");
+                        context.execute("editarLegislacionModLegislacionLaboral.show()");
+                        casillaVigenciaContrato = -1;
+                    } else if (casillaVigenciaContrato == 1) {
+                        context.update("formularioDialogos:editarFechaMIInicialModLegislacionLaboral");
+                        context.execute("editarFechaMIInicialModLegislacionLaboral.show()");
+                        casillaVigenciaContrato = -1;
+                    } else if (casillaVigenciaContrato == 2) {
+                        context.update("formularioDialogos:editarFechaMIFinalModLegislacionLaboral");
+                        context.execute("editarFechaMIFinalModLegislacionLaboral.show()");
+                        casillaVigenciaContrato = -1;
+                    } else if (casillaVigenciaContrato == 3) {
+                        context.update("formularioDialogos:editarFechaMFInicialModLegislacionLaboral");
+                        context.execute("editarFechaMFInicialModLegislacionLaboral.show()");
+                        casillaVigenciaContrato = -1;
+                    } else if (casillaVigenciaContrato == 4) {
+                        context.update("formularioDialogos:editarFechaMFFinalModLegislacionLaboral");
+                        context.execute("editarFechaMFFinalModLegislacionLaboral.show()");
+                        casillaVigenciaContrato = -1;
+                    }
+                }
+                if (casillaVigenciaUbicacion >= 0) {
+                    if (casillaVigenciaUbicacion == 0) {
+                        context.update("formularioDialogos:editarUbicacionModUbicacion");
+                        context.execute("editarUbicacionModUbicacion.show()");
+                        casillaVigenciaUbicacion = -1;
+                    } else if (casillaVigenciaUbicacion == 1) {
+                        context.update("formularioDialogos:editarCiudadModUbicacion");
+                        context.execute("editarCiudadModUbicacion.show()");
+                        casillaVigenciaUbicacion = -1;
+                    } else if (casillaVigenciaUbicacion == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModUbicacion");
+                        context.execute("editarFechaInicialModUbicacion.show()");
+                        casillaVigenciaUbicacion = -1;
+                    } else if (casillaVigenciaUbicacion == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModUbicacion");
+                        context.execute("editarFechaFinalModUbicacion.show()");
+                        casillaVigenciaUbicacion = -1;
+                    }
+                }
+                if (casillaVigenciaAfiliacion >= 0) {
+                    if (casillaVigenciaAfiliacion == 0) {
+                        context.update("formularioDialogos:editarTerceroModAfiliacion");
+                        context.execute("editarTerceroModAfiliacion.show()");
+                        casillaVigenciaAfiliacion = -1;
+                    } else if (casillaVigenciaAfiliacion == 1) {
+                        context.update("formularioDialogos:editarTipoEntidadModAfiliacion");
+                        context.execute("editarTipoEntidadModAfiliacion.show()");
+                        casillaVigenciaAfiliacion = -1;
+                    } else if (casillaVigenciaAfiliacion == 2) {
+                        context.update("formularioDialogos:editarEstadoModAfiliacion");
+                        context.execute("editarEstadoModAfiliacion.show()");
+                        casillaVigenciaAfiliacion = -1;
+                    } else if (casillaVigenciaAfiliacion == 3) {
+                        context.update("formularioDialogos:editarFechaInicialModAfiliacion");
+                        context.execute("editarFechaInicialModAfiliacion.show()");
+                        casillaVigenciaAfiliacion = -1;
+                    } else if (casillaVigenciaAfiliacion == 4) {
+                        context.update("formularioDialogos:editarFechaFinalModAfiliacion");
+                        context.execute("editarFechaFinalModAfiliacion.show()");
+                        casillaVigenciaAfiliacion = -1;
+                    }
+                }
+                if (casillaVigenciaFormaPago >= 0) {
+                    if (casillaVigenciaFormaPago == 0) {
+                        context.update("formularioDialogos:editarFormaPagoModFormaPago");
+                        context.execute("editarFormaPagoModFormaPago.show()");
+                        casillaVigenciaFormaPago = -1;
+                    } else if (casillaVigenciaFormaPago == 1) {
+                        context.update("formularioDialogos:editarSucursalModFormaPago");
+                        context.execute("editarSucursalModFormaPago.show()");
+                        casillaVigenciaFormaPago = -1;
+                    } else if (casillaVigenciaFormaPago == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModFormaPago");
+                        context.execute("editarFechaInicialModFormaPago.show()");
+                        casillaVigenciaFormaPago = -1;
+                    } else if (casillaVigenciaFormaPago == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModFormaPago");
+                        context.execute("editarFechaFinalModFormaPago.show()");
+                        casillaVigenciaFormaPago = -1;
+                    }
+                }
+                if (casillaMvrs >= 0) {
+                    if (casillaMvrs == 0) {
+                        context.update("formularioDialogos:editarMotivoModMvrs");
+                        context.execute("editarMotivoModMvrs.show()");
+                        casillaMvrs = -1;
+                    } else if (casillaMvrs == 1) {
+                        context.update("formularioDialogos:editarSueldoMinModMvrs");
+                        context.execute("editarSueldoMinModMvrs.show()");
+                        casillaMvrs = -1;
+                    } else if (casillaMvrs == 2) {
+                        context.update("formularioDialogos:editarSueldoMaxModMvrs");
+                        context.execute("editarSueldoMaxModMvrs.show()");
+                        casillaMvrs = -1;
+                    } else if (casillaMvrs == 3) {
+                        context.update("formularioDialogos:editarFechaInicialModMvrs");
+                        context.execute("editarFechaInicialModMvrs.show()");
+                        casillaMvrs = -1;
+                    } else if (casillaMvrs == 4) {
+                        context.update("formularioDialogos:editarFechaFinalModMvrs");
+                        context.execute("editarFechaFinalModMvrs.show()");
+                        casillaMvrs = -1;
+                    }
+                }
+                if (casillaSets >= 0) {
+                    if (casillaSets == 0) {
+                        context.update("formularioDialogos:editarPromedioMinModSets");
+                        context.execute("editarPromedioMinModSets.show()");
+                        casillaSets = -1;
+                    } else if (casillaSets == 1) {
+                        context.update("formularioDialogos:editarPromedioMaxModSets");
+                        context.execute("editarPromedioMaxModSets.show()");
+                        casillaSets = -1;
+                    } else if (casillaSets == 2) {
+                        context.update("formularioDialogos:editarFechaMIInicialModSets");
+                        context.execute("editarFechaMIInicialModSets.show()");
+                        casillaSets = -1;
+                    } else if (casillaSets == 3) {
+                        context.update("formularioDialogos:editarFechaMIFinalModSets");
+                        context.execute("editarFechaMIFinalModSets.show()");
+                        casillaSets = -1;
+                    } else if (casillaSets == 4) {
+                        context.update("formularioDialogos:editarFechaMFInicialModSets");
+                        context.execute("editarFechaMFInicialModSets.show()");
+                        casillaSets = -1;
+                    } else if (casillaSets == 5) {
+                        context.update("formularioDialogos:editarFechaMFFinalModSets");
+                        context.execute("editarFechaMFFinalModSets.show()");
+                        casillaSets = -1;
+                    }
+                }
+                if (casillaVacacion >= 0) {
+                    if (casillaVacacion == 0) {
+                        context.update("formularioDialogos:editarFechaMIInicialModVacacion");
+                        context.execute("editarFechaMIInicialModVacacion.show()");
+                        casillaVacacion = -1;
+                    } else if (casillaVacacion == 1) {
+                        context.update("formularioDialogos:editarFechaMIFinalModVacacion");
+                        context.execute("editarFechaMIFinalModVacacion.show()");
+                        casillaVacacion = -1;
+                    } else if (casillaVacacion == 2) {
+                        context.update("formularioDialogos:editarFechaMFInicialModVacacion");
+                        context.execute("editarFechaMFInicialModVacacion.show()");
+                        casillaVacacion = -1;
+                    } else if (casillaVacacion == 3) {
+                        context.update("formularioDialogos:editarFechaMFFinalModVacacion");
+                        context.execute("editarFechaMFFinalModVacacion.show()");
+                        casillaVacacion = -1;
+                    }
+                }
+                if (casillaVigenciaJornadaLaboral >= 0) {
+                    if (casillaVigenciaJornadaLaboral == 0) {
+                        context.update("formularioDialogos:editarJornadaModJornadaLaboral");
+                        context.execute("editarJornadaModJornadaLaboral.show()");
+                        casillaVigenciaJornadaLaboral = -1;
+                    } else if (casillaVigenciaJornadaLaboral == 1) {
+                        context.update("formularioDialogos:editarFechaInicialModJornadaLaboral");
+                        context.execute("editarFechaInicialModJornadaLaboral.show()");
+                        casillaVigenciaJornadaLaboral = -1;
+                    } else if (casillaVigenciaJornadaLaboral == 2) {
+                        context.update("formularioDialogos:editarFechaFinalModJornadaLaboral");
+                        context.execute("editarFechaFinalModJornadaLaboral.show()");
+                        casillaVigenciaJornadaLaboral = -1;
+                    }
+                }
+                if (casillaMotivoRetiro >= 0) {
+                    if (casillaMotivoRetiro == 0) {
+                        context.update("formularioDialogos:editarMotivoModFechaRetiro");
+                        context.execute("editarMotivoModFechaRetiro.show()");
+                        casillaMotivoRetiro = -1;
+                    } else if (casillaMotivoRetiro == 1) {
+                        context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
+                        context.execute("editarFechaInicialModFechaRetiro.show()");
+                        casillaMotivoRetiro = -1;
+                    } else if (casillaMotivoRetiro == 2) {
+                        context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
+                        context.execute("editarFechaFinalModFechaRetiro.show()");
+                        casillaMotivoRetiro = -1;
+                    }
                 }
             }
-            if (casillaVigenciaLocalizacion >= 0) {
-                if (casillaVigenciaLocalizacion == 0) {
-                    context.update("formularioDialogos:editarLocalizacionModCentroCosto");
-                    context.execute("editarLocalizacionModCentroCosto.show()");
-                    casillaVigenciaLocalizacion = -1;
-                } else if (casillaVigenciaLocalizacion == 1) {
-                    context.update("formularioDialogos:editarMotivoModCentroCosto");
-                    context.execute("editarMotivoModCentroCosto.show()");
-                    casillaVigenciaLocalizacion = -1;
-                } else if (casillaVigenciaLocalizacion == 2) {
-                    context.update("formularioDialogos:editarFechaInicialModCentroCosto");
-                    context.execute("editarFechaInicialModCentroCosto.show()");
-                    casillaVigenciaLocalizacion = -1;
-                } else if (casillaVigenciaLocalizacion == 3) {
-                    context.update("formularioDialogos:editarFechaFinalModCentroCosto");
-                    context.execute("editarFechaFinalModCentroCosto.show()");
-                    casillaVigenciaLocalizacion = -1;
-                }
-            }
-            if (casillaVigenciaSueldo >= 0) {
-                if (casillaVigenciaSueldo == 0) {
-                    context.update("formularioDialogos:editarTipoSueldoModSueldo");
-                    context.execute("editarTipoSueldoModSueldo.show()");
-                    casillaVigenciaSueldo = -1;
-                } else if (casillaVigenciaSueldo == 1) {
-                    context.update("formularioDialogos:editarMotivoModSueldo");
-                    context.execute("editarMotivoModSueldo.show()");
-                    casillaVigenciaSueldo = -1;
-                } else if (casillaVigenciaSueldo == 2) {
-                    context.update("formularioDialogos:editarSueldoMinimoModSueldo");
-                    context.execute("editarSueldoMinimoModSueldo.show()");
-                    casillaVigenciaSueldo = -1;
-                } else if (casillaVigenciaSueldo == 3) {
-                    context.update("formularioDialogos:editarSueldoMaximoModSueldo");
-                    context.execute("editarSueldoMaximoModSueldo.show()");
-                    casillaVigenciaSueldo = -1;
-                } else if (casillaVigenciaSueldo == 4) {
-                    context.update("formularioDialogos:editarFechaInicialModSueldo");
-                    context.execute("editarFechaInicialModSueldo.show()");
-                    casillaVigenciaSueldo = -1;
-                } else if (casillaVigenciaSueldo == 5) {
-                    context.update("formularioDialogos:editarFechaFinalModSueldo");
-                    context.execute("editarFechaFinalModSueldo.show()");
-                    casillaVigenciaSueldo = -1;
-                }
-            }
-            if (casillaVigenciaTipoContrato >= 0) {
-                if (casillaVigenciaTipoContrato == 0) {
-                    context.update("formularioDialogos:editarTipoContratoModFechaContrato");
-                    context.execute("editarTipoContratoModFechaContrato.show()");
-                    casillaVigenciaTipoContrato = -1;
-                } else if (casillaVigenciaTipoContrato == 1) {
-                    context.update("formularioDialogos:editarMotivoModFechaContrato");
-                    context.execute("editarMotivoModFechaContrato.show()");
-                    casillaVigenciaTipoContrato = -1;
-                } else if (casillaVigenciaTipoContrato == 2) {
-                    context.update("formularioDialogos:editarFechaInicialModFechaContrato");
-                    context.execute("editarFechaInicialModFechaContrato.show()");
-                    casillaVigenciaTipoContrato = -1;
-                } else if (casillaVigenciaTipoContrato == 3) {
-                    context.update("formularioDialogos:editarFechaFinalModFechaContrato");
-                    context.execute("editarFechaFinalModFechaContrato.show()");
-                    casillaVigenciaTipoContrato = -1;
-                }
-            }
-            if (casillaVigenciaTipoTrabajador >= 0) {
-                if (casillaVigenciaTipoTrabajador == 0) {
-                    context.update("formularioDialogos:editarTipoTrabajadorModTipoTrabajador");
-                    context.execute("editarTipoTrabajadorModTipoTrabajador.show()");
-                    casillaVigenciaTipoTrabajador = -1;
-                } else if (casillaVigenciaTipoTrabajador == 1) {
-                    context.update("formularioDialogos:editarFechaInicialModTipoTrabajador");
-                    context.execute("editarFechaInicialModTipoTrabajador.show()");
-                    casillaVigenciaTipoTrabajador = -1;
-                } else if (casillaVigenciaTipoTrabajador == 2) {
-                    context.update("formularioDialogos:editarFechaFinalModTipoTrabajador");
-                    context.execute("editarFechaFinalModTipoTrabajador.show()");
-                    casillaVigenciaTipoTrabajador = -1;
-                }
-            }
-            if (casillaVigenciaReformaLaboral >= 0) {
-                if (casillaVigenciaReformaLaboral == 0) {
-                    context.update("formularioDialogos:editarReformaLaboralModTipoSalario");
-                    context.execute("editarReformaLaboralModTipoSalario.show()");
-                    casillaVigenciaReformaLaboral = -1;
-                } else if (casillaVigenciaReformaLaboral == 1) {
-                    context.update("formularioDialogos:editarFechaInicialModTipoSalario");
-                    context.execute("editarFechaInicialModTipoSalario.show()");
-                    casillaVigenciaReformaLaboral = -1;
-                } else if (casillaVigenciaReformaLaboral == 2) {
-                    context.update("formularioDialogos:editarFechaFinalModTipoSalario");
-                    context.execute("editarFechaFinalModTipoSalario.show()");
-                    casillaVigenciaReformaLaboral = -1;
-                }
-            }
-            if (casillaVigenciaNormaLaboral >= 0) {
-                if (casillaVigenciaNormaLaboral == 0) {
-                    context.update("formularioDialogos:editarNormaLaboralModNormaLaboral");
-                    context.execute("editarNormaLaboralModNormaLaboral.show()");
-                    casillaVigenciaNormaLaboral = -1;
-                } else if (casillaVigenciaNormaLaboral == 1) {
-                    context.update("formularioDialogos:editarFechaInicialModNormaLaboral");
-                    context.execute("editarFechaInicialModNormaLaboral.show()");
-                    casillaVigenciaNormaLaboral = -1;
-                } else if (casillaVigenciaNormaLaboral == 2) {
-                    context.update("formularioDialogos:editarFechaFinalModNormaLaboral");
-                    context.execute("editarFechaFinalModNormaLaboral.show()");
-                    casillaVigenciaNormaLaboral = -1;
-                }
-            }
-            if (casillaVigenciaContrato >= 0) {
-                if (casillaVigenciaContrato == 0) {
-                    context.update("formularioDialogos:editarLegislacionModLegislacionLaboral");
-                    context.execute("editarLegislacionModLegislacionLaboral.show()");
-                    casillaVigenciaContrato = -1;
-                } else if (casillaVigenciaContrato == 1) {
-                    context.update("formularioDialogos:editarFechaMIInicialModLegislacionLaboral");
-                    context.execute("editarFechaMIInicialModLegislacionLaboral.show()");
-                    casillaVigenciaContrato = -1;
-                } else if (casillaVigenciaContrato == 2) {
-                    context.update("formularioDialogos:editarFechaMIFinalModLegislacionLaboral");
-                    context.execute("editarFechaMIFinalModLegislacionLaboral.show()");
-                    casillaVigenciaContrato = -1;
-                } else if (casillaVigenciaContrato == 3) {
-                    context.update("formularioDialogos:editarFechaMFInicialModLegislacionLaboral");
-                    context.execute("editarFechaMFInicialModLegislacionLaboral.show()");
-                    casillaVigenciaContrato = -1;
-                } else if (casillaVigenciaContrato == 4) {
-                    context.update("formularioDialogos:editarFechaMFFinalModLegislacionLaboral");
-                    context.execute("editarFechaMFFinalModLegislacionLaboral.show()");
-                    casillaVigenciaContrato = -1;
-                }
-            }
-            if (casillaVigenciaUbicacion >= 0) {
-                if (casillaVigenciaUbicacion == 0) {
-                    context.update("formularioDialogos:editarUbicacionModUbicacion");
-                    context.execute("editarUbicacionModUbicacion.show()");
-                    casillaVigenciaUbicacion = -1;
-                } else if (casillaVigenciaUbicacion == 1) {
-                    context.update("formularioDialogos:editarCiudadModUbicacion");
-                    context.execute("editarCiudadModUbicacion.show()");
-                    casillaVigenciaUbicacion = -1;
-                } else if (casillaVigenciaUbicacion == 2) {
-                    context.update("formularioDialogos:editarFechaInicialModUbicacion");
-                    context.execute("editarFechaInicialModUbicacion.show()");
-                    casillaVigenciaUbicacion = -1;
-                } else if (casillaVigenciaUbicacion == 3) {
-                    context.update("formularioDialogos:editarFechaFinalModUbicacion");
-                    context.execute("editarFechaFinalModUbicacion.show()");
-                    casillaVigenciaUbicacion = -1;
-                }
-            }
-            if (casillaVigenciaAfiliacion >= 0) {
-                if (casillaVigenciaAfiliacion == 0) {
-                    context.update("formularioDialogos:editarTerceroModAfiliacion");
-                    context.execute("editarTerceroModAfiliacion.show()");
-                    casillaVigenciaAfiliacion = -1;
-                } else if (casillaVigenciaAfiliacion == 1) {
-                    context.update("formularioDialogos:editarTipoEntidadModAfiliacion");
-                    context.execute("editarTipoEntidadModAfiliacion.show()");
-                    casillaVigenciaAfiliacion = -1;
-                } else if (casillaVigenciaAfiliacion == 2) {
-                    context.update("formularioDialogos:editarEstadoModAfiliacion");
-                    context.execute("editarEstadoModAfiliacion.show()");
-                    casillaVigenciaAfiliacion = -1;
-                } else if (casillaVigenciaAfiliacion == 3) {
-                    context.update("formularioDialogos:editarFechaInicialModAfiliacion");
-                    context.execute("editarFechaInicialModAfiliacion.show()");
-                    casillaVigenciaAfiliacion = -1;
-                } else if (casillaVigenciaAfiliacion == 4) {
-                    context.update("formularioDialogos:editarFechaFinalModAfiliacion");
-                    context.execute("editarFechaFinalModAfiliacion.show()");
-                    casillaVigenciaAfiliacion = -1;
-                }
-            }
-            if (casillaVigenciaFormaPago >= 0) {
-                if (casillaVigenciaFormaPago == 0) {
-                    context.update("formularioDialogos:editarFormaPagoModFormaPago");
-                    context.execute("editarFormaPagoModFormaPago.show()");
-                    casillaVigenciaFormaPago = -1;
-                } else if (casillaVigenciaFormaPago == 1) {
-                    context.update("formularioDialogos:editarSucursalModFormaPago");
-                    context.execute("editarSucursalModFormaPago.show()");
-                    casillaVigenciaFormaPago = -1;
-                } else if (casillaVigenciaFormaPago == 2) {
-                    context.update("formularioDialogos:editarFechaInicialModFormaPago");
-                    context.execute("editarFechaInicialModFormaPago.show()");
-                    casillaVigenciaFormaPago = -1;
-                } else if (casillaVigenciaFormaPago == 3) {
-                    context.update("formularioDialogos:editarFechaFinalModFormaPago");
-                    context.execute("editarFechaFinalModFormaPago.show()");
-                    casillaVigenciaFormaPago = -1;
-                }
-            }
-            if (casillaMvrs >= 0) {
-                if (casillaMvrs == 0) {
-                    context.update("formularioDialogos:editarMotivoModMvrs");
-                    context.execute("editarMotivoModMvrs.show()");
-                    casillaMvrs = -1;
-                } else if (casillaMvrs == 1) {
-                    context.update("formularioDialogos:editarSueldoMinModMvrs");
-                    context.execute("editarSueldoMinModMvrs.show()");
-                    casillaMvrs = -1;
-                } else if (casillaMvrs == 2) {
-                    context.update("formularioDialogos:editarSueldoMaxModMvrs");
-                    context.execute("editarSueldoMaxModMvrs.show()");
-                    casillaMvrs = -1;
-                } else if (casillaMvrs == 3) {
-                    context.update("formularioDialogos:editarFechaInicialModMvrs");
-                    context.execute("editarFechaInicialModMvrs.show()");
-                    casillaMvrs = -1;
-                } else if (casillaMvrs == 4) {
-                    context.update("formularioDialogos:editarFechaFinalModMvrs");
-                    context.execute("editarFechaFinalModMvrs.show()");
-                    casillaMvrs = -1;
-                }
-            }
-            if (casillaSets >= 0) {
-                if (casillaSets == 0) {
-                    context.update("formularioDialogos:editarPromedioMinModSets");
-                    context.execute("editarPromedioMinModSets.show()");
-                    casillaSets = -1;
-                } else if (casillaSets == 1) {
-                    context.update("formularioDialogos:editarPromedioMaxModSets");
-                    context.execute("editarPromedioMaxModSets.show()");
-                    casillaSets = -1;
-                } else if (casillaSets == 2) {
-                    context.update("formularioDialogos:editarFechaMIInicialModSets");
-                    context.execute("editarFechaMIInicialModSets.show()");
-                    casillaSets = -1;
-                } else if (casillaSets == 3) {
-                    context.update("formularioDialogos:editarFechaMIFinalModSets");
-                    context.execute("editarFechaMIFinalModSets.show()");
-                    casillaSets = -1;
-                } else if (casillaSets == 4) {
-                    context.update("formularioDialogos:editarFechaMFInicialModSets");
-                    context.execute("editarFechaMFInicialModSets.show()");
-                    casillaSets = -1;
-                } else if (casillaSets == 5) {
-                    context.update("formularioDialogos:editarFechaMFFinalModSets");
-                    context.execute("editarFechaMFFinalModSets.show()");
-                    casillaSets = -1;
-                }
-            }
-            if (casillaVacacion >= 0) {
-                if (casillaVacacion == 0) {
-                    context.update("formularioDialogos:editarFechaMIInicialModVacacion");
-                    context.execute("editarFechaMIInicialModVacacion.show()");
-                    casillaVacacion = -1;
-                } else if (casillaVacacion == 1) {
-                    context.update("formularioDialogos:editarFechaMIFinalModVacacion");
-                    context.execute("editarFechaMIFinalModVacacion.show()");
-                    casillaVacacion = -1;
-                } else if (casillaVacacion == 2) {
-                    context.update("formularioDialogos:editarFechaMFInicialModVacacion");
-                    context.execute("editarFechaMFInicialModVacacion.show()");
-                    casillaVacacion = -1;
-                } else if (casillaVacacion == 3) {
-                    context.update("formularioDialogos:editarFechaMFFinalModVacacion");
-                    context.execute("editarFechaMFFinalModVacacion.show()");
-                    casillaVacacion = -1;
-                }
-            }
-            if (casillaVigenciaJornadaLaboral >= 0) {
-                if (casillaVigenciaJornadaLaboral == 0) {
-                    context.update("formularioDialogos:editarJornadaModJornadaLaboral");
-                    context.execute("editarJornadaModJornadaLaboral.show()");
-                    casillaVigenciaJornadaLaboral = -1;
-                } else if (casillaVigenciaJornadaLaboral == 1) {
-                    context.update("formularioDialogos:editarFechaInicialModJornadaLaboral");
-                    context.execute("editarFechaInicialModJornadaLaboral.show()");
-                    casillaVigenciaJornadaLaboral = -1;
-                } else if (casillaVigenciaJornadaLaboral == 2) {
-                    context.update("formularioDialogos:editarFechaFinalModJornadaLaboral");
-                    context.execute("editarFechaFinalModJornadaLaboral.show()");
-                    casillaVigenciaJornadaLaboral = -1;
-                }
-            }
-            if (casillaMotivoRetiro >= 0) {
-                if (casillaMotivoRetiro == 0) {
-                    context.update("formularioDialogos:editarMotivoModFechaRetiro");
-                    context.execute("editarMotivoModFechaRetiro.show()");
-                    casillaMotivoRetiro = -1;
-                } else if (casillaMotivoRetiro == 1) {
-                    context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
-                    context.execute("editarFechaInicialModFechaRetiro.show()");
-                    casillaMotivoRetiro = -1;
-                } else if (casillaMotivoRetiro == 2) {
-                    context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
-                    context.execute("editarFechaFinalModFechaRetiro.show()");
-                    casillaMotivoRetiro = -1;
+            if (numeroTipoBusqueda == 2) {
+                if (casillaEmpleado >= 0) {
+                    if (casillaEmpleado == 0) {
+                        context.update("formularioDialogos:editarMotivoModFechaRetiro");
+                        context.execute("editarMotivoModFechaRetiro.show()");
+                        casillaEmpleado = -1;
+                    } else if (casillaEmpleado == 1) {
+                        context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
+                        context.execute("editarFechaInicialModFechaRetiro.show()");
+                        casillaEmpleado = -1;
+                    } else if (casillaEmpleado == 2) {
+                        context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
+                        context.execute("editarFechaFinalModFechaRetiro.show()");
+                        casillaEmpleado = -1;
+                    } else if (casillaEmpleado == 3) {
+                        context.update("formularioDialogos:editarFechaInicialModFechaRetiro");
+                        context.execute("editarFechaInicialModFechaRetiro.show()");
+                        casillaEmpleado = -1;
+                    } else if (casillaEmpleado == 4) {
+                        context.update("formularioDialogos:editarFechaFinalModFechaRetiro");
+                        context.execute("editarFechaFinalModFechaRetiro.show()");
+                        casillaEmpleado = -1;
+                    }
                 }
             }
         }
@@ -1700,152 +1819,168 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void botonListaValores() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (casillaVigenciaCargo >= 0) {
-            if (casillaVigenciaCargo == 0) {
-                context.update("form:CargoCargoDialogo");
-                context.execute("CargoCargoDialogo.show()");
-                casillaVigenciaCargo = -1;
+        if (numeroTipoBusqueda == 1) {
+            if (casillaVigenciaCargo >= 0) {
+                if (casillaVigenciaCargo == 0) {
+                    context.update("form:CargoCargoDialogo");
+                    context.execute("CargoCargoDialogo.show()");
+                    casillaVigenciaCargo = -1;
+                }
+                if (casillaVigenciaCargo == 1) {
+                    context.update("form:EstructuraCargoDialogo");
+                    context.execute("EstructuraCargoDialogo.show()");
+                    casillaVigenciaCargo = -1;
+                }
+                if (casillaVigenciaCargo == 2) {
+                    context.update("form:JefeCargoDialogo");
+                    context.execute("JefeCargoDialogo.show()");
+                    casillaVigenciaCargo = -1;
+                }
+                if (casillaVigenciaCargo == 3) {
+                    context.update("form:MotivoCargoDialogo");
+                    context.execute("MotivoCargoDialogo.show()");
+                    casillaVigenciaCargo = -1;
+                }
+                if (casillaVigenciaCargo == 5) {
+                    context.update("form:PapelCargoDialogo");
+                    context.execute("PapelCargoDialogo.show()");
+                    casillaVigenciaCargo = -1;
+                }
             }
-            if (casillaVigenciaCargo == 1) {
-                context.update("form:EstructuraCargoDialogo");
-                context.execute("EstructuraCargoDialogo.show()");
-                casillaVigenciaCargo = -1;
+            if (casillaVigenciaLocalizacion >= 0) {
+                if (casillaVigenciaLocalizacion == 0) {
+                    context.update("form:LocalizacionCentroCostoDialogo");
+                    context.execute("LocalizacionCentroCostoDialogo.show()");
+                    casillaVigenciaLocalizacion = -1;
+                }
+                if (casillaVigenciaLocalizacion == 1) {
+                    context.update("form:MotivoCentroCostoDialogo");
+                    context.execute("MotivoCentroCostoDialogo.show()");
+                    casillaVigenciaLocalizacion = -1;
+                }
             }
-            if (casillaVigenciaCargo == 2) {
-                context.update("form:JefeCargoDialogo");
-                context.execute("JefeCargoDialogo.show()");
-                casillaVigenciaCargo = -1;
+            if (casillaVigenciaSueldo >= 0) {
+                if (casillaVigenciaSueldo == 0) {
+                    context.update("form:TipoSueldoSueldoDialogo");
+                    context.execute("TipoSueldoSueldoDialogo.show()");
+                    casillaVigenciaSueldo = -1;
+                }
+                if (casillaVigenciaSueldo == 1) {
+                    context.update("form:MotivoSueldoDialogo");
+                    context.execute("MotivoSueldoDialogo.show()");
+                    casillaVigenciaSueldo = -1;
+                }
             }
-            if (casillaVigenciaCargo == 3) {
-                context.update("form:MotivoCargoDialogo");
-                context.execute("MotivoCargoDialogo.show()");
-                casillaVigenciaCargo = -1;
+            if (casillaVigenciaTipoContrato >= 0) {
+                if (casillaVigenciaTipoContrato == 0) {
+                    context.update("form:TipoContratoFechaContratoDialogo");
+                    context.execute("TipoContratoFechaContratoDialogo.show()");
+                    casillaVigenciaTipoContrato = -1;
+                }
+                if (casillaVigenciaTipoContrato == 1) {
+                    context.update("form:MotivoFechaContratoDialogo");
+                    context.execute("MotivoFechaContratoDialogo.show()");
+                    casillaVigenciaTipoContrato = -1;
+                }
             }
-            if (casillaVigenciaCargo == 5) {
-                context.update("form:PapelCargoDialogo");
-                context.execute("PapelCargoDialogo.show()");
-                casillaVigenciaCargo = -1;
+            if (casillaVigenciaTipoTrabajador >= 0) {
+                if (casillaVigenciaTipoTrabajador == 0) {
+                    context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
+                    context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
+                    casillaVigenciaTipoTrabajador = -1;
+                }
+            }
+            if (casillaVigenciaReformaLaboral >= 0) {
+                if (casillaVigenciaReformaLaboral == 0) {
+                    context.update("form:ReformaLaboralTipoSalarioDialogo");
+                    context.execute("ReformaLaboralTipoSalarioDialogo.show()");
+                    casillaVigenciaReformaLaboral = -1;
+                }
+            }
+            if (casillaVigenciaNormaLaboral >= 0) {
+                if (casillaVigenciaNormaLaboral == 0) {
+                    context.update("form:NormaLaboralNormaLaboralDialogo");
+                    context.execute("NormaLaboralNormaLaboralDialogo.show()");
+                    casillaVigenciaNormaLaboral = -1;
+                }
+            }
+            if (casillaVigenciaContrato >= 0) {
+                if (casillaVigenciaContrato == 0) {
+                    context.update("form:LegislacionLegislacionLaboralDialogo");
+                    context.execute("LegislacionLegislacionLaboralDialogo.show()");
+                    casillaVigenciaContrato = -1;
+                }
+            }
+            if (casillaVigenciaUbicacion >= 0) {
+                if (casillaVigenciaUbicacion == 0) {
+                    context.update("form:UbicacionUbicacionDialogo");
+                    context.execute("UbicacionUbicacionDialogo.show()");
+                    casillaVigenciaUbicacion = -1;
+                }
+            }
+            if (casillaVigenciaAfiliacion >= 0) {
+                if (casillaVigenciaAfiliacion == 0) {
+                    context.update("form:TerceroAfiliacionDialogo");
+                    context.execute("TerceroAfiliacionDialogo.show()");
+                    casillaVigenciaAfiliacion = -1;
+                }
+                if (casillaVigenciaAfiliacion == 1) {
+                    context.update("form:TipoEntidadAfiliacionDialogo");
+                    context.execute("TipoEntidadAfiliacionDialogo.show()");
+                    casillaVigenciaAfiliacion = -1;
+                }
+                if (casillaVigenciaAfiliacion == 2) {
+                    context.update("form:EstadoAfiliacionDialogo");
+                    context.execute("EstadoAfiliacionDialogo.show()");
+                    casillaVigenciaAfiliacion = -1;
+                }
+            }
+            if (casillaVigenciaFormaPago >= 0) {
+                if (casillaVigenciaFormaPago == 0) {
+                    context.update("form:PeriodicidadFormaPagoDialogo");
+                    context.execute("PeriodicidadFormaPagoDialogo.show()");
+                    casillaVigenciaFormaPago = -1;
+                }
+                if (casillaVigenciaFormaPago == 1) {
+                    context.update("form:SucursalFormaPagoDialogo");
+                    context.execute("SucursalFormaPagoDialogo.show()");
+                    casillaVigenciaFormaPago = -1;
+                }
+            }
+            if (casillaMvrs >= 0) {
+                if (casillaMvrs == 0) {
+                    context.update("form:MotivoMvrsDialogo");
+                    context.execute("MotivoMvrsDialogo.show()");
+                    casillaMvrs = -1;
+                }
+            }
+            if (casillaVigenciaJornadaLaboral >= 0) {
+                if (casillaVigenciaJornadaLaboral == 0) {
+                    context.update("form:JornadaJornadaLaboralDialogo");
+                    context.execute("JornadaJornadaLaboralDialogo.show()");
+                    casillaVigenciaJornadaLaboral = -1;
+                }
+            }
+            if (casillaMotivoRetiro >= 0) {
+                if (casillaMotivoRetiro == 0) {
+                    context.update("form:MotivoFechaRetiroDialogo");
+                    context.execute("MotivoFechaRetiroDialogo.show()");
+                    casillaMotivoRetiro = -1;
+                }
             }
         }
-        if (casillaVigenciaLocalizacion >= 0) {
-            if (casillaVigenciaLocalizacion == 0) {
-                context.update("form:LocalizacionCentroCostoDialogo");
-                context.execute("LocalizacionCentroCostoDialogo.show()");
-                casillaVigenciaLocalizacion = -1;
-            }
-            if (casillaVigenciaLocalizacion == 1) {
-                context.update("form:MotivoCentroCostoDialogo");
-                context.execute("MotivoCentroCostoDialogo.show()");
-                casillaVigenciaLocalizacion = -1;
-            }
-        }
-        if (casillaVigenciaSueldo >= 0) {
-            if (casillaVigenciaSueldo == 0) {
-                context.update("form:TipoSueldoSueldoDialogo");
-                context.execute("TipoSueldoSueldoDialogo.show()");
-                casillaVigenciaSueldo = -1;
-            }
-            if (casillaVigenciaSueldo == 1) {
-                context.update("form:MotivoSueldoDialogo");
-                context.execute("MotivoSueldoDialogo.show()");
-                casillaVigenciaSueldo = -1;
-            }
-        }
-        if (casillaVigenciaTipoContrato >= 0) {
-            if (casillaVigenciaTipoContrato == 0) {
-                context.update("form:TipoContratoFechaContratoDialogo");
-                context.execute("TipoContratoFechaContratoDialogo.show()");
-                casillaVigenciaTipoContrato = -1;
-            }
-            if (casillaVigenciaTipoContrato == 1) {
-                context.update("form:MotivoFechaContratoDialogo");
-                context.execute("MotivoFechaContratoDialogo.show()");
-                casillaVigenciaTipoContrato = -1;
-            }
-        }
-        if (casillaVigenciaTipoTrabajador >= 0) {
-            if (casillaVigenciaTipoTrabajador == 0) {
-                context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
-                context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
-                casillaVigenciaTipoTrabajador = -1;
-            }
-        }
-        if (casillaVigenciaReformaLaboral >= 0) {
-            if (casillaVigenciaReformaLaboral == 0) {
-                context.update("form:ReformaLaboralTipoSalarioDialogo");
-                context.execute("ReformaLaboralTipoSalarioDialogo.show()");
-                casillaVigenciaReformaLaboral = -1;
-            }
-        }
-        if (casillaVigenciaNormaLaboral >= 0) {
-            if (casillaVigenciaNormaLaboral == 0) {
-                context.update("form:NormaLaboralNormaLaboralDialogo");
-                context.execute("NormaLaboralNormaLaboralDialogo.show()");
-                casillaVigenciaNormaLaboral = -1;
-            }
-        }
-        if (casillaVigenciaContrato >= 0) {
-            if (casillaVigenciaContrato == 0) {
-                context.update("form:LegislacionLegislacionLaboralDialogo");
-                context.execute("LegislacionLegislacionLaboralDialogo.show()");
-                casillaVigenciaContrato = -1;
-            }
-        }
-        if (casillaVigenciaUbicacion >= 0) {
-            if (casillaVigenciaUbicacion == 0) {
-                context.update("form:UbicacionUbicacionDialogo");
-                context.execute("UbicacionUbicacionDialogo.show()");
-                casillaVigenciaUbicacion = -1;
-            }
-        }
-        if (casillaVigenciaAfiliacion >= 0) {
-            if (casillaVigenciaAfiliacion == 0) {
-                context.update("form:TerceroAfiliacionDialogo");
-                context.execute("TerceroAfiliacionDialogo.show()");
-                casillaVigenciaAfiliacion = -1;
-            }
-            if (casillaVigenciaAfiliacion == 1) {
-                context.update("form:TipoEntidadAfiliacionDialogo");
-                context.execute("TipoEntidadAfiliacionDialogo.show()");
-                casillaVigenciaAfiliacion = -1;
-            }
-            if (casillaVigenciaAfiliacion == 2) {
-                context.update("form:EstadoAfiliacionDialogo");
-                context.execute("EstadoAfiliacionDialogo.show()");
-                casillaVigenciaAfiliacion = -1;
-            }
-        }
-        if (casillaVigenciaFormaPago >= 0) {
-            if (casillaVigenciaFormaPago == 0) {
-                context.update("form:PeriodicidadFormaPagoDialogo");
-                context.execute("PeriodicidadFormaPagoDialogo.show()");
-                casillaVigenciaFormaPago = -1;
-            }
-            if (casillaVigenciaFormaPago == 1) {
-                context.update("form:SucursalFormaPagoDialogo");
-                context.execute("SucursalFormaPagoDialogo.show()");
-                casillaVigenciaFormaPago = -1;
-            }
-        }
-        if (casillaMvrs >= 0) {
-            if (casillaMvrs == 0) {
-                context.update("form:MotivoMvrsDialogo");
-                context.execute("MotivoMvrsDialogo.show()");
-                casillaMvrs = -1;
-            }
-        }
-        if (casillaVigenciaJornadaLaboral >= 0) {
-            if (casillaVigenciaJornadaLaboral == 0) {
-                context.update("form:JornadaJornadaLaboralDialogo");
-                context.execute("JornadaJornadaLaboralDialogo.show()");
-                casillaVigenciaJornadaLaboral = -1;
-            }
-        }
-        if (casillaMotivoRetiro >= 0) {
-            if (casillaMotivoRetiro == 0) {
-                context.update("form:MotivoFechaRetiroDialogo");
-                context.execute("MotivoFechaRetiroDialogo.show()");
-                casillaMotivoRetiro = -1;
+        if (numeroTipoBusqueda == 2) {
+            if (casillaEmpleado >= 0) {
+                if (casillaEmpleado == 1) {
+                    context.update("form:MotivoFechaRetiroDialogo");
+                    context.execute("MotivoFechaRetiroDialogo.show()");
+                    casillaEmpleado = -1;
+                }
+                if (casillaEmpleado == 2) {
+                    context.update("form:MotivoFechaRetiroDialogo");
+                    context.execute("MotivoFechaRetiroDialogo.show()");
+                    casillaEmpleado = -1;
+                }
             }
         }
     }
@@ -1868,6 +2003,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceCargo(int i) {
         if (permitirIndexVigenciaCargo == true) {
+            indice = -1;
             casillaVigenciaTipoContrato = -1;
             casillaVigenciaLocalizacion = -1;
             casillaVigenciaTipoTrabajador = -1;
@@ -1896,6 +2032,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceCentroCosto(int i) {
         if (permitirIndexVigenciaLocalizacion == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaTipoTrabajador = -1;
             casillaVigenciaTipoContrato = -1;
@@ -1921,6 +2058,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceSueldo(int i) {
         if (permitirIndexVigenciaSueldo == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaTipoTrabajador = -1;
             casillaVigenciaTipoContrato = -1;
@@ -1948,6 +2086,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceFechaContrato(int i) {
         if (permitirIndexVigenciaTipoContrato == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -1973,6 +2112,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceTipoTrabajador(int i) {
         if (permitirIndexVigenciaTipoTrabajador == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -1997,6 +2137,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceTipoSalario(int i) {
         if (permitirIndexVigenciaReformaLaboral == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2021,6 +2162,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceNormaLaboral(int i) {
         if (permitirIndexVigenciaNormaEmpleado == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaUbicacion = -1;
@@ -2045,6 +2187,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceLegislacionLaboral(int i) {
         if (permitirIndexVigenciaContrato == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2071,6 +2214,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceUbicacion(int i) {
         if (permitirIndexVigenciaUbicacion == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2095,6 +2239,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceAfiliacion(int i) {
         if (permitirIndexVigenciaAfiliacion == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2121,6 +2266,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceFormaPago(int i) {
         if (permitirIndexVigenciaFormaPago == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2146,6 +2292,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceMvrs(int i) {
         if (permitirIndexMvrs == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2171,6 +2318,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void cambiarIndiceSets(int i) {
+        indice = -1;
         casillaVigenciaCargo = -1;
         casillaVigenciaSueldo = -1;
         casillaVigenciaLocalizacion = -1;
@@ -2197,6 +2345,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void cambiarIndiceVacacion(int i) {
+        indice = -1;
         casillaVigenciaCargo = -1;
         casillaVigenciaSueldo = -1;
         casillaVigenciaLocalizacion = -1;
@@ -2221,6 +2370,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceJornadaLaboral(int i) {
         if (permitirIndexVigenciaJornada == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2245,6 +2395,7 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void cambiarIndiceFechaRetiro(int i) {
         if (permitirIndexMotivoRetiro == true) {
+            indice = -1;
             casillaVigenciaCargo = -1;
             casillaVigenciaSueldo = -1;
             casillaVigenciaLocalizacion = -1;
@@ -2264,6 +2415,15 @@ public class ControlBusquedaAvanzada implements Serializable {
             auxMotivoMotivoRetiro = motivoRetiroBA.getNombre();
             auxFechaFinalFechaRetiro = fechaFinalFechaRetiro;
             auxFechaInicialFechaRetiro = fechaInicialFechaRetiro;
+        }
+    }
+
+    public void cambiarIndiceDatosPersonales(int i) {
+        if (permitirIndexEmpleado == true) {
+            indice = -1;
+            casillaEmpleado = i;
+            auxCiudadDocumentoEmpleado = empleadoBA.getPersona().getCiudaddocumento().getNombre();
+            auxCiudadNacimientoEmpleado = empleadoBA.getPersona().getCiudadnacimiento().getNombre();
         }
     }
 
@@ -2771,6 +2931,30 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
     }
 
+    public void modificarFechaFinalModuloDatosPersonales(int i) {
+        try {
+            boolean retorno = false;
+            casillaEmpleado = i;
+            cambiarIndiceDatosPersonales(i);
+            retorno = validarFechasRegistroModuloDatosPersonales();
+            if (retorno == false) {
+                fechaFinalDatosPersonales = null;
+                fechaInicialDatosPersonales = null;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:tabViewDatosPersonales");
+                System.out.println("Error de fechas modulo de datos personales");
+                context.execute("errorFechasIngresadas.show()");
+            }
+        } catch (Exception e) {
+            fechaFinalDatosPersonales = null;
+            fechaInicialDatosPersonales = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewDatosPersonales");
+            context.execute("errorExceptionFechas.show()");
+            System.out.println("Error modificarFechaFinalModuloDatosPersonales Fechas Datos Personales : " + e.toString());
+        }
+    }
+
     public boolean validarFechasRegistroModuloCargo() {
         fechaParametro = new Date();
         fechaParametro.setYear(0);
@@ -3067,6 +3251,22 @@ public class ControlBusquedaAvanzada implements Serializable {
         boolean retorno = true;
         if (fechaFinalFechaRetiro != null && fechaInicialFechaRetiro != null) {
             if (fechaInicialFechaRetiro.after(fechaParametro) && fechaInicialFechaRetiro.before(fechaFinalFechaRetiro)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarFechasRegistroModuloDatosPersonales() {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (fechaFinalDatosPersonales != null && fechaInicialDatosPersonales != null) {
+            if (fechaInicialDatosPersonales.after(fechaParametro) && fechaInicialDatosPersonales.before(fechaFinalDatosPersonales)) {
                 retorno = true;
             } else {
                 retorno = false;
@@ -3617,6 +3817,50 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
     }
 
+    public void modificarParametrosDatosPersonales(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cualParametro.equals("DOCUMENTO")) {
+            empleadoBA.getPersona().getCiudaddocumento().setNombre(auxCiudadDocumentoEmpleado);
+            for (int i = 0; i < lovCiudades.size(); i++) {
+                if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                empleadoBA.getPersona().setCiudaddocumento(lovCiudades.get(indiceUnicoElemento));
+                lovCiudades = null;
+                getLovCiudades();
+                context.update("form:tabViewDatosPersonales:parametroCiudadDocumentoModDatosPersonales");
+            } else {
+                permitirIndexEmpleado = false;
+                context.update("form:CiudadDocumentoDatosPersonalesDialogo");
+                context.execute("CiudadDocumentoDatosPersonalesDialogo.show()");
+            }
+        }
+        if (cualParametro.equals("NACIMIENTO")) {
+            empleadoBA.getPersona().getCiudadnacimiento().setNombre(auxCiudadNacimientoEmpleado);
+            for (int i = 0; i < lovCiudades.size(); i++) {
+                if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                empleadoBA.getPersona().setCiudadnacimiento(lovCiudades.get(indiceUnicoElemento));
+                lovCiudades = null;
+                getLovCiudades();
+                context.update("form:tabViewDatosPersonales:parametroCiudadNacimientoModDatosPersonales");
+            } else {
+                permitirIndexEmpleado = false;
+                context.update("form:CiudadNacimientoDatosPersonalesDialogo");
+                context.execute("CiudadNacimientoDatosPersonalesDialogo.show()");
+            }
+        }
+    }
+
     public void modificarSueldosModuloSueldo() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (sueldoMaxSueldo != null && sueldoMinSueldo != null) {
@@ -3657,6 +3901,52 @@ public class ControlBusquedaAvanzada implements Serializable {
                 System.out.println("Error modificarPromediosModuloSets");
             }
         }
+    }
+
+    public void actualizarParametroCiudadDocumentoDatosPersonales() {
+        empleadoBA.getPersona().setCiudaddocumento(ciudadSeleccionada);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewDatosPersonales:parametroCiudadDocumentoModDatosPersonales");
+        ciudadSeleccionada = null;
+        filtrarLovCiudades = null;
+        casillaEmpleado = -1;
+        aceptar = true;
+        permitirIndexEmpleado = true;
+        context.update("form:CiudadDocumentoDatosPersonalesDialogo");
+        context.update("form:lovCiudadDocumentoDatosPersonales");
+        context.update("form:aceptarCDDP");
+        context.execute("CiudadDocumentoDatosPersonalesDialogo.hide()");
+    }
+
+    public void cancelarParametroCiudadDocumentoDatosPersonales() {
+        ciudadSeleccionada = null;
+        filtrarLovCiudades = null;
+        casillaEmpleado = -1;
+        aceptar = true;
+        permitirIndexEmpleado = true;
+    }
+
+    public void actualizarParametroCiudadNacimientoDatosPersonales() {
+        empleadoBA.getPersona().setCiudadnacimiento(ciudadSeleccionada);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewDatosPersonales:parametroCiudadNacimientoModDatosPersonales");
+        ciudadSeleccionada = null;
+        filtrarLovCiudades = null;
+        casillaEmpleado = -1;
+        aceptar = true;
+        permitirIndexEmpleado = true;
+        context.update("form:CiudadNacimientoDatosPersonalesDialogo");
+        context.update("form:lovCiudadNacimientoDatosPersonales");
+        context.update("form:aceptarCNDP");
+        context.execute("CiudadNacimientoDatosPersonalesDialogo.hide()");
+    }
+
+    public void cancelarParametroCiudadNacimientoDatosPersonales() {
+        ciudadSeleccionada = null;
+        filtrarLovCiudades = null;
+        casillaEmpleado = -1;
+        aceptar = true;
+        permitirIndexEmpleado = true;
     }
 
     public void actualizarParametroMotivoFechaRetiro() {
@@ -4284,6 +4574,10 @@ public class ControlBusquedaAvanzada implements Serializable {
         System.out.println("tabActivaFechaRetiro : " + tabActivaFechaRetiro);
     }
 
+    public void changeTapDatosPersonales() {
+        System.out.println("tabActivaDatosPersonales : " + tabActivaDatosPersonales);
+    }
+
     public void activarAceptar() {
         aceptar = false;
     }
@@ -4848,6 +5142,31 @@ public class ControlBusquedaAvanzada implements Serializable {
         indice = i;
         cualCelda = c;
         System.out.println("Indice : " + i + " -- Celda : " + c);
+    }
+
+    public void cambioBtnPrueba() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        scrollPanelNomina = (ScrollPanel) c.getViewRoot().findComponent("form:scrollPanelNomina");
+        scrollPanelPersonal = (ScrollPanel) c.getViewRoot().findComponent("form:scrollPanelPersonal");
+        if (numeroTipoBusqueda == 1) {
+            scrollPanelNomina.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none;");
+            scrollPanelPersonal.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none; visibility: hidden; display: none;");
+        }
+        if (numeroTipoBusqueda == 2) {
+            scrollPanelNomina.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none; visibility: hidden; display: none;");
+            scrollPanelPersonal.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none;");
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:scrollPanelNomina");
+        context.update("form:scrollPanelPersonal");
+    }
+
+    public int getNumeroTipoBusqueda() {
+        return numeroTipoBusqueda;
+    }
+
+    public void setNumeroTipoBusqueda(int numeroTipoBusqueda) {
+        this.numeroTipoBusqueda = numeroTipoBusqueda;
     }
 
     ////
@@ -6372,6 +6691,73 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     public void setInfoVariableEditarCelda(String infoVariableEditarCelda) {
         this.infoVariableEditarCelda = infoVariableEditarCelda;
+    }
+
+    public Empleados getEmpleadoBA() {
+        return empleadoBA;
+    }
+
+    public void setEmpleadoBA(Empleados empleadoBA) {
+        this.empleadoBA = empleadoBA;
+    }
+
+    public int getTabActivaDatosPersonales() {
+        return tabActivaDatosPersonales;
+    }
+
+    public void setTabActivaDatosPersonales(int tabActivaDatosPersonales) {
+        this.tabActivaDatosPersonales = tabActivaDatosPersonales;
+    }
+
+    public Date getFechaInicialDatosPersonales() {
+        return fechaInicialDatosPersonales;
+    }
+
+    public void setFechaInicialDatosPersonales(Date fechaInicialDatosPersonales) {
+        this.fechaInicialDatosPersonales = fechaInicialDatosPersonales;
+    }
+
+    public Date getFechaFinalDatosPersonales() {
+        return fechaFinalDatosPersonales;
+    }
+
+    public void setFechaFinalDatosPersonales(Date fechaFinalDatosPersonales) {
+        this.fechaFinalDatosPersonales = fechaFinalDatosPersonales;
+    }
+
+    public List<Ciudades> getLovCiudades() {
+        if (lovCiudades == null) {
+            lovCiudades = administrarEmpleadoIndividual.ciudades();
+        }
+        return lovCiudades;
+    }
+
+    public void setLovCiudades(List<Ciudades> lovCiudades) {
+        this.lovCiudades = lovCiudades;
+    }
+
+    public List<Ciudades> getFiltrarLovCiudades() {
+        return filtrarLovCiudades;
+    }
+
+    public void setFiltrarLovCiudades(List<Ciudades> filtrarLovCiudades) {
+        this.filtrarLovCiudades = filtrarLovCiudades;
+    }
+
+    public Ciudades getCiudadSeleccionada() {
+        return ciudadSeleccionada;
+    }
+
+    public void setCiudadSeleccionada(Ciudades ciudadSeleccionada) {
+        this.ciudadSeleccionada = ciudadSeleccionada;
+    }
+
+    public List<Empleados> getListaEmpleadosResultados() {
+        return listaEmpleadosResultados;
+    }
+
+    public void setListaEmpleadosResultados(List<Empleados> listaEmpleadosResultados) {
+        this.listaEmpleadosResultados = listaEmpleadosResultados;
     }
 
 }
