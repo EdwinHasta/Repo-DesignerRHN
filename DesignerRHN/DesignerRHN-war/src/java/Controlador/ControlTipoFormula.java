@@ -47,6 +47,7 @@ public class ControlTipoFormula implements Serializable {
     //LISTA INFOREPORTES
     private List<TiposFormulas> listaTiposFormulas;
     private List<TiposFormulas> filtradosListaTiposFormulas;
+    private TiposFormulas tipoFormulaSeleccionado;
     //L.O.V INFOREPORTES
     private List<TiposFormulas> lovlistaTiposFormulas;
     private List<TiposFormulas> lovfiltradoslistaTiposFormulas;
@@ -104,7 +105,7 @@ public class ControlTipoFormula implements Serializable {
         listaTiposFormulasBorrar = new ArrayList<TiposFormulas>();
         listaTiposFormulasCrear = new ArrayList<TiposFormulas>();
         listaTiposFormulasModificar = new ArrayList<TiposFormulas>();
-        altoTabla = "245";
+        altoTabla = "270";
         duplicarTipoFormula = new TiposFormulas();
     }
 
@@ -225,7 +226,7 @@ public class ControlTipoFormula implements Serializable {
         }
 
     }
-    
+
     public void guardarVariables(BigInteger secuencia) {
         if (index < 0) {
             System.out.println("INDEX " + index);
@@ -335,12 +336,14 @@ public class ControlTipoFormula implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
-                altoTabla = "245";
-                tiposFormulasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                altoTabla = "270";
+                tiposFormulasIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
                 tiposFormulasIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFormulasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
+                tiposFormulasFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
                 tiposFormulasFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFormulasObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
+                tiposFormulasObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
                 tiposFormulasObjetos.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposFormulas");
                 bandera = 0;
@@ -371,27 +374,28 @@ public class ControlTipoFormula implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 0) {
-            altoTabla = "223";
-            tiposFormulasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
+            altoTabla = "246";
+            tiposFormulasIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
             tiposFormulasIniciales.setFilterStyle("width: 60px");
-            tiposFormulasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
+            tiposFormulasFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
             tiposFormulasFinales.setFilterStyle("width: 60px");
-            tiposFormulasObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
+            tiposFormulasObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
             tiposFormulasObjetos.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosTiposFormulas");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposFormulasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
+            tiposFormulasIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
             tiposFormulasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFormulasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
+            tiposFormulasFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
             tiposFormulasFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFormulasObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
+            tiposFormulasObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
             tiposFormulasObjetos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposFormulas");
             bandera = 0;
@@ -403,14 +407,16 @@ public class ControlTipoFormula implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "245";
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposFormulasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
+            tiposFormulasIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
             tiposFormulasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFormulasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
+            tiposFormulasFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
             tiposFormulasFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFormulasObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
+            tiposFormulasObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
             tiposFormulasObjetos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposFormulas");
             bandera = 0;
@@ -706,14 +712,16 @@ public class ControlTipoFormula implements Serializable {
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                altoTabla = "245";
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                altoTabla = "270";
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tiposFormulasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
+                tiposFormulasIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
                 tiposFormulasIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFormulasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
+                tiposFormulasFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
                 tiposFormulasFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFormulasObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
+                tiposFormulasObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
                 tiposFormulasObjetos.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposFormulas");
                 bandera = 0;
@@ -793,14 +801,16 @@ public class ControlTipoFormula implements Serializable {
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
+            FacesContext c = FacesContext.getCurrentInstance();
+
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposFormulasIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
+            tiposFormulasIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasIniciales");
             tiposFormulasIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFormulasFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
+            tiposFormulasFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasFinales");
             tiposFormulasFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFormulasObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
+            tiposFormulasObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFormulas:tiposFormulasObjetos");
             tiposFormulasObjetos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposFormulas");
             bandera = 0;
@@ -981,7 +991,13 @@ public class ControlTipoFormula implements Serializable {
     public void setSecuenciaTiposFormulas(BigInteger secuenciaTiposFormulas) {
         this.secuenciaTiposFormulas = secuenciaTiposFormulas;
     }
-    
-    
+
+    public TiposFormulas getTipoFormulaSeleccionado() {
+        return tipoFormulaSeleccionado;
+    }
+
+    public void setTipoFormulaSeleccionado(TiposFormulas tipoFormulaSeleccionado) {
+        this.tipoFormulaSeleccionado = tipoFormulaSeleccionado;
+    }
 
 }
