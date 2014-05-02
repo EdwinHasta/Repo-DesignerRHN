@@ -2,9 +2,12 @@ package Administrar;
 
 import ClasesAyuda.SessionEntityManager;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Singleton;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 
 /**

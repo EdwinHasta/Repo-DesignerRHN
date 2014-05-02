@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface AdministrarVigenciasCargosInterface {
 
+    public void obtenerConexion(String idSesion);
+
     public List<VigenciasCargos> consultarTodo();
 
     public VigenciasCargos consultarPorSecuencia(BigInteger secuenciaVC);

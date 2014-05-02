@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesFormasPagos;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesFormasPagos' 
@@ -19,5 +20,5 @@ public interface PersistenciaVWActualesFormasPagosInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesFormasPagos con la información de la forma de pago actual de un empleado.
      */
-    public VWActualesFormasPagos buscarFormaPago(BigInteger secuencia);
+    public VWActualesFormasPagos buscarFormaPago(EntityManager em, BigInteger secuencia);
 }

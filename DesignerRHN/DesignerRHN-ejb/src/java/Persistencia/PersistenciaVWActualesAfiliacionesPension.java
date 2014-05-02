@@ -24,12 +24,12 @@ public class PersistenciaVWActualesAfiliacionesPension implements PersistenciaVW
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    @Override
-    public VWActualesAfiliacionesPension buscarAfiliacionPension(BigInteger secuencia) {
+    public VWActualesAfiliacionesPension buscarAfiliacionPension(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesAfiliacionesPension vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesAfiliacionesPension vwActualesAfiliacionesPension = (VWActualesAfiliacionesPension) query.getSingleResult();
             return vwActualesAfiliacionesPension;
         } catch (Exception e) {

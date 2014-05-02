@@ -35,7 +35,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Administrator
  */
 @Entity
-@Cacheable(true)
+
 @Table(name = "EMPLEADOS")
 @XmlRootElement
 @NamedQueries({

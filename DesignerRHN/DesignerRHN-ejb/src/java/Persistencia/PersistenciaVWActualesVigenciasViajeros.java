@@ -21,14 +21,14 @@ public class PersistenciaVWActualesVigenciasViajeros implements PersistenciaVWAc
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
-    @Override
-    public VWActualesVigenciasViajeros buscarTipoViajero(BigInteger secuencia) {
+*/
+    public VWActualesVigenciasViajeros buscarTipoViajero(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesVigenciasViajeros vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesVigenciasViajeros vWActualesVigenciasViajeros = (VWActualesVigenciasViajeros) query.getSingleResult();
             return vWActualesVigenciasViajeros;
         } catch (Exception e) {

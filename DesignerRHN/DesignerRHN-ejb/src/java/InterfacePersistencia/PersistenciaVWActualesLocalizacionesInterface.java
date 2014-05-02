@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesLocalizaciones;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesLocalizaciones' 
@@ -19,5 +20,5 @@ public interface PersistenciaVWActualesLocalizacionesInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesLocalizaciones con la información de la localización actual de un empleado.
      */
-    public VWActualesLocalizaciones buscarLocalizacion(BigInteger secuencia);
+    public VWActualesLocalizaciones buscarLocalizacion(EntityManager em, BigInteger secuencia);
 }

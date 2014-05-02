@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesAfiliacionesSalud;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesAfiliacionesSalud' 
  * de la base de datos.
@@ -18,5 +19,5 @@ public interface PersistenciaVWActualesAfiliacionesSaludInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesAfiliacionesSalud con la información de la afiliación a salud actual de un empleado.
      */
-    public VWActualesAfiliacionesSalud buscarAfiliacionSalud(BigInteger secuencia);
+    public VWActualesAfiliacionesSalud buscarAfiliacionSalud(EntityManager em, BigInteger secuencia);
 }

@@ -166,4 +166,16 @@ public interface AdministrarCarpetaPersonalInterface {
      * @return Retorna un String con el Alias del usuario que esta conectado en la sesion actual.
      */
     public String consultarAliasActualUsuario();
+    /**
+     * Método encargado de recuperar el estado actual de vacaciones de un empleado específico.
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Retorna un String con la información requerida.
+     */
+    public String consultarActualEstadoVacaciones(BigInteger secEmpleado);
+    /**
+     * Método encargado de recuperar el estado actual MVR de un empleado específico.
+     * @param secEmpleado Secuencia del Empleado.
+     * @return Retorna un String con la información requerida.
+     */
+    public String consultarActualMVR(BigInteger secEmpleado);
 }

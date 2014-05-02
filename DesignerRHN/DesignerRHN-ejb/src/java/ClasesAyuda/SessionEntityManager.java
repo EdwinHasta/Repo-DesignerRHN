@@ -6,6 +6,7 @@
 package ClasesAyuda;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 /**
  *
@@ -14,11 +15,12 @@ import javax.persistence.EntityManager;
 public class SessionEntityManager {
 
     public String idSession;
+    public EntityManagerFactory emf;
     public EntityManager em;
 
-    public SessionEntityManager(String idSession, EntityManager em) {
+    public SessionEntityManager(String idSession, EntityManagerFactory emf) {
         this.idSession = idSession;
-        this.em = em;
+        this.emf = emf;
     }
     
     public String getIdSession() {
@@ -30,6 +32,7 @@ public class SessionEntityManager {
     }
 
     public EntityManager getEm() {
+        em = emf.createEntityManager();
         return em;
     }
 

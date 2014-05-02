@@ -21,14 +21,14 @@ public class PersistenciaVWActualesJornadas implements PersistenciaVWActualesJor
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    @Override
-    public VWActualesJornadas buscarJornada(BigInteger secuencia) {
+    public VWActualesJornadas buscarJornada(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesJornadas vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesJornadas actualesJornadas = (VWActualesJornadas) query.getSingleResult();
             return actualesJornadas;
         } catch (Exception e) {

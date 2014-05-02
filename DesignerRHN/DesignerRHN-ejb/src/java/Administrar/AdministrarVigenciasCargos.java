@@ -3,6 +3,7 @@ package Administrar;
 import Entidades.Empleados;
 import Entidades.VWActualesTiposTrabajadores;
 import Entidades.VigenciasCargos;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfaceAdministrar.AdministrarVigenciasCargosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaVWActualesTiposTrabajadoresInterface;
@@ -13,6 +14,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -33,6 +35,20 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     private VigenciasCargos vc;
     private Empleados empleado;
     private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     /*
      public AdministrarVigenciasCargos() {
      persistenciaVigenciasCargos = new PersistenciaVigenciasCargos();
@@ -64,7 +80,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
         try {
             //System.out.println("Método AdministrarVigenciasCargos.vigenciasEmpleado.");
             //SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
-            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(secEmpleado);
+            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(em, secEmpleado);
         } catch (Exception e) {
             vigenciasCargos = null;
         }

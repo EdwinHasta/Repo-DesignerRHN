@@ -11,6 +11,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -42,8 +44,9 @@ public class ActualUsuario implements Serializable {
     @Column(name = "SECUENCIA")
     @Id
     private BigInteger secuencia;
-    @Column(name = "PERSONA")
-    private BigInteger persona;
+    @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Personas persona;
     @Column(name = "PERFIL")
     private BigInteger perfil;
     @Size(max = 1)
@@ -69,11 +72,11 @@ public class ActualUsuario implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public BigInteger getPersona() {
+    public Personas getPersona() {
         return persona;
     }
 
-    public void setPersona(BigInteger persona) {
+    public void setPersona(Personas persona) {
         this.persona = persona;
     }
 

@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesTiposContratos;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesTiposContratos' 
@@ -19,6 +20,6 @@ public interface PersistenciaVWActualesTiposContratosInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesTiposContratos con la información del Tipo Contrato actual de un empleado.
      */
-    public VWActualesTiposContratos buscarTiposContratosEmpleado(BigInteger secuencia);
+    public VWActualesTiposContratos buscarTiposContratosEmpleado(EntityManager em, BigInteger secuencia);
 
 }

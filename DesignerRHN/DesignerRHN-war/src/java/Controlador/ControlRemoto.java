@@ -57,6 +57,7 @@ public class ControlRemoto implements Serializable {
     private VWActualesUbicaciones vwActualesUbicaciones;
     private VWActualesFormasPagos vwActualesFormasPagos;
     private VWActualesVigenciasViajeros vwActualesVigenciasViajeros;
+    private String estadoVacaciones, actualMVR;
     private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
     private List<VWActualesTiposTrabajadores> backup;
     private List<VWActualesTiposTrabajadores> busquedaRapida;
@@ -173,7 +174,7 @@ public class ControlRemoto implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void datosIniciales(int pestaña) {
         numPestaña = pestaña;
     }
@@ -278,9 +279,20 @@ public class ControlRemoto implements Serializable {
         } catch (Exception e) {
             vwActualesVigenciasViajeros = null;
         }
+
+        try {
+            estadoVacaciones = administrarCarpetaPersonal.consultarActualEstadoVacaciones(secuencia);
+        } catch (Exception e) {
+            estadoVacaciones = null;
+        }
+        try {
+            actualMVR = administrarCarpetaPersonal.consultarActualMVR(secuencia);
+        } catch (Exception e) {
+            actualMVR = null;
+        }
+
         //RequestContext.getCurrentInstance().update("formulario:info:VCargoDesempeñado");
         //FacesContext.getCurrentInstance().getPartialViewContext().getRenderIds().add("formulario:VCargoDesempeñado");
-
     }
 
     public void activos() {
@@ -1056,6 +1068,22 @@ public class ControlRemoto implements Serializable {
 
     public void setSeleccionTablaLOV(Tablas seleccionTablaLOV) {
         this.seleccionTablaLOV = seleccionTablaLOV;
+    }
+
+    public String getEstadoVacaciones() {
+        return estadoVacaciones;
+    }
+
+    public String getActualMVR() {
+        return actualMVR;
+    }
+
+    public void setEstadoVacaciones(String estadoVacaciones) {
+        this.estadoVacaciones = estadoVacaciones;
+    }
+
+    public void setActualMVR(String actualMVR) {
+        this.actualMVR = actualMVR;
     }
 
     public String getFotoEmpleado() {

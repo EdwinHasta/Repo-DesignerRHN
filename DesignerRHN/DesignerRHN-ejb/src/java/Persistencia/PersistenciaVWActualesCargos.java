@@ -32,6 +32,7 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
         try {
             Query query = entity.createQuery("SELECT vw FROM VWActualesCargos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesCargos vwActualesCargos = (VWActualesCargos) query.getSingleResult();
             return vwActualesCargos;
         } catch (Exception e) {

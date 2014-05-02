@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.VigenciasCargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasCargos' 
  * de la base de datos.
@@ -46,5 +47,5 @@ public interface PersistenciaVigenciasCargosInterface {
      * @return Retorna una lista de VigenciasCargos ordenadas por fechaVigencia y
      * asociadas al Empleado cuya secuencia coincide con la del parámetro.
      */
-    public List<VigenciasCargos> buscarVigenciasCargosEmpleado(BigInteger secuencia);
+    public List<VigenciasCargos> buscarVigenciasCargosEmpleado(EntityManager em, BigInteger secuencia);
 }

@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesAfiliacionesPension;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesAfiliacionesPension' 
  * de la base de datos.
@@ -18,5 +19,5 @@ public interface PersistenciaVWActualesAfiliacionesPensionInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualAfiliacionPension con la información de la afiliación a pensión actual de un empleado.
      */
-    public VWActualesAfiliacionesPension buscarAfiliacionPension(BigInteger secuencia);
+    public VWActualesAfiliacionesPension buscarAfiliacionPension(EntityManager em, BigInteger secuencia);
 }

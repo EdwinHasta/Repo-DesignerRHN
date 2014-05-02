@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -13,7 +14,8 @@
         <title>Aplicativo de Nomina Designer RHN</title>
     </h:head>
 
-    <h:body onload="iniciarScrollEmpleado(); iniciarScrollEmpleador();">
+    <h:body onload="iniciarScrollEmpleado();
+            iniciarScrollEmpleador();">
         <div id="top"  class="top" style="background-image: url(Imagenes/fondoencabezado.png); height: 80px; background-repeat: no-repeat; background-size: 100% 100%;">
             <ui:insert name="banner">
             </ui:insert>
@@ -23,14 +25,22 @@
                 <ui:insert name="left">
                     <table width="224" border="0">
                         <tr>
-                            <td colspan="2" align="left"><p>Licencia de Uso a:</p></td>
+                            <td colspan="2" align="left"><h:outputText value="Licencia de Uso a:" style="font-weight: bold"/></td>
                         </tr>
                         <tr>
-                            <td colspan="2" align="center"><img src="Imagenes\800141025.png" width="150" height="50" alt="Logo Empresa" /></td>
+                            <br/>
+                            <td colspan="2" align="center"><img src="Imagenes\800141025.png" width="180" height="60" alt="Logo Empresa" style="position: relative; top: 20px"/></td>
                         </tr>
                         <tr>
-                            <td width="96" align="center"><img src="Imagenes\79709849.png" width="91" height="108" alt="Foto Usuario" /></td>
-                            <td width="118" align="center">alex.gutierrez</td>
+                            <td width="96" ><img src="#{controlTemplate.fotoUsuario}" width="110" height="130" alt="Foto Usuario" style="position: relative; top: 30px; left: 55px"/></td>
+                        </tr>
+                        <tr>
+                            <td width="118">
+                                <div style="font-weight: bold; position: relative; top: 35px; width: 224px; text-align: center; border: 2px; border-color: red;">
+                                    <h:outputText value="#{controlTemplate.nombreUsuario}"/>
+                                </div>
+                                <p:commandButton value="Cerrar Sesión" actionListener="#{controlTemplate.cerrarSession()}" style="position: relative; top: 35px; left: 50px"/>
+                            </td>
                         </tr>
                     </table>
 

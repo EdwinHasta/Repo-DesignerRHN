@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesReformasLaborales;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesReformasLaborales' 
@@ -19,5 +20,5 @@ public interface PersistenciaVWActualesReformasLaboralesInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualAfiliacionPension con la información de  la Reforma Laboral actual de un empleado.
      */
-    public VWActualesReformasLaborales buscarReformaLaboral(BigInteger secuencia);
+    public VWActualesReformasLaborales buscarReformaLaboral(EntityManager em, BigInteger secuencia);
 }

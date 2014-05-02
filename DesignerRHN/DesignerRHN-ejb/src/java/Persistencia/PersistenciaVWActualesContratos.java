@@ -24,12 +24,12 @@ public class PersistenciaVWActualesContratos implements PersistenciaVWActualesCo
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    @Override
-    public VWActualesContratos buscarContrato(BigInteger secuencia) {
+    public VWActualesContratos buscarContrato(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesContratos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesContratos actualesContratos = (VWActualesContratos) query.getSingleResult();
             return actualesContratos;
         } catch (Exception e) {

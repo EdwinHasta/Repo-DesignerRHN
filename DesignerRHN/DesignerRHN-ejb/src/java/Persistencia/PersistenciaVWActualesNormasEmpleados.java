@@ -21,14 +21,14 @@ public class PersistenciaVWActualesNormasEmpleados implements PersistenciaVWActu
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    @Override
-    public VWActualesNormasEmpleados buscarNormaLaboral(BigInteger secuencia) {
+    public VWActualesNormasEmpleados buscarNormaLaboral(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesNormasEmpleados vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesNormasEmpleados vwActualesNormasEmpleados = (VWActualesNormasEmpleados) query.getSingleResult();
             return vwActualesNormasEmpleados;
         } catch (Exception e) {

@@ -76,15 +76,15 @@
                                 <p:dataGrid   id="data" var="item" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" paginator="true"  
                                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
                                               {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-felipe" first="#{controlRemoto.estadoEmpleado}" >
-
+                                    
                                     <fieldset id="set" style="height: 80px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 80px;">
                                         <legend style="color: #00F;  ; font-weight: bold">#{msg['informacionpersonal']}</legend>
 
-                                        <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe">
-
+                                        <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe" >
+                                            
                                             <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; color: #14388B; 
                                                            ; width: 63px; height: 20px; top: 15px; font-weight: bold"/>
-                                            <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)};"
+                                            <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)}"
                                                          style="position: absolute; left: 12px; top: 30px; width: 76px; height: 15px;" onclick="select();"/>
                                             <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
 
@@ -268,7 +268,7 @@
                                         </p:tooltip>
 
                                         <!-- Cajas de Texto -->
-
+                                        
                                         <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesCargos.cargo.nombre}"  /> 
                                         <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 210px; height: 12px; " readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
                                         <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
@@ -280,8 +280,8 @@
                                         <p:inputText id="VTipoTrabajador" style="position: absolute; left: 315px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
                                         <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 315px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
                                         <p:inputText id="VJornada" style="position: absolute; left: 315px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
-                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 315px; top: 173px; width: 210px; height: 12px;"  />
-                                        <p:inputText id="VVacaciones" style="position: absolute; left: 315px; top: 208px; width: 210px; height: 12px;"  />
+                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 315px; top: 173px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
+                                        <p:inputText id="VVacaciones" style="position: absolute; left: 315px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
 
                                         <p:inputText id="VSueldo" style="position: absolute; left: 585px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.sueldo}"/>
                                         <p:inputText id="VTipoSalario" style="position: absolute; left: 585px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />

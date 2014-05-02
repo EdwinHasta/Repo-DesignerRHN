@@ -21,14 +21,14 @@ public class PersistenciaVWActualesFormasPagos implements PersistenciaVWActuales
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
-    @Override
-    public VWActualesFormasPagos buscarFormaPago(BigInteger secuencia) {
+    public VWActualesFormasPagos buscarFormaPago(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesFormasPagos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesFormasPagos actualesFormasPagos = (VWActualesFormasPagos) query.getSingleResult();
             return actualesFormasPagos;
         } catch (Exception e) {

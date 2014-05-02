@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.VWActualesVigenciasViajeros;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesVigenciasViajeros' 
  * de la base de datos.
@@ -18,5 +19,5 @@ public interface PersistenciaVWActualesVigenciasViajerosInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesVigenciasViajeros con la información del Tipo de Viajero actual de un empleado.
      */
-    public VWActualesVigenciasViajeros buscarTipoViajero(BigInteger secuencia);
+    public VWActualesVigenciasViajeros buscarTipoViajero(EntityManager em, BigInteger secuencia);
 }

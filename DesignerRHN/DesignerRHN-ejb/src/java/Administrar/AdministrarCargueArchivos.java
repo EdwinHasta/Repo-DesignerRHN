@@ -15,6 +15,7 @@ import Entidades.VWActualesReformasLaborales;
 import Entidades.VWActualesTiposContratos;
 import Entidades.VWActualesTiposTrabajadores;
 import InterfaceAdministrar.AdministrarCargueArchivosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -40,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -186,7 +188,20 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
      */
     @EJB
     PersistenciaNovedadesInterface persistenciaNovedades;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
@@ -209,7 +224,7 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
 
     @Override
     public ActualUsuario actualUsuario() {
-        return persistenciaActualUsuario.actualUsuarioBD();
+        return persistenciaActualUsuario.actualUsuarioBD(em);
     }
 
     @Override
@@ -256,17 +271,17 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
 
     @Override
     public VWActualesTiposTrabajadores consultarActualTipoTrabajadorEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(secuenciaEmpleado);
+        return persistenciaVWActualesTiposTrabajadores.buscarTipoTrabajador(em, secuenciaEmpleado);
     }
 
     @Override
     public VWActualesReformasLaborales consultarActualReformaLaboralEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaVWActualesReformasLaborales.buscarReformaLaboral(secuenciaEmpleado);
+        return persistenciaVWActualesReformasLaborales.buscarReformaLaboral(em, secuenciaEmpleado);
     }
 
     @Override
     public VWActualesTiposContratos consultarActualTipoContratoEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaVWActualesTiposContratos.buscarTiposContratosEmpleado(secuenciaEmpleado);
+        return persistenciaVWActualesTiposContratos.buscarTiposContratosEmpleado(em, secuenciaEmpleado);
     }
 
     @Override

@@ -21,14 +21,14 @@ public class PersistenciaVWActualesLocalizaciones implements PersistenciaVWActua
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    @Override
-    public VWActualesLocalizaciones buscarLocalizacion(BigInteger secuencia) {
+    public VWActualesLocalizaciones buscarLocalizacion(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesLocalizaciones vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesLocalizaciones vwActualesLocalizaciones = (VWActualesLocalizaciones) query.getSingleResult();
             return vwActualesLocalizaciones;
         } catch (Exception e) {
