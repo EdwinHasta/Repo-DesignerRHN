@@ -23,7 +23,7 @@
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['cargo']}</strong></legend>
 
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewCosto" activeIndex="#{controlBusquedaAvanzada.tabActivaCargos}" onTabChange="#{controlBusquedaAvanzada.changeTapCargo()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewCosto" widgetVar="tabViewCosto" activeIndex="#{controlBusquedaAvanzada.tabActivaCargos}" onTabChange="#{controlBusquedaAvanzada.changeTapCargo()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapCargo()}" process="@this" />
                                         <p:tab id="tabMensajeCargo" title="#{msg['infoBasica']}" >
                                             <div style="height: 65px;">
@@ -123,7 +123,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 155px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['centroCosto']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewCentroCosto" activeIndex="#{controlBusquedaAvanzada.tabActivaCentroCosto}" onTabChange="#{controlBusquedaAvanzada.changeTapCentroCosto()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewCentroCosto" widgetVar="tabViewCentroCosto" activeIndex="#{controlBusquedaAvanzada.tabActivaCentroCosto}" onTabChange="#{controlBusquedaAvanzada.changeTapCentroCosto()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapCentroCosto()}" process="@this" />
                                         <p:tab id="tabMensajeCentroCosto" title="#{msg['infoBasica']}" >
                                             <div style="height: 55px;">
@@ -192,7 +192,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 303px; font-size: 11px; width: 810px; height: 135px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['sueldo']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewSueldo" activeIndex="#{controlBusquedaAvanzada.tabActivaSueldo}" onTabChange="#{controlBusquedaAvanzada.changeTapSueldo()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewSueldo"  widgetVar="tabViewSueldo" activeIndex="#{controlBusquedaAvanzada.tabActivaSueldo}" onTabChange="#{controlBusquedaAvanzada.changeTapSueldo()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapSueldo()}" process="@this" />
                                         <p:tab id="tabMensajeSueldo" title="#{msg['infoBasica']}" >
                                             <div style="height: 65px;">
@@ -279,7 +279,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 455px; font-size: 11px; width: 810px; height: 135px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaContrato']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewFechaContrato" activeIndex="#{controlBusquedaAvanzada.tabActivaFechaContrato}" onTabChange="#{controlBusquedaAvanzada.changeTapFechaContrato()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewFechaContrato" widgetVar="tabViewFechaContrato" activeIndex="#{controlBusquedaAvanzada.tabActivaFechaContrato}" onTabChange="#{controlBusquedaAvanzada.changeTapFechaContrato()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapCentroCosto()}" process="@this" />
                                         <p:tab id="tabMensajeFechaContrato" title="#{msg['infoBasica']}" >
                                             <div style="height: 65px;">
@@ -347,17 +347,17 @@
                                 <fieldset style="position: absolute; left: 5px; top: 608px; font-size: 11px; width: 390px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['tipoTrabajador']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border : none;" id="tabViewTipoTrabajador" activeIndex="#{controlBusquedaAvanzada.tabActivaTipoTrabajador}" onTabChange="#{controlBusquedaAvanzada.changeTapTipoTrabajador()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border : none;" id="tabViewTipoTrabajador" widgetVar="tabViewTipoTrabajador" activeIndex="#{controlBusquedaAvanzada.tabActivaTipoTrabajador}" onTabChange="#{controlBusquedaAvanzada.changeTapTipoTrabajador()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapTipoTrabajador()}" process="@this" />
                                         <p:tab id="tabMensajeTipoTrabajador" title="#{msg['infoBasica']}" >
                                             <div style="height: 45px;">
                                                 <p:scrollPanel style="width: 380px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
                                                     <h:outputText id="textTipoTrabajador"
-                                                                  value="#{msg['textTipoTrabajador']}En éste bloque usted podrá realizar la búsqueda por tipo de contrato con o sin fechas para filtrar históricos. Los parametros de fechas funcionan asi:" /><br></br>
+                                                                  value="#{msg['textTipoTrabajador']}" /><br></br>
                                                     <h:outputText value="#{msg['opcion1']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion2']}"/><br></br>
                                                     <h:outputText value="#{msg['opcion3']}"/><br></br>
-                                                    <h:outputText value="#{msg['textTipoTrabajador2']}Para utilizar esta opción habilitela oprimiendo click en Tipo de Trabajador." />
+                                                    <h:outputText value="#{msg['textTipoTrabajador2']}" />
                                                 </p:scrollPanel>
                                             </div>
                                         </p:tab>
@@ -405,9 +405,9 @@
                                 </fieldset>
 
                                 <fieldset style="position: absolute; left: 425px; top: 608px; font-size: 11px; width: 390px; height: 115px; border-radius: 5px; ">
-                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['tipoSalario']}Tipo de Salario</strong></legend>
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['tipoSalario']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border : none;" id="tabViewTipoSalario" activeIndex="#{controlBusquedaAvanzada.tabActivaTipoSalario}" onTabChange="#{controlBusquedaAvanzada.changeTapTipoSalario()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border : none;" id="tabViewTipoSalario" widgetVar="tabViewTipoSalario" activeIndex="#{controlBusquedaAvanzada.tabActivaTipoSalario}" onTabChange="#{controlBusquedaAvanzada.changeTapTipoSalario()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapTipoSalario()}" process="@this" />
                                         <p:tab id="tabMensajeTipoSalario" title="#{msg['infoBasica']}" >
                                             <div style="height: 45px;">
@@ -465,9 +465,9 @@
                                 </fieldset>
 
                                 <fieldset style="position: absolute; left: 5px; top: 745px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
-                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['legislacionLaboral']}Legislacion Laboral</strong></legend>
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['legislacionLaboral']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewLegislacionLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaLegislacionLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapLegislacionLaboral()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewLegislacionLaboral" widgetVar="tabViewLegislacionLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaLegislacionLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapLegislacionLaboral()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapLegislacionLaboral()}" process="@this" />
                                         <p:tab id="tabMensajeLegislacionLaboral" title="#{msg['infoBasica']}" >
                                             <div style="height: 55px;">
@@ -556,7 +556,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 895px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['ubicacionGeografica']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewUbicacion" activeIndex="#{controlBusquedaAvanzada.tabActivaUbicacion}" onTabChange="#{controlBusquedaAvanzada.changeTapUbicacion()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewUbicacion" widgetVar="tabViewUbicacion" activeIndex="#{controlBusquedaAvanzada.tabActivaUbicacion}" onTabChange="#{controlBusquedaAvanzada.changeTapUbicacion()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapUbicacion()}" process="@this" />
                                         <p:tab id="tabMensajeUbicacion" title="#{msg['infoBasica']}" >
                                             <div style="height: 55px;">
@@ -622,7 +622,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 1040px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['afiliaciones']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewAfiliacion" activeIndex="#{controlBusquedaAvanzada.tabActivaAfiliacion}" onTabChange="#{controlBusquedaAvanzada.changeTapAfiliacion()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewAfiliacion" widgetVar="tabViewAfiliacion" activeIndex="#{controlBusquedaAvanzada.tabActivaAfiliacion}" onTabChange="#{controlBusquedaAvanzada.changeTapAfiliacion()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapAfiliacion()}" process="@this" />
                                         <p:tab id="tabMensajeAfiliacion" title="#{msg['infoBasica']}" >
                                             <div style="height: 55px;">
@@ -699,7 +699,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 1185px; font-size: 11px; width: 810px; height: 130px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['formaPago']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewFormaPago" activeIndex="#{controlBusquedaAvanzada.tabActivaFormaPago}" onTabChange="#{controlBusquedaAvanzada.changeTapFormaPago()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewFormaPago" widgetVar="tabViewFormaPago" activeIndex="#{controlBusquedaAvanzada.tabActivaFormaPago}" onTabChange="#{controlBusquedaAvanzada.changeTapFormaPago()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapFormaPago()}" process="@this" />
                                         <p:tab id="tabMensajeFormaPago" title="#{msg['infoBasica']}" >
                                             <div style="height: 60px;">
@@ -768,7 +768,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 1335px; font-size: 11px; width: 810px; height: 135px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['mvr']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewMvrs" activeIndex="#{controlBusquedaAvanzada.tabActivaCentroCosto}" onTabChange="#{controlBusquedaAvanzada.changeTapMvrs()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewMvrs" widgetVar="tabViewMvrs" activeIndex="#{controlBusquedaAvanzada.tabActivaCentroCosto}" onTabChange="#{controlBusquedaAvanzada.changeTapMvrs()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapMvrs()}" process="@this" />
                                         <p:tab id="tabMensajeMvrs" title="#{msg['infoBasica']}" >
                                             <div style="height: 65px;">
@@ -846,7 +846,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 1490px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['set']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewSets" activeIndex="#{controlBusquedaAvanzada.tabActivaSets}" onTabChange="#{controlBusquedaAvanzada.changeTapSets()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewSets" widgetVar="tabViewSets" activeIndex="#{controlBusquedaAvanzada.tabActivaSets}" onTabChange="#{controlBusquedaAvanzada.changeTapSets()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapSets()}" process="@this" />
                                         <p:tab id="tabMensajeSets" title="#{msg['infoBasica']}" >
                                             <div style="height: 55px;">
@@ -892,7 +892,7 @@
                                                 </p:selectOneRadio>  
 
                                                 <fieldset style="position: absolute; left: 400px; top: 55px; font-size: 11px; width: 180px; height: 50px; border-radius: 5px; ">
-                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaInicio']}Fecha Inicio</strong></legend>
+                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaInicio']}</strong></legend>
 
                                                     <h:outputText value="#{msg['entre']}" style="position: absolute; left: 10px; top: 15px;color: #14388B;font-weight: bold"/>
                                                     <div id="posicionFechaMIInicialModSets" style="font-size: 10px; position: absolute; top: 10px; left: 70px">
@@ -917,7 +917,7 @@
                                                 </fieldset>
 
                                                 <fieldset style="position: absolute; left: 610px; top: 55px; font-size: 11px; width: 180px; height: 50px; border-radius: 5px; ">
-                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaFinal']}Fecha Finalizacion</strong></legend>
+                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaFinal']}</strong></legend>
 
                                                     <h:outputText value="#{msg['entre']}" style="position: absolute; left: 10px; top: 15px;color: #14388B;font-weight: bold"/>
                                                     <div id="posicionFechaMFInicialModSets" style="font-size: 10px; position: absolute; top: 10px; left: 70px">
@@ -949,7 +949,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 1635px; font-size: 11px; width: 395px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['normaLaboral']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 395px;font-size: 11px;border: none" id="tabViewNormaLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaNormaLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapNormaLaboral()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 395px;font-size: 11px;border: none" id="tabViewNormaLaboral" widgetVar="tabViewNormaLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaNormaLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapNormaLaboral()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapNormaLaboral()}" process="@this" />
                                         <p:tab id="tabMensajeNormaLaboral" title="#{msg['infoBasica']}" >
                                             <div style="height: 45px;">
@@ -1010,7 +1010,7 @@
                                 <fieldset style="position: absolute; left: 435px; top: 1635px; font-size: 11px; width: 380px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['vacaciones']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 375px;font-size: 11px;border: none" id="tabViewVacacion" activeIndex="#{controlBusquedaAvanzada.tabActivaVacacion}" onTabChange="#{controlBusquedaAvanzada.changeTapVacacion()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 375px;font-size: 11px;border: none" id="tabViewVacacion" widgetVar="tabViewVacacion" activeIndex="#{controlBusquedaAvanzada.tabActivaVacacion}" onTabChange="#{controlBusquedaAvanzada.changeTapVacacion()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapVacacion()}" process="@this" />
                                         <p:tab id="tabMensajeVacacion" title="#{msg['infoBasica']}" >
                                             <div style="height: 45px;">
@@ -1031,7 +1031,7 @@
 
 
                                                 <fieldset style="position: absolute; left: 0px; top: 40px; font-size: 11px; width: 165px; height: 50px; border-radius: 5px; ">
-                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaSalida']}Fecha Salida</strong></legend>
+                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaSalida']}</strong></legend>
 
                                                     <h:outputText value="#{msg['entre']}" style="position: absolute; left: 10px; top: 15px;color: #14388B;font-weight: bold"/>
                                                     <div id="posicionFechaMIInicialModVacacion" style="font-size: 10px; position: absolute; top: 10px; left: 60px">
@@ -1087,7 +1087,7 @@
                                 <fieldset style="position: absolute; left: 5px; top: 1770px; font-size: 11px; width: 395px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['jornadaLaboral']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border: none" id="tabViewJornadaLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaJornadaLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapJornadaLaboral()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 390px;font-size: 11px;border: none" id="tabViewJornadaLaboral" widgetVar="tabViewJornadaLaboral" activeIndex="#{controlBusquedaAvanzada.tabActivaJornadaLaboral}" onTabChange="#{controlBusquedaAvanzada.changeTapJornadaLaboral()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapJornadaLaboral()}" process="@this" />
                                         <p:tab id="tabMensajeJornadaLaboral" title="#{msg['infoBasica']}" >
                                             <div style="height: 45px;">
@@ -1140,7 +1140,7 @@
                                 <fieldset style="position: absolute; left: 430px; top: 1770px; font-size: 11px; width: 385px; height: 115px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['fechaRetiro']}</strong></legend>
 
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 385px;font-size: 11px;border: none" id="tabViewFechaRetiro" activeIndex="#{controlBusquedaAvanzada.tabActivaFechaRetiro}" onTabChange="#{controlBusquedaAvanzada.changeTapFechaRetiro()}">
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 385px;font-size: 11px;border: none" id="tabViewFechaRetiro" widgetVar="tabViewFechaRetiro" activeIndex="#{controlBusquedaAvanzada.tabActivaFechaRetiro}" onTabChange="#{controlBusquedaAvanzada.changeTapFechaRetiro()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapFechaRetiro()}" process="@this" />
                                         <p:tab id="tabMensajeFechaRetiro" title="#{msg['infoBasica']}" >
                                             <div style="height: 45px;">
@@ -1192,17 +1192,18 @@
 
 
 
-                                <p:remoteCommand name="posicionModuloCargo" actionListener="#{controlBusquedaAvanzada.posicionModuloCargo()}"/>
-                                <p:remoteCommand name="posicionModuloUbicacion" actionListener="#{controlBusquedaAvanzada.posicionModuloUbicacion()}"/>
                             </p:scrollPanel>
 
+                            <p:remoteCommand name="posicionModuloCargo" actionListener="#{controlBusquedaAvanzada.posicionModuloCargo()}"/>
+                            <p:remoteCommand name="posicionModuloUbicacion" actionListener="#{controlBusquedaAvanzada.posicionModuloUbicacion()}"/>
+                            
                             <p:scrollPanel mode="native" id="scrollPanelPersonal" style="position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none" >
+
 
                                 <fieldset style="position: absolute; left: 5px; top: 2px; font-size: 11px; width: 810px; height: 135px; border-radius: 5px; ">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['datosPersonales']}</strong></legend>
 
-
-                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewDatosPersonal" activeIndex="#{controlBusquedaAvanzada.tabActivaDatosPersonales}" onTabChange="#{controlBusquedaAvanzada.changeTapDatosPersonales()}">
+                                    <p:tabView widgetVar="tabViewDatosPersonales" style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border : none;" id="tabViewDatosPersonales" activeIndex="#{controlBusquedaAvanzada.tabActivaDatosPersonales}" onTabChange="#{controlBusquedaAvanzada.changeTapDatosPersonales()}">
                                         <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapDatosPersonales()}" process="@this" />
                                         <p:tab id="tabMensajeDatosPersonales" title="#{msg['infoBasica']}" >
                                             <div style="height: 65px;">
@@ -1216,20 +1217,21 @@
                                                 </p:scrollPanel>
                                             </div>
                                         </p:tab>
-
                                         <p:tab id="tabDatosDatosPersonales" title="#{msg['tabDatosDatosPersonales']}">
+                                            
                                             <div style="height: 65px;">
+                                                
                                                 <h:outputText value="#{msg['numeroDocumento']}" style="position: absolute; left: 10px; top: 50px;color: #14388B;font-weight: bold"/>
                                                 <p:inputText onclick="select();" style="position: absolute; left: 140px; top: 45px;width: 140px"
-                                                             id="parametroNumeroDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.numerodocumento}">
-                                                    <p:ajax event="change"  process="@this" update="parametroNumeroDocumentoModDatosPersonales"/>
+                                                             id="parametroNumeroDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre}">
+                                                    <p:ajax event="change" process="@this" update="parametroNumeroDocumentoModDatosPersonales"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(0)}" process="@this"/>
                                                 </p:inputText>
 
                                                 <h:outputText value="#{msg['ciudadDocumento']}" style="position: absolute; left: 10px; top: 85px;color: #14388B;font-weight: bold"/>
                                                 <p:inputText onclick="select();" style="position: absolute; left: 140px; top: 80px;text-transform: uppercase;width: 140px"
                                                              id="parametroCiudadDocumentoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre}">
-                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosDatosPersonales('ESTRUCTURA', controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre)}" process="@this" update="parametroCiudadDocumentoModDatosPersonales"/>
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosDatosPersonales('ESTRUCTURA', controlBusquedaAvanzada.empleadoBA.persona.numerodocumento)}" process="@this" update="parametroCiudadDocumentoModDatosPersonales"/>
                                                     <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(1)}" process="@this"/>
                                                     <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
                                                 </p:inputText>
@@ -1237,15 +1239,15 @@
                                                 <h:outputText value="#{msg['ciudadNacimiento']}" style="position: absolute; left: 300px; top: 50px;color: #14388B;font-weight: bold"/>
                                                 <p:inputText onclick="select();" style="position: absolute; left: 440px; top: 45px;text-transform: uppercase;width: 140px"
                                                              id="parametroCiudadNacimientoModDatosPersonales" value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre}">
-                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosCargo('NACIMIENTO', controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre)}" process="@this" update="parametroCiudadNacimientoModDatosPersonales"/>
-                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(2)}" process="@this"/>
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosDatosPersonales('NACIMIENTO', controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre)}" process="@this" update="parametroCiudadNacimientoModDatosPersonales"/>
+                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(2)}" process="@this"/>
                                                     <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
 
                                                 </p:inputText>
 
                                                 <h:outputText value="#{msg['sexo']}" style="position: absolute; left: 300px; top: 85px;color: #14388B;font-weight: bold"/>
                                                 <p:selectOneMenu id="parametroSexoModDatosPersonales"  style="position: absolute; left: 440px; top: 80px;width: 110px" value="#{controlBusquedaAvanzada.empleadoBA.persona.sexo}">
-                                                    <f:selectItem itemLabel="" itemValue="null" />
+                                                    <f:selectItem itemLabel="" itemValue="" />
                                                     <f:selectItem itemLabel="#{msg['masculino']}" itemValue="M" />
                                                     <f:selectItem itemLabel="#{msg['femenino']}" itemValue="F" />
                                                     <p:ajax event="change" update="parametroSexoModDatosPersonales" process="@this"/>
@@ -1254,18 +1256,121 @@
                                                 <h:outputText value="#{msg['entre']}" style="position: absolute; left: 630px; top: 55px;color: #14388B;font-weight: bold"/>
                                                 <div id="posicionFechaInicialModDatosPersonales" style="font-size: 10px; position: absolute; top: 50px; left: 680px">
                                                     <lnk:calendar id="parametroFechaInicialModDatosPersonales" value="#{controlBusquedaAvanzada.fechaInicialDatosPersonales}" >
-                                                        <p:ajax event="dateSelect" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(3)}" process="@this" />
-                                                        <p:ajax event="change" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(3)}" process="@this"/>
-                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(3)}" process="@this"/>
+                                                        <p:ajax event="dateSelect" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloDatosPersonales(3)}" process="@this" />
+                                                        <p:ajax event="change" update="parametroFechaInicialModDatosPersonales" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloDatosPersonales(3)}" process="@this"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(3)}" process="@this"/>
                                                     </lnk:calendar>
                                                 </div>
 
                                                 <h:outputText value="#{msg['yel']}" style="position: absolute; left: 630px; top: 80px;color: #14388B;font-weight: bold"/>
                                                 <div id="posicionFechaFinalModDatosPersonales" style="font-size: 10px; position: absolute; top: 75px; left: 680px">
                                                     <lnk:calendar id="parametroFechaFinalModDatosPersonales" value="#{controlBusquedaAvanzada.fechaFinalDatosPersonales}" >
-                                                        <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
-                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloCargo(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
-                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceCargo(4)}" process="@this" />
+                                                        <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloDatosPersonales(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloDatosPersonales(4)}" update="parametroFechaFinalModDatosPersonales" process="@this"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceDatosPersonales(4)}" process="@this" />
+                                                    </lnk:calendar>
+                                                </div>
+                                               
+
+                                            </div>
+                                        </p:tab>
+                                    </p:tabView>
+                                </fieldset>
+                                                                
+                                 <fieldset style="position: absolute; left: 5px; top: 155px; font-size: 11px; width: 310px; height: 115px; border-radius: 5px; ">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['factorRH']}</strong></legend>
+
+                                    <p:tabView widgetVar="tabViewFactorRH" style="position: absolute; top: 15px; left: 5px; width: 310px;font-size: 11px;border : none;" id="tabViewFactorRH" activeIndex="#{controlBusquedaAvanzada.tabActivaFactorRH}" onTabChange="#{controlBusquedaAvanzada.changeTapFactorRH()}">
+                                        <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapFactorRH()}" process="@this" />
+                                        <p:tab id="tabMensajeFactorRH" title="#{msg['infoBasica']}" >
+                                            <div style="height: 45px;">
+                                                <p:scrollPanel style="width: 300px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
+                                                    <h:outputText id="textFactorRH"
+                                                                  value="#{msg['textFactorRH']}" /><br></br>
+                                                    <h:outputText value="#{msg['textFactorRH2']}" />
+                                                </p:scrollPanel>
+                                            </div>
+                                        </p:tab>
+
+                                        <p:tab id="tabDatosFactorRH" title="#{msg['tabDatosFactorRH']}">
+                                            <div style="height: 45px;">
+                                                <h:outputText value="#{msg['grupoSanguineo']}" style="position: absolute; left: 15px; top: 45px;color: #14388B;font-weight: bold"/>
+                                                <p:selectOneMenu id="parametroGrupoSanguineoModFactorRH"  style="position: absolute; left: 140px; top: 40px;width: 110px" value="#{controlBusquedaAvanzada.empleadoBA.persona.gruposanguineo}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItem itemLabel="A" itemValue="A" />
+                                                    <f:selectItem itemLabel="AB" itemValue="AB" />
+                                                    <f:selectItem itemLabel="B" itemValue="B" />
+                                                    <f:selectItem itemLabel="O" itemValue="O" />
+                                                    <p:ajax event="change" update="parametroGrupoSanguineoModFactorRH" process="@this"/>
+                                                </p:selectOneMenu>
+                                                
+                                                <h:outputText value="#{msg['factorRH']}" style="position: absolute; left: 15px; top: 75px;color: #14388B;font-weight: bold"/>
+                                                <p:selectOneMenu id="parametroFactorRHModFactorRH"  style="position: absolute; left: 140px; top: 70px;width: 110px" value="#{controlBusquedaAvanzada.empleadoBA.persona.factorrh}">
+                                                    <f:selectItem itemLabel="" itemValue="" />
+                                                    <f:selectItem itemLabel="+" itemValue="+" />
+                                                    <f:selectItem itemLabel="-" itemValue="-" />
+                                                    <p:ajax event="change" update="parametroFactorRHModFactorRH" process="@this"/>
+                                                </p:selectOneMenu>
+
+
+                                            </div>
+                                        </p:tab>
+
+                                    </p:tabView>
+                                </fieldset>
+                                
+                                <fieldset style="position: absolute; left: 350px; top: 155px; font-size: 11px; width: 465px; height: 115px; border-radius: 5px; ">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['estadoCivil']}</strong></legend>
+
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 465px;font-size: 11px;border : none;" id="tabViewEstadoCivil" widgetVar="tabViewEstadoCivil" activeIndex="#{controlBusquedaAvanzada.tabActivaEstadoCivil}" onTabChange="#{controlBusquedaAvanzada.changeTapEstadoCivil()}">
+                                        <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapEstadoCivil()}" process="@this" />
+                                        <p:tab id="tabMensajeEstadoCivil" title="#{msg['infoBasica']}" >
+                                            <div style="height: 45px;">
+                                                <p:scrollPanel style="width: 455px; height: 55px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
+                                                    <h:outputText id="textEstadoCivil"
+                                                                  value="#{msg['textEstadoCivil']}" /><br></br>
+                                                    <h:outputText value="#{msg['opcion1Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion2Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion3Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion4EstadoCivil']}"/><br></br>
+                                                    <h:outputText value="#{msg['textEstadoCivil2']}" />
+                                                </p:scrollPanel>
+                                            </div>
+                                        </p:tab>
+
+                                        <p:tab id="tabDatosEstadoCivil" title="#{msg['tabDatosEstadoCivil']}">
+                                            <div style="height: 45px;">
+                                                <h:outputText value="#{msg['estadoCivil']}" style="position: absolute; left: 90px; top: 50px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 30px; top: 65px;text-transform: uppercase;width: 170px"
+                                                             id="parametroEstadoCivilModEstadoCivil" value="#{controlBusquedaAvanzada.estadoCivilBA.descripcion}">
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosEstadoCivil('REFORMA', controlBusquedaAvanzada.estadoCivilBA.descripcion)}" process="@this" update="parametroEstadoCivilModEstadoCivil"/>
+                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceEstadoCivil(0)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
+                                                </p:inputText>
+
+                                                <p:selectOneRadio id="tipoFechaEstadoCivil" style="position: absolute; left: 190px; top: 30px;" onchange="#{controlBusquedaAvanzada.activarCasillasFechasEstadoCivil()}" value="#{controlBusquedaAvanzada.tipoFechaEstadoCivil}">
+                                                    <f:selectItem itemLabel="#{msg['actual']}" itemValue="1" />
+                                                    <f:selectItem itemLabel="#{msg['historico']}" itemValue="2" />
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.activarCasillasFechasEstadoCivil()}" process="@this"/>
+                                                </p:selectOneRadio>  
+
+                                                <h:outputText value="#{msg['entre']}" style="position: absolute; left: 260px; top: 65px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaInicialModEstadoCivil" style="font-size: 10px; position: absolute; top: 60px; left: 310px">
+                                                    <lnk:calendar id="parametroFechaInicialModEstadoCivil" disabled="#{controlBusquedaAvanzada.activoFechasEstadoCivil}"
+                                                                  value="#{controlBusquedaAvanzada.fechaInicialEstadoCivil}" >
+                                                        <p:ajax event="dateSelect" update="parametroFechaInicialModEstadoCivil" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloEstadoCivil(1)}" process="@this" />
+                                                        <p:ajax event="change" update="parametroFechaInicialModEstadoCivil" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloEstadoCivil(1)}" process="@this"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceEstadoCivil(1)}" process="@this"/>
+                                                    </lnk:calendar>
+                                                </div>
+
+                                                <h:outputText value="#{msg['yel']}" style="position: absolute; left: 260px; top: 90px;color: #14388B;font-weight: bold"/>
+                                                <div id="posicionFechaFinalModEstadoCivil" style="font-size: 10px; position: absolute; top: 85px; left: 310px">
+                                                    <lnk:calendar id="parametroFechaFinalModEstadoCivil" disabled="#{controlBusquedaAvanzada.activoFechasEstadoCivil}"
+                                                                  value="#{controlBusquedaAvanzada.fechaFinalEstadoCivil}" >
+                                                        <p:ajax event="dateSelect" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloEstadoCivil(2)}" update="parametroFechaFinalModEstadoCivil" process="@this"/>
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarFechaFinalModuloEstadoCivil(2)}" update="parametroFechaFinalModEstadoCivil" process="@this"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceEstadoCivil(2)}" process="@this" />
                                                     </lnk:calendar>
                                                 </div>
 
@@ -1274,7 +1379,100 @@
 
                                     </p:tabView>
                                 </fieldset>
+                               
+                                 <fieldset style="position: absolute; left: 5px; top: 303px; font-size: 11px; width: 810px; height: 125px; border-radius: 5px; ">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['idioma']}</strong></legend>
 
+                                    <p:tabView style="position: absolute; top: 15px; left: 5px; width: 810px;font-size: 11px;border: none" id="tabViewIdioma" widgetVar="tabViewIdioma" activeIndex="#{controlBusquedaAvanzada.tabActivaIdioma}" onTabChange="#{controlBusquedaAvanzada.changeTapIdioma()}">
+                                        <p:ajax event="tabChange" listener="#{controlBusquedaAvanzada.changeTapIdioma()}" process="@this" />
+                                        <p:tab id="tabMensajeIdioma" title="#{msg['infoBasica']}" >
+                                            <div style="height: 55px;">
+                                                <p:scrollPanel style="width: 800px; height: 70px; position: absolute; top: 40px; left: 5px;border : none" mode="native" > 
+                                                    <h:outputText id="textIdioma"
+                                                                  value="#{msg['textIdioma']}" /><br></br>
+                                                    <h:outputText value="#{msg['opcion1Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion2Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion3Personal']}"/><br></br>
+                                                    <h:outputText value="#{msg['opcion4Idioma']}"/><br></br>
+                                                    <h:outputText value="#{msg['textIdioma2']}" />
+                                                </p:scrollPanel>
+                                            </div>
+                                        </p:tab>
+
+                                        <p:tab id="tabDatosIdioma" title="#{msg['tabDatosIdioma']}">
+                                            <div style="height: 55px;">
+                                                <h:outputText value="#{msg['idioma']}" style="position: absolute; left: 10px; top: 70px;color: #14388B;font-weight: bold"/>
+                                                <p:inputText onclick="select();" style="position: absolute; left: 110px; top: 65px;text-transform: uppercase;width: 170px"
+                                                             id="parametroIdiomaModIdioma" value="#{controlBusquedaAvanzada.idiomaPersonaBA.idioma.nombre}">
+                                                    <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarParametrosIdioma('IDIOMA', idiomaPersonaBA.idioma.nombre)}" process="@this" update="parametroIdiomaModIdioma"/>
+                                                    <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(0)}" process="@this"/>
+                                                    <p:ajax event="dblclick" listener="#{controlBusquedaAvanzada.botonListaValores()}" process="@this"/>
+                                                </p:inputText>
+
+                                              
+
+                                                <fieldset style="position: absolute; left: 350px; top: 45px; font-size: 11px; width: 100px; height: 50px; border-radius: 5px; ">
+                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['conversacion']}</strong></legend>
+
+                                                    <h:outputText value="% #{msg['desde']}" style="position: absolute; left: 10px; top: 15px;color: #14388B;font-weight: bold"/>
+                                                    <p:inputText onclick="select();" style="position: absolute; top: 10px; left: 70px; width: 30px; "
+                                                             id="parametroConversacionDesdeModIdioma" value="#{controlBusquedaAvanzada.conversacionDesde}">
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarConversacionModuloIdioma()}" process="@this" update="parametroConversacionDesdeModIdioma"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(1)}" process="@this"/>
+                                                   </p:inputText>
+
+                                                    <h:outputText value="% #{msg['hasta']}" style="position: absolute; left: 10px; top: 40px;color: #14388B;font-weight: bold"/>
+                                                    <p:inputText onclick="select();" style="position: absolute; top: 35px; left: 70px; width: 30px; "
+                                                             id="parametroConversacionHastaModIdioma" value="#{controlBusquedaAvanzada.conversacionHasta}">
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarConversacionModuloIdioma()}" process="@this" update="parametroConversacionHastaModIdioma"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(2)}" process="@this"/>
+                                                   </p:inputText>
+                                                   
+
+                                                </fieldset>
+
+                                                <fieldset style="position: absolute; left: 490px; top: 45px; font-size: 11px; width: 100px; height: 50px; border-radius: 5px; ">
+                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['lectura']}</strong></legend>
+
+                                                    <h:outputText value="% #{msg['desde']}" style="position: absolute; left: 10px; top: 15px;color: #14388B;font-weight: bold"/>
+                                                    <p:inputText onclick="select();" style="position: absolute; top: 10px; left: 70px; width: 30px; "
+                                                             id="parametroLecturaDesdeModIdioma" value="#{controlBusquedaAvanzada.lecturaDesde}">
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarLecturaModuloIdioma()}" process="@this" update="parametroLecturaDesdeModIdioma"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(3)}" process="@this"/>
+                                                   </p:inputText>
+
+                                                    <h:outputText value="% #{msg['hasta']}" style="position: absolute; left: 10px; top: 40px;color: #14388B;font-weight: bold"/>
+                                                    <p:inputText onclick="select();" style="position: absolute; top: 35px; left: 70px; width: 30px; "
+                                                             id="parametroLecturaHastaModIdioma" value="#{controlBusquedaAvanzada.lecturaHasta}">
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarLecturaModuloIdioma()}" process="@this" update="parametroLecturaHastaModIdioma"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(4)}" process="@this"/>
+                                                   </p:inputText>
+
+                                                </fieldset>
+                                                
+                                                <fieldset style="position: absolute; left: 630px; top: 45px; font-size: 11px; width: 100px; height: 50px; border-radius: 5px; ">
+                                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['escritura']}</strong></legend>
+
+                                                    <h:outputText value="% #{msg['desde']}" style="position: absolute; left: 10px; top: 15px;color: #14388B;font-weight: bold"/>
+                                                    <p:inputText onclick="select();" style="position: absolute; top: 10px; left: 70px; width: 30px; "
+                                                             id="parametroEscrituraDesdeModIdioma" value="#{controlBusquedaAvanzada.escrituraDesde}">
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarEscrituraModuloIdioma()}" process="@this" update="parametroEscrituraDesdeModIdioma"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(3)}" process="@this"/>
+                                                   </p:inputText>
+
+                                                    <h:outputText value="% #{msg['hasta']}" style="position: absolute; left: 10px; top: 40px;color: #14388B;font-weight: bold"/>
+                                                    <p:inputText onclick="select();" style="position: absolute; top: 35px; left: 70px; width: 30px; "
+                                                             id="parametroEscrituraHastaModIdioma" value="#{controlBusquedaAvanzada.escrituraHasta}">
+                                                        <p:ajax event="change" listener="#{controlBusquedaAvanzada.modificarEscrituraModuloIdioma()}" process="@this" update="parametroEscrituraHastaModIdioma"/>
+                                                        <p:ajax event="select" listener="#{controlBusquedaAvanzada.cambiarIndiceIdioma(4)}" process="@this"/>
+                                                   </p:inputText>
+
+                                                </fieldset>
+                                            </div>
+                                        </p:tab>
+
+                                    </p:tabView>
+                                </fieldset>
 
                             </p:scrollPanel>
 
@@ -1322,8 +1520,71 @@
 
                     <!-- Dialogos de la #$%& cantidad de listas de valores que hay !-->
 
+                       <p:dialog header="#{msg['idiomasD']}" widgetVar="IdiomaIdiomaDialogo" draggable="false" resizable="false" closable="false" id="IdiomaIdiomaDialogo"  
+                              showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovIdiomaIdioma" style="font-size: 11px; width: 490px" var="idiomaI" value="#{controlBusquedaAvanzada.lovIdiomas}" rowKey="#{idiomaI.secuencia}"
+                                     selection="#{controlBusquedaAvanzada.idiomaSeleccionado}" selectionMode="single" widgetVar="lovIdiomaIdioma" scrollable="true" scrollWidth="505" scrollHeight="250"
+                                     filteredValue="#{controlBusquedaAvanzada.filtrarLovIdiomas}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarII"/>
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroIdiomaIdioma()}"  process="@this" onstart="lovIdiomaIdioma.clearFilters()" />
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarII']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovIdiomaIdioma.filter();" style="width:150px; position: relative; left: 20px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{idiomaI.codigo}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['codigo']}" />
+                                </f:facet>
+                                <h:outputText  value="#{idiomaI.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{idiomaI.nombre}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nombre']}" />
+                                </f:facet>
+                                <h:outputText value="#{idiomaI.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarII" style="position: relative; left: 360px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroIdiomaIdioma()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="IdiomaIdiomaDialogo.hide(), lovIdiomaIdioma.clearFilters();" update="lovIdiomaIdioma, aceptarII" process="@this">
+                            <p:resetInput target=":form:lovIdiomaIdioma:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasII" style="position: relative; left: 360px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroIdiomaIdioma()}" onclick="IdiomaIdiomaDialogo.hide(), lovIdiomaIdioma.clearFilters();" update="lovIdiomaIdioma" process="@this">
+                            <p:resetInput target=":form:lovIdiomaIdioma:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                       <p:dialog header="#{msg['estadosCivilesD']}" widgetVar="EstadoCivilEstadoCivilDialogo" draggable="false" resizable="false" closable="false" id="EstadoCivilEstadoCivilDialogo"  
+                              showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
+                        <p:dataTable id="lovEstadoCivilEstadoCivil" style="font-size: 11px; width: 490px" var="estadoCivilEC" value="#{controlBusquedaAvanzada.lovEstadosCiviles}" rowKey="#{estadoCivilEC.secuencia}"
+                                     selection="#{controlBusquedaAvanzada.estadoCivilSeleccionado}" selectionMode="single" widgetVar="lovEstadoCivilEstadoCivil" scrollable="true" scrollWidth="505" scrollHeight="250"
+                                     filteredValue="#{controlBusquedaAvanzada.filtrarLovEstadosCiviles}" emptyMessage="#{msg['lovvacio']}">              
+                            <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarECEC"/>
+                            <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroEstadoCivilEstadoCivil()}"  process="@this" onstart="lovEstadoCivilEstadoCivil.clearFilters()" />
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarECEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEstadoCivilEstadoCivil.filter();" style="width:150px; position: relative; left: 20px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{estadoCivilEC.codigo}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['codigo']}" />
+                                </f:facet>
+                                <h:outputText  value="#{estadoCivilEC.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{estadoCivilEC.descripcion}" filterMatchMode="contains">
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['descripcion']}" />
+                                </f:facet>
+                                <h:outputText value="#{estadoCivilEC.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarECEC" style="position: relative; left: 360px" value="#{msg['aceptar']}" actionListener="#{controlBusquedaAvanzada.actualizarParametroEstadoCivilEstadoCivil()}" disabled="#{controlBusquedaAvanzada.aceptar}" onclick="EstadoCivilEstadoCivilDialogo.hide(), lovEstadoCivilEstadoCivil.clearFilters();" update="lovEstadoCivilEstadoCivil, aceptarECEC" process="@this">
+                            <p:resetInput target=":form:lovEstadoCivilEstadoCivil:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasECEC" style="position: relative; left: 360px" value="#{msg['atras']}" actionListener="#{controlBusquedaAvanzada.cancelarParametroEstadoCivilEstadoCivil()}" onclick="EstadoCivilEstadoCivilDialogo.hide(), lovEstadoCivilEstadoCivil.clearFilters();" update="lovEstadoCivilEstadoCivil" process="@this">
+                            <p:resetInput target=":form:lovEstadoCivilEstadoCivil:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
 
-                    <p:dialog header="Ciudades" widgetVar="CiudadDocumentoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoDatosPersonalesDialogo"  
+                    <p:dialog header="#{msg['ciudadesD']}" widgetVar="CiudadDocumentoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoDatosPersonalesDialogo"  
                               showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovCiudadDocumentoDatosPersonales" style="font-size: 11px; width: 490px" var="documentoDP" value="#{controlBusquedaAvanzada.lovCiudades}" rowKey="#{documentoDP.secuencia}"
                                      selection="#{controlBusquedaAvanzada.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadDocumentoDatosPersonales" scrollable="true" scrollWidth="505" scrollHeight="250"
@@ -1331,18 +1592,18 @@
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCDDP"/>
                             <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}"  process="@this" onstart="lovCiudadDocumentoDatosPersonales.clearFilters()" />
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarCDP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudadDocumentoDatosPersonales.filter();" style="width:150px; position: relative; left: 20px;" />  
                             </f:facet>
                             <p:column filterBy="#{documentoDP.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="Nombre" />
+                                    <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                 </f:facet>
                                 <h:outputText  value="#{documentoDP.nombre}" />
                             </p:column>
                             <p:column filterBy="#{documentoDP.departamento.nombre}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Departamento" />
+                                    <h:outputText value="#{msg['departamento']}" />
                                 </f:facet>
                                 <h:outputText value="#{documentoDP.departamento.nombre}" />
                             </p:column>
@@ -1355,7 +1616,7 @@
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog header="Ciudades" widgetVar="CiudadNacimientoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoDatosPersonalesDialogo"  
+                    <p:dialog header="#{msg['ciudadesD']}" widgetVar="CiudadNacimientoDatosPersonalesDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoDatosPersonalesDialogo"  
                               showEffect="fade" hideEffect="fade" width="520" modal="true" style="font-size: 11px;">
                         <p:dataTable id="lovCiudadNacimientoDatosPersonales" style="font-size: 11px; width: 490px" var="nacimientoDP" value="#{controlBusquedaAvanzada.lovCiudades}" rowKey="#{nacimientoDP.secuencia}"
                                      selection="#{controlBusquedaAvanzada.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudadNacimientoDatosPersonales" scrollable="true" scrollWidth="505" scrollHeight="250"
@@ -1363,18 +1624,18 @@
                             <p:ajax event="rowSelect" listener="#{controlBusquedaAvanzada.activarAceptar()}" update=":form:aceptarCNDP"/>
                             <p:ajax event="rowDblselect" listener="#{controlBusquedaAvanzada.actualizarParametroCiudadDocumentoDatosPersonales()}"  process="@this" onstart="lovCiudadNacimientoDatosPersonales.clearFilters()" />
                             <f:facet name="header">  
-                                <h:outputText value="Buscar Ciudad: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <h:outputText value="#{msg['buscarCDP']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="lovCiudadNacimientoDatosPersonales.filter();" style="width:150px; position: relative; left: 20px;" />  
                             </f:facet>
                             <p:column filterBy="#{nacimientoDP.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
-                                    <h:outputText style="text-align: center" value="Nombre" />
+                                    <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                 </f:facet>
                                 <h:outputText  value="#{nacimientoDP.nombre}" />
                             </p:column>
                             <p:column filterBy="#{nacimientoDP.departamento.nombre}" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText value="Departamento" />
+                                    <h:outputText value="#{msg['departamento']}" />
                                 </f:facet>
                                 <h:outputText value="#{nacimientoDP.departamento.nombre}" />
                             </p:column>
@@ -2088,6 +2349,11 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorNewColumna']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                    <p:dialog id="errorIdiomaPorcentajes" header="#{msg['atencion']}" widgetVar="errorIdiomaPorcentajes"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorIdiomaPorcentajes']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
                 </h:form>
 
@@ -2606,34 +2872,93 @@
                     
                     <!-- MODULO DATOS PERSONALES -->
 
-                    <p:dialog id="editarNumeroDocumentoModDatosPersonales" header="#{msg['editarNumeroDocumentoModDatosPersonales']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNumeroDocumentoModDatosPersonales" header="#{msg['editarNumeroDocumentoModDatosPersonales']}" widgetVar="editarNumeroDocumentoModDatosPersonales" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.persona.numerodocumento}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarNumeroDocumentoModDatosPersonales" value="#{msg['atras']}" onclick="editarNumeroDocumentoModDatosPersonales.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     
-                    <p:dialog id="editarCiudadDocumentoModDatosPersonales" header="#{msg['editarCiudadDocumentoModDatosPersonales']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
-                        <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.ciudaddocumento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    <p:dialog id="editarCiudadDocumentoModDatosPersonales" header="#{msg['editarCiudadDocumentoModDatosPersonales']}" widgetVar="editarCiudadDocumentoModDatosPersonales" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudaddocumento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCiudadDocumentoModDatosPersonales" value="#{msg['atras']}" onclick="editarCiudadDocumentoModDatosPersonales.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
                     
-                    <p:dialog id="editarCiudadNacimientoModDatosPersonales" header="#{msg['editarCiudadNacimientoModDatosPersonales']}" widgetVar="editarMotivoModFechaRetiro" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCiudadNacimientoModDatosPersonales" header="#{msg['editarCiudadNacimientoModDatosPersonales']}" widgetVar="editarCiudadNacimientoModDatosPersonales" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlBusquedaAvanzada.empleadoBA.persona.ciudadnacimiento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarCiudadNacimientoModDatosPersonaless" value="#{msg['atras']}" onclick="editarCiudadNacimientoModDatosPersonales.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="editarFechaInicialModDatosPersonales" header="#{msg['editarFechaInicialModDatosPersonales']}" widgetVar="editarFechaInicialModDatosPersonales" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialDatosPersonales}" id="editFechaInicialModFechaRetiro"  styleClass="ui-datepicker, myClass"  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialDatosPersonales}" id="editFechaInicialModDatosPersonales"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaInicialModDatosPersonales" value="#{msg['atras']}" onclick="editarFechaInicialModDatosPersonales.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="editarFechaFinalModDatosPersonales" header="#{msg['editarFechaFinalModDatosPersonales']}" widgetVar="editarFechaFinalModDatosPersonales" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalDatosPersonales}" id="editFechaFinalModFechaRetiro"  styleClass="ui-datepicker, myClass"  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalDatosPersonales}" id="editFechaFinalModFDatosPersonales"  styleClass="ui-datepicker, myClass"  
                                      navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                         </p:calendar>
                         <p:commandButton id="cancelarFechaFinalModDatosPersonales" value="#{msg['atras']}" onclick="editarFechaFinalModDatosPersonales.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
                     </p:dialog>
+                    
+                    <!-- MODULO ESTADO CIVIL -->
+
+                    <p:dialog id="editarEstadoCivilModEstadoCivil" header="#{msg['editarEstadoCivilModEstadoCivil']}" widgetVar="editarEstadoCivilModEstadoCivil" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.estadoCivilBA.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEstadoCivilModEstadoCivil" value="#{msg['atras']}" onclick="editarEstadoCivilModEstadoCivil.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaInicialModEstadoCivil" header="#{msg['editarFechaInicialModEstadoCivil']}" widgetVar="editarFechaInicialModEstadoCivil" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaInicialEstadoCivil}" id="editFechaInicialModEstadoCivil"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaInicialModEstadoCivil" value="#{msg['atras']}" onclick="editarFechaInicialModEstadoCivil.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="editarFechaFinalModEstadoCivil" header="#{msg['editarFechaFinalModEstadoCivil']}" widgetVar="editarFechaFinalModEstadoCivil" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
+                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlBusquedaAvanzada.fechaFinalEstadoCivil}" id="editFechaFinalModFEstadoCivil"  styleClass="ui-datepicker, myClass"  
+                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
+                        </p:calendar>
+                        <p:commandButton id="cancelarFechaFinalModEstadoCivil" value="#{msg['atras']}" onclick="editarFechaFinalModEstadoCivil.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    </p:dialog>
+                    
+                    <!-- MODULO IDIOMA -->
+
+                    <p:dialog id="editarIdiomaModIdioma" header="#{msg['editarIdiomaModIdioma']}" widgetVar="editarIdiomaModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.idiomaPersonaBA.idioma.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarIdiomaModIdioma" value="#{msg['atras']}" onclick="editarIdiomaModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarConversacionDesdeModIdioma" header="#{msg['editarConversacionDesdeModIdioma']}" widgetVar="editarConversacionDesdeModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.conversacionDesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarConversacionDesdeModIdioma" value="#{msg['atras']}" onclick="editarConversacionDesdeModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarConversacionHastaModIdioma" header="#{msg['editarConversacionHastaModIdioma']}" widgetVar="editarConversacionHastaModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.conversacionHasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarConversacionHastaModIdioma" value="#{msg['atras']}" onclick="editarConversacionHastaModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarLecturaDesdeModIdioma" header="#{msg['editarLecturaDesdeModIdioma']}" widgetVar="editarLecturaDesdeModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.conversacionDesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarLecturaDesdeModIdioma" value="#{msg['atras']}" onclick="editarLecturaDesdeModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarLecturaHastaModIdioma" header="#{msg['editarLecturaHastaModIdioma']}" widgetVar="editarLecturaHastaModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.conversacionHasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarLecturaHastaModIdioma" value="#{msg['atras']}" onclick="editarLecturaHastaModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarEscrituraDesdeModIdioma" header="#{msg['editarEscrituraDesdeModIdioma']}" widgetVar="editarEscrituraDesdeModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.conversacionDesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEscrituraDesdeModIdioma" value="#{msg['atras']}" onclick="editarEscrituraDesdeModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarEscrituraHastaModIdioma" header="#{msg['editarEscrituraHastaModIdioma']}" widgetVar="editarEscrituraHastaModIdioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                        <p:inputTextarea value="#{controlBusquedaAvanzada.conversacionHasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:commandButton id="cancelarEscrituraHastaModIdioma" value="#{msg['atras']}" onclick="editarEscrituraHastaModIdioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
+                    </p:dialog>
+
                  
                     <!-- TABLA BUSQUEDA AVANZADA -->
 

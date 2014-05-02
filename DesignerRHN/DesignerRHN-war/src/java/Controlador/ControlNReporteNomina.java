@@ -145,7 +145,6 @@ public class ControlNReporteNomina implements Serializable {
     //BANDERAS
     private boolean estadoReporte;
     private String resultadoReporte;
-    FileInputStream prueba;
 
     public ControlNReporteNomina() throws FileNotFoundException {
         activoMostrarTodos = true;
@@ -193,8 +192,6 @@ public class ControlNReporteNomina implements Serializable {
         permitirIndex = true;
         altoTabla = "185";
         indice = -1;
-        prueba = new FileInputStream(new File("C:\\Users\\Administrador\\Documents\\Guia JasperReport.pdf"));
-        reporte = new DefaultStreamedContent(prueba, "application/pdf");
         reporte = new DefaultStreamedContent();
         cabezeraVisor = null;
         estadoReporte = false;
