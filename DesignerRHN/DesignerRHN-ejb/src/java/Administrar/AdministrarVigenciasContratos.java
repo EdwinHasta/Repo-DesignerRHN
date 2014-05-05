@@ -81,7 +81,7 @@ public class AdministrarVigenciasContratos implements AdministrarVigenciasContra
         }
     }
 
-    @Override
+    //@Override
     public List<Contratos> contratos() {
         try {
             contratos = persistenciaContratos.buscarContratos();
