@@ -7,12 +7,16 @@ import Entidades.CentrosCostos;
 import Entidades.Ciudades;
 import Entidades.ColumnasEscenarios;
 import Entidades.Contratos;
+import Entidades.Cursos;
 import Entidades.Empleados;
 import Entidades.EstadosAfiliaciones;
 import Entidades.EstadosCiviles;
 import Entidades.Estructuras;
+import Entidades.HvExperienciasLaborales;
 import Entidades.Idiomas;
 import Entidades.IdiomasPersonas;
+import Entidades.Indicadores;
+import Entidades.Instituciones;
 import Entidades.JornadasLaborales;
 import Entidades.MotivosCambiosCargos;
 import Entidades.MotivosCambiosSueldos;
@@ -25,23 +29,32 @@ import Entidades.NormasLaborales;
 import Entidades.Papeles;
 import Entidades.Periodicidades;
 import Entidades.Personas;
+import Entidades.Profesiones;
+import Entidades.Proyectos;
+import Entidades.PryRoles;
 import Entidades.QVWEmpleadosCorte;
 import Entidades.ReformasLaborales;
 import Entidades.ResultadoBusquedaAvanzada;
+import Entidades.SectoresEconomicos;
 import Entidades.Sucursales;
 import Entidades.TercerosSucursales;
 import Entidades.TiposContratos;
 import Entidades.TiposEntidades;
+import Entidades.TiposIndicadores;
 import Entidades.TiposSueldos;
 import Entidades.TiposTrabajadores;
 import Entidades.UbicacionesGeograficas;
 import Entidades.VigenciasAfiliaciones;
 import Entidades.VigenciasCargos;
 import Entidades.VigenciasContratos;
+import Entidades.VigenciasFormales;
 import Entidades.VigenciasFormasPagos;
+import Entidades.VigenciasIndicadores;
 import Entidades.VigenciasJornadas;
 import Entidades.VigenciasLocalizaciones;
+import Entidades.VigenciasNoFormales;
 import Entidades.VigenciasNormasEmpleados;
+import Entidades.VigenciasProyectos;
 import Entidades.VigenciasReformasLaborales;
 import Entidades.VigenciasSueldos;
 import Entidades.VigenciasTiposContratos;
@@ -51,17 +64,21 @@ import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfaceAdministrar.AdministrarEmplMvrsInterface;
+import InterfaceAdministrar.AdministrarEmplVigenciaIndicadorInterface;
 import InterfaceAdministrar.AdministrarEmplVigenciasFormasPagosInterface;
 import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
 import InterfaceAdministrar.AdministrarEstadosCivilesInterface;
 import InterfaceAdministrar.AdministrarIdiomaPersonaInterface;
-import InterfaceAdministrar.AdministrarIdiomasInterface;
+import InterfaceAdministrar.AdministrarPerExperienciaLaboralInterface;
 import InterfaceAdministrar.AdministrarVigenciaLocalizacionInterface;
 import InterfaceAdministrar.AdministrarVigenciaNormaLaboralInterface;
 import InterfaceAdministrar.AdministrarVigenciasAfiliaciones3Interface;
 import InterfaceAdministrar.AdministrarVigenciasCargosBusquedaAvanzadaInterface;
 import InterfaceAdministrar.AdministrarVigenciasContratosInterface;
+import InterfaceAdministrar.AdministrarVigenciasFormalesInterface;
 import InterfaceAdministrar.AdministrarVigenciasJornadasInterface;
+import InterfaceAdministrar.AdministrarVigenciasNoFormalesInterface;
+import InterfaceAdministrar.AdministrarVigenciasProyectosInterface;
 import InterfaceAdministrar.AdministrarVigenciasReformasLaboralesInterface;
 import InterfaceAdministrar.AdministrarVigenciasSueldosInterface;
 import InterfaceAdministrar.AdministrarVigenciasTiposContratosInterface;
@@ -389,6 +406,16 @@ public class ControlBusquedaAvanzada implements Serializable {
     AdministrarEstadosCivilesInterface administrarEstadosCiviles;
     @EJB
     AdministrarIdiomaPersonaInterface administrarIdiomasPersonas;
+    @EJB
+    AdministrarEmplVigenciaIndicadorInterface administrarEmplVigenciaIndicador;
+    @EJB
+    AdministrarVigenciasNoFormalesInterface administrarVigenciasNoFormales;
+    @EJB
+    AdministrarVigenciasFormalesInterface administrarVigenciasFormales;
+    @EJB
+    AdministrarPerExperienciaLaboralInterface administrarPerExperienciaLaboral;
+    @EJB
+    AdministrarVigenciasProyectosInterface administrarVigenciasProyectos;
     //Objetos para realizar el proceso de busqueda avanzada
     //Modulo Datos Personales
     private Empleados empleadoBA;
@@ -412,7 +439,82 @@ public class ControlBusquedaAvanzada implements Serializable {
     private int tabActivaIdioma;
     private int casillaIdiomaPersona;
     private boolean permitirIndexIdiomaPersona;
+    //Modulo Censo
+    private VigenciasIndicadores vigenciaIndicadorBA;
+    private int tabActivaCenso;
+    private int casillaVigenciaIndicador;
+    private boolean permitirIndexVigenciaIndicador;
+    private Date fechaInicialCenso, fechaFinalCenso;
+    private Date auxFechaInicialCenso, auxFechaFinalCenso;
+    private int tipoFechaCenso;
+    //Modulo Educacion Formal
+    private VigenciasFormales vigenciaFormalBA;
+    private int tabActivaEducacionFormal;
+    private int casillaVigenciaFormal;
+    private boolean permitirIndexVigenciaFormal;
+    private Date fechaInicialEducacionFormal, fechaFinalEducacionFormal;
+    private Date auxFechaInicialEducacionFormal, auxFechaFinalEducacionFormal;
+    private int tipoFechaEducacionFormal;
+    //Modulo Educacion No Formal
+    private VigenciasNoFormales vigenciaNoFormalBA;
+    private int tabActivaEducacionNoFormal;
+    private int casillaVigenciaNoFormal;
+    private boolean permitirIndexVigenciaNoFormal;
+    private Date fechaInicialEducacionNoFormal, fechaFinalEducacionNoFormal;
+    private Date auxFechaInicialEducacionNoFormal, auxFechaFinalEducacionNoFormal;
+    private int tipoFechaEducacionNoFormal;
+    //Modulo Experiencia Laboral
+    private HvExperienciasLaborales hvExperienciaLaboralBA;
+    private int tabActivaExperienciaLaboral;
+    private int casillaHvExperienciaLaboral;
+    private boolean permitirIndexHvExperienciaLaboral;
+    private Date fechaInicialExperienciaLaboral, fechaFinalExperienciaLaboral;
+    private Date auxFechaInicialExperienciaLaboral, auxFechaFinalExperienciaLaboral;
+    //Modulo Proyecto
+    private VigenciasProyectos vigenciaProyectoBA;
+    private int tabActivaProyecto;
+    private int casillaVigenciaProyecto;
+    private boolean permitirIndexVigenciaProyecto;
+    private Date fechaInicialProyecto, fechaFinalProyecto;
+    private Date auxFechaInicialProyecto, auxFechaFinalProyecto;
+    //Modulo Cargo A Postularse
+    private VigenciasCargos vigenciaCargoPersonalBA;
+    private int tabActivaCargoPostularse;
+    private int casillaVigenciaCargoPersonal;
+    private boolean permitirIndexVigenciaCargoPersonal;
     //LOVS
+    //PryRoles
+    private List<PryRoles> lovPryRoles;
+    private List<PryRoles> filtrarLovPryRoles;
+    private PryRoles pryRolSeleccionado;
+    //Proyectos
+    private List<Proyectos> lovProyectos;
+    private List<Proyectos> filtrarLovProyectos;
+    private Proyectos proyectoSeleccionado;
+    //Sectores Economicos
+    private List<SectoresEconomicos> lovSectoresEconomicos;
+    private List<SectoresEconomicos> filtrarLovSectoresEconomicos;
+    private SectoresEconomicos sectorEconomicoSeleccionado;
+    //Instituciones
+    private List<Instituciones> lovInstituciones;
+    private List<Instituciones> filtrarLovInstituciones;
+    private Instituciones institucionSeleccionada;
+    //Profesiones
+    private List<Profesiones> lovProfesiones;
+    private List<Profesiones> filtrarLovProfesiones;
+    private Profesiones profesionSeleccionada;
+    //Cursos
+    private List<Cursos> lovCursos;
+    private List<Cursos> filtrarLovCursos;
+    private Cursos cursoSeleccionado;
+    //Tipos Indicadores
+    private List<TiposIndicadores> lovTiposIndicadores;
+    private List<TiposIndicadores> filtrarLovTiposIndicadores;
+    private TiposIndicadores tipoIndicadorSeleccionado;
+    //Indicadores
+    private List<Indicadores> lovIndicadores;
+    private List<Indicadores> filtrarLovIndicadores;
+    private Indicadores indicadorSeleccionado;
     //Idiomas
     private List<Idiomas> lovIdiomas;
     private List<Idiomas> filtrarLovIdiomas;
@@ -427,14 +529,25 @@ public class ControlBusquedaAvanzada implements Serializable {
     private EstadosCiviles estadoCivilSeleccionado;
     //
     private boolean activoFechasEstadoCivil;
+    private boolean activoFechasCenso;
+    private boolean activoFechasEducacionFormal;
+    private boolean activoFechasEducacionNoFormal;
     ////////
     private String auxCiudadDocumentoEmpleado, auxCiudadNacimientoEmpleado;
     private String auxEstadoCivilEstadoCivil;
     private String auxIdiomaIdiomaPersona;
     private BigInteger auxConversacionDesde, auxConversacionHasta, auxLecturaDesde, auxLecturaHasta, auxEscrituraDesde, auxEscrituraHasta;
-
+    private String auxTipoIndicadorCenso, auxIndicadorCenso;
+    private String auxInstitucionEducacionFormal, auxProfesionEducacionFormal;
+    private String auxInstitucionEducacionNoFormal, auxCursoEducacionNoFormal;
+    private String auxMotivoRetiroExperienciaLaboral, auxSectorEconomicoExperienciaLaboral;
+    private String auxRolProyecto, auxProyectoProyecto;
+    private String auxCargoCargoPostularse;
     //Otros
     private BigInteger conversacionDesde, conversacionHasta, lecturaDesde, lecturaHasta, escrituraDesde, escrituraHasta;
+    private String desarrolladoEducacionFormal;
+    private String desarrolladoEducacionNoFormal;
+    private String empresaExperienciaLaboral, cargoExperienciaLaboral;
     /*
      MODULO DE BUSQUEDA AVANZADA PERSONAL
      */
@@ -500,6 +613,16 @@ public class ControlBusquedaAvanzada implements Serializable {
         auxFechaInicialDatosPersonales = null;
         auxFechaFinalEstadoCivil = null;
         auxFechaInicialEstadoCivil = null;
+        auxFechaFinalCenso = null;
+        auxFechaInicialCenso = null;
+        auxFechaFinalEducacionFormal = null;
+        auxFechaInicialEducacionFormal = null;
+        auxFechaFinalEducacionNoFormal = null;
+        auxFechaInicialEducacionNoFormal = null;
+        auxFechaFinalExperienciaLaboral = null;
+        auxFechaInicialExperienciaLaboral = null;
+        auxFechaFinalProyecto = null;
+        auxFechaInicialProyecto = null;
         //NOMINA
         auxFechaFinalCargo = null;
         auxFechaInicialCargo = null;
@@ -542,6 +665,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         //Tipo Fecha
         //PERSONAL
         tipoFechaEstadoCivil = 1;
+        tipoFechaCenso = 1;
+        tipoFechaEducacionFormal = 1;
+        tipoFechaEducacionNoFormal = 1;
         //NOMINA
         tipoFechaCargo = 1;
         tipoFechaCentroCosto = 1;
@@ -559,6 +685,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         //Activo Fechas
         //PERSONAL
         activoFechasEstadoCivil = true;
+        activoFechasCenso = true;
+        activoFechasEducacionFormal = true;
+        activoFechasEducacionNoFormal = true;
         //NOMINA
         activoFechasCargos = true;
         activoFechasCentroCosto = true;
@@ -578,6 +707,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         casillaEmpleado = -1;
         casillaEstadoCivil = -1;
         casillaIdiomaPersona = -1;
+        casillaVigenciaIndicador = -1;
+        casillaVigenciaFormal = -1;
+        casillaVigenciaNoFormal = -1;
+        casillaHvExperienciaLaboral = -1;
+        casillaVigenciaProyecto = -1;
+        casillaVigenciaCargoPersonal = -1;
         //NOMINA
         casillaVigenciaSueldo = -1;
         casillaVigenciaCargo = -1;
@@ -601,6 +736,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         tabActivaEstadoCivil = 0;
         tabActivaDatosPersonales = 0;
         tabActivaFactorRH = 0;
+        tabActivaCenso = 0;
+        tabActivaEducacionFormal = 0;
+        tabActivaEducacionNoFormal = 0;
+        tabActivaExperienciaLaboral = 0;
+        tabActivaProyecto = 0;
+        tabActivaCargoPostularse = 0;
         //NOMINA
         auxTabActivoCentroCosto = false;
         tabActivaCentroCosto = 0;
@@ -624,6 +765,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         permitirIndexEstadoCivil = true;
         permitirIndexEmpleado = true;
         permitirIndexIdiomaPersona = true;
+        permitirIndexVigenciaIndicador = true;
+        permitirIndexVigenciaFormal = true;
+        permitirIndexVigenciaNoFormal = true;
+        permitirIndexHvExperienciaLaboral = true;
+        permitirIndexVigenciaProyecto = true;
+        permitirIndexVigenciaCargoPersonal = true;
         //NOMINA
         permitirIndexVigenciaCargo = true;
         permitirIndexVigenciaLocalizacion = true;
@@ -648,6 +795,25 @@ public class ControlBusquedaAvanzada implements Serializable {
         estadoCivilBA = new EstadosCiviles();
         idiomaPersonaBA = new IdiomasPersonas();
         idiomaPersonaBA.setIdioma(new Idiomas());
+        vigenciaIndicadorBA = new VigenciasIndicadores();
+        vigenciaIndicadorBA.setTipoindicador(new TiposIndicadores());
+        vigenciaIndicadorBA.setIndicador(new Indicadores());
+        vigenciaFormalBA = new VigenciasFormales();
+        vigenciaFormalBA.setInstitucion(new Instituciones());
+        vigenciaFormalBA.setProfesion(new Profesiones());
+        desarrolladoEducacionFormal = null;
+        vigenciaNoFormalBA = new VigenciasNoFormales();
+        vigenciaNoFormalBA.setInstitucion(new Instituciones());
+        vigenciaNoFormalBA.setCurso(new Cursos());
+        desarrolladoEducacionNoFormal = null;
+        hvExperienciaLaboralBA = new HvExperienciasLaborales();
+        hvExperienciaLaboralBA.setMotivoretiro(new MotivosRetiros());
+        hvExperienciaLaboralBA.setSectoreconomico(new SectoresEconomicos());
+        vigenciaProyectoBA = new VigenciasProyectos();
+        vigenciaProyectoBA.setProyecto(new Proyectos());
+        vigenciaProyectoBA.setPryRol(new PryRoles());
+        vigenciaCargoPersonalBA = new VigenciasCargos();
+        vigenciaCargoPersonalBA.setCargo(new Cargos());
         //NOMINA
         vigenciaCargoBA = new VigenciasCargos();
         vigenciaCargoBA.setEstructura(new Estructuras());
@@ -690,6 +856,22 @@ public class ControlBusquedaAvanzada implements Serializable {
         motivoRetiroBA = new MotivosRetiros();
         //LOVS
         //PERSONAL
+        lovProyectos = null;
+        proyectoSeleccionado = new Proyectos();
+        lovPryRoles = null;
+        pryRolSeleccionado = new PryRoles();
+        lovSectoresEconomicos = null;
+        sectorEconomicoSeleccionado = new SectoresEconomicos();
+        lovCursos = null;
+        cursoSeleccionado = new Cursos();
+        lovInstituciones = null;
+        institucionSeleccionada = new Instituciones();
+        lovProfesiones = null;
+        profesionSeleccionada = new Profesiones();
+        lovTiposIndicadores = null;
+        tipoIndicadorSeleccionado = new TiposIndicadores();
+        lovIndicadores = null;
+        indicadorSeleccionado = new Indicadores();
         lovIdiomas = null;
         idiomaSeleccionado = new Idiomas();
         lovEstadosCiviles = null;
@@ -751,6 +933,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         auxSueldoMinimoMvrs = null;
         auxPromedioMaximoSets = null;
         auxPromedioMinimoSets = null;
+        conversacionDesde = null;
+        conversacionHasta = null;
+        lecturaDesde = null;
+        lecturaHasta = null;
+        escrituraDesde = null;
+        escrituraHasta = null;
         tipoMetodoSets = "";
         //Resulatos de busqueda
         nuevaColumna = "";
@@ -1442,7 +1630,6 @@ public class ControlBusquedaAvanzada implements Serializable {
             context.update("form:tabViewVacacion");
             context.update("form:tabViewJornadaLaboral");
             context.update("form:tabViewFechaRetiro");
-            context.update("form:scrollPanelNomina");
         }
         if (numeroTipoBusqueda == 2) {
             System.out.println("numeroTipoBusqueda 2");
@@ -1453,6 +1640,27 @@ public class ControlBusquedaAvanzada implements Serializable {
             estadoCivilBA = new EstadosCiviles();
             idiomaPersonaBA = new IdiomasPersonas();
             idiomaPersonaBA.setIdioma(new Idiomas());
+            vigenciaIndicadorBA = new VigenciasIndicadores();
+            vigenciaIndicadorBA.setTipoindicador(new TiposIndicadores());
+            vigenciaIndicadorBA.setIndicador(new Indicadores());
+            vigenciaFormalBA = new VigenciasFormales();
+            vigenciaFormalBA.setProfesion(new Profesiones());
+            vigenciaFormalBA.setInstitucion(new Instituciones());
+            desarrolladoEducacionFormal = null;
+            vigenciaNoFormalBA = new VigenciasNoFormales();
+            vigenciaNoFormalBA.setCurso(new Cursos());
+            vigenciaNoFormalBA.setInstitucion(new Instituciones());
+            desarrolladoEducacionNoFormal = null;
+            hvExperienciaLaboralBA = new HvExperienciasLaborales();
+            hvExperienciaLaboralBA.setMotivoretiro(new MotivosRetiros());
+            hvExperienciaLaboralBA.setSectoreconomico(new SectoresEconomicos());
+            empresaExperienciaLaboral = "";
+            cargoExperienciaLaboral = "";
+            vigenciaProyectoBA = new VigenciasProyectos();
+            vigenciaProyectoBA.setProyecto(new Proyectos());
+            vigenciaProyectoBA.setPryRol(new PryRoles());
+            vigenciaCargoPersonalBA = new VigenciasCargos();
+            vigenciaCargoPersonalBA.setCargo(new Cargos());
             //
             fechaInicialDatosPersonales = null;
             auxFechaInicialDatosPersonales = null;
@@ -1462,6 +1670,26 @@ public class ControlBusquedaAvanzada implements Serializable {
             auxFechaInicialEstadoCivil = null;
             fechaFinalEstadoCivil = null;
             auxFechaFinalEstadoCivil = null;
+            fechaInicialCenso = null;
+            auxFechaInicialCenso = null;
+            fechaFinalCenso = null;
+            auxFechaFinalCenso = null;
+            fechaInicialEducacionFormal = null;
+            auxFechaInicialEducacionFormal = null;
+            fechaFinalEducacionFormal = null;
+            auxFechaFinalEducacionFormal = null;
+            fechaInicialEducacionNoFormal = null;
+            auxFechaInicialEducacionNoFormal = null;
+            fechaFinalEducacionNoFormal = null;
+            auxFechaFinalEducacionNoFormal = null;
+            fechaInicialExperienciaLaboral = null;
+            auxFechaInicialExperienciaLaboral = null;
+            fechaFinalExperienciaLaboral = null;
+            auxFechaFinalExperienciaLaboral = null;
+            fechaInicialProyecto = null;
+            auxFechaInicialProyecto = null;
+            fechaFinalProyecto = null;
+            auxFechaFinalProyecto = null;
             //
             conversacionDesde = null;
             conversacionHasta = null;
@@ -1476,19 +1704,36 @@ public class ControlBusquedaAvanzada implements Serializable {
             auxEscrituraDesde = null;
             auxEscrituraHasta = null;
             //
+            tabActivaCenso = 0;
             tabActivaEstadoCivil = 0;
             tabActivaFactorRH = 0;
             tabActivaDatosPersonales = 0;
             tabActivaIdioma = 0;
+            tabActivaEducacionFormal = 0;
+            tabActivaEducacionNoFormal = 0;
+            tabActivaExperienciaLaboral = 0;
+            tabActivaProyecto = 0;
+            tabActivaCargoPostularse = 0;
             //
-            tipoFechaEstadoCivil= 1;
+            tipoFechaCenso = 1;
+            activarCasillasFechasCenso();
+            tipoFechaEstadoCivil = 1;
             activarCasillasFechasEstadoCivil();
+            tipoFechaEducacionFormal = 1;
+            activarCasillasFechasEducacionFormal();
+            tipoFechaEducacionNoFormal = 1;
+            activarCasillasFechasEducacionNoFormal();
             //
+            context.update("form:tabViewCargoPostularse");
+            context.update("form:tabViewProyecto");
+            context.update("form:tabViewExperienciaLaboral");
+            context.update("form:tabViewEducacionNoFormal");
+            context.update("form:tabViewEducacionFormal");
+            context.update("form:tabViewCenso");
             context.update("form:tabViewIdioma");
             context.update("form:tabViewEstadoCivil");
             context.update("form:tabViewFactorRH");
             context.update("form:tabViewDatosPersonales");
-            context.update("form:scrollPanelPersonal");
         }
         restaurar();
         //
@@ -1946,6 +2191,116 @@ public class ControlBusquedaAvanzada implements Serializable {
                         casillaIdiomaPersona = -1;
                     }
                 }
+                if (casillaVigenciaIndicador >= 0) {
+                    if (casillaVigenciaIndicador == 0) {
+                        context.update("formularioDialogos:editarTipoIndicadorModCenso");
+                        context.execute("editarTipoIndicadorModCenso.show()");
+                        casillaVigenciaIndicador = -1;
+                    } else if (casillaVigenciaIndicador == 1) {
+                        context.update("formularioDialogos:editarIndicadorModCenso");
+                        context.execute("editarIndicadorModCenso.show()");
+                        casillaVigenciaIndicador = -1;
+                    } else if (casillaVigenciaIndicador == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModCenso");
+                        context.execute("editarFechaInicialModCenso.show()");
+                        casillaVigenciaIndicador = -1;
+                    } else if (casillaVigenciaIndicador == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModCenso");
+                        context.execute("editarFechaFinalModCenso.show()");
+                        casillaVigenciaIndicador = -1;
+                    }
+                }
+                if (casillaVigenciaFormal >= 0) {
+                    if (casillaVigenciaFormal == 0) {
+                        context.update("formularioDialogos:editarProfesionModEducacionFormal");
+                        context.execute("editarProfesionModEducacionFormal.show()");
+                        casillaVigenciaFormal = -1;
+                    } else if (casillaVigenciaFormal == 1) {
+                        context.update("formularioDialogos:editarInstitucionModEducacionFormal");
+                        context.execute("editarInstitucionModEducacionFormal.show()");
+                        casillaVigenciaFormal = -1;
+                    } else if (casillaVigenciaFormal == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModEducacionFormal");
+                        context.execute("editarFechaInicialModEducacionFormal.show()");
+                        casillaVigenciaFormal = -1;
+                    } else if (casillaVigenciaFormal == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModEducacionFormal");
+                        context.execute("editarFechaFinalModEducacionFormal.show()");
+                        casillaVigenciaFormal = -1;
+                    }
+                }
+                if (casillaVigenciaNoFormal >= 0) {
+                    if (casillaVigenciaNoFormal == 0) {
+                        context.update("formularioDialogos:editarCursoModEducacionNoFormal");
+                        context.execute("editarCursoModEducacionNoFormal.show()");
+                        casillaVigenciaNoFormal = -1;
+                    } else if (casillaVigenciaNoFormal == 1) {
+                        context.update("formularioDialogos:editarInstitucionModEducacionNoFormal");
+                        context.execute("editarInstitucionModEducacionNoFormal.show()");
+                        casillaVigenciaNoFormal = -1;
+                    } else if (casillaVigenciaNoFormal == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModEducacionNoFormal");
+                        context.execute("editarFechaInicialModEducacionNoFormal.show()");
+                        casillaVigenciaNoFormal = -1;
+                    } else if (casillaVigenciaNoFormal == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModEducacionNoFormal");
+                        context.execute("editarFechaFinalModEducacionNoFormal.show()");
+                        casillaVigenciaNoFormal = -1;
+                    }
+                }
+                if (casillaHvExperienciaLaboral >= 0) {
+                    if (casillaHvExperienciaLaboral == 0) {
+                        context.update("formularioDialogos:editarSectorEconomicoModExperienciaLaboral");
+                        context.execute("editarSectorEconomicoModExperienciaLaboral.show()");
+                        casillaHvExperienciaLaboral = -1;
+                    } else if (casillaHvExperienciaLaboral == 1) {
+                        context.update("formularioDialogos:editarMotivoRetiroModExperienciaLaboral");
+                        context.execute("editarMotivoRetiroModExperienciaLaboral.show()");
+                        casillaHvExperienciaLaboral = -1;
+                    } else if (casillaHvExperienciaLaboral == 2) {
+                        context.update("formularioDialogos:editarEmpresaModExperienciaLaboral");
+                        context.execute("editarEmpresaModExperienciaLaboral.show()");
+                        casillaHvExperienciaLaboral = -1;
+                    } else if (casillaHvExperienciaLaboral == 3) {
+                        context.update("formularioDialogos:editarCargoModExperienciaLaboral");
+                        context.execute("editarCargoModExperienciaLaboral.show()");
+                        casillaHvExperienciaLaboral = -1;
+                    } else if (casillaHvExperienciaLaboral == 4) {
+                        context.update("formularioDialogos:editarFechaInicialModExperienciaLaboral");
+                        context.execute("editarFechaInicialModExperienciaLaboral.show()");
+                        casillaHvExperienciaLaboral = -1;
+                    } else if (casillaHvExperienciaLaboral == 5) {
+                        context.update("formularioDialogos:editarFechaFinalModExperienciaLaboral");
+                        context.execute("editarFechaFinalModExperienciaLaboral.show()");
+                        casillaHvExperienciaLaboral = -1;
+                    }
+                }
+                if (casillaVigenciaProyecto >= 0) {
+                    if (casillaVigenciaProyecto == 0) {
+                        context.update("formularioDialogos:editarProyectoModProyecto");
+                        context.execute("editarProyectoModProyecto.show()");
+                        casillaVigenciaProyecto = -1;
+                    } else if (casillaVigenciaProyecto == 1) {
+                        context.update("formularioDialogos:editarRolModProyecto");
+                        context.execute("editarRolModProyecto.show()");
+                        casillaVigenciaProyecto = -1;
+                    } else if (casillaVigenciaProyecto == 2) {
+                        context.update("formularioDialogos:editarFechaInicialModProyecto");
+                        context.execute("editarFechaInicialModProyecto.show()");
+                        casillaVigenciaProyecto = -1;
+                    } else if (casillaVigenciaProyecto == 3) {
+                        context.update("formularioDialogos:editarFechaFinalModProyecto");
+                        context.execute("editarFechaFinalModProyecto.show()");
+                        casillaVigenciaProyecto = -1;
+                    }
+                }
+                if (casillaVigenciaCargoPersonal >= 0) {
+                    if (casillaVigenciaCargoPersonal == 0) {
+                        context.update("formularioDialogos:editarCargoModCargoPostularse");
+                        context.execute("editarCargoModCargoPostularse.show()");
+                        casillaVigenciaCargoPersonal = -1;
+                    } 
+                }
             }
         }
     }
@@ -2126,7 +2481,74 @@ public class ControlBusquedaAvanzada implements Serializable {
                 if (casillaIdiomaPersona == 0) {
                     context.update("form:IdiomaIdiomaDialogo");
                     context.execute("IdiomaIdiomaDialogo.show()");
-                    casillaIdiomaPersona = -0;
+                    casillaIdiomaPersona = -1;
+                }
+            }
+            if (casillaVigenciaIndicador >= 0) {
+                if (casillaVigenciaIndicador == 0) {
+                    context.update("form:TipoIndicadorCensoDialogo");
+                    context.execute("TipoIndicadorCensoDialogo.show()");
+                    casillaVigenciaIndicador = -1;
+                }
+                if (casillaVigenciaIndicador == 1) {
+                    context.update("form:IndicadorCensoDialogo");
+                    context.execute("IndicadorCensoDialogo.show()");
+                    casillaVigenciaIndicador = -1;
+                }
+            }
+            if (casillaVigenciaFormal >= 0) {
+                if (casillaVigenciaFormal == 0) {
+                    context.update("form:ProfesionEducacionFormalDialogo");
+                    context.execute("ProfesionEducacionFormalDialogo.show()");
+                    casillaVigenciaFormal = -1;
+                }
+                if (casillaVigenciaFormal == 1) {
+                    context.update("form:InstitucionEducacionFormalDialogo");
+                    context.execute("InstitucionEducacionFormalDialogo.show()");
+                    casillaVigenciaFormal = -1;
+                }
+            }
+            if (casillaVigenciaNoFormal >= 0) {
+                if (casillaVigenciaNoFormal == 0) {
+                    context.update("form:CursoEducacionNoFormalDialogo");
+                    context.execute("CursoEducacionNoFormalDialogo.show()");
+                    casillaVigenciaFormal = -1;
+                }
+                if (casillaVigenciaNoFormal == 1) {
+                    context.update("form:InstitucionEducacionNoFormalDialogo");
+                    context.execute("InstitucionEducacionNoFormalDialogo.show()");
+                    casillaVigenciaNoFormal = -1;
+                }
+            }
+            if (casillaHvExperienciaLaboral >= 0) {
+                if (casillaHvExperienciaLaboral == 0) {
+                    context.update("form:SectorEconomicoExperienciaLaboralDialogo");
+                    context.execute("SectorEconomicoExperienciaLaboralDialogo.show()");
+                    casillaHvExperienciaLaboral = -1;
+                }
+                if (casillaHvExperienciaLaboral == 1) {
+                    context.update("form:MotivoRetiroExperienciaLaboralDialogo");
+                    context.execute("MotivoRetiroExperienciaLaboralDialogo.show()");
+                    casillaHvExperienciaLaboral = -1;
+                }
+            }
+            if (casillaVigenciaProyecto >= 0) {
+                if (casillaVigenciaProyecto == 0) {
+                    context.update("form:ProyectoProyectoDialogo");
+                    context.execute("ProyectoProyectoDialogo.show()");
+                    casillaVigenciaProyecto = -1;
+                }
+                if (casillaVigenciaProyecto == 1) {
+                    context.update("form:PryRolProyectoDialogo");
+                    context.execute("PryRolProyectoDialogo.show()");
+                    casillaVigenciaProyecto = -1;
+                }
+            }
+            if (casillaVigenciaCargoPersonal >= 0) {
+                if (casillaVigenciaCargoPersonal == 0) {
+                    context.update("form:CargoCargoPostularseDialogo");
+                    context.execute("CargoCargoPostularseDialogo.show()");
+                    casillaVigenciaCargoPersonal = -1;
                 }
             }
         }
@@ -2570,9 +2992,17 @@ public class ControlBusquedaAvanzada implements Serializable {
             indice = -1;
             casillaEstadoCivil = -1;
             casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
             casillaEmpleado = i;
             auxCiudadDocumentoEmpleado = empleadoBA.getPersona().getCiudaddocumento().getNombre();
             auxCiudadNacimientoEmpleado = empleadoBA.getPersona().getCiudadnacimiento().getNombre();
+            auxFechaInicialDatosPersonales = fechaInicialDatosPersonales;
+            auxFechaFinalDatosPersonales = fechaFinalDatosPersonales;
         }
     }
 
@@ -2581,16 +3011,30 @@ public class ControlBusquedaAvanzada implements Serializable {
             indice = -1;
             casillaEmpleado = -1;
             casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
             casillaEstadoCivil = i;
             auxEstadoCivilEstadoCivil = estadoCivilBA.getDescripcion();
+            auxFechaInicialEstadoCivil = fechaInicialEstadoCivil;
+            auxFechaFinalEstadoCivil = fechaFinalEstadoCivil;
         }
     }
-    
+
     public void cambiarIndiceIdioma(int i) {
         if (permitirIndexIdiomaPersona == true) {
             indice = -1;
             casillaEmpleado = -1;
             casillaEstadoCivil = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
             casillaIdiomaPersona = i;
             auxIdiomaIdiomaPersona = idiomaPersonaBA.getIdioma().getNombre();
             auxConversacionDesde = conversacionDesde;
@@ -2599,6 +3043,117 @@ public class ControlBusquedaAvanzada implements Serializable {
             auxLecturaHasta = lecturaHasta;
             auxEscrituraDesde = escrituraDesde;
             auxEscrituraHasta = escrituraHasta;
+        }
+    }
+
+    public void cambiarIndiceCenso(int i) {
+        if (permitirIndexVigenciaIndicador == true) {
+            indice = -1;
+            casillaEmpleado = -1;
+            casillaEstadoCivil = -1;
+            casillaIdiomaPersona = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
+            casillaVigenciaIndicador = i;
+            auxTipoIndicadorCenso = vigenciaIndicadorBA.getTipoindicador().getDescripcion();
+            auxIndicadorCenso = vigenciaIndicadorBA.getIndicador().getDescripcion();
+            auxFechaInicialCenso = fechaInicialCenso;
+            auxFechaFinalCenso = fechaFinalCenso;
+        }
+    }
+
+    public void cambiarIndiceEducacionFormal(int i) {
+        if (permitirIndexVigenciaFormal == true) {
+            indice = -1;
+            casillaEmpleado = -1;
+            casillaEstadoCivil = -1;
+            casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
+            casillaVigenciaFormal = i;
+            auxInstitucionEducacionFormal = vigenciaFormalBA.getInstitucion().getDescripcion();
+            auxProfesionEducacionFormal = vigenciaFormalBA.getProfesion().getDescripcion();
+            auxFechaInicialEducacionFormal = fechaInicialEducacionFormal;
+            auxFechaFinalEducacionFormal = fechaFinalEducacionFormal;
+        }
+    }
+
+    public void cambiarIndiceEducacionNoFormal(int i) {
+        if (permitirIndexVigenciaNoFormal == true) {
+            indice = -1;
+            casillaEmpleado = -1;
+            casillaEstadoCivil = -1;
+            casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
+            casillaVigenciaNoFormal = i;
+            auxCursoEducacionNoFormal = vigenciaNoFormalBA.getCurso().getNombre();
+            auxInstitucionEducacionNoFormal = vigenciaFormalBA.getInstitucion().getDescripcion();
+            auxFechaInicialEducacionNoFormal = fechaInicialEducacionNoFormal;
+            auxFechaFinalEducacionNoFormal = fechaFinalEducacionNoFormal;
+        }
+    }
+
+    public void cambiarIndiceExperienciaLaboral(int i) {
+        if (permitirIndexHvExperienciaLaboral == true) {
+            indice = -1;
+            casillaEmpleado = -1;
+            casillaEstadoCivil = -1;
+            casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = -1;
+            casillaHvExperienciaLaboral = i;
+            auxMotivoRetiroExperienciaLaboral = hvExperienciaLaboralBA.getMotivoretiro().getNombre();
+            auxSectorEconomicoExperienciaLaboral = hvExperienciaLaboralBA.getSectoreconomico().getDescripcion();
+            auxFechaInicialExperienciaLaboral = fechaInicialExperienciaLaboral;
+            auxFechaFinalExperienciaLaboral = fechaFinalExperienciaLaboral;
+        }
+    }
+
+    public void cambiarIndiceProyecto(int i) {
+        if (permitirIndexVigenciaProyecto == true) {
+            indice = -1;
+            casillaEmpleado = -1;
+            casillaEstadoCivil = -1;
+            casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaCargoPersonal = -1;
+            casillaVigenciaProyecto = i;
+            auxProyectoProyecto = vigenciaProyectoBA.getProyecto().getNombreproyecto();
+            auxRolProyecto = vigenciaProyectoBA.getPryRol().getDescripcion();
+            auxFechaInicialProyecto = fechaInicialProyecto;
+            auxFechaFinalProyecto = fechaFinalProyecto;
+        }
+    }
+    
+    public void cambiarIndiceCargoPostularse(int i) {
+        if (permitirIndexVigenciaCargoPersonal == true) {
+            indice = -1;
+            casillaEmpleado = -1;
+            casillaEstadoCivil = -1;
+            casillaIdiomaPersona = -1;
+            casillaVigenciaIndicador = -1;
+            casillaVigenciaFormal = -1;
+            casillaVigenciaNoFormal = -1;
+            casillaHvExperienciaLaboral = -1;
+            casillaVigenciaProyecto = -1;
+            casillaVigenciaCargoPersonal = i;
+            auxCargoCargoPostularse = vigenciaCargoPersonalBA.getCargo().getNombre();
         }
     }
 
@@ -3031,8 +3586,8 @@ public class ControlBusquedaAvanzada implements Serializable {
             if (fechaMFInicialVacacion != null) {
                 boolean retorno = false;
                 casillaSets = i;
-                cambiarIndiceSets(i);
-                retorno = validarFechasMFRegistroModuloSets();
+                cambiarIndiceVacacion(i);
+                retorno = validarFechasMFRegistroModuloVacacion();
                 if (retorno == false) {
                     fechaMFInicialVacacion = null;
                     fechaMFFinalVacacion = null;
@@ -3150,7 +3705,127 @@ public class ControlBusquedaAvanzada implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:tabViewEstadoCivil");
             context.execute("errorExceptionFechas.show()");
-            System.out.println("Error modificarFechaFinalModuloDatosPersonales Fechas Estado Civil : " + e.toString());
+            System.out.println("Error modificarFechaFinalModuloEstadoCivil Fechas Estado Civil : " + e.toString());
+        }
+    }
+
+    public void modificarFechaFinalModuloCenso(int i) {
+        try {
+            boolean retorno = false;
+            casillaVigenciaIndicador = i;
+            cambiarIndiceCenso(i);
+            retorno = validarFechasRegistroModuloCenso();
+            if (retorno == false) {
+                fechaFinalCenso = null;
+                fechaInicialCenso = null;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:tabViewCenso");
+                System.out.println("Error de fechas modulo de censo");
+                context.execute("errorFechasIngresadas.show()");
+            }
+        } catch (Exception e) {
+            fechaFinalCenso = null;
+            fechaInicialCenso = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewCenso");
+            context.execute("errorExceptionFechas.show()");
+            System.out.println("Error modificarFechaFinalModuloCenso Fechas Censos : " + e.toString());
+        }
+    }
+
+    public void modificarFechaFinalModuloEducacionFormal(int i) {
+        try {
+            boolean retorno = false;
+            casillaVigenciaFormal = i;
+            cambiarIndiceEducacionFormal(i);
+            retorno = validarFechasRegistroModuloEducacionFormal();
+            if (retorno == false) {
+                fechaFinalEducacionFormal = null;
+                fechaInicialEducacionFormal = null;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:tabViewEducacionFormal");
+                System.out.println("Error de fechas modulo de educacion formal");
+                context.execute("errorFechasIngresadas.show()");
+            }
+        } catch (Exception e) {
+            fechaFinalEducacionFormal = null;
+            fechaInicialEducacionFormal = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewEducacionFormal");
+            context.execute("errorExceptionFechas.show()");
+            System.out.println("Error modificarFechaFinalModuloEducacionFormal Fechas Educacion Formal : " + e.toString());
+        }
+    }
+
+    public void modificarFechaFinalModuloEducacionNoFormal(int i) {
+        try {
+            boolean retorno = false;
+            casillaVigenciaNoFormal = i;
+            cambiarIndiceEducacionNoFormal(i);
+            retorno = validarFechasRegistroModuloEducacionNoFormal();
+            if (retorno == false) {
+                fechaFinalEducacionNoFormal = null;
+                fechaInicialEducacionNoFormal = null;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:tabViewEducacionNoFormal");
+                System.out.println("Error de fechas modulo de educacion no formal");
+                context.execute("errorFechasIngresadas.show()");
+            }
+        } catch (Exception e) {
+            fechaFinalEducacionNoFormal = null;
+            fechaInicialEducacionNoFormal = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewEducacionNoFormal");
+            context.execute("errorExceptionFechas.show()");
+            System.out.println("Error modificarFechaFinalModuloEducacionNoFormal Fechas Educacion No Formal : " + e.toString());
+        }
+    }
+
+    public void modificarFechaFinalModuloExperienciaLaboral(int i) {
+        try {
+            boolean retorno = false;
+            casillaHvExperienciaLaboral = i;
+            cambiarIndiceExperienciaLaboral(i);
+            retorno = validarFechasRegistroModuloExperienciaLaboral();
+            if (retorno == false) {
+                fechaFinalExperienciaLaboral = null;
+                fechaInicialExperienciaLaboral = null;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:tabViewExperienciaLaboral");
+                System.out.println("Error de fechas modulo de experiencia laboral");
+                context.execute("errorFechasIngresadas.show()");
+            }
+        } catch (Exception e) {
+            fechaFinalExperienciaLaboral = null;
+            fechaInicialExperienciaLaboral = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewExperienciaLaboral");
+            context.execute("errorExceptionFechas.show()");
+            System.out.println("Error modificarFechaFinalModuloEducacionNoFormal Fechas Experiencia Laboral : " + e.toString());
+        }
+    }
+
+    public void modificarFechaFinalModuloProyecto(int i) {
+        try {
+            boolean retorno = false;
+            casillaVigenciaProyecto = i;
+            cambiarIndiceProyecto(i);
+            retorno = validarFechasRegistroModuloProyecto();
+            if (retorno == false) {
+                fechaFinalProyecto = null;
+                fechaInicialProyecto = null;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:tabViewProyecto");
+                System.out.println("Error de fechas modulo de proyecto");
+                context.execute("errorFechasIngresadas.show()");
+            }
+        } catch (Exception e) {
+            fechaFinalProyecto = null;
+            fechaInicialProyecto = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewProyecto");
+            context.execute("errorExceptionFechas.show()");
+            System.out.println("Error modificarFechaFinalModuloEducacionNoFormal Fechas Proyecto : " + e.toString());
         }
     }
 
@@ -3482,6 +4157,86 @@ public class ControlBusquedaAvanzada implements Serializable {
         boolean retorno = true;
         if (fechaFinalEstadoCivil != null && fechaInicialEstadoCivil != null) {
             if (fechaInicialEstadoCivil.after(fechaParametro) && fechaInicialEstadoCivil.before(fechaFinalEstadoCivil)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarFechasRegistroModuloCenso() {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (fechaFinalCenso != null && fechaInicialCenso != null) {
+            if (fechaInicialCenso.after(fechaParametro) && fechaInicialCenso.before(fechaFinalCenso)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarFechasRegistroModuloEducacionFormal() {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (fechaFinalEducacionFormal != null && fechaInicialEducacionFormal != null) {
+            if (fechaInicialEducacionFormal.after(fechaParametro) && fechaInicialEducacionFormal.before(fechaFinalEducacionFormal)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarFechasRegistroModuloEducacionNoFormal() {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (fechaFinalEducacionNoFormal != null && fechaInicialEducacionNoFormal != null) {
+            if (fechaInicialEducacionNoFormal.after(fechaParametro) && fechaInicialEducacionNoFormal.before(fechaFinalEducacionNoFormal)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarFechasRegistroModuloExperienciaLaboral() {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (fechaFinalExperienciaLaboral != null && fechaInicialExperienciaLaboral != null) {
+            if (fechaInicialExperienciaLaboral.after(fechaParametro) && fechaInicialExperienciaLaboral.before(fechaFinalExperienciaLaboral)) {
+                retorno = true;
+            } else {
+                retorno = false;
+            }
+        }
+        return retorno;
+    }
+
+    public boolean validarFechasRegistroModuloProyecto() {
+        fechaParametro = new Date();
+        fechaParametro.setYear(0);
+        fechaParametro.setMonth(1);
+        fechaParametro.setDate(1);
+        boolean retorno = true;
+        if (fechaFinalProyecto != null && fechaInicialProyecto != null) {
+            if (fechaInicialProyecto.after(fechaParametro) && fechaInicialProyecto.before(fechaFinalProyecto)) {
                 retorno = true;
             } else {
                 retorno = false;
@@ -4094,7 +4849,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                 getLovEstadosCiviles();
                 context.update("form:tabViewEstadoCivil:parametroEstadoCivilModEstadoCivil");
             } else {
-                permitirIndexEmpleado = false;
+                permitirIndexEstadoCivil = false;
                 context.update("form:EstadoCivilEstadoCivilDialogo");
                 context.execute("EstadoCivilEstadoCivilDialogo.show()");
             }
@@ -4119,22 +4874,262 @@ public class ControlBusquedaAvanzada implements Serializable {
                 getLovIdiomas();
                 context.update("form:tabViewIdioma:parametroIdiomaModIdioma");
             } else {
-                permitirIndexEmpleado = false;
+                permitirIndexIdiomaPersona = false;
                 context.update("form:IdiomaIdiomaDialogo");
                 context.execute("IdiomaIdiomaDialogo.show()");
             }
         }
     }
 
-    public void modificarConversacionModuloIdioma() {
-        System.out.println("modificarLecturaModuloIdioma");
+    public void modificarParametrosCenso(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("conversacionDesde : "+conversacionDesde);
-        System.out.println("conversacionHasta : "+conversacionHasta);
+        if (cualParametro.equals("TIPOINDICADOR")) {
+            vigenciaIndicadorBA.getTipoindicador().setDescripcion(auxTipoIndicadorCenso);
+            for (int i = 0; i < lovTiposIndicadores.size(); i++) {
+                if (lovTiposIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaIndicadorBA.setTipoindicador(lovTiposIndicadores.get(indiceUnicoElemento));
+                lovTiposIndicadores = null;
+                getLovTiposIndicadores();
+                context.update("form:tabViewCenso:parametroTipoIndicadorModCenso");
+            } else {
+                permitirIndexVigenciaIndicador = false;
+                context.update("form:TipoIndicadorCensoDialogo");
+                context.execute("TipoIndicadorCensoDialogo.show()");
+            }
+        }
+        if (cualParametro.equals("INDICADOR")) {
+            vigenciaIndicadorBA.getIndicador().setDescripcion(auxIndicadorCenso);
+            for (int i = 0; i < lovIndicadores.size(); i++) {
+                if (lovIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaIndicadorBA.setIndicador(lovIndicadores.get(indiceUnicoElemento));
+                lovIndicadores = null;
+                getLovIndicadores();
+                context.update("form:tabViewCenso:parametroIndicadorModCenso");
+            } else {
+                permitirIndexVigenciaIndicador = false;
+                context.update("form:IndicadorCensoDialogo");
+                context.execute("IndicadorCensoDialogo.show()");
+            }
+        }
+    }
+
+    public void modificarParametrosEducacionFormal(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cualParametro.equals("PROFESION")) {
+            vigenciaFormalBA.getProfesion().setDescripcion(auxProfesionEducacionFormal);
+            for (int i = 0; i < lovProfesiones.size(); i++) {
+                if (lovProfesiones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaFormalBA.setProfesion(lovProfesiones.get(indiceUnicoElemento));
+                lovProfesiones = null;
+                getLovProfesiones();
+                context.update("form:tabViewEducacionFormal:parametroProfesionModEducacionFormal");
+            } else {
+                permitirIndexVigenciaFormal = false;
+                context.update("form:ProfesionEducacionFormalDialogo");
+                context.execute("ProfesionEducacionFormalDialogo.show()");
+            }
+        }
+        if (cualParametro.equals("INSTITUCION")) {
+            vigenciaFormalBA.getInstitucion().setDescripcion(auxInstitucionEducacionFormal);
+            for (int i = 0; i < lovInstituciones.size(); i++) {
+                if (lovInstituciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaFormalBA.setInstitucion(lovInstituciones.get(indiceUnicoElemento));
+                lovInstituciones = null;
+                getLovInstituciones();
+                context.update("form:tabViewEducacionFormal:parametroInstitucionModEducacionFormal");
+            } else {
+                permitirIndexVigenciaFormal = false;
+                context.update("form:InstitucionEducacionFormalDialogo");
+                context.execute("InstitucionEducacionFormalDialogo.show()");
+            }
+        }
+    }
+
+    public void modificarParametrosEducacionNoFormal(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cualParametro.equals("CURSO")) {
+            vigenciaNoFormalBA.getCurso().setNombre(auxCursoEducacionNoFormal);
+            for (int i = 0; i < lovCursos.size(); i++) {
+                if (lovCursos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaNoFormalBA.setCurso(lovCursos.get(indiceUnicoElemento));
+                lovCursos = null;
+                getLovCursos();
+                context.update("form:tabViewEducacionNoFormal:parametroCursoModEducacionNoFormal");
+            } else {
+                permitirIndexVigenciaNoFormal = false;
+                context.update("form:CursoEducacionNoFormalDialogo");
+                context.execute("CursoEducacionNoFormalDialogo.show()");
+            }
+        }
+        if (cualParametro.equals("INSTITUCION")) {
+            vigenciaNoFormalBA.getInstitucion().setDescripcion(auxInstitucionEducacionNoFormal);
+            for (int i = 0; i < lovInstituciones.size(); i++) {
+                if (lovInstituciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaNoFormalBA.setInstitucion(lovInstituciones.get(indiceUnicoElemento));
+                lovInstituciones = null;
+                getLovInstituciones();
+                context.update("form:tabViewEducacionNoFormal:parametroInstitucionModEducacionNoFormal");
+            } else {
+                permitirIndexVigenciaNoFormal = false;
+                context.update("form:InstitucionEducacionNoFormalDialogo");
+                context.execute("InstitucionEducacionNoFormalDialogo.show()");
+            }
+        }
+    }
+
+    public void modificarParametrosExperienciaLaboral(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cualParametro.equals("MOTIVO")) {
+            hvExperienciaLaboralBA.getMotivoretiro().setNombre(auxMotivoRetiroExperienciaLaboral);
+            for (int i = 0; i < lovMotivosRetiros.size(); i++) {
+                if (lovMotivosRetiros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                hvExperienciaLaboralBA.setMotivoretiro(lovMotivosRetiros.get(indiceUnicoElemento));
+                lovMotivosRetiros = null;
+                getLovMotivosRetiros();
+                context.update("form:tabViewExperienciaLaboral:parametroMotivoRetiroModExperienciaLaboral");
+            } else {
+                permitirIndexHvExperienciaLaboral = false;
+                context.update("form:MotivoRetiroExperienciaLaboralDialogo");
+                context.execute("MotivoRetiroExperienciaLaboralDialogo.show()");
+            }
+        }
+        if (cualParametro.equals("SECTOR")) {
+            hvExperienciaLaboralBA.getSectoreconomico().setDescripcion(auxSectorEconomicoExperienciaLaboral);
+            for (int i = 0; i < lovSectoresEconomicos.size(); i++) {
+                if (lovSectoresEconomicos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                hvExperienciaLaboralBA.setSectoreconomico(lovSectoresEconomicos.get(indiceUnicoElemento));
+                lovSectoresEconomicos = null;
+                getLovSectoresEconomicos();
+                context.update("form:tabViewExperienciaLaboral:parametroSectorEconomicoModExperienciaLaboral");
+            } else {
+                permitirIndexHvExperienciaLaboral = false;
+                context.update("form:SectorEconomicoExperienciaLaboralDialogo");
+                context.execute("SectorEconomicoExperienciaLaboralDialogo.show()");
+            }
+        }
+    }
+
+    public void modificarParametrosProyecto(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cualParametro.equals("PROYECTO")) {
+            vigenciaProyectoBA.getProyecto().setNombreproyecto(auxProyectoProyecto);
+            for (int i = 0; i < lovProyectos.size(); i++) {
+                if (lovProyectos.get(i).getNombreproyecto().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaProyectoBA.setProyecto(lovProyectos.get(indiceUnicoElemento));
+                lovProyectos = null;
+                getLovProyectos();
+                context.update("form:tabViewProyecto:parametroProyectoModProyecto");
+            } else {
+                permitirIndexVigenciaProyecto = false;
+                context.update("form:ProyectoProyectoDialogo");
+                context.execute("ProyectoProyectoDialogo.show()");
+            }
+        }
+        if (cualParametro.equals("ROL")) {
+            vigenciaProyectoBA.getPryRol().setDescripcion(auxRolProyecto);
+            for (int i = 0; i < lovPryRoles.size(); i++) {
+                if (lovPryRoles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaProyectoBA.setPryRol(lovPryRoles.get(indiceUnicoElemento));
+                lovPryRoles = null;
+                getLovPryRoles();
+                context.update("form:tabViewProyecto:parametroRolModProyecto");
+            } else {
+                permitirIndexVigenciaProyecto = false;
+                context.update("form:PryRolProyectoDialogo");
+                context.execute("PryRolProyectoDialogo.show()");
+            }
+        }
+    }
+    
+    public void modificarParametrosCargoPostularse(String cualParametro, String valorConfirmar) {
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cualParametro.equals("CARGO")) {
+            vigenciaCargoPersonalBA.getCargo().setNombre(auxCargoCargoPostularse);
+            for (int i = 0; i < lovCargos.size(); i++) {
+                if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                    indiceUnicoElemento = i;
+                    coincidencias++;
+                }
+            }
+            if (coincidencias == 1) {
+                vigenciaCargoPersonalBA.setCargo(lovCargos.get(indiceUnicoElemento));
+                lovCargos = null;
+                getLovCargos();
+                context.update("form:tabViewCargoPostularse:parametroCargoModCargoPostularse");
+            } else {
+                permitirIndexVigenciaCargoPersonal = false;
+                context.update("form:CargoCargoPostularseDialogo");
+                context.execute("CargoCargoPostularseDialogo.show()");
+            }
+        }
+    }
+
+    public void modificarConversacionModuloIdioma() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (conversacionDesde != null && conversacionHasta != null) {
-            System.out.println("Entro if");
             if (conversacionHasta.intValue() < conversacionDesde.intValue()) {
-                System.out.println("error");
                 conversacionDesde = auxConversacionDesde;
                 conversacionHasta = auxConversacionHasta;
                 context.update("form:tabViewIdioma:parametroConversacionDesdeModIdioma");
@@ -4144,16 +5139,11 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
         }
     }
-    
+
     public void modificarEscrituraModuloIdioma() {
-        System.out.println("modificarEscrituraModuloIdioma");
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("escrituraDesde : "+escrituraDesde);
-        System.out.println("escrituraHasta : "+escrituraHasta);
         if (escrituraDesde != null && escrituraHasta != null) {
-            System.out.println("Entro if");
             if (escrituraHasta.intValue() < escrituraDesde.intValue()) {
-                System.out.println("error");
                 escrituraDesde = auxEscrituraDesde;
                 escrituraHasta = auxEscrituraHasta;
                 context.update("form:tabViewIdioma:parametroEscrituraDesdeModIdioma");
@@ -4163,16 +5153,11 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
         }
     }
-    
+
     public void modificarLecturaModuloIdioma() {
-        System.out.println("modificarLecturaModuloIdioma");
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lecturaDesde : "+lecturaDesde);
-        System.out.println("lecturaHasta : "+lecturaHasta);
         if (lecturaDesde != null && lecturaHasta != null) {
-            System.out.println("Entro if");
             if (lecturaHasta.intValue() < lecturaDesde.intValue()) {
-                System.out.println("error");
                 lecturaDesde = auxLecturaDesde;
                 lecturaHasta = auxLecturaHasta;
                 context.update("form:tabViewIdioma:parametroLecturaDesdeModIdioma");
@@ -4182,7 +5167,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
         }
     }
-    
+
     public void modificarSueldosModuloSueldo() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (sueldoMaxSueldo != null && sueldoMinSueldo != null) {
@@ -4225,13 +5210,266 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
     }
 
+    public void actualizarParametroCargoCargoPostularse() {
+        vigenciaCargoPersonalBA.setCargo(cargoSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewCargoPostularse:parametroCargoModCargoPostularse");
+        cargoSeleccionado = null;
+        filtrarLovCargos = null;
+        casillaVigenciaCargoPersonal = -1;
+        aceptar = true;
+        permitirIndexVigenciaCargoPersonal = true;
+        context.update("form:CargoCargoPostularseDialogo");
+        context.update("form:lovCargoCargoPostularse");
+        context.update("form:aceptarCCP");
+        context.execute("CargoCargoPostularseDialogo.hide()");
+    }
+
+    public void cancelarParametroCargoCargoPostularse() {
+        cargoSeleccionado = null;
+        filtrarLovCargos = null;
+        casillaVigenciaCargoPersonal = -1;
+        aceptar = true;
+        permitirIndexVigenciaCargoPersonal = true;
+    }
+    
+    public void actualizarParametroProyectoProyecto() {
+        vigenciaProyectoBA.setProyecto(proyectoSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewProyecto:parametroProyectoModProyecto");
+        proyectoSeleccionado = null;
+        filtrarLovProyectos = null;
+        casillaVigenciaProyecto = -1;
+        aceptar = true;
+        permitirIndexVigenciaProyecto = true;
+        context.update("form:ProyectoProyectoDialogo");
+        context.update("form:lovProyectoProyecto");
+        context.update("form:aceptarPP");
+        context.execute("ProyectoProyectoDialogo.hide()");
+    }
+
+    public void cancelarParametroProyectoProyecto() {
+        proyectoSeleccionado = null;
+        filtrarLovProyectos = null;
+        casillaVigenciaProyecto = -1;
+        aceptar = true;
+        permitirIndexVigenciaProyecto = true;
+    }
+
+    public void actualizarParametroPryRolProyecto() {
+        vigenciaProyectoBA.setPryRol(pryRolSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewProyecto:parametroRolModProyecto");
+        pryRolSeleccionado = null;
+        filtrarLovPryRoles = null;
+        casillaVigenciaProyecto = -1;
+        aceptar = true;
+        permitirIndexVigenciaProyecto = true;
+        context.update("form:PryRolProyectoDialogo");
+        context.update("form:lovPryRolProyecto");
+        context.update("form:aceptarPRYP");
+        context.execute("PryRolProyectoDialogo.hide()");
+    }
+
+    public void cancelarParametroPryRolProyecto() {
+        pryRolSeleccionado = null;
+        filtrarLovPryRoles = null;
+        casillaVigenciaProyecto = -1;
+        aceptar = true;
+        permitirIndexVigenciaProyecto = true;
+    }
+
+    public void actualizarParametroSectorEconomicoExperienciaLaboral() {
+        hvExperienciaLaboralBA.setSectoreconomico(sectorEconomicoSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewExperienciaLaboral:parametroSectorEconomicoModExperienciaLaboral");
+        sectorEconomicoSeleccionado = null;
+        filtrarLovSectoresEconomicos = null;
+        casillaHvExperienciaLaboral = -1;
+        aceptar = true;
+        permitirIndexHvExperienciaLaboral = true;
+        context.update("form:SectorEconomicoExperienciaLaboralDialogo");
+        context.update("form:lovSectorEconomicoExperienciaLaboral");
+        context.update("form:aceptarSEEL");
+        context.execute("SectorEconomicoExperienciaLaboralDialogo.hide()");
+    }
+
+    public void cancelarParametroSectorEconomicoExperienciaLaboral() {
+        sectorEconomicoSeleccionado = null;
+        filtrarLovSectoresEconomicos = null;
+        casillaHvExperienciaLaboral = -1;
+        aceptar = true;
+        permitirIndexHvExperienciaLaboral = true;
+    }
+
+    public void actualizarParametroMotivoRetiroExperienciaLaboral() {
+        hvExperienciaLaboralBA.setMotivoretiro(motivoRetiroSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewExperienciaLaboral:parametroMotivoRetiroModExperienciaLaboral");
+        motivoRetiroSeleccionado = null;
+        filtrarLovMotivosRetiros = null;
+        casillaHvExperienciaLaboral = -1;
+        aceptar = true;
+        permitirIndexHvExperienciaLaboral = true;
+        context.update("form:MotivoRetiroExperienciaLaboralDialogo");
+        context.update("form:lovMotivoRetiroExperienciaLaboral");
+        context.update("form:aceptarMREL");
+        context.execute("MotivoRetiroExperienciaLaboralDialogo.hide()");
+    }
+
+    public void cancelarParametroMotivoRetiroExperienciaLaboral() {
+        motivoRetiroSeleccionado = null;
+        filtrarLovMotivosRetiros = null;
+        casillaHvExperienciaLaboral = -1;
+        aceptar = true;
+        permitirIndexHvExperienciaLaboral = true;
+    }
+
+    public void actualizarParametroInstitucionEducacionNoFormal() {
+        vigenciaNoFormalBA.setInstitucion(institucionSeleccionada);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewEducacionNoFormal:parametroInstitucionModEducacionNoFormal");
+        institucionSeleccionada = null;
+        filtrarLovInstituciones = null;
+        casillaVigenciaNoFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaNoFormal = true;
+        context.update("form:InstitucionEducacionNoFormalDialogo");
+        context.update("form:lovInstitucionEducacionNoFormal");
+        context.update("form:aceptarIENF");
+        context.execute("InstitucionEducacionNoFormalDialogo.hide()");
+    }
+
+    public void cancelarParametroInstitucionEducacionNoFormal() {
+        institucionSeleccionada = null;
+        filtrarLovInstituciones = null;
+        casillaVigenciaNoFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaNoFormal = true;
+    }
+
+    public void actualizarParametroCursoEducacionNoFormal() {
+        vigenciaNoFormalBA.setCurso(cursoSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewEducacionNoFormal:parametroCursoModEducacionNoFormal");
+        cursoSeleccionado = null;
+        filtrarLovCursos = null;
+        casillaVigenciaNoFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaNoFormal = true;
+        context.update("form:CursoEducacionNoFormalDialogo");
+        context.update("form:lovCursoEducacionNoFormal");
+        context.update("form:aceptarPENF");
+        context.execute("CursoEducacionNoFormalDialogo.hide()");
+    }
+
+    public void cancelarParametroCursoEducacionNoFormal() {
+        cursoSeleccionado = null;
+        filtrarLovCursos = null;
+        casillaVigenciaNoFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaNoFormal = true;
+    }
+
+    public void actualizarParametroProfesionEducacionFormal() {
+        vigenciaFormalBA.setProfesion(profesionSeleccionada);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewEducacionFormal:parametroProfesionModEducacionFormal");
+        profesionSeleccionada = null;
+        filtrarLovProfesiones = null;
+        casillaVigenciaFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaFormal = true;
+        context.update("form:ProfesionEducacionFormalDialogo");
+        context.update("form:lovProfesionEducacionFormal");
+        context.update("form:aceptarPEF");
+        context.execute("ProfesionEducacionFormalDialogo.hide()");
+    }
+
+    public void cancelarParametroProfesionEducacionFormal() {
+        profesionSeleccionada = null;
+        filtrarLovProfesiones = null;
+        casillaVigenciaFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaFormal = true;
+    }
+
+    public void actualizarParametroInstitucionEducacionFormal() {
+        vigenciaFormalBA.setInstitucion(institucionSeleccionada);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewEducacionFormal:parametroInstitucionModEducacionFormal");
+        institucionSeleccionada = null;
+        filtrarLovInstituciones = null;
+        casillaVigenciaFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaFormal = true;
+        context.update("form:InstitucionEducacionFormalDialogo");
+        context.update("form:lovInstitucionEducacionFormal");
+        context.update("form:aceptarIEF");
+        context.execute("InstitucionEducacionFormalDialogo.hide()");
+    }
+
+    public void cancelarParametroInstitucionEducacionFormal() {
+        institucionSeleccionada = null;
+        filtrarLovInstituciones = null;
+        casillaVigenciaFormal = -1;
+        aceptar = true;
+        permitirIndexVigenciaFormal = true;
+    }
+
+    public void actualizarParametroTipoIndicadorCenso() {
+        vigenciaIndicadorBA.setTipoindicador(tipoIndicadorSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewCenso:parametroTipoIndicadorModCenso");
+        tipoIndicadorSeleccionado = null;
+        filtrarLovTiposIndicadores = null;
+        casillaVigenciaIndicador = -1;
+        aceptar = true;
+        permitirIndexVigenciaIndicador = true;
+        context.update("form:TipoIndicadorCensoDialogo");
+        context.update("form:lovTipoIndicadorCensol");
+        context.update("form:aceptarTIC");
+        context.execute("TipoIndicadorCensoDialogo.hide()");
+    }
+
+    public void cancelarParametroTipoIndicadorCenso() {
+        tipoIndicadorSeleccionado = null;
+        filtrarLovTiposIndicadores = null;
+        casillaVigenciaIndicador = -1;
+        aceptar = true;
+        permitirIndexVigenciaIndicador = true;
+    }
+
+    public void actualizarParametroIndicadorCenso() {
+        vigenciaIndicadorBA.setIndicador(indicadorSeleccionado);
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewCenso:parametroIndicadorModCenso");
+        indicadorSeleccionado = null;
+        filtrarLovIndicadores = null;
+        casillaVigenciaIndicador = -1;
+        aceptar = true;
+        permitirIndexVigenciaIndicador = true;
+        context.update("form:IndicadorCensoDialogo");
+        context.update("form:lovIndicadorCensol");
+        context.update("form:aceptarIC");
+        context.execute("IndicadorCensoDialogo.hide()");
+    }
+
+    public void cancelarParametroIndicadorCenso() {
+        indicadorSeleccionado = null;
+        filtrarLovIndicadores = null;
+        casillaVigenciaIndicador = -1;
+        aceptar = true;
+        permitirIndexVigenciaIndicador = true;
+    }
+
     public void actualizarParametroIdiomaIdioma() {
         idiomaPersonaBA.setIdioma(idiomaSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabViewIdioma:parametroIdiomaModIdioma");
         idiomaSeleccionado = null;
         filtrarLovIdiomas = null;
-        casillaIdiomaPersona= -1;
+        casillaIdiomaPersona = -1;
         aceptar = true;
         permitirIndexIdiomaPersona = true;
         context.update("form:IdiomaIdiomaDialogo");
@@ -4243,18 +5481,18 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void cancelarParametroIdiomaIdioma() {
         idiomaSeleccionado = null;
         filtrarLovIdiomas = null;
-        casillaIdiomaPersona= -1;
+        casillaIdiomaPersona = -1;
         aceptar = true;
         permitirIndexIdiomaPersona = true;
     }
-    
+
     public void actualizarParametroEstadoCivilEstadoCivil() {
         estadoCivilBA = estadoCivilSeleccionado;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabViewEstadoCivil:parametroEstadoCivilModEstadoCivil");
         estadoCivilSeleccionado = null;
         filtrarLovEstadosCiviles = null;
-        casillaEstadoCivil= -1;
+        casillaEstadoCivil = -1;
         aceptar = true;
         permitirIndexEstadoCivil = true;
         context.update("form:EstadoCivilEstadoCivilDialogo");
@@ -4266,11 +5504,11 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void cancelarParametroEstadoCivilEstadoCivil() {
         estadoCivilSeleccionado = null;
         filtrarLovEstadosCiviles = null;
-        casillaEstadoCivil= -1;
+        casillaEstadoCivil = -1;
         aceptar = true;
         permitirIndexEstadoCivil = true;
     }
-    
+
     public void actualizarParametroCiudadDocumentoDatosPersonales() {
         empleadoBA.getPersona().setCiudaddocumento(ciudadSeleccionada);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -4949,13 +6187,37 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void changeTapFactorRH() {
         System.out.println("tabActivaFactorRH : " + tabActivaFactorRH);
     }
-    
+
     public void changeTapEstadoCivil() {
         System.out.println("tabActivaEstadoCivil : " + tabActivaEstadoCivil);
     }
-    
+
     public void changeTapIdioma() {
         System.out.println("tabActivaIdioma : " + tabActivaIdioma);
+    }
+
+    public void changeTapCenso() {
+        System.out.println("tabActivaCenso : " + tabActivaCenso);
+    }
+
+    public void changeTapEducacionFormal() {
+        System.out.println("tabActivaEducacionFormal : " + tabActivaEducacionFormal);
+    }
+
+    public void changeTapEducacionNoFormal() {
+        System.out.println("tabActivaEducacionNoFormal : " + tabActivaEducacionNoFormal);
+    }
+
+    public void changeTapExperienciaLaboral() {
+        System.out.println("tabActivaExperienciaLaboral : " + tabActivaExperienciaLaboral);
+    }
+
+    public void changeTapProyecto() {
+        System.out.println("tabActivaProyecto : " + tabActivaProyecto);
+    }
+    
+    public void changeTapCargoPostularse() {
+        System.out.println("tabActivaCargoPostularse : " + tabActivaCargoPostularse);
     }
 
     public void activarAceptar() {
@@ -5177,7 +6439,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         context.update("form:tabViewSets");
         context.update("form:tabViewSets:tipoFechaLegislacionLaboral");
     }
-    
+
     public void activarCasillasFechasEstadoCivil() {
         if (tipoFechaEstadoCivil == 1) {
             activoFechasEstadoCivil = true;
@@ -5192,6 +6454,54 @@ public class ControlBusquedaAvanzada implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabViewEstadoCivil");
         context.update("form:tabViewEstadoCivil:tipoFechaEstadoCivil");
+    }
+
+    public void activarCasillasFechasCenso() {
+        if (tipoFechaCenso == 1) {
+            activoFechasCenso = true;
+            fechaFinalCenso = null;
+            fechaInicialCenso = null;
+            auxFechaFinalCenso = null;
+            auxFechaInicialCenso = null;
+        }
+        if (tipoFechaCenso == 2) {
+            activoFechasCenso = false;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewCenso");
+        context.update("form:tabViewCenso:tipoFechaCenso");
+    }
+
+    public void activarCasillasFechasEducacionFormal() {
+        if (tipoFechaEducacionFormal == 1) {
+            activoFechasEducacionFormal = true;
+            fechaFinalEducacionFormal = null;
+            fechaInicialEducacionFormal = null;
+            auxFechaFinalEducacionFormal = null;
+            auxFechaInicialEducacionFormal = null;
+        }
+        if (tipoFechaEducacionFormal == 2) {
+            activoFechasEducacionFormal = false;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewEducacionFormal");
+        context.update("form:tabViewEducacionFormal:tipoFechaEducacionFormal");
+    }
+
+    public void activarCasillasFechasEducacionNoFormal() {
+        if (tipoFechaEducacionNoFormal == 1) {
+            activoFechasEducacionNoFormal = true;
+            fechaFinalEducacionNoFormal = null;
+            fechaInicialEducacionNoFormal = null;
+            auxFechaFinalEducacionNoFormal = null;
+            auxFechaInicialEducacionNoFormal = null;
+        }
+        if (tipoFechaEducacionNoFormal == 2) {
+            activoFechasEducacionNoFormal = false;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:tabViewEducacionNoFormal");
+        context.update("form:tabViewEducacionNoFormal:tipoFechaEducacionNoFormal");
     }
 
     //Clase de columnas que sera cargadas en la tabla
@@ -5545,12 +6855,12 @@ public class ControlBusquedaAvanzada implements Serializable {
         scrollPanelNomina = (ScrollPanel) c.getViewRoot().findComponent("form:scrollPanelNomina");
         scrollPanelPersonal = (ScrollPanel) c.getViewRoot().findComponent("form:scrollPanelPersonal");
         if (numeroTipoBusqueda == 1) {
-            scrollPanelNomina.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none;");
-            scrollPanelPersonal.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none; visibility: hidden; display: none;");
+            scrollPanelNomina.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 275px;font-size: 10px;z-index: auto;border: none;");
+            scrollPanelPersonal.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 275px;font-size: 10px;z-index: auto;border: none; visibility: hidden; display: none;");
         }
         if (numeroTipoBusqueda == 2) {
-            scrollPanelNomina.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none; visibility: hidden; display: none;");
-            scrollPanelPersonal.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 290px;font-size: 10px;z-index: auto;border: none;");
+            scrollPanelNomina.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 275px;font-size: 10px;z-index: auto;border: none; visibility: hidden; display: none;");
+            scrollPanelPersonal.setStyle("position: absolute; top: 15px; left: 5px;width: 855px; height: 275px;font-size: 10px;z-index: auto;border: none;");
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:scrollPanelNomina");
@@ -7205,7 +8515,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public List<EstadosCiviles> getLovEstadosCiviles() {
-        if(lovEstadosCiviles == null){
+        if (lovEstadosCiviles == null) {
             lovEstadosCiviles = administrarEstadosCiviles.consultarEstadosCiviles();
         }
         return lovEstadosCiviles;
@@ -7256,7 +8566,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public List<Idiomas> getLovIdiomas() {
-        if(lovIdiomas == null){
+        if (lovIdiomas == null) {
             lovIdiomas = administrarIdiomasPersonas.listIdiomas();
         }
         return lovIdiomas;
@@ -7330,6 +8640,477 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.escrituraHasta = escrituraHasta;
     }
 
-    
+    public VigenciasIndicadores getVigenciaIndicadorBA() {
+        return vigenciaIndicadorBA;
+    }
+
+    public void setVigenciaIndicadorBA(VigenciasIndicadores vigenciaIndicadorBA) {
+        this.vigenciaIndicadorBA = vigenciaIndicadorBA;
+    }
+
+    public int getTabActivaCenso() {
+        return tabActivaCenso;
+    }
+
+    public void setTabActivaCenso(int tabActivaCenso) {
+        this.tabActivaCenso = tabActivaCenso;
+    }
+
+    public Date getFechaInicialCenso() {
+        return fechaInicialCenso;
+    }
+
+    public void setFechaInicialCenso(Date fechaInicialCenso) {
+        this.fechaInicialCenso = fechaInicialCenso;
+    }
+
+    public int getTipoFechaCenso() {
+        return tipoFechaCenso;
+    }
+
+    public void setTipoFechaCenso(int tipoFechaCenso) {
+        this.tipoFechaCenso = tipoFechaCenso;
+    }
+
+    public List<TiposIndicadores> getLovTiposIndicadores() {
+        if (lovTiposIndicadores == null) {
+            lovTiposIndicadores = administrarEmplVigenciaIndicador.listTiposIndicadores();
+        }
+        return lovTiposIndicadores;
+    }
+
+    public void setLovTiposIndicadores(List<TiposIndicadores> lovTiposIndicadores) {
+        this.lovTiposIndicadores = lovTiposIndicadores;
+    }
+
+    public List<TiposIndicadores> getFiltrarLovTiposIndicadores() {
+        return filtrarLovTiposIndicadores;
+    }
+
+    public void setFiltrarLovTiposIndicadores(List<TiposIndicadores> filtrarLovTiposIndicadores) {
+        this.filtrarLovTiposIndicadores = filtrarLovTiposIndicadores;
+    }
+
+    public TiposIndicadores getTipoIndicadorSeleccionado() {
+        return tipoIndicadorSeleccionado;
+    }
+
+    public void setTipoIndicadorSeleccionado(TiposIndicadores tipoIndicadorSeleccionado) {
+        this.tipoIndicadorSeleccionado = tipoIndicadorSeleccionado;
+    }
+
+    public List<Indicadores> getLovIndicadores() {
+        if (lovIndicadores == null) {
+            lovIndicadores = administrarEmplVigenciaIndicador.listIndicadores();
+        }
+        return lovIndicadores;
+    }
+
+    public void setLovIndicadores(List<Indicadores> lovIndicadores) {
+        this.lovIndicadores = lovIndicadores;
+    }
+
+    public List<Indicadores> getFiltrarLovIndicadores() {
+        return filtrarLovIndicadores;
+    }
+
+    public void setFiltrarLovIndicadores(List<Indicadores> filtrarLovIndicadores) {
+        this.filtrarLovIndicadores = filtrarLovIndicadores;
+    }
+
+    public Indicadores getIndicadorSeleccionado() {
+        return indicadorSeleccionado;
+    }
+
+    public void setIndicadorSeleccionado(Indicadores indicadorSeleccionado) {
+        this.indicadorSeleccionado = indicadorSeleccionado;
+    }
+
+    public boolean isActivoFechasCenso() {
+        return activoFechasCenso;
+    }
+
+    public void setActivoFechasCenso(boolean activoFechasCenso) {
+        this.activoFechasCenso = activoFechasCenso;
+    }
+
+    public Date getFechaFinalCenso() {
+        return fechaFinalCenso;
+    }
+
+    public void setFechaFinalCenso(Date fechaFinalCenso) {
+        this.fechaFinalCenso = fechaFinalCenso;
+    }
+
+    public VigenciasFormales getVigenciaFormalBA() {
+        return vigenciaFormalBA;
+    }
+
+    public void setVigenciaFormalBA(VigenciasFormales vigenciaFormalBA) {
+        this.vigenciaFormalBA = vigenciaFormalBA;
+    }
+
+    public int getTabActivaEducacionFormal() {
+        return tabActivaEducacionFormal;
+    }
+
+    public void setTabActivaEducacionFormal(int tabActivaEducacionFormal) {
+        this.tabActivaEducacionFormal = tabActivaEducacionFormal;
+    }
+
+    public Date getFechaInicialEducacionFormal() {
+        return fechaInicialEducacionFormal;
+    }
+
+    public void setFechaInicialEducacionFormal(Date fechaInicialEducacionFormal) {
+        this.fechaInicialEducacionFormal = fechaInicialEducacionFormal;
+    }
+
+    public Date getFechaFinalEducacionFormal() {
+        return fechaFinalEducacionFormal;
+    }
+
+    public void setFechaFinalEducacionFormal(Date fechaFinalEducacionFormal) {
+        this.fechaFinalEducacionFormal = fechaFinalEducacionFormal;
+    }
+
+    public int getTipoFechaEducacionFormal() {
+        return tipoFechaEducacionFormal;
+    }
+
+    public void setTipoFechaEducacionFormal(int tipoFechaEducacionFormal) {
+        this.tipoFechaEducacionFormal = tipoFechaEducacionFormal;
+    }
+
+    public List<Instituciones> getLovInstituciones() {
+        if (lovInstituciones == null) {
+            lovInstituciones = administrarVigenciasFormales.lovInstituciones();
+        }
+        return lovInstituciones;
+    }
+
+    public void setLovInstituciones(List<Instituciones> lovInstituciones) {
+        this.lovInstituciones = lovInstituciones;
+    }
+
+    public List<Instituciones> getFiltrarLovInstituciones() {
+        return filtrarLovInstituciones;
+    }
+
+    public void setFiltrarLovInstituciones(List<Instituciones> filtrarLovInstituciones) {
+        this.filtrarLovInstituciones = filtrarLovInstituciones;
+    }
+
+    public Instituciones getInstitucionSeleccionada() {
+        return institucionSeleccionada;
+    }
+
+    public void setInstitucionSeleccionada(Instituciones institucionSeleccionada) {
+        this.institucionSeleccionada = institucionSeleccionada;
+    }
+
+    public List<Profesiones> getLovProfesiones() {
+        if (lovProfesiones == null) {
+            lovProfesiones = administrarVigenciasFormales.lovProfesiones();
+        }
+        return lovProfesiones;
+    }
+
+    public void setLovProfesiones(List<Profesiones> lovProfesiones) {
+        this.lovProfesiones = lovProfesiones;
+    }
+
+    public List<Profesiones> getFiltrarLovProfesiones() {
+        return filtrarLovProfesiones;
+    }
+
+    public void setFiltrarLovProfesiones(List<Profesiones> filtrarLovProfesiones) {
+        this.filtrarLovProfesiones = filtrarLovProfesiones;
+    }
+
+    public Profesiones getProfesionSeleccionada() {
+        return profesionSeleccionada;
+    }
+
+    public void setProfesionSeleccionada(Profesiones profesionSeleccionada) {
+        this.profesionSeleccionada = profesionSeleccionada;
+    }
+
+    public boolean isActivoFechasEducacionFormal() {
+        return activoFechasEducacionFormal;
+    }
+
+    public void setActivoFechasEducacionFormal(boolean activoFechasEducacionFormal) {
+        this.activoFechasEducacionFormal = activoFechasEducacionFormal;
+    }
+
+    public String getDesarrolladoEducacionFormal() {
+        return desarrolladoEducacionFormal;
+    }
+
+    public void setDesarrolladoEducacionFormal(String desarrolladoEducacionFormal) {
+        this.desarrolladoEducacionFormal = desarrolladoEducacionFormal;
+    }
+
+    public VigenciasNoFormales getVigenciaNoFormalBA() {
+        return vigenciaNoFormalBA;
+    }
+
+    public void setVigenciaNoFormalBA(VigenciasNoFormales vigenciaNoFormalBA) {
+        this.vigenciaNoFormalBA = vigenciaNoFormalBA;
+    }
+
+    public int getTabActivaEducacionNoFormal() {
+        return tabActivaEducacionNoFormal;
+    }
+
+    public void setTabActivaEducacionNoFormal(int tabActivaEducacionNoFormal) {
+        this.tabActivaEducacionNoFormal = tabActivaEducacionNoFormal;
+    }
+
+    public Date getFechaInicialEducacionNoFormal() {
+        return fechaInicialEducacionNoFormal;
+    }
+
+    public void setFechaInicialEducacionNoFormal(Date fechaInicialEducacionNoFormal) {
+        this.fechaInicialEducacionNoFormal = fechaInicialEducacionNoFormal;
+    }
+
+    public Date getFechaFinalEducacionNoFormal() {
+        return fechaFinalEducacionNoFormal;
+    }
+
+    public void setFechaFinalEducacionNoFormal(Date fechaFinalEducacionNoFormal) {
+        this.fechaFinalEducacionNoFormal = fechaFinalEducacionNoFormal;
+    }
+
+    public int getTipoFechaEducacionNoFormal() {
+        return tipoFechaEducacionNoFormal;
+    }
+
+    public void setTipoFechaEducacionNoFormal(int tipoFechaEducacionNoFormal) {
+        this.tipoFechaEducacionNoFormal = tipoFechaEducacionNoFormal;
+    }
+
+    public List<Cursos> getLovCursos() {
+        if (lovCursos == null) {
+            lovCursos = administrarVigenciasNoFormales.lovCursos();
+        }
+        return lovCursos;
+    }
+
+    public void setLovCursos(List<Cursos> lovCursos) {
+        this.lovCursos = lovCursos;
+    }
+
+    public List<Cursos> getFiltrarLovCursos() {
+        return filtrarLovCursos;
+    }
+
+    public void setFiltrarLovCursos(List<Cursos> filtrarLovCursos) {
+        this.filtrarLovCursos = filtrarLovCursos;
+    }
+
+    public Cursos getCursoSeleccionado() {
+        return cursoSeleccionado;
+    }
+
+    public void setCursoSeleccionado(Cursos cursoSeleccionado) {
+        this.cursoSeleccionado = cursoSeleccionado;
+    }
+
+    public boolean isActivoFechasEducacionNoFormal() {
+        return activoFechasEducacionNoFormal;
+    }
+
+    public void setActivoFechasEducacionNoFormal(boolean activoFechasEducacionNoFormal) {
+        this.activoFechasEducacionNoFormal = activoFechasEducacionNoFormal;
+    }
+
+    public String getDesarrolladoEducacionNoFormal() {
+        return desarrolladoEducacionNoFormal;
+    }
+
+    public void setDesarrolladoEducacionNoFormal(String desarrolladoEducacionNoFormal) {
+        this.desarrolladoEducacionNoFormal = desarrolladoEducacionNoFormal;
+    }
+
+    public HvExperienciasLaborales getHvExperienciaLaboralBA() {
+        return hvExperienciaLaboralBA;
+    }
+
+    public void setHvExperienciaLaboralBA(HvExperienciasLaborales hvExperienciaLaboralBA) {
+        this.hvExperienciaLaboralBA = hvExperienciaLaboralBA;
+    }
+
+    public int getTabActivaExperienciaLaboral() {
+        return tabActivaExperienciaLaboral;
+    }
+
+    public void setTabActivaExperienciaLaboral(int tabActivaExperienciaLaboral) {
+        this.tabActivaExperienciaLaboral = tabActivaExperienciaLaboral;
+    }
+
+    public Date getFechaInicialExperienciaLaboral() {
+        return fechaInicialExperienciaLaboral;
+    }
+
+    public void setFechaInicialExperienciaLaboral(Date fechaInicialExperienciaLaboral) {
+        this.fechaInicialExperienciaLaboral = fechaInicialExperienciaLaboral;
+    }
+
+    public Date getFechaFinalExperienciaLaboral() {
+        return fechaFinalExperienciaLaboral;
+    }
+
+    public void setFechaFinalExperienciaLaboral(Date fechaFinalExperienciaLaboral) {
+        this.fechaFinalExperienciaLaboral = fechaFinalExperienciaLaboral;
+    }
+
+    public List<SectoresEconomicos> getLovSectoresEconomicos() {
+        if (lovSectoresEconomicos == null) {
+            lovSectoresEconomicos = administrarPerExperienciaLaboral.listSectoresEconomicos();
+        }
+        return lovSectoresEconomicos;
+    }
+
+    public void setLovSectoresEconomicos(List<SectoresEconomicos> lovSectoresEconomicos) {
+        this.lovSectoresEconomicos = lovSectoresEconomicos;
+    }
+
+    public List<SectoresEconomicos> getFiltrarLovSectoresEconomicos() {
+        return filtrarLovSectoresEconomicos;
+    }
+
+    public void setFiltrarLovSectoresEconomicos(List<SectoresEconomicos> filtrarLovSectoresEconomicos) {
+        this.filtrarLovSectoresEconomicos = filtrarLovSectoresEconomicos;
+    }
+
+    public SectoresEconomicos getSectorEconomicoSeleccionado() {
+        return sectorEconomicoSeleccionado;
+    }
+
+    public void setSectorEconomicoSeleccionado(SectoresEconomicos sectorEconomicoSeleccionado) {
+        this.sectorEconomicoSeleccionado = sectorEconomicoSeleccionado;
+    }
+
+    public String getEmpresaExperienciaLaboral() {
+        return empresaExperienciaLaboral;
+    }
+
+    public void setEmpresaExperienciaLaboral(String empresaExperienciaLaboral) {
+        this.empresaExperienciaLaboral = empresaExperienciaLaboral;
+    }
+
+    public String getCargoExperienciaLaboral() {
+        return cargoExperienciaLaboral;
+    }
+
+    public void setCargoExperienciaLaboral(String cargoExperienciaLaboral) {
+        this.cargoExperienciaLaboral = cargoExperienciaLaboral;
+    }
+
+    public VigenciasProyectos getVigenciaProyectoBA() {
+        return vigenciaProyectoBA;
+    }
+
+    public void setVigenciaProyectoBA(VigenciasProyectos vigenciaProyectoBA) {
+        this.vigenciaProyectoBA = vigenciaProyectoBA;
+    }
+
+    public int getTabActivaProyecto() {
+        return tabActivaProyecto;
+    }
+
+    public void setTabActivaProyecto(int tabActivaProyecto) {
+        this.tabActivaProyecto = tabActivaProyecto;
+    }
+
+    public Date getFechaInicialProyecto() {
+        return fechaInicialProyecto;
+    }
+
+    public void setFechaInicialProyecto(Date fechaInicialProyecto) {
+        this.fechaInicialProyecto = fechaInicialProyecto;
+    }
+
+    public Date getFechaFinalProyecto() {
+        return fechaFinalProyecto;
+    }
+
+    public void setFechaFinalProyecto(Date fechaFinalProyecto) {
+        this.fechaFinalProyecto = fechaFinalProyecto;
+    }
+
+    public List<PryRoles> getLovPryRoles() {
+        if (lovPryRoles == null) {
+            lovPryRoles = administrarVigenciasProyectos.lovPryRoles();
+        }
+        return lovPryRoles;
+    }
+
+    public void setLovPryRoles(List<PryRoles> lovPryRoles) {
+        this.lovPryRoles = lovPryRoles;
+    }
+
+    public List<PryRoles> getFiltrarLovPryRoles() {
+        return filtrarLovPryRoles;
+    }
+
+    public void setFiltrarLovPryRoles(List<PryRoles> filtrarLovPryRoles) {
+        this.filtrarLovPryRoles = filtrarLovPryRoles;
+    }
+
+    public PryRoles getPryRolSeleccionado() {
+        return pryRolSeleccionado;
+    }
+
+    public void setPryRolSeleccionado(PryRoles pryRolSeleccionado) {
+        this.pryRolSeleccionado = pryRolSeleccionado;
+    }
+
+    public List<Proyectos> getLovProyectos() {
+        if (lovProyectos == null) {
+            lovProyectos = administrarVigenciasProyectos.lovProyectos();
+        }
+        return lovProyectos;
+    }
+
+    public void setLovProyectos(List<Proyectos> lovProyectos) {
+        this.lovProyectos = lovProyectos;
+    }
+
+    public List<Proyectos> getFiltrarLovProyectos() {
+        return filtrarLovProyectos;
+    }
+
+    public void setFiltrarLovProyectos(List<Proyectos> filtrarLovProyectos) {
+        this.filtrarLovProyectos = filtrarLovProyectos;
+    }
+
+    public Proyectos getProyectoSeleccionado() {
+        return proyectoSeleccionado;
+    }
+
+    public void setProyectoSeleccionado(Proyectos proyectoSeleccionado) {
+        this.proyectoSeleccionado = proyectoSeleccionado;
+    }
+
+    public VigenciasCargos getVigenciaCargoPersonalBA() {
+        return vigenciaCargoPersonalBA;
+    }
+
+    public void setVigenciaCargoPersonalBA(VigenciasCargos vigenciaCargoPersonalBA) {
+        this.vigenciaCargoPersonalBA = vigenciaCargoPersonalBA;
+    }
+
+    public int getTabActivaCargoPostularse() {
+        return tabActivaCargoPostularse;
+    }
+
+    public void setTabActivaCargoPostularse(int tabActivaCargoPostularse) {
+        this.tabActivaCargoPostularse = tabActivaCargoPostularse;
+    }
+
     
 }
