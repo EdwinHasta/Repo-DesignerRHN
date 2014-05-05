@@ -44,6 +44,7 @@ public class ControlCerrarLiquidacion implements Serializable {
     public void tipoLiquidacion(String tipoLiquidacion){
         opcionLiquidacion = tipoLiquidacion;
     }
+    
     public void confirmarCierreLiquidacion() {
         Integer conteo = administrarCerrarLiquidacion.consultarConteoProcesoSN(parametroEstructura.getProceso().getSecuencia());
         if (conteo == totalEmpleadosParaLiquidar) {

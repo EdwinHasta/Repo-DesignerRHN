@@ -45,8 +45,10 @@
                 <p:inputText id="baseDatos" value="#{controlInicioRed.baseDatos}" style="position: absolute; top: 95px; left: 185px; font-weight: bold; text-transform: uppercase" disabled="#{controlInicioRed.estadoInicio}"/>
 
                 <p:focus for="usuario"/>
-                <p:commandButton id="btnLogin" value="#{controlInicioRed.txtBoton}" actionListener="#{controlInicioRed.ingresar()}"  style="position: relative; left: 100px; top: 90px"/> 
+                <p:commandButton id="btnLogin" value="#{controlInicioRed.txtBoton}" actionListener="#{controlInicioRed.ingresar()}"  style="position: relative; left: 100px; top: 90px" onclick="validarMensaje();" oncomplete="estadoSesion.hide()" /> 
                 <p:commandButton id="btnCambioClave" value="Cambio de Clave" disabled="#{controlInicioRed.cambioClave}" update=":formularioDialogos:cambiarClave" oncomplete="cambiarClave.show();" style="position: relative; left: 100px; top: 90px"/>
+                
+                <p:remoteCommand name="validarMensaje" actionListener="#{controlInicioRed.validarDialogoSesion()}"/>
             </p:panel>
 
             <p:imageSwitch id="bannerConsultas" effect="fade" widgetVar="informacion" style="position: absolute; top: 135px; left: 255px; box-shadow: 5px 5px 12px #000000" slideshowSpeed="5000">  
@@ -116,20 +118,25 @@
                 <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                 <h:outputText value="Las contraseñas no coniciden, por favor verificar e intentar de nuevo." style="position: absolute; left: 80px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
             </p:dialog>
-            
+
             <p:dialog id="errorCambioClaveCamposVacios" header="ATENCIÓN" widgetVar="errorCambioClaveCamposVacios"  resizable="false" draggable="false" modal="true" height="60" width="300px" style="font-size: 12px" closable="true">  
                 <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                 <h:outputText value="Existen campos vacios, por favor ingrese una valor." style="position: absolute; left: 80px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
             </p:dialog>
-            
+
             <p:dialog id="errorCambioClaveReusar" header="ATENCIÓN" widgetVar="errorCambioClaveReusar"  resizable="false" draggable="false" modal="true" height="60" width="300px" style="font-size: 12px" closable="true">  
                 <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                 <h:outputText value="Ya ha utilizado esta contraseña, por favor utilize una diferente." style="position: absolute; left: 80px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
             </p:dialog>
-            
+
             <p:dialog id="exitoCambioClave" header="ATENCIÓN" widgetVar="exitoCambioClave"  resizable="false" draggable="false" modal="true" height="60" width="300px" style="font-size: 12px" closable="true">  
                 <h:graphicImage value="Imagenes/correcto.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                 <h:outputText value="La contraseña se ha cambiado exitosamente." style="position: absolute; left: 80px; top: 15px; width: 200px; font-weight:bold; text-align: center" />
+            </p:dialog>
+
+            <p:dialog id="estadoSesion" header="Información" widgetVar="estadoSesion"  resizable="false" draggable="false" modal="true" height="65" width="350px" style="font-size: 12px" closable="false">  
+                <h:graphicImage value="Imagenes/cargando.gif" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                <h:outputText value="#{controlInicioRed.msgSesion}" style="font-size: 12px; position: absolute; left: 95px; top: 20px; width: 240px; text-align: justify; font-weight:bold;" />
             </p:dialog>
         </h:form>
     </h:body>

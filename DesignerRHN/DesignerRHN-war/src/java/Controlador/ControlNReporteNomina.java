@@ -195,7 +195,7 @@ public class ControlNReporteNomina implements Serializable {
         indice = -1;
         prueba = new FileInputStream(new File("C:\\Users\\Administrador\\Documents\\Guia JasperReport.pdf"));
         reporte = new DefaultStreamedContent(prueba, "application/pdf");
-        reporte = new DefaultStreamedContent();
+        //reporte = new DefaultStreamedContent();
         cabezeraVisor = null;
         estadoReporte = false;
     }
@@ -1450,6 +1450,7 @@ public class ControlNReporteNomina implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("cambiosReporte = " + cambiosReporte);
         if (cambiosReporte == true) {
+            System.out.println("0");
             if (tipoLista == 0) {
                 nombreReporte = listaIR.get(indice).getNombrereporte();
                 tipoReporte = listaIR.get(indice).getTipo();
@@ -1458,21 +1459,17 @@ public class ControlNReporteNomina implements Serializable {
                 tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
             }
             if (nombreReporte != null && tipoReporte != null) {
+                System.out.println("1");
                 pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
             }
             if (pathReporteGenerado != null) {
                 //context.execute("exportarReporte();");
-                System.out.println("Pasooo");
-                try {
-                    exportarReporte();
-                    context.execute("validarDescargaReporte();");
-                } catch (IOException ex) {
-                    Logger.getLogger(ControlNReporteNomina.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                System.out.println("2");
+                context.execute("validarDescargaReporte();");
             }
         } else {
             System.out.println("Syso antes ");
-            
+
             context.update("form:confirmarGuardarSinSalida");
             context.execute("confirmarGuardarSinSalida.show()");
         }
@@ -1576,13 +1573,17 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void exportarReporte() throws IOException {
+        System.out.println("PUM");
         if (pathReporteGenerado != null) {
+            System.out.println("3");
+            System.out.println("Path (exportarReporte): " + pathReporteGenerado);
             File reporte = new File(pathReporteGenerado);
             FacesContext ctx = FacesContext.getCurrentInstance();
             FileInputStream fis = new FileInputStream(reporte);
             byte[] bytes = new byte[1024];
             int read;
             if (!ctx.getResponseComplete()) {
+                System.out.println("4");
                 String fileName = reporte.getName();
                 HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
                 response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
@@ -1600,13 +1601,14 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void validarDescargaReporte() {
-        System.out.println("0");
-        RequestContext context = new DefaultRequestContext();
-        System.out.println("1");
+        System.out.println("5");
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("6");
         context.execute("generandoReporte.hide();");
-        System.out.println("2");
+        System.out.println("7");
         if (pathReporteGenerado != null && !pathReporteGenerado.startsWith("Error:")) {
             if (!tipoReporte.equals("PDF")) {
+                System.out.println("8");
                 context.execute("descargarReporte.show();");
             } else {
                 FileInputStream fis;
@@ -1622,11 +1624,11 @@ public class ControlNReporteNomina implements Serializable {
                 if (reporte != null) {
                     cabezeraVisor = "Reporte - " + listaIR.get(indice).getNombre();
                     context.update("formDialogos:verReportePDF");
-                    System.out.println("3");
+                    System.out.println("9");
                     context.execute("verReportePDF.show();");
                 }
+                pathReporteGenerado = null;
             }
-            pathReporteGenerado = null;
         } else {
             context.update("formDialogos:errorGenerandoReporte");
             context.execute("errorGenerandoReporte.show();");
@@ -2137,6 +2139,7 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public StreamedContent getReporte() {
+        System.out.println("get: " + reporte);
         return reporte;
     }
 
@@ -2148,6 +2151,7 @@ public class ControlNReporteNomina implements Serializable {
         return pathReporteGenerado;
     }
 
+    /*
     public static FacesContext getFacesContext(HttpServletRequest request, HttpServletResponse response) {
         // Get current FacesContext.
         FacesContext facesContext;
@@ -2171,7 +2175,7 @@ public class ControlNReporteNomina implements Serializable {
         FacesContextWrapper.setCurrentInstance(facesContext);
 
         return facesContext;
-    }
+    }*/
 
     private static abstract class FacesContextWrapper extends FacesContext {
 

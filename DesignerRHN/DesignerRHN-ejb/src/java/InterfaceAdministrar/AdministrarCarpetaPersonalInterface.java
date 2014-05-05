@@ -178,4 +178,12 @@ public interface AdministrarCarpetaPersonalInterface {
      * @return Retorna un String con la información requerida.
      */
     public String consultarActualMVR(BigInteger secEmpleado);
+    /**
+     * Método encargado de borrar la liquidacion automatica.
+     */
+    public void borrarLiquidacionAutomatico();
+    /**
+     * Método encargado de borrar la liquidacion no automatica.
+     */
+    public void borrarLiquidacionNoAutomatico();
 }

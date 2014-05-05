@@ -45,6 +45,7 @@ public class ControlInicioRed implements Serializable {
     private String nombreEmpresa;
     //CAMBIO CLAVE
     private String NClave, Rclave;
+    private String msgSesion;
 
     public ControlInicioRed() {
         cambioClave = true;
@@ -79,6 +80,7 @@ public class ControlInicioRed implements Serializable {
         //INICIO SESSION DEFAULT
         inicioSession = true;
         acceso = false;
+        msgSesion = "Iniciando sesión, por favor espere...";
     }
 
     public void ingresar() {
@@ -182,6 +184,19 @@ public class ControlInicioRed implements Serializable {
             }
         } catch (Exception e) {
             System.out.println(e);
+        }
+    }
+
+    public void validarDialogoSesion() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (estadoInicio == false) {
+            msgSesion = "Iniciando sesión, por favor espere...";
+            context.update("formularioDialogos:estadoSesion");
+            context.execute("estadoSesion.show()");
+        } else {
+            msgSesion = "Cerrando sesión, por favor espere...";
+            context.update("formularioDialogos:estadoSesion");
+            context.execute("estadoSesion.show()");
         }
     }
 
@@ -366,5 +381,9 @@ public class ControlInicioRed implements Serializable {
 
     public void setRclave(String Rclave) {
         this.Rclave = Rclave.toUpperCase();
+    }
+
+    public String getMsgSesion() {
+        return msgSesion;
     }
 }

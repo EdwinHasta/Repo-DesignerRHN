@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
@@ -1206,6 +1207,32 @@ public class ControlRemoto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:tabMenu:Tablas");
         context.update("form:tabMenu:mostrarTodasTablas");
+    }
+
+    public void validarBorradoLiquidacion() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (pago.equals("AUTOMATICO")) {
+            context.execute("confirmarBorrarLiquidacion.show()");
+        } else if (pago.equals("NO AUTOMATICO")) {
+            context.execute("confirmarBorrarLiquidacionPorFuera.show()");
+        }
+    }
+
+    public void borrarLiquidacion() {
+        administrarCarpetaPersonal.borrarLiquidacionAutomatico();
+        mensajeResultadoBorrarLiquidacion();
+    }
+
+    public void borrarLiquidacionPorFuera() {
+        administrarCarpetaPersonal.borrarLiquidacionNoAutomatico();
+        mensajeResultadoBorrarLiquidacion();
+    }
+
+    public void mensajeResultadoBorrarLiquidacion() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage msg = new FacesMessage("Información", "Liquidación borrada con éxito.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
     }
 
     public boolean isBuscarTablasLOV() {

@@ -104,7 +104,7 @@ public class AdministrarCerrarLiquidacion implements AdministrarCerrarLiquidacio
     
     @Override
     public void cerrarLiquidacionNoAutomatico(){
-        persistenciaCandados.cerrarLiquidacionAutomatico();
+        persistenciaCandados.cerrarLiquidacionNoAutomatico();
     }
     
     @Override

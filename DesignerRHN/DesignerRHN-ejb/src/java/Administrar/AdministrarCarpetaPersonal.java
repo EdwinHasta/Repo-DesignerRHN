@@ -214,6 +214,13 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
      * está usando el aplicativo.
      */
     @EJB
+    PersistenciaCandadosInterface persistenciaCandados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
     AdministrarSesionesInterface administrarSesiones;
 
     private EntityManager em;
@@ -221,7 +228,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------    
-     @Override
+    @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
@@ -375,7 +382,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             return null;
         }
     }
-    
+
     @Override
     public String consultarActualEstadoVacaciones(BigInteger secEmpleado) {
         try {
@@ -385,7 +392,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             return null;
         }
     }
-    
+
     @Override
     public String consultarActualMVR(BigInteger secEmpleado) {
         try {
@@ -500,5 +507,15 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public String consultarAliasActualUsuario() {
         return persistenciaActualUsuario.actualAliasBD();
+    }
+
+    @Override
+    public void borrarLiquidacionAutomatico() {
+        persistenciaCandados.borrarLiquidacionAutomatico();
+    }
+
+    @Override
+    public void borrarLiquidacionNoAutomatico() {
+        persistenciaCandados.borrarLiquidacionNoAutomatico();
     }
 }
