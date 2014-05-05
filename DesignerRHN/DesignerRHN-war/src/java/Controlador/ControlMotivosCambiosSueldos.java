@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,6 +45,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
     private MotivosCambiosSueldos editarMotivoCambioSueldo;
     private MotivosCambiosSueldos nuevoMotivoCambioSueldo;
     private MotivosCambiosSueldos duplicarMotivoCambioSueldo;
+    private MotivosCambiosSueldos motivoCambioSueldoSeleccionado;
     private String mensajeValidacion;
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -56,18 +58,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
     //borrado
     private BigInteger borradoVS;
     private int registrosBorrados;
-    /*
-     prueba
-     */
-    private boolean prueba;
-
-    public boolean isPrueba() {
-        return prueba;
-    }
-
-    public void setPrueba(Boolean prueba) {
-        this.prueba = prueba;
-    }
+    private int tamano;
 
     //----------------------
     public ControlMotivosCambiosSueldos() {
@@ -80,6 +71,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         duplicarMotivoCambioSueldo = new MotivosCambiosSueldos();
         permitirIndex = true;
         guardado = true;
+        tamano = 270;
     }
 
     public void eventoFiltrar() {
@@ -92,6 +84,8 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             System.out.println("ERROR ControlMotivosCambiosSueldos eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    private String backUpDescripcion;
+    private Integer backUpCodigo;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -99,6 +93,19 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listMotivosCambiosSueldos.get(index).getCodigo();
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listMotivosCambiosSueldos.get(index).getNombre();
+                }
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarMotivosCambiosSueldos.get(index).getCodigo();
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarMotivosCambiosSueldos.get(index).getNombre();
+                }
+            }
             secRegistro = listMotivosCambiosSueldos.get(index).getSecuencia();
         }
         System.err.println("Indice: " + index + " Celda: " + cualCelda);
@@ -131,18 +138,17 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         aceptar = false;
     }
 
-    public void listaValoresBoton() {
-    }
-
     public void cancelarModificacion() {
         System.err.println("cancelarModificacion");
         if (bandera == 1) {
-            //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
+            tamano = 270;
+            FacesContext c = FacesContext.getCurrentInstance();
+//CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            estadoSueldoPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
+            estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
             estadoSueldoPromedio.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioSueldo");
             bandera = 0;
@@ -165,24 +171,27 @@ public class ControlMotivosCambiosSueldos implements Serializable {
     }
 
     public void activarCtrlF11() {
-        if (bandera == 0) {
+        FacesContext c = FacesContext.getCurrentInstance();
 
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
+        if (bandera == 0) {
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
             codigo.setFilterStyle("width: 360px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
             descripcion.setFilterStyle("width: 390px");
-            estadoSueldoPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
+            estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
             estadoSueldoPromedio.setFilterStyle("width: 200px");
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioSueldo");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            estadoSueldoPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
+            estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
             estadoSueldoPromedio.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioSueldo");
             bandera = 0;
@@ -195,13 +204,23 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         System.out.println("modificarPromediosSuelos cambio = " + cambio);
         System.out.println("modificarPromediosSuelos indice = " + indice);
         System.err.println("cambio = " + cambio);
-
-        listMotivosCambiosSueldos.get(indice).setEstadoSueldoPromedio(cambio);
-        if (listMotivosCambiosSueldos.get(indice).getEstadoSueldoPromedio() == true) {
-            listMotivosCambiosSueldos.get(indice).setSueldopromedio("S");
+        if (tipoLista == 0) {
+            listMotivosCambiosSueldos.get(indice).setEstadoSueldoPromedio(cambio);
+            if (listMotivosCambiosSueldos.get(indice).getEstadoSueldoPromedio() == true) {
+                listMotivosCambiosSueldos.get(indice).setSueldopromedio("S");
+            } else {
+                listMotivosCambiosSueldos.get(indice).setSueldopromedio("N");
+            }
         } else {
-            listMotivosCambiosSueldos.get(indice).setSueldopromedio("N");
+            filtrarMotivosCambiosSueldos.get(indice).setEstadoSueldoPromedio(cambio);
+            if (filtrarMotivosCambiosSueldos.get(indice).getEstadoSueldoPromedio() == true) {
+                filtrarMotivosCambiosSueldos.get(indice).setSueldopromedio("S");
+            } else {
+                filtrarMotivosCambiosSueldos.get(indice).setSueldopromedio("N");
+            }
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosMotivoCambioSueldo");
 
         modificarMotivosCambiosSueldos(indice, "N", "N");
     }
@@ -223,6 +242,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                     if (listMotivosCambiosSueldos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMotivosCambiosSueldos.size(); j++) {
                             if (j != indice) {
@@ -234,6 +254,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
@@ -242,9 +263,11 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                     if (listMotivosCambiosSueldos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
                     }
                     if (listMotivosCambiosSueldos.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -261,17 +284,14 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
-                }
-            } else {
-
-                if (!crearMotivosCambiosSueldos.contains(filtrarMotivosCambiosSueldos.get(indice))) {
-                    if (filtrarMotivosCambiosSueldos.get(indice).getCodigo() == a) {
+                } else {
+                    if (listMotivosCambiosSueldos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMotivosCambiosSueldos.size(); j++) {
                             if (j != indice) {
@@ -283,6 +303,54 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listMotivosCambiosSueldos.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listMotivosCambiosSueldos.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+                }
+            } else {
+
+                if (!crearMotivosCambiosSueldos.contains(filtrarMotivosCambiosSueldos.get(indice))) {
+                    if (filtrarMotivosCambiosSueldos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMotivosCambiosSueldos.size(); j++) {
+                            if (j != indice) {
+                                if (listMotivosCambiosSueldos.get(indice).getCodigo() == listMotivosCambiosSueldos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
@@ -292,9 +360,11 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                     if (filtrarMotivosCambiosSueldos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarMotivosCambiosSueldos.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -318,7 +388,59 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarMotivosCambiosSueldos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMotivosCambiosSueldos.size(); j++) {
+                            if (j != indice) {
+                                if (listMotivosCambiosSueldos.get(indice).getCodigo() == listMotivosCambiosSueldos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listMotivosCambiosSueldos.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarMotivosCambiosSueldos.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarMotivosCambiosSueldos.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosSueldos.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (filtrarMotivosCambiosSueldos.get(indice).getEstadoSueldoPromedio() == true) {
+                        listMotivosCambiosSueldos.get(indice).setSueldopromedio("S");
+                    }
+                    if (filtrarMotivosCambiosSueldos.get(indice).getEstadoSueldoPromedio() == false) {
+                        listMotivosCambiosSueldos.get(indice).setSueldopromedio("N");
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -441,7 +563,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivoCambioSueldo.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoCambioSueldo.getCodigo());
@@ -462,7 +584,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             }
         }
         if (nuevoMotivoCambioSueldo.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Una  Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -489,12 +611,13 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
+                FacesContext c = FacesContext.getCurrentInstance();
 
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                estadoSueldoPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
+                estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
                 estadoSueldoPromedio.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivoCambioSueldo");
                 bandera = 0;
@@ -637,17 +760,20 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
-                //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
+                //CERRAR FILTRADO  
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                estadoSueldoPromedio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
+                estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
                 estadoSueldoPromedio.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivoCambioSueldo");
                 bandera = 0;
                 filtrarMotivosCambiosSueldos = null;
                 tipoLista = 0;
+                tamano = 270;
             }
             duplicarMotivoCambioSueldo = new MotivosCambiosSueldos();
             RequestContext.getCurrentInstance().execute("duplicarRegistroMotivosCambiosSueldos.hide()");
@@ -691,6 +817,9 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             context.update("form:datosMotivoCambioSueldo");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -824,6 +953,22 @@ public class ControlMotivosCambiosSueldos implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public MotivosCambiosSueldos getMotivoCambioSueldoSeleccionado() {
+        return motivoCambioSueldoSeleccionado;
+    }
+
+    public void setMotivoCambioSueldoSeleccionado(MotivosCambiosSueldos motivoCambioSueldoSeleccionado) {
+        this.motivoCambioSueldoSeleccionado = motivoCambioSueldoSeleccionado;
     }
 
 }

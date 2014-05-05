@@ -119,6 +119,11 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public void setEstadoSueldoPromedio(Boolean estadoSueldoPromedio) {
+        if (estadoSueldoPromedio == null || estadoSueldoPromedio==false) {
+            sueldopromedio="N";
+        } else {
+            this.sueldopromedio = "S";
+        }
         this.estadoSueldoPromedio = estadoSueldoPromedio;
     }
 

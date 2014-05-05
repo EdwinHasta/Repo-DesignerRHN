@@ -59,4 +59,10 @@ public class AdministrarMotivosLocalizaciones implements AdministrarMotivosLocal
         moticoLocalizacion = PersistenciaMotivosLocalizaciones.buscarMotivoLocalizacionSecuencia(secMotivosCambiosCargos);
         return moticoLocalizacion;
     }
+    
+    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion (BigInteger secMotivoLocalizacion)
+    { BigInteger contarVigencias;
+    contarVigencias = PersistenciaMotivosLocalizaciones.contarVigenciasLocalizacionesMotivoLocalizacion(secMotivoLocalizacion);
+    return contarVigencias;
+    }
 }

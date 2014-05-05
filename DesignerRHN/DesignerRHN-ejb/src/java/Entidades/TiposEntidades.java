@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -19,7 +18,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -47,7 +45,7 @@ public class TiposEntidades implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private short codigo;
+    private Short codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @JoinColumn(name = "RUBROPRESUPUESTAL", referencedColumnName = "SECUENCIA")
@@ -64,7 +62,7 @@ public class TiposEntidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public TiposEntidades(BigInteger secuencia, short codigo, String nombre) {
+    public TiposEntidades(BigInteger secuencia, Short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -78,11 +76,11 @@ public class TiposEntidades implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 
