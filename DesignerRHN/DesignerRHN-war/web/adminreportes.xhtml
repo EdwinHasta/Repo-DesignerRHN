@@ -108,7 +108,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText id="OutTipo" value="#{info.estadoTipo}" style="text-transform: uppercase;height: 12px"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:selectOneMenu  id="editarTipos" value="#{info.estadoTipo}" style="width: 100%">  
+                                            <p:selectOneMenu  id="editarTipos" value="#{info.estadoTipo}" style="width: 100%;height: 20px">  
                                                 <f:selectItem itemLabel="PDF" itemValue="PDF" />  
                                                 <f:selectItem itemLabel="XHTML" itemValue="XHTML" />  
                                                 <f:selectItem itemLabel="XLS" itemValue="XLS" />  
@@ -148,7 +148,7 @@
                                         <p:tooltip  for="headerFechaDesde" value="#{msg['fechadesde']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoFechaDesde}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoFechaDesde}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoFechaDesde)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
 
@@ -160,7 +160,7 @@
                                         <p:tooltip  for="headerFechaHasta" value="#{msg['fechahasta']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoFechaHasta}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoFechaHasta}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoFechaHasta)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
 
@@ -172,7 +172,7 @@
                                         <p:tooltip  for="headerEmpleadoDesde" value="#{msg['empleadodesde']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoEmpleadoDesde}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoEmpleadoDesde}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoEmpleadoDesde)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
 
@@ -184,7 +184,7 @@
                                         <p:tooltip  for="headerEmpleadoHasta" value="#{msg['empleadohasta']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoEmpleadoHasta}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoEmpleadoHasta}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoEmpleadoHasta)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -195,7 +195,7 @@
                                         <p:tooltip  for="headerLocalizacion" value="#{msg['localizacion']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoLocalizacion}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoLocalizacion}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoLocalizacion)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -206,7 +206,7 @@
                                         <p:tooltip  for="headerEstado" value="#{msg['estado']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoEstado}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoEstado}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoEstado)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -217,7 +217,7 @@
                                         <p:tooltip  for="headerGrupo" value="#{msg['grupo']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoGrupo}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoGrupo}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoGrupo)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -228,7 +228,7 @@
                                         <p:tooltip  for="headerTercero" value="#{msg['tercero']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoTercero}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoTercero}" style="height :12px; position: relative;top: -3px">   
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoTercero)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -239,7 +239,7 @@
                                         <p:tooltip  for="headerTrabajador" value="#{msg['trabajador']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoTrabajador}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoTrabajador}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoTrabajador)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -250,7 +250,7 @@
                                         <p:tooltip  for="headerTipoTrabajador" value="#{msg['tipotrabajador']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoTipoTrabajador}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoTipoTrabajador}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoTipoTrabajador)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -261,7 +261,7 @@
                                         <p:tooltip  for="headerSolicitud" value="#{msg['solicitud']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoSolicitud}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoSolicitud}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoSolicitud)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -272,7 +272,7 @@
                                         <p:tooltip  for="headerCiudad" value="#{msg['ciudad']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoCiudad}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoCiudad}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoCiudad)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -283,7 +283,7 @@
                                         <p:tooltip  for="headerTipoTelefono" value="#{msg['tipotelefono']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoTipoTelefono}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoTipoTelefono}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoTipoTelefono)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -294,7 +294,7 @@
                                         <p:tooltip  for="headerEstadoCivil" value="#{msg['estadocivil']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoEstadoCivil}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoEstadoCivil}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoEstadoCivil)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -305,7 +305,7 @@
                                         <p:tooltip  for="headerDeporte" value="#{msg['deporte']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoDeporte}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoDeporte}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoDeporte)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -316,7 +316,7 @@
                                         <p:tooltip  for="headerIdioma" value="#{msg['idioma']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoIdioma}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoIdioma}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoIdioma)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -327,7 +327,7 @@
                                         <p:tooltip  for="headerAficion" value="#{msg['aficion']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoAficion}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoAficion}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoAficion)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -338,7 +338,7 @@
                                         <p:tooltip  for="headerJefeDivision" value="#{msg['jefedivision']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoJefeDivision}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoJefeDivision}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoJefeDivision)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -349,7 +349,7 @@
                                         <p:tooltip  for="headerRodamiento" value="#{msg['rodamiento']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoRodamiento}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoRodamiento}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoRodamiento)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>
@@ -360,7 +360,7 @@
                                         <p:tooltip  for="headerEnvioMasivo" value="#{msg['enviomasivo']}" />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{info.estadoEnvioMasivo}">  
+                                    <p:selectBooleanCheckbox value="#{info.estadoEnvioMasivo}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlAdminreportes.modificarInforeportes(indice, 'N', info.estadoEnvioMasivo)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
                                 </p:column>

@@ -125,7 +125,7 @@
                                         <p:tooltip  for="headerDeclarante" value="#{msg['declaranteSN']}"  />
                                     </f:facet>  
 
-                                    <p:selectBooleanCheckbox value="#{dec.estadoDeclarante}">  
+                                    <p:selectBooleanCheckbox value="#{dec.estadoDeclarante}" style="height :12px; position: relative;top: -3px">  
                                         <p:ajax event="change" listener="#{controlDeclarantes.modificarDeclarantes(indice, 'N', dec.estadoDeclarante)}" update="@this"/>  
                                     </p:selectBooleanCheckbox> 
 
@@ -135,7 +135,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{dec.retenciondeseada}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{dec.retenciondeseada}" id="editarRetencionDeseada" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase"> 
+                                            <p:inputText value="#{dec.retenciondeseada}" id="editarRetencionDeseada" style=" border-radius: 0px; width: 99.5%; text-transform: uppercase;height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlDeclarantes.cambiarIndice(indice, 2)}" />
                                                 <p:ajax event="change" listener="#{controlDeclarantes.modificarDeclarantes(indice, 'N', dec.retenciondeseada)}" update="@this" />
                                             </p:inputText> 
@@ -151,7 +151,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{dec.retencionminima.retencion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{dec.retencionminima.retencion}" id="editarTarifaDeseo" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{dec.retencionminima.retencion}" id="editarTarifaDeseo" style="border-radius: 0px; width: 93.5%;text-transform: uppercase;height: 12px"> 
                                                 <p:ajax event="select" listener="#{controlDeclarantes.cambiarIndice(indice, 3)}" />
                                                 <p:ajax event="change" update="editarTarifaDeseo" listener="#{controlDeclarantes.modificarDeclarantes(indice,'MINIMA',dec.retencionminima.retencion)}" process="@this"/>
                                                 <p:ajax event="dblclick" listener="#{controlDeclarantes.asignarIndex(indice,0,0)}" process="@this"/>
