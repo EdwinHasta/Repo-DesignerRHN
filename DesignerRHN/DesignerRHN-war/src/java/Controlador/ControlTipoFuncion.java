@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -47,6 +48,7 @@ public class ControlTipoFuncion implements Serializable {
     //LISTA INFOREPORTES
     private List<TiposFunciones> listaTiposFunciones;
     private List<TiposFunciones> filtradosListaTiposFunciones;
+    private TiposFunciones tipoFuncionSeleccionado;
     //L.O.V INFOREPORTES
     private List<TiposFunciones> lovlistaTiposFunciones;
     private List<TiposFunciones> lovfiltradoslistaTiposFunciones;
@@ -97,7 +99,7 @@ public class ControlTipoFuncion implements Serializable {
         listaTiposFuncionesBorrar = new ArrayList<TiposFunciones>();
         listaTiposFuncionesCrear = new ArrayList<TiposFunciones>();
         listaTiposFuncionesModificar = new ArrayList<TiposFunciones>();
-        altoTabla = "245";
+        altoTabla = "270";
         duplicarTipoFuncion = new TiposFunciones();
     }
 
@@ -117,7 +119,7 @@ public class ControlTipoFuncion implements Serializable {
     public void recibirDatosOperando(BigInteger secuenciaOperando, String tipoOperando, Operandos operandoRegistro) {
         secOperando = secuenciaOperando;
         tOperando = tipoOperando;
-        
+
         operando = operandoRegistro;
         listaTiposFunciones = null;
         getListaTiposFunciones();
@@ -127,7 +129,7 @@ public class ControlTipoFuncion implements Serializable {
     //AUTOCOMPLETAR
     public void modificarTiposFunciones(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
-        
+
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
             if (tipoLista == 0) {
@@ -140,9 +142,9 @@ public class ControlTipoFuncion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
+
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -156,9 +158,8 @@ public class ControlTipoFuncion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -190,19 +191,21 @@ public class ControlTipoFuncion implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
-                altoTabla = "245";
-                tiposFuncionesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                altoTabla = "270";
+                tiposFuncionesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
                 tiposFuncionesIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFuncionesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
+                tiposFuncionesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
                 tiposFuncionesFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFuncionesObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
+                tiposFuncionesObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
                 tiposFuncionesObjetos.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposFunciones");
                 bandera = 0;
                 filtradosListaTiposFunciones = null;
                 tipoLista = 0;
             }
-            cambiosPagina = false;
+
             context.update("form:ACEPTAR");
             //Falta Ponerle el Operando al cual se agregará
             duplicarTipoFuncion.setOperando(operando);
@@ -212,7 +215,7 @@ public class ControlTipoFuncion implements Serializable {
             index = -1;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.update("form:datosTiposFunciones");
             duplicarTipoFuncion = new TiposFunciones();
@@ -226,27 +229,28 @@ public class ControlTipoFuncion implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 0) {
-            altoTabla = "223";
-            tiposFuncionesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
+            altoTabla = "246";
+            tiposFuncionesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
             tiposFuncionesIniciales.setFilterStyle("width: 60px");
-            tiposFuncionesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
+            tiposFuncionesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
             tiposFuncionesFinales.setFilterStyle("width: 60px");
-            tiposFuncionesObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
+            tiposFuncionesObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
             tiposFuncionesObjetos.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosTiposFunciones");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposFuncionesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
+            tiposFuncionesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
             tiposFuncionesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFuncionesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
+            tiposFuncionesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
             tiposFuncionesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFuncionesObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
+            tiposFuncionesObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
             tiposFuncionesObjetos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposFunciones");
             bandera = 0;
@@ -257,15 +261,17 @@ public class ControlTipoFuncion implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposFuncionesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
+            tiposFuncionesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
             tiposFuncionesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFuncionesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
+            tiposFuncionesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
             tiposFuncionesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFuncionesObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
+            tiposFuncionesObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
             tiposFuncionesObjetos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposFunciones");
             bandera = 0;
@@ -283,7 +289,6 @@ public class ControlTipoFuncion implements Serializable {
         guardado = true;
         permitirIndex = true;
         cambiosPagina = true;
-
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosTiposFunciones");
@@ -430,12 +435,13 @@ public class ControlTipoFuncion implements Serializable {
             listaTiposFunciones = null;
 
             RequestContext context = RequestContext.getCurrentInstance();
-            cambiosPagina = true;
-            context.update("form:ACEPTAR");
             context.update("form:datosTiposFunciones");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             //  k = 0;
         }
         index = -1;
@@ -475,7 +481,7 @@ public class ControlTipoFuncion implements Serializable {
 
     public void agregarNuevoTipoFuncion() {
         int pasa = 0;
-        int pasa2= 0;
+        int pasa2 = 0;
         mensajeValidacion = new String();
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -484,8 +490,8 @@ public class ControlTipoFuncion implements Serializable {
             mensajeValidacion = mensajeValidacion + " * Fecha Inicial\n";
             pasa++;
         }
-        
-        if (nuevoTipoFuncion.getFechafinal().before(nuevoTipoFuncion.getFechainicial())){
+
+        if (nuevoTipoFuncion.getFechafinal().before(nuevoTipoFuncion.getFechainicial())) {
             context.update("formularioDialogos:errorFechas");
             context.execute("errorFechas.show()");
             pasa2++;
@@ -499,14 +505,16 @@ public class ControlTipoFuncion implements Serializable {
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                altoTabla = "245";
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                altoTabla = "270";
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tiposFuncionesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
+                tiposFuncionesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
                 tiposFuncionesIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFuncionesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
+                tiposFuncionesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
                 tiposFuncionesFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposFuncionesObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
+                tiposFuncionesObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
                 tiposFuncionesObjetos.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposFunciones");
                 bandera = 0;
@@ -520,7 +528,6 @@ public class ControlTipoFuncion implements Serializable {
             System.out.println("Operando: " + operando);
             nuevoTipoFuncion.setOperando(operando);
 
-            cambiosPagina = false;
             context.update("form:ACEPTAR");
             //Falta Agregar el operando al cual se va a adicionar
             listaTiposFuncionesCrear.add(nuevoTipoFuncion);
@@ -529,7 +536,7 @@ public class ControlTipoFuncion implements Serializable {
             context.update("form:datosTiposFunciones");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoTipoFuncion.hide()");
             index = -1;
@@ -579,7 +586,7 @@ public class ControlTipoFuncion implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -587,14 +594,16 @@ public class ControlTipoFuncion implements Serializable {
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
+            FacesContext c = FacesContext.getCurrentInstance();
+
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposFuncionesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
+            tiposFuncionesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesIniciales");
             tiposFuncionesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFuncionesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
+            tiposFuncionesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesFinales");
             tiposFuncionesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposFuncionesObjetos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
+            tiposFuncionesObjetos = (Column) c.getViewRoot().findComponent("form:datosTiposFunciones:tiposFuncionesObjetos");
             tiposFuncionesObjetos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposFunciones");
             bandera = 0;
@@ -731,4 +740,21 @@ public class ControlTipoFuncion implements Serializable {
     public void setDuplicarTipoFuncion(TiposFunciones duplicarTipoFuncion) {
         this.duplicarTipoFuncion = duplicarTipoFuncion;
     }
+
+    public TiposFunciones getTipoFuncionSeleccionado() {
+        return tipoFuncionSeleccionado;
+    }
+
+    public void setTipoFuncionSeleccionado(TiposFunciones tipoFuncionSeleccionado) {
+        this.tipoFuncionSeleccionado = tipoFuncionSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }

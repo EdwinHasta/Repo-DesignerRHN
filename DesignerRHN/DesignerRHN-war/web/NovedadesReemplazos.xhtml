@@ -18,15 +18,15 @@
                     <p:growl id="growl" showDetail="true"/>
 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">    
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 400px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 130px;width: 580px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['empleados']}</strong></legend>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 600px; top: 30px;  " id="btnBuscarEmpleados" actionListener="#{controlNovedadesReemplazos.asignarIndex(indice, 0, 0)}" value="Buscar Empleado" process="@this" disabled="#{controlNovedadesReemplazos.botones}"/>
-                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 600px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesReemplazos.mostrarTodos()}" value="Mostrar Todos" process="@this" disabled="#{controlNovedadesReemplazos.botones}"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 30px;  " id="btnBuscarTerceros" actionListener="#{controlNovedadesTerceros.asignarIndex(indice, 4, 0)}" value="#{msg['buscar']}" process="@this"/>
+                            <p:commandButton style="width: 200px; height: 25px; position: absolute; left: 630px; top: 60px;  " id="btnMostrarTodos" actionListener="#{controlNovedadesTerceros.mostrarTodos()}" value="#{msg['mostrar']}" process="@this"/>
 
 
                             <p:dataTable id="datosEmpleados" var="empleados" value="#{controlNovedadesReemplazos.listaFalsaEmpleados}"
-                                         rowKey="#{empleados.secuencia}" rowIndexVar="indiceT" style=" border: 1px;width:560px"                           
-                                         scrollable="true" scrollHeight="80" scrollWidth="560" filteredValue="#{controlNovedadesReemplazos.filtradosListaFalsaEmpleados}" 
+                                         rowKey="#{empleados.secuencia}" rowIndexVar="indiceT" style=" border: 1px; text-align: left; width: 560px"                           
+                                         scrollable="true" scrollHeight="80" scrollWidth="575" filteredValue="#{controlNovedadesReemplazos.filtradosListaFalsaEmpleados}" 
                                          emptyMessage="#{msg['vacio']}" selection="#{controlNovedadesReemplazos.seleccionMostrar}"
                                          editable="true" editMode="cell" selectionMode="single">
 
@@ -94,7 +94,7 @@
 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 240px; font-size: 10px; width: 100px; height: 270px; border-radius: 10px; ">
+                        <fieldset style="position: absolute; left: 10px; top: 230px;  width: 100px; height: 220px; border-radius: 10px; ">
                             <legend style="font-size: 14px; color: #14388B"><strong>#{msg['reemplazos']}</strong></legend>
                             <p:dataTable id="datosEncargaturasEmpleado" var="encargaturas" value="#{controlNovedadesReemplazos.listaEncargaturas}"
                                          rowKey="#{encargaturas.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"                             

@@ -91,7 +91,7 @@ public class ControlNovedadEmbargo implements Serializable {
     //AUTOCOMPLETAR D
     private String Pago, Periodicidad;
     //AUTOCOMPLETAR
-    private String TipoEmbargo, Juzgado, Motivo, Demandante, Forma,Nit;
+    private String TipoEmbargo, Juzgado, Motivo, Demandante, Forma, Nit;
     //OTROS
     private int tipoActualizacion; //Activo/Desactivo Crtl + F11
     private int bandera;
@@ -250,33 +250,35 @@ public class ControlNovedadEmbargo implements Serializable {
 
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
-                embargosTipoEmbargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                embargosTipoEmbargo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
                 embargosTipoEmbargo.setFilterStyle("display: none; visibility: hidden;");
-                embargosDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
+                embargosDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
                 embargosDocumento.setFilterStyle("display: none; visibility: hidden;");
-                embargosFechaDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
+                embargosFechaDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
                 embargosFechaDocumento.setFilterStyle("display: none; visibility: hidden;");
-                embargosNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
+                embargosNumero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
                 embargosNumero.setFilterStyle("display: none; visibility: hidden;");
-                embargosJuzgado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
+                embargosJuzgado = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
                 embargosJuzgado.setFilterStyle("display: none; visibility: hidden;");
-                embargosMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
+                embargosMotivo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
                 embargosMotivo.setFilterStyle("display: none; visibility: hidden;");
-                embargosBeneficiario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
+                embargosBeneficiario = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
                 embargosBeneficiario.setFilterStyle("display: none; visibility: hidden;");
-                embargosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNit");
+                embargosNit = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNit");
                 embargosNit.setFilterStyle("display: none; visibility: hidden;");
-                embargosTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
+                embargosTercero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
                 embargosTercero.setFilterStyle("display: none; visibility: hidden;");
-                embargosValorTotal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
+                embargosValorTotal = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
                 embargosValorTotal.setFilterStyle("display: none; visibility: hidden;");
-                embargosFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
+                embargosFechaInicio = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
                 embargosFechaInicio.setFilterStyle("display: none; visibility: hidden;");
-                embargosCancelacionDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
+                embargosCancelacionDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
                 embargosCancelacionDocumento.setFilterStyle("display: none; visibility: hidden;");
-                embargosCancelacionFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
+                embargosCancelacionFecha = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
                 embargosCancelacionFecha.setFilterStyle("display: none; visibility: hidden;");
-                embargosObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
+                embargosObservaciones = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
                 embargosObservaciones.setFilterStyle("display: none; visibility: hidden;");
 
                 altoScrollEmbargos = "90";
@@ -292,15 +294,13 @@ public class ControlNovedadEmbargo implements Serializable {
             nuevoEmbargo.setTipoeer("EMBARGO");
             nuevoEmbargo.setEmpleado(empleadoActual);
 
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
             listaEmbargosCrear.add(nuevoEmbargo);
             listaEmbargos.add(nuevoEmbargo);
             nuevoEmbargo = new EersPrestamos();
             context.update("form:datosEmbargos");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroEmbargos.hide()");
             index = -1;
@@ -387,13 +387,13 @@ public class ControlNovedadEmbargo implements Serializable {
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEmbargos");
-            cambiosPagina = false;
+
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         } else if (indexD >= 0 && cualTabla == 1) {
 
@@ -432,11 +432,10 @@ public class ControlNovedadEmbargo implements Serializable {
             context.update("form:datosEmbargosDetalles");
             indexD = -1;
             secRegistro = null;
-            cambiosPagina = false;
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -574,17 +573,17 @@ public class ControlNovedadEmbargo implements Serializable {
 
             listaDetallesEmbargosModificar.clear();
         }
-        FacesMessage msg = new FacesMessage("Información", "Se han guardado los datos exitosamente.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        
+
         System.out.println("Se guardaron los datos con exito");
         listaDetallesEmbargos = null;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosEmbargosDetalles");
+        FacesMessage msg = new FacesMessage("Información", "Se han guardado los datos exitosamente.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
         context.update("form:growl");
         guardado = true;
         permitirIndex = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         //  k = 0;
 
         System.out.println("Valor k: " + k);
@@ -595,34 +594,36 @@ public class ControlNovedadEmbargo implements Serializable {
     }
 
     public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 1) {
-            embargosTipoEmbargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
+            embargosTipoEmbargo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
             embargosTipoEmbargo.setFilterStyle("display: none; visibility: hidden;");
-            embargosDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
+            embargosDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
             embargosDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
+            embargosFechaDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
             embargosFechaDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
+            embargosNumero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
             embargosNumero.setFilterStyle("display: none; visibility: hidden;");
-            embargosJuzgado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
+            embargosJuzgado = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
             embargosJuzgado.setFilterStyle("display: none; visibility: hidden;");
-            embargosMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
+            embargosMotivo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
             embargosMotivo.setFilterStyle("display: none; visibility: hidden;");
-            embargosBeneficiario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
+            embargosBeneficiario = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
             embargosBeneficiario.setFilterStyle("display: none; visibility: hidden;");
-            embargosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNit");
+            embargosNit = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNit");
             embargosNit.setFilterStyle("display: none; visibility: hidden;");
-            embargosTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
+            embargosTercero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
             embargosTercero.setFilterStyle("display: none; visibility: hidden;");
-            embargosValorTotal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
+            embargosValorTotal = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
             embargosValorTotal.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
+            embargosFechaInicio = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
             embargosFechaInicio.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
+            embargosCancelacionDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
             embargosCancelacionDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
+            embargosCancelacionFecha = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
             embargosCancelacionFecha.setFilterStyle("display: none; visibility: hidden;");
-            embargosObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
+            embargosObservaciones = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
             embargosObservaciones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEmbargos");
             altoScrollEmbargos = "90";
@@ -635,25 +636,25 @@ public class ControlNovedadEmbargo implements Serializable {
         if (bandera == 1) {
             //SOLUCIONES NODOS EMPLEADO
             System.out.println("Desactiva 2");
-            detallesPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
+            detallesPagos = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
             detallesPagos.setFilterStyle("display: none; visibility: hidden;");
-            detallesIka = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
+            detallesIka = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
             detallesIka.setFilterStyle("display: none; visibility: hidden;");
-            detallesPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
+            detallesPorcentaje = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
             detallesPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            detallesValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
+            detallesValor = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
             detallesValor.setFilterStyle("display: none; visibility: hidden;");
-            detallesSaldoInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
+            detallesSaldoInicial = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
             detallesSaldoInicial.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
+            detallesPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
             detallesPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
+            detallesPeriodicidadNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
             detallesPeriodicidadNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
+            detallesConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
             detallesConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
+            detallesConceptoNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
             detallesConceptoNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
+            detallesEmpresa = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
             detallesEmpresa.setFilterStyle("display: none; visibility: hidden;");
 
             altoScrollDetallesEmbargos = "90";
@@ -687,33 +688,35 @@ public class ControlNovedadEmbargo implements Serializable {
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
-            embargosTipoEmbargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            embargosTipoEmbargo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
             embargosTipoEmbargo.setFilterStyle("display: none; visibility: hidden;");
-            embargosDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
+            embargosDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
             embargosDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
+            embargosFechaDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
             embargosFechaDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
+            embargosNumero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
             embargosNumero.setFilterStyle("display: none; visibility: hidden;");
-            embargosJuzgado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
+            embargosJuzgado = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
             embargosJuzgado.setFilterStyle("display: none; visibility: hidden;");
-            embargosMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
+            embargosMotivo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
             embargosMotivo.setFilterStyle("display: none; visibility: hidden;");
-            embargosBeneficiario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
+            embargosBeneficiario = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
             embargosBeneficiario.setFilterStyle("display: none; visibility: hidden;");
-            embargosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNit");
+            embargosNit = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNit");
             embargosNit.setFilterStyle("display: none; visibility: hidden;");
-            embargosTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
+            embargosTercero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
             embargosTercero.setFilterStyle("display: none; visibility: hidden;");
-            embargosValorTotal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
+            embargosValorTotal = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
             embargosValorTotal.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
+            embargosFechaInicio = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
             embargosFechaInicio.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
+            embargosCancelacionDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
             embargosCancelacionDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
+            embargosCancelacionFecha = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
             embargosCancelacionFecha.setFilterStyle("display: none; visibility: hidden;");
-            embargosObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
+            embargosObservaciones = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
             embargosObservaciones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEmbargos");
             altoScrollEmbargos = "90";
@@ -724,27 +727,29 @@ public class ControlNovedadEmbargo implements Serializable {
         }
 
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //SOLUCIONES NODOS EMPLEADO
             System.out.println("Desactiva 2");
-            detallesPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
+            detallesPagos = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
             detallesPagos.setFilterStyle("display: none; visibility: hidden;");
-            detallesIka = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
+            detallesIka = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
             detallesIka.setFilterStyle("display: none; visibility: hidden;");
-            detallesPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
+            detallesPorcentaje = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
             detallesPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            detallesValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
+            detallesValor = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
             detallesValor.setFilterStyle("display: none; visibility: hidden;");
-            detallesSaldoInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
+            detallesSaldoInicial = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
             detallesSaldoInicial.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
+            detallesPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
             detallesPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
+            detallesPeriodicidadNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
             detallesPeriodicidadNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
+            detallesConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
             detallesConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
+            detallesConceptoNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
             detallesConceptoNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
+            detallesEmpresa = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
             detallesEmpresa.setFilterStyle("display: none; visibility: hidden;");
 
             altoScrollDetallesEmbargos = "90";
@@ -998,25 +1003,26 @@ public class ControlNovedadEmbargo implements Serializable {
             if (bandera == 1) {
                 //SOLUCIONES NODOS EMPLEADO
                 System.out.println("Desactiva 2");
-                detallesPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
+                FacesContext c = FacesContext.getCurrentInstance();
+                detallesPagos = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
                 detallesPagos.setFilterStyle("display: none; visibility: hidden;");
-                detallesIka = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
+                detallesIka = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
                 detallesIka.setFilterStyle("display: none; visibility: hidden;");
-                detallesPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
+                detallesPorcentaje = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
                 detallesPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                detallesValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
+                detallesValor = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
                 detallesValor.setFilterStyle("display: none; visibility: hidden;");
-                detallesSaldoInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
+                detallesSaldoInicial = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
                 detallesSaldoInicial.setFilterStyle("display: none; visibility: hidden;");
-                detallesPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
+                detallesPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
                 detallesPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-                detallesPeriodicidadNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
+                detallesPeriodicidadNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
                 detallesPeriodicidadNombre.setFilterStyle("display: none; visibility: hidden;");
-                detallesConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
+                detallesConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
                 detallesConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-                detallesConceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
+                detallesConceptoNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
                 detallesConceptoNombre.setFilterStyle("display: none; visibility: hidden;");
-                detallesEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
+                detallesEmpresa = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
                 detallesEmpresa.setFilterStyle("display: none; visibility: hidden;");
 
                 altoScrollDetallesEmbargos = "90";
@@ -1031,15 +1037,13 @@ public class ControlNovedadEmbargo implements Serializable {
             nuevoEmbargoDetalle.setSecuencia(l);
             nuevoEmbargoDetalle.setEerprestamo(embargoSeleccionado);
 
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
             listaDetallesEmbargosCrear.add(nuevoEmbargoDetalle);
             listaDetallesEmbargos.add(nuevoEmbargoDetalle);
             nuevoEmbargoDetalle = new EersPrestamosDtos();
             context.update("form:datosEmbargosDetalles");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroDetallesEmbargos.hide()");
             index = -1;
@@ -1057,36 +1061,38 @@ public class ControlNovedadEmbargo implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
-            embargosTipoEmbargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            embargosTipoEmbargo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
             embargosTipoEmbargo.setFilterStyle("display: none; visibility: hidden;");
-            embargosDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
+            embargosDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
             embargosDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
+            embargosFechaDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
             embargosFechaDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
+            embargosNumero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
             embargosNumero.setFilterStyle("display: none; visibility: hidden;");
-            embargosJuzgado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
+            embargosJuzgado = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
             embargosJuzgado.setFilterStyle("display: none; visibility: hidden;");
-            embargosMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
+            embargosMotivo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
             embargosMotivo.setFilterStyle("display: none; visibility: hidden;");
-            embargosBeneficiario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
+            embargosBeneficiario = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
             embargosBeneficiario.setFilterStyle("display: none; visibility: hidden;");
-            embargosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNit");
+            embargosNit = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNit");
             embargosNit.setFilterStyle("display: none; visibility: hidden;");
-            embargosTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
+            embargosTercero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
             embargosTercero.setFilterStyle("display: none; visibility: hidden;");
-            embargosValorTotal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
+            embargosValorTotal = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
             embargosValorTotal.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
+            embargosFechaInicio = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
             embargosFechaInicio.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
+            embargosCancelacionDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
             embargosCancelacionDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
+            embargosCancelacionFecha = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
             embargosCancelacionFecha.setFilterStyle("display: none; visibility: hidden;");
-            embargosObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
+            embargosObservaciones = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
             embargosObservaciones.setFilterStyle("display: none; visibility: hidden;");
 
             altoScrollEmbargos = "90";
@@ -1109,28 +1115,30 @@ public class ControlNovedadEmbargo implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
-            detallesPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            detallesPagos = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
             detallesPagos.setFilterStyle("display: none; visibility: hidden;");
-            detallesIka = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
+            detallesIka = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
             detallesIka.setFilterStyle("display: none; visibility: hidden;");
-            detallesPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
+            detallesPorcentaje = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
             detallesPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            detallesValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
+            detallesValor = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
             detallesValor.setFilterStyle("display: none; visibility: hidden;");
-            detallesSaldoInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
+            detallesSaldoInicial = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
             detallesSaldoInicial.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
+            detallesPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
             detallesPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
+            detallesPeriodicidadNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
             detallesPeriodicidadNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
+            detallesConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
             detallesConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
+            detallesConceptoNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
             detallesConceptoNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
+            detallesEmpresa = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
             detallesEmpresa.setFilterStyle("display: none; visibility: hidden;");
 
             altoScrollDetallesEmbargos = "90";
@@ -1364,36 +1372,38 @@ public class ControlNovedadEmbargo implements Serializable {
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
         System.out.println("cualTabla= " + cualTabla);
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0 && cualTabla == 0) {
             System.out.println("Activa 1");
             //SOLUCIONES NODOS EMPLEADO
-            embargosTipoEmbargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
+            embargosTipoEmbargo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
             embargosTipoEmbargo.setFilterStyle("width: 40px");
-            embargosDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
+            embargosDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
             embargosDocumento.setFilterStyle("width: 100px");
-            embargosFechaDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
+            embargosFechaDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
             embargosFechaDocumento.setFilterStyle("width: 30px");
-            embargosNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
+            embargosNumero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
             embargosNumero.setFilterStyle("width: 30px");
-            embargosJuzgado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
+            embargosJuzgado = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
             embargosJuzgado.setFilterStyle("");
-            embargosMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
+            embargosMotivo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
             embargosMotivo.setFilterStyle("width: 140px");
-            embargosBeneficiario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
+            embargosBeneficiario = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
             embargosBeneficiario.setFilterStyle("width: 40px");
-            embargosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNit");
+            embargosNit = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNit");
             embargosNit.setFilterStyle("width: 50px");
-            embargosTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
+            embargosTercero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
             embargosTercero.setFilterStyle("width: 80px");
-            embargosValorTotal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
+            embargosValorTotal = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
             embargosValorTotal.setFilterStyle("width: 50px");
-            embargosFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
+            embargosFechaInicio = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
             embargosFechaInicio.setFilterStyle("width: 80px");
-            embargosCancelacionDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
+            embargosCancelacionDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
             embargosCancelacionDocumento.setFilterStyle("width: 80px");
-            embargosCancelacionFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
+            embargosCancelacionFecha = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
             embargosCancelacionFecha.setFilterStyle("width: 40px");
-            embargosObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
+            embargosObservaciones = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
             embargosObservaciones.setFilterStyle("width: 40px");
 
             altoScrollEmbargos = "66";
@@ -1403,33 +1413,33 @@ public class ControlNovedadEmbargo implements Serializable {
 
         } else if (bandera == 1 && cualTabla == 0) {
             System.out.println("Desactiva 1");
-            embargosTipoEmbargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
+            embargosTipoEmbargo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTipoEmbargo");
             embargosTipoEmbargo.setFilterStyle("display: none; visibility: hidden;");
-            embargosDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
+            embargosDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosDocumento");
             embargosDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
+            embargosFechaDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaDocumento");
             embargosFechaDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosNumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
+            embargosNumero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNumero");
             embargosNumero.setFilterStyle("display: none; visibility: hidden;");
-            embargosJuzgado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
+            embargosJuzgado = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosJuzgado");
             embargosJuzgado.setFilterStyle("display: none; visibility: hidden;");
-            embargosMotivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
+            embargosMotivo = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosMotivo");
             embargosMotivo.setFilterStyle("display: none; visibility: hidden;");
-            embargosBeneficiario = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
+            embargosBeneficiario = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosBeneficiario");
             embargosBeneficiario.setFilterStyle("display: none; visibility: hidden;");
-            embargosNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosNit");
+            embargosNit = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosNit");
             embargosNit.setFilterStyle("display: none; visibility: hidden;");
-            embargosTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
+            embargosTercero = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosTercero");
             embargosTercero.setFilterStyle("display: none; visibility: hidden;");
-            embargosValorTotal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
+            embargosValorTotal = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosValorTotal");
             embargosValorTotal.setFilterStyle("display: none; visibility: hidden;");
-            embargosFechaInicio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
+            embargosFechaInicio = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosFechaInicio");
             embargosFechaInicio.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
+            embargosCancelacionDocumento = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionDocumento");
             embargosCancelacionDocumento.setFilterStyle("display: none; visibility: hidden;");
-            embargosCancelacionFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
+            embargosCancelacionFecha = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosCancelacionFecha");
             embargosCancelacionFecha.setFilterStyle("display: none; visibility: hidden;");
-            embargosObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
+            embargosObservaciones = (Column) c.getViewRoot().findComponent("form:datosEmbargos:embargosObservaciones");
             embargosObservaciones.setFilterStyle("display: none; visibility: hidden;");
 
             altoScrollEmbargos = "90";
@@ -1441,25 +1451,25 @@ public class ControlNovedadEmbargo implements Serializable {
         } else if (bandera == 0 && cualTabla == 1) {
             System.out.println("Activa 2");
 
-            detallesPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
+            detallesPagos = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
             detallesPagos.setFilterStyle("width: 100px");
-            detallesIka = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
+            detallesIka = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
             detallesIka.setFilterStyle("width: 30px");
-            detallesPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
+            detallesPorcentaje = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
             detallesPorcentaje.setFilterStyle("width: 30px");
-            detallesValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
+            detallesValor = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
             detallesValor.setFilterStyle("");
-            detallesSaldoInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
+            detallesSaldoInicial = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
             detallesSaldoInicial.setFilterStyle("");
-            detallesPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
+            detallesPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
             detallesPeriodicidadCodigo.setFilterStyle("width: 40px");
-            detallesPeriodicidadNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
+            detallesPeriodicidadNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
             detallesPeriodicidadNombre.setFilterStyle("width: 40px");
-            detallesConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
+            detallesConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
             detallesConceptoCodigo.setFilterStyle("width: 50px");
-            detallesConceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
+            detallesConceptoNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
             detallesConceptoNombre.setFilterStyle("width: 80px");
-            detallesEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
+            detallesEmpresa = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
             detallesEmpresa.setFilterStyle("width: 50px");
 
             altoScrollDetallesEmbargos = "66";
@@ -1471,25 +1481,25 @@ public class ControlNovedadEmbargo implements Serializable {
         } else if (bandera == 1 && cualTabla == 1) {
             //SOLUCIONES NODOS EMPLEADO
             System.out.println("Desactiva 2");
-            detallesPagos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
+            detallesPagos = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPagos");
             detallesPagos.setFilterStyle("display: none; visibility: hidden;");
-            detallesIka = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
+            detallesIka = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesIka");
             detallesIka.setFilterStyle("display: none; visibility: hidden;");
-            detallesPorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
+            detallesPorcentaje = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPorcentaje");
             detallesPorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            detallesValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
+            detallesValor = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesValor");
             detallesValor.setFilterStyle("display: none; visibility: hidden;");
-            detallesSaldoInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
+            detallesSaldoInicial = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesSaldoInicial");
             detallesSaldoInicial.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
+            detallesPeriodicidadCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadCodigo");
             detallesPeriodicidadCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesPeriodicidadNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
+            detallesPeriodicidadNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesPeriodicidadNombre");
             detallesPeriodicidadNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
+            detallesConceptoCodigo = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoCodigo");
             detallesConceptoCodigo.setFilterStyle("display: none; visibility: hidden;");
-            detallesConceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
+            detallesConceptoNombre = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesConceptoNombre");
             detallesConceptoNombre.setFilterStyle("display: none; visibility: hidden;");
-            detallesEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
+            detallesEmpresa = (Column) c.getViewRoot().findComponent("form:datosEmbargosDetalles:detallesEmpresa");
             detallesEmpresa.setFilterStyle("display: none; visibility: hidden;");
 
             altoScrollDetallesEmbargos = "90";
@@ -1576,13 +1586,11 @@ public class ControlNovedadEmbargo implements Serializable {
             context.execute("elegirTabla.show()");
         }
         int tamaño = listaEmbargos.size();
-        
-        
-        if(tamaño == 0){
+
+        if (tamaño == 0) {
             context.update("formularioDialogos:NuevoRegistroEmbargos");
             context.execute("NuevoRegistroEmbargos.show()");
         }
-        
 
         if (listaDetallesEmbargos.isEmpty() && !listaEmbargos.isEmpty()) {
             context.update("formularioDialogos:elegirTabla");
@@ -1655,6 +1663,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargosDetalles");
@@ -1702,6 +1711,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargos");
@@ -1761,6 +1771,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargos");
@@ -1820,6 +1831,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargosDetalles");
@@ -1891,6 +1903,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargos");
@@ -1950,6 +1963,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargos");
@@ -1999,6 +2013,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargos");
@@ -2058,6 +2073,7 @@ public class ControlNovedadEmbargo implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             permitirIndex = true;
             context.update("form:datosEmbargos");
@@ -2111,9 +2127,9 @@ public class ControlNovedadEmbargo implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -2127,9 +2143,9 @@ public class ControlNovedadEmbargo implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -2296,9 +2312,9 @@ public class ControlNovedadEmbargo implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 indexD = -1;
                 secRegistro = null;
@@ -2312,9 +2328,9 @@ public class ControlNovedadEmbargo implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 indexD = -1;
                 secRegistro = null;
@@ -2342,7 +2358,7 @@ public class ControlNovedadEmbargo implements Serializable {
                 lovlistaDetallesFormasDtos.clear();
                 getLovlistaDetallesFormasDtos();
             } else {
-                cambiosPagina = false;
+
                 permitirIndex = false;
                 context.update("formularioDialogos:formasDescuentosDialogo");
                 context.execute("formasDescuentosDialogo.show()");
@@ -2370,7 +2386,7 @@ public class ControlNovedadEmbargo implements Serializable {
                 lovlistaPeriodicidades.clear();
                 getLovlistaPeriodicidades();
             } else {
-                cambiosPagina = false;
+
                 permitirIndex = false;
                 context.update("formularioDialogos:periodicidadesDialogo");
                 context.execute("periodicidadesDialogo.show()");
@@ -2592,7 +2608,7 @@ public class ControlNovedadEmbargo implements Serializable {
             } else if (tipoNuevo == 2) {
                 duplicarEmbargo.getTercero().setStrNit(Nit);
             }
-            
+
             for (int i = 0; i < lovlistaTerceros.size(); i++) {
                 if (lovlistaTerceros.get(i).getStrNit().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -3522,7 +3538,13 @@ public class ControlNovedadEmbargo implements Serializable {
     public void setCambiosPagina(boolean cambiosPagina) {
         this.cambiosPagina = cambiosPagina;
     }
-    
-    
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
 
 }
