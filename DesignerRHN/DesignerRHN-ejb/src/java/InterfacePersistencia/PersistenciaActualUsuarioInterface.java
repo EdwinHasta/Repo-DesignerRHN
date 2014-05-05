@@ -16,7 +16,7 @@ public interface PersistenciaActualUsuarioInterface {
      * Método encargado de consultar toda la información del usuario que está usando el aplicativo.
      * @return Retorna el usuario que está usando el aplicativo.
      */
-    public ActualUsuario actualUsuarioBD();
+    public ActualUsuario actualUsuarioBD(EntityManager em);
     /**
      * Método encargado de consultar el alias del usuario que está usando el aplicativo. 
      * @return Retorna el alias del usuario que está usando el aplicativo.

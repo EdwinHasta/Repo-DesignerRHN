@@ -6,34 +6,33 @@
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
-    <properties>
-      <property name="eclipselink.canonicalmodel.subpackage" value="one"/>
-    </properties>
   </persistence-unit>
   <persistence-unit name="SOPORTE9" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
+    <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTE9:1521:SOPORTE9"/>
       <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
       <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="eclipselink.canonicalmodel.subpackage" value="two"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+      <property name="eclipselink.cache.type.default" value="NONE"/>
     </properties>
   </persistence-unit>
   <persistence-unit name="XE" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <shared-cache-mode>ALL</shared-cache-mode>
+    <shared-cache-mode>DISABLE_SELECTIVE</shared-cache-mode>
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@SOPORTEXE:1521:XE"/>
       <property name="javax.persistence.jdbc.user" value="ENTRADA"/>
       <property name="javax.persistence.jdbc.password" value="ENTRADA"/>
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-      <property name="eclipselink.canonicalmodel.subpackage" value="three"/>
+      <property name="eclipselink.cache.shared.default" value="false"/>
+      <property name="eclipselink.cache.type.default" value="NONE"/>
     </properties>
   </persistence-unit>
 </persistence>

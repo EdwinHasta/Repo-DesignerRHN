@@ -28,10 +28,10 @@
                                 <h:outputText value="#{msg['correo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; left: 556px; top: 20px"/>
                                 <p:inputText value="#{controlComprobantes.parametroActual.empleado.persona.email}" readonly="true" style="position: absolute; top: 35px; left: 556px; width: 240px"/>
 
-                                <h:outputText value="#{msg['periodo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px"/>
-                                <h:outputText value="#{controlComprobantes.parametroActual.fechasParametros}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 155px"/>
-                                <h:outputText value="#{msg['estructura']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 300px"/>
-                                <h:outputText value="#{controlComprobantes.parametroEstructura.estructura.nombre}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 72px; left: 425px"/>
+                                <h:outputText value="#{msg['periodo']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 60px; left: 10px"/>
+                                <h:outputText value="#{controlComprobantes.parametroActual.fechasParametros}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 76px; left: 10px"/>
+                                <h:outputText value="#{msg['estructura']}" style="color: #14388B; font-size: 12px; font-weight: bold; position: absolute; top: 60px; left: 300px"/>
+                                <h:outputText value="#{controlComprobantes.parametroEstructura.estructura.nombre}" style="color: black; font-size: 12px; font-weight: bold; position: absolute; top: 76px; left: 300px"/>
 
                                 <p:commandButton style="position: absolute; left: 815px; top: 24px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/arriba.JPG); background-size: 100% 100%; background-repeat: no-repeat; "  value="" actionListener="#{controlComprobantes.anteriorEmpleado()}" process="@this" />
                                 <p:commandButton style="position: absolute; left: 815px; top: 45px; font-size: 11px; font-family: Arial, Helvetica, sans-serif; width: 20px; height: 20px; background-image: url(Imagenes/abajo.JPG); background-size: 100% 100%; background-repeat: no-repeat; " value=""  actionListener="#{controlComprobantes.siguienteEmpleado()}" process="@this" />
@@ -257,14 +257,23 @@
                                     </p:cellEditor>
                                 </p:column>
                                 <p:columnGroup type="footer">  
-                                    <p:row> 
-                                        <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="#{msg['totales']}" style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B"/>
-                                        <p:column footerText="#{controlComprobantes.pago}" style="text-align:right; position: relative; left: 17px; padding-left: 0px; border: none"/>
-                                        <p:column footerText="#{controlComprobantes.descuento}" style="text-align:right; position: relative; left: 25px; padding-left: 0px; border: none"/> 
-                                        <p:column footerText="&nbsp;&nbsp;&nbsp; Neto: &nbsp;&nbsp;&nbsp; #{controlComprobantes.netoTotal}"  style=" text-align: left; position: relative; padding-left: 0px; border: none; left: 22px; border: none"/>
+                                    <p:row>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="#{msg['totales']}" style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B; background-color: white"/>
+                                        <p:column footerText="#{controlComprobantes.pago}" style="text-align:right; position: relative; padding-left: 17px; border: none; background-color: white; "/>
+                                        <p:column footerText="#{controlComprobantes.descuento}" style="text-align:right; position: relative; padding-left: 10px; border: none; background-color: white"/> 
+                                        <p:column footerText="&nbsp;&nbsp;&nbsp; Neto: &nbsp;&nbsp;&nbsp; #{controlComprobantes.netoTotal}"  style=" text-align: left; position: relative; padding-left: 10px; border: none; border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
                                     </p:row>  
                                 </p:columnGroup>
                             </p:dataTable>
@@ -375,7 +384,7 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{solucionNodoEmpleador.cuentad.codigo}" style="width: 96%; text-transform: uppercase" readonly="true"/>
-                                         </f:facet>
+                                        </f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
@@ -469,13 +478,22 @@
 
                                 <p:columnGroup type="footer">  
                                     <p:row> 
-                                        <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="" style="visibility: hidden; border: none"/>
-                                        <p:column footerText="#{msg['totales']}" style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B"/>
-                                        <p:column footerText="#{controlComprobantes.pasivo}" style="text-align:right; position: relative; left: 17px; padding-left: 0px; border: none"/>
-                                        <p:column footerText="#{controlComprobantes.gasto}" style="text-align:right; position: relative; left: 25px; padding-left: 0px; border: none"/> 
-                                        <p:column footerText=""  style=" visibility: hidden; position: relative; padding-left: 0px; border: none; left: 22px; border: none"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="#{msg['totales']}" style="text-align:right; position: relative; z-index: 1; padding-left: 0px; border: none; color: #14388B; background-color: white"/>
+                                        <p:column footerText="#{controlComprobantes.pasivo}" style="text-align:right; position: relative; padding-left: 17px; border: none"/>
+                                        <p:column footerText="#{controlComprobantes.gasto}" style="text-align:right; position: relative; padding-left: 17px; border: none"/> 
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
+                                        <p:column footerText="" style="border: none; background-color: white"/>
                                     </p:row>  
                                 </p:columnGroup>
                             </p:dataTable>
@@ -527,7 +545,7 @@
                     <p:dialog id="parcialesConcepto" header="#{msg['parciales']}" widgetVar="parcialesConcepto"  resizable="false" draggable="false" modal="true" height="182" width="330" style="font-size: 12px" closable="false">  
                         <p:inputTextarea value="#{controlComprobantes.parcialesSolucionNodos}" style="position: absolute; left: 10px; top: 10px; width: 300px; height: 125px; font-weight:bold; overflow: auto" readonly="true" />
                         <p:commandButton value="#{msg['aceptar']}" style="position: absolute; top: 148px; left: 248px" onclick="parcialesConcepto.hide();
-                                        confirmacionFormatoExtendido.show();"/>
+                                confirmacionFormatoExtendido.show();"/>
                     </p:dialog>
 
                     <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  

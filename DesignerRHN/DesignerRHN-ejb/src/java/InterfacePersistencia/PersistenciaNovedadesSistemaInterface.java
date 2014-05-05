@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.NovedadesSistema;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'NovedadesSistema' 
@@ -39,5 +40,12 @@ public interface PersistenciaNovedadesSistemaInterface {
     public List<NovedadesSistema> novedadesEmpleado(BigInteger secuenciaEmpleado);
     
     public List<NovedadesSistema> novedadesEmpleadoVacaciones(BigInteger secuenciaEmpleado);
+    /**
+     * Método encargado de buscar si ha o no disfrutado vacaciones.
+     * @param em Conexion de la sesion.
+     * @param secuenciaEmpleado Secuencia del empleado al que se la buscan las NovedadesSistema
+     * @return Retorna un String.
+     */
+    public String buscarEstadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado);
     
     }

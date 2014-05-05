@@ -160,6 +160,7 @@ public class ControlCargo implements Serializable {
     private List<Cargos> lovCargos;
     private List<Cargos> filtrarLovCargos;
     private Cargos cargoSeleccionado;
+    private String redirigirPantalla;
 
     public ControlCargo() {
         lovCargos = null;
@@ -1318,6 +1319,14 @@ public class ControlCargo implements Serializable {
         context.update("form:detalleCargo");
         guardadoDetalleCargo = true;
 
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;  
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
 
     public void cancelarModificacionCargos() {

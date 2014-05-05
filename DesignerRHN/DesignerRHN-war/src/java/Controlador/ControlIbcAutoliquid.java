@@ -19,6 +19,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -45,6 +46,7 @@ public class ControlIbcAutoliquid implements Serializable {
     private List<IbcsAutoliquidaciones> filtrarListIbcsAutoliquidaciones;
     //
     private List<TiposEntidades> listTiposEntidades;
+    private List<TiposEntidades> filtrarListTiposEntidades;
     private TiposEntidades tipoEntidadActual;
     private int registroActual;
     //
@@ -52,12 +54,12 @@ public class ControlIbcAutoliquid implements Serializable {
     private List<Procesos> filtrarListProcesos;
     private Procesos procesoSeleccionado;
     //
-    //
     private int tipoActualizacion;
-    private int bandera;
+    private int bandera, banderaTE;
     private TiposEntidades backUpTipoEntidadActual;
     //Columnas Tabla VL
     private Column ibcFechaInicial, ibcFechaFinal, ibcEstado, ibcProceso, ibcValor, ibcFechaPago;
+    private Column codigoTipoEntidad, nombreTipoEntidad;
     //Otros
     private boolean aceptar;
     private int index;
@@ -69,7 +71,7 @@ public class ControlIbcAutoliquid implements Serializable {
     private int k;
     private List<IbcsAutoliquidaciones> listIbcsAutoliquidacionesBorrar;
     private IbcsAutoliquidaciones editarIBC;
-    private int cualCelda, tipoLista;
+    private int cualCelda, tipoLista, tipoListaTE;
     private boolean cambioEditor, aceptarEditar;
     private IbcsAutoliquidaciones duplicarIBC;
     private boolean permitirIndex, permitirIndexTS;
@@ -81,19 +83,25 @@ public class ControlIbcAutoliquid implements Serializable {
     private boolean cambiosIBC;
     private BigInteger secRegistroIBC;
     private BigInteger backUpSecRegistroIBC;
+    private BigInteger secRegistroTipoEntidad;
+    private BigInteger backUpSecRegistroTipoEntidad;
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private BigInteger backUp;
     private String nombreTablaRastro;
     private int indexAux;
     private String proceso;
     private Empleados empleado;
-    private BigInteger secuenciaEmpleado;
     private Date fechaParametro;
     private Date fechaIni, fechaFin;
     private BigDecimal auxValor;
+    private String altoTabla;
+    private String altoTablaTipoE;
+    private int posicionTipoEntidad;
 
     public ControlIbcAutoliquid() {
-        secuenciaEmpleado = new BigInteger("10661474");
+        posicionTipoEntidad = -1;
+        altoTabla = "170";
+        altoTablaTipoE = "95";
         empleado = new Empleados();
         registroActual = 0;
         indexAux = 0;
@@ -107,6 +115,8 @@ public class ControlIbcAutoliquid implements Serializable {
         msnConfirmarRastroHistorico = "";
         secRegistroIBC = null;
         backUpSecRegistroIBC = null;
+        secRegistroTipoEntidad = null;
+        backUpSecRegistroTipoEntidad = null;
         listIbcsAutoliquidaciones = null;
         //Otros
         aceptar = true;
@@ -123,6 +133,7 @@ public class ControlIbcAutoliquid implements Serializable {
         aceptarEditar = true;
         cualCelda = -1;
         tipoLista = 0;
+        tipoListaTE = 0;
         //guardar
         guardado = true;
         //Crear VC
@@ -130,6 +141,7 @@ public class ControlIbcAutoliquid implements Serializable {
         nuevoIBC.setProceso(new Procesos());
         index = -1;
         bandera = 0;
+        banderaTE = 0;
         permitirIndex = true;
         permitirIndexTS = true;
 
@@ -143,44 +155,52 @@ public class ControlIbcAutoliquid implements Serializable {
     public void obtenerTipoEntidad(BigInteger empl) {
         listIbcsAutoliquidaciones = null;
         listTiposEntidades = null;
-        empleado = administrarIBCAuto.empleadoActual(secuenciaEmpleado);
+        empleado = administrarIBCAuto.empleadoActual(empl);
         tipoEntidadActual = getTipoEntidadActual();
         getListIbcsAutoliquidaciones();
+        System.out.println("empleado : " + empleado.getPersona().getNombreCompleto());
     }
 
-    public void anteriorTipoEntidad() {
+    public void obtenerDetallesIBCS() {
+        if (bandera == 1) {
+            altoTabla = "170";
+            ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
+            ibcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
+            ibcFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            ibcEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcEstado");
+            ibcEstado.setFilterStyle("display: none; visibility: hidden;");
+            ibcProceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcProceso");
+            ibcProceso.setFilterStyle("display: none; visibility: hidden;");
+            ibcValor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcValor");
+            ibcValor.setFilterStyle("display: none; visibility: hidden;");
+            ibcFechaPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaPago");
+            ibcFechaPago.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosIBCS");
+            bandera = 0;
+            filtrarListIbcsAutoliquidaciones = null;
+            tipoLista = 0;
+        }
+        index = -1;
+        secRegistroIBC = null;
         if (cambiosIBC == true) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
-        }
-        if (cambiosIBC == false) {
-            if (registroActual > 0) {
-                registroActual--;
-                tipoEntidadActual = listTiposEntidades.get(registroActual);
-                listIbcsAutoliquidaciones = null;
-                getListIbcsAutoliquidaciones();
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:tipoEntidadActual");
-                context.update("form:datosIBCS");
+        } else {
+            int posicion = 0;
+            if (tipoLista == 0) {
+                posicion = listTiposEntidades.indexOf(tipoEntidadActual);
+                secRegistroTipoEntidad = listTiposEntidades.get(posicion).getSecuencia();
+            } else {
+                posicion = filtrarListTiposEntidades.indexOf(tipoEntidadActual);
+                secRegistroTipoEntidad = filtrarListTiposEntidades.get(posicion).getSecuencia();
             }
-        }
-    }
-
-    public void siguienteTipoEntidad() {
-        if (cambiosIBC == true) {
+            posicionTipoEntidad = posicion;
+            System.out.println("posicionTipoEntidad : " + posicionTipoEntidad);
+            listIbcsAutoliquidaciones = null;
+            getListIbcsAutoliquidaciones();
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("confirmarGuardar.show()");
-        }
-        if (cambiosIBC == false) {
-            if (registroActual < (listTiposEntidades.size() - 1)) {
-                registroActual++;
-                tipoEntidadActual = listTiposEntidades.get(registroActual);
-                listIbcsAutoliquidaciones = null;
-                getListIbcsAutoliquidaciones();
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:tipoEntidadActual");
-                context.update("form:datosIBCS");
-            }
+            context.update("form:datosIBCS");
         }
     }
 
@@ -414,6 +434,8 @@ public class ControlIbcAutoliquid implements Serializable {
         cualCelda = celda;
         index = indice;
         indexAux = indice;
+        posicionTipoEntidad = -1;
+        secRegistroTipoEntidad = null;
         if (tipoLista == 0) {
             secRegistroIBC = listIbcsAutoliquidaciones.get(index).getSecuencia();
             fechaFin = listIbcsAutoliquidaciones.get(index).getFechafinal();
@@ -480,6 +502,7 @@ public class ControlIbcAutoliquid implements Serializable {
      */
     public void cancelarModificacion() {
         if (bandera == 1) {
+            altoTabla = "170";
             ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
             ibcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
@@ -497,10 +520,23 @@ public class ControlIbcAutoliquid implements Serializable {
             filtrarListIbcsAutoliquidaciones = null;
             tipoLista = 0;
         }
+        if (banderaTE == 1) {
+            altoTablaTipoE = "95";
+            codigoTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigoTipoEntidad");
+            codigoTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+            nombreTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombreTipoEntidad");
+            nombreTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
+            banderaTE = 0;
+            filtrarListTiposEntidades = null;
+            tipoListaTE = 0;
+        }
         listIbcsAutoliquidacionesBorrar.clear();
         listIbcsAutoliquidacionesCrear.clear();
         listIbcsAutoliquidacionesModificar.clear();
         index = -1;
+        posicionTipoEntidad = -1;
+        secRegistroTipoEntidad = null;
         indexAux = -1;
         secRegistroIBC = null;
         k = 0;
@@ -584,6 +620,7 @@ public class ControlIbcAutoliquid implements Serializable {
         if (nuevoIBC.getFechainicial() != null && nuevoIBC.getValor() != null) {
             if (validarFechasRegistro(1) == true) {
                 if (bandera == 1) {
+                    altoTabla = "170";
                     ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
                     ibcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
@@ -696,6 +733,7 @@ public class ControlIbcAutoliquid implements Serializable {
         if (duplicarIBC.getFechainicial() != null && duplicarIBC.getValor() != null) {
             if (validarFechasRegistro(2) == true) {
                 if (bandera == 1) {
+                    altoTabla = "170";
                     ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
                     ibcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
                     ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
@@ -799,6 +837,9 @@ public class ControlIbcAutoliquid implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
+        if (posicionTipoEntidad >= 0) {
+            filtradoTipoEntidad();
+        }
         if (index >= 0) {
             filtradoIBCS();
         }
@@ -809,6 +850,7 @@ public class ControlIbcAutoliquid implements Serializable {
      */
     public void filtradoIBCS() {
         if (bandera == 0) {
+            altoTabla = "148";
             ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
             ibcFechaInicial.setFilterStyle("width: 50px");
             ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
@@ -824,6 +866,7 @@ public class ControlIbcAutoliquid implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosIBCS");
             bandera = 1;
         } else if (bandera == 1) {
+            altoTabla = "170";
             ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
             ibcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
@@ -843,12 +886,46 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
+    public void filtradoTipoEntidad() {
+        if (banderaTE == 0) {
+            altoTablaTipoE = "73";
+            codigoTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigoTipoEntidad");
+            codigoTipoEntidad.setFilterStyle("width: 35px");
+            nombreTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombreTipoEntidad");
+            nombreTipoEntidad.setFilterStyle("width: 150px");
+            RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
+            banderaTE = 1;
+        } else if (banderaTE == 1) {
+            altoTablaTipoE = "95";
+            codigoTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigoTipoEntidad");
+            codigoTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+            nombreTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombreTipoEntidad");
+            nombreTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
+            banderaTE = 0;
+            filtrarListTiposEntidades = null;
+            tipoListaTE = 0;
+        }
+    }
+
     //SALIR
     /**
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
+        if (banderaTE == 1) {
+            altoTablaTipoE = "95";
+            codigoTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigoTipoEntidad");
+            codigoTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+            nombreTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombreTipoEntidad");
+            nombreTipoEntidad.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
+            banderaTE = 0;
+            filtrarListTiposEntidades = null;
+            tipoListaTE = 0;
+        }
         if (bandera == 1) {
+            altoTabla = "170";
             ibcFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaInicial");
             ibcFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             ibcFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosIBCS:ibcFechaFinal");
@@ -871,6 +948,8 @@ public class ControlIbcAutoliquid implements Serializable {
         listIbcsAutoliquidacionesCrear.clear();
         listIbcsAutoliquidacionesModificar.clear();
         index = -1;
+        posicionTipoEntidad = -1;
+        secRegistroTipoEntidad = null;
         secRegistroIBC = null;
         tipoEntidadActual = null;
         registroActual = 0;
@@ -1034,6 +1113,24 @@ public class ControlIbcAutoliquid implements Serializable {
         permitirIndex = true;
     }
 
+    public void posicionTipoEntidad() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        posicionTipoEntidad = indice;
+        if (tipoListaTE == 0) {
+            tipoEntidadActual = listTiposEntidades.get(posicionTipoEntidad);
+        } else {
+            tipoEntidadActual = filtrarListTiposEntidades.get(posicionTipoEntidad);
+        }
+        RequestContext context2 = RequestContext.getCurrentInstance();
+        context2.update("form:datosTipoEntidad");
+        obtenerDetallesIBCS();
+    }
+
     /**
      * Selecciona la tabla a exportar XML con respecto al index activo
      *
@@ -1042,7 +1139,11 @@ public class ControlIbcAutoliquid implements Serializable {
     public String exportXML() {
         if (index >= 0) {
             nombreTabla = ":formExportarIBCS:datosIBCSExportar";
-            nombreXML = "IBCSAutoliquidacionXML";
+            nombreXML = "IBCSAutoliquidacion_XML";
+        }
+        if (posicionTipoEntidad >= 0) {
+            nombreTabla = ":formExportarTipoEntidad:datosTipoEntidadExportar";
+            nombreXML = "TiposEntidades_XML";
         }
         return nombreTabla;
     }
@@ -1053,7 +1154,12 @@ public class ControlIbcAutoliquid implements Serializable {
      * @throws IOException Excepcion de In-Out de datos
      */
     public void validarExportPDF() throws IOException {
-        exportPDF_IBC();
+        if (index >= 0) {
+            exportPDF_IBC();
+        }
+        if (posicionTipoEntidad >= 0) {
+            exportPDF_TE();
+        }
     }
 
     /**
@@ -1065,10 +1171,19 @@ public class ControlIbcAutoliquid implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarIBCS:datosIBCSExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "IBCSAutoliquidacionPDF", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "IBCSAutoliquidacion_PDF", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistroIBC = null;
+    }
+    public void exportPDF_TE() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarTipoEntidad:datosTipoEntidadExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "TiposEntidades_PDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        posicionTipoEntidad = -1;
+        secRegistroTipoEntidad = null;
     }
 
     /**
@@ -1077,7 +1192,12 @@ public class ControlIbcAutoliquid implements Serializable {
      * @throws IOException
      */
     public void verificarExportXLS() throws IOException {
-        exportXLS_IBC();
+        if (index >= 0) {
+            exportXLS_IBC();
+        }
+        if (posicionTipoEntidad >= 0) {
+            exportXLS_TE();
+        }
     }
 
     /**
@@ -1089,10 +1209,19 @@ public class ControlIbcAutoliquid implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarIBCS:datosIBCSExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "IBCSAutoliquidacionXLS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "IBCSAutoliquidacion_XLS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistroIBC = null;
+    }
+    public void exportXLS_TE() throws IOException {
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarTipoEntidad:datosTipoEntidadExportar");
+        FacesContext context = FacesContext.getCurrentInstance();
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "TiposEntidades_XLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+        posicionTipoEntidad = -1;
+        secRegistroTipoEntidad = null;
     }
 
     //EVENTO FILTRAR
@@ -1100,6 +1229,11 @@ public class ControlIbcAutoliquid implements Serializable {
      * Evento que cambia la lista real a la filtrada
      */
     public void eventoFiltrar() {
+        if (posicionTipoEntidad >= 0) {
+            if (tipoListaTE == 0) {
+                tipoListaTE = 1;
+            }
+        }
         if (index >= 0) {
             if (tipoLista == 0) {
                 tipoLista = 1;
@@ -1109,11 +1243,16 @@ public class ControlIbcAutoliquid implements Serializable {
 
     //METODO RASTROS PARA LAS TABLAS EN EMPLVIGENCIASUELDOS
     public void verificarRastroTabla() {
-        verificarRastroIBCS();
-        index = -1;
+        if (posicionTipoEntidad >= 0) {
+            verificarRastroTipoEntidad();
+            posicionTipoEntidad = -1;
+        }
+        if (index >= 0) {
+            verificarRastroIBCS();
+            index = -1;
+        }
     }
 
-    //Verificar Rastro Vigencia Sueldos
     public void verificarRastroIBCS() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listIbcsAutoliquidaciones != null) {
@@ -1150,6 +1289,44 @@ public class ControlIbcAutoliquid implements Serializable {
             }
         }
         index = -1;
+    }
+
+    public void verificarRastroTipoEntidad() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposEntidades != null) {
+            if (secRegistroTipoEntidad != null) {
+                int resultado = administrarRastros.obtenerTabla(secRegistroTipoEntidad, "TIPOSENTIDADES");
+                backUpSecRegistroTipoEntidad = secRegistroTipoEntidad;
+                backUp = secRegistroTipoEntidad;
+                secRegistroTipoEntidad = null;
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    nombreTablaRastro = "TiposEntidades";
+                    msnConfirmarRastro = "La tabla TIPOSENTIDADES tiene rastros para el registro seleccionado, ¿desea continuar?";
+                    context.update("form:msnConfirmarRastro");
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("TIPOSENTIDADES")) {
+                nombreTablaRastro = "TiposEntidades";
+                msnConfirmarRastroHistorico = "La tabla TIPOSENTIDADES tiene rastros historicos, ¿Desea continuar?";
+                context.update("form:confirmarRastroHistorico");
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+        }
+        posicionTipoEntidad = -1;
     }
 
     public void limpiarMSNRastros() {
@@ -1362,4 +1539,37 @@ public class ControlIbcAutoliquid implements Serializable {
     public void setAceptar(boolean aceptar) {
         this.aceptar = aceptar;
     }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public Empleados getEmpleado() {
+        return empleado;
+    }
+
+    public void setEmpleado(Empleados empleado) {
+        this.empleado = empleado;
+    }
+
+    public List<TiposEntidades> getFiltrarListTiposEntidades() {
+        return filtrarListTiposEntidades;
+    }
+
+    public void setFiltrarListTiposEntidades(List<TiposEntidades> filtrarListTiposEntidades) {
+        this.filtrarListTiposEntidades = filtrarListTiposEntidades;
+    }
+
+    public String getAltoTablaTipoE() {
+        return altoTablaTipoE;
+    }
+
+    public void setAltoTablaTipoE(String altoTablaTipoE) {
+        this.altoTablaTipoE = altoTablaTipoE;
+    }
+
 }

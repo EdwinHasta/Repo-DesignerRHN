@@ -133,7 +133,7 @@
                         </p:toolbar>
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh"  actionListener="#{controlEmplIbcs.cancelarModificacion()}" id="REFRESCAR" value="Refrescar" process="@this" disabled="true" />
-                        <p:commandButton style=" position: absolute; left: 115px; top: 470px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" id="detallesIbcs" value="Detalles IBCS" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 115px; top: 470px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(controlEmplIbcs.empleadoSeleccionado.secuencia)}" id="detallesIbcs" value="Detalles IBCS" process="@this" />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrasEmplIbcs"   />
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplIbcs.activarCtrlF11()}"  /> 

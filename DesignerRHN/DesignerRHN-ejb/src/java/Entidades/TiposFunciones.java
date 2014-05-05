@@ -82,6 +82,9 @@ public class TiposFunciones implements Serializable {
     }
 
     public String getNombreobjeto() {
+        if(nombreobjeto == null){
+            nombreobjeto = "";
+        }
         return nombreobjeto.toUpperCase();
     }
 

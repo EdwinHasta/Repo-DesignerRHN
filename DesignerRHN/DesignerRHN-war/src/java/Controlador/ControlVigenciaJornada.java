@@ -2135,40 +2135,57 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void validarNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (index >= 0) {
-            boolean existeVJ = false;
-            VigenciasJornadas vigJornada = listVigenciasJornadas.get(index);
-            List<VigenciasJornadas> listaVJ = administrarVigenciasJornadas.VigenciasJornadasEmpleado(empleado.getSecuencia());
-            for (int i = 0; i < listaVJ.size(); i++) {
-                if (listaVJ.get(i).getSecuencia().equals(vigJornada.getSecuencia())) {
-                    existeVJ = true;
+        int tam = 0;
+        if (listVigenciasJornadas != null) {
+            tam = listVigenciasJornadas.size();
+        }
+        int tam1 = 0;
+        if (listVigenciasCompensacionesDinero != null) {
+            tam1 = listVigenciasCompensacionesDinero.size();
+        }
+        int tam2 = 0;
+        if (listVigenciasCompensacionesTiempo != null) {
+            tam2 = listVigenciasCompensacionesTiempo.size();
+        }
+        if (tam == 0 && tam1 == 0 && tam2 == 0) {
+            context.update("form:NuevoRegistroPagina");
+            context.execute("NuevoRegistroPagina.show()");
+        } else {
+            if (index >= 0) {
+                boolean existeVJ = false;
+                VigenciasJornadas vigJornada = listVigenciasJornadas.get(index);
+                List<VigenciasJornadas> listaVJ = administrarVigenciasJornadas.VigenciasJornadasEmpleado(empleado.getSecuencia());
+                for (int i = 0; i < listaVJ.size(); i++) {
+                    if (listaVJ.get(i).getSecuencia().equals(vigJornada.getSecuencia())) {
+                        existeVJ = true;
+                    }
                 }
-            }
-            if (existeVJ == true) {
-                if ((existeVCD == false) || (existeVCT == false)) {
-                    context.update("form:NuevoRegistroPagina");
-                    context.execute("NuevoRegistroPagina.show()");
+                if (existeVJ == true) {
+                    if ((existeVCD == false) || (existeVCT == false)) {
+                        context.update("form:NuevoRegistroPagina");
+                        context.execute("NuevoRegistroPagina.show()");
+                    } else {
+                        nuevaVigencia = new VigenciasJornadas();
+                        nuevaVigencia.setJornadatrabajo(new JornadasLaborales());
+                        nuevaVigencia.setTipodescanso(new TiposDescansos());
+                        context.update("form:NuevoRegistroVJ");
+                        context.execute("NuevoRegistroVJ.show()");
+                    }
                 } else {
-                    nuevaVigencia = new VigenciasJornadas();
-                    nuevaVigencia.setJornadatrabajo(new JornadasLaborales());
-                    nuevaVigencia.setTipodescanso(new TiposDescansos());
-                    context.update("form:NuevoRegistroVJ");
-                    context.execute("NuevoRegistroVJ.show()");
+                    context.update("form:confirmarGuardarVJ");
+                    context.execute("confirmarGuardarVJ.show()");
                 }
-            } else {
-                context.update("form:confirmarGuardarVJ");
-                context.execute("confirmarGuardarVJ.show()");
             }
-        }
-        if (indexVCT >= 0) {
-            nuevaVigenciaCT = new VigenciasCompensaciones();
-            context.update("form:NuevoRegistroVCT");
-            context.execute("NuevoRegistroVCT.show()");
-        }
-        if (indexVCD >= 0) {
-            nuevaVigenciaCD = new VigenciasCompensaciones();
-            context.update("form:NuevoRegistroVCD");
-            context.execute("NuevoRegistroVCD.show()");
+            if (indexVCT >= 0) {
+                nuevaVigenciaCT = new VigenciasCompensaciones();
+                context.update("form:NuevoRegistroVCT");
+                context.execute("NuevoRegistroVCT.show()");
+            }
+            if (indexVCD >= 0) {
+                nuevaVigenciaCD = new VigenciasCompensaciones();
+                context.update("form:NuevoRegistroVCD");
+                context.execute("NuevoRegistroVCD.show()");
+            }
         }
     }
 

@@ -26,12 +26,13 @@ import javax.persistence.Query;
     @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
 
-    @Override
-    public VWActualesTiposTrabajadores buscarTipoTrabajador(BigInteger secuencia) {
+    
+    public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia) {
         try {
-            VWActualesTiposTrabajadores vwActualesTiposTrabajadores = (VWActualesTiposTrabajadores) em.createNamedQuery("VWActualesTiposTrabajadores.findByEmpleado")
-                    .setParameter("empleado", secuencia)
-                    .getSingleResult();
+            Query query = em.createNamedQuery("VWActualesTiposTrabajadores.findByEmpleado");
+            query.setParameter("empleado", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            VWActualesTiposTrabajadores vwActualesTiposTrabajadores = (VWActualesTiposTrabajadores) query.getSingleResult();
             return vwActualesTiposTrabajadores;
         } catch (Exception e) {
             VWActualesTiposTrabajadores vwActualesTiposTrabajadores = null;

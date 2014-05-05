@@ -48,4 +48,12 @@ public interface PersistenciaCandadosInterface {
      * Método encargado de cerrar la liquidación de manera no automatica.
      */
     public void cerrarLiquidacionNoAutomatico();
+    /**
+     * Método encargado de borrar la liquidación de manera automatica.
+     */
+    public void borrarLiquidacionAutomatico();
+    /**
+     * Método encargado de borrar la liquidación de manera no automatica.
+     */
+    public void borrarLiquidacionNoAutomatico();
 }

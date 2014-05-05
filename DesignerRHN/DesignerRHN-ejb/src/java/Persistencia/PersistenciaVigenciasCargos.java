@@ -5,21 +5,25 @@ package Persistencia;
 
 import Entidades.Empleados;
 import Entidades.VigenciasCargos;
+import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
-import java.math.BigInteger;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasCargos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasCargos' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -69,11 +73,16 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
         return em.createQuery(cq).getResultList();
     }
 
-    @Override
-    public List<VigenciasCargos> buscarVigenciasCargosEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasCargos> buscarVigenciasCargosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
-            Empleados empleado = (Empleados) em.createNamedQuery("Empleados.findBySecuencia").setParameter("secuencia", secEmpleado).getSingleResult();
-            List<VigenciasCargos> vigenciasCargos = (List<VigenciasCargos>) em.createNamedQuery("VigenciasCargos.findByEmpleado").setParameter("empleado", empleado).getResultList();
+            Query query = em.createNamedQuery("Empleados.findBySecuencia");
+            query.setParameter("secuencia", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Empleados empleado = (Empleados) query.getSingleResult();
+            Query query2 = em.createNamedQuery("VigenciasCargos.findByEmpleado");
+            query2.setParameter("empleado", empleado);
+            query2.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<VigenciasCargos> vigenciasCargos = (List<VigenciasCargos>) query2.getResultList();
             return vigenciasCargos;
         } catch (Exception e) {
             List<VigenciasCargos> vigenciasCargos = null;

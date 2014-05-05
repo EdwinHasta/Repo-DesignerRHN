@@ -105,7 +105,7 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
             if (em != null) {
                 if (em.isOpen()) {
                     persistenciaConexionInicial.setearUsuario(em, perfilUsuario.getDescripcion(), perfilUsuario.getPwd());
-                    SessionEntityManager sem = new SessionEntityManager(idSesion, em);
+                    SessionEntityManager sem = new SessionEntityManager(idSesion, sessionEMF.getEmf());
                     administrarSessiones.adicionarSesion(sem);
                     return true;
                 }

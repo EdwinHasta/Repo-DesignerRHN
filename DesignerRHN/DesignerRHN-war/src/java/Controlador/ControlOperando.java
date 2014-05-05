@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -105,7 +106,7 @@ public class ControlOperando implements Serializable {
         listaOperandosBorrar = new ArrayList<Operandos>();
         listaOperandosCrear = new ArrayList<Operandos>();
         listaOperandosModificar = new ArrayList<Operandos>();
-        altoTabla = "245";
+        altoTabla = "270";
         duplicarOperando = new Operandos();
     }
 
@@ -140,9 +141,10 @@ public class ControlOperando implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -156,9 +158,10 @@ public class ControlOperando implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -384,16 +387,18 @@ public class ControlOperando implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
-                altoTabla = "245";
-                operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                altoTabla = "270";
+                operandosNombres = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosNombres");
                 operandosNombres.setFilterStyle("display: none; visibility: hidden;");
-                operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
+                operandosTipos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosTipos");
                 operandosTipos.setFilterStyle("display: none; visibility: hidden;");
-                operandosValores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosValores");
+                operandosValores = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosValores");
                 operandosValores.setFilterStyle("display: none; visibility: hidden;");
-                operandosDescripciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
+                operandosDescripciones = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
                 operandosDescripciones.setFilterStyle("display: none; visibility: hidden;");
-                operandosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
+                operandosCodigos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
                 operandosCodigos.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosOperandos");
                 bandera = 0;
@@ -447,35 +452,36 @@ public class ControlOperando implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 0) {
-            altoTabla = "223";
-            operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
-            operandosNombres.setFilterStyle("width: 60px");
-            operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
+            altoTabla = "246";
+            operandosNombres = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosNombres");
+            operandosNombres.setFilterStyle("width: 100px");
+            operandosTipos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosTipos");
             operandosTipos.setFilterStyle("width: 60px");
-            operandosValores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosValores");
-            operandosValores.setFilterStyle("width: 60px");
-            operandosDescripciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
-            operandosDescripciones.setFilterStyle("width: 60px");
-            operandosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
-            operandosCodigos.setFilterStyle("width: 60px");
+            operandosValores = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosValores");
+            operandosValores.setFilterStyle("width: 40px");
+            operandosDescripciones = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
+            operandosDescripciones.setFilterStyle("width: 100px");
+            operandosCodigos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
+            operandosCodigos.setFilterStyle("width: 40px");
             RequestContext.getCurrentInstance().update("form:datosOperandos");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
+            operandosNombres = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosNombres");
             operandosNombres.setFilterStyle("display: none; visibility: hidden;");
-            operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
+            operandosTipos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosTipos");
             operandosTipos.setFilterStyle("display: none; visibility: hidden;");
-            operandosValores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosValores");
+            operandosValores = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosValores");
             operandosValores.setFilterStyle("display: none; visibility: hidden;");
-            operandosDescripciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
+            operandosDescripciones = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
             operandosDescripciones.setFilterStyle("display: none; visibility: hidden;");
-            operandosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
+            operandosCodigos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
             operandosCodigos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosOperandos");
             bandera = 0;
@@ -487,18 +493,20 @@ public class ControlOperando implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            altoTabla = "245";
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
+            operandosNombres = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosNombres");
             operandosNombres.setFilterStyle("display: none; visibility: hidden;");
-            operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
+            operandosTipos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosTipos");
             operandosTipos.setFilterStyle("display: none; visibility: hidden;");
-            operandosValores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosValores");
+            operandosValores = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosValores");
             operandosValores.setFilterStyle("display: none; visibility: hidden;");
-            operandosDescripciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
+            operandosDescripciones = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
             operandosDescripciones.setFilterStyle("display: none; visibility: hidden;");
-            operandosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
+            operandosCodigos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
             operandosCodigos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosOperandos");
             bandera = 0;
@@ -648,18 +656,20 @@ public class ControlOperando implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
-                altoTabla = "245";
+                altoTabla = "270";
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
+                operandosNombres = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosNombres");
                 operandosNombres.setFilterStyle("display: none; visibility: hidden;");
-                operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
+                operandosTipos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosTipos");
                 operandosTipos.setFilterStyle("display: none; visibility: hidden;");
-                operandosValores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosValores");
+                operandosValores = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosValores");
                 operandosValores.setFilterStyle("display: none; visibility: hidden;");
-                operandosDescripciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
+                operandosDescripciones = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
                 operandosDescripciones.setFilterStyle("display: none; visibility: hidden;");
-                operandosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
+                operandosCodigos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
                 operandosCodigos.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosOperandos");
                 bandera = 0;
@@ -773,8 +783,10 @@ public class ControlOperando implements Serializable {
             context.update("form:datosOperandos");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            //  k = 0;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         secRegistro = null;
@@ -847,18 +859,20 @@ public class ControlOperando implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            altoTabla = "245";
+            altoTabla = "270";
+            FacesContext c = FacesContext.getCurrentInstance();
+
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            operandosNombres = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosNombres");
+            operandosNombres = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosNombres");
             operandosNombres.setFilterStyle("display: none; visibility: hidden;");
-            operandosTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosTipos");
+            operandosTipos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosTipos");
             operandosTipos.setFilterStyle("display: none; visibility: hidden;");
-            operandosValores = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosValores");
+            operandosValores = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosValores");
             operandosValores.setFilterStyle("display: none; visibility: hidden;");
-            operandosDescripciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
+            operandosDescripciones = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosDescripciones");
             operandosDescripciones.setFilterStyle("display: none; visibility: hidden;");
-            operandosCodigos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
+            operandosCodigos = (Column) c.getViewRoot().findComponent("form:datosOperandos:operandosCodigos");
             operandosCodigos.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosOperandos");
             bandera = 0;
@@ -881,10 +895,12 @@ public class ControlOperando implements Serializable {
     public List<Operandos> getListaOperandos() {
         if (listaOperandos == null) {
             listaOperandos = administrarOperandos.buscarOperandos();
-            for (int i = 0; i < listaOperandos.size(); i++) {
-                String valor;
-                valor = administrarOperandos.buscarValores(listaOperandos.get(i).getSecuencia());
-                listaOperandos.get(i).setValor(valor);
+            if (!listaOperandos.isEmpty()) {
+                for (int i = 0; i < listaOperandos.size(); i++) {
+                    String valor;
+                    valor = administrarOperandos.buscarValores(listaOperandos.get(i).getSecuencia());
+                    listaOperandos.get(i).setValor(valor);
+                }
             }
         }
         return listaOperandos;

@@ -240,7 +240,7 @@
                         <p:commandButton style="position: absolute; left: 100px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARCENTROCOSTO" value="Buscar Periodicidad" actionListener="#{controlPeriodicidades.llamadoDialogoBuscarPeriodicidades()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 233px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="Mostrar Todos" actionListener="#{controlPeriodicidades.cancelarModificacion()}" process="@this"/>
                         <p:commandButton style=" position: absolute; left: 730px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlPeriodicidades.guardado}" onclick="confirmarGuardar.show();" update=":form:datosPeriodicidades" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 808px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras" actionListener="#{controlUnidad.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style=" position: absolute; left: 808px; top: 497px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-closethick" id="ATRAS" value="Atras" actionListener="#{controlPeriodicidades.refrescar()}" action="#{controlPeriodicidades.redirigir()}" process="@this" />
 
                     </p:panel>
 

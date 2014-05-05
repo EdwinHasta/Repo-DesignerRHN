@@ -148,7 +148,7 @@ public class Declarantes implements Serializable {
         if (declarante != null) {
             if (declarante.equals("S")) {
                 estadoDeclarante = true;
-            } else {
+            } else if (declarante.equals("N")){
                 estadoDeclarante = false;
             }
         } else {

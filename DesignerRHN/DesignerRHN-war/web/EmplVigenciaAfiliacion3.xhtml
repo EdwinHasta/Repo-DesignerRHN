@@ -62,14 +62,19 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
+                        <p:remoteCommand name="posicionNit" actionListener="#{controlEmplVigenciaAfiliacion3.posicionNit()}"/>
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style=" font-size: 14px; color: blue"><strong>#{msg['afiliaciones']}</strong></legend>
                             <p:dataTable id="datosVAVigencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVA" value="#{controlEmplVigenciaAfiliacion3.listVigenciasAfiliaciones}" 
-                                         filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" rows="8" 
+                                         filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarVigenciasAfiliaciones}" editable="true" editMode="cell" liveScroll="true" scrollRows="10"
                                          scrollable="true" scrollWidth="830" scrollHeight="#{controlEmplVigenciaAfiliacion3.altoTabla}" emptyMessage="#{msg['vacio']}" style=" border: 1px;width: 830px"
                                          selection="#{controlEmplVigenciaAfiliacion3.vigenciaSeleccionada}" selectionMode="single">
 
+                                
+                                <p:ajax event="filter" listener="#{controlEmplVigenciaAfiliacion3.eventoFiltrar()}" process="@this"/>
+                                
+                                
                                 <p:column headerText="#{msg['inicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vAFechaInicial" width="68"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
                                     <p:cellEditor>  
@@ -151,9 +156,9 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tercerosucursal.tercero.nit}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  value="#{info.tercerosucursal.tercero.nit}" id="editarNITTerceroVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"> 
-                                                <p:ajax event="select" listener="#{controlEmplVigenciaAfiliacion3.cambiarIndiceVA(indiceVA,4)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.modificarVA(indiceVA)}" process="@this" update="editarNITTerceroVA"/>                                                
+                                            <p:inputText readonly="true"  value="#{info.tercerosucursal.tercero.nit}" id="editarNITTerceroVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"
+                                                         onclick="select();" onselect="posicionNit([{name: 'n', value: '4'}, {name: 't', value: '#{indiceVA}'}]);"> 
+                                                
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -329,6 +334,14 @@
                         <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.guardadoGeneral()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarModificacionVA()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                    </p:dialog>
+                    
+                    <p:dialog id="confirmarGuardarSinSalir" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalir"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSinSalir.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.guardadoGeneral()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSinSalir.hide();" actionListener="#{controlEmplVigenciaAfiliacion3.cancelarModificacionVA()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSinSalir.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
                     
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
@@ -570,38 +583,38 @@
                     <!-- Validaciones --> 
                     <p:dialog id="errorIngresoRegistro" header="#{msg['atencion']}" widgetVar="errorIngresoRegistro"  resizable="false" draggable="false" modal="true" height="110" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorIngresoRegistro']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['ok']}" onclick="errorIngresoRegistro.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                        <h:outputText value="#{msg['errorIngresoRegistro']}" style="position: absolute; left: 100px; top: 20px; width: 260px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorIngresoRegistro.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
                     </p:dialog>
                     
                     <p:dialog id="errorFechasRegistro" header="#{msg['atencion']}" widgetVar="errorFechasRegistro"  resizable="false" draggable="false" modal="true" height="110" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorFechasRegistro']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['ok']}" onclick="errorFechasRegistro.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                        <h:outputText value="#{msg['errorFechasRegistro']}" style="position: absolute; left: 100px; top: 20px; width: 260px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechasRegistro.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
                     </p:dialog>
                     
                     <p:dialog id="errorExistenciaTipoEntidad" header="#{msg['atencion']}" widgetVar="errorExistenciaTipoEntidad"  resizable="false" draggable="false" modal="true" height="110" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorExistenciaTipoEntidad']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['ok']}" onclick="errorExistenciaTipoEntidad.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                        <h:outputText value="#{msg['errorExistenciaTipoEntidad']}" style="position: absolute; left: 100px; top: 20px; width: 260px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorExistenciaTipoEntidad.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
                     </p:dialog>
                     
                     <p:dialog id="errorTerceroSucursal" header="#{msg['atencion']}" widgetVar="errorTerceroSucursal"  resizable="false" draggable="false" modal="true" height="110" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorTerceroSucursal']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['ok']}" onclick="errorTerceroSucursal.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                        <h:outputText value="#{msg['errorTerceroSucursal']}" style="position: absolute; left: 100px; top: 20px; width: 260px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorTerceroSucursal.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
                     </p:dialog>
                     
                     <p:dialog id="errorFechaMenorContratacion" header="#{msg['atencion']}" widgetVar="errorFechaMenorContratacion"  resizable="false" draggable="false" modal="true" height="110" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorFechaMenorContratacion']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['ok']}" onclick="errorFechaMenorContratacion.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                        <h:outputText value="#{msg['errorFechaMenorContratacion']}" style="position: absolute; left: 100px; top: 20px; width: 260px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechaMenorContratacion.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
                     </p:dialog>
                     
                     <p:dialog id="errorFechaInicialRegistro" header="#{msg['atencion']}" widgetVar="errorFechaInicialRegistro"  resizable="false" draggable="false" modal="true" height="110" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/error_x.png" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['errorFechaInicialRegistro']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['ok']}" onclick="errorFechaInicialRegistro.hide();" style="position: absolute; top: 75px; left: 255px" process="@this" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechaInicialRegistro']}" style="position: absolute; left: 100px; top: 20px; width: 260px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorFechaInicialRegistro.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
                     </p:dialog>
 
 

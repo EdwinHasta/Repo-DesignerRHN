@@ -13,6 +13,7 @@
 
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.nominaf" var="msg" />
+                    <p:growl id="growl" showDetail="true"/>
                     <p:panel id="PanelTotal" header="#{msg['titulo']}" style=" ; position: absolute; width: 874px; height: 530px;">  
 
 
@@ -76,15 +77,15 @@
                                 <p:dataGrid   id="data" var="item" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" paginator="true"  
                                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
                                               {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-felipe" first="#{controlRemoto.estadoEmpleado}" >
-
+                                    
                                     <fieldset id="set" style="height: 80px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 80px;">
                                         <legend style="color: #00F;  ; font-weight: bold">#{msg['informacionpersonal']}</legend>
 
-                                        <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe">
-
+                                        <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe" >
+                                            
                                             <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; color: #14388B; 
                                                            ; width: 63px; height: 20px; top: 15px; font-weight: bold"/>
-                                            <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)};"
+                                            <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)}"
                                                          style="position: absolute; left: 12px; top: 30px; width: 76px; height: 15px;" onclick="select();"/>
                                             <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
 
@@ -268,7 +269,7 @@
                                         </p:tooltip>
 
                                         <!-- Cajas de Texto -->
-
+                                        
                                         <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesCargos.cargo.nombre}"  /> 
                                         <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 210px; height: 12px; " readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
                                         <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
@@ -280,8 +281,8 @@
                                         <p:inputText id="VTipoTrabajador" style="position: absolute; left: 315px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesTiposTrabajadores.tipoTrabajador.nombre}" />
                                         <p:inputText id="VLegislacionLaboral" style="position: absolute; left: 315px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesContratos.contrato.descripcion}" />
                                         <p:inputText id="VJornada" style="position: absolute; left: 315px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesJornadas.jornadaTrabajo.descripcion}"  />
-                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 315px; top: 173px; width: 210px; height: 12px;"  />
-                                        <p:inputText id="VVacaciones" style="position: absolute; left: 315px; top: 208px; width: 210px; height: 12px;"  />
+                                        <p:inputText id="VMenorValorRetencio" style="position: absolute; left: 315px; top: 173px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualMVR}"/>
+                                        <p:inputText id="VVacaciones" style="position: absolute; left: 315px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.estadoVacaciones}"/>
 
                                         <p:inputText id="VSueldo" style="position: absolute; left: 585px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.sueldo}"/>
                                         <p:inputText id="VTipoSalario" style="position: absolute; left: 585px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
@@ -503,7 +504,7 @@
 
                                         <hr style="float: left; height: 250px; position: absolute; left: 270px; top: 0px;"/>
 
-                                        <p:commandButton value=" " id="btnBorrarLiquidacion" style="position: absolute; left: 275px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; "/>
+                                        <p:commandButton value=" " id="btnBorrarLiquidacion" style="position: absolute; left: 275px; top: 5px; width: 80px; height: 80px; background-image: url(Imagenes/nom_borrar.gif);  background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlRemoto.validarBorradoLiquidacion()}"/>
 
                                         <p:commandButton value=" " id="btnCerrarLiquidacion" style="position: absolute; left: 275px; top: 90px; width: 80px; height: 80px; background-image: url(Imagenes/nom_cerrar.gif);  background-repeat: no-repeat; background-size: 100% 100%; " actionListener="#{controlCerrarLiquidacion.tipoLiquidacion(controlRemoto.pago)}" action="cerrarliq"/>
 
@@ -519,11 +520,25 @@
                                 <h:outputText style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
                                 <p:dialog id="confirmarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarLiquidacion"  resizable="false" draggable="false" modal="true" height="120" width="420px"  closable="false">  
-                                    <h:graphicImage value="Imagenes/alerta.jpg" width="100" height="70" style="position: absolute; left: 10px; top: 10px;"  />
-                                    <h:outputText value="#{msg['antesdeliquidar']}" style="position: absolute; left: 100px; top: 20px; width: 280px; font-weight:bold; text-align: center" />
-                                    <h:outputText value="¿#{msg['confirmarLiquidacion']}?" style="position: absolute; left: 110px; top: 55px; width: 300px; font-weight:bold" />
-                                    <p:commandButton value="#{msg['si']}" onclick="confirmarLiquidacion.hide();" action="liquidacion" style="position: absolute; top: 80px; left: 215px " process="@this" />
-                                    <p:commandButton value="#{msg['no']}" onclick="confirmarLiquidacion.hide();" style="position: absolute; top: 80px; left: 255px" process="@this" />
+                                    <h:graphicImage value="Imagenes/alerta.jpg" width="100" height="80" style="position: absolute; left: 10px; top: 10px;"  />
+                                    <h:outputText value="#{msg['antesdeliquidar']}" style="position: absolute; left: 120px; top: 10px; width: 280px; font-weight:bold; text-align: center" />
+                                    <h:outputText value="#{msg['confirmarLiquidacion']}" style="position: absolute; left: 120px; top: 60px; width: 300px; font-weight:bold" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarLiquidacion.hide();" action="liquidacion" style="position: absolute; top: 80px; left: 275px " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarLiquidacion.hide();" style="position: absolute; top: 80px; left: 330px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                </p:dialog>
+                                
+                                <p:dialog id="confirmarBorrarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarBorrarLiquidacion"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
+                                    <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
+                                    <h:outputText value="#{msg['msgborrarLiquidacion']}" style="position: absolute; left: 100px; top: 20px; width: 320px; font-weight:bold; " />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarBorrarLiquidacion.hide();" actionListener="#{controlRemoto.borrarLiquidacion()}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarBorrarLiquidacion.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                                </p:dialog>
+                                
+                                <p:dialog id="confirmarBorrarLiquidacionPorFuera" header="#{msg['atencion']}" widgetVar="confirmarBorrarLiquidacionPorFuera"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
+                                    <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
+                                    <h:outputText value="#{msg['msgborrarLiquidacionPorFuera']}" style="position: absolute; left: 100px; top: 20px; width: 320px; font-weight:bold;" />
+                                    <p:commandButton value="#{msg['si']}" onclick="confirmarBorrarLiquidacionPorFuera.hide();" actionListener="#{controlRemoto.borrarLiquidacionPorFuera()}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
+                                    <p:commandButton value="#{msg['no']}" onclick="confirmarBorrarLiquidacionPorFuera.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
                             </p:tab>  
 

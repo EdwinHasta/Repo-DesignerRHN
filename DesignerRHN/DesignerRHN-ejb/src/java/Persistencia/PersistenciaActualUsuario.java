@@ -23,7 +23,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     private EntityManager em;
 
     @Override
-    public ActualUsuario actualUsuarioBD() {
+    public ActualUsuario actualUsuarioBD(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT au FROM ActualUsuario au");
             ActualUsuario actualUsuario;

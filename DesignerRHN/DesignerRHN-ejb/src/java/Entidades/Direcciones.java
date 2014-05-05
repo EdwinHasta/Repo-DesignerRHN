@@ -288,6 +288,9 @@ public class Direcciones implements Serializable {
     }
 
     public String getHipoteca() {
+        if (hipoteca == null) {
+            hipoteca = "N";
+        }
         return hipoteca;
     }
 
@@ -308,8 +311,6 @@ public class Direcciones implements Serializable {
             }
         }
         return estadoHipoteca;
-
-
 
     }
 
@@ -340,7 +341,7 @@ public class Direcciones implements Serializable {
     public void setDireccionalternativa(String direccionalternativa) {
         if (direccionalternativa != null) {
             this.direccionalternativa = direccionalternativa.toUpperCase();
-        }else{
+        } else {
             this.direccionalternativa = direccionalternativa;
         }
     }

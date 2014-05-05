@@ -94,6 +94,7 @@ public class ControlProyecto implements Serializable {
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
     private Date fechaInic, fechaFin;
+    private String paginaAnterior;
 
     public ControlProyecto() {
         proyectoSeleccionado = new Proyectos();
@@ -275,6 +276,15 @@ public class ControlProyecto implements Serializable {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosProyectos");
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
 
     /**

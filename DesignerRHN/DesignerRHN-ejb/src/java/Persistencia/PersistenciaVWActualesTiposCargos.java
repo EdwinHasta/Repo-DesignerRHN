@@ -21,14 +21,14 @@ public class PersistenciaVWActualesTiposCargos implements PersistenciaVWActuales
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    @Override
-    public VWActualesTiposContratos buscarTiposContratosEmpleado(BigInteger secuencia) {
+    public VWActualesTiposContratos buscarTiposContratosEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesTiposContratos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesTiposContratos actualesTiposContratos = (VWActualesTiposContratos) query.getSingleResult();
             return actualesTiposContratos;
         } catch (Exception e) {

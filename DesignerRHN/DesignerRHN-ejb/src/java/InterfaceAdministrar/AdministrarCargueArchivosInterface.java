@@ -21,6 +21,7 @@ import java.util.List;
  * @author betelgeuse
  */
 public interface AdministrarCargueArchivosInterface {
+    public void obtenerConexion(String idSesion);
     /**
      * Método encargado de crear TempNovedades.
      * @param listaTempNovedades Lista de los TempNovedades que se van a crear.

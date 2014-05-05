@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -32,7 +33,7 @@ import org.primefaces.context.RequestContext;
  */
 @ManagedBean
 @SessionScoped
-public class ControlTipoConstante implements Serializable{
+public class ControlTipoConstante implements Serializable {
 
     @EJB
     AdministrarTiposConstantesInterface administrarTiposConstantes;
@@ -45,6 +46,7 @@ public class ControlTipoConstante implements Serializable{
     private Operandos operando;//LISTA INFOREPORTES
     private List<TiposConstantes> listaTiposConstantes;
     private List<TiposConstantes> filtradosListaTiposConstantes;
+    private TiposConstantes tipoConstanteSeleccionado;
     //L.O.V INFOREPORTES
     private List<TiposConstantes> lovlistaTiposConstantes;
     private List<TiposConstantes> lovfiltradoslistaTiposConstantes;
@@ -93,7 +95,6 @@ public class ControlTipoConstante implements Serializable{
     private boolean fechaBD;
     private boolean cadenaBD;
 
-
     public ControlTipoConstante() {
         cambiosPagina = true;
         nuevoTipoConstante = new TiposConstantes();
@@ -107,7 +108,7 @@ public class ControlTipoConstante implements Serializable{
         listaTiposConstantesBorrar = new ArrayList<TiposConstantes>();
         listaTiposConstantesCrear = new ArrayList<TiposConstantes>();
         listaTiposConstantesModificar = new ArrayList<TiposConstantes>();
-        altoTabla = "245";
+        altoTabla = "270";
         duplicarTipoConstante = new TiposConstantes();
         nuevoTipoConstante.setFechainicial(new Date());
     }
@@ -175,45 +176,47 @@ public class ControlTipoConstante implements Serializable{
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (bandera == 0) {
-            altoTabla = "223";
-            tiposConstantesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
+            altoTabla = "246";
+            tiposConstantesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
             tiposConstantesTipos.setFilterStyle("width: 60px");
-            tiposConstantesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
+            tiposConstantesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
             tiposConstantesIniciales.setFilterStyle("width: 60px");
-            tiposConstantesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
+            tiposConstantesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
             tiposConstantesFinales.setFilterStyle("width: 60px");
-            tiposConstantesReales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
+            tiposConstantesReales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
             tiposConstantesReales.setFilterStyle("width: 60px");
-            tiposConstantesDates = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
+            tiposConstantesDates = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
             tiposConstantesDates.setFilterStyle("width: 60px");
-            tiposConstantesCadenas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
+            tiposConstantesCadenas = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
             tiposConstantesCadenas.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposConstantesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
+            tiposConstantesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
             tiposConstantesTipos.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
+            tiposConstantesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
             tiposConstantesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
+            tiposConstantesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
             tiposConstantesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesReales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
+            tiposConstantesReales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
             tiposConstantesReales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesDates = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
+            tiposConstantesDates = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
             tiposConstantesDates.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesCadenas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
+            tiposConstantesCadenas = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
             tiposConstantesCadenas.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
             bandera = 0;
@@ -223,22 +226,25 @@ public class ControlTipoConstante implements Serializable{
     }
 
     public void salir() {
+
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposConstantesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
+            tiposConstantesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
             tiposConstantesTipos.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
+            tiposConstantesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
             tiposConstantesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
+            tiposConstantesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
             tiposConstantesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesReales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
+            tiposConstantesReales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
             tiposConstantesReales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesDates = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
+            tiposConstantesDates = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
             tiposConstantesDates.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesCadenas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
+            tiposConstantesCadenas = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
             tiposConstantesCadenas.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
             bandera = 0;
@@ -301,21 +307,23 @@ public class ControlTipoConstante implements Serializable{
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            altoTabla = "245";
+            altoTabla = "270";
             System.out.println("Desactivar");
             System.out.println("TipoLista= " + tipoLista);
-            tiposConstantesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
+            tiposConstantesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
             tiposConstantesTipos.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
+            tiposConstantesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
             tiposConstantesIniciales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
+            tiposConstantesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
             tiposConstantesFinales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesReales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
+            tiposConstantesReales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
             tiposConstantesReales.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesDates = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
+            tiposConstantesDates = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
             tiposConstantesDates.setFilterStyle("display: none; visibility: hidden;");
-            tiposConstantesCadenas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
+            tiposConstantesCadenas = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
             tiposConstantesCadenas.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
             bandera = 0;
@@ -445,7 +453,10 @@ public class ControlTipoConstante implements Serializable{
             context.update("form:datosTiposConstantes");
             guardado = true;
             permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             //  k = 0;
         }
         index = -1;
@@ -453,6 +464,7 @@ public class ControlTipoConstante implements Serializable{
     }
 
     public void seleccionarTipo(String estadoTipo, int indice, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoLista == 0) {
             if (estadoTipo.equals("NUMERICO")) {
                 listaTiposConstantes.get(indice).setTipo("N");
@@ -518,6 +530,9 @@ public class ControlTipoConstante implements Serializable{
         }
         if (guardado == true) {
             guardado = false;
+            cambiosPagina = false;
+            context.update("form:ACEPTAR");
+
         }
         RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
     }
@@ -596,7 +611,7 @@ public class ControlTipoConstante implements Serializable{
             cadenaB = false;
         }
     }
-    
+
     public void revisarTipoN() {
         if (nuevoTipoConstante.getTipo().equals("N")) {
             numericoBN = false;
@@ -612,7 +627,7 @@ public class ControlTipoConstante implements Serializable{
             cadenaBN = false;
         }
     }
-    
+
     public void revisarTipoD() {
         if (duplicarTipoConstante.getTipo().equals("N")) {
             numericoBD = false;
@@ -647,9 +662,10 @@ public class ControlTipoConstante implements Serializable{
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -663,9 +679,10 @@ public class ControlTipoConstante implements Serializable{
                     }
                     if (guardado == true) {
                         guardado = false;
+                        cambiosPagina = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 index = -1;
                 secRegistro = null;
@@ -712,20 +729,22 @@ public class ControlTipoConstante implements Serializable{
         if (pasa == 0 && pasa2 == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                altoTabla = "245";
+                altoTabla = "270";
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tiposConstantesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
+                tiposConstantesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
                 tiposConstantesTipos.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
+                tiposConstantesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
                 tiposConstantesIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
+                tiposConstantesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
                 tiposConstantesFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesReales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
+                tiposConstantesReales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
                 tiposConstantesReales.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesDates = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
+                tiposConstantesDates = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
                 tiposConstantesDates.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesCadenas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
+                tiposConstantesCadenas = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
                 tiposConstantesCadenas.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
                 bandera = 0;
@@ -747,7 +766,8 @@ public class ControlTipoConstante implements Serializable{
             context.update("form:datosTiposConstantes");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoTipoConstante.hide()");
             index = -1;
@@ -772,21 +792,22 @@ public class ControlTipoConstante implements Serializable{
 
         if (pasa == 0) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                altoTabla = "245";
+                altoTabla = "270";
                 System.out.println("Desactivar");
                 System.out.println("TipoLista= " + tipoLista);
-                tiposConstantesTipos = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
+                tiposConstantesTipos = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesTipos");
                 tiposConstantesTipos.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesIniciales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
+                tiposConstantesIniciales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesIniciales");
                 tiposConstantesIniciales.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesFinales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
+                tiposConstantesFinales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesFinales");
                 tiposConstantesFinales.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesReales = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
+                tiposConstantesReales = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesReales");
                 tiposConstantesReales.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesDates = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
+                tiposConstantesDates = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesDates");
                 tiposConstantesDates.setFilterStyle("display: none; visibility: hidden;");
-                tiposConstantesCadenas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
+                tiposConstantesCadenas = (Column) c.getViewRoot().findComponent("form:datosTiposConstantes:tiposConstantesCadenas");
                 tiposConstantesCadenas.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposConstantes");
                 bandera = 0;
@@ -803,7 +824,8 @@ public class ControlTipoConstante implements Serializable{
             index = -1;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                cambiosPagina = false;
+                context.update("form:ACEPTAR");
             }
             context.update("form:datosTiposFormulas");
             duplicarTipoConstante = new TiposConstantes();
@@ -1036,6 +1058,14 @@ public class ControlTipoConstante implements Serializable{
 
     public void setCadenaBD(boolean cadenaBD) {
         this.cadenaBD = cadenaBD;
+    }
+
+    public TiposConstantes getTipoConstanteSeleccionado() {
+        return tipoConstanteSeleccionado;
+    }
+
+    public void setTipoConstanteSeleccionado(TiposConstantes tipoConstanteSeleccionado) {
+        this.tipoConstanteSeleccionado = tipoConstanteSeleccionado;
     }
 
 }

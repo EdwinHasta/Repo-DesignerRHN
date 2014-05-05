@@ -7,6 +7,7 @@ import Entidades.Empleados;
 import Entidades.VWActualesTiposTrabajadores;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesTiposTrabajadores' 
  * de la base de datos.
@@ -20,7 +21,7 @@ public interface PersistenciaVWActualesTiposTrabajadoresInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesTiposTrabajadores con la información del TipoTrabajador actual de un empleado.
      */
-    public VWActualesTiposTrabajadores buscarTipoTrabajador(BigInteger secuencia);
+    public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia);
     /**
      * Método encargado de buscar los VWActualesTiposTrabajadores filtrados por TipoTrabajador. 
      * @param tipo Secuencia del TipoTrabajador.

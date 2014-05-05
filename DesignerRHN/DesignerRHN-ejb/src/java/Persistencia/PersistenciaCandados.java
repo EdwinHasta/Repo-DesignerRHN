@@ -107,4 +107,26 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
             System.out.println("Error cerrarLiquidacion. " + e);
         }
     }
+    
+    @Override
+    public void borrarLiquidacionAutomatico() {
+        try {
+            String sqlQuery = "call UTL_FORMS.ELIMINARLIQUIDACION()";
+            Query query = em.createNativeQuery(sqlQuery);
+            int resultado = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error cerrarLiquidacion. " + e);
+        }
+    }
+    
+    @Override
+    public void borrarLiquidacionNoAutomatico() {
+        try {
+            String sqlQuery = "call UTL_FORMS.ELIMINARLIQPAGOPORFUERA()";
+            Query query = em.createNativeQuery(sqlQuery);
+            int resultado = query.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error cerrarLiquidacion. " + e);
+        }
+    }
 }
