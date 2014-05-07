@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.CortesProcesos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'CortesProcesos' 
@@ -63,4 +64,11 @@ public interface PersistenciaCortesProcesosInterface {
      * @param fechaHasta Fecha final del rango
      */
     public void eliminarComprobante(Short codigoProceso, String fechaDesde, String fechaHasta);
+    /**
+     * Método encargado de buscar el comprobante más reciente del empleado.
+     * @param em EntityManager que tiene la conexión.
+     * @param secuenciaEmpleado Secuencia del empleado.
+     * @return Retorna el comprobante reciente.
+     */
+    public CortesProcesos buscarComprobante (EntityManager em, BigInteger secuenciaEmpleado);
 }

@@ -274,7 +274,7 @@
                                         <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 210px; height: 12px; " readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
                                         <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
                                         <p:inputText id="VAfiliaciones" style="position: absolute; left: 45px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesAfiliacionesSalud.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesSalud.tercerosSucursales.tercero.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tiposEntidades.nombre} - #{controlRemoto.vwActualesAfiliacionesPension.tercerosSucursales.tercero.nombre}" />
-                                        <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 210px; height: 12px;"  />
+                                        <p:inputText id="VIBC" style="position: absolute; left: 45px; top: 173px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.actualIBC}" />
                                         <p:inputText id="VTipoViajero" style="position: absolute; left: 45px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.vwActualesVigenciasViajeros.tipoViajero.nombre}"/>
 
                                         <p:inputText id="VCentroDeCosto" style="position: absolute; left: 315px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesLocalizaciones.localizacion.centrocosto.codigo} - #{controlRemoto.vwActualesLocalizaciones.localizacion.nombre}"  />
@@ -288,8 +288,8 @@
                                         <p:inputText id="VTipoSalario" style="position: absolute; left: 585px; top: 66px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesReformasLaborales.reformaLaboral.nombre}" />
                                         <p:inputText id="VUbicacion" style="position: absolute; left: 585px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesUbicaciones.ubicacion.descripcion} #{controlRemoto.vwActualesUbicaciones.ubicacion.ciudad.nombre}" />
                                         <p:inputText id="VFormaDePago" style="position: absolute; left: 585px; top: 137px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesFormasPagos.formaPago.nombre}" />
-                                        <p:inputText id="VSET" style="position: absolute; left: 585px; top: 173px; width: 210px; height: 12px;"  />
-                                        <p:inputText id="VComprobantes" style="position: absolute; left: 585px; top: 208px; width: 210px; height: 12px;"  />
+                                        <p:inputText id="VSET" style="position: absolute; left: 585px; top: 173px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualSet}"/>
+                                        <p:inputText id="VComprobantes" style="position: absolute; left: 585px; top: 208px; width: 210px; height: 12px;"  readonly="true" value="#{controlRemoto.actualComprobante}"/>
                                     </fieldset>
 
 
@@ -395,7 +395,7 @@
 
                                         <h:outputText id="Usuario" style="position: absolute; top: 475px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
 
-                                        <h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 477px;  text-align: right; width: 365px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                        <h:outputText id="Empresa"  style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
                                     </p:panel>
                                 </p:dataGrid>
@@ -517,7 +517,7 @@
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
 
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
-                                <h:outputText style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
 
                                 <p:dialog id="confirmarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarLiquidacion"  resizable="false" draggable="false" modal="true" height="120" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="100" height="80" style="position: absolute; left: 10px; top: 10px;"  />
@@ -583,7 +583,7 @@
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
-                                <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab> 
 
                             <p:tab title="#{msg['gerencial']}" id="Gerencial" > 
@@ -625,7 +625,7 @@
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
-                                <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
 
                             <p:tab title="#{msg['designer']}" id="Designer">
@@ -722,7 +722,7 @@
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
-                                <h:outputText  style="position: absolute; top: 473px; left: 477px;  text-align: right; width: 365px; font-weight: bold" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
+                                <h:outputText style="position: absolute; top: 475px; left: 290px;  text-align: right; width: 550px; font-weight: bold;" value="#{controlRemoto.detallesEmpresas.empresa.nombre} - Nit. #{controlRemoto.detallesEmpresas.empresa.nit}- Tel. #{controlRemoto.detallesEmpresas.telefono}"/>
                             </p:tab>
                         </p:tabView>  
                     </p:panel>

@@ -101,4 +101,24 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
             System.out.println("Error cerrarLiquidacion. " + e);
         }
     }
+    
+    @Override
+    public CortesProcesos buscarComprobante (EntityManager em, BigInteger secuenciaEmpleado) {
+        try {
+            Query query = em.createNativeQuery("SELECT cp.* from cortesprocesos cp, procesos p\n"
+                    + "where cp.empleado=?\n"
+                    + "and cp.proceso=p.secuencia\n"
+                    + "and p.codigo in (1,2,9,10)\n"
+                    + "and cp.corte= (select max(cpi.corte) from cortesprocesos cpi, procesos pi where cpi.empleado=? and cpi.proceso=pi.secuencia and pi.codigo in (1,2,9,10))\n"
+                    + "and ROWNUM <=1 \n"
+                    + "order by cp.comprobante desc", CortesProcesos.class);
+            query.setParameter(1, secuenciaEmpleado);
+            query.setParameter(2, secuenciaEmpleado);
+            CortesProcesos actualComprobante = (CortesProcesos) query.getSingleResult();
+            return actualComprobante;
+        } catch (Exception e) {
+            System.out.println("Error: (PersistenciaCortesProcesos.buscarComprobante)" + e);
+            return null;
+        }
+    }
 }

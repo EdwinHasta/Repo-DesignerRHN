@@ -61,6 +61,9 @@ public class VWActualesCargos implements Serializable {
     @Basic(optional = false)
     @Column(name = "ESCALAFON")
     private BigInteger escalafon;
+    @Basic(optional = false)
+    @Column(name = "PAPEL")
+    private BigInteger papel;
 
     public VWActualesCargos() {
         fechaVigencia = new Date();
@@ -157,13 +160,12 @@ public class VWActualesCargos implements Serializable {
     public void setEscalafon(BigInteger escalafon) {
         this.escalafon = escalafon;
     }
-    
-    
-    
-    
-    
-    
 
-    
-    
+    public BigInteger getPapel() {
+        return papel;
+    }
+
+    public void setPapel(BigInteger papel) {
+        this.papel = papel;
+    }    
 }

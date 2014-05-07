@@ -11,14 +11,17 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Comprobantes'
- * de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'Comprobantes' de la
+ * base de datos
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaComprobantes implements PersistenciaComprobantesInterface{
+public class PersistenciaComprobantes implements PersistenciaComprobantesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */

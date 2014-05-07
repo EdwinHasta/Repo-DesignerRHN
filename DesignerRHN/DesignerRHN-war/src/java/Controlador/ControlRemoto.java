@@ -58,7 +58,7 @@ public class ControlRemoto implements Serializable {
     private VWActualesUbicaciones vwActualesUbicaciones;
     private VWActualesFormasPagos vwActualesFormasPagos;
     private VWActualesVigenciasViajeros vwActualesVigenciasViajeros;
-    private String estadoVacaciones, actualMVR;
+    private String estadoVacaciones, actualMVR, actualIBC, actualSet, actualComprobante;
     private List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresesLista;
     private List<VWActualesTiposTrabajadores> backup;
     private List<VWActualesTiposTrabajadores> busquedaRapida;
@@ -290,6 +290,24 @@ public class ControlRemoto implements Serializable {
             actualMVR = administrarCarpetaPersonal.consultarActualMVR(secuencia);
         } catch (Exception e) {
             actualMVR = null;
+        }
+
+        try {
+            actualIBC = administrarCarpetaPersonal.actualIBC(secuencia, trabajador.getEmpleado().getEmpresa().getRetencionysegsocxpersona());
+        } catch (Exception e) {
+            actualIBC = null;
+        }
+
+        try {
+            actualSet = administrarCarpetaPersonal.consultarActualSet(secuencia);
+        } catch (Exception e) {
+            actualSet = null;
+        }
+
+        try {
+            actualComprobante = administrarCarpetaPersonal.consultarActualComprobante(secuencia);
+        } catch (Exception e) {
+            actualComprobante = null;
         }
 
         //RequestContext.getCurrentInstance().update("formulario:info:VCargoDesempeñado");
@@ -1085,6 +1103,30 @@ public class ControlRemoto implements Serializable {
 
     public void setActualMVR(String actualMVR) {
         this.actualMVR = actualMVR;
+    }
+
+    public String getActualIBC() {
+        return actualIBC;
+    }
+
+    public void setActualIBC(String actualIBC) {
+        this.actualIBC = actualIBC;
+    }
+
+    public String getActualSet() {
+        return actualSet;
+    }
+
+    public void setActualSet(String actualSet) {
+        this.actualSet = actualSet;
+    }
+
+    public String getActualComprobante() {
+        return actualComprobante;
+    }
+
+    public void setActualComprobante(String actualComprobante) {
+        this.actualComprobante = actualComprobante;
     }
 
     public String getFotoEmpleado() {

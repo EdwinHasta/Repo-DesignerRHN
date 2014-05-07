@@ -84,10 +84,13 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
             query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
             String estado = (String) query.getSingleResult();
+            if (estado == null) {
+                return "N";
+            }
             return estado;
         } catch (Exception e) {
             System.out.println("Error PersistenciaEmpresas.estadoConsultaDatos");
-            return null;
+            return "N";
         }
     }
 

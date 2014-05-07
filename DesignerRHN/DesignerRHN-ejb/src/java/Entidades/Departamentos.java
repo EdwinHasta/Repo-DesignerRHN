@@ -32,9 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Departamentos.findAll", query = "SELECT d FROM Departamentos d")})
 public class Departamentos implements Serializable {
-    @Column(name = "CODIGO")
-    private Integer codigo;
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -42,6 +39,8 @@ public class Departamentos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @Column(name = "CODIGO")
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "departamento")

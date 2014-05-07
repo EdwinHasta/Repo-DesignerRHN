@@ -186,4 +186,7 @@ public interface AdministrarCarpetaPersonalInterface {
      * Método encargado de borrar la liquidacion no automatica.
      */
     public void borrarLiquidacionNoAutomatico();
+    public String actualIBC(BigInteger secEmpleado, String RETENCIONYSEGSOCXPERSONA);
+    public String consultarActualSet(BigInteger secEmpleado);
+    public String consultarActualComprobante(BigInteger secEmpleado);
 }

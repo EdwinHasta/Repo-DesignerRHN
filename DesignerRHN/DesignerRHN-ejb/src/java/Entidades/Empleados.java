@@ -42,6 +42,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Empleados.findAll", query = "SELECT e FROM Empleados e"),
     @NamedQuery(name = "Empleados.findBySecuencia", query = "SELECT e FROM Empleados e where e.secuencia = :secuencia")})
 public class Empleados implements Serializable {
+    @Size(max = 30)
+    @Column(name = "USUARIOBD")
+    private String usuariobd;
     
     private Collection<VigenciasUbicaciones> vigenciasubicacionesCollection;
     private static final long serialVersionUID = 1L;
@@ -528,6 +531,14 @@ public class Empleados implements Serializable {
     public void setCodigoempleadoSTR(String codigoempleadoSTR) {
         codigoempleado = new BigInteger(codigoempleadoSTR);
         this.codigoempleadoSTR = codigoempleadoSTR;
+    }
+
+    public String getUsuariobd() {
+        return usuariobd;
+    }
+
+    public void setUsuariobd(String usuariobd) {
+        this.usuariobd = usuariobd;
     }
 
    

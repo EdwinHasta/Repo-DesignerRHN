@@ -5,9 +5,7 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -34,6 +31,7 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "CortesProcesos.findBySecuencia", query = "SELECT c FROM CortesProcesos c WHERE c.secuencia = :secuencia"),
     @NamedQuery(name = "CortesProcesos.findByCorte", query = "SELECT c FROM CortesProcesos c WHERE c.corte = :corte")})
 public class CortesProcesos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -41,22 +39,20 @@ public class CortesProcesos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @JoinColumn(name = "COMPROBANTE", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Comprobantes comprobante;
     @Basic(optional = false)
     @NotNull
     @Column(name = "CORTE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date corte;
-    @OneToMany(mappedBy = "corteproceso")
-    private Collection<SolucionesNodos> solucionesNodosCollection;
-    @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
-    private Procesos proceso;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
-    @JoinColumn(name = "COMPROBANTE", referencedColumnName = "SECUENCIA")
+    @JoinColumn(name = "PROCESO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
-    private Comprobantes comprobante;
+    private Procesos proceso;
 
     public CortesProcesos() {
     }
@@ -84,14 +80,6 @@ public class CortesProcesos implements Serializable {
 
     public void setCorte(Date corte) {
         this.corte = corte;
-    }
-
-    public Collection<SolucionesNodos> getSolucionesNodosCollection() {
-        return solucionesNodosCollection;
-    }
-
-    public void setSolucionesNodosCollection(Collection<SolucionesNodos> solucionesNodosCollection) {
-        this.solucionesNodosCollection = solucionesNodosCollection;
     }
 
     public Procesos getProceso() {
@@ -142,5 +130,5 @@ public class CortesProcesos implements Serializable {
     public String toString() {
         return "Entidades.CortesProcesos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

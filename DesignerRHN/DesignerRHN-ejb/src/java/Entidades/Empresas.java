@@ -39,6 +39,45 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Empresas.findAll", query = "SELECT e FROM Empresas e")})
 public class Empresas implements Serializable {
+    @Size(max = 1)
+    @Column(name = "CDIUSAHTTPS")
+    private String cdiusahttps;
+    @Size(max = 1)
+    @Column(name = "USARETENCIONMETODO3")
+    private String usaretencionmetodo3;
+    @Size(max = 50)
+    @Column(name = "DSNCDI")
+    private String dsncdi;
+    @Size(max = 1)
+    @Column(name = "GENERAREPORTEINGRESO")
+    private String generareporteingreso;
+    @Size(max = 5)
+    @Column(name = "SAPBOSUFIJOEMPLEADO")
+    private String sapbosufijoempleado;
+    @Size(max = 5)
+    @Column(name = "SAPBOSUFIJOTERCERO")
+    private String sapbosufijotercero;
+    @Size(max = 20)
+    @Column(name = "SAPBOADICIONALCUENTA")
+    private String sapboadicionalcuenta;
+    @Size(max = 1)
+    @Column(name = "PERMITEVALORMVRDEPENDIENTE")
+    private String permitevalormvrdependiente;
+    @Size(max = 1)
+    @Column(name = "BASEPRFFECHAPAGO")
+    private String baseprffechapago;
+    @Size(max = 1)
+    @Column(name = "INTERADICIONACCSEPARADOR")
+    private String interadicionaccseparador;
+    @Size(max = 1)
+    @Column(name = "CESAPROMEDIAVARIABLEANOREAL")
+    private String cesapromediavariableanoreal;
+    @Size(max = 1)
+    @Column(name = "RECALCULODEPENDIENTEUSADO")
+    private String recalculodependienteusado;
+    @Size(max = 1)
+    @Column(name = "RETETICKETSUMABASECOMPARA")
+    private String reteticketsumabasecompara;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "empresa")
     private Collection<Papeles> papelesCollection;
 
@@ -1247,6 +1286,110 @@ public class Empresas implements Serializable {
 
     public void setPapelesCollection(Collection<Papeles> papelesCollection) {
         this.papelesCollection = papelesCollection;
+    }
+
+    public String getCdiusahttps() {
+        return cdiusahttps;
+    }
+
+    public void setCdiusahttps(String cdiusahttps) {
+        this.cdiusahttps = cdiusahttps;
+    }
+
+    public String getUsaretencionmetodo3() {
+        return usaretencionmetodo3;
+    }
+
+    public void setUsaretencionmetodo3(String usaretencionmetodo3) {
+        this.usaretencionmetodo3 = usaretencionmetodo3;
+    }
+
+    public String getDsncdi() {
+        return dsncdi;
+    }
+
+    public void setDsncdi(String dsncdi) {
+        this.dsncdi = dsncdi;
+    }
+
+    public String getGenerareporteingreso() {
+        return generareporteingreso;
+    }
+
+    public void setGenerareporteingreso(String generareporteingreso) {
+        this.generareporteingreso = generareporteingreso;
+    }
+
+    public String getSapbosufijoempleado() {
+        return sapbosufijoempleado;
+    }
+
+    public void setSapbosufijoempleado(String sapbosufijoempleado) {
+        this.sapbosufijoempleado = sapbosufijoempleado;
+    }
+
+    public String getSapbosufijotercero() {
+        return sapbosufijotercero;
+    }
+
+    public void setSapbosufijotercero(String sapbosufijotercero) {
+        this.sapbosufijotercero = sapbosufijotercero;
+    }
+
+    public String getSapboadicionalcuenta() {
+        return sapboadicionalcuenta;
+    }
+
+    public void setSapboadicionalcuenta(String sapboadicionalcuenta) {
+        this.sapboadicionalcuenta = sapboadicionalcuenta;
+    }
+
+    public String getPermitevalormvrdependiente() {
+        return permitevalormvrdependiente;
+    }
+
+    public void setPermitevalormvrdependiente(String permitevalormvrdependiente) {
+        this.permitevalormvrdependiente = permitevalormvrdependiente;
+    }
+
+    public String getBaseprffechapago() {
+        return baseprffechapago;
+    }
+
+    public void setBaseprffechapago(String baseprffechapago) {
+        this.baseprffechapago = baseprffechapago;
+    }
+
+    public String getInteradicionaccseparador() {
+        return interadicionaccseparador;
+    }
+
+    public void setInteradicionaccseparador(String interadicionaccseparador) {
+        this.interadicionaccseparador = interadicionaccseparador;
+    }
+
+    public String getCesapromediavariableanoreal() {
+        return cesapromediavariableanoreal;
+    }
+
+    public void setCesapromediavariableanoreal(String cesapromediavariableanoreal) {
+        this.cesapromediavariableanoreal = cesapromediavariableanoreal;
+    }
+
+    public String getRecalculodependienteusado() {
+        return recalculodependienteusado;
+    }
+
+    public void setRecalculodependienteusado(String recalculodependienteusado) {
+        this.recalculodependienteusado = recalculodependienteusado;
+    }
+
+    public String getReteticketsumabasecompara() {
+        return reteticketsumabasecompara;
+    }
+
+    public void setReteticketsumabasecompara(String reteticketsumabasecompara) {
+        this.reteticketsumabasecompara = reteticketsumabasecompara;
     }
 
 }

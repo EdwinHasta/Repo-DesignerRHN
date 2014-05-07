@@ -33,8 +33,8 @@ public class PersistenciaVWActualesContratos implements PersistenciaVWActualesCo
             VWActualesContratos actualesContratos = (VWActualesContratos) query.getSingleResult();
             return actualesContratos;
         } catch (Exception e) {
-            VWActualesContratos actualesContratos =  null;
-            return actualesContratos;
+            System.out.println("Error: (PersistenciaVWActualesContratos.buscarContrato)" + e);
+            return null;
         }
     }
 }

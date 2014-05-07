@@ -8,10 +8,12 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -38,6 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")})
 public class Personas implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
+    private List<IbcsPersona> ibcsPersonaList;
     @Basic(optional = false)
     @NotNull
     @Column(name = "NUMERODOCUMENTO")
@@ -692,5 +696,14 @@ public class Personas implements Serializable {
 
     public void setDeclarantesCollection(Collection<Declarantes> declarantesCollection) {
         this.declarantesCollection = declarantesCollection;
+    }
+
+    @XmlTransient
+    public List<IbcsPersona> getIbcsPersonaList() {
+        return ibcsPersonaList;
+    }
+
+    public void setIbcsPersonaList(List<IbcsPersona> ibcsPersonaList) {
+        this.ibcsPersonaList = ibcsPersonaList;
     }
 }

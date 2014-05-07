@@ -36,7 +36,7 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
             VWActualesCargos vwActualesCargos = (VWActualesCargos) query.getSingleResult();
             return vwActualesCargos;
         } catch (Exception e) {
-            System.out.println("Error: PersistenciaVWActualesCargos.buscarCargoEmpleado");
+            System.out.println("Error: PersistenciaVWActualesCargos.buscarCargoEmpleado " + e);
             VWActualesCargos vwActualesCargos = null;
             return vwActualesCargos;
         }

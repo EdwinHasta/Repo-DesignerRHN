@@ -57,6 +57,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN ('PAGO','DESCUENTO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SolucionesNodos> listSolucionesNodos = query.getResultList();
             return listSolucionesNodos;
         } catch (Exception e) {
@@ -71,6 +72,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN  ('PASIVO','GASTO','NETO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SolucionesNodos> listSolucionesNodos = query.getResultList();
             return listSolucionesNodos;
         } catch (Exception e) {
@@ -100,6 +102,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
                     + "AND SN2.tipo = 'PASIVO' "
                     + "AND SN2.estado='CERRADO')");
             query.setParameter("secuenciaempleado", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigDecimal llegada = (BigDecimal) query.getSingleResult();
             return llegada;
         } catch (Exception e) {
@@ -127,6 +130,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             query.setParameter("fechaInicial", fechaInicial);
             query.setParameter("secuenciaT", secuenciaTE);
             query.setParameter("secuenciaTer", secuenciaTer);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long r = (Long) query.getSingleResult();
             System.out.println("Resultado : " + r);
             return r;
@@ -146,6 +150,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
                     + "AND sn.empleado.secuencia = :secuenciaEmpleado "
                     + "ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SolucionesNodos> listSolucionesNodos = query.getResultList();
             return listSolucionesNodos;
         } catch (Exception e) {
@@ -164,6 +169,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
                     + "AND sn.valor <> 0 AND sn.empleado.secuencia = :secuenciaEmpleado "
                     + "ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SolucionesNodos> listSolucionesNodos = query.getResultList();
             return listSolucionesNodos;
         } catch (Exception e) {
@@ -185,6 +191,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
                     + "              AND p.empleado = sn.empleado)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secProceso);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigDecimal conteo = (BigDecimal) query.getSingleResult();
             Integer conteoProcesosSN = conteo.intValueExact();
             return conteoProcesosSN;
@@ -199,6 +206,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
         try {
             Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn WHERE sn.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long valor =(Long) query.getSingleResult();
             return valor>0;
         } catch (Exception e) {

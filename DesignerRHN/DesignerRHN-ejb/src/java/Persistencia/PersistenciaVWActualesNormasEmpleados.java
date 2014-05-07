@@ -32,6 +32,7 @@ public class PersistenciaVWActualesNormasEmpleados implements PersistenciaVWActu
             VWActualesNormasEmpleados vwActualesNormasEmpleados = (VWActualesNormasEmpleados) query.getSingleResult();
             return vwActualesNormasEmpleados;
         } catch (Exception e) {
+            System.out.println("Error PersistenciaVWActualesNormasEmpleados.buscarNormaLaboral: " + e);
             VWActualesNormasEmpleados vwActualesNormasEmpleados = null;
             return vwActualesNormasEmpleados;
         }

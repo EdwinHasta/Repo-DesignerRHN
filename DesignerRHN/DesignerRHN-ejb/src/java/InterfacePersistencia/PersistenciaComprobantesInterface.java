@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Comprobantes;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Comprobantes' 

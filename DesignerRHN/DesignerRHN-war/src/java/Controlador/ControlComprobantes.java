@@ -421,7 +421,8 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleado() {
-        if (listaSolucionesNodosEmpleado == null && parametroActual != null) {
+        //if (listaSolucionesNodosEmpleado == null && parametroActual != null) {
+        if (parametroActual != null) {
             listaSolucionesNodosEmpleado = administrarComprobantes.consultarSolucionesNodosEmpleado(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleado != null) {
                 subtotalPago = new BigDecimal(0);
@@ -455,7 +456,8 @@ public class ControlComprobantes implements Serializable {
     }
 
     public List<SolucionesNodos> getListaSolucionesNodosEmpleador() {
-        if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
+        //if (listaSolucionesNodosEmpleador == null && parametroActual != null) {
+        if (parametroActual != null) {
             listaSolucionesNodosEmpleador = administrarComprobantes.consultarSolucionesNodosEmpleador(parametroActual.getEmpleado().getSecuencia());
             if (listaSolucionesNodosEmpleador != null) {
                 subtotalPasivo = new BigDecimal(0);

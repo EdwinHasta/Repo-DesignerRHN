@@ -32,6 +32,7 @@ public class PersistenciaVWActualesTiposCargos implements PersistenciaVWActuales
             VWActualesTiposContratos actualesTiposContratos = (VWActualesTiposContratos) query.getSingleResult();
             return actualesTiposContratos;
         } catch (Exception e) {
+            System.out.println("Error PersistenciaVWActualesTiposCargos.buscarTiposContratosEmpleado: " + e);
             VWActualesTiposContratos actualesTiposContratos = null;
             return actualesTiposContratos;
         }

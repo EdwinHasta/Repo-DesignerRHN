@@ -58,6 +58,7 @@ public class ControlParametro implements Serializable {
     private List<Parametros> empleadosParametros;
     private List<Parametros> filtradoEmpleadosParametros;
     private Parametros editarEmpleadosParametros;
+    private Parametros empleadoParametroSeleccionado;
     //COLUMNAS
     private Column FechaDesde, FechaHasta, Codigo, pApellido, sApellido, nombre, estadoParametro;
     //LOV EMPLEADOS
@@ -80,7 +81,7 @@ public class ControlParametro implements Serializable {
         cualCelda = -1;
         tipoLista = 0;
         listaBorrarParametros = new ArrayList<Parametros>();
-        altoTabla = 226;
+        altoTabla = 208;
         cambiosParametros = false;
         formatoFecha = new SimpleDateFormat("dd/MMM/yyyy");
         formatoFechaDias = new SimpleDateFormat("dd/MM/yyyy");
@@ -452,8 +453,8 @@ public class ControlParametro implements Serializable {
                                                     context.execute("errorDias.show();");
                                                 }
                                             } else {
-                                                context.update("formularioDialogos:alertaFechas");
-                                                context.execute("alertaFechas.show()");
+                                                context.update("formularioDialogos:errorFechas");
+                                                context.execute("errorFechas.show()");
                                             }
                                         } else {
                                             context.execute("errorDiaFechaCorte.show();");
@@ -672,7 +673,7 @@ public class ControlParametro implements Serializable {
             nombre.setFilterStyle("");
             estadoParametro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:estadoParametro");
             estadoParametro.setFilterStyle("width: 60px;");
-            altoTabla = 201;
+            altoTabla = 184;
             RequestContext.getCurrentInstance().update("form:empleadosParametros");
             bandera = 1;
         } else if (bandera == 1) {
@@ -690,7 +691,7 @@ public class ControlParametro implements Serializable {
             nombre.setFilterStyle("display: none; visibility: hidden;");
             estadoParametro = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:empleadosParametros:estadoParametro");
             estadoParametro.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = 226;
+            altoTabla = 208;
             RequestContext.getCurrentInstance().update("form:empleadosParametros");
             bandera = 0;
             filtradoEmpleadosParametros = null;
@@ -1049,5 +1050,13 @@ public class ControlParametro implements Serializable {
 
     public void setSeleccionEmpleado(Empleados seleccionEmpleado) {
         this.seleccionEmpleado = seleccionEmpleado;
+    }
+
+    public Parametros getEmpleadoParametroSeleccionado() {
+        return empleadoParametroSeleccionado;
+    }
+
+    public void setEmpleadoParametroSeleccionado(Parametros empleadoParametroSeleccionado) {
+        this.empleadoParametroSeleccionado = empleadoParametroSeleccionado;
     }
 }

@@ -56,7 +56,7 @@ public class DetallesFormulas implements Serializable {
     private BigInteger formulaHijo;
     private BigInteger historiaFormula;
     private BigInteger historiaFormulaHijo;
-    private BigDecimal valor;
+    private String valor;
     
     
 
@@ -140,11 +140,11 @@ public class DetallesFormulas implements Serializable {
         this.historiaFormulaHijo = historiaFormulaHijo;
     }
 
-    public BigDecimal getValor() {
+    public String getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(String valor) {
         this.valor = valor;
     }
 

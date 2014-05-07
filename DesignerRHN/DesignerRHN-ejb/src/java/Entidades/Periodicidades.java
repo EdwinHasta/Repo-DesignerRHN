@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,17 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
-
-    @Basic(optional = false)
-    @NotNull()
-    @Column(name = "CODIGO")
-    private Integer codigo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "periodicidad")
-    private Collection<EersPrestamosDtos> eersPrestamosDtosCollection;
-    @OneToMany(mappedBy = "periodicidadcorte")
-    private Collection<GruposProvisiones> gruposProvisionesCollection;
-    @OneToMany(mappedBy = "periodicidad")
-    private Collection<Novedades> novedadesCollection;
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -51,6 +40,10 @@ public class Periodicidades implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
+    @Basic(optional = false)
+    @NotNull()
+    @Column(name = "CODIGO")
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "INDEPENDIENTEADELANTO")
@@ -157,24 +150,6 @@ public class Periodicidades implements Serializable {
         return "Entidades.Periodicidades[ secuencia=" + secuencia + " ]";
     }
 
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
-        return gruposProvisionesCollection;
-    }
-
-    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
-        this.gruposProvisionesCollection = gruposProvisionesCollection;
-    }
-
     public String getCodigoStr() {
         if (codigo != null) {
             codigoStr = String.valueOf(codigo);
@@ -188,15 +163,6 @@ public class Periodicidades implements Serializable {
     public void setCodigoStr(String codigoStr) {
         codigo = Integer.parseInt(codigoStr);
         this.codigoStr = codigoStr;
-    }
-
-    @XmlTransient
-    public Collection<EersPrestamosDtos> getEersPrestamosDtosCollection() {
-        return eersPrestamosDtosCollection;
-    }
-
-    public void setEersPrestamosDtosCollection(Collection<EersPrestamosDtos> eersPrestamosDtosCollection) {
-        this.eersPrestamosDtosCollection = eersPrestamosDtosCollection;
     }
 
     public Integer getCodigo() {

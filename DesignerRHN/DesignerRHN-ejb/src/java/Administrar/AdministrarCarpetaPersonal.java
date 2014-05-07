@@ -9,7 +9,10 @@ import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
@@ -209,6 +212,34 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
     /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesIBCS'.
+     */
+    @EJB
+    PersistenciaVWActualesIBCSInterface persistenciaVWActualesIBCS;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaIbcsPersona'.
+     */
+    @EJB
+    PersistenciaIbcsPersonaInterface persistenciaIbcsPersona;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesSets'.
+     */
+    @EJB
+    PersistenciaVWActualesSetsInterface persistenciaVWActualesSets;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaComprobantes'.
+     */
+    @EJB
+    PersistenciaCortesProcesosInterface persistenciaCortesProcesos;
+    /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
      * está usando el aplicativo.
@@ -224,6 +255,8 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     AdministrarSesionesInterface administrarSesiones;
 
     private EntityManager em;
+    private final SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    private final NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
 
     //--------------------------------------------------------------------------
     //MÉTODOS
@@ -398,6 +431,60 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         try {
             String actualMVR = PersistenciaVWActualesMvrs.buscarActualMVR(em, secEmpleado);
             return actualMVR;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String actualIBC(BigInteger secEmpleado, String RETENCIONYSEGSOCXPERSONA) {
+        try {
+            String ibcEmpleado;
+            if (RETENCIONYSEGSOCXPERSONA == null || RETENCIONYSEGSOCXPERSONA.equals("N")) {
+                VWActualesIBCS actualIbc = persistenciaVWActualesIBCS.buscarIbcEmpleado(em, secEmpleado);
+                if (actualIbc != null) {
+                    ibcEmpleado = formato.format(actualIbc.getFechaFinal()) + "  " + nf.format(actualIbc.getValor());
+                } else {
+                    return null;
+                }
+            } else {
+                IbcsPersona actualIbc = persistenciaIbcsPersona.buscarIbcPersona(em, secEmpleado);
+                if (actualIbc != null) {
+                    ibcEmpleado = formato.format(actualIbc.getFechafinal()) + "  " + nf.format(actualIbc.getValor());
+                } else {
+                    return null;
+                }
+            }
+            return ibcEmpleado;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String consultarActualSet(BigInteger secEmpleado) {
+        try {
+            String actualSetEmpleado;
+            VWActualesSets actualSet = persistenciaVWActualesSets.buscarSetEmpleado(em, secEmpleado);
+            if (actualSet != null) {
+                actualSetEmpleado = actualSet.getPorcentaje().toString() + "%   " + nf.format(actualSet.getPromedio());
+            } else {
+                return null;
+            }
+            return actualSetEmpleado;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public String consultarActualComprobante(BigInteger secEmpleado) {
+        try {
+            String actualComprobante;
+            CortesProcesos corteProceso = persistenciaCortesProcesos.buscarComprobante(em, secEmpleado);
+            if (corteProceso != null && corteProceso.getComprobante() != null) {
+                actualComprobante = nf.format(corteProceso.getComprobante().getValor()) + " - " + formato.format(corteProceso.getCorte());
+            } else {
+                return null;
+            }
+            return actualComprobante;
         } catch (Exception e) {
             return null;
         }
