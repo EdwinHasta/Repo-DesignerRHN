@@ -131,15 +131,6 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
                 Query query = em.createNativeQuery(queryMap, "ConsultaBusquedaAvanzada");
                 query.setParameter(1, listaEmpleadosResultados.get(j));
                 resultado = (ResultadoBusquedaAvanzada) query.getSingleResult();
-                System.out.println("Paso esta gonorrea");
-
-                System.out.println("-----------");
-                System.out.println("ResultadoBusquedaAvanzada sec: " + resultado.getSecuencia());
-                System.out.println("ResultadoBusquedaAvanzada cod: " + resultado.getCodigoEmpleado());
-                System.out.println("ResultadoBusquedaAvanzada primer ap: " + resultado.getPrimerApellido());
-                System.out.println("ResultadoBusquedaAvanzada segundo ap: " + resultado.getSegundoApellido());
-                System.out.println("ResultadoBusquedaAvanzada name: " + resultado.getNombre());
-                System.out.println("ResultadoBusquedaAvanzada columna0: " + resultado.getColumna0());
                 registroPrueba.add(resultado);
             }
             return registroPrueba;
