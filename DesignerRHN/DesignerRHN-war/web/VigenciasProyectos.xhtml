@@ -142,9 +142,6 @@
                             </p:dataTable>
                         </fieldset>
 
-
-
-
                         <p:toolbar style=" position: absolute; top: 37px; left: 12px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
@@ -193,7 +190,6 @@
                         <p:commandButton style="position: absolute; left: 688px; top: 482px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosVigenciasProyectosPersona" process="@this" disabled="#{controlVigenciasProyectos.guardado}"/>
                         <p:commandButton style="position: absolute;  left: 15px; top: 482px; " icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlVigenciasProyectos.cancelarModificacion()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 482px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlVigenciasProyectos.salir()}" action="individual" process="@this" />
-
 
                     </p:panel>
                 </h:form>

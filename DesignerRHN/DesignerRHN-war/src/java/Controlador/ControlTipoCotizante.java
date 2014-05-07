@@ -14,6 +14,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,6 +42,7 @@ public class ControlTipoCotizante implements Serializable {
     //LISTA DETALLES TIPO COTIZANTE
     private List<DetallesTiposCotizantes> listaDetallesTiposCotizantes;
     private List<DetallesTiposCotizantes> filtradosListaDetallesTiposCotizantes;
+    private List<DetallesTiposCotizantes> detalleTipoCotizanteSeleccionado;
     //L.O.V ListaEntidades
     private List<TiposEntidades> lovListaTiposEntidades;
     private List<TiposEntidades> filtradoslovListaTiposEntidades;
@@ -247,6 +249,7 @@ public class ControlTipoCotizante implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
                 }
                 indexNF = -1;
@@ -262,9 +265,9 @@ public class ControlTipoCotizante implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
+
                 }
                 indexNF = -1;
                 secRegistro = null;
@@ -274,6 +277,8 @@ public class ControlTipoCotizante implements Serializable {
     }
 
     public void seleccionarSubTipoCotizante(String estadoSubTipoCotizante, int indice, int celda) {
+        RequestContext context = RequestContext.getCurrentInstance();
+
         if (tipoLista == 0) {
             if (estadoSubTipoCotizante != null) {
                 if (estadoSubTipoCotizante.equals("1")) {
@@ -327,10 +332,9 @@ public class ControlTipoCotizante implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            context.update("form:ACEPTAR");
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        cambiosPagina = false;
-        context.update("form:ACEPTAR");
+
         RequestContext.getCurrentInstance().update("form:datosTiposCotizantes");
         System.out.println("Subtipo: " + listaTiposCotizantes.get(indice).getSubtipocotizante());
     }
@@ -378,7 +382,7 @@ public class ControlTipoCotizante implements Serializable {
                 duplicarTipoCotizante.setSubtipocotizante(null);
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            cambiosPagina = false;
+
             context.update("form:ACEPTAR");
             RequestContext.getCurrentInstance().update("formularioDialogos:duplicarSubTipoCotizacion");
         }
@@ -457,7 +461,7 @@ public class ControlTipoCotizante implements Serializable {
     public void activarCtrlF11() {
         System.out.println("TipoLista= " + tipoLista);
         if (bandera == 0 && CualTabla == 0) {
-            altoTabla = "73";
+            altoTabla = "71";
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
             tcCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposCotizantes:tcCodigo");
@@ -486,7 +490,7 @@ public class ControlTipoCotizante implements Serializable {
             bandera = 1;
 
         } else if (bandera == 1 && CualTabla == 0) {
-            altoTabla = "80";
+            altoTabla = "95";
             tcCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposCotizantes:tcCodigo");
             tcCodigo.setFilterStyle("display: none; visibility: hidden;");
             tcDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposCotizantes:tcDescripcion");
@@ -512,7 +516,7 @@ public class ControlTipoCotizante implements Serializable {
             filtradosListaTiposCotizantes = null;
             tipoLista = 0;
         } else if (banderaNF == 0 && CualTabla == 1) {
-            altoTablaNF = "73";
+            altoTablaNF = "71";
             dtcTipoEntidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetallesTiposCotizantes:dtcTipoEntidad");
             dtcTipoEntidad.setFilterStyle("width: 60px");
             dtcMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetallesTiposCotizantes:dtcMinimo");
@@ -654,11 +658,10 @@ public class ControlTipoCotizante implements Serializable {
             nuevoTipoCotizante.setCodigo(BigInteger.valueOf(0));
             nuevoTipoCotizante.setDescripcion(" ");
             context.update("form:datosTiposCotizantes");
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
+
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroTipoCotizante.hide()");
             index = -1;
@@ -707,12 +710,12 @@ public class ControlTipoCotizante implements Serializable {
             context.update("form:datosTiposCotizantes");
             index = -1;
             secRegistro = null;
-            cambiosPagina = false;
+
             context.update("form:ACEPTAR");
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         } else if (indexNF >= 0 && CualTabla == 1) {
 
@@ -746,18 +749,17 @@ public class ControlTipoCotizante implements Serializable {
                 filtradosListaDetallesTiposCotizantes.remove(indexNF);
                 System.out.println("Realizado");
             }
-            
 
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDetallesTiposCotizantes");
-            cambiosPagina = false;
+
             context.update("form:ACEPTAR");
             indexNF = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -837,13 +839,12 @@ public class ControlTipoCotizante implements Serializable {
         listaTiposCotizantes.add(duplicarTipoCotizante);
         listaTiposCotizantesCrear.add(duplicarTipoCotizante);
         RequestContext context = RequestContext.getCurrentInstance();
-        cambiosPagina = false;
-        context.update("form:ACEPTAR");
+
         index = -1;
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
             altoTabla = "73";
@@ -1130,6 +1131,9 @@ public class ControlTipoCotizante implements Serializable {
             context.update("form:datosTiposCotizantes");
             guardado = true;
             permitirIndex = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             RequestContext.getCurrentInstance().update("form:aceptar");
             index = -1;
             secRegistro = null;
@@ -1246,7 +1250,10 @@ public class ControlTipoCotizante implements Serializable {
         context.update("form:datosDetallesTiposCotizantes");
         guardado = true;
         permitirIndex = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.update("form:growl");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         indexNF = -1;
         secRegistro = null;
         index = -1;
@@ -1299,6 +1306,8 @@ public class ControlTipoCotizante implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
+
                     }
                 }
                 indexNF = -1;
@@ -1314,9 +1323,9 @@ public class ControlTipoCotizante implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        context.update("form:ACEPTAR");
+
                     }
-                    cambiosPagina = false;
-                    context.update("form:ACEPTAR");
                 }
                 indexNF = -1;
                 secRegistro = null;
@@ -1343,7 +1352,7 @@ public class ControlTipoCotizante implements Serializable {
                 }
                 lovListaTiposEntidades.clear();
                 getLovListaTiposEntidades();
-                cambiosPagina = false;
+
                 context.update("form:ACEPTAR");
             } else {
                 permitirIndex = false;
@@ -1442,7 +1451,7 @@ public class ControlTipoCotizante implements Serializable {
         context.execute("tiposCotizantesDialogo.hide()");
         context.reset("formularioDialogos:LOVTiposCotizantes:globalFilter");
         context.update("formularioDialogos:LOVTiposCotizantes");
-        cambiosPagina = false;
+
         context.update("form:ACEPTAR");
     }
 
@@ -1470,9 +1479,9 @@ public class ControlTipoCotizante implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
+
             }
-            cambiosPagina = false;
-            context.update("form:ACEPTAR");
             permitirIndex = true;
             context.update("form:datosDetallesTiposCotizantes");
         } else if (tipoActualizacion == 1) {
@@ -1520,7 +1529,7 @@ public class ControlTipoCotizante implements Serializable {
                 }
                 lovListaTiposEntidades.clear();
                 getLovListaTiposEntidades();
-                cambiosPagina = false;
+
                 context.update("form:ACEPTAR");
             } else {
                 context.update("form:tiposEntidadesDialogo");
@@ -1589,10 +1598,9 @@ public class ControlTipoCotizante implements Serializable {
             context.update("form:datosDetallesTiposCotizantes");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
-            }
-            cambiosPagina = false;
             context.update("form:ACEPTAR");
+            }
+
             context.execute("NuevoRegistroDetalleTipoCotizante.hide()");
             indexNF = -1;
             secRegistro = null;
@@ -1634,7 +1642,7 @@ public class ControlTipoCotizante implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            context.update("form:ACEPTAR");
         }
         if (bandera == 1) {
             altoTablaNF = "95";
@@ -1931,7 +1939,21 @@ public class ControlTipoCotizante implements Serializable {
     public void setCambiosPagina(boolean cambiosPagina) {
         this.cambiosPagina = cambiosPagina;
     }
-    
-    
+
+    public List<DetallesTiposCotizantes> getDetalleTipoCotizanteSeleccionado() {
+        return detalleTipoCotizanteSeleccionado;
+    }
+
+    public void setDetalleTipoCotizanteSeleccionado(List<DetallesTiposCotizantes> detalleTipoCotizanteSeleccionado) {
+        this.detalleTipoCotizanteSeleccionado = detalleTipoCotizanteSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
 
 }
