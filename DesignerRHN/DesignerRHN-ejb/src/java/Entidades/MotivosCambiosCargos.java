@@ -40,13 +40,9 @@ public class MotivosCambiosCargos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Short codigo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivocambiocargo")
@@ -59,7 +55,7 @@ public class MotivosCambiosCargos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public MotivosCambiosCargos(BigInteger secuencia, short codigo, String nombre) {
+    public MotivosCambiosCargos(BigInteger secuencia, Short codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -73,11 +69,11 @@ public class MotivosCambiosCargos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Short getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Short codigo) {
         this.codigo = codigo;
     }
 
@@ -91,7 +87,9 @@ public class MotivosCambiosCargos implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        }
     }
 
     @XmlTransient

@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,6 +45,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
     private MotivosCambiosCargos nuevoMotivoCambioCargo;
     private MotivosCambiosCargos duplicarMotivoCambioCargo;
     private MotivosCambiosCargos editarMotivoCambioCargo;
+    private MotivosCambiosCargos motivoCambioGargoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -56,6 +58,10 @@ public class ControlMotivosCambiosCargos implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+
+    private Short backupCodigo;
+    private String backupNombre;
+    private int tamano;
 
     /**
      * Creates a new instance of ControlMotivosCambiosCargos
@@ -71,6 +77,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         nuevoMotivoCambioCargo = new MotivosCambiosCargos();
         duplicarMotivoCambioCargo = new MotivosCambiosCargos();
         guardado = true;
+        tamano = 270;
     }
 
     public void eventoFiltrar() {
@@ -91,6 +98,21 @@ public class ControlMotivosCambiosCargos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listMotivosCambiosCargos.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backupCodigo = listMotivosCambiosCargos.get(indice).getCodigo();
+                }
+                if (cualCelda == 1) {
+                    backupNombre = listMotivosCambiosCargos.get(indice).getNombre();
+                }
+            } else {
+                if (cualCelda == 0) {
+                    backupCodigo = filtrarMotivosCambiosCargos.get(indice).getCodigo();
+                }
+                if (cualCelda == 1) {
+                    backupNombre = filtrarMotivosCambiosCargos.get(indice).getNombre();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -124,17 +146,19 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
             bandera = 0;
             filtrarMotivosCambiosCargos = null;
             tipoLista = 0;
         }
-
+        tamano = 270;
         borrarMotivoCambioCargo.clear();
         crearMotivoCambioCargo.clear();
         modificarMotivoCambioCargo.clear();
@@ -150,21 +174,23 @@ public class ControlMotivosCambiosCargos implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
+            codigo.setFilterStyle("width: 40px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
+            descripcion.setFilterStyle("width: 600px");
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
+            tamano = 270;
             RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
             bandera = 0;
             filtrarMotivosCambiosCargos = null;
@@ -189,6 +215,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     if (listMotivosCambiosCargos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listMotivosCambiosCargos.size(); j++) {
                             if (j != indice) {
@@ -200,6 +227,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -208,9 +237,13 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     if (listMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+
                     }
                     if (listMotivosCambiosCargos.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosCambiosCargos.get(indice).setNombre(backupNombre);
+
                         banderita = false;
                     }
 
@@ -227,7 +260,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
@@ -237,6 +269,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 if (!crearMotivoCambioCargo.contains(filtrarMotivosCambiosCargos.get(indice))) {
                     if (filtrarMotivosCambiosCargos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listMotivosCambiosCargos.size(); j++) {
@@ -255,6 +288,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarMotivosCambiosCargos.get(indice).setCodigo(backupCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -265,10 +299,12 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     if (filtrarMotivosCambiosCargos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarMotivosCambiosCargos.get(indice).setNombre(backupNombre);
                     }
                     if (filtrarMotivosCambiosCargos.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarMotivosCambiosCargos.get(indice).setNombre(backupNombre);
                     }
 
                     if (banderita == true) {
@@ -284,7 +320,6 @@ public class ControlMotivosCambiosCargos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
@@ -401,6 +436,9 @@ public class ControlMotivosCambiosCargos implements Serializable {
             context.update("form:datosMotivoCambioCargo");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -478,10 +516,12 @@ public class ControlMotivosCambiosCargos implements Serializable {
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
+                tamano = 270;
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
                 bandera = 0;
@@ -609,9 +649,11 @@ public class ControlMotivosCambiosCargos implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                tamano = 270;
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
                 bandera = 0;
@@ -628,7 +670,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         }
     }
 
-    public void limpiarduplicarMotivosContratos() {
+    public void limpiarduplicarMotivosCambiosCargos() {
         duplicarMotivoCambioCargo = new MotivosCambiosCargos();
     }
 
@@ -751,6 +793,30 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public MotivosCambiosCargos getMotivoCambioGargoSeleccionado() {
+        return motivoCambioGargoSeleccionado;
+    }
+
+    public void setMotivoCambioGargoSeleccionado(MotivosCambiosCargos motivoCambioGargoSeleccionado) {
+        this.motivoCambioGargoSeleccionado = motivoCambioGargoSeleccionado;
+    }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

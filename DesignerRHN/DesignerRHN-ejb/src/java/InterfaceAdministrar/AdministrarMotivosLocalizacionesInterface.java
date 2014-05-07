@@ -56,4 +56,6 @@ public interface AdministrarMotivosLocalizacionesInterface {
      * @return Retorna una MotivosLocalizaciones.
      */
     public MotivosLocalizaciones mostrarMotivoCambioCargo(BigInteger secMotivosLocalizaciones);
+    
+    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion (BigInteger secMotivoLocalizacion);
 }

@@ -100,7 +100,11 @@ public class Papeles implements Serializable {
     }
 
     public void setCodigoalternativo(String codigoalternativo) {
-        this.codigoalternativo = codigoalternativo.toUpperCase();
+        if (codigoalternativo == null) {
+               System.out.println("Papeles : Codigo alternativo nulo");
+        } else {
+            this.codigoalternativo = codigoalternativo.toUpperCase();
+        }
     }
 
     @Override

@@ -15,6 +15,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -43,6 +44,7 @@ public class ControlSubCategorias implements Serializable {
     private SubCategorias nuevoSubCategoria;
     private SubCategorias duplicarSubCategoria;
     private SubCategorias editarSubCategoria;
+    private SubCategorias subCategoriaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,6 +60,9 @@ public class ControlSubCategorias implements Serializable {
     //filtrado table
     private int tamano;
 
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+
     public ControlSubCategorias() {
         listSubCategorias = null;
         crearSubCategorias = new ArrayList<SubCategorias>();
@@ -68,7 +73,7 @@ public class ControlSubCategorias implements Serializable {
         nuevoSubCategoria = new SubCategorias();
         duplicarSubCategoria = new SubCategorias();
         guardado = true;
-        tamano = 300;
+        tamano = 270;
     }
 
     public void eventoFiltrar() {
@@ -88,6 +93,19 @@ public class ControlSubCategorias implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listSubCategorias.get(indice).getCodigo();
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listSubCategorias.get(indice).getDescripcion();
+                }
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarSubCategorias.get(indice).getCodigo();
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarSubCategorias.get(indice).getDescripcion();
+                }
+            }
             secRegistro = listSubCategorias.get(index).getSecuencia();
 
         }
@@ -122,9 +140,10 @@ public class ControlSubCategorias implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSubCategoria");
             bandera = 0;
@@ -138,6 +157,7 @@ public class ControlSubCategorias implements Serializable {
         index = -1;
         secRegistro = null;
         k = 0;
+        tamano = 270;
         listSubCategorias = null;
         guardado = true;
         permitirIndex = true;
@@ -147,21 +167,23 @@ public class ControlSubCategorias implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:codigo");
+            codigo.setFilterStyle("width: 90px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosSubCategoria");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 300;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSubCategoria");
             bandera = 0;
@@ -187,6 +209,7 @@ public class ControlSubCategorias implements Serializable {
                     if (listSubCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listSubCategorias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listSubCategorias.size(); j++) {
                             if (j != indice) {
@@ -198,6 +221,7 @@ public class ControlSubCategorias implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listSubCategorias.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
@@ -205,10 +229,12 @@ public class ControlSubCategorias implements Serializable {
                     }
                     if (listSubCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
                     if (listSubCategorias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -225,7 +251,51 @@ public class ControlSubCategorias implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+
+                    if (listSubCategorias.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listSubCategorias.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listSubCategorias.size(); j++) {
+                            if (j != indice) {
+                                if (listSubCategorias.get(indice).getCodigo() == listSubCategorias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listSubCategorias.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listSubCategorias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (listSubCategorias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -236,6 +306,7 @@ public class ControlSubCategorias implements Serializable {
                     if (filtrarSubCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < filtrarSubCategorias.size(); j++) {
                             if (j != indice) {
@@ -253,6 +324,7 @@ public class ControlSubCategorias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -263,10 +335,12 @@ public class ControlSubCategorias implements Serializable {
                     if (filtrarSubCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarSubCategorias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -282,7 +356,58 @@ public class ControlSubCategorias implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarSubCategorias.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarSubCategorias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSubCategorias.get(indice).getCodigo() == listSubCategorias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listSubCategorias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSubCategorias.get(indice).getCodigo() == listSubCategorias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarSubCategorias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarSubCategorias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -408,6 +533,9 @@ public class ControlSubCategorias implements Serializable {
             context.update("form:datosSubCategoria");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -485,10 +613,13 @@ public class ControlSubCategorias implements Serializable {
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
+                tamano = 270;
+
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSubCategoria");
                 bandera = 0;
@@ -611,10 +742,13 @@ public class ControlSubCategorias implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                tamano = 270;
+
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSubCategoria:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSubCategoria");
                 bandera = 0;
@@ -770,6 +904,14 @@ public class ControlSubCategorias implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public SubCategorias getSubCategoriaSeleccionada() {
+        return subCategoriaSeleccionada;
+    }
+
+    public void setSubCategoriaSeleccionada(SubCategorias subCategoriaSeleccionada) {
+        this.subCategoriaSeleccionada = subCategoriaSeleccionada;
     }
 
 }
