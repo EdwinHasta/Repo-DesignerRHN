@@ -1904,7 +1904,7 @@
                         <p:tooltip style="font-size: 12px" for="ANADIRAPARAMETROS" value="#{msg['textAnadirParametros']}" />
                         <p:commandButton style="position: absolute; left: 285px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlBusquedaAvanzada.cancelarModificaciones()}" icon="ui-icon-refresh" process="@this" />
                         <p:commandButton style="position: absolute; left: 700px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" action="nominaf" process="@this" />
-                        <p:commandButton style="position: absolute; left: 790px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" action="nominaf" icon="ui-icon-arrowreturnthick-1-w" process="@this" />
+                        <p:commandButton style="position: absolute; left: 790px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" action="nominaf" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlBusquedaAvanzada.salir()}" process="@this" />
 
                         <p:remoteCommand name="posicionTablaBusquedaAvanzada" actionListener="#{controlBusquedaAvanzada.posicionTablaBusquedaAvanzada()}"/>
 

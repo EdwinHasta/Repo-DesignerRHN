@@ -88,6 +88,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -595,7 +596,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     private ScrollPanel scrollPanelNomina, scrollPanelPersonal;
 
     public ControlBusquedaAvanzada() {
-        numeroTipoBusqueda = 2;
+        numeroTipoBusqueda = 1;
         cabeceraEditarCelda = "";
         infoVariableEditarCelda = "";
         indice = -1;
@@ -961,10 +962,38 @@ public class ControlBusquedaAvanzada implements Serializable {
 
     }
 
+    public void recibirTipoBusqueda(int tipoBusqueda) {
+        if (tipoBusqueda == 1) {
+            numeroTipoBusqueda = tipoBusqueda;
+        }
+        if (tipoBusqueda == 2) {
+            numeroTipoBusqueda = tipoBusqueda;
+        }
+        cambioBtnPrueba();
+    }
+
     public void ejecutarQuery() {
         restaurar();
         System.out.println("Inicio el ejecutarQuery");
         listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
+        cargueQueryModuloNomina();
+        cargueQueryModuloPersonal();
+        String query = administrarBusquedaAvanzada.armarQueryModulosBusquedaAvanzada(listaParametrosQueryModulos);
+        System.out.println("Query hecho por Administrar : " + query);
+        String queryEmpleado = "SELECT codigoempleado FROM EMPLEADOS EM ";
+        if (!query.isEmpty()) {
+            queryEmpleado = queryEmpleado + query;
+        }
+        System.out.println("Query Final Busqueda Avanzada : " + queryEmpleado);
+        listaCodigosEmpleado = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulosCodigo(queryEmpleado);
+        for (int i = 0; i < listaCodigosEmpleado.size(); i++) {
+            System.out.println("listaCodigosEmpleado Codigo : " + listaCodigosEmpleado.get(i));
+        }
+        System.out.println("Tamaño: " + listaCodigosEmpleado.size());
+        updateColumns();
+    }
+
+    public void cargueQueryModuloNomina() {
         cargueParametrosModuloCargo();
         cargueParametrosModuloCentroCosto();
         cargueParametrosModuloSueldo();
@@ -981,19 +1010,19 @@ public class ControlBusquedaAvanzada implements Serializable {
         cargueParametrosModuloVacaciones();
         cargueParametrosModuloFechaRetiro();
         cargueParametrosModuloJornadaLaboral();
-        String query = administrarBusquedaAvanzada.armarQueryModulosBusquedaAvanzada(listaParametrosQueryModulos);
-        System.out.println("Query hecho por Administrar : " + query);
-        String queryEmpleado = "SELECT codigoempleado FROM EMPLEADOS EM ";
-        if (!query.isEmpty()) {
-            queryEmpleado = queryEmpleado + query;
-        }
-        System.out.println("Query Final Busqueda Avanzada : " + queryEmpleado);
-        listaCodigosEmpleado = administrarBusquedaAvanzada.ejecutarQueryBusquedaAvanzadaPorModulosCodigo(queryEmpleado);
-        for (int i = 0; i < listaCodigosEmpleado.size(); i++) {
-            System.out.println("listaCodigosEmpleado Codigo : " + listaCodigosEmpleado.get(i));
-        }
-        System.out.println("Tamaño: " + listaCodigosEmpleado.size());
-        updateColumns();
+    }
+
+    public void cargueQueryModuloPersonal() {
+        cargueParametrosModuloDatosPersonales();
+        cargueParametrosModuloFactorRH();
+        cargueParametrosModuloEstadoCivil();
+        cargueParametrosModuloIdioma();
+        cargueParametrosModuloCensos();
+        cargueParametrosModuloEducacionFormal();
+        cargueParametrosModuloEducacionNoFormal();
+        cargueParametrosModuloCargoPostularse();
+        cargueParametrosModuloProyecto();
+        cargueParametrosModuloExperienciaLaboral();
     }
 
     public void cargueParametrosModuloCargo() {
@@ -1005,11 +1034,19 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaCargo == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "BCARGO", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGODESDE", fechaInicialCargo.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGOHASTA", fechaFinalCargo.toString());
+                
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialCargo != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGODESDE", df.format(fechaInicialCargo).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalCargo != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGOHASTA", df.format(fechaFinalCargo).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaCargoBA.getCargo().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "CARGO", vigenciaCargoBA.getCargo().getSecuencia().toString());
@@ -1050,11 +1087,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaCentroCosto == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "BCENTROCOSTO", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "CENTROCOSTODESDE", fechaInicialCentroCosto.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "CENTROCOSTOHASTA", fechaFinalCentroCosto.toString());
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialCentroCosto != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "CENTROCOSTODESDE", df.format(fechaInicialCentroCosto).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalCentroCosto != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "CENTROCOSTOHASTA", df.format(fechaFinalCentroCosto).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaLocalizacionBA.getLocalizacion().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENTROCOSTO", "LOCALIZACION", vigenciaLocalizacionBA.getLocalizacion().getSecuencia().toString());
@@ -1076,11 +1120,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaSueldo == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "BSUELDO", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDODESDE", fechaInicialSueldo.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDOHASTA", fechaFinalSueldo.toString());
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialSueldo != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDODESDE", df.format(fechaInicialSueldo).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalSueldo != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("SUELDO", "SUELDOHASTA", df.format(fechaFinalSueldo).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaSueldoBA.getTiposueldo().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SUELDO", "TIPOSUELDO ", vigenciaSueldoBA.getTiposueldo().getSecuencia().toString());
@@ -1109,12 +1160,19 @@ public class ControlBusquedaAvanzada implements Serializable {
                 listaParametrosQueryModulos.add(parametro);
             }
             if (tipoFechaFechaContrato == 2) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "BFECHACONTRATO", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "FECHACONTRATODESDE", fechaInicialFechaContrato.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "FECHACONTRATOHASTA", fechaFinalFechaContrato.toString());
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "BFECHACONTRATO", "H");               
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialFechaContrato != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "FECHACONTRATODESDE", df.format(fechaInicialFechaContrato).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalFechaContrato != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "FECHACONTRATOHASTA", df.format(fechaFinalFechaContrato).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaTipoContratoBA.getTipocontrato().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "TIPOCONTRATO", vigenciaTipoContratoBA.getTipocontrato().toString());
@@ -1136,11 +1194,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaTipoTrabajador == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "BTIPOTRABAJADOR", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORDESDE", fechaInicialTipoTrabajador.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORHASTA", fechaFinalTipoTrabajador.toString());
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialTipoTrabajador != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORDESDE", df.format(fechaInicialTipoTrabajador).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalTipoTrabajador != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORHASTA", df.format(fechaFinalTipoTrabajador).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaTipoTrabajadorBA.getTipotrabajador().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADOR", vigenciaTipoTrabajadorBA.getTipotrabajador().toString());
@@ -1158,11 +1223,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaTipoSalario == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "BTIPOSALARIO", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "TIPOSALARIODESDE", fechaInicialTipoSalario.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "TIPOSALARIOHASTA", fechaFinalTipoSalario.toString());
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialTipoSalario != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "TIPOSALARIODESDE", df.format(fechaInicialTipoSalario).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalTipoSalario != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "TIPOSALARIOHASTA", df.format(fechaFinalTipoSalario).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaReformaLaboralBA.getReformalaboral().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOSALARIO", "REFORMA", vigenciaReformaLaboralBA.getReformalaboral().getSecuencia().toString());
@@ -1180,11 +1252,19 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaNormaLaboral == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "BNORMALABORAL", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMALABORALDESDE", fechaInicialNormaLaboral.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMALABORALHASTA", fechaFinalNormaLaboral.toString());
+                
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialNormaLaboral != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMALABORALDESDE", df.format(fechaInicialNormaLaboral).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalNormaLaboral != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMALABORALHASTA", df.format(fechaFinalNormaLaboral).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaNormaEmpleadoBA.getNormalaboral().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "NORMA", vigenciaNormaEmpleadoBA.getNormalaboral().getSecuencia().toString());
@@ -1202,15 +1282,28 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaLegislacionLaboral == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "BLEGISLACIONLABORAL", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALDESDE", fechaMIInicialLegislacionLaboral.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALHASTA", fechaMIFinalLegislacionLaboral.toString());
-                ParametrosQueryBusquedaAvanzada parametro4 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALDESDEF", fechaMFInicialLegislacionLaboral.toString());
-                ParametrosQueryBusquedaAvanzada parametro5 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALHASTAF", fechaMFFinalLegislacionLaboral.toString());
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
-                listaParametrosQueryModulos.add(parametro4);
-                listaParametrosQueryModulos.add(parametro5);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                ParametrosQueryBusquedaAvanzada parametro4 = null;
+                ParametrosQueryBusquedaAvanzada parametro5 = null;
+                if (fechaMIInicialLegislacionLaboral != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALDESDE", df.format(fechaMIInicialLegislacionLaboral).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaMIFinalLegislacionLaboral != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALHASTA", df.format(fechaMIFinalLegislacionLaboral).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
+                if (fechaMFInicialLegislacionLaboral != null) {
+                    parametro4 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALDESDEF", df.format(fechaMFInicialLegislacionLaboral).toString());
+                    listaParametrosQueryModulos.add(parametro4);
+                }
+                if (fechaMFFinalLegislacionLaboral != null) {
+                    parametro5 = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "LEGISLACIONLABORALHASTAF", df.format(fechaMFFinalLegislacionLaboral).toString());
+                    listaParametrosQueryModulos.add(parametro5);
+                }
             }
             if (vigenciaContratoBA.getContrato().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("LEGISLACIONLABORAL", "CONTRATO", vigenciaContratoBA.getContrato().getSecuencia().toString());
@@ -1228,11 +1321,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaUbicacion == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("UBICACION", "BUBICACION", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACIONDESDE", fechaInicialUbicacion.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACIONHASTA", fechaFinalUbicacion.toString());
+                DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialUbicacion != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACIONDESDE", df.format(fechaInicialUbicacion).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalUbicacion != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACIONHASTA", df.format(fechaFinalUbicacion).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaUbicacionBA.getUbicacion().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("UBICACION", "UBICACION", vigenciaUbicacionBA.getUbicacion().getSecuencia().toString());
@@ -1250,11 +1350,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaAfiliacion == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "BAFILIACIONES", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "AFILIACIONESDESDE", fechaInicialAfiliacion.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "AFILIACIONESHASTA", fechaFinalAfiliacion.toString());
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialAfiliacion != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "AFILIACIONESDESDE", df.format(fechaInicialAfiliacion).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalAfiliacion != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "AFILIACIONESHASTA", df.format(fechaFinalAfiliacion).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaAfiliacionBA.getTercerosucursal().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("AFILIACIONES", "TERCERO", vigenciaAfiliacionBA.getTercerosucursal().getSecuencia().toString());
@@ -1280,11 +1387,19 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaFormaPago == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "BFORMAPAGO", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGODESDE", fechaInicialFormaPago.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGOHASTA", fechaFinalFormaPago.toString());
+
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialFormaPago != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGODESDE", df.format(fechaInicialFormaPago).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalFormaPago != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGOHASTA", df.format(fechaFinalFormaPago).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (vigenciaFormaPagoBA.getFormapago().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FORMAPAGO", "FORMAPAGO", vigenciaFormaPagoBA.getFormapago().getSecuencia().toString());
@@ -1307,11 +1422,18 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaMvrs == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "BMVRS", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("MVRS", "MVRSDESDE", fechaInicialMvrs.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("MVRS", "MVRSHASTA", fechaFinalMvrs.toString());
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialMvrs != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("MVRS", "MVRSDESDE", df.format(fechaInicialMvrs).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalMvrs != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("MVRS", "MVRSHASTA", df.format(fechaFinalMvrs).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
             }
             if (mvrsBA.getMotivo().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("MVRS", "MOTIVO", mvrsBA.getMotivo().getSecuencia().toString());
@@ -1337,15 +1459,29 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
             if (tipoFechaMvrs == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "BSETS", "H");
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSDESDE", fechaMIInicialSets.toString());
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSHASTA", fechaMIFinalSets.toString());
-                ParametrosQueryBusquedaAvanzada parametro4 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSDESDEF", fechaMFInicialSets.toString());
-                ParametrosQueryBusquedaAvanzada parametro5 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSHASTAF", fechaMFFinalSets.toString());
+
                 listaParametrosQueryModulos.add(parametro);
-                listaParametrosQueryModulos.add(parametro2);
-                listaParametrosQueryModulos.add(parametro3);
-                listaParametrosQueryModulos.add(parametro4);
-                listaParametrosQueryModulos.add(parametro5);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                ParametrosQueryBusquedaAvanzada parametro4 = null;
+                ParametrosQueryBusquedaAvanzada parametro5 = null;
+                if (fechaMIInicialSets != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSDESDE", df.format(fechaMIInicialSets).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaMIFinalSets != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSHASTA", df.format(fechaMIFinalSets).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
+                if (fechaMFInicialSets != null) {
+                    parametro4 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSDESDEF", df.format(fechaMFInicialSets).toString());
+                    listaParametrosQueryModulos.add(parametro4);
+                }
+                if (fechaMFFinalSets != null) {
+                    parametro5 = new ParametrosQueryBusquedaAvanzada("SETS", "SETSHASTAF", df.format(fechaMFFinalSets).toString());
+                    listaParametrosQueryModulos.add(parametro5);
+                }
             }
             if (tipoMetodoSets != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("SETS", "METODO", tipoMetodoSets);
@@ -1368,19 +1504,23 @@ public class ControlBusquedaAvanzada implements Serializable {
             ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("VACACIONES", "NN", "NN");
             listaParametrosQueryModulos.add(parametroInicial);
             if (fechaMIInicialVacacion != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHASALIDADESDE", fechaMIInicialVacacion.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHASALIDADESDE", df.format(fechaMIInicialVacacion).toString());
                 listaParametrosQueryModulos.add(parametro);
             }
             if (fechaMIFinalVacacion != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHASALIDAHASTA", fechaMIFinalVacacion.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHASALIDAHASTA", df.format(fechaMIFinalVacacion).toString());
                 listaParametrosQueryModulos.add(parametro);
             }
             if (fechaMFInicialVacacion != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHAREGRESODESDE", fechaMFInicialVacacion.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHAREGRESODESDE", df.format(fechaMFInicialVacacion).toString());
                 listaParametrosQueryModulos.add(parametro);
             }
             if (fechaMFFinalVacacion != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHAREGRESOHASTA", fechaMFFinalVacacion.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("VACACIONES", "FECHAREGRESOHASTA", df.format(fechaMFFinalVacacion).toString());
                 listaParametrosQueryModulos.add(parametro);
             }
         }
@@ -1392,11 +1532,13 @@ public class ControlBusquedaAvanzada implements Serializable {
             ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "NN", "NN");
             listaParametrosQueryModulos.add(parametroInicial);
             if (fechaInicialFechaRetiro != null) {
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "FECHARETIRODESDE", fechaInicialFechaRetiro.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "FECHARETIRODESDE", df.format(fechaInicialFechaRetiro).toString());
                 listaParametrosQueryModulos.add(parametro2);
             }
             if (fechaFinalFechaRetiro != null) {
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "FECHARETIROHASTA", fechaFinalFechaRetiro.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("FECHARETIRO", "FECHARETIROHASTA", df.format(fechaFinalFechaRetiro).toString());
                 listaParametrosQueryModulos.add(parametro3);
             }
             if (motivoRetiroBA.getSecuencia() != null) {
@@ -1412,11 +1554,13 @@ public class ControlBusquedaAvanzada implements Serializable {
             ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "NN", "NN");
             listaParametrosQueryModulos.add(parametroInicial);
             if (fechaInicialJornadaLaboral != null) {
-                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALDESDE", fechaInicialJornadaLaboral.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALDESDE", df.format(fechaInicialJornadaLaboral).toString());
                 listaParametrosQueryModulos.add(parametro2);
             }
             if (fechaFinalJornadaLaboral != null) {
-                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALHASTA", fechaFinalJornadaLaboral.toString());
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("JORNADALABORAL", "JORNADALABORALHASTA", df.format(fechaFinalJornadaLaboral).toString());
                 listaParametrosQueryModulos.add(parametro3);
             }
             if (vigenciaJornadaBA.getJornadatrabajo().getSecuencia() != null) {
@@ -1426,10 +1570,420 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
     }
 
+    public void cargueParametrosModuloDatosPersonales() {
+        if (tabActivaDatosPersonales == 1) {
+            System.out.println("Inicio el cargueParametrosModuloDatosPersonales");
+
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+
+            if (empleadoBA.getPersona().getNumerodocumento() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NUMERODOCUMENTO", empleadoBA.getPersona().getNumerodocumento().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (empleadoBA.getPersona().getCiudaddocumento().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "CIUDADDOCUMENTO", empleadoBA.getPersona().getCiudaddocumento().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (!empleadoBA.getPersona().getSexo().isEmpty()) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "SEXO", empleadoBA.getPersona().getSexo().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (empleadoBA.getPersona().getCiudadnacimiento().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "CIUDADNACIMIENTO", empleadoBA.getPersona().getCiudadnacimiento().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaInicialDatosPersonales != null) {
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "FECHANACIMIENTODESDE", df.format(fechaInicialDatosPersonales).toString());
+                listaParametrosQueryModulos.add(parametro2);
+            }
+            if (fechaFinalDatosPersonales != null) {
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "FECHANACIMIENTOHASTA", df.format(fechaFinalDatosPersonales).toString());
+                listaParametrosQueryModulos.add(parametro3);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloFactorRH() {
+        if (tabActivaFactorRH == 1) {
+            System.out.println("Inicio el cargueParametrosModuloFactorRH");
+            if (!empleadoBA.getPersona().getFactorrh().isEmpty()) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FACTORRH", "FACTORRH", empleadoBA.getPersona().getFactorrh().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (!empleadoBA.getPersona().getGruposanguineo().isEmpty()) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FACTORRH", "GRUPOSANGUINEO", empleadoBA.getPersona().getGruposanguineo().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloEstadoCivil() {
+        if (tabActivaEstadoCivil == 1) {
+            System.out.println("Inicio el cargueParametrosModuloEstadoCivil");
+            if (tipoFechaEstadoCivil == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("ESTADOCIVIL", "BESTADOCIVIL", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaEstadoCivil == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("ESTADOCIVIL", "BESTADOCIVIL", "H");
+
+                listaParametrosQueryModulos.add(parametro);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialEstadoCivil != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("ESTADOCIVIL", "ESTADOCIVILDESDE", df.format(fechaInicialEstadoCivil).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalEstadoCivil != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("ESTADOCIVIL", "ESTADOCIVILHASTA", df.format(fechaFinalEstadoCivil).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
+            }
+            if (estadoCivilBA.getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("ESTADOCIVIL", "ESTADOCIVIL", estadoCivilBA.getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloIdioma() {
+        if (tabActivaIdioma == 1) {
+            System.out.println("Inicio el cargueParametrosModuloIdioma");
+
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("IDIOMA", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+
+            if (idiomaPersonaBA.getIdioma().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "IDIOMA", idiomaPersonaBA.getIdioma().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (conversacionDesde != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "CONVERSACIONDESDE", conversacionDesde.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (conversacionHasta != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "CONVERSACIONHASTA", conversacionHasta.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (lecturaDesde != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "LECTURADESDE", lecturaDesde.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (lecturaHasta != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "LECTURAHASTA", lecturaHasta.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (escrituraDesde != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "ESCRITURADESDE", escrituraDesde.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (escrituraHasta != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("IDIOMA", "ESCRITURAHASTA", escrituraHasta.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloCensos() {
+        if (tabActivaCenso == 1) {
+            System.out.println("Inicio el cargueParametrosModuloEstadoCivil");
+            if (tipoFechaCenso == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENSOS", "BCENSOS", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaCenso == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENSOS", "BCENSOS", "H");
+                listaParametrosQueryModulos.add(parametro);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialCenso != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("CENSOS", "CENSOSDESDE", df.format(fechaInicialCenso).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalCenso != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("CENSOS", "CENSOSHASTA", df.format(fechaFinalCenso).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
+            }
+            if (vigenciaIndicadorBA.getTipoindicador().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENSOS", "TIPOINDICADOR", vigenciaIndicadorBA.getTipoindicador().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaIndicadorBA.getIndicador().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CENSOS", "INDICADOR", vigenciaIndicadorBA.getIndicador().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloEducacionFormal() {
+        if (tabActivaEducacionFormal == 1) {
+            System.out.println("Inicio el cargueParametrosModuloEducacionFormal");
+            if (tipoFechaEducacionFormal == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "BEDUCACIONFORMAL", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaEducacionFormal == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "BEDUCACIONFORMAL", "H");
+                listaParametrosQueryModulos.add(parametro);
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                if (fechaInicialEducacionFormal != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "EDUCACIONFORMALDESDE", df.format(fechaInicialEducacionFormal).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalEducacionFormal != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "EDUCACIONFORMALHASTA", df.format(fechaFinalEducacionFormal).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
+            }
+            if (vigenciaFormalBA.getInstitucion().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "INSTITUCION", vigenciaFormalBA.getInstitucion().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaFormalBA.getProfesion().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "PROFESION", vigenciaFormalBA.getProfesion().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (desarrolladoEducacionFormal != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONFORMAL", "REALIZADO", desarrolladoEducacionFormal.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloEducacionNoFormal() {
+        if (tabActivaEducacionNoFormal == 1) {
+            System.out.println("Inicio el cargueParametrosModuloEducacionNoFormal");
+            if (tipoFechaEducacionNoFormal == 1) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "BEDUCACIONNOFORMAL", "A");
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (tipoFechaEducacionNoFormal == 2) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "BEDUCACIONNOFORMAL", "H");
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = null;
+                ParametrosQueryBusquedaAvanzada parametro3 = null;
+                listaParametrosQueryModulos.add(parametro);
+                if (fechaInicialEducacionNoFormal != null) {
+                    parametro2 = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "EDUCACIONNOFORMALDESDE", df.format(fechaInicialEducacionNoFormal).toString());
+                    listaParametrosQueryModulos.add(parametro2);
+                }
+                if (fechaFinalEducacionNoFormal != null) {
+                    parametro3 = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "EDUCACIONNOFORMALHASTA", df.format(fechaFinalEducacionNoFormal).toString());
+                    listaParametrosQueryModulos.add(parametro3);
+                }
+            }
+            if (vigenciaNoFormalBA.getInstitucion().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "INSTITUCION", vigenciaNoFormalBA.getInstitucion().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaNoFormalBA.getCurso().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "CURSO", vigenciaNoFormalBA.getCurso().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (desarrolladoEducacionNoFormal != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EDUCACIONNOFORMAL", "REALIZADO", desarrolladoEducacionNoFormal.toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloCargoPostularse() {
+        if (tabActivaCargoPostularse == 1) {
+            System.out.println("Inicio el cargueParametrosModuloCargoPostularse");
+
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("CARGOPOSTULARSE", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+
+            if (vigenciaCargoPersonalBA.getCargo().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGOPOSTULARSE", "CARGO", vigenciaCargoPersonalBA.getCargo().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloProyecto() {
+        if (tabActivaProyecto == 1) {
+            System.out.println("Inicio el cargueParametrosModuloProyecto");
+
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("PROYECTO", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+
+            if (vigenciaProyectoBA.getProyecto().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("PROYECTO", "PROYECTO", vigenciaProyectoBA.getProyecto().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (vigenciaProyectoBA.getPryRol().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("PROYECTO", "ROL", vigenciaProyectoBA.getPryRol().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaInicialProyecto != null) {
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("PROYECTO", "PROYECTODESDE", df.format(fechaInicialProyecto).toString());
+                listaParametrosQueryModulos.add(parametro2);
+            }
+            if (fechaInicialProyecto != null) {
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("PROYECTO", "PROYECTOHASTA", df.format(fechaInicialProyecto).toString());
+                listaParametrosQueryModulos.add(parametro3);
+            }
+        }
+    }
+
+    public void cargueParametrosModuloExperienciaLaboral() {
+        if (tabActivaExperienciaLaboral == 1) {
+            System.out.println("Inicio el cargueParametrosModuloExperienciaLaboral");
+
+            ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "NN", "NN");
+            listaParametrosQueryModulos.add(parametroInicial);
+
+            if (!cargoExperienciaLaboral.isEmpty()) {
+                ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "CARGO", cargoExperienciaLaboral.toString());
+                listaParametrosQueryModulos.add(parametro2);
+            }
+            if (!empresaExperienciaLaboral.isEmpty()) {
+                ParametrosQueryBusquedaAvanzada parametro3 = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "EMPRESA", empresaExperienciaLaboral.toString());
+                listaParametrosQueryModulos.add(parametro3);
+            }
+            if (hvExperienciaLaboralBA.getSectoreconomico().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "SECTORECONOMICO", hvExperienciaLaboralBA.getSectoreconomico().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (hvExperienciaLaboralBA.getMotivoretiro().getSecuencia() != null) {
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "MOTIVORETIRO", hvExperienciaLaboralBA.getMotivoretiro().getSecuencia().toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaInicialExperienciaLaboral != null) {
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "EXPERIENCIALABORALDESDE", df.format(fechaInicialExperienciaLaboral).toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+            if (fechaFinalExperienciaLaboral != null) {
+                DateFormat df = DateFormat.getDateInstance();
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("EXPERIENCIALABORAL", "EXPERIENCIALABORALHASTA", df.format(fechaFinalExperienciaLaboral).toString());
+                listaParametrosQueryModulos.add(parametro);
+            }
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void salir() {
+        cancelarModificaciones();
+        //PERSONAL
+        lovProyectos = null;
+        proyectoSeleccionado = new Proyectos();
+        lovPryRoles = null;
+        pryRolSeleccionado = new PryRoles();
+        lovSectoresEconomicos = null;
+        sectorEconomicoSeleccionado = new SectoresEconomicos();
+        lovCursos = null;
+        cursoSeleccionado = new Cursos();
+        lovInstituciones = null;
+        institucionSeleccionada = new Instituciones();
+        lovProfesiones = null;
+        profesionSeleccionada = new Profesiones();
+        lovTiposIndicadores = null;
+        tipoIndicadorSeleccionado = new TiposIndicadores();
+        lovIndicadores = null;
+        indicadorSeleccionado = new Indicadores();
+        lovIdiomas = null;
+        idiomaSeleccionado = new Idiomas();
+        lovEstadosCiviles = null;
+        estadoCivilSeleccionado = new EstadosCiviles();
+        lovCiudades = null;
+        ciudadSeleccionada = new Ciudades();
+        //NOMINA
+        lovMotivosRetiros = null;
+        motivoRetiroSeleccionado = new MotivosRetiros();
+        lovJornadasLaborales = null;
+        jornadaLaboralSeleccionada = new JornadasLaborales();
+        lovMotivosMvrs = null;
+        motivoMvrsSeleccionado = new Motivosmvrs();
+        lovPeriodicidades = null;
+        periodicidadSeleccionada = new Periodicidades();
+        lovSucursales = null;
+        sucursalSeleccionada = new Sucursales();
+        lovEstadosAfiliaciones = null;
+        estadoAfiliacionSeleccionado = new EstadosAfiliaciones();
+        lovTercerosSucursales = null;
+        terceroSucursalSeleccionado = new TercerosSucursales();
+        lovTiposEntidades = null;
+        tipoEntidadSeleccionado = new TiposEntidades();
+        lovUbicacionesGeograficas = null;
+        ubicacionGeograficaSeleccionada = new UbicacionesGeograficas();
+        lovContratos = null;
+        contratoSeleccionado = new Contratos();
+        lovNormasLaborales = null;
+        normaLaboralSeleccionada = new NormasLaborales();
+        lovReformasLaborales = null;
+        reformaLaboralSeleccionada = new ReformasLaborales();
+        lovMotivosContratos = null;
+        motivoContratoSeleccionado = new MotivosContratos();
+        lovTiposSueldos = null;
+        tipoSueldoSeleccionado = new TiposSueldos();
+        lovMotivosCambiosSueldos = null;
+        motivoSueldoSeleccionado = new MotivosCambiosSueldos();
+        lovTiposSueldos = null;
+        tipoSueldoSeleccionado = new TiposSueldos();
+        lovMotivosLocalizaciones = null;
+        motivoLocalizacionSeleccionado = new MotivosLocalizaciones();
+        lovEstructuras = null;
+        estructuraSeleccionada = new Estructuras();
+        lovCargos = null;
+        cargoSeleccionado = new Cargos();
+        lovEmpleados = null;
+        empleadoSeleccionado = new Empleados();
+        lovPapeles = null;
+        papelSeleccionado = new Papeles();
+        lovMotivosCambiosCargos = null;
+        motivoCambioSeleccionado = new MotivosCambiosCargos();
+        lovTiposTrabajadores = null;
+        tipoTrabajadorSeleccionado = new TiposTrabajadores();
+        //OTROS
+        aceptar = true;
+        auxSueldoMinimoSueldo = null;
+        auxSueldoMaximoSueldo = null;
+        auxSueldoMaximoMvrs = null;
+        auxSueldoMinimoMvrs = null;
+        auxPromedioMaximoSets = null;
+        auxPromedioMinimoSets = null;
+        conversacionDesde = null;
+        conversacionHasta = null;
+        lecturaDesde = null;
+        lecturaHasta = null;
+        escrituraDesde = null;
+        escrituraHasta = null;
+        tipoMetodoSets = "";
+        //Resulatos de busqueda
+        nuevaColumna = "";
+        columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
+        mapValoresColumnas = new HashMap<String, String>();
+        listaResultadoBusquedaAvanzada = new ArrayList<ResultadoBusquedaAvanzada>();
+        listaCodigosEmpleado = new ArrayList<BigInteger>();
+        numeroTipoBusqueda = 1;
+        cabeceraEditarCelda = "";
+        infoVariableEditarCelda = "";
+        indice = -1;
+        cualCelda = -1;
+        listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
+        registros = new ArrayList<QVWEmpleadosCorte>();
+        listaColumnasEscenarios = null;
+        auxTabActivoCentroCosto = false;
+        //
+        listaEmpleadosResultados = new ArrayList<Empleados>();
+        listaParametrosQueryModulos = new ArrayList<ParametrosQueryBusquedaAvanzada>();
+    }
+
     public void cancelarModificaciones() {
         //
         indice = -1;
@@ -1632,7 +2186,6 @@ public class ControlBusquedaAvanzada implements Serializable {
             context.update("form:tabViewFechaRetiro");
         }
         if (numeroTipoBusqueda == 2) {
-            System.out.println("numeroTipoBusqueda 2");
             empleadoBA = new Empleados();
             empleadoBA.setPersona(new Personas());
             empleadoBA.getPersona().setCiudaddocumento(new Ciudades());
@@ -2299,7 +2852,7 @@ public class ControlBusquedaAvanzada implements Serializable {
                         context.update("formularioDialogos:editarCargoModCargoPostularse");
                         context.execute("editarCargoModCargoPostularse.show()");
                         casillaVigenciaCargoPersonal = -1;
-                    } 
+                    }
                 }
             }
         }
@@ -3140,7 +3693,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             auxFechaFinalProyecto = fechaFinalProyecto;
         }
     }
-    
+
     public void cambiarIndiceCargoPostularse(int i) {
         if (permitirIndexVigenciaCargoPersonal == true) {
             indice = -1;
@@ -5100,7 +5653,7 @@ public class ControlBusquedaAvanzada implements Serializable {
             }
         }
     }
-    
+
     public void modificarParametrosCargoPostularse(String cualParametro, String valorConfirmar) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -5232,7 +5785,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         aceptar = true;
         permitirIndexVigenciaCargoPersonal = true;
     }
-    
+
     public void actualizarParametroProyectoProyecto() {
         vigenciaProyectoBA.setProyecto(proyectoSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -6215,7 +6768,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void changeTapProyecto() {
         System.out.println("tabActivaProyecto : " + tabActivaProyecto);
     }
-    
+
     public void changeTapCargoPostularse() {
         System.out.println("tabActivaCargoPostularse : " + tabActivaCargoPostularse);
     }
@@ -6552,7 +7105,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         }
         listaColumnasBusquedaAvanzada = new ArrayList<ColumnasBusquedaAvanzada>();
         listaResultadoBusquedaAvanzada = administrarBusquedaAvanzada.obtenerQVWEmpleadosCorteParaEmpleadoCodigo(listaCodigosEmpleado, camposBusqueda);
-        System.out.println("listaResultadoBusquedaAvanzada  : " + listaResultadoBusquedaAvanzada.size());
         int tamanoLista = 0;
         if (listaResultadoBusquedaAvanzada != null) {
             tamanoLista = listaResultadoBusquedaAvanzada.size();
@@ -6566,7 +7118,6 @@ public class ControlBusquedaAvanzada implements Serializable {
             for (int i = 1; i < palabras.length; i++) {
                 nuevaColumna = nuevaColumna + "_" + palabras[i];
             }
-            System.out.println("nuevaColumna : " + nuevaColumna);
             columnTemplate = columnTemplate + nuevaColumna + " ";
             nuevaColumna = "";
         }
@@ -6574,7 +7125,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         String[] valoresColumnasDeseadas = camposBusqueda.split(",");
         mapValoresColumnas.clear();
         if (tamanoLista > 0) {
-            System.out.println("valoresColumnasDeseadas.length : " + valoresColumnasDeseadas.length);
             if (valoresColumnasDeseadas.length == 5) {
                 createStaticColumns();
                 cargarTablaColumnasEstaticas();
@@ -6648,12 +7198,10 @@ public class ControlBusquedaAvanzada implements Serializable {
     }
 
     public void createDynamicColumns() {
-        System.out.println("columnTemplate : " + columnTemplate);
         String[] valoresColumnasDeseadas = columnTemplate.split(" ");
         int numColumna = 0;
         for (int i = 4; i < valoresColumnasDeseadas.length; i++) {
             String nameColumna = "columna" + String.valueOf(numColumna);
-            System.out.println("createDynamicColumns  : " + nameColumna);
             mapValoresColumnas.put(nameColumna, valoresColumnasDeseadas[i]);
             numColumna = numColumna + 1;
         }
@@ -6664,7 +7212,6 @@ public class ControlBusquedaAvanzada implements Serializable {
         for (Map.Entry<String, String> entry : mapValoresColumnas.entrySet()) {
             String numero = entry.getKey().charAt(entry.getKey().length() - 1) + "";
             if (esNumero(numero) == true) {
-                System.out.println("createDynamicColumns numero : " + numero);
                 int numeroCol = Integer.parseInt(numero);
                 if (VALID_COLUMN_KEYS.contains(entry.getKey())) {
                     columns.set(numeroCol + 4, new ColumnModel(entry.getValue().toUpperCase(), entry.getKey().toString()));
@@ -6685,10 +7232,8 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void cargarTablaColumnasEstaticas() {
         for (int i = 0; i < 4; i++) {
             int tamEmpleado = listaResultadoBusquedaAvanzada.size();
-            System.out.println("tamEmpleado : " + tamEmpleado);
             if (columns.get(i).getProperty().equalsIgnoreCase("codigo")) {
                 for (int j = 0; j < tamEmpleado; j++) {
-                    System.out.println("listaResultadoBusquedaAvanzada.get(j).getCodigo() : " + listaResultadoBusquedaAvanzada.get(j).getCodigoEmpleado());
                     listaColumnasBusquedaAvanzada.get(j).setCodigo(listaResultadoBusquedaAvanzada.get(j).getCodigoEmpleado().toString().toUpperCase());
                 }
             }
@@ -6715,12 +7260,9 @@ public class ControlBusquedaAvanzada implements Serializable {
         System.out.println("cargarTablaColumnasDinamicas");
         List<String> campos = new ArrayList<String>();
         for (int i = 4; i < columns.size(); i++) {
-            System.out.println("columns.get(i).getHeader() : " + columns.get(i).getHeader());
-            System.out.println("columns.get(i).getProperty() : " + columns.get(i).getProperty());
             campos.add(columns.get(i).getHeader());
         }
         int tam = columns.size();
-        System.out.println("tam : " + tam);
         for (int i = 4; i < tam; i++) {
             for (int j = 0; j < listaColumnasBusquedaAvanzada.size(); j++) {
                 if (columns.get(i).getProperty().equalsIgnoreCase("columna0")) {
@@ -6800,8 +7342,6 @@ public class ControlBusquedaAvanzada implements Serializable {
     public void restaurar() {
         mapValoresColumnas.clear();
         columns.clear();
-        System.out.println("columns : " + columns.size());
-        System.out.println("mapValoresColumnas : " + mapValoresColumnas.size());
         columnTemplate = "";
         columnTemplate = "Codigo Primer_Apellido Segundo_Apellido Nombre ";
         listaResultadoBusquedaAvanzada = null;
@@ -9112,5 +9652,4 @@ public class ControlBusquedaAvanzada implements Serializable {
         this.tabActivaCargoPostularse = tabActivaCargoPostularse;
     }
 
-    
 }
