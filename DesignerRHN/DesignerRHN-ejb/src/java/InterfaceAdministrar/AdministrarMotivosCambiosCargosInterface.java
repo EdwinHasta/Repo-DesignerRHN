@@ -16,6 +16,13 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarMotivosCambiosCargosInterface {
 
+    
+    /**
+     * Método encargado de obtener la conexion con la que se ingreso.
+     *
+     * @param idSesion Identificador de la sesión para encontrar la conexión.
+     */
+    public void obtenerConexion(String idSesion);
     /**
      * Método encargado de modificar MotivosCambiosCargos.
      *

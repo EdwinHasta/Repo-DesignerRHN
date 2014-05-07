@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.MotivosCambiosCargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      *
      * @param motivoCambioCargo MotivoCambioCargo que se quiere crear.
      */
-    public void crear(MotivosCambiosCargos motivoCambioCargo);
+    public void crear(EntityManager em, MotivosCambiosCargos motivoCambioCargo);
 
     /**
      * *
@@ -31,7 +32,7 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      * @param motivoCambioCargo MotivoCambioCargo con los cambios que se van a
      * realizar.
      */
-    public void editar(MotivosCambiosCargos motivoCambioCargo);
+    public void editar(EntityManager em, MotivosCambiosCargos motivoCambioCargo);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoCambioCargo que
@@ -39,7 +40,7 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      *
      * @param motivoCambioCargo MotivoCambioCargo que se quiere eliminar.
      */
-    public void borrar(MotivosCambiosCargos motivoCambioCargo);
+    public void borrar(EntityManager em, MotivosCambiosCargos motivoCambioCargo);
 
     /**
      * Método encargado de buscar el MotivoCambioCargo con la secuencia dada por
@@ -49,7 +50,7 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      * @return Retorna el MotivoCambioCargo identificado con la secuencia dada
      * por parámetro.
      */
-    public MotivosCambiosCargos buscarMotivoCambioCargo(BigInteger secuencia);
+    public MotivosCambiosCargos buscarMotivoCambioCargo(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos los MotivosCambiosCargos existentes en
@@ -57,7 +58,7 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      *
      * @return Retorna una lista de MotivosCambiosCargos.
      */
-    public List<MotivosCambiosCargos> buscarMotivosCambiosCargos();
+    public List<MotivosCambiosCargos> buscarMotivosCambiosCargos(EntityManager em);
 
     /**
      * Método encargado de verificar si hay al menos una VigenciaCargo asociada
@@ -67,5 +68,5 @@ public interface PersistenciaMotivosCambiosCargosInterface {
      * @return Retorna un valor mayor a cero si existe alguna VigenciaCargo
      * asociada a un MotivoCambioCargo.
      */
-    public BigInteger verificarBorradoVigenciasCargos(BigInteger secuencia);
+    public BigInteger verificarBorradoVigenciasCargos(EntityManager em, BigInteger secuencia);
 }

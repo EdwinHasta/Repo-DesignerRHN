@@ -6,11 +6,13 @@ package Administrar;
 
 import Entidades.MotivosCambiosCargos;
 import InterfaceAdministrar.AdministrarMotivosCambiosCargosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosCambiosCargosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,11 +24,21 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     @EJB
     PersistenciaMotivosCambiosCargosInterface persistenciaMotivosCambiosCargos;
 
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public List<MotivosCambiosCargos> consultarMotivosCambiosCargos() {
         List<MotivosCambiosCargos> motivosCambiosCargos = null;
         try {
-            motivosCambiosCargos = persistenciaMotivosCambiosCargos.buscarMotivosCambiosCargos();
+            motivosCambiosCargos = persistenciaMotivosCambiosCargos.buscarMotivosCambiosCargos(em);
         } catch (Exception e) {
             motivosCambiosCargos = null;
             System.out.println("AdministrarMotivosCambiosCargos.consultarMotivosCambiosCargos.");
@@ -41,7 +53,7 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     public MotivosCambiosCargos consultarMotivoCambioCargo(BigInteger secuenciaMCC) {
         MotivosCambiosCargos mcc = null;
         try {
-            mcc = persistenciaMotivosCambiosCargos.buscarMotivoCambioCargo(secuenciaMCC);
+            mcc = persistenciaMotivosCambiosCargos.buscarMotivoCambioCargo(em, secuenciaMCC);
         } catch (Exception e) {
             mcc = null;
         } finally {
@@ -53,7 +65,7 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     public void modificarMotivosCambiosCargos(List<MotivosCambiosCargos> listaMotivosCambiosCargos) {
         for (int i = 0; i < listaMotivosCambiosCargos.size(); i++) {
             System.out.println("Administrar Modificando");
-            persistenciaMotivosCambiosCargos.editar(listaMotivosCambiosCargos.get(i));
+            persistenciaMotivosCambiosCargos.editar(em, listaMotivosCambiosCargos.get(i));
         }
     }
 
@@ -61,7 +73,7 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     public void borrarMotivosCambiosCargos(List<MotivosCambiosCargos> listaMotivosCambiosCargos) {
         for (int i = 0; i < listaMotivosCambiosCargos.size(); i++) {
             System.out.println("Administrar Borrando");
-            persistenciaMotivosCambiosCargos.borrar(listaMotivosCambiosCargos.get(i));
+            persistenciaMotivosCambiosCargos.borrar(em, listaMotivosCambiosCargos.get(i));
         }
     }
 
@@ -69,7 +81,7 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     public void crearMotivosCambiosCargos(List<MotivosCambiosCargos> listaMotivosCambiosCargos) {
         for (int i = 0; i < listaMotivosCambiosCargos.size(); i++) {
             System.out.println("Administrar Creando");
-            persistenciaMotivosCambiosCargos.crear(listaMotivosCambiosCargos.get(i));
+            persistenciaMotivosCambiosCargos.crear(em, listaMotivosCambiosCargos.get(i));
         }
     }
 
@@ -77,7 +89,7 @@ public class AdministrarMotivosCambiosCargos implements AdministrarMotivosCambio
     public BigInteger contarVigenciasCargosMotivoCambioCargo(BigInteger secuenciaMovitoCambioCargo) {
         BigInteger verificadorVC = null;
         try {
-            verificadorVC = persistenciaMotivosCambiosCargos.verificarBorradoVigenciasCargos(secuenciaMovitoCambioCargo);
+            verificadorVC = persistenciaMotivosCambiosCargos.verificarBorradoVigenciasCargos(em, secuenciaMovitoCambioCargo);
         } catch (Exception e) {
             System.out.println("AdministrarMotivosCambiosCargos.verificarBorradoVC.");
             System.err.println("Excepcion.");

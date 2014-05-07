@@ -9,9 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
@@ -27,11 +25,11 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(MotivosCambiosCargos motivoCambioCargo) {
+    public void crear(EntityManager em, MotivosCambiosCargos motivoCambioCargo) {
         try {
             em.persist(motivoCambioCargo);
         } catch (Exception e) {
@@ -40,7 +38,7 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     }
 
     @Override
-    public void editar(MotivosCambiosCargos motivoCambioCargo) {
+    public void editar(EntityManager em, MotivosCambiosCargos motivoCambioCargo) {
         try {
             em.merge(motivoCambioCargo);
         } catch (Exception e) {
@@ -49,13 +47,13 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     }
 
     @Override
-    public void borrar(MotivosCambiosCargos motivoCambioCargo) {
+    public void borrar(EntityManager em, MotivosCambiosCargos motivoCambioCargo) {
         //revisar        
         em.remove(em.merge(motivoCambioCargo));
     }
 
     @Override
-    public MotivosCambiosCargos buscarMotivoCambioCargo(BigInteger secuencia) {
+    public MotivosCambiosCargos buscarMotivoCambioCargo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(MotivosCambiosCargos.class, secuencia);
         } catch (Exception e) {
@@ -64,18 +62,20 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
     }
 
     @Override
-    public List<MotivosCambiosCargos> buscarMotivosCambiosCargos() {
+    public List<MotivosCambiosCargos> buscarMotivosCambiosCargos(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM MotivosCambiosCargos m");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<MotivosCambiosCargos> lista = query.getResultList();
         return lista;
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasCargos(BigInteger secuencia) {
+    public BigInteger verificarBorradoVigenciasCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vc) FROM VigenciasCargos vc WHERE vc.motivocambiocargo.secuencia =:secMotivoCambioCargo");
             query.setParameter("secMotivoCambioCargo", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosCambiosCargos retorno ==" + retorno.intValue());
 
