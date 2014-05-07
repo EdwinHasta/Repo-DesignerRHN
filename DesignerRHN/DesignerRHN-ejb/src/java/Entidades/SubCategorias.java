@@ -31,8 +31,6 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "SubCategorias.findAll", query = "SELECT s FROM SubCategorias s")})
 public class SubCategorias implements Serializable {
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
 

@@ -105,7 +105,6 @@ public class ControlNovedadesDefinitivas implements Serializable {
         guardado = true;
         tipoLista = 0;
         listaNovedades = null;
-
         nuevaNovedad = new NovedadesSistema();
         nuevaNovedad.setMotivodefinitiva(new MotivosDefinitivas());
         nuevaNovedad.setMotivoretiro(new MotivosRetiros());

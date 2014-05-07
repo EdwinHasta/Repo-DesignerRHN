@@ -318,31 +318,32 @@ public class ControlBetaCentrosCostos implements Serializable {
     public void cancelarModificacion() {
         try {
             System.out.println("entre a CONTROLBETACENTROSCOSTOS.cancelarModificacion");
+           FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 //0
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //2
-                tipoCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
                 tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //3 
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
                 manoDeObra.setFilterStyle("display: none; visibility: hidden;");
                 //4
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
                 codigoAT.setFilterStyle("display: none; visibility: hidden;");
                 //5 
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
                 obsoleto.setFilterStyle("display: none; visibility: hidden;");
                 //6
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
                 codigoCTT.setFilterStyle("display: none; visibility: hidden;");
                 //7 
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
                 tamano = 270;
                 bandera = 0;
@@ -788,21 +789,22 @@ public class ControlBetaCentrosCostos implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
-                    codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                     FacesContext c = FacesContext.getCurrentInstance();
+                    codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                     codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                    nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                    nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
                     nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                    tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
                     tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                    manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
                     manoDeObra.setFilterStyle("display: none; visibility: hidden;");
-                    codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                    codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
                     codigoAT.setFilterStyle("display: none; visibility: hidden;");
-                    obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                    obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
                     obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                    codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                    codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
                     codigoCTT.setFilterStyle("display: none; visibility: hidden;");
-                    dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                    dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                     dimensiones.setFilterStyle("display: none; visibility: hidden;");
                     tamano = 270;
                     RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
@@ -995,29 +997,30 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                 FacesContext c = FacesContext.getCurrentInstance();
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //2
-                tipoCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
                 tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //3 COMBO BOX
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
                 manoDeObra.setFilterStyle("display: none; visibility: hidden;");
                 //4
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
                 codigoAT.setFilterStyle("display: none; visibility: hidden;");
                 //5 COMBO BOX
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
                 obsoleto.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
                 //6
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
                 tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //7 COMBO BOX
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
                 tamano = 270;
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
@@ -1349,45 +1352,46 @@ public class ControlBetaCentrosCostos implements Serializable {
         
         try {
             
+                 FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
                 tamano = 246;
                 System.out.println("Activar");
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("width: 40px");
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("width: 105px");
-                tipoCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
                 tipoCentroCosto.setFilterStyle("width: 100px");
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
                 manoDeObra.setFilterStyle("width: 90px");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
                 codigoAT.setFilterStyle("width: 60px");
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
                 obsoleto.setFilterStyle("width: 35px");
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
                 codigoCTT.setFilterStyle("width: 90px");
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("width: 15px");
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
                 bandera = 1;
             } else if (bandera == 1) {
                 System.out.println("Desactivar");
                 //0
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                tipoCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
                 tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                manoDeObra = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
                 manoDeObra.setFilterStyle("display: none; visibility: hidden;");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
                 codigoAT.setFilterStyle("display: none; visibility: hidden;");
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
                 obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                codigoCTT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
                 codigoCTT.setFilterStyle("display: none; visibility: hidden;");
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
                 tamano = 270;
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");

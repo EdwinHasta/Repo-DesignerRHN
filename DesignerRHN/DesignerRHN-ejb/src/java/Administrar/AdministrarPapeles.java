@@ -78,6 +78,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
     @Override
     public void crearPapeles(List<Papeles> listaPapeles) {
         try {
+               System.out.println("Creando... tamaño "+listaPapeles.size());
             for (int i = 0; i < listaPapeles.size(); i++) {
                 System.out.println("Creando...");
                 persistenciaPapeles.crear(listaPapeles.get(i));

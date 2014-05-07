@@ -691,7 +691,7 @@ public class ControlVigenciasProyectos implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -831,7 +831,7 @@ public class ControlVigenciasProyectos implements Serializable {
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             //  k = 0;
         }
         System.out.println("Tamaño lista: " + listaVigenciasProyectosCrear.size());

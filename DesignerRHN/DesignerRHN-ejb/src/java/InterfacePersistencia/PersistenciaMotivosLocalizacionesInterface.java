@@ -8,38 +8,56 @@ import java.math.BigInteger;
 import java.util.List;
 
 /**
- * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosLocalizaciones' 
- * de la base de datos.
+ * Interface encargada de determinar las operaciones que se realizan sobre la
+ * tabla 'MotivosLocalizaciones' de la base de datos.
+ *
  * @author AndresPineda
  */
 public interface PersistenciaMotivosLocalizacionesInterface {
+
     /**
      * Método encargado de insertar un MotivoLocalizacion en la base de datos.
+     *
      * @param motivosLocalizaciones MotivoLocalizacion que se quiere crear.
      */
     public void crear(MotivosLocalizaciones motivosLocalizaciones);
+
     /**
      * Método encargado de modificar un MotivoLocalizacion de la base de datos.
-     * Este método recibe la información del parámetro para hacer un 'merge' con la 
-     * información de la base de datos.
-     * @param motivosLocalizaciones MotivoLocalizacion con los cambios que se van a realizar.
+     * Este método recibe la información del parámetro para hacer un 'merge' con
+     * la información de la base de datos.
+     *
+     * @param motivosLocalizaciones MotivoLocalizacion con los cambios que se
+     * van a realizar.
      */
     public void editar(MotivosLocalizaciones motivosLocalizaciones);
+
     /**
-     * Método encargado de eliminar de la base de datos el MotivoLocalizacion que entra por parámetro.
+     * Método encargado de eliminar de la base de datos el MotivoLocalizacion
+     * que entra por parámetro.
+     *
      * @param motivosLocalizaciones MotivoLocalizacion que se quiere eliminar.
      */
     public void borrar(MotivosLocalizaciones motivosLocalizaciones);
+
     /**
-     * Método encargado de buscar todos los MotivosLocalizaciones existentes en la base de datos.
+     * Método encargado de buscar todos los MotivosLocalizaciones existentes en
+     * la base de datos.
+     *
      * @return Retorna una lista de MotivosLocalizaciones.
      */
     public List<MotivosLocalizaciones> buscarMotivosLocalizaciones();
+
     /**
-     * Método encargado de buscar el MotivoLocalizacion con la secMotivosLocalizaciones dada por parámetro.
-     * @param secMotivosLocalizaciones Secuencia del MotivoLocalizacion que se quiere encontrar.
-     * @return Retorna el MotivoLocalizacion identificado con la secMotivosLocalizaciones dada por parámetro.
+     * Método encargado de buscar el MotivoLocalizacion con la
+     * secMotivosLocalizaciones dada por parámetro.
+     *
+     * @param secMotivosLocalizaciones Secuencia del MotivoLocalizacion que se
+     * quiere encontrar.
+     * @return Retorna el MotivoLocalizacion identificado con la
+     * secMotivosLocalizaciones dada por parámetro.
      */
     public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secMotivosLocalizaciones);
-    
+
+    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(BigInteger secMotivoLocalizacion);
 }

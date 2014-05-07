@@ -13,13 +13,15 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosLocalizaciones'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'MotivosLocalizaciones' de la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLocalizacionesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -77,4 +79,20 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
             return motivoL;
         }
     }
+
+    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(BigInteger secMotivoLocalizacion) {
+        BigInteger retorno = new BigInteger("-1");
+        try {
+            String sqlQuery = "SELECT COUNT(*)FROM vigenciaslocalizaciones WHERE motivo =?";
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secMotivoLocalizacion);
+            retorno = new BigInteger(query.getSingleResult().toString());
+            System.err.println("Contador PERSISTENCIAMOTIVOSLOCALIZACIONES contarVigenciasLocalizacionesMotivoLocalizacion  " + retorno);
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error PERSISTENCIAMOTIVOSLOCALIZACIONES  contarVigenciasLocalizacionesMotivoLocalizacion. " + e);
+            return retorno;
+        }
+    }
+
 }

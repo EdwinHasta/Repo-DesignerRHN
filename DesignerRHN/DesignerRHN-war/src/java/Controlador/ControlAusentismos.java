@@ -65,6 +65,7 @@ public class ControlAusentismos implements Serializable {
     //LISTA AUSENTISMOS
     private List<Soausentismos> listaAusentismos;
     private List<Soausentismos> filtradosListaAusentismos;
+    private Soausentismos ausentismoSeleccionado;
     //LISTA DE ARRIBA
     private List<Empleados> listaEmpleadosAusentismo;
     private List<Empleados> filtradosListaEmpleadosAusentismo;
@@ -149,7 +150,7 @@ public class ControlAusentismos implements Serializable {
     private String altoTabla;
 
     public ControlAusentismos() {
-        altoTabla = "200";
+        altoTabla = "145";
         cambiosPagina = true;
         Relacion = null;
         Prorroga = null;
@@ -1403,7 +1404,6 @@ public class ControlAusentismos implements Serializable {
 
     //BORRAR Novedades
     public void borrarAusentismos() {
-
         if (index >= 0) {
             cambiosPagina = false;
             if (tipoLista == 0) {
@@ -2185,107 +2185,112 @@ public class ControlAusentismos implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
         System.out.println("TipoLista= " + tipoLista);
         if (bandera == 0) {
+            altoTabla = "121";
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            ATipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
             ATipo.setFilterStyle("width: 60px");
-            AClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
-            AClase.setFilterStyle("");
-            ACausa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+            AClase.setFilterStyle("width: 60px");
+            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
             ACausa.setFilterStyle("width: 60px");
-            ADias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
             ADias.setFilterStyle("width: 60px");
-            AHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
             AHoras.setFilterStyle("width: 60px");
-            AFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
             AFecha.setFilterStyle("width: 60px");
-            AFechaFinaus = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
             AFechaFinaus.setFilterStyle("width: 60px");
-            AFechaExpedicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
             AFechaExpedicion.setFilterStyle("width: 60px");
-            AFechaInipago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
             AFechaInipago.setFilterStyle("width: 60px");
-            AFechaFinpago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
             AFechaFinpago.setFilterStyle("width: 60px");
-            APorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
             APorcentaje.setFilterStyle("width: 60px");
-            ABase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
             ABase.setFilterStyle("width: 60px");
-            AForma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
             AForma.setFilterStyle("width: 60px");
-            ADescripcionCaso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
             ADescripcionCaso.setFilterStyle("width: 60px");
-            AEnfermedad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
             AEnfermedad.setFilterStyle("width: 60px");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("width: 60px");
-            ADiagnostico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
             ADiagnostico.setFilterStyle("width: 60px");
-            AProrroga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
             AProrroga.setFilterStyle("width: 60px");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("width: 60px");
-            ARelacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
             ARelacion.setFilterStyle("width: 60px");
-            ARelacionada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
             ARelacionada.setFilterStyle("width: 60px");
-            ATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
             ATercero.setFilterStyle("width: 60px");
-            AObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
             AObservaciones.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
             bandera = 1;
             tipoLista = 1;
         } else if (bandera == 1) {
+            altoTabla = "145";
+
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            ATipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
             ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
             AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
             ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
             ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
             AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
             AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
             AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
             AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
             AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
             AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
             APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
             ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
             AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
             ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
             AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
             ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
             AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
             ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
             ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
             ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
             AObservaciones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
             bandera = 0;
@@ -2381,53 +2386,57 @@ public class ControlAusentismos implements Serializable {
 
         if (pasa == 0) {
             if (bandera == 1) {
+                altoTabla = "135";
+
                 System.out.println("Activar");
                 System.out.println("TipoLista= " + tipoLista);
-                ATipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
                 ATipo.setFilterStyle("display: none; visibility: hidden;");
-                AClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+                AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
                 AClase.setFilterStyle("display: none; visibility: hidden;");
-                ACausa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+                ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
                 ACausa.setFilterStyle("display: none; visibility: hidden;");
-                ADias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+                ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
                 ADias.setFilterStyle("display: none; visibility: hidden;");
-                AHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+                AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
                 AHoras.setFilterStyle("display: none; visibility: hidden;");
-                AFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+                AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
                 AFecha.setFilterStyle("display: none; visibility: hidden;");
-                AFechaFinaus = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+                AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
                 AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-                AFechaExpedicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+                AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
                 AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-                AFechaInipago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+                AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
                 AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-                AFechaFinpago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+                AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
                 AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-                APorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+                APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
                 APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-                ABase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+                ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
                 ABase.setFilterStyle("display: none; visibility: hidden;");
-                AForma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+                AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
                 AForma.setFilterStyle("display: none; visibility: hidden;");
-                ADescripcionCaso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+                ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
                 ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-                AEnfermedad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+                AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
                 AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-                ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+                ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
                 ANumero.setFilterStyle("display: none; visibility: hidden;");
-                ADiagnostico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+                ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
                 ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-                AProrroga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+                AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
                 AProrroga.setFilterStyle("display: none; visibility: hidden;");
-                ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+                ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
                 ANumero.setFilterStyle("display: none; visibility: hidden;");
-                ARelacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+                ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
                 ARelacion.setFilterStyle("display: none; visibility: hidden;");
-                ARelacionada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+                ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
                 ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-                ATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+                ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
                 ATercero.setFilterStyle("display: none; visibility: hidden;");
-                AObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+                AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
                 AObservaciones.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
                 bandera = 0;
@@ -2525,51 +2534,53 @@ public class ControlAusentismos implements Serializable {
         if (bandera == 1) {
             System.out.println("Activar");
             System.out.println("TipoLista= " + tipoLista);
-            ATipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "135";
+            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
             ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
             AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
             ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
             ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
             AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
             AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
             AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
             AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
             AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
             AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
             APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
             ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
             AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
             ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
             AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
             ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
             AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
             ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
             ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
             ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
             AObservaciones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
             bandera = 0;
@@ -2753,51 +2764,53 @@ public class ControlAusentismos implements Serializable {
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
-            ATipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "135";
+            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
             ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
             AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
             ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
             ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
             AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
             AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
             AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
             AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
             AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
             AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
             APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
             ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
             AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
             ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
             AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
             ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
             AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
             ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
             ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
             ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
             AObservaciones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
             bandera = 0;
@@ -2823,51 +2836,53 @@ public class ControlAusentismos implements Serializable {
     //SALIR
     public void salir() {
         if (bandera == 1) {
-            ATipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "135";
+            ATipo = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATipo");
             ATipo.setFilterStyle("display: none; visibility: hidden;");
-            AClase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
+            AClase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AClase");
             AClase.setFilterStyle("display: none; visibility: hidden;");
-            ACausa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
+            ACausa = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ACausa");
             ACausa.setFilterStyle("display: none; visibility: hidden;");
-            ADias = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
+            ADias = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADias");
             ADias.setFilterStyle("display: none; visibility: hidden;");
-            AHoras = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
+            AHoras = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AHoras");
             AHoras.setFilterStyle("display: none; visibility: hidden;");
-            AFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
+            AFecha = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFecha");
             AFecha.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinaus = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
+            AFechaFinaus = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinaus");
             AFechaFinaus.setFilterStyle("display: none; visibility: hidden;");
-            AFechaExpedicion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
+            AFechaExpedicion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaExpedicion");
             AFechaExpedicion.setFilterStyle("display: none; visibility: hidden;");
-            AFechaInipago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
+            AFechaInipago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaInipago");
             AFechaInipago.setFilterStyle("display: none; visibility: hidden;");
-            AFechaFinpago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
+            AFechaFinpago = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AFechaFinpago");
             AFechaFinpago.setFilterStyle("display: none; visibility: hidden;");
-            APorcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
+            APorcentaje = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:APorcentaje");
             APorcentaje.setFilterStyle("display: none; visibility: hidden;");
-            ABase = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
+            ABase = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ABase");
             ABase.setFilterStyle("display: none; visibility: hidden;");
-            AForma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
+            AForma = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AForma");
             AForma.setFilterStyle("display: none; visibility: hidden;");
-            ADescripcionCaso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
+            ADescripcionCaso = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADescripcionCaso");
             ADescripcionCaso.setFilterStyle("display: none; visibility: hidden;");
-            AEnfermedad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
+            AEnfermedad = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AEnfermedad");
             AEnfermedad.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ADiagnostico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
+            ADiagnostico = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ADiagnostico");
             ADiagnostico.setFilterStyle("display: none; visibility: hidden;");
-            AProrroga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
+            AProrroga = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AProrroga");
             AProrroga.setFilterStyle("display: none; visibility: hidden;");
-            ANumero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
+            ANumero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ANumero");
             ANumero.setFilterStyle("display: none; visibility: hidden;");
-            ARelacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
+            ARelacion = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacion");
             ARelacion.setFilterStyle("display: none; visibility: hidden;");
-            ARelacionada = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
+            ARelacionada = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ARelacionada");
             ARelacionada.setFilterStyle("display: none; visibility: hidden;");
-            ATercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
+            ATercero = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:ATercero");
             ATercero.setFilterStyle("display: none; visibility: hidden;");
-            AObservaciones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
+            AObservaciones = (Column) c.getViewRoot().findComponent("form:datosAusentismosEmpleado:AObservaciones");
             AObservaciones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosAusentismosEmpleado");
             bandera = 0;
@@ -3339,6 +3354,22 @@ public class ControlAusentismos implements Serializable {
 
     public void setCambiosPagina(boolean cambiosPagina) {
         this.cambiosPagina = cambiosPagina;
+    }
+
+    public Soausentismos getAusentismoSeleccionado() {
+        return ausentismoSeleccionado;
+    }
+
+    public void setAusentismoSeleccionado(Soausentismos ausentismoSeleccionado) {
+        this.ausentismoSeleccionado = ausentismoSeleccionado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
     }
 
 }

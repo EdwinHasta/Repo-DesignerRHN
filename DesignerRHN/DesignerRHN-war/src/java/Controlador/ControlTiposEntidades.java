@@ -16,6 +16,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -63,6 +64,7 @@ public class ControlTiposEntidades implements Serializable {
     private BigInteger borrado;
     private BigInteger borradoFCE;
     private int registrosBorrados;
+    private int tamano;
 
     public ControlTiposEntidades() {
         listTiposEntidades = null;
@@ -74,8 +76,8 @@ public class ControlTiposEntidades implements Serializable {
         editarTipoEntidad = new TiposEntidades();
         nuevoTipoEntidad = new TiposEntidades();
         nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
-        guardado=true;
-
+        guardado = true;
+        tamano = 270;
     }
 
     public void eventoFiltrar() {
@@ -88,6 +90,8 @@ public class ControlTiposEntidades implements Serializable {
             System.out.println("ERROR ControlTiposEntidades eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    private Short backUpCodigo;
+    private String backUpDescripcion;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -96,7 +100,20 @@ public class ControlTiposEntidades implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listTiposEntidades.get(index).getSecuencia();
-
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listTiposEntidades.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarTiposEntidades.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listTiposEntidades.get(index).getNombre();
+                } else {
+                    backUpDescripcion = filtrarTiposEntidades.get(index).getNombre();
+                }
+            }
             if (cualCelda == 2) {
                 if (tipoLista == 0) {
                     grupoAsociadoAutoCompletar = listTiposEntidades.get(index).getGrupo().getNombre();
@@ -234,6 +251,7 @@ public class ControlTiposEntidades implements Serializable {
                     if (listTiposEntidades.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposEntidades.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposEntidades.size(); j++) {
                             if (j != indice) {
@@ -245,10 +263,23 @@ public class ControlTiposEntidades implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listTiposEntidades.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
                         } else {
                             banderita = true;
                         }
 
+                    }
+
+                    if (listTiposEntidades.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
                     }
 
                     if (banderita == true) {
@@ -262,9 +293,54 @@ public class ControlTiposEntidades implements Serializable {
                         }
 
                     } else {
-                        context.update("form:validacioModificar");
-                        context.execute("validacioModificar.show()");
-                        cancelarModificacion();
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposEntidades.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposEntidades.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposEntidades.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listTiposEntidades.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (listTiposEntidades.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -278,7 +354,7 @@ public class ControlTiposEntidades implements Serializable {
                     } else {
                         for (int j = 0; j < listTiposEntidades.size(); j++) {
                             if (j != indice) {
-                                if (listTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                if (filtrarTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -291,7 +367,16 @@ public class ControlTiposEntidades implements Serializable {
                         }
 
                     }
-
+                    if (filtrarTiposEntidades.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
                     if (banderita == true) {
                         if (modificarTiposEntidades.isEmpty()) {
                             modificarTiposEntidades.add(filtrarTiposEntidades.get(indice));
@@ -305,26 +390,54 @@ public class ControlTiposEntidades implements Serializable {
                     } else {
                         context.update("form:validacioModificar");
                         context.execute("validacioModificar.show()");
-                        cancelarModificacion();
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposEntidades.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listTiposEntidades.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposEntidades.get(indice).getCodigo() == listTiposEntidades.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (filtrarTiposEntidades.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarTiposEntidades.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacioModificar");
+                        context.execute("validacioModificar.show()");
+
                     }
                     index = -1;
                     secRegistro = null;
                 }
-
-
-                /*if (!crearTiposEntidades.contains(filtrarTiposEntidades.get(indice))) {
-
-                 if (modificarTiposEntidades.isEmpty()) {
-                 modificarTiposEntidades.add(filtrarTiposEntidades.get(indice));
-                 } else if (!modificarTiposEntidades.contains(filtrarTiposEntidades.get(indice))) {
-                 modificarTiposEntidades.add(filtrarTiposEntidades.get(indice));
-                 }
-                 if (guardado == true) {
-                 guardado = false;
-                 }
-                 }
-                 index = -1;
-                 secRegistro = null;*/
             }
             context.update("form:datosTipoEntidad");
         } else if (confirmarCambio.equalsIgnoreCase("GRUPOSTIPOSENTIDADES")) {
@@ -426,23 +539,26 @@ public class ControlTiposEntidades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
             codigo.setFilterStyle("width: 200px");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
             nombre.setFilterStyle("width: 270px");
-            grupoAsociado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
+            grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
             grupoAsociado.setFilterStyle("width: 270px");
             RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            grupoAsociado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
+            grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
             grupoAsociado.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
             bandera = 0;
@@ -453,12 +569,14 @@ public class ControlTiposEntidades implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 270;
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            grupoAsociado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
+            grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
             grupoAsociado.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
             bandera = 0;
@@ -554,12 +672,14 @@ public class ControlTiposEntidades implements Serializable {
         if (contador == 3) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
+                tamano = 270;
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                grupoAsociado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
+                grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
                 grupoAsociado.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
                 bandera = 0;
@@ -660,7 +780,8 @@ public class ControlTiposEntidades implements Serializable {
                 System.out.println("Borrado==0");
                 borrarTiposEntidades();
             } else {
-                System.out.println("Borrado>0");
+                System.out.println("VERIFICARBORRADO borrado : " + borrado);
+                System.out.println("VERIFICARBORRADO borradoFCE : " + borradoFCE);
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
@@ -810,11 +931,13 @@ public class ControlTiposEntidades implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:codigo");
+                tamano = 270;
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                grupoAsociado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
+                grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
                 grupoAsociado.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
                 bandera = 0;
@@ -841,8 +964,8 @@ public class ControlTiposEntidades implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarTiposEntidades.isEmpty()) {
-administrarTipoEntidad.borrarTipoEntidad(borrarTiposEntidades);
-                
+                administrarTipoEntidad.borrarTipoEntidad(borrarTiposEntidades);
+
                 //mostrarBorrados
                 registrosBorrados = borrarTiposEntidades.size();
                 context.update("form:mostrarBorrados");
@@ -862,7 +985,10 @@ administrarTipoEntidad.borrarTipoEntidad(borrarTiposEntidades);
             listTiposEntidades = null;
             context.update("form:datosTipoEntidad");
             k = 0;
-            guardado=true;
+            guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1023,6 +1149,14 @@ administrarTipoEntidad.borrarTipoEntidad(borrarTiposEntidades);
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

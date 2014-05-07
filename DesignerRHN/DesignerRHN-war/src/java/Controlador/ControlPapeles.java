@@ -17,6 +17,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -64,7 +65,9 @@ public class ControlPapeles implements Serializable {
     private Papeles nuevoPapel;
     private Papeles duplicarPapel;
     private Papeles editarPapel;
+    private Papeles papelSeleccionado;
 
+    private int tamano;
     private Column codigoCC, nombrePapel,
             codigoAT;
 
@@ -94,7 +97,7 @@ public class ControlPapeles implements Serializable {
         filtradoListaEmpresas = null;
         guardado = true;
         banderaSeleccionPapelesPorEmpresa = false;
-
+        tamano = 270;
     }
 
     public void eventoFiltrar() {
@@ -108,6 +111,9 @@ public class ControlPapeles implements Serializable {
             System.out.println("ERROR CONTROLPAPELES eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    private String backUpCodigo;
+    private String backUpDescripcion;
+    private String backUpCodigoAlternativo;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("BETA CENTRO COSTO TIPO LISTA = " + tipoLista);
@@ -116,6 +122,24 @@ public class ControlPapeles implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listPapelesPorEmpresa.get(indice).getCodigo();
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listPapelesPorEmpresa.get(indice).getDescripcion();
+                } else if (cualCelda == 2) {
+                    backUpCodigoAlternativo = listPapelesPorEmpresa.get(indice).getCodigoalternativo();
+                }
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarPapeles.get(indice).getCodigo();
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarPapeles.get(indice).getDescripcion();
+                } else if (cualCelda == 2) {
+                    backUpCodigoAlternativo = filtrarPapeles.get(indice).getCodigoalternativo();
+                }
+            }
+
             System.err.println("CAMBIAR INDICE CUALCELDA = " + cualCelda);
             secRegistro = listPapelesPorEmpresa.get(index).getSecuencia();
             System.err.println("Sec Registro = " + secRegistro);
@@ -143,10 +167,12 @@ public class ControlPapeles implements Serializable {
                 if (!crearPapeles.contains(listPapelesPorEmpresa.get(indice))) {
                     if (listPapelesPorEmpresa.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listPapelesPorEmpresa.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else if (listPapelesPorEmpresa.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listPapelesPorEmpresa.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listPapelesPorEmpresa.size(); j++) {
                             if (j != indice) {
@@ -157,6 +183,7 @@ public class ControlPapeles implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listPapelesPorEmpresa.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -165,11 +192,14 @@ public class ControlPapeles implements Serializable {
                     }
 
                     if (listPapelesPorEmpresa.get(indice).getDescripcion().isEmpty()) {
+                        listPapelesPorEmpresa.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                     } else if (listPapelesPorEmpresa.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
+                        listPapelesPorEmpresa.get(indice).setDescripcion(backUpDescripcion);
+
                     } else {
                         banderita1 = true;
                     }
@@ -189,7 +219,6 @@ public class ControlPapeles implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
@@ -200,9 +229,11 @@ public class ControlPapeles implements Serializable {
                     if (filtrarPapeles.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarPapeles.get(indice).setCodigo(backUpCodigo);
                     } else if (filtrarPapeles.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarPapeles.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listPapelesPorEmpresa.size(); j++) {
                             if (j != indice) {
@@ -219,6 +250,7 @@ public class ControlPapeles implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            filtrarPapeles.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -227,11 +259,13 @@ public class ControlPapeles implements Serializable {
                     }
 
                     if (filtrarPapeles.get(indice).getDescripcion().isEmpty()) {
+                        filtrarPapeles.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                     }
                     if (filtrarPapeles.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarPapeles.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
                     } else {
                         banderita1 = true;
@@ -266,15 +300,16 @@ public class ControlPapeles implements Serializable {
     public void cancelarModificacion() {
         try {
             System.out.println("entre a CONTROLPAPELES.cancelarModificacion");
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 //0
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombrePapel = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:nombrePapel");
+                nombrePapel = (Column) c.getViewRoot().findComponent("form:datosPapeles:nombrePapel");
                 nombrePapel.setFilterStyle("display: none; visibility: hidden;");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoAT");
                 codigoAT.setFilterStyle("display: none; visibility: hidden;");
 
                 bandera = 0;
@@ -463,13 +498,15 @@ public class ControlPapeles implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
-                    codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoCC");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    codigoCC = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoCC");
                     codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                    nombrePapel = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:nombrePapel");
+                    nombrePapel = (Column) c.getViewRoot().findComponent("form:datosPapeles:nombrePapel");
                     nombrePapel.setFilterStyle("display: none; visibility: hidden;");
-                    codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoAT");
+                    codigoAT = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoAT");
                     codigoAT.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosPapeles");
+                    tamano = 270;
 
                     bandera = 0;
                     filtrarPapeles = null;
@@ -610,17 +647,21 @@ public class ControlPapeles implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoCC");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombrePapel = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:nombrePapel");
+                nombrePapel = (Column) c.getViewRoot().findComponent("form:datosPapeles:nombrePapel");
                 nombrePapel.setFilterStyle("display: none; visibility: hidden;");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoAT");
                 codigoAT.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosPapeles");
                 bandera = 0;
                 filtrarPapeles = null;
                 tipoLista = 0;
+                tamano = 270;
+
             }
             duplicarPapel = new Papeles();
             RequestContext.getCurrentInstance().execute("DuplicarRegistroPapeles.hide()");
@@ -741,7 +782,9 @@ public class ControlPapeles implements Serializable {
             context.update("form:datosTipoPapel");
             k = 0;
             guardado = true;
-
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
                 banderaModificacionEmpresa = 1;
@@ -775,30 +818,35 @@ public class ControlPapeles implements Serializable {
         System.out.println("\n ENTRE A CONTROLPAPELES.activarCtrlF11 \n");
 
         try {
+            FacesContext c = FacesContext.getCurrentInstance();
 
             if (bandera == 0) {
                 System.out.println("Activar");
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoCC");
                 codigoCC.setFilterStyle("width: 80px");
-                nombrePapel = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:nombrePapel");
+                nombrePapel = (Column) c.getViewRoot().findComponent("form:datosPapeles:nombrePapel");
                 nombrePapel.setFilterStyle("width: 105px");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoAT");
                 codigoAT.setFilterStyle("width: 60px");
                 RequestContext.getCurrentInstance().update("form:datosPapeles");
                 bandera = 1;
+                tamano = 246;
+
             } else if (bandera == 1) {
                 System.out.println("Desactivar");
                 //0
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                nombrePapel = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:nombrePapel");
+                nombrePapel = (Column) c.getViewRoot().findComponent("form:datosPapeles:nombrePapel");
                 nombrePapel.setFilterStyle("display: none; visibility: hidden;");
-                codigoAT = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPapeles:codigoAT");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoAT");
                 codigoAT.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosPapeles");
                 bandera = 0;
                 filtrarPapeles = null;
                 tipoLista = 0;
+                tamano = 270;
+
             }
         } catch (Exception e) {
 
@@ -1190,6 +1238,22 @@ public class ControlPapeles implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public Papeles getPapelSeleccionado() {
+        return papelSeleccionado;
+    }
+
+    public void setPapelSeleccionado(Papeles papelSeleccionado) {
+        this.papelSeleccionado = papelSeleccionado;
     }
 
 }

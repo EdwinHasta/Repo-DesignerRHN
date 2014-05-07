@@ -115,7 +115,7 @@
                                 <p:ajax event="filter" listener="#{controlNovedadesEmpleados.eventoFiltrar()}"/>
 
                                 <p:column headerText="#{msg['concepto']}" sortBy= "#{novedades.concepto.codigoSTR}" filterBy="#{novedades.concepto.codigoSTR}" filterMatchMode="contains" id="nEConceptoCodigo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
+                                    <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{novedades.concepto.codigoSTR}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{novedades.concepto.codigoSTR}" id="editarConceptoCodigo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
