@@ -8,7 +8,7 @@ package Administrar;
 import Entidades.Festivos;
 import Entidades.Paises;
 import InterfaceAdministrar.AdministrarFestivosInterface;
-import InterfaceAdministrar.PersistenciaFestivosInterface;
+import InterfacePersistencia.PersistenciaFestivosInterface;
 import InterfacePersistencia.PersistenciaPaisesInterface;
 import java.math.BigInteger;
 import java.util.List;

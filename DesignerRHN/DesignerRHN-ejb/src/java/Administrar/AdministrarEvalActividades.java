@@ -7,7 +7,7 @@ package Administrar;
 
 import Entidades.EvalActividades;
 import InterfaceAdministrar.AdministrarEvalActividadesInterface;
-import InterfaceAdministrar.PersistenciaEvalActividadesInterface;
+import InterfacePersistencia.PersistenciaEvalActividadesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;

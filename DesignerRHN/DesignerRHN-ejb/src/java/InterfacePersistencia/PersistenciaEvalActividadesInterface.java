@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package InterfaceAdministrar;
+package InterfacePersistencia;
 
 import Entidades.EvalActividades;
 import java.math.BigInteger;

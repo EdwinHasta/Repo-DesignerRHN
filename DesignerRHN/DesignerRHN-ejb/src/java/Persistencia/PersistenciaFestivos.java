@@ -6,7 +6,7 @@
 package Persistencia;
 
 import Entidades.Festivos;
-import InterfaceAdministrar.PersistenciaFestivosInterface;
+import InterfacePersistencia.PersistenciaFestivosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
