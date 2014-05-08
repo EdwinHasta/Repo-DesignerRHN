@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarSubCategorias implements AdministrarSubCategoriasInterfa
 
     @EJB
     PersistenciaSubCategoriasInterface persistenciaSubCategorias;
-
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarSubCategorias(List<SubCategorias> listaSubCategorias) {
         for (int i = 0; i < listaSubCategorias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaSubCategorias.editar(listaSubCategorias.get(i));
+            persistenciaSubCategorias.editar(em, listaSubCategorias.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarSubCategorias implements AdministrarSubCategoriasInterfa
     public void borrarSubCategorias(List<SubCategorias> listaSubCategorias) {
         for (int i = 0; i < listaSubCategorias.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaSubCategorias.borrar(listaSubCategorias.get(i));
+            persistenciaSubCategorias.borrar(em, listaSubCategorias.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarSubCategorias implements AdministrarSubCategoriasInterfa
     public void crearSubCategorias(List<SubCategorias> listaSubCategorias) {
         for (int i = 0; i < listaSubCategorias.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaSubCategorias.crear(listaSubCategorias.get(i));
+            persistenciaSubCategorias.crear(em, listaSubCategorias.get(i));
         }
     }
 
     @Override
     public List<SubCategorias> consultarSubCategorias() {
         List<SubCategorias> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaSubCategorias.consultarSubCategorias();
+        listMotivosCambiosCargos = persistenciaSubCategorias.consultarSubCategorias(em);
         return listMotivosCambiosCargos;
     }
 
     @Override
     public SubCategorias consultarSubCategoria(BigInteger secSubCategorias) {
         SubCategorias subCategoria;
-        subCategoria = persistenciaSubCategorias.consultarSubCategoria(secSubCategorias);
+        subCategoria = persistenciaSubCategorias.consultarSubCategoria(em, secSubCategorias);
         return subCategoria;
     }
 
@@ -66,7 +82,7 @@ public class AdministrarSubCategorias implements AdministrarSubCategoriasInterfa
         BigInteger contarEscalafones = null;
 
         try {
-            return contarEscalafones = persistenciaSubCategorias.contarEscalafones(secSubCategorias);
+            return contarEscalafones = persistenciaSubCategorias.contarEscalafones(em, secSubCategorias);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarSubCategorias contarEscalafones ERROR : " + e);
             return null;

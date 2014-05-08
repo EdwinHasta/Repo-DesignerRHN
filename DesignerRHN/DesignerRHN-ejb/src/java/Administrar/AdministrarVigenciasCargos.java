@@ -16,6 +16,7 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
+
 /**
  *
  * @author Hugo Sin y -Felipphe-
@@ -29,12 +30,6 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaVWActualesTiposTrabajadoresInterface persistenciaVWActualesTiposTrabajadores;
-    
-    private List<VigenciasCargos> vigenciasCargos;
-    public List<VWActualesTiposTrabajadores> tipoEmpleadoLista;
-    private VigenciasCargos vc;
-    private Empleados empleado;
-    private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
@@ -42,7 +37,12 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-
+    
+    private List<VigenciasCargos> vigenciasCargos;
+    public List<VWActualesTiposTrabajadores> tipoEmpleadoLista;
+    private VigenciasCargos vc;
+    private Empleados empleado;
+    private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     private EntityManager em;
     
     @Override
@@ -58,7 +58,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     @Override
     public List<VigenciasCargos> consultarTodo() {
         try {
-            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargos();
+            vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargos(em);
         } catch (Exception e) {
             vigenciasCargos = null;
         }
@@ -68,7 +68,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     @Override
     public VigenciasCargos consultarPorSecuencia(BigInteger secuenciaVC) {
         try {
-            vc = persistenciaVigenciasCargos.buscarVigenciaCargo(secuenciaVC);
+            vc = persistenciaVigenciasCargos.buscarVigenciaCargo(em, secuenciaVC);
         } catch (Exception e) {
             vc = null;
         }
@@ -91,7 +91,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     public void editarVigenciaCargo(VigenciasCargos vigencia) {
         try {
             System.out.println("administrarEmplVig editarVig: editar Vigencia = " + vigencia.getSecuencia());
-            persistenciaVigenciasCargos.editar(vigencia);
+            persistenciaVigenciasCargos.editar(em, vigencia);
         } catch (Exception ex) {
             System.out.println("administrarEmplVig editarVig: FALLO EN EL EDITAR");
         }
@@ -103,10 +103,10 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
             if (listVCModificadas.get(i).getEmpleadojefe().getSecuencia() == null) {
                 listVCModificadas.get(i).setEmpleadojefe(null);
                 vc = listVCModificadas.get(i);
-                persistenciaVigenciasCargos.editar(vc);
+                persistenciaVigenciasCargos.editar(em, vc);
             } else {
                 vc = listVCModificadas.get(i);
-                persistenciaVigenciasCargos.editar(vc);
+                persistenciaVigenciasCargos.editar(em, vc);
             }
 
         }
@@ -114,7 +114,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
 
     public void borrarVC(VigenciasCargos vigenciasCargos) {
         try {
-            persistenciaVigenciasCargos.borrar(vigenciasCargos);
+            persistenciaVigenciasCargos.borrar(em, vigenciasCargos);
         } catch (Exception e) {
             System.out.println("Error" + e);
         }
@@ -122,12 +122,12 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     }
 
     public void crearVC(VigenciasCargos vigenciasCargos) {
-        persistenciaVigenciasCargos.crear(vigenciasCargos);
+        persistenciaVigenciasCargos.crear(em, vigenciasCargos);
     }
 
     public Empleados buscarEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -138,7 +138,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador() {
 
         try {
-            tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador("ACTIVO");
+            tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(em, "ACTIVO");
             return tipoEmpleadoLista;
         } catch (Exception e) {
             tipoEmpleadoLista = null;

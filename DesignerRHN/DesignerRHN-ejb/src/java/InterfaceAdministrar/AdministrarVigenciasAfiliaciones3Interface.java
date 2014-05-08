@@ -21,6 +21,13 @@ import java.util.List;
  */
 public interface AdministrarVigenciasAfiliaciones3Interface {
 
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia);
 
     public void editarVigenciaAfiliacion(VigenciasAfiliaciones vigencia);

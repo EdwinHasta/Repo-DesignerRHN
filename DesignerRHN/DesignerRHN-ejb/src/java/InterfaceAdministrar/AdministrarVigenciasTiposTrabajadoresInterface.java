@@ -26,6 +26,13 @@ import java.util.List;
 public interface AdministrarVigenciasTiposTrabajadoresInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Metodo que obtiene el total de VigenciasTiposTrabajadores por un Empleado
      * @param secEmpleado Secuencia de un Empleado
      * @return listVTT Lista de VigenciasTiposTrabajadores por un Empleado

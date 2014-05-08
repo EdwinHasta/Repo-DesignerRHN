@@ -16,6 +16,13 @@ import java.util.List;
 public interface AdministrarVigenciasJornadasInterface {
     
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Obtiene la lista de VigenciaJornada de un empleado
      * @param secEmpleado Secuencia Empleado
      * @return Lista de VigenciaJornada del empleado dado

@@ -19,6 +19,13 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarVigenciasEstadosCivilesInterface {
 
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPorEmpleado(BigInteger secEmpleado);
 public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPorEmpleado();
     public void modificarVigenciasEstadosCiviles(List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles);

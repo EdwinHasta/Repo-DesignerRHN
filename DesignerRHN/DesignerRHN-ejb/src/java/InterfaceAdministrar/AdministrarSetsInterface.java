@@ -16,6 +16,12 @@ import java.util.List;
 public interface AdministrarSetsInterface {
     
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    /**
      * Metodo que obtiene los Sets de un Empleado especifico
      * @param secEmpleado Secuencia Empleado
      * @return listSE Lista de Sets de un Empleado

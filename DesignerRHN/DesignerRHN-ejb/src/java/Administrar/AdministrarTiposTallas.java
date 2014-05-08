@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
 
     @EJB
     PersistenciaTiposTallasInterface persistenciaTiposTallas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarTiposTallas(List<TiposTallas> listTiposTallas) {
         for (int i = 0; i < listTiposTallas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposTallas.editar(listTiposTallas.get(i));
+            persistenciaTiposTallas.editar(em, listTiposTallas.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
     public void borrarTiposTallas(List<TiposTallas> listTiposTallas) {
         for (int i = 0; i < listTiposTallas.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposTallas.borrar(listTiposTallas.get(i));
+            persistenciaTiposTallas.borrar(em, listTiposTallas.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
     public void crearTiposTallas(List<TiposTallas> listTiposTallas) {
         for (int i = 0; i < listTiposTallas.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposTallas.crear(listTiposTallas.get(i));
+            persistenciaTiposTallas.crear(em, listTiposTallas.get(i));
         }
     }
 
     @Override
     public List<TiposTallas> consultarTiposTallas() {
         List<TiposTallas> listTiposTallas;
-        listTiposTallas = persistenciaTiposTallas.buscarTiposTallas();
+        listTiposTallas = persistenciaTiposTallas.buscarTiposTallas(em);
         return listTiposTallas;
     }
 
     @Override
     public TiposTallas consultarTipoTalla(BigInteger secTipoEmpresa) {
         TiposTallas tiposTallas;
-        tiposTallas = persistenciaTiposTallas.buscarTipoTalla(secTipoEmpresa);
+        tiposTallas = persistenciaTiposTallas.buscarTipoTalla(em, secTipoEmpresa);
         return tiposTallas;
     }
 
@@ -66,7 +82,7 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
         try {
             BigInteger verificadorElementos;
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            return verificadorElementos = persistenciaTiposTallas.contadorElementos(secuenciaElementos);
+            return verificadorElementos = persistenciaTiposTallas.contadorElementos(em, secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposTallas verificarBorradoElementos ERROR :" + e);
             return null;
@@ -78,7 +94,7 @@ public class AdministrarTiposTallas implements AdministrarTiposTallasInterface {
         try {
             BigInteger verificadorVigenciasTallas;
             System.err.println("Secuencia Borrado Vigencias Tallas" + secuenciaVigenciasTallas);
-            return verificadorVigenciasTallas = persistenciaTiposTallas.contadorVigenciasTallas(secuenciaVigenciasTallas);
+            return verificadorVigenciasTallas = persistenciaTiposTallas.contadorVigenciasTallas(em, secuenciaVigenciasTallas);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposTallas verificarBorradoVigenciasTallas ERROR :" + e);
             return null;

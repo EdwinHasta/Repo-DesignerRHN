@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarSoausentismos implements AdministrarSoausentismosInterface {
@@ -62,15 +64,29 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     PersistenciaEnfermedadesInterface persistenciaEnfermedades;
     @EJB
     PersistenciaRelacionesIncapacidadesInterface persistenciaRelacionesIncapacidades;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     
+    private EntityManager em;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
+    @Override
     public void borrarAusentismos(Soausentismos ausentismos) {
-        persistenciaSoausentismos.borrar(ausentismos);
+        persistenciaSoausentismos.borrar(em, ausentismos);
     }
 
     @Override
     public void crearAusentismos(Soausentismos ausentismos) {
-        persistenciaSoausentismos.crear(ausentismos);
+        persistenciaSoausentismos.crear(em, ausentismos);
     }
 
     @Override
@@ -132,7 +148,7 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
                     if (listaAusentismosModificar.get(i).getObservaciones()== null) {
                         listaAusentismosModificar.get(i).setObservaciones(null);
                     }
-            persistenciaSoausentismos.editar(listaAusentismosModificar.get(i));
+            persistenciaSoausentismos.editar(em, listaAusentismosModificar.get(i));
         }
     }
     
@@ -140,7 +156,7 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
     @Override
     public List<Soausentismos> ausentismosEmpleado(BigInteger secuenciaEmpleado) {
         try {
-            return persistenciaSoausentismos.ausentismosEmpleado(secuenciaEmpleado);
+            return persistenciaSoausentismos.ausentismosEmpleado(em, secuenciaEmpleado);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesEmpleados.novedadesEmpleado" + e);
             return null;
@@ -149,53 +165,53 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
 
     //Lista de Valores Empleados
     public List<Empleados> lovEmpleados() {
-        return persistenciaEmpleados.empleadosNovedad();
+        return persistenciaEmpleados.empleadosNovedad(em);
     }
 
     public List<Tiposausentismos> lovTiposAusentismos() {
-        return persistenciaTiposAusentismos.consultarTiposAusentismos();
+        return persistenciaTiposAusentismos.consultarTiposAusentismos(em);
     }
 
     public List<Clasesausentismos> lovClasesAusentismos() {
-        return persistenciaClasesAusentismos.buscarClasesAusentismos();
+        return persistenciaClasesAusentismos.buscarClasesAusentismos(em);
     }
     
     public List<Causasausentismos> lovCausasAusentismos() {
-        return persistenciaCausasAusentismos.buscarCausasAusentismos();
+        return persistenciaCausasAusentismos.buscarCausasAusentismos(em);
     }
     
     public List<Soaccidentes> lovAccidentes(BigInteger secuenciaEmpleado){
-        return persistenciaSoaccdicentes.accidentesEmpleado(secuenciaEmpleado);
+        return persistenciaSoaccdicentes.accidentesEmpleado(em, secuenciaEmpleado);
     }
     
     public List<Terceros> lovTerceros(){
-        return persistenciaTerceros.buscarTerceros();
+        return persistenciaTerceros.buscarTerceros(em);
     }
     
     public List<Diagnosticoscategorias> lovDiagnosticos(){
-        return persistenciaDiagnosticos.buscarDiagnosticos();
+        return persistenciaDiagnosticos.buscarDiagnosticos(em);
     }
     
     public List<Ibcs> empleadosIBCS(BigInteger secuenciaEmpleado){
-        return persistenciaIBCS.buscarIbcsPorEmpleado(secuenciaEmpleado);
+        return persistenciaIBCS.buscarIbcsPorEmpleado(em, secuenciaEmpleado);
     }
     
     public List<Enfermedades> enfermedades(){
-        return persistenciaEnfermedades.buscarEnfermedades();
+        return persistenciaEnfermedades.buscarEnfermedades(em );
     }
     
     public List<EnfermeadadesProfesionales> empleadosEP(BigInteger secuenciaEmpleado){
-        return persistenciaEP.buscarEPPorEmpleado(secuenciaEmpleado);
+        return persistenciaEP.buscarEPPorEmpleado(em, secuenciaEmpleado);
     }
     
     //MostrarProrroga
     public String mostrarProrroga(BigInteger secuenciaProrroga){
-        return persistenciaSoausentismos.prorrogaMostrar(secuenciaProrroga);
+        return persistenciaSoausentismos.prorrogaMostrar(em, secuenciaProrroga);
     }
     
     //MostrarRelacion
     public String mostrarRelacion(BigInteger secuenciaAusentismo){
-        return persistenciaRelacionesIncapacidades.relaciones(secuenciaAusentismo);
+        return persistenciaRelacionesIncapacidades.relaciones(em, secuenciaAusentismo);
     }
     
     //LOV Prorrogas
@@ -203,6 +219,6 @@ public class AdministrarSoausentismos implements AdministrarSoausentismosInterfa
         /*if(secuenciaAusentismo == null){
            secuenciaAusentismo = BigInteger.valueOf(0);
         }*/
-        return persistenciaSoausentismos.prorrogas(secEmpleado, secuenciaCausa, secuenciaAusentismo);
+        return persistenciaSoausentismos.prorrogas(em, secEmpleado, secuenciaCausa, secuenciaAusentismo);
     }
 }

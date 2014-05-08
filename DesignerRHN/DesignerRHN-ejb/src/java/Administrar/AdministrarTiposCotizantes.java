@@ -15,6 +15,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 
 /**
@@ -25,22 +27,36 @@ import javax.ejb.Stateful;
 public class AdministrarTiposCotizantes implements AdministrarTiposCotizantesInterface{
     @EJB
     PersistenciaTiposCotizantesInterface persistenciaTiposCotizantes;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
+    @Override
     public List<TiposCotizantes> tiposCotizantes() {
         List<TiposCotizantes> listaTiposCotizantes;
-        listaTiposCotizantes = persistenciaTiposCotizantes.lovTiposCotizantes();
+        listaTiposCotizantes = persistenciaTiposCotizantes.lovTiposCotizantes(em);
         return listaTiposCotizantes;
     }
     
     @Override
     public void borrarTipoCotizante(TiposCotizantes tiposCotizantes) {
-        persistenciaTiposCotizantes.borrar(tiposCotizantes);
+        persistenciaTiposCotizantes.borrar(em, tiposCotizantes);
     }
 
     @Override
     public void crearTipoCotizante(TiposCotizantes tiposCotizantes) {
-        persistenciaTiposCotizantes.crear(tiposCotizantes);
+        persistenciaTiposCotizantes.crear(em, tiposCotizantes);
     }
     
     
@@ -76,7 +92,7 @@ public class AdministrarTiposCotizantes implements AdministrarTiposCotizantesInt
                     if (listaTiposCotizantesModificar.get(i).getExtranjero()== null) {
                         listaTiposCotizantesModificar.get(i).setExtranjero(null);
                     }
-            persistenciaTiposCotizantes.editar(listaTiposCotizantesModificar.get(i));
+            persistenciaTiposCotizantes.editar(em, listaTiposCotizantesModificar.get(i));
         }
     }
     

@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,37 +24,51 @@ public class AdministrarVigenciasPlantas implements AdministrarVigenciasPlantasI
 
     @EJB
     PersistenciaVigenciasPlantasInterface persistenciaVigenciasPlantas;
-
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     public void modificarVigenciasPlantas(List<VigenciasPlantas> listaVigenciasPlantas) {
         for (int i = 0; i < listaVigenciasPlantas.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaVigenciasPlantas.editar(listaVigenciasPlantas.get(i));
+            persistenciaVigenciasPlantas.editar(em, listaVigenciasPlantas.get(i));
         }
     }
 
     public void borrarVigenciasPlantas(List<VigenciasPlantas> listaVigenciasPlantas) {
         for (int i = 0; i < listaVigenciasPlantas.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaVigenciasPlantas.borrar(listaVigenciasPlantas.get(i));
+            persistenciaVigenciasPlantas.borrar(em, listaVigenciasPlantas.get(i));
         }
     }
 
     public void crearVigenciasPlantas(List<VigenciasPlantas> listaVigenciasPlantas) {
         for (int i = 0; i < listaVigenciasPlantas.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaVigenciasPlantas.crear(listaVigenciasPlantas.get(i));
+            persistenciaVigenciasPlantas.crear(em, listaVigenciasPlantas.get(i));
         }
     }
 
     public List<VigenciasPlantas> consultarVigenciasPlantas() {
         List<VigenciasPlantas> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaVigenciasPlantas.consultarVigenciasPlantas();
+        listMotivosCambiosCargos = persistenciaVigenciasPlantas.consultarVigenciasPlantas(em);
         return listMotivosCambiosCargos;
     }
 
     public VigenciasPlantas consultarVigenciaPlanta(BigInteger secVigenciasPlantas) {
         VigenciasPlantas motivoCambioCargo;
-        motivoCambioCargo = persistenciaVigenciasPlantas.consultarVigenciaPlanta(secVigenciasPlantas);
+        motivoCambioCargo = persistenciaVigenciasPlantas.consultarVigenciaPlanta(em, secVigenciasPlantas);
         return motivoCambioCargo;
     }
 
@@ -60,7 +76,7 @@ public class AdministrarVigenciasPlantas implements AdministrarVigenciasPlantasI
         BigInteger contarPlantasVigenciaPlanta = null;
 
         try {
-            return contarPlantasVigenciaPlanta = persistenciaVigenciasPlantas.contarPlantasVigenciaPlanta(secVigenciasPlantas);
+            return contarPlantasVigenciaPlanta = persistenciaVigenciasPlantas.contarPlantasVigenciaPlanta(em, secVigenciasPlantas);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarVigenciasPlantas verificarBorradoVNE ERROR :" + e);
             return null;

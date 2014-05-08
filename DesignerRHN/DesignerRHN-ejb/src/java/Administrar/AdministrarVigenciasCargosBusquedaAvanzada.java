@@ -21,6 +21,8 @@ import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -76,14 +78,28 @@ public class AdministrarVigenciasCargosBusquedaAvanzada implements AdministrarVi
      */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
+    @Override
     public List<Estructuras> lovEstructura() {
         try {
-            List<Estructuras> lista = persistenciaEstructuras.buscarEstructuras();
+            List<Estructuras> lista = persistenciaEstructuras.buscarEstructuras(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovEstructura Admi : " + e.toString());
@@ -94,7 +110,7 @@ public class AdministrarVigenciasCargosBusquedaAvanzada implements AdministrarVi
     @Override
     public List<MotivosCambiosCargos> lovMotivosCambiosCargos() {
         try {
-            List<MotivosCambiosCargos> lista = persistenciaMotivosCambiosCargos.buscarMotivosCambiosCargos();
+            List<MotivosCambiosCargos> lista = persistenciaMotivosCambiosCargos.buscarMotivosCambiosCargos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovMotivosCambiosCargos Admi : " + e.toString());
@@ -105,7 +121,7 @@ public class AdministrarVigenciasCargosBusquedaAvanzada implements AdministrarVi
     @Override
     public List<CentrosCostos> lovCentrosCostos() {
         try {
-            List<CentrosCostos> lista = persistenciaCentrosCostos.buscarCentrosCostos();
+            List<CentrosCostos> lista = persistenciaCentrosCostos.buscarCentrosCostos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovCentrosCostos Admi : " + e.toString());
@@ -116,7 +132,7 @@ public class AdministrarVigenciasCargosBusquedaAvanzada implements AdministrarVi
     @Override
     public List<Papeles> lovPapeles() {
         try {
-            List<Papeles> lista = persistenciaPapeles.consultarPapeles();
+            List<Papeles> lista = persistenciaPapeles.consultarPapeles(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovPapeles Admi : " + e.toString());
@@ -127,7 +143,7 @@ public class AdministrarVigenciasCargosBusquedaAvanzada implements AdministrarVi
     @Override
     public List<Cargos> lovCargos() {
         try {
-            List<Cargos> lista = persistenciaCargos.consultarCargos();
+            List<Cargos> lista = persistenciaCargos.consultarCargos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovCargos Admi : " + e.toString());
@@ -138,7 +154,7 @@ public class AdministrarVigenciasCargosBusquedaAvanzada implements AdministrarVi
     @Override
     public List<Empleados> lovEmpleados() {
         try {
-            List<Empleados> lista = persistenciaEmpleado.buscarEmpleados();
+            List<Empleados> lista = persistenciaEmpleado.buscarEmpleados(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovEmpleados Admi : " + e.toString());

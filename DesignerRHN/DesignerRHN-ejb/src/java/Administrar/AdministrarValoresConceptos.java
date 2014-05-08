@@ -14,6 +14,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -34,40 +36,58 @@ public class AdministrarValoresConceptos implements AdministrarValoresConceptosI
     PersistenciaValoresConceptosInterface persistenciaValoresConceptos;
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
+    @Override
     public void modificarValoresConceptos(List<ValoresConceptos> listaValoresConceptos) {
         for (int i = 0; i < listaValoresConceptos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaValoresConceptos.editar(listaValoresConceptos.get(i));
+            persistenciaValoresConceptos.editar(em, listaValoresConceptos.get(i));
         }
     }
 
+    @Override
     public void borrarValoresConceptos(List<ValoresConceptos> listaValoresConceptos) {
         for (int i = 0; i < listaValoresConceptos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaValoresConceptos.borrar(listaValoresConceptos.get(i));
+            persistenciaValoresConceptos.borrar(em, listaValoresConceptos.get(i));
         }
     }
 
+    @Override
     public void crearValoresConceptos(List<ValoresConceptos> listaValoresConceptos) {
         for (int i = 0; i < listaValoresConceptos.size(); i++) {
-            persistenciaValoresConceptos.crear(listaValoresConceptos.get(i));
+            persistenciaValoresConceptos.crear(em, listaValoresConceptos.get(i));
         }
     }
 
     @Override
     public List<ValoresConceptos> consultarValoresConceptos() {
         List<ValoresConceptos> listaValoresConceptos;
-        listaValoresConceptos = persistenciaValoresConceptos.consultarValoresConceptos();
+        listaValoresConceptos = persistenciaValoresConceptos.consultarValoresConceptos(em);
         return listaValoresConceptos;
     }
 
+    @Override
     public List<Conceptos> consultarLOVConceptos() {
         List<Conceptos> listLOVConceptos;
-        listLOVConceptos = persistenciaConceptos.buscarConceptos();
+        listLOVConceptos = persistenciaConceptos.buscarConceptos(em);
         return listLOVConceptos;
     }
 
@@ -76,7 +96,7 @@ public class AdministrarValoresConceptos implements AdministrarValoresConceptosI
         BigInteger consulta;
 
         try {
-            consulta = persistenciaValoresConceptos.consultarConceptoValorConcepto(concepto);
+            consulta = persistenciaValoresConceptos.consultarConceptoValorConcepto(em, concepto);
             return consulta;
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARVALORESCONCEPTOS CONSULTARCONCEPTOVALORCONCEPTO ERROR : " + e);

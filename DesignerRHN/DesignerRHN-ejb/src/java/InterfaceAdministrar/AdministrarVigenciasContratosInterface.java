@@ -15,6 +15,13 @@ import java.util.List;
 public interface AdministrarVigenciasContratosInterface {
     
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Metodo que obtiene las VigenciasContrados por la secuencia de un Emplado
      * @param secEmpleado Secuencia del Empleado
      * @return listVC Lista de Vigencias Contratos por Empleado

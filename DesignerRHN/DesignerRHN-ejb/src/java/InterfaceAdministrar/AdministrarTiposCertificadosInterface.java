@@ -17,6 +17,13 @@ import javax.ejb.Local;
 public interface AdministrarTiposCertificadosInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Método encargado de modificar TiposCertificados.
      *
      * @param listaTiposCertificados Lista TiposCertificados que se van a modificar.

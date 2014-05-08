@@ -5,13 +5,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarSoActosInsegurosInterface;
 import Entidades.SoActosInseguros;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfaceAdministrar.AdministrarSoActosInsegurosInterface;
 import InterfacePersistencia.PersistenciaSoActosInsegurosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,14 +24,27 @@ public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosI
 
     @EJB
     PersistenciaSoActosInsegurosInterface persistenciaSoActosInseguros;
-
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     private List<SoActosInseguros> listSoActosInseguros;
+    private EntityManager em;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarSoActosInseguros(List<SoActosInseguros> listSoActosInseguros) {
         for (int i = 0; i < listSoActosInseguros.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaSoActosInseguros.editar(listSoActosInseguros.get(i));
+            persistenciaSoActosInseguros.editar(em, listSoActosInseguros.get(i));
         }
     }
 
@@ -37,7 +52,7 @@ public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosI
     public void borrarSoActosInseguros(List<SoActosInseguros> listSoActosInseguros) {
         for (int i = 0; i < listSoActosInseguros.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaSoActosInseguros.borrar(listSoActosInseguros.get(i));
+            persistenciaSoActosInseguros.borrar(em, listSoActosInseguros.get(i));
         }
     }
 
@@ -45,20 +60,20 @@ public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosI
     public void crearSoActosInseguros(List<SoActosInseguros> listSoActosInseguros) {
         for (int i = 0; i < listSoActosInseguros.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaSoActosInseguros.crear(listSoActosInseguros.get(i));
+            persistenciaSoActosInseguros.crear(em, listSoActosInseguros.get(i));
         }
     }
 
     @Override
     public List<SoActosInseguros> consultarSoActosInseguros() {
-        listSoActosInseguros = persistenciaSoActosInseguros.buscarSoActosInseguros();
+        listSoActosInseguros = persistenciaSoActosInseguros.buscarSoActosInseguros(em);
         return listSoActosInseguros;
     }
 
     @Override
     public SoActosInseguros consultarSoActoInseguro(BigInteger secSoCondicionesAmbientalesP) {
         SoActosInseguros soActosInseguros;
-        soActosInseguros = persistenciaSoActosInseguros.buscarSoActoInseguro(secSoCondicionesAmbientalesP);
+        soActosInseguros = persistenciaSoActosInseguros.buscarSoActoInseguro(em, secSoCondicionesAmbientalesP);
         return soActosInseguros;
     }
 
@@ -67,7 +82,7 @@ public class AdministrarSoActosInseguros implements AdministrarSoActosInsegurosI
         BigInteger verificarSoAccidtenesMedicos;
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            return verificarSoAccidtenesMedicos = persistenciaSoActosInseguros.contadorSoAccidentesMedicos(secuenciaElementos);
+            return verificarSoAccidtenesMedicos = persistenciaSoActosInseguros.contadorSoAccidentesMedicos(em, secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARSOACTOSINSEGUROS verificarSoAccidtenesMedicos ERROR :" + e);
             return null;

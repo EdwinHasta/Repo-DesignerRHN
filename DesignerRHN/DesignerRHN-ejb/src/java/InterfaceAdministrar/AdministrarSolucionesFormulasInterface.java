@@ -18,6 +18,13 @@ import java.util.List;
 public interface AdministrarSolucionesFormulasInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Método encargado de recuperar los datos de SolucionesFormulas con
      * respecto a los parametro de la Secuencia del Empleado y la Secuencia de
      * la Novedad.

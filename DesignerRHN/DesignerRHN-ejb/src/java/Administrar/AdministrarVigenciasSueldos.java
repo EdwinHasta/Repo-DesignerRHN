@@ -22,6 +22,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -46,6 +48,14 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     PersistenciaEmpleadoInterface persistenciaEmpleados;
     @EJB
     PersistenciaTercerosSucursalesInterface persistenciaTercerosSucursales;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     //Vigencias Sueldos
     List<VigenciasSueldos> listVigenciasSueldos;
     VigenciasSueldos vigenciaSueldo;
@@ -64,11 +74,17 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     Empleados empleado;
     //Tercertos Sucursales
     List<TercerosSucursales> listTercerosSucursales;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public List<VigenciasSueldos> VigenciasSueldosEmpleado(BigInteger secEmpleado) {
         try {
-            listVigenciasSueldos = persistenciaVigenciasSueldos.buscarVigenciasSueldosEmpleado(secEmpleado);
+            listVigenciasSueldos = persistenciaVigenciasSueldos.buscarVigenciasSueldosEmpleado(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Sueldos (VigenciasSueldosEmpleado)");
             listVigenciasSueldos = null;
@@ -79,7 +95,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public List<VigenciasSueldos> VigenciasSueldosActualesEmpleado(BigInteger secEmpleado) {
         try {
-            listVigenciasSueldos = persistenciaVigenciasSueldos.buscarVigenciasSueldosEmpleadoRecientes(secEmpleado);
+            listVigenciasSueldos = persistenciaVigenciasSueldos.buscarVigenciasSueldosEmpleadoRecientes(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Sueldos (VigenciasSueldosActualesEmpleado)");
             listVigenciasSueldos = null;
@@ -100,7 +116,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
                     listVSModificadas.get(i).setTiposueldo(null);
                 }
                 vigenciaSueldo = listVSModificadas.get(i);
-                persistenciaVigenciasSueldos.editar(vigenciaSueldo);
+                persistenciaVigenciasSueldos.editar(em, vigenciaSueldo);
             }
         } catch (Exception e) {
             System.out.println("Error modificarVS AdmiVigenciasSueldos");
@@ -110,7 +126,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public void borrarVS(VigenciasSueldos vigenciasSueldos) {
         try {
-            persistenciaVigenciasSueldos.borrar(vigenciasSueldos);
+            persistenciaVigenciasSueldos.borrar(em, vigenciasSueldos);
         } catch (Exception e) {
             System.out.println("Error borrarVS AdmiVigenciasSueldos");
         }
@@ -119,7 +135,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public void crearVS(VigenciasSueldos vigenciasSueldos) {
         try {
-            persistenciaVigenciasSueldos.crear(vigenciasSueldos);
+            persistenciaVigenciasSueldos.crear(em, vigenciasSueldos);
         } catch (Exception e) {
             System.out.println("Error crearVS AdmiVigenciasSueldos");
         }
@@ -128,7 +144,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             System.out.println("Error buscarEmpleado AdmiVigenciasSueldos");
@@ -140,7 +156,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public List<VigenciasAfiliaciones> VigenciasAfiliacionesVigencia(BigInteger secVigencia) {
         try {
-            listVigenciasAfiliaciones = persistenciaVigenciasAfiliaciones.buscarVigenciasAfiliacionesVigenciaSecuencia(secVigencia);
+            listVigenciasAfiliaciones = persistenciaVigenciasAfiliaciones.buscarVigenciasAfiliacionesVigenciaSecuencia(em, secVigencia);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Afiliaciones (VigenciasSueldosEmpleado)");
             listVigenciasAfiliaciones = null;
@@ -160,7 +176,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
                     listVAModificadas.get(i).getTercerosucursal().setTercero(null);
                 }
                 vigenciaAfiliacion = listVAModificadas.get(i);
-                persistenciaVigenciasAfiliaciones.editar(vigenciaAfiliacion);
+                persistenciaVigenciasAfiliaciones.editar(em, vigenciaAfiliacion);
             }
         } catch (Exception e) {
             System.out.println("Error modificarVA AdmiVigenciasSueldos");
@@ -170,7 +186,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public void borrarVA(VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
-            persistenciaVigenciasAfiliaciones.borrar(vigenciasAfiliaciones);
+            persistenciaVigenciasAfiliaciones.borrar(em, vigenciasAfiliaciones);
         } catch (Exception e) {
             System.out.println("Error borrarVA AdmiVigenciasSueldos");
         }
@@ -179,7 +195,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public void crearVA(VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
-            persistenciaVigenciasAfiliaciones.crear(vigenciasAfiliaciones);
+            persistenciaVigenciasAfiliaciones.crear(em, vigenciasAfiliaciones);
         } catch (Exception e) {
             System.out.println("Error crearVA AdmiVigenciasSueldos");
         }
@@ -188,7 +204,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public List<TiposSueldos> tiposSueldos() {
         try {
-            listTiposSueldos = persistenciaTiposSueldos.buscarTiposSueldos();
+            listTiposSueldos = persistenciaTiposSueldos.buscarTiposSueldos(em);
             return listTiposSueldos;
         } catch (Exception e) {
             System.out.println("Error tiposSueldos AdmiVigenciasSueldos");
@@ -199,7 +215,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public List<MotivosCambiosSueldos> motivosCambiosSueldos() {
         try {
-            listMotivosCambiosSueldos = persistenciaMotivosCambiosSueldos.buscarMotivosCambiosSueldos();
+            listMotivosCambiosSueldos = persistenciaMotivosCambiosSueldos.buscarMotivosCambiosSueldos(em);
             return listMotivosCambiosSueldos;
         } catch (Exception e) {
             System.out.println("Error motivosCambiosSueldos AdmiVigenciasSueldos");
@@ -210,7 +226,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public List<TiposEntidades> tiposEntidades() {
         try {
-            listTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades();
+            listTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades(em);
             return listTiposEntidades;
         } catch (Exception e) {
             System.out.println("Error tiposEntidades AdmiVigenciasSueldos");
@@ -221,7 +237,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public List<Terceros> terceros() {
         try {
-            listTerceros = persistenciaTerceros.buscarTerceros();
+            listTerceros = persistenciaTerceros.buscarTerceros(em);
             return listTerceros;
         } catch (Exception e) {
             System.out.println("Error terceros AdmiVigenciasSueldos");
@@ -232,7 +248,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override 
     public List<TercerosSucursales> tercerosSucursales(BigInteger secuencia) {
         try {
-            listTercerosSucursales = persistenciaTercerosSucursales.buscarTercerosSucursalesPorTerceroSecuencia(secuencia);
+            listTercerosSucursales = persistenciaTercerosSucursales.buscarTercerosSucursalesPorTerceroSecuencia(em, secuencia);
             return listTercerosSucursales;
         } catch (Exception e) {
             System.out.println("Error tercerosSucursales AdmiVigenciasSueldos");
@@ -243,7 +259,7 @@ public class AdministrarVigenciasSueldos implements AdministrarVigenciasSueldosI
     @Override
     public void crearTerceroSurcursal(TercerosSucursales tercerosSucursales) {
         try {
-            persistenciaTercerosSucursales.crear(tercerosSucursales);
+            persistenciaTercerosSucursales.crear(em, tercerosSucursales);
         } catch (Exception e) {
             System.out.println("Error crearTerceroSucursal AdmiVigenciasSueldos");
         }

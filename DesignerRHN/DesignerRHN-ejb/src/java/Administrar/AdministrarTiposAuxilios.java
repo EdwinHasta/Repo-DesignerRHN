@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarTiposAuxilios implements AdministrarTiposAuxiliosInterfa
 
     @EJB
     PersistenciaTiposAuxiliosInterface persistenciaTiposAuxilios;
-
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarTiposAuxilios(List<TiposAuxilios> listaTiposAuxilios) {
         for (int i = 0; i < listaTiposAuxilios.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposAuxilios.editar(listaTiposAuxilios.get(i));
+            persistenciaTiposAuxilios.editar(em, listaTiposAuxilios.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarTiposAuxilios implements AdministrarTiposAuxiliosInterfa
     public void borrarTiposAuxilios(List<TiposAuxilios> listaTiposAuxilios) {
         for (int i = 0; i < listaTiposAuxilios.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposAuxilios.borrar(listaTiposAuxilios.get(i));
+            persistenciaTiposAuxilios.borrar(em, listaTiposAuxilios.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarTiposAuxilios implements AdministrarTiposAuxiliosInterfa
     public void crearTiposAuxilios(List<TiposAuxilios> listaTiposAuxilios) {
         for (int i = 0; i < listaTiposAuxilios.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposAuxilios.crear(listaTiposAuxilios.get(i));
+            persistenciaTiposAuxilios.crear(em, listaTiposAuxilios.get(i));
         }
     }
 
     @Override
     public List<TiposAuxilios> consultarTiposAuxilios() {
         List<TiposAuxilios> listTiposAuxilios;
-        listTiposAuxilios = persistenciaTiposAuxilios.buscarTiposAuxilios();
+        listTiposAuxilios = persistenciaTiposAuxilios.buscarTiposAuxilios(em);
         return listTiposAuxilios;
     }
 
     @Override
     public TiposAuxilios consultarTipoAuxilio(BigInteger secTiposAuxilios) {
         TiposAuxilios tiposAuxilios;
-        tiposAuxilios = persistenciaTiposAuxilios.buscarTipoAuxilio(secTiposAuxilios);
+        tiposAuxilios = persistenciaTiposAuxilios.buscarTipoAuxilio(em, secTiposAuxilios);
         return tiposAuxilios;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarTiposAuxilios implements AdministrarTiposAuxiliosInterfa
     public BigInteger contarTablasAuxiliosTiposAuxilios(BigInteger secuenciaTiposAuxilios) {
         BigInteger verificarTablasAuxilios = null;
         try {
-            return verificarTablasAuxilios = persistenciaTiposAuxilios.contadorTablasAuxilios(secuenciaTiposAuxilios);
+            return verificarTablasAuxilios = persistenciaTiposAuxilios.contadorTablasAuxilios(em, secuenciaTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSAUXILIOS verificarTablasAuxilios ERROR :" + e);
             return null;

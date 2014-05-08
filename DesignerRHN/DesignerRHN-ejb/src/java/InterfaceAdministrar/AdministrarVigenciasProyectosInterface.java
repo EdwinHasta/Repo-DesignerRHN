@@ -15,6 +15,13 @@ import java.util.List;
 
 public interface AdministrarVigenciasProyectosInterface {
     
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
      public void crearVigenciaProyecto(VigenciasProyectos vigenciasProyectos);
      public void borrarVigenciaProyecto(VigenciasProyectos vigenciasProyectos);
      public void modificarVigenciaProyecto(List<VigenciasProyectos> listaVigenciasProyectosModificar);

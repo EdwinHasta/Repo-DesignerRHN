@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarTiposDescansos implements AdministrarTiposDescansosInter
 
     @EJB
     PersistenciaTiposDescansosInterface persistenciaTiposDescansos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarTiposDescansos(List<TiposDescansos> listaTiposDescansos) {
         for (int i = 0; i < listaTiposDescansos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposDescansos.editar(listaTiposDescansos.get(i));
+            persistenciaTiposDescansos.editar(em, listaTiposDescansos.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarTiposDescansos implements AdministrarTiposDescansosInter
     public void borrarTiposDescansos(List<TiposDescansos> listaTiposDescansos) {
         for (int i = 0; i < listaTiposDescansos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposDescansos.borrar(listaTiposDescansos.get(i));
+            persistenciaTiposDescansos.borrar(em, listaTiposDescansos.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarTiposDescansos implements AdministrarTiposDescansosInter
     public void crearTiposDescansos(List<TiposDescansos> listaTiposDescansos) {
         for (int i = 0; i < listaTiposDescansos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposDescansos.crear(listaTiposDescansos.get(i));
+            persistenciaTiposDescansos.crear(em, listaTiposDescansos.get(i));
         }
     }
 
     @Override
     public List<TiposDescansos> consultarTiposDescansos() {
         List<TiposDescansos> listTiposTallas;
-        listTiposTallas = persistenciaTiposDescansos.consultarTiposDescansos();
+        listTiposTallas = persistenciaTiposDescansos.consultarTiposDescansos(em);
         return listTiposTallas;
     }
 
     @Override
     public TiposDescansos consultarTipoDescanso(BigInteger secTipoDescanso) {
         TiposDescansos tiposTallas;
-        tiposTallas = persistenciaTiposDescansos.consultarTipoDescanso(secTipoDescanso);
+        tiposTallas = persistenciaTiposDescansos.consultarTipoDescanso(em, secTipoDescanso);
         return tiposTallas;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarTiposDescansos implements AdministrarTiposDescansosInter
         BigInteger contarVigenciasJornadasTipoDescanso;
         try {
             System.out.println("Secuencia Tipos Jornadas" + secuenciaTiposDescansos);
-            return contarVigenciasJornadasTipoDescanso = persistenciaTiposDescansos.contarVigenciasJornadasTipoDescanso(secuenciaTiposDescansos);
+            return contarVigenciasJornadasTipoDescanso = persistenciaTiposDescansos.contarVigenciasJornadasTipoDescanso(em, secuenciaTiposDescansos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposDescansos contarVigenciasJornadasTipoDescanso ERROR :" + e);
             return null;

@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,13 +24,27 @@ public class AdministrarTiposViajeros implements AdministrarTiposViajerosInterfa
 
     @EJB
     PersistenciaTiposViajerosInterface persistenciaTiposViajeros;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarTiposViajeros(List<Tiposviajeros> listaTiposViajeros) {
         for (int i = 0; i < listaTiposViajeros.size(); i++) {
             System.out.println("Administrar Modificando...");
             System.out.println("Nombre " + listaTiposViajeros.get(i).getNombre() + " Codigo " + listaTiposViajeros.get(i).getCodigo());
-            persistenciaTiposViajeros.editar(listaTiposViajeros.get(i));
+            persistenciaTiposViajeros.editar(em, listaTiposViajeros.get(i));
         }
     }
 
@@ -37,7 +53,7 @@ public class AdministrarTiposViajeros implements AdministrarTiposViajerosInterfa
         for (int i = 0; i < listaTiposViajeros.size(); i++) {
             System.out.println("Administrar Borrando...");
             System.out.println("Nombre " + listaTiposViajeros.get(i).getNombre() + " Codigo " + listaTiposViajeros.get(i).getCodigo());
-            persistenciaTiposViajeros.borrar(listaTiposViajeros.get(i));
+            persistenciaTiposViajeros.borrar(em, listaTiposViajeros.get(i));
         }
     }
 
@@ -46,21 +62,21 @@ public class AdministrarTiposViajeros implements AdministrarTiposViajerosInterfa
         for (int i = 0; i < listaTiposViajeros.size(); i++) {
             System.out.println("Administrar Creando...");
             System.out.println("Nombre " + listaTiposViajeros.get(i).getNombre() + " Codigo " + listaTiposViajeros.get(i).getCodigo());
-            persistenciaTiposViajeros.crear(listaTiposViajeros.get(i));
+            persistenciaTiposViajeros.crear(em, listaTiposViajeros.get(i));
         }
     }
 
     @Override
     public List<Tiposviajeros> consultarTiposViajeros() {
         List<Tiposviajeros> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaTiposViajeros.consultarTiposViajeros();
+        listMotivosCambiosCargos = persistenciaTiposViajeros.consultarTiposViajeros(em);
         return listMotivosCambiosCargos;
     }
 
     @Override
     public Tiposviajeros consultarTipoViajero(BigInteger secTiposViajeros) {
         Tiposviajeros subCategoria;
-        subCategoria = persistenciaTiposViajeros.consultarSubCategoria(secTiposViajeros);
+        subCategoria = persistenciaTiposViajeros.consultarSubCategoria(em, secTiposViajeros);
         return subCategoria;
     }
 
@@ -69,7 +85,7 @@ public class AdministrarTiposViajeros implements AdministrarTiposViajerosInterfa
         BigInteger contarTiposLegalizaciones = null;
 
         try {
-            return contarTiposLegalizaciones = persistenciaTiposViajeros.contarTiposLegalizacionesTipoViajero(secTiposViajeros);
+            return contarTiposLegalizaciones = persistenciaTiposViajeros.contarTiposLegalizacionesTipoViajero(em, secTiposViajeros);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposViajeros contarEscalafones ERROR : " + e);
             return null;
@@ -81,7 +97,7 @@ public class AdministrarTiposViajeros implements AdministrarTiposViajerosInterfa
         BigInteger contarVigenciasViajeros = null;
 
         try {
-            return contarVigenciasViajeros = persistenciaTiposViajeros.contarVigenciasViajerosTipoViajero(secTiposViajeros);
+            return contarVigenciasViajeros = persistenciaTiposViajeros.contarVigenciasViajerosTipoViajero(em, secTiposViajeros);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposViajeros contarEscalafones ERROR : " + e);
             return null;

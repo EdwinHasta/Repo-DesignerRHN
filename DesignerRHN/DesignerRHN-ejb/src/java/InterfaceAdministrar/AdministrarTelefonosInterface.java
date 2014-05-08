@@ -16,6 +16,13 @@ import java.util.List;
  * @author Administrator
  */
 public interface AdministrarTelefonosInterface {
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public List<Telefonos> telefonosPersona(BigInteger secPersona);
     public Personas encontrarPersona(BigInteger secPersona);
     public List<TiposTelefonos>  lovTiposTelefonos();

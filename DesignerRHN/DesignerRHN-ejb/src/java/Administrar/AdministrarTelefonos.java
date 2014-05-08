@@ -13,6 +13,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarTelefonos implements AdministrarTelefonosInterface{
@@ -25,12 +27,26 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     PersistenciaTiposTelefonosInterface persistenciaTiposTelefonos;
     @EJB
     PersistenciaCiudadesInterface PersistenciaCiudades;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     private Telefonos t;
+    private EntityManager em;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public List<Telefonos> telefonosPersona(BigInteger secPersona) {
         try {
-            return persistenciaTelefonos.telefonosPersona(secPersona);
+            return persistenciaTelefonos.telefonosPersona(em, secPersona);
         } catch (Exception e) {
             System.err.println("Error AdministrarTelefonos.telefonosPersona " + e);
             return null;
@@ -39,19 +55,19 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
     
     @Override
     public Personas encontrarPersona(BigInteger secPersona){
-        return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
+        return persistenciaPersonas.buscarPersonaSecuencia(em, secPersona);
     } 
     
     //Lista de Valores TiposTelefonos
     
     @Override
     public List<TiposTelefonos>  lovTiposTelefonos(){
-        return persistenciaTiposTelefonos.tiposTelefonos();
+        return persistenciaTiposTelefonos.tiposTelefonos(em);
     }
     
     @Override
     public List<Ciudades>  lovCiudades(){
-        return PersistenciaCiudades.ciudades();
+        return PersistenciaCiudades.ciudades(em);
     }
     
     @Override
@@ -72,19 +88,19 @@ public class AdministrarTelefonos implements AdministrarTelefonosInterface{
             }
             
             
-            persistenciaTelefonos.editar(t);
+            persistenciaTelefonos.editar(em, t);
         }
     }
 
     @Override
     public void borrarTelefono(Telefonos telefonos) {
-        persistenciaTelefonos.borrar(telefonos);
+        persistenciaTelefonos.borrar(em, telefonos);
     }
 
 
     @Override
     public void crearTelefono(Telefonos telefonos) {
-        persistenciaTelefonos.crear(telefonos);
+        persistenciaTelefonos.crear(em, telefonos);
     }
 
     

@@ -16,6 +16,13 @@ import java.util.List;
  */
 public interface AdministrarTiposFormulasInterface {
 
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public List<TiposFormulas> buscarTiposFormulas(BigInteger secuenciaOperando, String tipoOperando);
 
     public void borrarTiposFormulas(TiposFormulas tiposFormulas);

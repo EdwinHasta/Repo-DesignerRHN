@@ -13,6 +13,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -25,28 +27,41 @@ public class AdministrarTiposConstantes implements AdministrarTiposConstantesInt
     PersistenciaTiposConstantesInterface persistenciaTiposConstantes;
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }    
 
     @Override
     public List<TiposConstantes> buscarTiposConstantes(BigInteger secuenciaOperando, String tipoOperando) {
         List<TiposConstantes> listaTiposConstantes;
-        listaTiposConstantes = persistenciaTiposConstantes.tiposConstantes(secuenciaOperando, tipoOperando);
+        listaTiposConstantes = persistenciaTiposConstantes.tiposConstantes(em, secuenciaOperando, tipoOperando);
         return listaTiposConstantes;
     }
 
     @Override
     public void borrarTiposConstantes(TiposConstantes tiposConstantes) {
-        persistenciaTiposConstantes.borrar(tiposConstantes);
+        persistenciaTiposConstantes.borrar(em, tiposConstantes);
     }
 
     @Override
     public void crearTiposConstantes(TiposConstantes tiposConstantes) {
-        persistenciaTiposConstantes.crear(tiposConstantes);
+        persistenciaTiposConstantes.crear(em, tiposConstantes);
     }
 
     @Override
     public void modificarTiposConstantes(TiposConstantes tiposConstantes) {
-        persistenciaTiposConstantes.editar(tiposConstantes);
+        persistenciaTiposConstantes.editar(em, tiposConstantes);
 
     }
     

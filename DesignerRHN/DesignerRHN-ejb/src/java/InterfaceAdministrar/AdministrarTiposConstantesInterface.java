@@ -16,6 +16,13 @@ import java.util.List;
  */
 public interface AdministrarTiposConstantesInterface {
     
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public List<TiposConstantes> buscarTiposConstantes(BigInteger secuenciaOperando, String tipoOperando);
 
     public void borrarTiposConstantes(TiposConstantes tiposConstantes);

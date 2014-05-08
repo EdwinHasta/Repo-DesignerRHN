@@ -18,6 +18,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -57,12 +59,26 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
      */
     @EJB
     PersistenciaSucursalesPilaInterface persistenciaSucursalesPila;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     //-------------------------------------------------------------------------------------
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas(em);
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("ADMINISTRARUBICACIONESGEOGRAFICAS: Falló al buscar las empresas /n" + e.getMessage());
@@ -84,7 +100,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
             }
 
             for (int i = 0; i < listaUbicacionesGeograficas.size(); i++) {
-                persistenciaUbicacionesGeograficas.editar(listaUbicacionesGeograficas.get(i));
+                persistenciaUbicacionesGeograficas.editar(em, listaUbicacionesGeograficas.get(i));
             }
         } catch (Exception e) {
             System.err.println("AdministrarUbicacionesGeograficas: Falló al editar el CentroCosto /n" + e.getMessage());
@@ -105,7 +121,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
             }
             for (int i = 0; i < listaUbicacionesGeograficas.size(); i++) {
                 System.out.println("Borando... sucursalpila : " + listaUbicacionesGeograficas.get(i).getSucursalPila().getSecuencia());
-                persistenciaUbicacionesGeograficas.borrar(listaUbicacionesGeograficas.get(i));
+                persistenciaUbicacionesGeograficas.borrar(em, listaUbicacionesGeograficas.get(i));
             }
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARUBICACIONESGEOGRAFICAS.borrarUbicacionesGeograficas ERROR=====" + e.getMessage());
@@ -122,7 +138,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
                     listaUbicacionesGeograficas.get(i).setSucursalPila(null);
                 }
                 System.out.println("ADMINISTRAR CREANDO...");
-                persistenciaUbicacionesGeograficas.crear(listaUbicacionesGeograficas.get(i));
+                persistenciaUbicacionesGeograficas.crear(em, listaUbicacionesGeograficas.get(i));
 
             }
 
@@ -134,7 +150,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     public List<UbicacionesGeograficas> consultarUbicacionesGeograficasPorEmpresa(BigInteger secEmpresa) {
         try {
             System.out.println("ENTRE A ADMINISTRARUBICACIONESGEOGRAFICAS.buscarUbicacionesGeograficasPorEmpresa ");
-            List<UbicacionesGeograficas> listaUbicacionesGeograficas = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficasPorEmpresa(secEmpresa);
+            List<UbicacionesGeograficas> listaUbicacionesGeograficas = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficasPorEmpresa(em, secEmpresa);
             return listaUbicacionesGeograficas;
         } catch (Exception e) {
             System.out.println("ERROR ADMINISTRARUBICACIONESGEOGRAFICAS CONSULTARUBICACIONESGEOGRAFICASPOREMPRESA ERROR : " + e);
@@ -144,7 +160,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
 
     public List<Ciudades> lovCiudades() {
         try {
-            List<Ciudades> listaCiudades = persistenciaCiudades.ciudades();
+            List<Ciudades> listaCiudades = persistenciaCiudades.ciudades(em);
             return listaCiudades;
         } catch (Exception e) {
             System.out.println("\n ADMINISTRARUBICACIONESGEOGRAFICAS LOVCIUDADES ERROR : " + e);
@@ -154,7 +170,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
 
     public List<SucursalesPila> lovSucursalesPilaPorEmpresa(BigInteger secEmpresa) {
         try {
-            List<SucursalesPila> listaSucursalesPila = persistenciaSucursalesPila.consultarSucursalesPilaPorEmpresa(secEmpresa);
+            List<SucursalesPila> listaSucursalesPila = persistenciaSucursalesPila.consultarSucursalesPilaPorEmpresa(em, secEmpresa);
             return listaSucursalesPila;
         } catch (Exception e) {
             System.out.println("\n ADMINISTRARUBICACIONESGEOGRAFICAS LOVSUCURSALESPILA ERROR : " + e);
@@ -165,7 +181,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     public BigInteger contarAfiliacionesEntidadesUbicacionGeografica(BigInteger secuencia) {
         BigInteger contarAfiliacionesEntidadesUbicacionGeografica;
         try {
-            contarAfiliacionesEntidadesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarAfiliacionesEntidadesUbicacionGeografica(secuencia);
+            contarAfiliacionesEntidadesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarAfiliacionesEntidadesUbicacionGeografica(em, secuencia);
             return contarAfiliacionesEntidadesUbicacionGeografica;
         } catch (Exception e) {
             return null;
@@ -175,7 +191,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     public BigInteger contarInspeccionesUbicacionGeografica(BigInteger secuencia) {
         BigInteger contarInspeccionesUbicacionGeografica;
         try {
-            contarInspeccionesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarInspeccionesUbicacionGeografica(secuencia);
+            contarInspeccionesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarInspeccionesUbicacionGeografica(em, secuencia);
             return contarInspeccionesUbicacionGeografica;
         } catch (Exception e) {
             return null;
@@ -185,7 +201,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     public BigInteger contarParametrosInformesUbicacionGeografica(BigInteger secuencia) {
         BigInteger contarParametrosInformesUbicacionGeografica;
         try {
-            contarParametrosInformesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarParametrosInformesUbicacionGeografica(secuencia);
+            contarParametrosInformesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarParametrosInformesUbicacionGeografica(em, secuencia);
             return contarParametrosInformesUbicacionGeografica;
         } catch (Exception e) {
             return null;
@@ -195,7 +211,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     public BigInteger contarRevisionesUbicacionGeografica(BigInteger secuencia) {
         BigInteger contarRevisionesUbicacionGeografica;
         try {
-            contarRevisionesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarRevisionesUbicacionGeografica(secuencia);
+            contarRevisionesUbicacionGeografica = persistenciaUbicacionesGeograficas.contarRevisionesUbicacionGeografica(em, secuencia);
             return contarRevisionesUbicacionGeografica;
         } catch (Exception e) {
             return null;
@@ -205,7 +221,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
     public BigInteger contarVigenciasUbicacionesUbicacionGeografica(BigInteger secuencia) {
         BigInteger contarVigenciasUbicacionesGeografica;
         try {
-            contarVigenciasUbicacionesGeografica = persistenciaUbicacionesGeograficas.contarVigenciasUbicacionesGeografica(secuencia);
+            contarVigenciasUbicacionesGeografica = persistenciaUbicacionesGeograficas.contarVigenciasUbicacionesGeografica(em, secuencia);
             return contarVigenciasUbicacionesGeografica;
         } catch (Exception e) {
             return null;

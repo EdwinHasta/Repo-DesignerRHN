@@ -25,6 +25,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -51,17 +53,26 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     PersistenciaTiposPensionadosInterface persistenciaTiposPensionados;
     @EJB
     PersistenciaClasesPensionesInterface persistenciaClasesPensiones;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
     List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadores;
     VigenciasTiposTrabajadores vigenciaTipoTrabajador;
     Empleados empleado;
     List<TiposTrabajadores> tiposTrabajadores;
     TiposTrabajadores tipoTrabajadorCodigo;
-    
+
     List<MotivosRetiros> motivosRetiros;
     MotivosRetiros motivoRetiroCodigo;
     List<Retirados> retiradosEmpleado;
     Retirados retiradoVigencia;
-    
+  
     List<Pensionados> listaPensionados;
     List<Pensionados> listaPensionesEmpleado;
     Pensionados pensionVigencia;
@@ -75,9 +86,14 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     List<ClasesPensiones> clasesPensiones;
     ClasesPensiones clasePension;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     public List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadoresEmpleado(BigInteger secEmpleado) {
         try {
-            vigenciasTiposTrabajadores = persistenciaVigenciasTiposTrabajadores.buscarVigenciasTiposTrabajadoresEmpleado(secEmpleado);
+            vigenciasTiposTrabajadores = persistenciaVigenciasTiposTrabajadores.buscarVigenciasTiposTrabajadoresEmpleado(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Tipos Trabajadores (vigenciasTiposTrabajadoresEmpleado)");
             vigenciasTiposTrabajadores = null;
@@ -90,19 +106,19 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
         for (int i = 0; i < listVTTModificadas.size(); i++) {
             System.out.println("Modificando...");
             vigenciaTipoTrabajador = listVTTModificadas.get(i);
-            persistenciaVigenciasTiposTrabajadores.editar(vigenciaTipoTrabajador);
+            persistenciaVigenciasTiposTrabajadores.editar(em, vigenciaTipoTrabajador);
         }
     }
 
     @Override
     public void borrarVTT(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
-        persistenciaVigenciasTiposTrabajadores.borrar(vigenciasTiposTrabajadores);
+        persistenciaVigenciasTiposTrabajadores.borrar(em, vigenciasTiposTrabajadores);
     }
 
     @Override
     public void crearVTT(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
-            persistenciaVigenciasTiposTrabajadores.crear(vigenciasTiposTrabajadores);
+            persistenciaVigenciasTiposTrabajadores.crear(em, vigenciasTiposTrabajadores);
             System.out.println("Llamo a persistencia tipo trab");
         } catch (Exception e) {
             System.out.println("Error crearVTT AdministrarVIgenciasTipoTrabajador");
@@ -112,7 +128,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -123,7 +139,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<TiposTrabajadores> tiposTrabajadores() {
         try {
-            tiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
+            tiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
             return tiposTrabajadores;
         } catch (Exception e) {
             return null;
@@ -132,7 +148,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
 
     public TiposTrabajadores tipoTrabajadorCodigo(BigDecimal codTipoTrabajador) {
         try {
-            tipoTrabajadorCodigo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigo(codTipoTrabajador);
+            tipoTrabajadorCodigo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigo(em, codTipoTrabajador);
             return tipoTrabajadorCodigo;
         } catch (Exception e) {
             return null;
@@ -141,13 +157,13 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
 
     @Override
     public void crearRetirado(Retirados retirado) {
-        persistenciaRetirados.crear(retirado);
+        persistenciaRetirados.crear(em, retirado);
     }
 
     @Override
     public void editarRetirado(Retirados retirado) {
         try {
-            persistenciaRetirados.editar(retirado);
+            persistenciaRetirados.editar(em, retirado);
         } catch (Exception e) {
             System.out.println("Error editarRetirado !!");
         }
@@ -155,13 +171,13 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
 
     @Override
     public void borrarRetirado(Retirados retirado) {
-        persistenciaRetirados.borrar(retirado);
+        persistenciaRetirados.borrar(em, retirado);
     }
 
     @Override
     public List<Retirados> retiradosEmpleado(BigInteger secEmpleado) {
         try {
-            retiradosEmpleado = persistenciaRetirados.buscarRetirosEmpleado(secEmpleado);
+            retiradosEmpleado = persistenciaRetirados.buscarRetirosEmpleado(em, secEmpleado);
             return retiradosEmpleado;
         } catch (Exception e) {
             return null;
@@ -171,7 +187,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public Retirados retiroPorSecuenciaVigencia(BigInteger secVigencia) {
         try {
-            retiradoVigencia = persistenciaRetirados.buscarRetiroVigenciaSecuencia(secVigencia);
+            retiradoVigencia = persistenciaRetirados.buscarRetiroVigenciaSecuencia(em, secVigencia);
             return retiradoVigencia;
         } catch (Exception e) {
             return new Retirados();
@@ -181,7 +197,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<MotivosRetiros> motivosRetiros() {
         try {
-            motivosRetiros = persistenciaMotivosRetiros.consultarMotivosRetiros();
+            motivosRetiros = persistenciaMotivosRetiros.consultarMotivosRetiros(em);
             return motivosRetiros;
         } catch (Exception e) {
             return null;
@@ -191,7 +207,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public MotivosRetiros motivoRetiroCodigo(BigInteger codMotivoRetiro) {
         try {
-            motivoRetiroCodigo = persistenciaMotivosRetiros.consultarMotivoRetiro(codMotivoRetiro);
+            motivoRetiroCodigo = persistenciaMotivosRetiros.consultarMotivoRetiro(em, codMotivoRetiro);
             return motivoRetiroCodigo;
         } catch (Exception e) {
             return null;
@@ -204,7 +220,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<TiposPensionados> tiposPensionados() {
         try {
-            tiposPensionados = persistenciaTiposPensionados.consultarTiposPensionados();
+            tiposPensionados = persistenciaTiposPensionados.consultarTiposPensionados(em);
             return tiposPensionados;
         } catch (Exception e) {
             System.out.println("error tipospensionado administrarvigenciastipostrabajadores");
@@ -215,7 +231,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<ClasesPensiones> clasesPensiones() {
         try {
-            clasesPensiones = persistenciaClasesPensiones.consultarClasesPensiones();
+            clasesPensiones = persistenciaClasesPensiones.consultarClasesPensiones(em);
             return clasesPensiones;
         } catch (Exception e) {
             System.out.println("error clasesPensiones administrarvigenciastipostrabajadores");
@@ -226,7 +242,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public ClasesPensiones clasePensionCodigo(BigInteger codClasePension) {
         try {
-            clasePension = persistenciaClasesPensiones.consultarClasePension(codClasePension);
+            clasePension = persistenciaClasesPensiones.consultarClasePension(em, codClasePension);
             return clasePension;
         } catch (Exception e) {
             System.out.println("Error AdministrarVigenciaTipoTrabajador clasePensionCodigo");
@@ -238,7 +254,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<Personas> listaPersonas(){
         try{
-            listaPersonas = persistenciaPersonas.consultarPersonas();
+            listaPersonas = persistenciaPersonas.consultarPersonas(em);
             return listaPersonas;
         }catch(Exception e){
             System.out.println("Error listaPersonas AdministrarVigenciaTipoTrabajador");
@@ -249,7 +265,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public Personas personaSecuencia(BigInteger secPersona){
         try{
-            persona = persistenciaPersonas.buscarPersonaSecuencia(secPersona);
+            persona = persistenciaPersonas.buscarPersonaSecuencia(em, secPersona);
             return persona;
         }catch(Exception e){
             System.out.println("Error personasSecuencia AdministrarVigenciaTipoTrabajador");
@@ -262,7 +278,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public void crearPensionado(Pensionados pension) {
         try{
-        persistenciaPensionados.crear(pension);
+        persistenciaPensionados.crear(em, pension);
         }catch(Exception e){
             System.out.println("Error crearPensionado AdministrarVigenciaTiposTrabajadores");
         }
@@ -272,7 +288,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public void editarPensionado(Pensionados pension) {
         try {
-            persistenciaPensionados.editar(pension);
+            persistenciaPensionados.editar(em, pension);
         } catch (Exception e) {
             System.out.println("Error editarPensionado AdministrarVigenciaTiposTrabajadores");
         }
@@ -282,7 +298,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public void borrarPensionado(Pensionados pension) {
         try{
-        persistenciaPensionados.borrar(pension);
+        persistenciaPensionados.borrar(em, pension);
         }catch(Exception e){
             System.out.println("Error borrarPensionado AdministrarVigenciaTiposTrabajadores");
         }
@@ -292,7 +308,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<Pensionados> pensionadoEmpleado(BigInteger secEmpleado) {
         try {
-            listaPensionesEmpleado = persistenciaPensionados.buscarPensionadosEmpleado(secEmpleado);
+            listaPensionesEmpleado = persistenciaPensionados.buscarPensionadosEmpleado(em, secEmpleado);
             return listaPensionesEmpleado;
         } catch (Exception e) {
             System.out.println("Error pensionadoEmpleado AdministrarVigenciaTiposTrabajadores");
@@ -303,7 +319,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public List<Pensionados> listaPensionados() {
         try {
-            listaPensionados = persistenciaPensionados.buscarPensionados();
+            listaPensionados = persistenciaPensionados.buscarPensionados(em);
             return listaPensionados;
         } catch (Exception e) {
             System.out.println("Error listaPensionados AdministrarVigenciaTiposTrabajadores");
@@ -314,7 +330,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     @Override
     public Pensionados pensionPorSecuenciaVigencia(BigInteger secVigencia) {
         try {
-            pensionVigencia = persistenciaPensionados.buscarPensionVigenciaSecuencia(secVigencia);
+            pensionVigencia = persistenciaPensionados.buscarPensionVigenciaSecuencia(em, secVigencia);
             return pensionVigencia;
         } catch (Exception e) {
             System.out.println("Error pensionPorSecuenciaVigencia AdministrarVigenciaTiposTrabajadores");

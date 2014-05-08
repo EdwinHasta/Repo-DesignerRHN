@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,21 +24,36 @@ public class AdministrarTiposFunciones implements AdministrarTiposFuncionesInter
 
     @EJB
     PersistenciaTiposFuncionesInterface persistenciaTiposFunciones;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
+    @Override
     public List<TiposFunciones> buscarTiposFunciones(BigInteger secuenciaOperando, String tipoOperando) {
         List<TiposFunciones> listaTiposFunciones;
-        listaTiposFunciones = persistenciaTiposFunciones.tiposFunciones(secuenciaOperando, tipoOperando);
+        listaTiposFunciones = persistenciaTiposFunciones.tiposFunciones(em, secuenciaOperando, tipoOperando);
         return listaTiposFunciones;
     }
 
     @Override
     public void borrarTiposFunciones(TiposFunciones tiposFunciones) {
-        persistenciaTiposFunciones.borrar(tiposFunciones);
+        persistenciaTiposFunciones.borrar(em, tiposFunciones);
     }
 
     @Override
     public void crearTiposFunciones(TiposFunciones tiposFunciones) {
-        persistenciaTiposFunciones.crear(tiposFunciones);
+        persistenciaTiposFunciones.crear(em, tiposFunciones);
     }
 
     @Override
@@ -49,7 +66,7 @@ public class AdministrarTiposFunciones implements AdministrarTiposFuncionesInter
             if (listaTiposFuncionesModificar.get(i).getNombreobjeto()== null) {
                 listaTiposFuncionesModificar.get(i).setNombreobjeto(null);
             }
-            persistenciaTiposFunciones.editar(listaTiposFuncionesModificar.get(i));
+            persistenciaTiposFunciones.editar(em, listaTiposFuncionesModificar.get(i));
         }
     }
 }
