@@ -23,11 +23,11 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    EntityManager em;*/
 
     @Override
-    public void crear(GruposTiposCC gruposTiposCC) {
+    public void crear(EntityManager em,GruposTiposCC gruposTiposCC) {
         try {
             em.persist(gruposTiposCC);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     }
 
     @Override
-    public void editar(GruposTiposCC gruposTiposCC) {
+    public void editar(EntityManager em,GruposTiposCC gruposTiposCC) {
         try {
             em.merge(gruposTiposCC);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     }
 
     @Override
-    public void borrar(GruposTiposCC gruposTiposCC) {
+    public void borrar(EntityManager em,GruposTiposCC gruposTiposCC) {
         try {
             em.remove(em.merge(gruposTiposCC));
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     }
 
     @Override
-    public GruposTiposCC buscarGruposTiposCCPorSecuencia(BigInteger secuencia) {
+    public GruposTiposCC buscarGruposTiposCCPorSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(GruposTiposCC.class, secuencia);
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
     }
 
     @Override
-    public List<GruposTiposCC> buscarGruposTiposCC() {
+    public List<GruposTiposCC> buscarGruposTiposCC(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(GruposTiposCC.class));

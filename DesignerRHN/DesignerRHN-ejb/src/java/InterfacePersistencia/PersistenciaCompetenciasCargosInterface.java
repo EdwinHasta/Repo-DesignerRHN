@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Competenciascargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaCompetenciasCargosInterface {
      *
      * @param competenciascargos CompetenciaCargo que se quiere crear.
      */
-    public void crear(Competenciascargos competenciascargos);
+    public void crear(EntityManager em,Competenciascargos competenciascargos);
 
     /**
      * Método encargado de modificar una CompetenciaCargo de la base de datos.
@@ -29,7 +30,7 @@ public interface PersistenciaCompetenciasCargosInterface {
      *
      * @param competenciascargos CompetenciaCargo con los cambios que se van a realizar.
      */
-    public void editar(Competenciascargos competenciascargos);
+    public void editar(EntityManager em,Competenciascargos competenciascargos);
 
     /**
      * Método encargado de eliminar de la base de datos la CompetenciaCargo que
@@ -37,7 +38,7 @@ public interface PersistenciaCompetenciasCargosInterface {
      *
      * @param competenciascargos CompetenciaCargo que se quiere eliminar.
      */
-    public void borrar(Competenciascargos competenciascargos);
+    public void borrar(EntityManager em,Competenciascargos competenciascargos);
 
     /**
      * Método encargado de buscar todos las CompetenciasCargos existentes en la
@@ -45,7 +46,7 @@ public interface PersistenciaCompetenciasCargosInterface {
      *
      * @return Retorna una lista de Competenciascargos.
      */
-    public List<Competenciascargos> buscarCompetenciasCargos();
+    public List<Competenciascargos> buscarCompetenciasCargos(EntityManager em);
 
     /**
      * Método encargado de buscar la CompetenciaCargo con la secuencia dada por
@@ -55,7 +56,7 @@ public interface PersistenciaCompetenciasCargosInterface {
      * @return Retorna la CompetenciaCargo identificado con la secuencia dada
      * por parámetro.
      */
-    public Competenciascargos buscarCompetenciasCargosSecuencia(BigInteger secuencia);
+    public Competenciascargos buscarCompetenciasCargosSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos las Competenciascargos existentes en la
@@ -64,5 +65,5 @@ public interface PersistenciaCompetenciasCargosInterface {
      * @param secCargo Secuencia Cargo
      * @return Retorna una lista de Competenciascargos.
      */
-    public List<Competenciascargos> buscarCompetenciasCargosParaSecuenciaCargo(BigInteger secCargo);
+    public List<Competenciascargos> buscarCompetenciasCargosParaSecuenciaCargo(EntityManager em,BigInteger secCargo);
 }

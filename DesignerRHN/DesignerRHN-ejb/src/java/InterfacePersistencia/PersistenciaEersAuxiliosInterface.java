@@ -8,6 +8,7 @@ package InterfacePersistencia;
 
 import Entidades.EersAuxilios;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,6 +16,6 @@ import java.util.List;
  */
 public interface PersistenciaEersAuxiliosInterface {
     
-    public List<EersAuxilios> auxilios();
+    public List<EersAuxilios> auxilios(EntityManager em);
     
 }

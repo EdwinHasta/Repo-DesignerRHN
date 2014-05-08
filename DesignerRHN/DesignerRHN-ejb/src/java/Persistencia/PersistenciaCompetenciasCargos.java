@@ -25,11 +25,11 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Competenciascargos competenciascargos) {
+    public void crear(EntityManager em,Competenciascargos competenciascargos) {
         try {
             em.persist(competenciascargos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     }
 
     @Override
-    public void editar(Competenciascargos competenciascargos) {
+    public void editar(EntityManager em,Competenciascargos competenciascargos) {
         try {
             em.merge(competenciascargos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     }
 
     @Override
-    public void borrar(Competenciascargos competenciascargos) {
+    public void borrar(EntityManager em,Competenciascargos competenciascargos) {
         try {
             em.remove(em.merge(competenciascargos));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     }
 
     @Override
-    public List<Competenciascargos> buscarCompetenciasCargos() {
+    public List<Competenciascargos> buscarCompetenciasCargos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT cc FROM Competenciascargos cc ORDER BY cc.peso ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Competenciascargos> competenciascargos = query.getResultList();
             return competenciascargos;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     }
 
     @Override
-    public Competenciascargos buscarCompetenciasCargosSecuencia(BigInteger secuencia) {
+    public Competenciascargos buscarCompetenciasCargosSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT cc FROM Competenciascargos cc WHERE cc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Competenciascargos competenciascargos = (Competenciascargos) query.getSingleResult();
             return competenciascargos;
         } catch (Exception e) {
@@ -82,10 +84,11 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
     }
 
     @Override
-    public List<Competenciascargos> buscarCompetenciasCargosParaSecuenciaCargo(BigInteger secCargo) {
+    public List<Competenciascargos> buscarCompetenciasCargosParaSecuenciaCargo(EntityManager em,BigInteger secCargo) {
         try {
             Query query = em.createQuery("SELECT cc FROM Competenciascargos cc WHERE cc.cargo.secuencia=:secCargo");
             query.setParameter("secCargo", secCargo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Competenciascargos> competenciascargos = query.getResultList();
             return competenciascargos;
         } catch (Exception e) {

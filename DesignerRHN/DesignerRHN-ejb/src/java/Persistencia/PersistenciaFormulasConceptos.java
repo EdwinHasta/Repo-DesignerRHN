@@ -23,11 +23,11 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(FormulasConceptos conceptos) {
+    public void crear(EntityManager em,FormulasConceptos conceptos) {
         try {
             em.persist(conceptos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public void editar(FormulasConceptos conceptos) {
+    public void editar(EntityManager em,FormulasConceptos conceptos) {
         try {
             em.merge(conceptos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public void borrar(FormulasConceptos conceptos) {
+    public void borrar(EntityManager em,FormulasConceptos conceptos) {
         try {
             em.remove(em.merge(conceptos));
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public List<FormulasConceptos> buscarFormulasConceptos() {
+    public List<FormulasConceptos> buscarFormulasConceptos(EntityManager em) {
         try{
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(FormulasConceptos.class));
@@ -66,10 +66,11 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
     
     @Override
-    public boolean verificarExistenciaConceptoFormulasConcepto(BigInteger secuencia) {
+    public boolean verificarExistenciaConceptoFormulasConcepto(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -79,10 +80,11 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public List<FormulasConceptos> formulasConcepto(BigInteger secuencia) {
+    public List<FormulasConceptos> formulasConcepto(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT fc FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             return query.getResultList();
         } catch (Exception e) {
             return null;
@@ -90,11 +92,12 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public boolean verificarFormulaCargue_Concepto(BigInteger secuencia, BigInteger secFormula) {
+    public boolean verificarFormulaCargue_Concepto(EntityManager em,BigInteger secuencia, BigInteger secFormula) {
         try {
             Query query = em.createQuery("SELECT COUNT(fc) FROM FormulasConceptos fc WHERE fc.concepto.secuencia = :secuencia AND fc.formula.secuencia = :secFormula");
             query.setParameter("secuencia", secuencia);
             query.setParameter("secFormula", secFormula);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -104,10 +107,11 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
     
       @Override
-    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(BigInteger secuencia) {
+    public Long comportamientoConceptoAutomaticoSecuenciaConcepto(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f WHERE f.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado;
         } catch (Exception e) {
@@ -117,10 +121,11 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
 
     @Override
-    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(BigInteger secuencia) {
+    public Long comportamientoConceptoSemiAutomaticoSecuenciaConcepto(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT COUNT(f.secuencia) FROM FormulasConceptos f, FormulasNovedades fn WHERE  fn.formula=f.formula AND f.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado;
         } catch (Exception e) {
@@ -130,10 +135,11 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
     }
     
     @Override
-    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(BigInteger secuencia) {
+    public List<FormulasConceptos> formulasConceptosParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT f FROM FormulasConceptos f WHERE f.formula.secuencia=:secuenciaF");
             query.setParameter("secuenciaF", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormulasConceptos> resultado =  query.getResultList();
             return resultado;
         } catch (Exception e) {

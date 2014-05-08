@@ -21,36 +21,38 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaDeclarantes implements PersistenciaDeclarantesInterface{
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Declarantes declarantes) {
+    public void crear(EntityManager em,Declarantes declarantes) {
         em.persist(declarantes);
     }
 
     @Override
-    public void editar(Declarantes declarantes) {
+    public void editar(EntityManager em,Declarantes declarantes) {
         em.merge(declarantes);
     }
 
     @Override
-    public void borrar(Declarantes declarantes) {
+    public void borrar(EntityManager em,Declarantes declarantes) {
         em.remove(em.merge(declarantes));
     }
 
     @Override
-    public List<Declarantes> buscarDeclarantes() {
-        List<Declarantes> declarantesLista = (List<Declarantes>) em.createNamedQuery("Declarantes.findAll")
-                .getResultList();
+    public List<Declarantes> buscarDeclarantes(EntityManager em) {
+        Query query = em.createNamedQuery("Declarantes.findAll");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+        List<Declarantes> declarantesLista = (List<Declarantes>) query.getResultList();
         return declarantesLista;
     }
 
     @Override
-    public Declarantes buscarDeclaranteSecuencia(BigInteger secuencia) {
+    public Declarantes buscarDeclaranteSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT d FROM Declarantes d WHERE d.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Declarantes declarantes = (Declarantes) query.getSingleResult();
             return declarantes;
         } catch (Exception e) {
@@ -60,10 +62,11 @@ public class PersistenciaDeclarantes implements PersistenciaDeclarantesInterface
     }
 
     @Override
-    public List<Declarantes> buscarDeclarantesPersona(BigInteger secPersona) {
+    public List<Declarantes> buscarDeclarantesPersona(EntityManager em,BigInteger secPersona) {
         try {
             Query query = em.createQuery("SELECT d FROM Declarantes d WHERE d.persona.secuencia = :secPersona ORDER BY d.fechainicial DESC");
             query.setParameter("secPersona", secPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Declarantes> declarantesE = query.getResultList();
             return declarantesE;
         } catch (Exception e) {

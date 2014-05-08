@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Historiasformulas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -26,16 +27,16 @@ public interface PersistenciaHistoriasformulasInterface {
      * @return Retorna la secuencia de la última HistoriaFormula de una formula
      * a una fecha específica.
      */
-    public BigInteger obtenerSecuenciaHistoriaFormula(BigInteger secFormula, String fecha);
+    public BigInteger obtenerSecuenciaHistoriaFormula(EntityManager em,BigInteger secFormula, String fecha);
 
-    public void crear(Historiasformulas historiasformulas);
+    public void crear(EntityManager em,Historiasformulas historiasformulas);
 
-    public void editar(Historiasformulas historiasformulas);
+    public void editar(EntityManager em,Historiasformulas historiasformulas);
 
-    public void borrar(Historiasformulas historiasformulas);
+    public void borrar(EntityManager em,Historiasformulas historiasformulas);
 
-    public Historiasformulas buscarHistoriaformula(BigInteger secuencia);
+    public Historiasformulas buscarHistoriaformula(EntityManager em,BigInteger secuencia);
 
-    public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(BigInteger secuencia);
+    public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(EntityManager em,BigInteger secuencia);
     
 }

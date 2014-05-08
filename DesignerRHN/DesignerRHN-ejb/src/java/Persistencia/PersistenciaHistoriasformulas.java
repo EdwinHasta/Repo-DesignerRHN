@@ -23,26 +23,26 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     
     @Override
-    public void crear(Historiasformulas historiasformulas) {
+    public void crear(EntityManager em,Historiasformulas historiasformulas) {
         em.persist(historiasformulas);
     }
 
     @Override
-    public void editar(Historiasformulas historiasformulas) {
+    public void editar(EntityManager em,Historiasformulas historiasformulas) {
         em.merge(historiasformulas);
     }
 
     @Override
-    public void borrar(Historiasformulas historiasformulas) {
+    public void borrar(EntityManager em,Historiasformulas historiasformulas) {
         em.remove(em.merge(historiasformulas));
     }
 
     @Override
-    public Historiasformulas buscarHistoriaformula(BigInteger secuencia) {
+    public Historiasformulas buscarHistoriaformula(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(Historiasformulas.class, secuencia);
         } catch (Exception e) {
@@ -52,10 +52,11 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
     }
     
     @Override
-    public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(BigInteger secuencia) {
+    public List<Historiasformulas> historiasFormulasParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT hf FROM Historiasformulas hf WHERE hf.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Historiasformulas> historiasformulas = queryFinal.getResultList();
             return historiasformulas;
         } catch (Exception e) {
@@ -66,7 +67,7 @@ public class PersistenciaHistoriasformulas implements PersistenciaHistoriasformu
 
 
     @Override
-    public BigInteger obtenerSecuenciaHistoriaFormula(BigInteger secFormula, String fecha) {
+    public BigInteger obtenerSecuenciaHistoriaFormula(EntityManager em,BigInteger secFormula, String fecha) {
         try {
             String sqlQuery = "SELECT hf.secuencia\n"
                     + "FROM historiasformulas hf\n"

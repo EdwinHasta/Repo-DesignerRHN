@@ -25,41 +25,42 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Comprobantes comprobante) {
+    public void crear(EntityManager em,Comprobantes comprobante) {
         em.persist(comprobante);
     }
 
     @Override
-    public void editar(Comprobantes comprobante) {
+    public void editar(EntityManager em,Comprobantes comprobante) {
         em.merge(comprobante);
     }
 
     @Override
-    public void borrar(Comprobantes comprobante) {
+    public void borrar(EntityManager em,Comprobantes comprobante) {
         em.remove(em.merge(comprobante));
     }
 
     @Override
-    public Comprobantes buscarComprobanteSecuencia(BigInteger secuencia) {
+    public Comprobantes buscarComprobanteSecuencia(EntityManager em,BigInteger secuencia) {
         return em.find(Comprobantes.class, secuencia);
     }
 
     @Override
-    public List<Comprobantes> buscarComprobantes() {
+    public List<Comprobantes> buscarComprobantes(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Comprobantes.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<Comprobantes> comprobantesEmpleado(BigInteger secuenciaEmpleado) {
+    public List<Comprobantes> comprobantesEmpleado(EntityManager em,BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Comprobantes> listComprobantes = query.getResultList();
             return listComprobantes;
         } catch (Exception e) {
@@ -69,9 +70,10 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     }
 
     @Override
-    public BigInteger numeroMaximoComprobante() {
+    public BigInteger numeroMaximoComprobante(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT MAX(c.numero) FROM Comprobantes c");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigInteger max = (BigInteger) query.getSingleResult();
             return max;
         } catch (Exception e) {

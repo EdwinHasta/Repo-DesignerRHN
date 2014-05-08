@@ -27,22 +27,22 @@ public class PersistenciaDetallesExtrasRecargos implements PersistenciaDetallesE
     private EntityManager em;
 
     @Override
-    public void crear(DetallesExtrasRecargos detallesExtrasRecargos) {
+    public void crear(EntityManager em, DetallesExtrasRecargos detallesExtrasRecargos) {
         em.persist(detallesExtrasRecargos);
     }
 
     @Override
-    public void editar(DetallesExtrasRecargos detallesExtrasRecargos) {
+    public void editar(EntityManager em,DetallesExtrasRecargos detallesExtrasRecargos) {
         em.merge(detallesExtrasRecargos);
     }
 
     @Override
-    public void borrar(DetallesExtrasRecargos detallesExtrasRecargos) {
+    public void borrar(EntityManager em,DetallesExtrasRecargos detallesExtrasRecargos) {
         em.remove(em.merge(detallesExtrasRecargos));
     }
 
     @Override
-    public DetallesExtrasRecargos buscarDetalleExtraRecargo(BigInteger secuencia) {
+    public DetallesExtrasRecargos buscarDetalleExtraRecargo(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(DetallesExtrasRecargos.class, secuencia);
         } catch (Exception e) {
@@ -52,9 +52,10 @@ public class PersistenciaDetallesExtrasRecargos implements PersistenciaDetallesE
     }
 
     @Override
-    public List<DetallesExtrasRecargos> buscaDetallesExtrasRecargos() {
+    public List<DetallesExtrasRecargos> buscaDetallesExtrasRecargos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT der FROM DetallesExtrasRecargos der ORDER BY der.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesExtrasRecargos> extrasRecargos = query.getResultList();
             return extrasRecargos;
         } catch (Exception e) {
@@ -64,10 +65,11 @@ public class PersistenciaDetallesExtrasRecargos implements PersistenciaDetallesE
     }
     
     @Override
-    public List<DetallesExtrasRecargos> buscaDetallesExtrasRecargosPorSecuenciaExtraRecargo(BigInteger secuencia) {
+    public List<DetallesExtrasRecargos> buscaDetallesExtrasRecargosPorSecuenciaExtraRecargo(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT der FROM DetallesExtrasRecargos der WHERE der.extrarecargo.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesExtrasRecargos> extrasRecargos = query.getResultList();
             return extrasRecargos;
         } catch (Exception e) {

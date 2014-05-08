@@ -10,6 +10,7 @@ import Entidades.GruposFactoresRiesgos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,12 +18,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface PersistenciaGruposFactoresRiesgosInterface {
-public void crear(GruposFactoresRiesgos grupoFactoresRiesgos);
-    public void editar(GruposFactoresRiesgos grupoFactoresRiesgos);
-    public void borrar(GruposFactoresRiesgos grupoFactoresRiesgos);
-    public List<GruposFactoresRiesgos> consultarGruposFactoresRiesgos();
-    public GruposFactoresRiesgos consultarGrupoFactorRiesgo(BigInteger secuencia);
-    public BigInteger contarSoProActividadesGrupoFactorRiesgo(BigInteger secuencia) ;
-    public BigInteger contarSoIndicadoresGrupoFactorRiesgo(BigInteger secuencia);
-    public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(BigInteger secuencia);
+public void crear(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos);
+    public void editar(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos);
+    public void borrar(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos);
+    public List<GruposFactoresRiesgos> consultarGruposFactoresRiesgos(EntityManager em);
+    public GruposFactoresRiesgos consultarGrupoFactorRiesgo(EntityManager em,BigInteger secuencia);
+    public BigInteger contarSoProActividadesGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) ;
+    public BigInteger contarSoIndicadoresGrupoFactorRiesgo(EntityManager em,BigInteger secuencia);
+    public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(EntityManager em,BigInteger secuencia);
 }

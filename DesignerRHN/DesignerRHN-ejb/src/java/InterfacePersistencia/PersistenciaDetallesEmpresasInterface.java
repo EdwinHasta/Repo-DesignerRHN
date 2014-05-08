@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.DetallesEmpresas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -22,7 +23,7 @@ public interface PersistenciaDetallesEmpresasInterface {
      *
      * @param detallesEmpresas DetalleEmpresa que se quiere crear.
      */
-    public void crear(DetallesEmpresas detallesEmpresas);
+    public void crear(EntityManager em,DetallesEmpresas detallesEmpresas);
 
     /**
      * Método encargado de modificar un DetalleEmpresa de la base de datos. Este método
@@ -31,7 +32,7 @@ public interface PersistenciaDetallesEmpresasInterface {
      *
      * @param detallesEmpresas DetalleEmpresa con los cambios que se van a realizar.
      */
-    public void editar(DetallesEmpresas detallesEmpresas);
+    public void editar(EntityManager em,DetallesEmpresas detallesEmpresas);
 
     /**
      * Método encargado de eliminar de la base de datos el DetalleEmpresa que entra por
@@ -39,7 +40,7 @@ public interface PersistenciaDetallesEmpresasInterface {
      *
      * @param detallesEmpresas DetalleEmpresa que se quiere eliminar.
      */
-    public void borrar(DetallesEmpresas detallesEmpresas);
+    public void borrar(EntityManager em,DetallesEmpresas detallesEmpresas);
 
     /**
      * Método encargado de buscar todos los DetallesEmpresas existentes en la base de
@@ -47,14 +48,14 @@ public interface PersistenciaDetallesEmpresasInterface {
      *
      * @return Retorna una lista de DetallesEmpresas.
      */
-    public List<DetallesEmpresas> buscarDetallesEmpresas();
+    public List<DetallesEmpresas> buscarDetallesEmpresas(EntityManager em);
 
     /**
      * Método encargado de buscar los DetallesEmpresa de una Empresa especifica por medio de su secuencia
      * @param secEmpresa Secuencia Empresa
      * @return Retorna el DetalleEmpresa de la Empresa.
      */
-    public DetallesEmpresas buscarDetalleEmpresaPorSecuencia(BigInteger secEmpresa);
+    public DetallesEmpresas buscarDetalleEmpresaPorSecuencia(EntityManager em,BigInteger secEmpresa);
 
     /**
      * Método encargado de buscar el DetalleEmpresa con la secuencia dada por
@@ -65,6 +66,6 @@ public interface PersistenciaDetallesEmpresasInterface {
      * @return Retorna el DetalleEmpresa de la emprersa identificada con la
      * secuencia dada por parámetro.
      */
-    public DetallesEmpresas buscarDetalleEmpresa(Short codigoEmpresa);
+    public DetallesEmpresas buscarDetalleEmpresa(EntityManager em,Short codigoEmpresa);
 
 }

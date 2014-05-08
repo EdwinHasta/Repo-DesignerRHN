@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Clasesausentismos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaClasesAusentismosInterface {
      *
      * @param clasesAusentismos ClaseAusentismo que se quiere crear.
      */
-    public void crear(Clasesausentismos clasesAusentismos);
+    public void crear(EntityManager em,Clasesausentismos clasesAusentismos);
 
     /**
      * Método encargado de modificar una ClaseAusentismo de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaClasesAusentismosInterface {
      * @param clasesAusentismos ClaseAusentismo con los cambios que se van a
      * realizar.
      */
-    public void editar(Clasesausentismos clasesAusentismos);
+    public void editar(EntityManager em,Clasesausentismos clasesAusentismos);
 
     /**
      * Método encargado de eliminar de la base de datos la ClaseAusentismo que
@@ -38,7 +39,7 @@ public interface PersistenciaClasesAusentismosInterface {
      *
      * @param clasesAusentismos ClaseAusentismo que se quiere eliminar.
      */
-    public void borrar(Clasesausentismos clasesAusentismos);
+    public void borrar(EntityManager em,Clasesausentismos clasesAusentismos);
 
     /**
      * Método encargado de buscar todas las ClasesAusentismos existentes en la
@@ -46,10 +47,10 @@ public interface PersistenciaClasesAusentismosInterface {
      *
      * @return Retorna una lista de ClasesAusentismos.
      */
-    public List<Clasesausentismos> buscarClasesAusentismos();
+    public List<Clasesausentismos> buscarClasesAusentismos(EntityManager em);
 
-    public BigInteger contadorCausasAusentismosClaseAusentismo(BigInteger secuencia);
+    public BigInteger contadorCausasAusentismosClaseAusentismo(EntityManager em,BigInteger secuencia);
 
-    public BigInteger contadorSoAusentismosClaseAusentismo(BigInteger secuencia);
+    public BigInteger contadorSoAusentismosClaseAusentismo(EntityManager em,BigInteger secuencia);
 
 }

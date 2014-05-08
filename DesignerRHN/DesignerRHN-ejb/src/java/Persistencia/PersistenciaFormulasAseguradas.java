@@ -24,10 +24,10 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(FormulasAseguradas formulasAseguradas) {
+    public void crear(EntityManager em,FormulasAseguradas formulasAseguradas) {
         try {
             em.persist(formulasAseguradas);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
         }
     }
 
-    public void editar(FormulasAseguradas formulasAseguradas) {
+    public void editar(EntityManager em,FormulasAseguradas formulasAseguradas) {
         try {
             em.merge(formulasAseguradas);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
         }
     }
 
-    public void borrar(FormulasAseguradas formulasAseguradas) {
+    public void borrar(EntityManager em,FormulasAseguradas formulasAseguradas) {
         try {
             em.remove(em.merge(formulasAseguradas));
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
         }
     }
 
-    public List<FormulasAseguradas> consultarFormulasAseguradas() {
+    public List<FormulasAseguradas> consultarFormulasAseguradas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT te FROM FormulasAseguradas te");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormulasAseguradas> formulasAseguradas = query.getResultList();
             return formulasAseguradas;
         } catch (Exception e) {
@@ -62,10 +63,11 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
         }
     }
 
-    public FormulasAseguradas consultarFormulaAsegurada(BigInteger secuencia) {
+    public FormulasAseguradas consultarFormulaAsegurada(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM FormulasAseguradas te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             FormulasAseguradas formulasAseguradas = (FormulasAseguradas) query.getSingleResult();
             return formulasAseguradas;
         } catch (Exception e) {

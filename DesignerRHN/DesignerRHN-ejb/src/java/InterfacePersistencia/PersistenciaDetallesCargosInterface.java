@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.DetallesCargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaDetallesCargosInterface {
      *
      * @param detallesCargos DetalleCargo que se quiere crear.
      */
-    public void crear(DetallesCargos detallesCargos);
+    public void crear(EntityManager em,DetallesCargos detallesCargos);
 
     /**
      * Método encargado de modificar un DetalleCargo de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaDetallesCargosInterface {
      *
      * @param detallesCargos DetalleCargo con los cambios que se van a realizar.
      */
-    public void editar(DetallesCargos detallesCargos);
+    public void editar(EntityManager em,DetallesCargos detallesCargos);
 
     /**
      * Método encargado de eliminar de la base de datos el DetalleCargo que
@@ -37,7 +38,7 @@ public interface PersistenciaDetallesCargosInterface {
      *
      * @param detallesCargos DetalleCargo que se quiere eliminar.
      */
-    public void borrar(DetallesCargos detallesCargos);
+    public void borrar(EntityManager em,DetallesCargos detallesCargos);
 
     /**
      * Método encargado de buscar todos los DetallesCargos existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaDetallesCargosInterface {
      *
      * @return Retorna una lista de DetallesCargos.
      */
-    public List<DetallesCargos> buscarDetallesCargos();
+    public List<DetallesCargos> buscarDetallesCargos(EntityManager em);
 
     /**
      * Método encargado de buscar el DetalleCargo con la secuencia dada por
@@ -55,7 +56,7 @@ public interface PersistenciaDetallesCargosInterface {
      * @return Retorna el DetalleCargo identificado con la secuencia dada por
      * parámetro.
      */
-    public DetallesCargos buscarDetallesCargosSecuencia(BigInteger secuencia);
+    public DetallesCargos buscarDetallesCargosSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar el DetalleCargo asociado a un TipoDetalle dado
@@ -66,13 +67,13 @@ public interface PersistenciaDetallesCargosInterface {
      * @return Retorna el DetalleCargo asociado al TipoDetalle y al Cargo dado
      * por parametro
      */
-    public DetallesCargos buscarDetalleCargoParaSecuenciaTipoDetalle(BigInteger secTipoDetalle, BigInteger secCargo);
+    public DetallesCargos buscarDetalleCargoParaSecuenciaTipoDetalle(EntityManager em,BigInteger secTipoDetalle, BigInteger secCargo);
     /**
      * Método encargado de buscar los DetallesCargos asociados a un Cargo
      *
      * @param secuencia Secuencia del Cargo
      * @return Retorna una lista de DetallesCargos
      */
-    public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(BigInteger secuencia);
+    public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(EntityManager em,BigInteger secuencia);
 
 }

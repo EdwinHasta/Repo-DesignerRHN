@@ -25,11 +25,11 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(ClasesPensiones clasesPensiones) {
+    public void crear(EntityManager em, ClasesPensiones clasesPensiones) {
         try {
             em.persist(clasesPensiones);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     }
 
     @Override
-    public void editar(ClasesPensiones clasesPensiones) {
+    public void editar(EntityManager em, ClasesPensiones clasesPensiones) {
         try {
             em.merge(clasesPensiones);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     }
 
     @Override
-    public void borrar(ClasesPensiones clasesPensiones) {
+    public void borrar(EntityManager em, ClasesPensiones clasesPensiones) {
         try {
             em.remove(em.merge(clasesPensiones));
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     }
 
     @Override
-    public List<ClasesPensiones> consultarClasesPensiones() {
+    public List<ClasesPensiones> consultarClasesPensiones(EntityManager em) {
         try {
             List<ClasesPensiones> clasesPensionesLista = (List<ClasesPensiones>) em.createNamedQuery("ClasesPensiones.findAll").getResultList();
             return clasesPensionesLista;
@@ -67,11 +67,12 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     }
 
     @Override
-    public ClasesPensiones consultarClasePension(BigInteger secuencia) {
+    public ClasesPensiones consultarClasePension(EntityManager em,BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT cp FROM ClasesPensiones cp WHERE cp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ClasesPensiones claseP = (ClasesPensiones) query.getSingleResult();
             return claseP;
         } catch (Exception e) {
@@ -82,7 +83,7 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     }
 
     @Override
-    public BigInteger contarRetiradosClasePension(BigInteger secuencia) {
+    public BigInteger contarRetiradosClasePension(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM pensionados WHERE clase=?";

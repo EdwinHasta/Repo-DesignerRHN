@@ -26,33 +26,38 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
-    public void crear(HvReferencias hvReferencias) {
+    public void crear(EntityManager em, HvReferencias hvReferencias) {
         em.persist(hvReferencias);
     }
+
     @Override
-    public void editar(HvReferencias hvReferencias) {
+    public void editar(EntityManager em, HvReferencias hvReferencias) {
         em.merge(hvReferencias);
     }
+
     @Override
-    public void borrar(HvReferencias hvReferencias) {
+    public void borrar(EntityManager em, HvReferencias hvReferencias) {
         em.remove(em.merge(hvReferencias));
     }
+
     @Override
-    public List<HvReferencias> buscarHvReferencias() {
+    public List<HvReferencias> buscarHvReferencias(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM HvEntrevistas te ORDER BY te.fecha ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<HvReferencias> listHvReferencias = query.getResultList();
         return listHvReferencias;
 
     }
+
     @Override
-    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado) {
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT hr FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl AND hr.tipo='PERSONALES' ORDER BY hr.nombrepersona ");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<HvReferencias> listHvReferencias = query.getResultList();
             return listHvReferencias;
         } catch (Exception e) {
@@ -62,14 +67,16 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     }
 
     @Override
-    public List<HvReferencias> referenciasPersonalesPersona(BigInteger secuenciaHV) {
+    public List<HvReferencias> referenciasPersonalesPersona(EntityManager em, BigInteger secuenciaHV) {
         try {
             Query query = em.createQuery("SELECT COUNT(hvr) FROM HvReferencias hvr WHERE hvr.hojadevida.secuencia = :secuenciaHV");
             query.setParameter("secuenciaHV", secuenciaHV);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT hvr FROM HvReferencias hvr WHERE hvr.hojadevida.secuencia = :secuenciaHV and hvr.tipo = 'PERSONALES'");
                 queryFinal.setParameter("secuenciaHV", secuenciaHV);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<HvReferencias> listaReferenciasPersonales = queryFinal.getResultList();
                 return listaReferenciasPersonales;
             }
@@ -81,12 +88,12 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     }
 
     @Override
-    public List<HVHojasDeVida> consultarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado) {
+    public List<HVHojasDeVida> consultarHvHojaDeVidaPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             System.out.println("PersistenciaHvReferencias secuencia empleado hoja de vida " + secEmpleado);
             Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<HVHojasDeVida> hvHojasDeVIda = query.getResultList();
             return hvHojasDeVIda;
         } catch (Exception e) {
@@ -96,11 +103,11 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     }
 
     @Override
-    public List<HvReferencias> consultarHvReferenciasFamiliarPorEmpleado(BigInteger secEmpleado) {
+    public List<HvReferencias> consultarHvReferenciasFamiliarPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT hr FROM HVHojasDeVida hv , HvReferencias hr , Empleados e WHERE hv.secuencia = hr.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl AND hr.tipo='FAMILIARES' ORDER BY hr.nombrepersona ");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<HvReferencias> listHvReferencias = query.getResultList();
             return listHvReferencias;
         } catch (Exception e) {
@@ -108,8 +115,9 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
             return null;
         }
     }
+
     @Override
-    public HvReferencias buscarHvReferencia(BigInteger secHvReferencias) {
+    public HvReferencias buscarHvReferencia(EntityManager em, BigInteger secHvReferencias) {
         try {
             return em.find(HvReferencias.class, secHvReferencias);
         } catch (Exception e) {
@@ -118,14 +126,16 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
     }
 
     @Override
-    public List<HvReferencias> contarReferenciasFamiliaresPersona(BigInteger secuenciaHV) {
+    public List<HvReferencias> contarReferenciasFamiliaresPersona(EntityManager em, BigInteger secuenciaHV) {
         try {
             Query query = em.createQuery("SELECT COUNT(hvr) FROM HvReferencias hvr WHERE hvr.hojadevida.secuencia = :secuenciaHV");
             query.setParameter("secuenciaHV", secuenciaHV);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT hvr FROM HvReferencias hvr WHERE hvr.hojadevida.secuencia = :secuenciaHV and hvr.tipo = 'FAMILIARES'");
                 queryFinal.setParameter("secuenciaHV", secuenciaHV);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<HvReferencias> listaReferenciasPersonales = queryFinal.getResultList();
                 return listaReferenciasPersonales;
             }

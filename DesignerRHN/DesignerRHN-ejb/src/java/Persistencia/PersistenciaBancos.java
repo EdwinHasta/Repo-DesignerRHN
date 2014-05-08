@@ -25,11 +25,11 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Bancos bancos) {
+    public void crear(EntityManager em, Bancos bancos) {
         try {
             em.persist(bancos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
     }
 
     @Override
-    public void editar(Bancos bancos) {
+    public void editar(EntityManager em, Bancos bancos) {
         try {
             em.merge(bancos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
     }
 
     @Override
-    public void borrar(Bancos bancos) {
+    public void borrar(EntityManager em, Bancos bancos) {
         try {
             em.remove(em.merge(bancos));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
     }
 
     @Override
-    public List<Bancos> buscarBancos() {
+    public List<Bancos> buscarBancos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT b FROM Bancos b");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Bancos> lista = query.getResultList();
             return lista;
         } catch (Exception e) {

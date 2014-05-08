@@ -25,11 +25,11 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(DiasLaborables diasLaborables) {
+    public void crear(EntityManager em,DiasLaborables diasLaborables) {
         try {
             em.persist(diasLaborables);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     }
 
     @Override
-    public void editar(DiasLaborables diasLaborables) {
+    public void editar(EntityManager em,DiasLaborables diasLaborables) {
         try {
             em.merge(diasLaborables);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     }
 
     @Override
-    public void borrar(DiasLaborables diasLaborables) {
+    public void borrar(EntityManager em,DiasLaborables diasLaborables) {
         try {
             em.remove(em.merge(diasLaborables));
         } catch (Exception e) {
@@ -56,10 +56,11 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     }
 
     @Override
-    public DiasLaborables buscarDiaLaborableSecuencia(BigInteger secDiaLaboral) {
+    public DiasLaborables buscarDiaLaborableSecuencia(EntityManager em,BigInteger secDiaLaboral) {
         try {
             Query query = em.createQuery("SELECT dl FROM DiasLaborables dl WHERE dl.secuencia =:secuencia");
             query.setParameter("secuencia", secDiaLaboral);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             DiasLaborables diasLaborables = (DiasLaborables) query.getSingleResult();
             return diasLaborables;
         } catch (Exception e) {
@@ -69,9 +70,10 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     }
 
     @Override
-    public List<DiasLaborables> diasLaborables() {
+    public List<DiasLaborables> diasLaborables(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT dl FROM DiasLaborables dl");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DiasLaborables> diasLaborables = query.getResultList();
             return diasLaborables;
         } catch (Exception e) {
@@ -80,10 +82,11 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
     }
 
     @Override
-    public List<DiasLaborables> diasLaborablesParaSecuenciaTipoContrato(BigInteger secTipoContrato) {
+    public List<DiasLaborables> diasLaborablesParaSecuenciaTipoContrato(EntityManager em,BigInteger secTipoContrato) {
         try {
             Query query = em.createQuery("SELECT dl FROM DiasLaborables dl WHERE dl.tipocontrato.secuencia=:secuencia");
             query.setParameter("secuencia", secTipoContrato);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DiasLaborables> diasLaborables = query.getResultList();
             return diasLaborables;
         } catch (Exception e) {

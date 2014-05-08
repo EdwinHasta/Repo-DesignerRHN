@@ -9,6 +9,7 @@ import Entidades.FormulasAseguradas;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,13 +18,13 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaFormulasAseguradasInterface {
 
-    public void crear(FormulasAseguradas formulasAseguradas);
+    public void crear(EntityManager em,FormulasAseguradas formulasAseguradas);
 
-    public void editar(FormulasAseguradas formulasAseguradas);
+    public void editar(EntityManager em,FormulasAseguradas formulasAseguradas);
 
-    public void borrar(FormulasAseguradas formulasAseguradas);
+    public void borrar(EntityManager em,FormulasAseguradas formulasAseguradas);
 
-    public List<FormulasAseguradas> consultarFormulasAseguradas();
+    public List<FormulasAseguradas> consultarFormulasAseguradas(EntityManager em);
 
-    public FormulasAseguradas consultarFormulaAsegurada(BigInteger secuencia);
+    public FormulasAseguradas consultarFormulaAsegurada(EntityManager em,BigInteger secuencia);
 }

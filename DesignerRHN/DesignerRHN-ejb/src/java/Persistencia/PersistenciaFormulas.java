@@ -22,11 +22,11 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Formulas formulas) {
+    public void crear(EntityManager em,Formulas formulas) {
         try {
             em.persist(formulas);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void editar(Formulas formulas) {
+    public void editar(EntityManager em,Formulas formulas) {
         try {
             em.merge(formulas);
         } catch (Exception e) {
@@ -44,12 +44,12 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void borrar(Formulas formulas) {
+    public void borrar(EntityManager em,Formulas formulas) {
         em.remove(em.merge(formulas));
     }
 
     @Override
-    public Formulas buscarFormula(BigInteger secuencia) {
+    public Formulas buscarFormula(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(Formulas.class, secuencia);
         } catch (Exception e) {
@@ -58,16 +58,17 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public List<Formulas> buscarFormulas() {
+    public List<Formulas> buscarFormulas(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Formulas.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<Formulas> buscarFormulasCarge() {
+    public List<Formulas> buscarFormulasCarge(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT f FROM Formulas f WHERE f.secuencia IN (SELECT fn.formula.secuencia FROM FormulasNovedades fn WHERE fn.cargue = 'S')");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Formulas> listaFormulas = query.getResultList();
             return listaFormulas;
         } catch (Exception e) {
@@ -76,9 +77,10 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public Formulas buscarFormulaCargeInicial() {
+    public Formulas buscarFormulaCargeInicial(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT f FROM Formulas f WHERE f.secuencia IN (SELECT fn.formula.secuencia FROM FormulasNovedades fn WHERE fn.cargue = 'S' AND fn.formula.nombrecorto = 'LIQNOV')");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Formulas formulaInicial = (Formulas) query.getSingleResult();
             return formulaInicial;
         } catch (Exception e) {
@@ -87,9 +89,10 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public List<Formulas> lovFormulas() {
+    public List<Formulas> lovFormulas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT f FROM Formulas f ORDER BY f.nombrelargo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Formulas> listaFormulas = query.getResultList();
             return listaFormulas;
         } catch (Exception e) {
@@ -99,7 +102,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void clonarFormulas(String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
+    public void clonarFormulas(EntityManager em,String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
         int i = 0;
         try {
             String sqlQuery = "call FORMULAS_PKG.CLONARFORMULA(?, ?, ?, ?)";
@@ -115,7 +118,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void operandoFormulas(BigInteger secFormula) {
+    public void operandoFormulas(EntityManager em,BigInteger secFormula) {
         int i = 0;
         try {
             String sqlQuery = "call UTL_FORMS.INSERTAROPERANDOFORMULA(?)";

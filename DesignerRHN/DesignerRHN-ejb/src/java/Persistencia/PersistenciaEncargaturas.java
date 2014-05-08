@@ -24,18 +24,20 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<Encargaturas> reemplazoPersona(BigInteger secuenciaEmpleado) {
+    public List<Encargaturas> reemplazoPersona(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT COUNT(e) FROM Encargaturas e WHERE e.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT e FROM Encargaturas e WHERE e.empleado.secuencia = :secuenciaEmpleado and e.fechainicial = (SELECT MAX(en.fechainicial) FROM Encargaturas en WHERE en.empleado.secuencia = :secuenciaEmpleado)");
                 queryFinal.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<Encargaturas> listaEncargaturas = queryFinal.getResultList();
                 return listaEncargaturas;
             }
@@ -47,7 +49,7 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
     }
     
      @Override
-    public void crear(Encargaturas encargaturas) {
+    public void crear(EntityManager em,Encargaturas encargaturas) {
         try {
             em.merge(encargaturas);
         } catch (PersistenceException ex) {
@@ -56,27 +58,28 @@ public class PersistenciaEncargaturas implements PersistenciaEncargaturasInterfa
     }
        
     @Override
-    public void editar(Encargaturas encargaturas) {
+    public void editar(EntityManager em,Encargaturas encargaturas) {
         em.merge(encargaturas);
     }
 
     @Override
-    public void borrar(Encargaturas encargaturas) {
+    public void borrar(EntityManager em,Encargaturas encargaturas) {
         em.remove(em.merge(encargaturas));
     }
     
     @Override
-    public List<Encargaturas> buscarEncargaturas() {
+    public List<Encargaturas> buscarEncargaturas(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Encargaturas.class));
         return em.createQuery(cq).getResultList();
     }
     
     @Override
-    public List<Encargaturas> encargaturasEmpleado(BigInteger secuenciaEmpleado) {
+    public List<Encargaturas> encargaturasEmpleado(EntityManager em,BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT e FROM Encargaturas e WHERE e.empleado.secuencia= :secuenciaEmpleado ORDER BY e.fechainicial");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Encargaturas> listaEncargaturas = query.getResultList();
             return listaEncargaturas;
         } catch (Exception e) {

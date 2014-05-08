@@ -24,10 +24,10 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(GruposFactoresRiesgos grupoFactoresRiesgos) {
+    public void crear(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos) {
         try {
             em.persist(grupoFactoresRiesgos);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public void editar(GruposFactoresRiesgos grupoFactoresRiesgos) {
+    public void editar(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos) {
         try {
             em.merge(grupoFactoresRiesgos);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public void borrar(GruposFactoresRiesgos grupoFactoresRiesgos) {
+    public void borrar(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos) {
         try {
             em.remove(em.merge(grupoFactoresRiesgos));
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public List<GruposFactoresRiesgos> consultarGruposFactoresRiesgos() {
+    public List<GruposFactoresRiesgos> consultarGruposFactoresRiesgos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM GruposFactoresRiesgos t ORDER BY t.codigo  ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposFactoresRiesgos> evalActividades = query.getResultList();
             return evalActividades;
         } catch (Exception e) {
@@ -62,10 +63,11 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public GruposFactoresRiesgos consultarGrupoFactorRiesgo(BigInteger secuencia) {
+    public GruposFactoresRiesgos consultarGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM GruposFactoresRiesgos t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             GruposFactoresRiesgos grupoFactoresRiesgos = (GruposFactoresRiesgos) query.getSingleResult();
             return grupoFactoresRiesgos;
         } catch (Exception e) {
@@ -75,7 +77,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public BigInteger contarSoProActividadesGrupoFactorRiesgo(BigInteger secuencia) {
+    public BigInteger contarSoProActividadesGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soprogactividades WHERE factorriesgo = ?";
@@ -90,7 +92,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public BigInteger contarSoIndicadoresGrupoFactorRiesgo(BigInteger secuencia) {
+    public BigInteger contarSoIndicadoresGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soindicadores WHERE factorriesgo = ?";
@@ -105,7 +107,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(BigInteger secuencia) {
+    public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM factoresriesgos WHERE grupo = ?";

@@ -25,11 +25,11 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Formulascontratos formulascontratos) {
+    public void crear(EntityManager em,Formulascontratos formulascontratos) {
         try {
             em.persist(formulascontratos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     }
 
     @Override
-    public void editar(Formulascontratos formulascontratos) {
+    public void editar(EntityManager em,Formulascontratos formulascontratos) {
         try {
             em.merge(formulascontratos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     }
 
     @Override
-    public void borrar(Formulascontratos formulascontratos) {
+    public void borrar(EntityManager em,Formulascontratos formulascontratos) {
         try {
             em.remove(em.merge(formulascontratos));
         } catch (Exception e) {
@@ -56,10 +56,11 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     }
 
     @Override
-    public List<Formulascontratos> formulasContratosParaFormulaSecuencia(BigInteger secuencia) {
+    public List<Formulascontratos> formulasContratosParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Formulascontratos> formulascontratos = queryFinal.getResultList();
             return formulascontratos;
         } catch (Exception e) {
@@ -69,10 +70,11 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     }
 
     @Override
-    public List<Formulascontratos> formulasContratosParaContratoSecuencia(BigInteger secuencia) {
+    public List<Formulascontratos> formulasContratosParaContratoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.contrato.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Formulascontratos> formulascontratos = queryFinal.getResultList();
             return formulascontratos;
         } catch (Exception e) {
@@ -81,10 +83,11 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
         }
     }
 
-    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(BigInteger secuencia) {
+    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Formulascontratos formulascontratos = (Formulascontratos) queryFinal.getSingleResult();
             return formulascontratos;
         } catch (Exception e) {

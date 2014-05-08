@@ -22,11 +22,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaFormasDtos implements PersistenciaFormasDtosInterface {
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(FormasDtos formasDtos) {
+    public void crear(EntityManager em,FormasDtos formasDtos) {
         try {
             em.merge(formasDtos);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaFormasDtos implements PersistenciaFormasDtosInterface {
     }
 
     @Override
-    public void editar(FormasDtos formasDtos) {
+    public void editar(EntityManager em,FormasDtos formasDtos) {
         try {
             em.merge(formasDtos);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaFormasDtos implements PersistenciaFormasDtosInterface {
     }
 
     @Override
-    public void borrar(FormasDtos formasDtos) {
+    public void borrar(EntityManager em,FormasDtos formasDtos) {
         try {
             em.remove(em.merge(formasDtos));
         } catch (Exception e) {
@@ -53,7 +53,7 @@ public class PersistenciaFormasDtos implements PersistenciaFormasDtosInterface {
     }
 
     @Override
-    public List<FormasDtos> formasDescuentos(BigInteger tipoEmbargo) {
+    public List<FormasDtos> formasDescuentos(EntityManager em,BigInteger tipoEmbargo) {
         try {
             String sqlQuery = "SELECT SECUENCIA, DESCRIPCION FROM FORMASDTOS \n"
                     + "WHERE TIPO = 'EMBARGO'\n"

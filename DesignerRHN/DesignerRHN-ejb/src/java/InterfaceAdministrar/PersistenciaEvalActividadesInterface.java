@@ -10,6 +10,7 @@ import Entidades.EvalActividades;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,13 +18,13 @@ import javax.ejb.Local;
  */
 @Local
 public interface PersistenciaEvalActividadesInterface {
-    public void crear(EvalActividades evalCompetencias);
-    public void editar(EvalActividades evalCompetencias);
-    public void borrar(EvalActividades evalCompetencias);
+    public void crear(EntityManager em,EvalActividades evalCompetencias);
+    public void editar(EntityManager em,EvalActividades evalCompetencias);
+    public void borrar(EntityManager em,EvalActividades evalCompetencias);
 
-    public List<EvalActividades> consultarEvalActividades();
-    public EvalActividades consultarEvalActividad(BigInteger secuencia);
-    public BigInteger contarEvalPlanesDesarrollosEvalActividad(BigInteger secuencia);
-    public BigInteger contarCapNecesidadesEvalActividad(BigInteger secuencia) ;
-    public BigInteger contarCapBuzonesEvalActividad(BigInteger secuencia);
+    public List<EvalActividades> consultarEvalActividades(EntityManager em);
+    public EvalActividades consultarEvalActividad(EntityManager em,BigInteger secuencia);
+    public BigInteger contarEvalPlanesDesarrollosEvalActividad(EntityManager em,BigInteger secuencia);
+    public BigInteger contarCapNecesidadesEvalActividad(EntityManager em,BigInteger secuencia) ;
+    public BigInteger contarCapBuzonesEvalActividad(EntityManager em,BigInteger secuencia);
 }

@@ -9,6 +9,7 @@ import Entidades.Festivos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,13 +18,13 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaFestivosInterface {
 
-    public void crear(Festivos festivos);
+    public void crear(EntityManager em,Festivos festivos);
 
-    public void editar(Festivos festivos);
+    public void editar(EntityManager em,Festivos festivos);
 
-    public void borrar(Festivos festivos);
+    public void borrar(EntityManager em,Festivos festivos);
 
-    public List<Festivos> consultarFestivosPais(BigInteger secPais);
+    public List<Festivos> consultarFestivosPais(EntityManager em,BigInteger secPais);
 
-    public Festivos consultarPais(BigInteger secPais);
+    public Festivos consultarPais(EntityManager em,BigInteger secPais);
 }

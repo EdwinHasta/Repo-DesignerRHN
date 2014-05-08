@@ -25,10 +25,10 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(Enfoques enfoques) {
+    public void crear(EntityManager em,Enfoques enfoques) {
         try {
             em.persist(enfoques);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
         }
     }
 
-    public void editar(Enfoques enfoques) {
+    public void editar(EntityManager em,Enfoques enfoques) {
         try {
             em.merge(enfoques);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
         }
     }
 
-    public void borrar(Enfoques enfoques) {
+    public void borrar(EntityManager em,Enfoques enfoques) {
         try {
             em.remove(em.merge(enfoques));
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
         }
     }
 
-    public Enfoques buscarEnfoque(BigInteger secuenciaEnfoques) {
+    public Enfoques buscarEnfoque(EntityManager em,BigInteger secuenciaEnfoques) {
         try {
             return em.find(Enfoques.class, secuenciaEnfoques);
         } catch (Exception e) {
@@ -61,7 +61,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
         }
     }
 
-    public List<Enfoques> buscarEnfoques() {
+    public List<Enfoques> buscarEnfoques(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Enfoques.class));
@@ -72,7 +72,7 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
         }
     }
     
-    public BigInteger contadorTiposDetalles(BigInteger secuencia) {
+    public BigInteger contadorTiposDetalles(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM tiposdetalles td , enfoques eee WHERE eee.secuencia=td.enfoque AND eee.secuencia  = ? ";

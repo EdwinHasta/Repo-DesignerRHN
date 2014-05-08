@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.EvalResultadosConv;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'EvalResultadosConv' 
@@ -18,5 +19,5 @@ public interface PersistenciaEvalResultadosConvInterface {
      * @param secuenciaEmpleado Secuencia del empleado del que se quiere obtener la información
      * @return Retorna una lista de EvalResultadosConv con las ultimas evaluaciones realizadas al empleado.
      */
-    public List<EvalResultadosConv> pruebasAplicadasPersona(BigInteger secuenciaEmpleado);
+    public List<EvalResultadosConv> pruebasAplicadasPersona(EntityManager em,BigInteger secuenciaEmpleado);
 }

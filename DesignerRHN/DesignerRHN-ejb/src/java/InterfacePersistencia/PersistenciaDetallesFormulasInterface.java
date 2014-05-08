@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.DetallesFormulas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la entidad 'DetallesFormulas',
@@ -23,5 +24,5 @@ public interface PersistenciaDetallesFormulasInterface {
      * @param secHistoriaFormula Secuencia de la HistoriaFormula
      * @return Retorna una lista de DetallesFormulas
      */
-    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
+    public List<DetallesFormulas> detallesFormula(EntityManager em,BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula);
 }

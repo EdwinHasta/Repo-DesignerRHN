@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Actividades;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaActividadesInterface {
      *
      * @param actividades Actividad que se quiere crear.
      */
-    public void crear(Actividades actividades);
+    public void crear(EntityManager em,Actividades actividades);
 
     /**
      * Método encargado de modificar una actividad de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaActividadesInterface {
      *
      * @param actividades Actividad con los cambios que se van a realizar.
      */
-    public void editar(Actividades actividades);
+    public void editar(EntityManager em,Actividades actividades);
 
     /**
      * Método encargado de eliminar de la base de datos la actividad que entra
@@ -37,7 +38,7 @@ public interface PersistenciaActividadesInterface {
      *
      * @param actividades Actividad que se quiere eliminar.
      */
-    public void borrar(Actividades actividades);
+    public void borrar(EntityManager em,Actividades actividades);
 
     /**
      * Método encargado de buscar todas las actividades existentes en la base de
@@ -45,9 +46,9 @@ public interface PersistenciaActividadesInterface {
      *
      * @return Retorna una lista de actividades.
      */
-    public List<Actividades> buscarActividades();
+    public List<Actividades> buscarActividades(EntityManager em);
 
-    public BigInteger contarBienNecesidadesActividad(BigInteger secuencia);
+    public BigInteger contarBienNecesidadesActividad(EntityManager em,BigInteger secuencia);
 
-    public BigInteger contarParametrosInformesActividad(BigInteger secuencia);
+    public BigInteger contarParametrosInformesActividad(EntityManager em,BigInteger secuencia);
 }

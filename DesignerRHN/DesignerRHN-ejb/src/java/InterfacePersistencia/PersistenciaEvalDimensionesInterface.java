@@ -9,6 +9,7 @@ import Entidades.EvalDimensiones;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaEvalDimensionesInterface {
      *
      * @param evalDimensiones EvalDimensiones que se quiere crear.
      */
-    public void crear(EvalDimensiones evalDimensiones);
+    public void crear(EntityManager em,EvalDimensiones evalDimensiones);
 
     /**
      * Método encargado de modificar un EvalDimension de la base de datos. Este
@@ -32,7 +33,7 @@ public interface PersistenciaEvalDimensionesInterface {
      * @param evalDimensiones EvalDimensiones con los cambios que se van a
      * realizar.
      */
-    public void editar(EvalDimensiones evalDimensiones);
+    public void editar(EntityManager em,EvalDimensiones evalDimensiones);
 
     /**
      * Método encargado de eliminar de la base de datos un EvalDiemsion que
@@ -40,7 +41,7 @@ public interface PersistenciaEvalDimensionesInterface {
      *
      * @param evalDimensiones EvalDimensiones que se quiere eliminar.
      */
-    public void borrar(EvalDimensiones evalDimensiones);
+    public void borrar(EntityManager em,EvalDimensiones evalDimensiones);
 
     /**
      * Método encargado de buscar un EvalDimension con la secuencia dada por
@@ -51,7 +52,7 @@ public interface PersistenciaEvalDimensionesInterface {
      * @return Retorna un EvalDimension identificado con la secuencia dada por
      * parámetro.
      */
-    public EvalDimensiones buscarEvalDimension(BigInteger secEvalDimensiones);
+    public EvalDimensiones buscarEvalDimension(EntityManager em,BigInteger secEvalDimensiones);
 
     /**
      * Método encargado de buscar todas las EvalDimensiones existentes en la
@@ -59,7 +60,7 @@ public interface PersistenciaEvalDimensionesInterface {
      *
      * @return Retorna una lista de EvalDimensiones.
      */
-    public List<EvalDimensiones> buscarEvalDimensiones();
+    public List<EvalDimensiones> buscarEvalDimensiones(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre una
@@ -70,5 +71,5 @@ public interface PersistenciaEvalDimensionesInterface {
      * @return Retorna el número de proyectos relacionados con una EvalPlanillas
      * cuya secEvalDimensiones coincide con el parámetro.
      */
-    public BigInteger contradorEvalPlanillas(BigInteger secEvalDimensiones);
+    public BigInteger contradorEvalPlanillas(EntityManager em,BigInteger secEvalDimensiones);
 }

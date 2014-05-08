@@ -9,6 +9,7 @@ import Entidades.EvalCompetencias;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaEvalCompetenciasInterface {
      *
      * @param evalCompetencias Nibeda que se quiere crear.
      */
-    public void crear(EvalCompetencias evalCompetencias);
+    public void crear(EntityManager em,EvalCompetencias evalCompetencias);
 
     /**
      * Método encargado de modificar un EvalCompetencia de la base de datos.
@@ -32,7 +33,7 @@ public interface PersistenciaEvalCompetenciasInterface {
      * @param evalCompetencias EvalCompetencias con los cambios que se van a
      * realizar.
      */
-    public void editar(EvalCompetencias evalCompetencias);
+    public void editar(EntityManager em,EvalCompetencias evalCompetencias);
 
     /**
      * Método encargado de eliminar de la base de datos un EvalCompetencia que
@@ -40,7 +41,7 @@ public interface PersistenciaEvalCompetenciasInterface {
      *
      * @param evalCompetencias EvalCompetencias que se quiere eliminar.
      */
-    public void borrar(EvalCompetencias evalCompetencias);
+    public void borrar(EntityManager em,EvalCompetencias evalCompetencias);
 
     /**
      * Método encargado de buscar un EvalCompetencia con la secuencia dada por
@@ -51,7 +52,7 @@ public interface PersistenciaEvalCompetenciasInterface {
      * @return Retorna un EvalCompetencia identificado con la secuencia dada por
      * parámetro.
      */
-    public EvalCompetencias buscarEvalCompetencia(BigInteger secEvalCompetencias);
+    public EvalCompetencias buscarEvalCompetencia(EntityManager em,BigInteger secEvalCompetencias);
 
     /**
      * Método encargado de buscar todas las EvalCompetencias existentes en la
@@ -59,7 +60,7 @@ public interface PersistenciaEvalCompetenciasInterface {
      *
      * @return Retorna una lista de EvalCompetencias.
      */
-    public List<EvalCompetencias> buscarEvalCompetencias();
+    public List<EvalCompetencias> buscarEvalCompetencias(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre una
@@ -70,5 +71,5 @@ public interface PersistenciaEvalCompetenciasInterface {
      * @return Retorna el número de CompetenciasCargos relacionados con la
      * EvalCompetencias cuya secuencia coincide con el parámetro.
      */
-    public BigInteger contadorCompetenciasCargos(BigInteger secEvalCompetencias);
+    public BigInteger contadorCompetenciasCargos(EntityManager em,BigInteger secEvalCompetencias);
 }

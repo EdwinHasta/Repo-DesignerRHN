@@ -23,11 +23,11 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
    
     @Override
-    public void crear(EstadosAfiliaciones afiliaciones) {
+    public void crear(EntityManager em,EstadosAfiliaciones afiliaciones) {
         try {
             em.persist(afiliaciones);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     }
     
     @Override
-    public void editar(EstadosAfiliaciones afiliaciones) {
+    public void editar(EntityManager em,EstadosAfiliaciones afiliaciones) {
         try {
             em.merge(afiliaciones);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     }
     
     @Override
-    public void borrar(EstadosAfiliaciones afiliaciones) {
+    public void borrar(EntityManager em,EstadosAfiliaciones afiliaciones) {
         try {
             em.remove(em.merge(afiliaciones));
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     }
     
     @Override
-    public EstadosAfiliaciones buscarEstadoAfiliacion(BigInteger secuencia) {
+    public EstadosAfiliaciones buscarEstadoAfiliacion(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(EstadosAfiliaciones.class, secuencia);
         } catch (Exception e) {
@@ -64,7 +64,7 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     }
     
     @Override
-    public List<EstadosAfiliaciones> buscarEstadosAfiliaciones() {
+    public List<EstadosAfiliaciones> buscarEstadosAfiliaciones(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(EstadosAfiliaciones.class));

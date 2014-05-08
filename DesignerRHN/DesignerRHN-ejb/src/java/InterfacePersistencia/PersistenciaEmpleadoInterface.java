@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Empleados;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 public interface PersistenciaEmpleadoInterface {
 
@@ -14,7 +15,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @param empleados Empleado que se quiere crear.
      */
-    public void crear(Empleados empleados);
+    public void crear(EntityManager em,Empleados empleados);
 
     /**
      * Método encargado de modificar un Empleado de la base de datos. Este
@@ -23,7 +24,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @param empleados Empleado con los cambios que se van a realizar.
      */
-    public void editar(Empleados empleados);
+    public void editar(EntityManager em,Empleados empleados);
 
     /**
      * Método encargado de eliminar de la base de datos el empleado que entra
@@ -31,7 +32,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @param empleados Empleado que se quiere eliminar.
      */
-    public void borrar(Empleados empleados);
+    public void borrar(EntityManager em,Empleados empleados);
 
     /**
      * Método encargado de buscar el Empleado con la secuencia dada por
@@ -41,7 +42,7 @@ public interface PersistenciaEmpleadoInterface {
      * @return Retorna el Empleado identificado con la secuencia dada por
      * parámetro.
      */
-    public Empleados buscarEmpleado(BigInteger secuencia);
+    public Empleados buscarEmpleado(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos los Empleados existentes en la base de
@@ -49,7 +50,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @return Retorna una lista de Contratos.
      */
-    public List<Empleados> buscarEmpleados();
+    public List<Empleados> buscarEmpleados(EntityManager em);
 
     /**
      * Método encargado de buscar el Empleado con la secuencia dada por
@@ -59,7 +60,7 @@ public interface PersistenciaEmpleadoInterface {
      * @return Retorna el Empleado identificado con la secuencia dada por
      * parámetro.
      */
-    public Empleados buscarEmpleadoSecuencia(BigInteger secuencia);
+    public Empleados buscarEmpleadoSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de verificar si un empleado existe para una empresa
@@ -70,7 +71,7 @@ public interface PersistenciaEmpleadoInterface {
      * el usuario pertenece.
      * @return Retorna True si el empleado existe para esa empresa
      */
-    public boolean verificarCodigoEmpleado_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa);
+    public boolean verificarCodigoEmpleado_Empresa(EntityManager em,BigInteger codigoEmpleado, BigInteger secEmpresa);
 
     /**
      * Método encargado de buscar un empleado de una empresa específica.
@@ -81,7 +82,7 @@ public interface PersistenciaEmpleadoInterface {
      * @return Retorna el empleado que cumple las características dadas por los
      * parámetros.
      */
-    public Empleados buscarEmpleadoCodigo_Empresa(BigInteger codigoEmpleado, BigInteger secEmpresa);
+    public Empleados buscarEmpleadoCodigo_Empresa(EntityManager em,BigInteger codigoEmpleado, BigInteger secEmpresa);
 
     /**
      * Método encargado de buscar el Empleado con la secuencia dada por
@@ -91,7 +92,7 @@ public interface PersistenciaEmpleadoInterface {
      * @return Retorna el Empleado identificado con el código dado por
      * parámetro.
      */
-    public Empleados buscarEmpleadoCodigo(BigInteger codigoEmpleado);
+    public Empleados buscarEmpleadoCodigo(EntityManager em,BigInteger codigoEmpleado);
 
     /**
      * Método encargado de buscar los empleados que fueron parametrizados y se
@@ -100,7 +101,7 @@ public interface PersistenciaEmpleadoInterface {
      * @param usuarioBD Alias del Usuario en la base de datos.
      * @return Retorna una lista de empleados
      */
-    public List<Empleados> empleadosComprobantes(String usuarioBD);
+    public List<Empleados> empleadosComprobantes(EntityManager em,String usuarioBD);
 
     /**
      * Método encargado de buscar un empleado por su código
@@ -108,7 +109,7 @@ public interface PersistenciaEmpleadoInterface {
      * @param codigoEmpleado
      * @return
      */
-    public Empleados buscarEmpleadoTipo(BigInteger codigoEmpleado);
+    public Empleados buscarEmpleadoTipo(EntityManager em,BigInteger codigoEmpleado);
 
     /**
      * Método encargado de buscar los empleado que sean 'ACTIVOS','RETIRADOS' O
@@ -117,7 +118,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @return Retorna una lista de empleados.
      */
-    public List<Empleados> empleadosNovedad();
+    public List<Empleados> empleadosNovedad(EntityManager em);
 
     /**
      * Método encargado de buscar todos los Empleados existentes en la base de
@@ -125,7 +126,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @return Retorna una lista de Empleados ordenados por código.
      */
-    public List<Empleados> todosEmpleados();
+    public List<Empleados> todosEmpleados(EntityManager em);
 
     /**
      * Método encargado de buscar los empleado que sean 'ACTIVOS' y que se
@@ -133,7 +134,7 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @return
      */
-    public List<Empleados> empleadosVacaciones();
+    public List<Empleados> empleadosVacaciones(EntityManager em);
 
     /**
      * Método encargado de buscar los empleados en estado 'ACTIVO' y
@@ -141,9 +142,9 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @return
      */
-    public List<Empleados> lovEmpleadosParametros();
+    public List<Empleados> lovEmpleadosParametros(EntityManager em);
 
-    public List<Empleados> empleadosAuxilios();
+    public List<Empleados> empleadosAuxilios(EntityManager em);
 
     /**
      * Método encargado de buscar los empleado que sean 'ACTIVOS' y que se
@@ -151,9 +152,9 @@ public interface PersistenciaEmpleadoInterface {
      *
      * @return Retorna una lista de empleados.
      */
-    public List<Empleados> empleadosNovedadEmbargo();
+    public List<Empleados> empleadosNovedadEmbargo(EntityManager em);
 
-    public List<Empleados> buscarEmpleadosBusquedaAvanzada(String queryBusquedaAvanzada);
+    public List<Empleados> buscarEmpleadosBusquedaAvanzada(EntityManager em,String queryBusquedaAvanzada);
     
-    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(String queryBusquedaAvanzada);
+    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(EntityManager em,String queryBusquedaAvanzada);
 }

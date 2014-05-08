@@ -23,16 +23,16 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Contratos contratos) {
+    public void crear(EntityManager em,Contratos contratos) {
         em.persist(contratos);
     }
 
     @Override
-    public void editar(Contratos contratos) {
+    public void editar(EntityManager em,Contratos contratos) {
         try {
             em.merge(contratos);
         } catch (Exception e) {
@@ -41,21 +41,24 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     }
 
     @Override
-    public void borrar(Contratos contratos) {
+    public void borrar(EntityManager em,Contratos contratos) {
         em.remove(em.merge(contratos));
     }
 
     @Override
-    public List<Contratos> buscarContratos() {
-        List<Contratos> contratoLista = (List<Contratos>) em.createNamedQuery("Contratos.findAll").getResultList();
+    public List<Contratos> buscarContratos(EntityManager em) {
+        Query query = em.createNamedQuery("Contratos.findAll");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+        List<Contratos> contratoLista = (List<Contratos>) query.getResultList();
         return contratoLista;
     }
 
     @Override
-    public Contratos buscarContratoSecuencia(BigInteger secuencia) {
+    public Contratos buscarContratoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT e FROM Contratos e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Contratos contrato = (Contratos) query.getSingleResult();
             return contrato;
         } catch (Exception e) {
@@ -65,9 +68,10 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     }
 
     @Override
-    public List<Contratos> lovContratos() {
+    public List<Contratos> lovContratos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT c FROM Contratos c ORDER BY c.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Contratos> listaContratos = query.getResultList();
             return listaContratos;
         } catch (Exception e) {
@@ -76,7 +80,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     }
 
     @Override
-    public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {        
+    public void reproducirContrato(EntityManager em,Short codigoOrigen, Short codigoDestino) {        
         try {
             String sqlQuery = "call FORMULASCONTRATOS_PKG.CLONARLEGISLACION(?, ?)";
             Query query = em.createNativeQuery(sqlQuery);

@@ -20,11 +20,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaEersAuxilios implements PersistenciaEersAuxiliosInterface{
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<EersAuxilios> auxilios() {
+    public List<EersAuxilios> auxilios(EntityManager em) {
         try {
             String sqlQuery = "select * from eersauxilios e where EXISTS (SELECT 'X' FROM EMPLEADOS EM WHERE EM.SECUENCIA=E.EMPLEADO)";
             Query query = em.createNativeQuery(sqlQuery, EersAuxilios.class);

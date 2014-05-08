@@ -12,33 +12,35 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'HvEntrevistas'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'HvEntrevistas' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaHvEntrevistas implements PersistenciaHvEntrevistasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
-    public void crear(HvEntrevistas hvEntrevistas) {
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
+    public void crear(EntityManager em, HvEntrevistas hvEntrevistas) {
         em.persist(hvEntrevistas);
     }
 
-    public void editar(HvEntrevistas hvEntrevistas) {
+    public void editar(EntityManager em, HvEntrevistas hvEntrevistas) {
         em.merge(hvEntrevistas);
     }
 
-    public void borrar(HvEntrevistas hvEntrevistas) {
+    public void borrar(EntityManager em, HvEntrevistas hvEntrevistas) {
         em.remove(em.merge(hvEntrevistas));
     }
 
-    public HvEntrevistas buscarHvEntrevista(BigInteger secuenciaHvEntrevista) {
+    public HvEntrevistas buscarHvEntrevista(EntityManager em, BigInteger secuenciaHvEntrevista) {
         try {
             return em.find(HvEntrevistas.class, secuenciaHvEntrevista);
         } catch (Exception e) {
@@ -46,17 +48,19 @@ public class PersistenciaHvEntrevistas implements PersistenciaHvEntrevistasInter
         }
     }
 
-    public List<HvEntrevistas> buscarHvEntrevistas() {
+    public List<HvEntrevistas> buscarHvEntrevistas(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM HvEntrevistas te ORDER BY te.fecha ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<HvEntrevistas> listHvEntrevistas = query.getResultList();
         return listHvEntrevistas;
 
     }
 
-    public List<HvEntrevistas> buscarHvEntrevistasPorEmpleado(BigInteger secEmpleado) {
+    public List<HvEntrevistas> buscarHvEntrevistasPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT he FROM HVHojasDeVida hv , HvEntrevistas he , Empleados e WHERE hv.secuencia = he.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl ORDER BY he.fecha ");
             query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
 
             List<HvEntrevistas> listHvEntrevistas = query.getResultList();
             return listHvEntrevistas;
@@ -66,29 +70,31 @@ public class PersistenciaHvEntrevistas implements PersistenciaHvEntrevistasInter
         }
     }
 
-    public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado) {
+    public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             System.err.println("secuencia empleado hoja de vida " + secEmpleado);
             Query query = em.createQuery("SELECT hv FROM HVHojasDeVida hv , HvEntrevistas he , Empleados e WHERE hv.secuencia = he.hojadevida.secuencia AND e.persona.secuencia= hv.persona.secuencia AND e.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<HVHojasDeVida> hvHojasDeVIda = query.getResultList();
             return hvHojasDeVIda;
         } catch (Exception e) {
             System.out.println("Error en Persistencia HvEntrevistas buscarHvHojaDeVidaPorEmpleado " + e);
             return null;
         }
-    }    
-    
+    }
+
     @Override
-    public List<HvEntrevistas> entrevistasPersona(BigInteger secuenciaHV) {
+    public List<HvEntrevistas> entrevistasPersona(EntityManager em, BigInteger secuenciaHV) {
         try {
             Query query = em.createQuery("SELECT COUNT(hve) FROM HvEntrevistas hve WHERE hve.hojadevida.secuencia = :secuenciaHV");
             query.setParameter("secuenciaHV", secuenciaHV);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT hve FROM HvEntrevistas hve WHERE hve.hojadevida.secuencia = :secuenciaHV and hve.fecha = (SELECT MAX(hven.fecha) FROM HvEntrevistas hven WHERE hven.hojadevida.secuencia = :secuenciaHV)");
                 queryFinal.setParameter("secuenciaHV", secuenciaHV);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<HvEntrevistas> listaHvEntrevistas = queryFinal.getResultList();
                 return listaHvEntrevistas;
             }

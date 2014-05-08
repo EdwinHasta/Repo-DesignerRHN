@@ -23,11 +23,11 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(GruposConceptos gruposConceptos) {
+    public void crear(EntityManager em,GruposConceptos gruposConceptos) {
         try {
             em.persist(gruposConceptos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
     }
 
     @Override
-    public void editar(GruposConceptos gruposConceptos) {
+    public void editar(EntityManager em,GruposConceptos gruposConceptos) {
         try {
             em.merge(gruposConceptos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
     }
 
     @Override
-    public void borrar(GruposConceptos gruposConceptos) {
+    public void borrar(EntityManager em,GruposConceptos gruposConceptos) {
         try {
             em.remove(em.merge(gruposConceptos));
         } catch (Exception e) {
@@ -54,9 +54,10 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
     }
    
     @Override
-    public List<GruposConceptos> buscarGruposConceptos() {
+    public List<GruposConceptos> buscarGruposConceptos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT e FROM GruposConceptos e ORDER BY e.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposConceptos> gruposConceptos = (List<GruposConceptos>) query.getResultList();
             return gruposConceptos;
         } catch (Exception e) {
@@ -66,11 +67,12 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
     }
 
     @Override
-    public GruposConceptos buscarGruposConceptosSecuencia(BigInteger secuencia) {
+    public GruposConceptos buscarGruposConceptosSecuencia(EntityManager em,BigInteger secuencia) {
         GruposConceptos gruposConceptos;
         try {
             Query query = em.createQuery("SELECT e FROM GruposConceptos e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             gruposConceptos = (GruposConceptos) query.getSingleResult();
             return gruposConceptos;
         } catch (Exception e) {

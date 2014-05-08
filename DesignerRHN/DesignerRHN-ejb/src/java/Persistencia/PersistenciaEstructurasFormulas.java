@@ -24,11 +24,11 @@ public class PersistenciaEstructurasFormulas implements PersistenciaEstructurasF
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<EstructurasFormulas> estructurasFormulasParaHistoriaFormula(BigInteger secuencia) {
+    public List<EstructurasFormulas> estructurasFormulasParaHistoriaFormula(EntityManager em,BigInteger secuencia) {
         try {
             String sqlQuery = "select rownum ID, LEVEL NIVEL, vw.posicion POSICION,\n"
                     + "decode(vw.descripcion, null, \n"

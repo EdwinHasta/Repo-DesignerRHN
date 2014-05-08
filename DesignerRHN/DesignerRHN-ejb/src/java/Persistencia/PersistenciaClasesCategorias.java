@@ -25,11 +25,11 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
      /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(ClasesCategorias clasesCategorias) {
+    public void crear(EntityManager em,ClasesCategorias clasesCategorias) {
         try {
             em.persist(clasesCategorias);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     }
 
     @Override
-    public void editar(ClasesCategorias clasesCategorias) {
+    public void editar(EntityManager em,ClasesCategorias clasesCategorias) {
         try {
             em.merge(clasesCategorias);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     }
 
     @Override
-    public void borrar(ClasesCategorias clasesCategorias) {
+    public void borrar(EntityManager em,ClasesCategorias clasesCategorias) {
         try {
             em.remove(em.merge(clasesCategorias));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     }
 
     @Override
-     public List<ClasesCategorias> consultarClasesCategorias() {
+     public List<ClasesCategorias> consultarClasesCategorias(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT td FROM ClasesCategorias td ORDER BY td.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ClasesCategorias> clasesCategorias = query.getResultList();
             return clasesCategorias;
         } catch (Exception e) {
@@ -67,10 +68,11 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
         }
     }
     @Override
-    public ClasesCategorias consultarClaseCategoria(BigInteger secClaseCategoria) {
+    public ClasesCategorias consultarClaseCategoria(EntityManager em,BigInteger secClaseCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT cc FROM ClasesCategorias cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ClasesCategorias clasesCategorias = (ClasesCategorias) query.getSingleResult();
             return clasesCategorias;
         } catch (Exception e) {
@@ -79,7 +81,7 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
     }
     
      @Override
-    public BigInteger contarCategoriasClaseCategoria(BigInteger secuencia) {
+    public BigInteger contarCategoriasClaseCategoria(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM categorias WHERE clasecategoria = ?";

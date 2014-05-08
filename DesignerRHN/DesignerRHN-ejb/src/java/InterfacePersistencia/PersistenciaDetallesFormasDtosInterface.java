@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.DetallesFormasDtos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public interface PersistenciaDetallesFormasDtosInterface {
 
-    public void crear(DetallesFormasDtos detallesFormasDtos);
+    public void crear(EntityManager em,DetallesFormasDtos detallesFormasDtos);
 
-    public void editar(DetallesFormasDtos detallesFormasDtos);
+    public void editar(EntityManager em,DetallesFormasDtos detallesFormasDtos);
     
-    public void borrar(DetallesFormasDtos detallesFormasDtos);
+    public void borrar(EntityManager em,DetallesFormasDtos detallesFormasDtos);
 
-    public List<DetallesFormasDtos> detallesFormasDescuentos(BigInteger formaDto);
+    public List<DetallesFormasDtos> detallesFormasDescuentos(EntityManager em,BigInteger formaDto);
     
 }

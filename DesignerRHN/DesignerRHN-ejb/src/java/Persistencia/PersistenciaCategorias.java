@@ -26,11 +26,11 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
      /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+  /*  @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Categorias categorias) {
+    public void crear(EntityManager em,Categorias categorias) {
         try {
             em.persist(categorias);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
     }
 
     @Override
-    public void editar(Categorias categorias) {
+    public void editar(EntityManager em,Categorias categorias) {
         try {
             em.merge(categorias);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
     }
 
     @Override
-    public void borrar(Categorias categorias) {
+    public void borrar(EntityManager em,Categorias categorias) {
         try {
             em.remove(em.merge(categorias));
         } catch (Exception e) {
@@ -57,17 +57,18 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
     }
 
     @Override
-    public List<Categorias> buscarCategorias() {
+    public List<Categorias> buscarCategorias(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Categorias.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public Categorias buscarCategoriaSecuencia(BigInteger secCategoria) {
+    public Categorias buscarCategoriaSecuencia(EntityManager em,BigInteger secCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT c FROM Categorias c WHERE c.secuencia=:secuencia");
             query.setParameter("secuencia", secCategoria);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Categorias categorias = (Categorias) query.getSingleResult();
             return categorias;
         } catch (Exception e) {

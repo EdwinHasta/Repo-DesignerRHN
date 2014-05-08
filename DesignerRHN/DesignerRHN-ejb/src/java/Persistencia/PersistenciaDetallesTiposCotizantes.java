@@ -29,11 +29,11 @@ public class PersistenciaDetallesTiposCotizantes implements PersistenciaDetalles
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     
     @Override
-    public void crear(DetallesTiposCotizantes detallesTiposCotizantes) {
+    public void crear(EntityManager em,DetallesTiposCotizantes detallesTiposCotizantes) {
         try {
             em.persist(detallesTiposCotizantes);
         } catch (Exception e) {
@@ -42,7 +42,7 @@ public class PersistenciaDetallesTiposCotizantes implements PersistenciaDetalles
     }
 
     @Override
-    public void editar(DetallesTiposCotizantes detallesTiposCotizantes) {
+    public void editar(EntityManager em,DetallesTiposCotizantes detallesTiposCotizantes) {
         try {
             em.merge(detallesTiposCotizantes);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class PersistenciaDetallesTiposCotizantes implements PersistenciaDetalles
     }
 
     @Override
-    public void borrar(DetallesTiposCotizantes detallesTiposCotizantes) {
+    public void borrar(EntityManager em,DetallesTiposCotizantes detallesTiposCotizantes) {
         try {
             em.remove(em.merge(detallesTiposCotizantes));
         } catch (Exception e) {
@@ -60,10 +60,11 @@ public class PersistenciaDetallesTiposCotizantes implements PersistenciaDetalles
     }
     
     @Override
-    public List<DetallesTiposCotizantes> detallesTiposCotizantes(BigInteger tipoCotizante) {
+    public List<DetallesTiposCotizantes> detallesTiposCotizantes(EntityManager em,BigInteger tipoCotizante) {
         try {
             Query query = em.createQuery("SELECT d FROM DetallesTiposCotizantes d WHERE d.tipocotizante.secuencia = :tipoCotizante");
             query.setParameter("tipoCotizante", tipoCotizante);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesTiposCotizantes> listaDetalles = query.getResultList();
             return listaDetalles;
         } catch (Exception e) {

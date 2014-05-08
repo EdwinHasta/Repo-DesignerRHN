@@ -26,11 +26,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscenariosInterface {
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<ColumnasEscenarios> buscarColumnasEscenarios() {
+    public List<ColumnasEscenarios> buscarColumnasEscenarios(EntityManager em) {
         try {
             Query query = em.createNativeQuery("SELECT * FROM ColumnasEscenarios cc WHERE ESCENARIO = (select SECUENCIA from escenarios where QVWNOMBRE= 'QVWEMPLEADOSCORTE') ORDER BY cc.nombrecolumna ASC", ColumnasEscenarios.class);
             List<ColumnasEscenarios> competenciascargos = query.getResultList();
@@ -42,7 +42,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     }
 
     @Override
-    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos) {
+    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(EntityManager em,List<Empleados> listaEmpleadosResultados, List<String> campos) {
         try {
             System.out.println("Entrto persistencia");
             List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
@@ -104,7 +104,7 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     }
 
     @Override
-    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(List<BigInteger> listaEmpleadosResultados, String campos) {
+    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(EntityManager em,List<BigInteger> listaEmpleadosResultados, String campos) {
         try {
             System.out.println("Entro persistencia");
             String[] nnn = campos.split(",");

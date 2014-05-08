@@ -28,7 +28,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     private EntityManager em;
 
     @Override
-    public void crear(Deportes deportes) {
+    public void crear(EntityManager em,Deportes deportes) {
         try{
         em.persist(deportes);
         } catch(Exception e){
@@ -37,7 +37,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
   
     @Override
-    public void editar(Deportes deportes) {
+    public void editar(EntityManager em,Deportes deportes) {
         try {
         em.merge(deportes);
         } catch(Exception e){
@@ -46,7 +46,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
  
     @Override
-    public void borrar(Deportes deportes) {
+    public void borrar(EntityManager em,Deportes deportes) {
         try{
         em.remove(em.merge(deportes));
         } catch(Exception e){
@@ -55,7 +55,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public Deportes buscarDeporte(BigInteger secuencia) {
+    public Deportes buscarDeporte(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(Deportes.class, secuencia);
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public List<Deportes> buscarDeportes() {
+    public List<Deportes> buscarDeportes(EntityManager em) {
         try{
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Deportes.class));
@@ -77,7 +77,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
     
     @Override
-    public BigInteger contadorParametrosInformes(BigInteger secuencia) {
+    public BigInteger contadorParametrosInformes(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT (*) FROM parametrosinformes WHERE deporte =  ?";
@@ -95,7 +95,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public BigInteger contadorDeportesPersonas(BigInteger secuencia) {
+    public BigInteger contadorDeportesPersonas(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM deportespersonas WHERE deporte = ?";
@@ -112,7 +112,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuencia) {
+    public BigInteger verificarBorradoVigenciasDeportes(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT count(*) FROM VigenciasDeportes  WHERE  deporte   =?";

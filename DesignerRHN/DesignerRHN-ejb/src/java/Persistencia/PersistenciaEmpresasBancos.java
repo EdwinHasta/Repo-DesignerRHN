@@ -24,10 +24,10 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(EmpresasBancos empresasBancos) {
+    public void crear(EntityManager em,EmpresasBancos empresasBancos) {
         try {
             System.out.println("PERSISTENCIAEMPRESASBANCOS  EMPRESA " + empresasBancos.getEmpresa().getNombre());
             System.out.println("PERSISTENCIAEMPRESASBANCOS  BANCO " + empresasBancos.getBanco().getNombre());
@@ -47,7 +47,7 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
         }
     }
 
-    public void editar(EmpresasBancos empresasBancos) {
+    public void editar(EntityManager em,EmpresasBancos empresasBancos) {
         try {
             if (empresasBancos.getTipocuenta() == null) {
                 System.out.println("PERSISTENCIA TIPO CUENTA ES NULO");
@@ -62,7 +62,7 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
         }
     }
 
-    public void borrar(EmpresasBancos empresasBancos) {
+    public void borrar(EntityManager em,EmpresasBancos empresasBancos) {
         try {
             em.remove(em.merge(empresasBancos));
         } catch (Exception e) {
@@ -70,9 +70,10 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
         }
     }
 
-    public List<EmpresasBancos> consultarEmpresasBancos() {
+    public List<EmpresasBancos> consultarEmpresasBancos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT g FROM EmpresasBancos g ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< EmpresasBancos> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
 
@@ -82,10 +83,11 @@ public class PersistenciaEmpresasBancos implements PersistenciaEmpresasBancosInt
         }
     }
 
-    public EmpresasBancos consultarFirmaReporte(BigInteger secuencia) {
+    public EmpresasBancos consultarFirmaReporte(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM EmpresasBancos te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             EmpresasBancos empresasBancos = (EmpresasBancos) query.getSingleResult();
             return empresasBancos;
         } catch (Exception e) {

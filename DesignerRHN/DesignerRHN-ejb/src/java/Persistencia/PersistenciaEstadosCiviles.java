@@ -23,11 +23,11 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
   
     @Override
-    public void crear(EstadosCiviles estadosCiviles) {
+    public void crear(EntityManager em,EstadosCiviles estadosCiviles) {
         try{
         em.persist(estadosCiviles);
         } catch(Exception e){
@@ -36,7 +36,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     }
   
     @Override
-    public void editar(EstadosCiviles estadosCiviles) {
+    public void editar(EntityManager em,EstadosCiviles estadosCiviles) {
         try {
         em.merge(estadosCiviles);
         } catch(Exception e){
@@ -45,7 +45,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     }
  
     @Override
-    public void borrar(EstadosCiviles estadosCiviles) {
+    public void borrar(EntityManager em,EstadosCiviles estadosCiviles) {
         try{
         em.remove(em.merge(estadosCiviles));
         } catch(Exception e){
@@ -54,7 +54,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     }
 
     @Override
-    public EstadosCiviles buscarEstadoCivil(BigInteger secuencia) {
+    public EstadosCiviles buscarEstadoCivil(EntityManager em,BigInteger secuencia) {
         try {          
             return em.find(EstadosCiviles.class, secuencia);
         } catch (Exception e) {
@@ -64,14 +64,15 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
     }
 
     @Override
-    public List<EstadosCiviles> consultarEstadosCiviles() {
+    public List<EstadosCiviles> consultarEstadosCiviles(EntityManager em) {
         Query query = em.createQuery("SELECT e FROM EstadosCiviles e ORDER BY e.codigo ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<EstadosCiviles> listEstadosCiviles = query.getResultList();
         return listEstadosCiviles;
 
     }
     
-      public BigInteger contadorVigenciasEstadosCiviles(BigInteger secuencia) {
+      public BigInteger contadorVigenciasEstadosCiviles(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM vigenciasestadosciviles WHERE estadocivil = ?";

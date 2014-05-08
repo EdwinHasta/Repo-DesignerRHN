@@ -24,25 +24,26 @@ public class PersistenciaFestivos implements PersistenciaFestivosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
-    public void crear(Festivos festivos) {
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
+    public void crear(EntityManager em, Festivos festivos) {
         em.persist(festivos);
     }
 
-    public void editar(Festivos festivos) {
+    public void editar(EntityManager em, Festivos festivos) {
         em.merge(festivos);
     }
 
-    public void borrar(Festivos festivos) {
+    public void borrar(EntityManager em, Festivos festivos) {
         em.remove(em.merge(festivos));
     }
 
-    public List<Festivos> consultarFestivosPais(BigInteger secPais) {
+    public List<Festivos> consultarFestivosPais(EntityManager em, BigInteger secPais) {
         try {
             Query query = em.createQuery("SELECT fes FROM Festivos fes WHERE fes.pais.secuencia = :secuenciaPais");
+
             query.setParameter("secuenciaPais", secPais);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
 
             List<Festivos> listFestivos = query.getResultList();
             return listFestivos;
@@ -52,7 +53,7 @@ public class PersistenciaFestivos implements PersistenciaFestivosInterface {
         }
     }
 
-    public Festivos consultarPais(BigInteger secPais) {
+    public Festivos consultarPais(EntityManager em, BigInteger secPais) {
         try {
             return em.find(Festivos.class, secPais);
         } catch (Exception e) {

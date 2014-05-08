@@ -7,6 +7,7 @@ import Entidades.Conceptos;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -21,7 +22,7 @@ public interface PersistenciaConceptosInterface {
      *
      * @param concepto Concepto que se quiere crear.
      */
-    public void crear(Conceptos concepto);
+    public void crear(EntityManager em,Conceptos concepto);
 
     /**
      * Método encargado de modificar un Concepto de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaConceptosInterface {
      *
      * @param concepto Concepto con los cambios que se van a realizar.
      */
-    public void editar(Conceptos concepto);
+    public void editar(EntityManager em,Conceptos concepto);
 
     /**
      * Método encargado de eliminar de la base de datos el Concepto que entra
@@ -38,7 +39,7 @@ public interface PersistenciaConceptosInterface {
      *
      * @param concepto Concepto que se quiere eliminar.
      */
-    public void borrar(Conceptos concepto);
+    public void borrar(EntityManager em,Conceptos concepto);
 
     /**
      * Método encargado de buscar todos los Conceptos existentes en la base de
@@ -46,7 +47,7 @@ public interface PersistenciaConceptosInterface {
      *
      * @return Retorna una lista de Conceptos.
      */
-    public List<Conceptos> buscarConceptos();
+    public List<Conceptos> buscarConceptos(EntityManager em);
 
     /**
      * Método encargado de validar que el código que entra por parámetro existe
@@ -56,7 +57,7 @@ public interface PersistenciaConceptosInterface {
      * base de datos
      * @return True si el Código esta en la base de datos
      */
-    public boolean verificarCodigoConcepto(BigInteger codigoConcepto);
+    public boolean verificarCodigoConcepto(EntityManager em,BigInteger codigoConcepto);
 
     /**
      * Método encargado de buscar los conceptos cuyo código existe y pertencen a
@@ -67,7 +68,7 @@ public interface PersistenciaConceptosInterface {
      * @return Retorna la lista de Conceptos cuyo código concuerda con el dado y
      * que pertenecen a la empresa con secuencia igual a la dada por parámetro.
      */
-    public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa);
+    public Conceptos validarCodigoConcepto(EntityManager em,BigInteger codigoConcepto, BigInteger secEmpresa);
 
     /**
      * Método encargado de buscar los Conceptos de una empresa especifica.
@@ -77,7 +78,7 @@ public interface PersistenciaConceptosInterface {
      * @return Retorna una lista de los conceptos de le empresa cuya secuencia
      * es igual a la que entra por parámetro.
      */
-    public List<Conceptos> conceptosPorEmpresa(BigInteger secEmpresa);
+    public List<Conceptos> conceptosPorEmpresa(EntityManager em,BigInteger secEmpresa);
 
     /**
      * Método encargado de buscar los Conceptos de una empresa especifica y
@@ -90,7 +91,7 @@ public interface PersistenciaConceptosInterface {
      * @return Retorna una lista con los conceptos que cumplen con el estado
      * dado por parámetro.
      */
-    public List<Conceptos> conceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado);
+    public List<Conceptos> conceptosEmpresaActivos_Inactivos(EntityManager em,BigInteger secEmpresa, String estado);
 
     /**
      * Método encargado de consultar todos los conceptos de la empresa menos los
@@ -102,7 +103,7 @@ public interface PersistenciaConceptosInterface {
      * @return Retorna una lista de conceptos No pasivos que pertenecen a una
      * empresa especifica.
      */
-    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa);
+    public List<Conceptos> conceptosEmpresaSinPasivos(EntityManager em,BigInteger secEmpresa);
 
     /**
      * Método encargado de clonar un concepto. Se crea un nuevo concepto con los
@@ -113,7 +114,7 @@ public interface PersistenciaConceptosInterface {
      * @param codigoConceptoNuevo Código del nuevo concepto.
      * @param descripcionConceptoNuevo Descripción del nuevo concepto.
      */
-    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo);
+    public void clonarConcepto(EntityManager em,BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo);
 
     /**
      * Método encargado de buscar el Contrato con la secuencia dada por
@@ -123,18 +124,18 @@ public interface PersistenciaConceptosInterface {
      * @return Retorna el Contrato identificado con la secuencia dada por
      * parámetro.
      */
-    public Conceptos conceptosPorSecuencia(BigInteger secuencia);
+    public Conceptos conceptosPorSecuencia(EntityManager em,BigInteger secuencia);
     /**
      * Elimina un concepto y todos los datos asociados a este.
      * @param secuenciaConcepto Secuencia del concepto que se va a eliminar
      * @return Retorna True si fue posible eliminar el concepto, false de lo contrario.
      */
-    public boolean eliminarConcepto(BigInteger secuenciaConcepto);
+    public boolean eliminarConcepto(EntityManager em,BigInteger secuenciaConcepto);
 
-    public String conceptoParaFormulaContrato(BigInteger secuencia, Date fechaFin);
+    public String conceptoParaFormulaContrato(EntityManager em,BigInteger secuencia, Date fechaFin);
     
-    public List<Conceptos> conceptoEmpresa();
+    public List<Conceptos> conceptoEmpresa(EntityManager em);
     
-    public List<Conceptos> novedadConceptos();
+    public List<Conceptos> novedadConceptos(EntityManager em);
 
 }

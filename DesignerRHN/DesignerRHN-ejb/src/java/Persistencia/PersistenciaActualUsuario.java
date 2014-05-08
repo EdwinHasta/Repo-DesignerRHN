@@ -19,13 +19,14 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
     public ActualUsuario actualUsuarioBD(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT au FROM ActualUsuario au");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ActualUsuario actualUsuario;
             actualUsuario = (ActualUsuario) query.getSingleResult();
             return actualUsuario;
@@ -36,7 +37,7 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
     }
     
     @Override
-    public String actualAliasBD() {
+    public String actualAliasBD(EntityManager em) {
         try {
             String sqlQuery = "SELECT au.ALIAS FROM VWActualUsuario au";
             Query query = em.createNativeQuery(sqlQuery);

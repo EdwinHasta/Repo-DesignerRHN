@@ -9,6 +9,7 @@ import Entidades.ClasesAccidentes;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaClasesAccidentesInterface {
      *
      * @param clasesAccidentes ClasesAccidentes que se quiere crear.
      */
-    public void crear(ClasesAccidentes clasesAccidentes);
+    public void crear(EntityManager em,ClasesAccidentes clasesAccidentes);
 
     /**
      * Método encargado de modificar un ClaseAccidente de la base de datos. Este
@@ -32,7 +33,7 @@ public interface PersistenciaClasesAccidentesInterface {
      * @param clasesAccidentes ClasesAccidentes con los cambios que se van a
      * realizar.
      */
-    public void editar(ClasesAccidentes clasesAccidentes);
+    public void editar(EntityManager em,ClasesAccidentes clasesAccidentes);
 
     /**
      * Método encargado de eliminar de la base de datos un ClaseAccidente que
@@ -40,7 +41,7 @@ public interface PersistenciaClasesAccidentesInterface {
      *
      * @param clasesAccidentes ClasesAccidentes que se quiere eliminar.
      */
-    public void borrar(ClasesAccidentes clasesAccidentes);
+    public void borrar(EntityManager em,ClasesAccidentes clasesAccidentes);
 
     /**
      * Método encargado de buscar un ClaseAccidente con la secClasesAccidentes
@@ -51,7 +52,7 @@ public interface PersistenciaClasesAccidentesInterface {
      * @return Retorna un ClaseAccidente identificado con la secClasesAccidentes
      * dada por parámetro.
      */
-    public ClasesAccidentes buscarClaseAccidente(BigInteger secClasesAccidentes);
+    public ClasesAccidentes buscarClaseAccidente(EntityManager em,BigInteger secClasesAccidentes);
 
     /**
      * Método encargado de buscar todas las ClasesAccidentes existentes en la
@@ -59,7 +60,7 @@ public interface PersistenciaClasesAccidentesInterface {
      *
      * @return Retorna una lista de ClasesAccidentes.
      */
-    public List<ClasesAccidentes> buscarClasesAccidentes();
+    public List<ClasesAccidentes> buscarClasesAccidentes(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relación entre un
@@ -70,5 +71,5 @@ public interface PersistenciaClasesAccidentesInterface {
      * @return Retorna el número de proyectos relacionados con un ClaseAccidente
      * cuya secuencia coincide con el parámetro.
      */
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secClasesAccidentes);
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em,BigInteger secClasesAccidentes);
 }

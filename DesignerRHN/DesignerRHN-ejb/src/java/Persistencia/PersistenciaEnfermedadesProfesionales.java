@@ -23,26 +23,26 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(EnfermeadadesProfesionales enfermedadesProfesionales) {
+    public void crear(EntityManager em, EnfermeadadesProfesionales enfermedadesProfesionales) {
         em.persist(enfermedadesProfesionales);
     }
 
     @Override
-    public void editar(EnfermeadadesProfesionales enfermedadesProfesionales) {
+    public void editar(EntityManager em, EnfermeadadesProfesionales enfermedadesProfesionales) {
         em.merge(enfermedadesProfesionales);
     }
 
     @Override
-    public void borrar(EnfermeadadesProfesionales enfermedadesProfesionales) {
+    public void borrar(EntityManager em, EnfermeadadesProfesionales enfermedadesProfesionales) {
         em.remove(em.merge(enfermedadesProfesionales));
     }
 
     @Override
-    public EnfermeadadesProfesionales buscarEnfermedadesProfesionales(BigInteger secuencia) {
+    public EnfermeadadesProfesionales buscarEnfermedadesProfesionales(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(EnfermeadadesProfesionales.class, secuencia);
         } catch (Exception e) {
@@ -52,11 +52,11 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
     }
     
     @Override
-    public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(BigInteger secEmpleado) {
+    public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT ep.fechanotificacion,d.descripcion,d.codigo FROM EnfermeadadesProfesionales ep, Diagnosticoscategorias d WHERE ep.empleado.secuencia = :secuenciaEmpl ORDER BY ep.fechanotificacion DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EnfermeadadesProfesionales> enfermedadesProfesionales = query.getResultList();
             return enfermedadesProfesionales;
         } catch (Exception e) {

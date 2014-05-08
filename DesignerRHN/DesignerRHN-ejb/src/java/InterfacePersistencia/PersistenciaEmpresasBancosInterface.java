@@ -9,6 +9,7 @@ import Entidades.EmpresasBancos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,13 +18,13 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaEmpresasBancosInterface {
 
-    public void crear(EmpresasBancos empresasBancos);
+    public void crear(EntityManager em,EmpresasBancos empresasBancos);
 
-    public void editar(EmpresasBancos empresasBancos);
+    public void editar(EntityManager em,EmpresasBancos empresasBancos);
 
-    public void borrar(EmpresasBancos empresasBancos);
+    public void borrar(EntityManager em,EmpresasBancos empresasBancos);
 
-    public List<EmpresasBancos> consultarEmpresasBancos();
+    public List<EmpresasBancos> consultarEmpresasBancos(EntityManager em);
 
-    public EmpresasBancos consultarFirmaReporte(BigInteger secuencia);
+    public EmpresasBancos consultarFirmaReporte(EntityManager em,BigInteger secuencia);
 }

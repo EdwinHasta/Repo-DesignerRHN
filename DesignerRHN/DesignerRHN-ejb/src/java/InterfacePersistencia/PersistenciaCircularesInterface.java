@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Circulares;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaCircularesInterface {
      *
      * @param circulares Circular que se quiere crear.
      */
-    public void crear(Circulares circulares);
+    public void crear(EntityManager em,Circulares circulares);
 
     /**
      * Método encargado de modificar una Circular de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaCircularesInterface {
      *
      * @param circulares Circular con los cambios que se van a realizar.
      */
-    public void editar(Circulares circulares);
+    public void editar(EntityManager em,Circulares circulares);
 
     /**
      * Método encargado de eliminar de la base de datos la Circular que entra
@@ -37,7 +38,7 @@ public interface PersistenciaCircularesInterface {
      *
      * @param circulares Circular que se quiere eliminar.
      */
-    public void borrar(Circulares circulares);
+    public void borrar(EntityManager em,Circulares circulares);
 
     /**
      * Método encargado de buscar todas las Circulares existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaCircularesInterface {
      *
      * @return Retorna una lista de Circulares.
      */
-    public List<Circulares> buscarCirculares();
+    public List<Circulares> buscarCirculares(EntityManager em);
 
     /**
      * Método encargado de buscar la Circular con la secCircular dada por
@@ -55,7 +56,7 @@ public interface PersistenciaCircularesInterface {
      * @return Retorna la Circular identificado con la secCircular dada
      * por parámetro.
      */
-    public Circulares buscarCircularSecuencia(BigInteger secuencia);
+    public Circulares buscarCircularSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos las Circulares existentes en la base
@@ -63,6 +64,6 @@ public interface PersistenciaCircularesInterface {
      * @param secuencia Secuencia de la empresa
      * @return Retorna una lista de Circulares.
      */
-    public List<Circulares> buscarCircularesPorSecuenciaEmpresa(BigInteger secuencia);
+    public List<Circulares> buscarCircularesPorSecuenciaEmpresa(EntityManager em,BigInteger secuencia);
 
 }

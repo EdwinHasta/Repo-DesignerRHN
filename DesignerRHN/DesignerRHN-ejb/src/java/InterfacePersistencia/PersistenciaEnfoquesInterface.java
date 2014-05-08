@@ -9,6 +9,7 @@ import Entidades.Enfoques;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaEnfoquesInterface {
      *
      * @param Enfoques Enfoque que se quiere crear.
      */
-    public void crear(Enfoques Enfoques);
+    public void crear(EntityManager em,Enfoques Enfoques);
 
     /**
      * Método encargado de modificar un Enfoque de la base de datos. Este método
@@ -31,7 +32,7 @@ public interface PersistenciaEnfoquesInterface {
      *
      * @param Enfoques Enfoques con los cambios que se van a realizar.
      */
-    public void editar(Enfoques Enfoques);
+    public void editar(EntityManager em,Enfoques Enfoques);
 
     /**
      * Método encargado de eliminar de la base de datos un Enfoque que entra por
@@ -39,7 +40,7 @@ public interface PersistenciaEnfoquesInterface {
      *
      * @param Enfoques Enfoques que se quiere eliminar.
      */
-    public void borrar(Enfoques Enfoques);
+    public void borrar(EntityManager em,Enfoques Enfoques);
 
     /**
      * Método encargado de buscar el TipoDia con la secEnfoques dada por
@@ -49,7 +50,7 @@ public interface PersistenciaEnfoquesInterface {
      * @return Retorna el Enfoque identificado con la secEnfoques dada por
      * parámetro.
      */
-    public Enfoques buscarEnfoque(BigInteger secEnfoques);
+    public Enfoques buscarEnfoque(EntityManager em,BigInteger secEnfoques);
 
     /**
      * Método encargado de buscar todas los Enfoques existentes en la base de
@@ -57,7 +58,7 @@ public interface PersistenciaEnfoquesInterface {
      *
      * @return Retorna una lista de Enfoques.
      */
-    public List<Enfoques> buscarEnfoques();
+    public List<Enfoques> buscarEnfoques(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Enfoque
@@ -68,5 +69,5 @@ public interface PersistenciaEnfoquesInterface {
      * @return Retorna el número de TiposDetalles relacionados con la Enfoque
      * cuya secEnfoques coincide con el parámetro.
      */
-    public BigInteger contadorTiposDetalles(BigInteger secEnfoques);
+    public BigInteger contadorTiposDetalles(EntityManager em,BigInteger secEnfoques);
 }

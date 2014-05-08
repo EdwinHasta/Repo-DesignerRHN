@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Enfermedades;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaEnfermedadesInterface {
      *
      * @param enfermedades Enfermedad que se quiere crear.
      */
-    public void crear(Enfermedades enfermedades);
+    public void crear(EntityManager em,Enfermedades enfermedades);
 
     /**
      * Método encargado de modificar una Enfermedad de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaEnfermedadesInterface {
      *
      * @param enfermedades Enfermedad con los cambios que se van a realizar.
      */
-    public void editar(Enfermedades enfermedades);
+    public void editar(EntityManager em,Enfermedades enfermedades);
 
     /**
      * Método encargado de eliminar de la base de datos la Enfermedad que entra
@@ -37,7 +38,7 @@ public interface PersistenciaEnfermedadesInterface {
      *
      * @param enfermedades Enfermedad
      */
-    public void borrar(Enfermedades enfermedades);
+    public void borrar(EntityManager em,Enfermedades enfermedades);
 
     /**
      * Método encargado de buscar la Enfermedad con la secEnfermedades dada por
@@ -48,7 +49,7 @@ public interface PersistenciaEnfermedadesInterface {
      * @return Retorna la Enfermedad identificada con la secEnfermedades dada
      * por parámetro.
      */
-    public Enfermedades buscarEnfermedad(BigInteger secEnfermedades);
+    public Enfermedades buscarEnfermedad(EntityManager em,BigInteger secEnfermedades);
 
     /**
      * Método encargado de buscar todas las Enfermedades existentes en la base
@@ -56,7 +57,7 @@ public interface PersistenciaEnfermedadesInterface {
      *
      * @return Retorna una lista de Enfermedades.
      */
-    public List<Enfermedades> buscarEnfermedades();
+    public List<Enfermedades> buscarEnfermedades(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Enfermedad
@@ -67,7 +68,7 @@ public interface PersistenciaEnfermedadesInterface {
      * @return Retorna el número de Ausentimos relacionados con la Enfermedad
      * cuya secEnfermedades coincide con el parámetro.
      */
-    public BigInteger contadorAusentimos(BigInteger secEnfermedades);
+    public BigInteger contadorAusentimos(EntityManager em,BigInteger secEnfermedades);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Enfermedad
@@ -78,7 +79,7 @@ public interface PersistenciaEnfermedadesInterface {
      * @return Retorna el número de DetallesLicencias relacionados con la
      * Enfermedad cuya secEnfermedades coincide con el parámetro.
      */
-    public BigInteger contadorDetallesLicencias(BigInteger secEnfermedades);
+    public BigInteger contadorDetallesLicencias(EntityManager em,BigInteger secEnfermedades);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Enfermedad
@@ -89,7 +90,7 @@ public interface PersistenciaEnfermedadesInterface {
      * @return Retorna el número de EnfermedadesPadecidas relacionados con la
      * Enfermedad cuya secEnfermedades coincide con el parámetro.
      */
-    public BigInteger contadorEnfermedadesPadecidas(BigInteger secEnfermedades);
+    public BigInteger contadorEnfermedadesPadecidas(EntityManager em,BigInteger secEnfermedades);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Enfermedad
@@ -100,7 +101,7 @@ public interface PersistenciaEnfermedadesInterface {
      * @return Retorna el número de SoAusentismos relacionados con la Enfermedad
      * cuya secEnfermedades coincide con el parámetro.
      */
-    public BigInteger contadorSoausentismos(BigInteger secEnfermedades);
+    public BigInteger contadorSoausentismos(EntityManager em,BigInteger secEnfermedades);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Enfermedad
@@ -111,5 +112,5 @@ public interface PersistenciaEnfermedadesInterface {
      * @return Retorna el número de SorevisionessSistemas relacionados con la
      * Enfermedad cuya secEnfermedades coincide con el parámetro.
      */
-    public BigInteger contadorSorevisionessSistemas(BigInteger secEnfermedades);
+    public BigInteger contadorSorevisionessSistemas(EntityManager em,BigInteger secEnfermedades);
 }

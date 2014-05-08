@@ -13,6 +13,7 @@ import Entidades.QVWEmpleadosCorte;
 import Entidades.ResultadoBusquedaAvanzada;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -20,8 +21,8 @@ import java.util.List;
  */
 public interface PersistenciaColumnasEscenariosInterface {
     
-    public List<ColumnasEscenarios> buscarColumnasEscenarios();
-    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos);
-    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(List<BigInteger> listaEmpleadosResultados, String campos);
+    public List<ColumnasEscenarios> buscarColumnasEscenarios(EntityManager em);
+    public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(EntityManager em,List<Empleados> listaEmpleadosResultados, List<String> campos);
+    public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(EntityManager em,List<BigInteger> listaEmpleadosResultados, String campos);
     
 }

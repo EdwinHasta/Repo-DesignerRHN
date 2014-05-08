@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Cargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaCargosInterface {
      *
      * @param cargos Cargo que se quiere crear.
      */
-    public void crear(Cargos cargos);
+    public void crear(EntityManager em,Cargos cargos);
 
     /**
      * Método encargado de modificar un Cargo de la base de datos. Este método
@@ -29,7 +30,7 @@ public interface PersistenciaCargosInterface {
      *
      * @param cargos Cargo con los cambios que se van a realizar.
      */
-    public void editar(Cargos cargos);
+    public void editar(EntityManager em,Cargos cargos);
 
     /**
      * Método encargado de eliminar de la base de datos el Cargo que entra por
@@ -37,7 +38,7 @@ public interface PersistenciaCargosInterface {
      *
      * @param cargos Cargo que se quiere eliminar.
      */
-    public void borrar(Cargos cargos);
+    public void borrar(EntityManager em,Cargos cargos);
 
     /**
      * Método encargado de buscar el Cargo con la secuencia dada por parámetro.
@@ -46,7 +47,7 @@ public interface PersistenciaCargosInterface {
      * @return Retorna el Cargo identificado con la secuencia dada por
      * parámetro.
      */
-    public Cargos buscarCargoSecuencia(BigInteger secuencia);
+    public Cargos buscarCargoSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos los Cargos existentes en la base de
@@ -54,7 +55,7 @@ public interface PersistenciaCargosInterface {
      *
      * @return Retorna una lista de Cargos.
      */
-    public List<Cargos> consultarCargos();
+    public List<Cargos> consultarCargos(EntityManager em);
 
     /**
      * Método encargado de traer todos los cargos de la base de datos,
@@ -63,7 +64,7 @@ public interface PersistenciaCargosInterface {
      * @return Retorna una lista de Cargos. Cada objeto cargos tiene su salario
      * incluido.
      */
-    public List<Cargos> cargosSalario();
+    public List<Cargos> cargosSalario(EntityManager em);
 
     /**
      * Método encargado de traer todos los cargos relacionados con una empresada
@@ -72,5 +73,5 @@ public interface PersistenciaCargosInterface {
      * @param secEmpresa Secuencia Empresa
      * @return Retorna una lista de Cargos
      */
-    public List<Cargos> buscarCargosPorSecuenciaEmpresa(BigInteger secEmpresa);
+    public List<Cargos> buscarCargosPorSecuenciaEmpresa(EntityManager em,BigInteger secEmpresa);
 }

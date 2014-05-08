@@ -26,11 +26,11 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Circulares circulares) {
+    public void crear(EntityManager em,Circulares circulares) {
         try {
             em.persist(circulares);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     }
 
     @Override
-    public void editar(Circulares circulares) {
+    public void editar(EntityManager em,Circulares circulares) {
         try {
             em.merge(circulares);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     }
 
     @Override
-    public void borrar(Circulares circulares) {
+    public void borrar(EntityManager em,Circulares circulares) {
         try {
             em.remove(em.merge(circulares));
         } catch (Exception e) {
@@ -57,9 +57,10 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     }
 
     @Override
-    public List<Circulares> buscarCirculares() {
+    public List<Circulares> buscarCirculares(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT c FROM Circulares c");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Circulares> circulares = query.getResultList();
             return circulares;
         } catch (Exception e) {
@@ -69,10 +70,11 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     }
 
     @Override
-    public Circulares buscarCircularSecuencia(BigInteger secuencia) {
+    public Circulares buscarCircularSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Circulares c WHERE c.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Circulares circulares = (Circulares) query.getSingleResult();
             return circulares;
         } catch (Exception e) {
@@ -83,10 +85,11 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
     }
 
     @Override
-    public List<Circulares> buscarCircularesPorSecuenciaEmpresa(BigInteger secuencia) {
+    public List<Circulares> buscarCircularesPorSecuenciaEmpresa(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Circulares c WHERE c.empresa.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Circulares> circulares = query.getResultList();
             return circulares;
         } catch (Exception e) {

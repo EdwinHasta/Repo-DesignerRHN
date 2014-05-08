@@ -20,11 +20,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaDetallesFormulas implements PersistenciaDetallesFormulasInterface{
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<DetallesFormulas> detallesFormula(BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula) {
+    public List<DetallesFormulas> detallesFormula(EntityManager em,BigInteger secEmpleado, String fechaDesde, String fechaHasta, BigInteger secProceso, BigInteger secHistoriaFormula) {
         try {
             String sqlQuery = "select ROWNUM ID, LEVEL NIVEL, \n"
                     + "        POSICION,\n"

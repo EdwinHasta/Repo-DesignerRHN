@@ -14,12 +14,13 @@ public class PersistenciaGenerales implements PersistenciaGeneralesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public Generales obtenerRutas() {
+    public Generales obtenerRutas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT g FROM Generales g");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Generales> listaGenerales = query.getResultList();
             if (listaGenerales != null && !listaGenerales.isEmpty()) {
                 return listaGenerales.get(0);

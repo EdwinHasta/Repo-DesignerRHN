@@ -19,14 +19,15 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public boolean permisoLiquidar(String usuarioBD) {
+    public boolean permisoLiquidar(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT COUNT(c) FROM Candados c WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
 
     @Override
-    public void liquidar() {
+    public void liquidar(EntityManager em) {
         int i = -100;
         try {
             String sqlQuery = "call PRCUTL_FORMSLIQUIDAR()";
@@ -48,10 +49,11 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
 
     @Override
-    public String estadoLiquidacion(String usuarioBD) {
+    public String estadoLiquidacion(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT c.estado FROM Candados c WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             String estadoLiquidacion = (String) query.getSingleResult();
             return estadoLiquidacion;
         } catch (Exception e) {
@@ -61,7 +63,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
 
     @Override
-    public Integer progresoLiquidacion(Integer totalEmpleadosALiquidar) {
+    public Integer progresoLiquidacion(EntityManager em, Integer totalEmpleadosALiquidar) {
         try {
             String sqlQuery = "select conteoliquidados(?) from dual";
             Query query = em.createNativeQuery(sqlQuery);
@@ -76,10 +78,11 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
 
     @Override
-    public void cancelarLiquidacion(String usuarioBD) {
+    public void cancelarLiquidacion(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("UPDATE Candados c SET c.estado='CANCELAR' WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
         } catch (Exception e) {
             System.out.println("Exepcion: cancelarLiquidacion " + e);
@@ -87,7 +90,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
 
     @Override
-    public void cerrarLiquidacionAutomatico() {
+    public void cerrarLiquidacionAutomatico(EntityManager em) {
         try {
             String sqlQuery = "call UTL_FORMS.CERRARLIQUIDACION()";
             Query query = em.createNativeQuery(sqlQuery);
@@ -98,7 +101,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
     
     @Override
-    public void cerrarLiquidacionNoAutomatico() {
+    public void cerrarLiquidacionNoAutomatico(EntityManager em) {
         try {
             String sqlQuery = "call UTL_FORMS.CERRARLIQPAGOPORFUERA()";
             Query query = em.createNativeQuery(sqlQuery);
@@ -109,7 +112,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
     
     @Override
-    public void borrarLiquidacionAutomatico() {
+    public void borrarLiquidacionAutomatico(EntityManager em) {
         try {
             String sqlQuery = "call UTL_FORMS.ELIMINARLIQUIDACION()";
             Query query = em.createNativeQuery(sqlQuery);
@@ -120,7 +123,7 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
     }
     
     @Override
-    public void borrarLiquidacionNoAutomatico() {
+    public void borrarLiquidacionNoAutomatico(EntityManager em) {
         try {
             String sqlQuery = "call UTL_FORMS.ELIMINARLIQPAGOPORFUERA()";
             Query query = em.createNativeQuery(sqlQuery);

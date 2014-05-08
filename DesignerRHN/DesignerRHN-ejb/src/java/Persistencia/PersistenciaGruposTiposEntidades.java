@@ -25,11 +25,11 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    EntityManager em;*/
 
     @Override
-    public void crear(Grupostiposentidades gruposTiposEntidades) {
+    public void crear(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
         try {
             em.persist(gruposTiposEntidades);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     }
 
     @Override
-    public void editar(Grupostiposentidades gruposTiposEntidades) {
+    public void editar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
         System.out.println("PERSISTENCIA-------------");
         System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
         System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
@@ -51,7 +51,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     }
 
     @Override
-    public void borrar(Grupostiposentidades gruposTiposEntidades) {
+    public void borrar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
         try {
             System.out.println("PERSISTENCIA-------------");
             System.out.println("----------BORRAR--------------------------------");
@@ -65,7 +65,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     }
 
     @Override
-    public Grupostiposentidades consultarGrupoTipoEntidad(BigInteger secuencia) {
+    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
         try {
 
             return em.find(Grupostiposentidades.class, secuencia);
@@ -77,9 +77,10 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     }
 
     @Override
-    public List<Grupostiposentidades> consultarGruposTiposEntidades() {
+    public List<Grupostiposentidades> consultarGruposTiposEntidades(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ta FROM Grupostiposentidades ta ORDER BY ta.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Grupostiposentidades> todosGrupostiposentidades = query.getResultList();
             return todosGrupostiposentidades;
         } catch (Exception e) {
@@ -88,7 +89,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTiposEntidadesGrupoTipoEntidad(BigInteger secuencia) {
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tiposentidades WHERE grupo =?";
@@ -103,7 +104,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(BigInteger secuencia) {
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";

@@ -7,6 +7,7 @@ import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -24,7 +25,7 @@ public interface PersistenciaHvReferenciasInterface {
      * de una persona.
      *
      */
-    public List<HvReferencias> referenciasPersonalesPersona(BigInteger secuenciaHV);
+    public List<HvReferencias> referenciasPersonalesPersona(EntityManager em,BigInteger secuenciaHV);
 
     /**
      * Metodo encargado de buscar las referencias familiares de una persona.
@@ -33,14 +34,14 @@ public interface PersistenciaHvReferenciasInterface {
      * @return Retorna una lista de HvReferencias con las referencias familiares
      * de una persona.
      */
-    public List<HvReferencias> contarReferenciasFamiliaresPersona(BigInteger secuenciaHV);
+    public List<HvReferencias> contarReferenciasFamiliaresPersona(EntityManager em,BigInteger secuenciaHV);
 
     /**
      * Método encargado de insertar una HvReferencia en la base de datos.
      *
      * @param hvReferencias HvReferencia que se quiere crear.
      */
-    public void crear(HvReferencias hvReferencias);
+    public void crear(EntityManager em,HvReferencias hvReferencias);
 
     /**
      * Método encargado de modificar una HvReferencia de la base de datos. Este
@@ -49,7 +50,7 @@ public interface PersistenciaHvReferenciasInterface {
      *
      * @param hvReferencias HvReferencias con los cambios que se van a realizar.
      */
-    public void editar(HvReferencias hvReferencias);
+    public void editar(EntityManager em,HvReferencias hvReferencias);
 
     /**
      * Método encargado de eliminar de la base de datos una HvReferencia que
@@ -57,7 +58,7 @@ public interface PersistenciaHvReferenciasInterface {
      *
      * @param hvReferencias HvReferencias que se quiere eliminar.
      */
-    public void borrar(HvReferencias hvReferencias);
+    public void borrar(EntityManager em,HvReferencias hvReferencias);
 
     /**
      * Método encargado de buscar el HvReferencias con la secuencia dada por
@@ -68,7 +69,7 @@ public interface PersistenciaHvReferenciasInterface {
      * @return Retorna la HvReferencia identificado con la secuencia dada por
      * parámetro.
      */
-    public HvReferencias buscarHvReferencia(BigInteger secuenciaHvReferencias);
+    public HvReferencias buscarHvReferencia(EntityManager em,BigInteger secuenciaHvReferencias);
 
     /**
      * Método encargado de buscar todas las HvReferencias existentes en la base
@@ -76,7 +77,7 @@ public interface PersistenciaHvReferenciasInterface {
      *
      * @return Retorna una lista de HvReferencias.
      */
-    public List<HvReferencias> buscarHvReferencias();
+    public List<HvReferencias> buscarHvReferencias(EntityManager em);
 
     /**
      * *
@@ -86,7 +87,7 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Lista de Referencias Por empleado
      */
-    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(EntityManager em,BigInteger secEmpleado);
 
 
     /**
@@ -97,7 +98,7 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Lista de Referencias Por empleado
      */
-    public List<HvReferencias> consultarHvReferenciasFamiliarPorEmpleado(BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasFamiliarPorEmpleado(EntityManager em,BigInteger secEmpleado);
     /**
      * Metodo encargado de traer las hojas de vida del empleado relacionadas con
      * HvReferencias
@@ -105,5 +106,5 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Retorna una lista De HVHojasDeVida
      */
-    public List<HVHojasDeVida> consultarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado);
+    public List<HVHojasDeVida> consultarHvHojaDeVidaPorEmpleado(EntityManager em,BigInteger secEmpleado);
 }

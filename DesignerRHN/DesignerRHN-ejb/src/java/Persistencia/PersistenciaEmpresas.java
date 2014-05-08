@@ -25,11 +25,11 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Empresas empresas) {
+    public void crear(EntityManager em,Empresas empresas) {
         try {
             em.persist(empresas);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public void editar(Empresas empresas) {
+    public void editar(EntityManager em,Empresas empresas) {
         try {
             em.merge(empresas);
         } catch (Exception e) {
@@ -47,14 +47,15 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public void borrar(Empresas empresas) {
+    public void borrar(EntityManager em,Empresas empresas) {
         em.remove(em.merge(empresas));
     }
 
     @Override
-    public List<Empresas> buscarEmpresas() {
+    public List<Empresas> buscarEmpresas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Empresas> empresas = query.getResultList();
             return empresas;
         } catch (Exception e) {
@@ -64,11 +65,12 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public Empresas buscarEmpresasSecuencia(BigInteger secuencia) {
+    public Empresas buscarEmpresasSecuencia(EntityManager em,BigInteger secuencia) {
         Empresas empresas;
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             empresas = (Empresas) query.getSingleResult();
             return empresas;
         } catch (Exception e) {
@@ -79,10 +81,11 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public String estadoConsultaDatos(BigInteger secuenciaEmpresa) {
+    public String estadoConsultaDatos(EntityManager em,BigInteger secuenciaEmpresa) {
         try {
             Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
             query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             String estado = (String) query.getSingleResult();
             if (estado == null) {
                 return "N";
@@ -98,9 +101,11 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     public String nombreEmpresa(EntityManager entity) {
         try {
             Query query = entity.createQuery("SELECT COUNT(e) FROM Empresas e WHERE e.codigo > 0");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado == 1) {
                 query = entity.createQuery("SELECT e.nombre FROM Empresas e WHERE e.codigo > 0");
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 String nombreE = (String) query.getSingleResult();
                 return nombreE;
             } else if (resultado > 1) {
@@ -115,12 +120,14 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public Short codigoEmpresa() {
+    public Short codigoEmpresa(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT COUNT(e) FROM Empresas e");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado == 1) {
                 query = em.createQuery("SELECT e.codigo FROM Empresas e");
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 Short codigoEmpresa = (Short) query.getSingleResult();
                 return codigoEmpresa;
             } else {
@@ -133,9 +140,10 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public List<Empresas> consultarEmpresas() {
+    public List<Empresas> consultarEmpresas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");            
             List<Empresas> empresas = query.getResultList();
             return empresas;
         } catch (Exception e) {
@@ -145,10 +153,11 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public String consultarPrimeraEmpresa() {
+    public String consultarPrimeraEmpresa(EntityManager em) {
         try {
             String retorno = "";
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE ROWNUM=1");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Empresas empresa = (Empresas) query.getSingleResult();
             if (empresa != null) {
                 String sqlQuery = "call EMPRESAS_PKG.RETENCIONYSEGSOCXPERSONA(?)";

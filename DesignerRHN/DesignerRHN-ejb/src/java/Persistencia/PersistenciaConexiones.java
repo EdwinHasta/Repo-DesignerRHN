@@ -51,6 +51,7 @@ public class PersistenciaConexiones implements PersistenciaConexionesInterface {
             BigInteger SID = buscarSID(em);
             em.getTransaction().begin();
             Query query = em.createQuery("SELECT COUNT(c) FROM Conexiones c WHERE c.sid = :SID");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("SID", SID);
             Long conteo = (Long) query.getSingleResult();
             em.getTransaction().commit();
@@ -60,6 +61,7 @@ public class PersistenciaConexiones implements PersistenciaConexionesInterface {
             } else {
                 em.getTransaction().begin();
                 query = em.createQuery("SELECT c.secuencia FROM Conexiones c WHERE c.sid = :SID");
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 query.setParameter("SID", SID);
                 BigInteger secuenciaConexion = (BigInteger) query.getSingleResult();
                 em.getTransaction().commit();

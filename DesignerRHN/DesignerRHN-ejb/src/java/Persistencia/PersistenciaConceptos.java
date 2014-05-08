@@ -25,36 +25,37 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Conceptos concepto) {
+    public void crear(EntityManager em,Conceptos concepto) {
         em.persist(concepto);
     }
 
     @Override
-    public void editar(Conceptos concepto) {
+    public void editar(EntityManager em,Conceptos concepto) {
         em.merge(concepto);
     }
 
     @Override
-    public void borrar(Conceptos concepto) {
+    public void borrar(EntityManager em,Conceptos concepto) {
         em.remove(em.merge(concepto));
     }
 
     @Override
-    public List<Conceptos> buscarConceptos() {
+    public List<Conceptos> buscarConceptos(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Conceptos.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public boolean verificarCodigoConcepto(BigInteger codigoConcepto) {
+    public boolean verificarCodigoConcepto(EntityManager em,BigInteger codigoConcepto) {
         try {
             Query query = em.createQuery("SELECT COUNT(c) FROM Conceptos c WHERE c.codigo = :codigo");
             query.setParameter("codigo", codigoConcepto);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -64,11 +65,12 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public Conceptos validarCodigoConcepto(BigInteger codigoConcepto, BigInteger secEmpresa) {
+    public Conceptos validarCodigoConcepto(EntityManager em,BigInteger codigoConcepto, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.codigo = :codigo AND c.empresa.secuencia = :secEmpresa");
             query.setParameter("codigo", codigoConcepto);
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Conceptos concepto = (Conceptos) query.getSingleResult();
             return concepto;
         } catch (Exception e) {
@@ -77,10 +79,11 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public List<Conceptos> conceptosPorEmpresa(BigInteger secEmpresa) {
+    public List<Conceptos> conceptosPorEmpresa(EntityManager em,BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Conceptos> listaConceptos = query.getResultList();
             return listaConceptos;
         } catch (Exception e) {
@@ -89,11 +92,12 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public List<Conceptos> conceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado) {
+    public List<Conceptos> conceptosEmpresaActivos_Inactivos(EntityManager em,BigInteger secEmpresa, String estado) {
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa AND c.activo = :estado ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
             query.setParameter("estado", estado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Conceptos> listaConceptos = query.getResultList();
             return listaConceptos;
         } catch (Exception e) {
@@ -102,10 +106,11 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public List<Conceptos> conceptosEmpresaSinPasivos(BigInteger secEmpresa) {
+    public List<Conceptos> conceptosEmpresaSinPasivos(EntityManager em,BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa AND c.naturaleza <> 'L' ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Conceptos> listaConceptos = query.getResultList();
             return listaConceptos;
         } catch (Exception e) {
@@ -114,7 +119,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
+    public void clonarConcepto(EntityManager em,BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
         try {
             String sqlQuery = "call CONCEPTOS_PKG.CLONARCONCEPTO(?, ?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
@@ -128,10 +133,11 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public Conceptos conceptosPorSecuencia(BigInteger secConcepto) {
+    public Conceptos conceptosPorSecuencia(EntityManager em,BigInteger secConcepto) {
         try {
             Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.secuencia=:secConcepto");
             query.setParameter("secConcepto", secConcepto);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Conceptos conceptos = (Conceptos) query.getSingleResult();
             return conceptos;
         } catch (Exception e) {
@@ -141,7 +147,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public boolean eliminarConcepto(BigInteger secuenciaConcepto) {
+    public boolean eliminarConcepto(EntityManager em,BigInteger secuenciaConcepto) {
         try {
             String sqlQuery = "call conceptos_pkg.Eliminarconcepto(:secuencia)";
             Query query = em.createNativeQuery(sqlQuery);
@@ -155,7 +161,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     }
 
     @Override
-    public String conceptoParaFormulaContrato(BigInteger secuencia, Date fechaFin) {
+    public String conceptoParaFormulaContrato(EntityManager em,BigInteger secuencia, Date fechaFin) {
         try {
             String sqlQuery = "select substr(c.codigo||'-'||c.descripcion,1,200)\n"
                     + "from formulasconceptos fc, conceptos c\n"
@@ -187,7 +193,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
 
-    public List<Conceptos> conceptoEmpresa() {
+    public List<Conceptos> conceptoEmpresa(EntityManager em) {
         try {
             String sqlQuery = "SELECT  C.*,\n"
                     + "decode(c.naturaleza,'P','PAGO','D','DESCUENTO','L','PASIVO','G','GASTO','N','NETO') NATURALEZA\n"
@@ -203,7 +209,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         }
     }
     
-    public List<Conceptos> novedadConceptos(){
+    public List<Conceptos> novedadConceptos(EntityManager em){
         try {
             String sqlQuery = "SELECT  V.* FROM Conceptos V WHERE EXISTS (select 'x' from empresas e where v.empresa=e.secuencia) AND NVL(V.ACTIVO,'S')='S'";
             Query query = em.createNativeQuery(sqlQuery,Conceptos.class);

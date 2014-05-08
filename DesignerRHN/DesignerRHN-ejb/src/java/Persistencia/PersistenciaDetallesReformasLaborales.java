@@ -25,36 +25,38 @@ public class PersistenciaDetallesReformasLaborales implements PersistenciaDetall
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(DetallesReformasLaborales detallesReformasLaborales) {
+    public void crear(EntityManager em,DetallesReformasLaborales detallesReformasLaborales) {
         em.persist(detallesReformasLaborales);
     }
 
     @Override
-    public void editar(DetallesReformasLaborales detallesReformasLaborales) {
+    public void editar(EntityManager em,DetallesReformasLaborales detallesReformasLaborales) {
         em.merge(detallesReformasLaborales);
     }
 
     @Override
-    public void borrar(DetallesReformasLaborales detallesReformasLaborales) {
+    public void borrar(EntityManager em,DetallesReformasLaborales detallesReformasLaborales) {
         em.remove(em.merge(detallesReformasLaborales));
     }
 
     @Override
-    public List<DetallesReformasLaborales> buscarDetallesReformasLaborales() {
+    public List<DetallesReformasLaborales> buscarDetallesReformasLaborales(EntityManager em) {
         Query query = em.createQuery("SELECT d FROM DetallesReformasLaborales d");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<DetallesReformasLaborales> detallesReformasLaborales = (List<DetallesReformasLaborales>) query.getResultList();
         return detallesReformasLaborales;
     }
 
     @Override
-    public DetallesReformasLaborales buscarDetalleReformaSecuencia(BigInteger secuencia) {
+    public DetallesReformasLaborales buscarDetalleReformaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT d FROM DetallesReformasLaborales d WHERE d.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             DetallesReformasLaborales detallesReformasLaborales = (DetallesReformasLaborales) query.getSingleResult();
             return detallesReformasLaborales;
         } catch (Exception e) {
@@ -65,10 +67,11 @@ public class PersistenciaDetallesReformasLaborales implements PersistenciaDetall
     }
 
     @Override 
-    public List<DetallesReformasLaborales> buscarDetalleReformasParaReformaSecuencia(BigInteger secuencia) {
+    public List<DetallesReformasLaborales> buscarDetalleReformasParaReformaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT d FROM DetallesReformasLaborales d WHERE d.reformalaboral.secuencia=:secuencia ORDER BY d.factor ASC");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesReformasLaborales> detallesReformasLaborales = (List<DetallesReformasLaborales>) query.getResultList();
             return detallesReformasLaborales;
         } catch (Exception e) {
