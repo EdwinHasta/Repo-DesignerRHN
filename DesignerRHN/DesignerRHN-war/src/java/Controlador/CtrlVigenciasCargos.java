@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -19,6 +20,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.component.panel.Panel;
@@ -90,7 +92,20 @@ public class CtrlVigenciasCargos implements Serializable {
         aceptarEditar = true;
         cualCelda = -1;
     }
-
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarCarpetaPersonal.obtenerConexion(ses.getId());
+            administrarCarpetaDesigner.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
+    }
+    
     public void paila(BigInteger sec) {
         secuencia = sec;
         System.out.println(sec);

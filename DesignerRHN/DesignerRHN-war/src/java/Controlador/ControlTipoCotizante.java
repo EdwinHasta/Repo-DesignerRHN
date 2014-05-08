@@ -13,11 +13,13 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -153,7 +155,20 @@ public class ControlTipoCotizante implements Serializable {
         cualNuevo = ":formularioDialogos:nuevoRegistroTipoCotizante";
         m = 0;
     }
-
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarTiposCotizantes.obtenerConexion(ses.getId());
+            administrarDetallesTiposCotizantes.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
+    }
+    
     //Ubicacion Celda Arriba 
     public void cambiarTipoCotizante() {
         //Si ninguna de las 3 listas (crear,modificar,borrar) tiene algo, hace esto

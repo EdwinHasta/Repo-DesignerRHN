@@ -35,6 +35,8 @@ import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.StreamedContent;
+import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -143,6 +145,18 @@ public class ControlReportesBancos implements Serializable {
         permitirIndex = true;
     }
 
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarReportesBancos.obtenerConexion(ses.getId());
+            administarReportes.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
+    }
     public void iniciarPagina() {
         listaIR = null;
         getListaIR();

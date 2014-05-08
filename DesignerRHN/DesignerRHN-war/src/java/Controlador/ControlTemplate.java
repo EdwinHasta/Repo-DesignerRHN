@@ -6,6 +6,7 @@
 package Controlador;
 
 import Entidades.ActualUsuario;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -27,6 +28,8 @@ public class ControlTemplate implements Serializable {
 
     @EJB
     AdministrarTemplateInterface administrarTemplate;
+    @EJB
+    AdministrarRastrosInterface administrarRastros;
 
     private ActualUsuario actualUsuario;
     private String nombreUsuario, fotoUsuario;
@@ -40,6 +43,7 @@ public class ControlTemplate implements Serializable {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTemplate.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
             /*if (resultado == false) {
              try {
              System.out.println("Paso 0 ");
@@ -61,10 +65,10 @@ public class ControlTemplate implements Serializable {
 
     public void informacionUsuario() {
         /*try {
-         validarSession();
-         } catch (IOException e) {
-         System.out.println("mierdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!");
-         }*/
+            validarSession();
+        } catch (IOException e) {
+            System.out.println("mierdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!");
+        }*/
         actualUsuario = administrarTemplate.consultarActualUsuario();
         if (actualUsuario != null) {
             nombreUsuario = actualUsuario.getPersona().getNombreCompleto();
@@ -74,15 +78,13 @@ public class ControlTemplate implements Serializable {
     }
 
     public void cerrarSession() throws IOException {
-        FacesContext x = FacesContext.getCurrentInstance();
-        HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
-        administrarTemplate.cerrarSession(ses.getId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.invalidateSession();
         ec.redirect(ec.getRequestContextPath() + "/iniciored.xhtml");
     }
 
     public void validarSession() throws IOException {
+        System.out.println("Hola bebo");
         FacesContext x = FacesContext.getCurrentInstance();
         HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
         boolean resultado = administrarTemplate.obtenerConexion(ses.getId());
