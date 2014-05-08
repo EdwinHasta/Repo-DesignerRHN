@@ -22,11 +22,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaDetallesFormasDtos implements PersistenciaDetallesFormasDtosInterface {
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(DetallesFormasDtos detallesFormasDtos) {
+    public void crear(EntityManager em,DetallesFormasDtos detallesFormasDtos) {
         try {
             em.merge(detallesFormasDtos);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaDetallesFormasDtos implements PersistenciaDetallesForma
     }
 
     @Override
-    public void editar(DetallesFormasDtos detallesFormasDtos) {
+    public void editar(EntityManager em,DetallesFormasDtos detallesFormasDtos) {
         try {
             em.merge(detallesFormasDtos);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaDetallesFormasDtos implements PersistenciaDetallesForma
     }
 
     @Override
-    public void borrar(DetallesFormasDtos detallesFormasDtos) {
+    public void borrar(EntityManager em,DetallesFormasDtos detallesFormasDtos) {
         try {
             em.remove(em.merge(detallesFormasDtos));
         } catch (Exception e) {
@@ -53,10 +53,11 @@ public class PersistenciaDetallesFormasDtos implements PersistenciaDetallesForma
     }
 
     @Override
-    public List<DetallesFormasDtos> detallesFormasDescuentos(BigInteger formaDto) {
+    public List<DetallesFormasDtos> detallesFormasDescuentos(EntityManager em,BigInteger formaDto) {
         try {
             Query query = em.createQuery("SELECT dfd FROM DetallesFormasDtos dfd WHERE dfd.formadto.secuencia = :formaDto ORDER BY 2");
             query.setParameter("formaDto", formaDto);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesFormasDtos> detallesFormasDtos = query.getResultList();
             List<DetallesFormasDtos> detallesFormasDtosResult = new ArrayList<DetallesFormasDtos>(detallesFormasDtos);
             return detallesFormasDtosResult;

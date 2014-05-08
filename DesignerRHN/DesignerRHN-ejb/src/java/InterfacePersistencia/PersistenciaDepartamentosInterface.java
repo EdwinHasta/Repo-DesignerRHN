@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Departamentos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -15,21 +16,21 @@ import java.util.List;
  */
 public interface PersistenciaDepartamentosInterface {
 
-    public void crear(Departamentos departamentos);
+    public void crear(EntityManager em,Departamentos departamentos);
 
-    public void editar(Departamentos departamentos);
+    public void editar(EntityManager em,Departamentos departamentos);
 
-    public void borrar(Departamentos departamentos);
+    public void borrar(EntityManager em,Departamentos departamentos);
 
-    public Departamentos consultarDepartamento(BigInteger secuencia);
+    public Departamentos consultarDepartamento(EntityManager em,BigInteger secuencia);
 
-    public List<Departamentos> consultarDepartamentos();
+    public List<Departamentos> consultarDepartamentos(EntityManager em);
 
-    public BigInteger contarSoAccidentesMedicosDepartamento(BigInteger secuencia);
+    public BigInteger contarSoAccidentesMedicosDepartamento(EntityManager em,BigInteger secuencia);
 
-    public BigInteger contarCiudadesDepartamento(BigInteger secuencia);
+    public BigInteger contarCiudadesDepartamento(EntityManager em,BigInteger secuencia);
 
-    public BigInteger contarCapModulosDepartamento(BigInteger secuencia);
+    public BigInteger contarCapModulosDepartamento(EntityManager em,BigInteger secuencia);
 
-    public BigInteger contarBienProgramacionesDepartamento(BigInteger secuencia);
+    public BigInteger contarBienProgramacionesDepartamento(EntityManager em,BigInteger secuencia);
 }

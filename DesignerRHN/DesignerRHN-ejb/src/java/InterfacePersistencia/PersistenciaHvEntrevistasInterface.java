@@ -7,6 +7,7 @@ import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -21,7 +22,7 @@ public interface PersistenciaHvEntrevistasInterface {
      *
      * @param hvEntrevistas HvEntrevistas que se quiere crear.
      */
-    public void crear(HvEntrevistas hvEntrevistas);
+    public void crear(EntityManager em,HvEntrevistas hvEntrevistas);
 
     /**
      * Método encargado de modificar una Moneda de la base de datos. Este método
@@ -30,7 +31,7 @@ public interface PersistenciaHvEntrevistasInterface {
      *
      * @param hvEntrevistas HvEntrevistas con los cambios que se van a realizar.
      */
-    public void editar(HvEntrevistas hvEntrevistas);
+    public void editar(EntityManager em,HvEntrevistas hvEntrevistas);
 
     /**
      * Método encargado de eliminar de la base de datos una Moneda que entra por
@@ -38,7 +39,7 @@ public interface PersistenciaHvEntrevistasInterface {
      *
      * @param hvEntrevistas HvEntrevistas que se quiere eliminar.
      */
-    public void borrar(HvEntrevistas hvEntrevistas);
+    public void borrar(EntityManager em,HvEntrevistas hvEntrevistas);
 
     /**
      * Método encargado de buscar un HvEntrevista con la secuencia dada por
@@ -49,7 +50,7 @@ public interface PersistenciaHvEntrevistasInterface {
      * @return Retorna la HvEntrevista identificado con la secuencia dada por
      * parámetro.
      */
-    public HvEntrevistas buscarHvEntrevista(BigInteger secHvEntrevista);
+    public HvEntrevistas buscarHvEntrevista(EntityManager em,BigInteger secHvEntrevista);
 
     /**
      * Método encargado de buscar todas las HvEntrevistas existentes en la base
@@ -57,7 +58,7 @@ public interface PersistenciaHvEntrevistasInterface {
      *
      * @return Retorna una lista de Monedas.
      */
-    public List<HvEntrevistas> buscarHvEntrevistas();
+    public List<HvEntrevistas> buscarHvEntrevistas(EntityManager em);
 
     /**
      * *
@@ -67,7 +68,7 @@ public interface PersistenciaHvEntrevistasInterface {
      * @param secEmpleado Secuecia Empleado
      * @return Lista de HvEntrevistas
      */
-    public List<HvEntrevistas> buscarHvEntrevistasPorEmpleado(BigInteger secEmpleado);
+    public List<HvEntrevistas> buscarHvEntrevistasPorEmpleado(EntityManager em,BigInteger secEmpleado);
 
     /**
      * Metodo encargado de buscar una Lista de Hojas de vida relacionadas con la
@@ -76,7 +77,7 @@ public interface PersistenciaHvEntrevistasInterface {
      * @param secEmpleado Secuencia del empleado.
      * @return Una lista de hojas de vida.
      */
-    public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(BigInteger secEmpleado);
+    public List<HVHojasDeVida> buscarHvHojaDeVidaPorEmpleado(EntityManager em,BigInteger secEmpleado);
 
     /**
      * Método encargado de recuperar las ultimas HvEntrevistas realizadas para
@@ -86,5 +87,5 @@ public interface PersistenciaHvEntrevistasInterface {
      * @return Retorna una lista de HvEntrevistas asociadas a una hoja de vida y
      * realizadas el mismo día.
      */
-    public List<HvEntrevistas> entrevistasPersona(BigInteger secuenciaHV);
+    public List<HvEntrevistas> entrevistasPersona(EntityManager em,BigInteger secuenciaHV);
 }

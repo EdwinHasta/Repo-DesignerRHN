@@ -24,22 +24,22 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(EvalDimensiones evalDimensiones) {
+    public void crear(EntityManager em,EvalDimensiones evalDimensiones) {
         em.persist(evalDimensiones);
     }
 
-    public void editar(EvalDimensiones evalDimensiones) {
+    public void editar(EntityManager em,EvalDimensiones evalDimensiones) {
         em.merge(evalDimensiones);
     }
 
-    public void borrar(EvalDimensiones evalDimensiones) {
+    public void borrar(EntityManager em,EvalDimensiones evalDimensiones) {
         em.remove(em.merge(evalDimensiones));
     }
 
-    public EvalDimensiones buscarEvalDimension(BigInteger secuencia) {
+    public EvalDimensiones buscarEvalDimension(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(EvalDimensiones.class, secuencia);
         } catch (Exception e) {
@@ -47,9 +47,10 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
         }
     }
 
-    public List<EvalDimensiones> buscarEvalDimensiones() {
+    public List<EvalDimensiones> buscarEvalDimensiones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ed FROM EvalDimensiones ed ORDER BY ed.descripcion ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalDimensiones> evalDimensiones = query.getResultList();
             return evalDimensiones;
         } catch (Exception e) {
@@ -58,7 +59,7 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
         }
     }
     
-    public BigInteger contradorEvalPlanillas(BigInteger secuencia) {
+    public BigInteger contradorEvalPlanillas(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM evaldimensiones ev, evalplanillas ep  WHERE ep.dimension=ev.secuencia AND ev.secuencia = ? ";

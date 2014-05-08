@@ -25,11 +25,11 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(DetallesCargos detallesCargos) {
+    public void crear(EntityManager em,DetallesCargos detallesCargos) {
         try {
             em.persist(detallesCargos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     }
 
     @Override
-    public void editar(DetallesCargos detallesCargos) {
+    public void editar(EntityManager em,DetallesCargos detallesCargos) {
         try {
             System.out.println("detallesCargos : "+detallesCargos.getDescripcion()+" ::::: "+detallesCargos.getSecuencia());
             em.merge(detallesCargos);
@@ -48,7 +48,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     }
 
     @Override
-    public void borrar(DetallesCargos detallesCargos) {
+    public void borrar(EntityManager em,DetallesCargos detallesCargos) {
         try {
             em.remove(em.merge(detallesCargos));
         } catch (Exception e) {
@@ -57,9 +57,10 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     }
 
     @Override
-    public List<DetallesCargos> buscarDetallesCargos() {
+    public List<DetallesCargos> buscarDetallesCargos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT cc FROM DetallesCargos cc ORDER BY cc.peso ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesCargos> detallesCargos = query.getResultList();
             return detallesCargos;
         } catch (Exception e) {
@@ -69,10 +70,11 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     }
 
     @Override
-    public DetallesCargos buscarDetallesCargosSecuencia(BigInteger secuencia) {
+    public DetallesCargos buscarDetallesCargosSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             DetallesCargos detallesCargos = (DetallesCargos) query.getSingleResult();
             return detallesCargos;
         } catch (Exception e) {
@@ -83,11 +85,12 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     }
 
     @Override 
-    public DetallesCargos buscarDetalleCargoParaSecuenciaTipoDetalle(BigInteger secTipoDetalle, BigInteger secCargo) { 
+    public DetallesCargos buscarDetalleCargoParaSecuenciaTipoDetalle(EntityManager em,BigInteger secTipoDetalle, BigInteger secCargo) { 
         try {
             Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.tipodetalle.secuencia=:secTipoDetalle AND dc.cargo.secuencia=:secCargo");
             query.setParameter("secTipoDetalle", secTipoDetalle);
             query.setParameter("secCargo", secCargo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             DetallesCargos detallesCargos = (DetallesCargos) query.getSingleResult();
             return detallesCargos;
         } catch (Exception e) {
@@ -97,10 +100,11 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
     }
      
     @Override 
-    public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(BigInteger secuencia) {
+    public List<DetallesCargos> buscarDetallesCargosDeCargoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT dc FROM DetallesCargos dc WHERE dc.cargo.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DetallesCargos> detallesCargos =  query.getResultList();
             return detallesCargos;
         } catch (Exception e) {

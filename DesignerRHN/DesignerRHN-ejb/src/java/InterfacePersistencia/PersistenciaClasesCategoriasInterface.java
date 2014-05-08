@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.ClasesCategorias;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaClasesCategoriasInterface {
      *
      * @param clasesCategorias Categoria que se quiere crear.
      */
-    public void crear(ClasesCategorias clasesCategorias);
+    public void crear(EntityManager em,ClasesCategorias clasesCategorias);
 
     /**
      * Método encargado de modificar una ClaseCategoria de la base de datos.
@@ -29,7 +30,7 @@ public interface PersistenciaClasesCategoriasInterface {
      *
      * @param clasesCategorias Categoria con los cambios que se van a realizar.
      */
-    public void editar(ClasesCategorias clasesCategorias);
+    public void editar(EntityManager em,ClasesCategorias clasesCategorias);
 
     /**
      * Método encargado de eliminar de la base de datos la ClaseCategoria que
@@ -37,7 +38,7 @@ public interface PersistenciaClasesCategoriasInterface {
      *
      * @param clasesCategorias Categoria que se quiere eliminar.
      */
-    public void borrar(ClasesCategorias clasesCategorias);
+    public void borrar(EntityManager em,ClasesCategorias clasesCategorias);
 
     /**
      * Método encargado de buscar todos las ClasesCategorias existentes en la
@@ -45,7 +46,7 @@ public interface PersistenciaClasesCategoriasInterface {
      *
      * @return Retorna una lista de ClasesCategorias
      */
-    public List<ClasesCategorias> consultarClasesCategorias();
+    public List<ClasesCategorias> consultarClasesCategorias(EntityManager em);
 
     /**
      * Método encargado de buscar una ClaseCategoria con la secClaseCategoria
@@ -56,7 +57,7 @@ public interface PersistenciaClasesCategoriasInterface {
      * @return Retorna el secClaseCategoria identificada con la secCategoria
      * dada por parámetro.
      */
-    public ClasesCategorias consultarClaseCategoria(BigInteger secClaseCategoria);
+    public ClasesCategorias consultarClaseCategoria(EntityManager em,BigInteger secClaseCategoria);
 
     /**
      * Metodo encargado de contar cuantas Categorias estar relacionadas con la
@@ -65,6 +66,6 @@ public interface PersistenciaClasesCategoriasInterface {
      * @param secClaseCategoria Secuencia de la ClaseCategoria
      * @return el numero de relaciones que tiene esa secuencia
      */
-    public BigInteger contarCategoriasClaseCategoria(BigInteger secClaseCategoria);
+    public BigInteger contarCategoriasClaseCategoria(EntityManager em,BigInteger secClaseCategoria);
 
 }

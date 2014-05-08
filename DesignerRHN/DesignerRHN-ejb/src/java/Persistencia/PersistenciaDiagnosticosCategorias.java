@@ -21,28 +21,29 @@ public class PersistenciaDiagnosticosCategorias implements PersistenciaDiagnosti
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Diagnosticoscategorias diagnosticosCategorias) {
+    public void crear(EntityManager em,Diagnosticoscategorias diagnosticosCategorias) {
         em.persist(diagnosticosCategorias);
     }
 
     @Override
-    public void editar(Diagnosticoscategorias diagnosticosCategorias) {
+    public void editar(EntityManager em,Diagnosticoscategorias diagnosticosCategorias) {
         em.merge(diagnosticosCategorias);
     }
 
     @Override
-    public void borrar(Diagnosticoscategorias diagnosticosCategorias) {
+    public void borrar(EntityManager em,Diagnosticoscategorias diagnosticosCategorias) {
         em.remove(em.merge(diagnosticosCategorias));
     }
 
     @Override
-    public List<Diagnosticoscategorias> buscarDiagnosticos() {
+    public List<Diagnosticoscategorias> buscarDiagnosticos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT d FROM Diagnosticoscategorias d ORDER BY d.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Diagnosticoscategorias> diagnosticosCategorias = query.getResultList();
             return diagnosticosCategorias;
         } catch (Exception e) {

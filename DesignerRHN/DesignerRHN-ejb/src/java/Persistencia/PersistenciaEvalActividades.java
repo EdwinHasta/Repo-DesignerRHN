@@ -24,10 +24,10 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(EvalActividades evalCompetencias) {
+    public void crear(EntityManager em,EvalActividades evalCompetencias) {
         try {
             em.persist(evalCompetencias);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public void editar(EvalActividades evalCompetencias) {
+    public void editar(EntityManager em,EvalActividades evalCompetencias) {
         try {
             em.merge(evalCompetencias);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public void borrar(EvalActividades evalCompetencias) {
+    public void borrar(EntityManager em,EvalActividades evalCompetencias) {
         try {
             em.remove(em.merge(evalCompetencias));
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public List<EvalActividades> consultarEvalActividades() {
+    public List<EvalActividades> consultarEvalActividades(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM EvalActividades t ORDER BY t.codigo  ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalActividades> evalActividades = query.getResultList();
             return evalActividades;
         } catch (Exception e) {
@@ -62,10 +63,11 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public EvalActividades consultarEvalActividad(BigInteger secuencia) {
+    public EvalActividades consultarEvalActividad(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM EvalActividades t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             EvalActividades evalCompetencias = (EvalActividades) query.getSingleResult();
             return evalCompetencias;
         } catch (Exception e) {
@@ -75,7 +77,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public BigInteger contarEvalPlanesDesarrollosEvalActividad(BigInteger secuencia) {
+    public BigInteger contarEvalPlanesDesarrollosEvalActividad(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM evalplanesdesarrollos WHERE evalactividad =?";
@@ -90,7 +92,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public BigInteger contarCapNecesidadesEvalActividad(BigInteger secuencia) {
+    public BigInteger contarCapNecesidadesEvalActividad(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM CAPNECESIDADES WHERE tipoeducacion =?";
@@ -105,7 +107,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
         }
     }
 
-    public BigInteger contarCapBuzonesEvalActividad(BigInteger secuencia) {
+    public BigInteger contarCapBuzonesEvalActividad(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM CAPBUZONES WHERE tipoeducacion =?";

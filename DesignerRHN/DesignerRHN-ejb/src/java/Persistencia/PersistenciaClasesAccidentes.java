@@ -24,22 +24,22 @@ public class PersistenciaClasesAccidentes implements PersistenciaClasesAccidente
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(ClasesAccidentes clasesAccidentes) {
+    public void crear(EntityManager em,ClasesAccidentes clasesAccidentes) {
         em.persist(clasesAccidentes);
     }
 
-    public void editar(ClasesAccidentes clasesAccidentes) {
+    public void editar(EntityManager em,ClasesAccidentes clasesAccidentes) {
         em.merge(clasesAccidentes);
     }
 
-    public void borrar(ClasesAccidentes clasesAccidentes) {
+    public void borrar(EntityManager em,ClasesAccidentes clasesAccidentes) {
         em.remove(em.merge(clasesAccidentes));
     }
 
-    public ClasesAccidentes buscarClaseAccidente(BigInteger secuenciaCA) {
+    public ClasesAccidentes buscarClaseAccidente(EntityManager em,BigInteger secuenciaCA) {
         try {
             return em.find(ClasesAccidentes.class, secuenciaCA);
         } catch (Exception e) {
@@ -47,9 +47,10 @@ public class PersistenciaClasesAccidentes implements PersistenciaClasesAccidente
         }
     }
 
-    public List<ClasesAccidentes> buscarClasesAccidentes() {
+    public List<ClasesAccidentes> buscarClasesAccidentes(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM ClasesAccidentes  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ClasesAccidentes> listClasesAccidentes = query.getResultList();
             return listClasesAccidentes;
         } catch (Exception e) {
@@ -59,7 +60,7 @@ public class PersistenciaClasesAccidentes implements PersistenciaClasesAccidente
 
     }
 
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos WHERE claseaccidente =?";

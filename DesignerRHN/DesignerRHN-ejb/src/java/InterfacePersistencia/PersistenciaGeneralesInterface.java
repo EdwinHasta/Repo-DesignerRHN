@@ -1,6 +1,7 @@
 package InterfacePersistencia;
 
 import Entidades.Generales;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -14,5 +15,5 @@ public interface PersistenciaGeneralesInterface {
      *
      * @return Retorna una entidad de tipo Generales que contiene las rutas.
      */
-    public Generales obtenerRutas();
+    public Generales obtenerRutas(EntityManager em);
 }

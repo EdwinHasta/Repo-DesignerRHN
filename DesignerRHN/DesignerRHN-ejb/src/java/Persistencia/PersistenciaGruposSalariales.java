@@ -23,11 +23,11 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(GruposSalariales gruposSalariales) {
+    public void crear(EntityManager em,GruposSalariales gruposSalariales) {
         try {
             em.persist(gruposSalariales);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     }
 
     @Override
-    public void editar(GruposSalariales gruposSalariales) {
+    public void editar(EntityManager em,GruposSalariales gruposSalariales) {
         try {
             em.merge(gruposSalariales);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     }
 
     @Override
-    public void borrar(GruposSalariales gruposSalariales) {
+    public void borrar(EntityManager em,GruposSalariales gruposSalariales) {
         try {
             em.remove(em.merge(gruposSalariales));
         } catch (Exception e) {
@@ -54,9 +54,10 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     }
 
     @Override
-    public List<GruposSalariales> buscarGruposSalariales() {
+    public List<GruposSalariales> buscarGruposSalariales(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT gs FROM GruposSalariales gs ORDER BY gs.secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposSalariales> gruposSalariales = query.getResultList();
             return gruposSalariales;
         } catch (Exception e) {
@@ -66,11 +67,12 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
     }
 
     @Override
-    public GruposSalariales buscarGrupoSalarialSecuencia(BigInteger secuencia) {
+    public GruposSalariales buscarGrupoSalarialSecuencia(EntityManager em,BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT gs FROM GruposSalariales gs WHERE gs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             GruposSalariales gruposSalariales = (GruposSalariales) query.getSingleResult();
             return gruposSalariales;
         } catch (Exception e) {
@@ -81,10 +83,11 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
 
     }
         @Override
-    public List<GruposSalariales> buscarGruposSalarialesParaEscalafonSalarial(BigInteger secEscalafon) {
+    public List<GruposSalariales> buscarGruposSalarialesParaEscalafonSalarial(EntityManager em,BigInteger secEscalafon) {
         try {
             Query query = em.createQuery("SELECT gs FROM GruposSalariales gs WHERE gs.escalafonsalarial.secuencia=:secEscalafon");
             query.setParameter("secEscalafon", secEscalafon);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<GruposSalariales> gruposSalariales = query.getResultList();
             return gruposSalariales;
         } catch (Exception e) {

@@ -24,26 +24,26 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(FormasPagos formasPagos) {
+    public void crear(EntityManager em,FormasPagos formasPagos) {
         em.persist(formasPagos);
     }
 
     @Override
-    public void editar(FormasPagos formasPagos) {
+    public void editar(EntityManager em,FormasPagos formasPagos) {
         em.merge(formasPagos);
     }
 
     @Override
-    public void borrar(FormasPagos formasPagos) {
+    public void borrar(EntityManager em,FormasPagos formasPagos) {
         em.remove(em.merge(formasPagos));
     }
 
     @Override
-    public FormasPagos buscarFormasPagos(BigInteger secuencia) {
+    public FormasPagos buscarFormasPagos(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(FormasPagos.class, secuencia);
         } catch (Exception e) {
@@ -53,11 +53,11 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
     }
 
     @Override
-    public List<FormasPagos> buscarFormasPagosPorEmpleado(BigInteger secEmpleado) {
+    public List<FormasPagos> buscarFormasPagosPorEmpleado(EntityManager em,BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vfp FROM VigenciasFormasPagos vfp WHERE vfp.empleado.secuencia = :secuenciaEmpl ORDER BY vfp.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormasPagos> vigenciasNormasEmpleados = query.getResultList();
             return vigenciasNormasEmpleados;
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class PersistenciaFormasPagos implements PersistenciaFormasPagosInterface
     }
     
     @Override
-    public List<FormasPagos> buscarFormasPagos() {
+    public List<FormasPagos> buscarFormasPagos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(FormasPagos.class));
         return em.createQuery(cq).getResultList();

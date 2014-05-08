@@ -22,11 +22,11 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal) {
+    public List<ConsultasLiquidaciones> liquidacionesCerradas(EntityManager em,String fechaInicial, String fechaFinal) {
         try {
             String sqlQuery = "select rownum ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL\n"
                     + "FROM\n"
@@ -53,7 +53,7 @@ public class PersistenciaConsultasLiquidaciones implements PersistenciaConsultas
     }
 
     @Override
-    public List<ConsultasLiquidaciones> preNomina() {
+    public List<ConsultasLiquidaciones> preNomina(EntityManager em) {
         try {
             String sqlQuery = "SELECT ROWNUM ID, T.EMPRESACODIGO, T.CORTE, T.PROCESO, T.CODIGO, T.TOTAL, 'PRENOMINA' OBSERVACION\n"
                     + "FROM (SELECT\n"

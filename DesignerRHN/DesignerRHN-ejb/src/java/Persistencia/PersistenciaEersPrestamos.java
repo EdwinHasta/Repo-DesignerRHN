@@ -22,11 +22,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInterface {
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(EersPrestamos eersPrestamos) {
+    public void crear(EntityManager em,EersPrestamos eersPrestamos) {
         try {
             em.persist(eersPrestamos);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInter
     }
 
     @Override
-    public void editar(EersPrestamos eersPrestamos) {
+    public void editar(EntityManager em,EersPrestamos eersPrestamos) {
         try {
             System.out.println("eersPrestamos : "+eersPrestamos);
             System.out.println("eersPrestamos secuencia : "+eersPrestamos.getSecuencia());
@@ -46,7 +46,7 @@ public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInter
     }
 
     @Override
-    public void borrar(EersPrestamos eersPrestamos) {
+    public void borrar(EntityManager em,EersPrestamos eersPrestamos) {
         try {
             em.remove(em.merge(eersPrestamos));
         } catch (Exception e) {
@@ -55,10 +55,11 @@ public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInter
     }
 
     @Override
-    public List<EersPrestamos> eersPrestamosEmpleado(BigInteger secuenciaEmpleado) {
+    public List<EersPrestamos> eersPrestamosEmpleado(EntityManager em,BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("select e FROM EersPrestamos e where e.tipoeer ='EMBARGO'AND EXISTS (SELECT em FROM Empleados em WHERE em.secuencia = e.empleado.secuencia and e.empleado.secuencia = :secuenciaEmpleado)");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EersPrestamos> eersPrestamos = query.getResultList();
             List<EersPrestamos> eersPrestamosResult = new ArrayList<EersPrestamos>(eersPrestamos);
             return eersPrestamosResult;

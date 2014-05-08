@@ -25,10 +25,10 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(Departamentos departamentos) {
+    public void crear(EntityManager em,Departamentos departamentos) {
         try {
             em.persist(departamentos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public void editar(Departamentos departamentos) {
+    public void editar(EntityManager em,Departamentos departamentos) {
         try {
             em.merge(departamentos);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public void borrar(Departamentos departamentos) {
+    public void borrar(EntityManager em,Departamentos departamentos) {
         try {
             em.remove(em.merge(departamentos));
         } catch (Exception e) {
@@ -52,7 +52,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public Departamentos consultarDepartamento(BigInteger secuencia) {
+    public Departamentos consultarDepartamento(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(Departamentos.class, secuencia);
         } catch (Exception e) {
@@ -62,9 +62,10 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     }
 
     @Override
-    public List<Departamentos> consultarDepartamentos() {
+    public List<Departamentos> consultarDepartamentos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT d FROM Departamentos d ORDER BY d.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Departamentos> departamentos = query.getResultList();
             return departamentos;
         } catch (Exception e) {
@@ -72,7 +73,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public BigInteger contarSoAccidentesMedicosDepartamento(BigInteger secuencia) {
+    public BigInteger contarSoAccidentesMedicosDepartamento(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "select COUNT(*)from soaccidentesmedicos WHERE departamento = ?";
@@ -88,7 +89,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public BigInteger contarCiudadesDepartamento(BigInteger secuencia) {
+    public BigInteger contarCiudadesDepartamento(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM ciudades WHERE departamento = ?";
@@ -104,7 +105,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public BigInteger contarCapModulosDepartamento(BigInteger secuencia) {
+    public BigInteger contarCapModulosDepartamento(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM capmodulos WHERE departamento = ?";
@@ -121,7 +122,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
 
     }
 
-    public BigInteger contarBienProgramacionesDepartamento(BigInteger secuencia) {
+    public BigInteger contarBienProgramacionesDepartamento(EntityManager em,BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM bienprogramaciones WHERE departamento = ?";

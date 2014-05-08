@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.EersPrestamosDtos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public interface PersistenciaEersPrestamosDtosInterface {
 
-    public void crear(EersPrestamosDtos eersPrestamosDtos);
+    public void crear(EntityManager em,EersPrestamosDtos eersPrestamosDtos);
 
-    public void editar(EersPrestamosDtos eersPrestamosDtos);
+    public void editar(EntityManager em,EersPrestamosDtos eersPrestamosDtos);
     
-    public void borrar(EersPrestamosDtos eersPrestamosDtos);
+    public void borrar(EntityManager em,EersPrestamosDtos eersPrestamosDtos);
     
-    public List<EersPrestamosDtos> eersPrestamosDtosEmpleado(BigInteger secuenciaEersPrestamo);
+    public List<EersPrestamosDtos> eersPrestamosDtosEmpleado(EntityManager em,BigInteger secuenciaEersPrestamo);
 
 }

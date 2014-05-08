@@ -23,11 +23,11 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Cuentas cuentas) {
+    public void crear(EntityManager em,Cuentas cuentas) {
         try {
             em.persist(cuentas);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
     
     @Override
-    public void editar(Cuentas cuentas) {
+    public void editar(EntityManager em,Cuentas cuentas) {
         try {
             em.merge(cuentas);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
 
     @Override
-    public void borrar(Cuentas cuentas) {
+    public void borrar(EntityManager em,Cuentas cuentas) {
         try {
             em.remove(em.merge(cuentas));
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
 
     @Override
-    public List<Cuentas> buscarCuentas() {
+    public List<Cuentas> buscarCuentas(EntityManager em) {
         try {
             List<Cuentas> cuentas = (List<Cuentas>) em.createNamedQuery("Cuentas.findAll").getResultList();
             return cuentas;
@@ -65,10 +65,11 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
 
     @Override
-    public Cuentas buscarCuentasSecuencia(BigInteger secuencia) {
+    public Cuentas buscarCuentasSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Cuentas c WHERE c.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Cuentas cuentas = (Cuentas) query.getSingleResult();
             return cuentas;
         } catch (Exception e) {
@@ -79,10 +80,11 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
 
     @Override
-    public List<Cuentas> buscarCuentasSecuenciaEmpresa(BigInteger secuencia) {
+    public List<Cuentas> buscarCuentasSecuenciaEmpresa(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Cuentas c WHERE c.empresa.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Cuentas> cuentas = (List<Cuentas>) query.getResultList();
             return cuentas;
         } catch (Exception e) {

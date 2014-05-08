@@ -23,11 +23,11 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(FormulasProcesos formulasProcesos) {
+    public void crear(EntityManager em,FormulasProcesos formulasProcesos) {
         try {
             em.persist(formulasProcesos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     }
 
     @Override
-    public void editar(FormulasProcesos formulasProcesos) {
+    public void editar(EntityManager em,FormulasProcesos formulasProcesos) {
         try {
             em.merge(formulasProcesos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     }
 
     @Override
-    public void borrar(FormulasProcesos formulasProcesos) {
+    public void borrar(EntityManager em,FormulasProcesos formulasProcesos) {
         try {
             em.remove(em.merge(formulasProcesos));
         } catch (Exception e) {
@@ -54,10 +54,11 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     }
 
     @Override
-    public List<FormulasProcesos> formulasProcesosParaFormulaSecuencia(BigInteger secuencia) {
+    public List<FormulasProcesos> formulasProcesosParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fp FROM FormulasProcesos fp WHERE fp.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormulasProcesos> formulasProcesos = queryFinal.getResultList();
             return formulasProcesos;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
     
     
     @Override 
-    public List<FormulasProcesos> formulasProcesosParaProcesoSecuencia(BigInteger secuencia) {
+    public List<FormulasProcesos> formulasProcesosParaProcesoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fp FROM FormulasProcesos fp WHERE fp.proceso.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<FormulasProcesos> formulasProcesos = queryFinal.getResultList();
             return formulasProcesos;
         } catch (Exception e) {

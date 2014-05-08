@@ -26,11 +26,11 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Escalafones escalafones) {
+    public void crear(EntityManager em,Escalafones escalafones) {
         try {
             em.persist(escalafones);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     }
 
     @Override
-    public void editar(Escalafones escalafones) {
+    public void editar(EntityManager em,Escalafones escalafones) {
         try {
             em.merge(escalafones);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     }
 
     @Override
-    public void borrar(Escalafones escalafon) {
+    public void borrar(EntityManager em,Escalafones escalafon) {
         try {
             em.remove(em.merge(escalafon));
         } catch (Exception e) {
@@ -57,17 +57,18 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
     }
 
     @Override
-    public List<Escalafones> buscarEscalafones() {
+    public List<Escalafones> buscarEscalafones(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Escalafones.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public Escalafones buscarEscalafonSecuencia(BigInteger secEscalafon) {
+    public Escalafones buscarEscalafonSecuencia(EntityManager em,BigInteger secEscalafon) {
         try {
             Query query = em.createNamedQuery("SELECT e FROM Escalafones e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secEscalafon);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Escalafones escalafones = (Escalafones) query.getSingleResult();
             return escalafones;
         } catch (Exception e) {

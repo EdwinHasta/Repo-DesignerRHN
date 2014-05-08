@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.Declarantes;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,16 +16,16 @@ import java.util.List;
  */
 public interface PersistenciaDeclarantesInterface {
 
-    public void crear(Declarantes declarantes);
+    public void crear(EntityManager em,Declarantes declarantes);
 
-    public void editar(Declarantes declarantes);
+    public void editar(EntityManager em,Declarantes declarantes);
 
-    public void borrar(Declarantes declarantes);
+    public void borrar(EntityManager em,Declarantes declarantes);
 
-    public List<Declarantes> buscarDeclarantes();
+    public List<Declarantes> buscarDeclarantes(EntityManager em);
 
-    public Declarantes buscarDeclaranteSecuencia(BigInteger secuencia);
+    public Declarantes buscarDeclaranteSecuencia(EntityManager em,BigInteger secuencia);
 
-    public List<Declarantes> buscarDeclarantesPersona(BigInteger secPersona);
+    public List<Declarantes> buscarDeclarantesPersona(EntityManager em,BigInteger secPersona);
 
 }

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Formulascontratos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaFormulasContratosInterface {
      *
      * @param formulasContratos FormulaContrato que se quiere crear.
      */
-    public void crear(Formulascontratos formulasContratos);
+    public void crear(EntityManager em,Formulascontratos formulasContratos);
 
     /**
      * Método encargado de modificar una FormulaContrato de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaFormulasContratosInterface {
      * @param formulasContratos FormulaContrato con los cambios que se van a
      * realizar.
      */
-    public void editar(Formulascontratos formulasContratos);
+    public void editar(EntityManager em,Formulascontratos formulasContratos);
 
     /**
      * Método encargado de eliminar de la base de datos la FormulaContrato que
@@ -38,7 +39,7 @@ public interface PersistenciaFormulasContratosInterface {
      *
      * @param formulasContratos FormulaContrato que se quiere eliminar.
      */
-    public void borrar(Formulascontratos formulasContratos);
+    public void borrar(EntityManager em,Formulascontratos formulasContratos);
 
     /**
      * Método encargado de obtener las FormulasContratos para una Formula
@@ -47,7 +48,7 @@ public interface PersistenciaFormulasContratosInterface {
      * @param secuencia Secuencia de la Formula.
      * @return Retorna una liste de Formulascontratos.
      */
-    public List<Formulascontratos> formulasContratosParaFormulaSecuencia(BigInteger secuencia);
+    public List<Formulascontratos> formulasContratosParaFormulaSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de obtener las FormulasContratos para un Contrato
@@ -56,7 +57,7 @@ public interface PersistenciaFormulasContratosInterface {
      * @param secuencia Secuencia del Contrato.
      * @return Retorna una liste de Formulascontratos.
      */
-    public List<Formulascontratos> formulasContratosParaContratoSecuencia(BigInteger secuencia);
+    public List<Formulascontratos> formulasContratosParaContratoSecuencia(EntityManager em,BigInteger secuencia);
 
-    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(BigInteger secuencia);
+    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(EntityManager em,BigInteger secuencia);
 }

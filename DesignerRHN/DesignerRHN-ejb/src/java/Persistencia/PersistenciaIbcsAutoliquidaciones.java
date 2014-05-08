@@ -23,11 +23,11 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(IbcsAutoliquidaciones autoliquidaciones) {
+    public void crear(EntityManager em,IbcsAutoliquidaciones autoliquidaciones) {
         try {
             em.persist(autoliquidaciones);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     }
 
     @Override
-    public void editar(IbcsAutoliquidaciones autoliquidaciones) {
+    public void editar(EntityManager em,IbcsAutoliquidaciones autoliquidaciones) {
         try {
             em.merge(autoliquidaciones);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     }
 
     @Override
-    public void borrar(IbcsAutoliquidaciones autoliquidaciones) {
+    public void borrar(EntityManager em,IbcsAutoliquidaciones autoliquidaciones) {
         try {
             em.remove(em.merge(autoliquidaciones));
         } catch (Exception e) {
@@ -54,9 +54,11 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     }  
 
     @Override
-    public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidaciones() {
+    public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidaciones(EntityManager em) {
         try {
-            List<IbcsAutoliquidaciones> autoliquidaciones = (List<IbcsAutoliquidaciones>) em.createNamedQuery("IbcsAutoliquidaciones.findAll").getResultList();
+            Query query= em.createNamedQuery("IbcsAutoliquidaciones.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<IbcsAutoliquidaciones> autoliquidaciones = (List<IbcsAutoliquidaciones>) query.getResultList();
             return autoliquidaciones;
         } catch (Exception e) {
             System.out.println("Error buscarIbcsAutoliquidaciones PersistenciaIbcsAutoliquidaciones : " + e.toString());
@@ -65,10 +67,11 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     }
 
     @Override
-    public IbcsAutoliquidaciones buscarIbcAutoliquidacionSecuencia(BigInteger secuencia) {
+    public IbcsAutoliquidaciones buscarIbcAutoliquidacionSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT ibc FROM IbcsAutoliquidaciones ibc WHERE ibc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             IbcsAutoliquidaciones autoliquidaciones = (IbcsAutoliquidaciones) query.getSingleResult();
             return autoliquidaciones;
         } catch (Exception e) {
@@ -79,11 +82,12 @@ public class PersistenciaIbcsAutoliquidaciones implements PersistenciaIbcsAutoli
     }
     
     @Override
-    public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidacionesTipoEntidadEmpleado(BigInteger secuenciaTE, BigInteger secuenciaEmpl) {
+    public List<IbcsAutoliquidaciones> buscarIbcsAutoliquidacionesTipoEntidadEmpleado(EntityManager em,BigInteger secuenciaTE, BigInteger secuenciaEmpl) {
         try {
             Query query = em.createQuery("SELECT ibc FROM IbcsAutoliquidaciones ibc WHERE ibc.tipoentidad.secuencia = :secuenciaTE AND ibc.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaTE", secuenciaTE);
             query.setParameter("secuenciaEmpl", secuenciaEmpl);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<IbcsAutoliquidaciones> autoliquidaciones = (List<IbcsAutoliquidaciones>)query.getResultList();
             return autoliquidaciones;
         } catch (Exception e) {

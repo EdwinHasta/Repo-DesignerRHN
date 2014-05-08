@@ -22,11 +22,11 @@ public class PersistenciaDemandas implements PersistenciaDemandasInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Demandas demandas) {
+    public void crear(EntityManager em,Demandas demandas) {
         try {
             em.persist(demandas);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaDemandas implements PersistenciaDemandasInterface{
     }
 
     @Override
-    public void editar(Demandas demandas) {
+    public void editar(EntityManager em,Demandas demandas) {
         try {
             em.merge(demandas);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaDemandas implements PersistenciaDemandasInterface{
     }
 
     @Override
-    public void borrar(Demandas demandas) {
+    public void borrar(EntityManager em,Demandas demandas) {
         try {
             em.remove(em.merge(demandas));
         } catch (Exception e) {
@@ -53,14 +53,16 @@ public class PersistenciaDemandas implements PersistenciaDemandasInterface{
     }
 
     @Override
-    public List<Demandas> demandasPersona(BigInteger secuenciaEmpl) {
+    public List<Demandas> demandasPersona(EntityManager em,BigInteger secuenciaEmpl) {
         try {
             Query query = em.createQuery("SELECT COUNT(d) FROM Demandas d WHERE d.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuenciaEmpl);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT d FROM Demandas d WHERE d.empleado.secuencia = :secuenciaEmpl");
                 queryFinal.setParameter("secuenciaEmpl", secuenciaEmpl);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<Demandas> listaDemandas = queryFinal.getResultList();
                 return listaDemandas;
             }

@@ -24,10 +24,10 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(FirmasReportes tiposCursos) {
+    public void crear(EntityManager em,FirmasReportes tiposCursos) {
         try {
             System.out.println("PERSISTENCIA CREAR------------------------");
             System.out.println("CODIGO : " + tiposCursos.getCodigo());
@@ -43,7 +43,7 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
         }
     }
 
-    public void editar(FirmasReportes tiposCursos) {
+    public void editar(EntityManager em,FirmasReportes tiposCursos) {
         try {
             em.merge(tiposCursos);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
         }
     }
 
-    public void borrar(FirmasReportes tiposCursos) {
+    public void borrar(EntityManager em,FirmasReportes tiposCursos) {
         try {
             em.remove(em.merge(tiposCursos));
         } catch (Exception e) {
@@ -59,9 +59,10 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
         }
     }
 
-    public List<FirmasReportes> consultarFirmasReportes() {
+    public List<FirmasReportes> consultarFirmasReportes(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT g FROM FirmasReportes g ORDER BY g.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< FirmasReportes> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
 
@@ -71,10 +72,11 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
         }
     }
 
-    public FirmasReportes consultarFirmaReporte(BigInteger secuencia) {
+    public FirmasReportes consultarFirmaReporte(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM FirmasReportes te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             FirmasReportes tiposCursos = (FirmasReportes) query.getSingleResult();
             return tiposCursos;
         } catch (Exception e) {

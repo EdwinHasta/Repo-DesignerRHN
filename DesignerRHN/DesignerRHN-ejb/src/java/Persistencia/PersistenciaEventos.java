@@ -23,26 +23,26 @@ public class PersistenciaEventos implements PersistenciaEventosInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Eventos eventos) {
+    public void crear(EntityManager em,Eventos eventos) {
         em.persist(eventos);
     }
 
     @Override
-    public void editar(Eventos eventos) {
+    public void editar(EntityManager em,Eventos eventos) {
         em.merge(eventos);
     }
 
     @Override
-    public void borrar(Eventos eventos) {
+    public void borrar(EntityManager em,Eventos eventos) {
         em.remove(em.merge(eventos));
     }
 
     @Override
-    public Eventos buscarEvento(BigInteger secuencia) {
+    public Eventos buscarEvento(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(Eventos.class, secuencia);
         } catch (Exception e) {
@@ -52,9 +52,10 @@ public class PersistenciaEventos implements PersistenciaEventosInterface{
     }
 
     @Override
-    public List<Eventos> buscarEventos() {
+    public List<Eventos> buscarEventos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT e FROM Eventos e ORDER BY e.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Eventos> eventos = query.getResultList();
             return eventos;
         } catch (Exception e) {
@@ -63,7 +64,7 @@ public class PersistenciaEventos implements PersistenciaEventosInterface{
         }
     }
     
-        public BigInteger contadorVigenciasEventos(BigInteger secuencia){
+        public BigInteger contadorVigenciasEventos(EntityManager em,BigInteger secuencia){
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM vigenciaseventos WHERE evento = ?";

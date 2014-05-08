@@ -21,13 +21,14 @@ public class PersistenciaAdiestramientosNF implements PersistenciaAdiestramiento
      /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     
     @Override
-        public List<AdiestramientosNF> adiestramientosNF() {
+        public List<AdiestramientosNF> adiestramientosNF(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT aNF FROM AdiestramientosNF aNF ORDER BY aNF.desccripcion");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<AdiestramientosNF> adiestramientosNF = query.getResultList();
             return adiestramientosNF;
         } catch (Exception e) {

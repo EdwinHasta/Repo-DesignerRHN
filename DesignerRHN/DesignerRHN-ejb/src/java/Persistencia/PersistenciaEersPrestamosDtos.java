@@ -23,11 +23,11 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaEersPrestamosDtos implements PersistenciaEersPrestamosDtosInterface {
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(EersPrestamosDtos eersPrestamosDtos) {
+    public void crear(EntityManager em,EersPrestamosDtos eersPrestamosDtos) {
         try {
             em.merge(eersPrestamosDtos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaEersPrestamosDtos implements PersistenciaEersPrestamosD
     }
 
     @Override
-    public void editar(EersPrestamosDtos eersPrestamosDtos) {
+    public void editar(EntityManager em,EersPrestamosDtos eersPrestamosDtos) {
         try {
             em.merge(eersPrestamosDtos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaEersPrestamosDtos implements PersistenciaEersPrestamosD
     }
 
     @Override
-    public void borrar(EersPrestamosDtos eersPrestamosDtos) {
+    public void borrar(EntityManager em,EersPrestamosDtos eersPrestamosDtos) {
         try {
             em.remove(em.merge(eersPrestamosDtos));
         } catch (Exception e) {
@@ -54,10 +54,11 @@ public class PersistenciaEersPrestamosDtos implements PersistenciaEersPrestamosD
     }
 
     @Override
-    public List<EersPrestamosDtos> eersPrestamosDtosEmpleado(BigInteger secuenciaEersPrestamo) {
+    public List<EersPrestamosDtos> eersPrestamosDtosEmpleado(EntityManager em,BigInteger secuenciaEersPrestamo) {
         try {
             Query query = em.createQuery("select e from EersPrestamosDtos e where e.eerprestamo.secuencia = :secuenciaEersPrestamo ");
             query.setParameter("secuenciaEersPrestamo", secuenciaEersPrestamo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EersPrestamosDtos> eersPrestamosDtos = query.getResultList();
             List<EersPrestamosDtos> eersPrestamosDtosResult = new ArrayList<EersPrestamosDtos>(eersPrestamosDtos);
             return eersPrestamosDtosResult;

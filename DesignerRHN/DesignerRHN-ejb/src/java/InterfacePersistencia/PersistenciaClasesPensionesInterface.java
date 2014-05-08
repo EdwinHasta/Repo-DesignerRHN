@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.ClasesPensiones;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaClasesPensionesInterface {
      *
      * @param clasesPensiones ClasePension que se quiere crear.
      */
-    public void crear(ClasesPensiones clasesPensiones);
+    public void crear(EntityManager em,ClasesPensiones clasesPensiones);
 
     /**
      * Método encargado de modificar una ClasePension de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaClasesPensionesInterface {
      * @param clasesPensiones ClasePension con los cambios que se van a
      * realizar.
      */
-    public void editar(ClasesPensiones clasesPensiones);
+    public void editar(EntityManager em,ClasesPensiones clasesPensiones);
 
     /**
      * Método encargado de eliminar de la base de datos la ClasePension que
@@ -38,7 +39,7 @@ public interface PersistenciaClasesPensionesInterface {
      *
      * @param clasesPensiones ClasePension que se quiere eliminar.
      */
-    public void borrar(ClasesPensiones clasesPensiones);
+    public void borrar(EntityManager em,ClasesPensiones clasesPensiones);
 
     /**
      * Método encargado de buscar todas las ClasesPensiones existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaClasesPensionesInterface {
      *
      * @return Retorna una lista de ClasesPensiones.
      */
-    public List<ClasesPensiones> consultarClasesPensiones();
+    public List<ClasesPensiones> consultarClasesPensiones(EntityManager em);
 
     /**
      * Método encargado de buscar la ClasePension con la secClasesPensiones dada
@@ -57,7 +58,7 @@ public interface PersistenciaClasesPensionesInterface {
      * @return Retorna la ClasePension identificada con la secClasesPensiones
      * dada por parámetro.
      */
-    public ClasesPensiones consultarClasePension(BigInteger secClasesPensiones);
+    public ClasesPensiones consultarClasePension(EntityManager em,BigInteger secClasesPensiones);
 
     /**
      * Metodo encargado de contar cuantas Retirados estan relacionadas con la
@@ -66,5 +67,5 @@ public interface PersistenciaClasesPensionesInterface {
      * @param secClasesPensiones Secuencia de la ClasePension
      * @return Cuantos Retirados tienen la secClasesPensiones recivida
      */
-    public BigInteger contarRetiradosClasePension(BigInteger secClasesPensiones);
+    public BigInteger contarRetiradosClasePension(EntityManager em,BigInteger secClasesPensiones);
 }

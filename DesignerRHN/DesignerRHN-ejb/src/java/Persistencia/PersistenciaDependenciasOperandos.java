@@ -26,11 +26,11 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     
     @Override
-    public void crear(DependenciasOperandos dependenciasOperandos) {
+    public void crear(EntityManager em,DependenciasOperandos dependenciasOperandos) {
         try {
             em.merge(dependenciasOperandos);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
 
     @Override
-    public void editar(DependenciasOperandos dependenciasOperandos) {
+    public void editar(EntityManager em,DependenciasOperandos dependenciasOperandos) {
         try {
             em.merge(dependenciasOperandos);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
 
     @Override
-    public void borrar(DependenciasOperandos dependenciasOperandos) {
+    public void borrar(EntityManager em,DependenciasOperandos dependenciasOperandos) {
         try {
             em.remove(em.merge(dependenciasOperandos));
         } catch (Exception e) {
@@ -57,10 +57,11 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
 
     @Override
-    public List<DependenciasOperandos> dependenciasOperandos(BigInteger secuenciaOperando) {
+    public List<DependenciasOperandos> dependenciasOperandos(EntityManager em,BigInteger secuenciaOperando) {
         try {
             Query query = em.createQuery("SELECT tf FROM DependenciasOperandos tf, Operandos op WHERE tf.operando.secuencia = :secuenciaOperando ORDER BY tf.codigo DESC");
             query.setParameter("secuenciaOperando", secuenciaOperando);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<DependenciasOperandos> dependenciasOperandosResult = new ArrayList<DependenciasOperandos>();
             dependenciasOperandosResult = query.getResultList();
             return dependenciasOperandosResult;
@@ -71,10 +72,11 @@ public class PersistenciaDependenciasOperandos implements PersistenciaDependenci
     }
     
     @Override
-    public String nombreOperandos(int codigo) {
+    public String nombreOperandos(EntityManager em,int codigo) {
         try {
             Query query = em.createQuery("SELECT op.nombre FROM Operandos op WHERE op.codigo = :codigo");
             query.setParameter("codigo", codigo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             String nombre;
             nombre = (String) query.getSingleResult();
             return nombre;

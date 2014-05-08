@@ -26,11 +26,11 @@ public class PersistenciaConceptosRedondeos implements PersistenciaConceptosRedo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<ConceptosRedondeos> buscarConceptosRedondeos() {
+    public List<ConceptosRedondeos> buscarConceptosRedondeos(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ConceptosRedondeos.class));
@@ -42,7 +42,7 @@ public class PersistenciaConceptosRedondeos implements PersistenciaConceptosRedo
     }
 
     @Override
-    public void crear(ConceptosRedondeos conceptosRedondeos) {
+    public void crear(EntityManager em,ConceptosRedondeos conceptosRedondeos) {
         try {
             em.persist(conceptosRedondeos);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class PersistenciaConceptosRedondeos implements PersistenciaConceptosRedo
     }
 
     @Override
-    public void editar(ConceptosRedondeos conceptosRedondeos) {
+    public void editar(EntityManager em,ConceptosRedondeos conceptosRedondeos) {
         try {
             em.merge(conceptosRedondeos);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class PersistenciaConceptosRedondeos implements PersistenciaConceptosRedo
     }
 
     @Override
-    public void borrar(ConceptosRedondeos conceptosRedondeos) {
+    public void borrar(EntityManager em,ConceptosRedondeos conceptosRedondeos) {
         try {
             em.remove(em.merge(conceptosRedondeos));
         } catch (Exception e) {

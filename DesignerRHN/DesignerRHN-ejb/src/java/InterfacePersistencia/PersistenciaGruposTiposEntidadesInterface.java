@@ -7,6 +7,7 @@ import Entidades.Grupostiposentidades;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -22,7 +23,7 @@ public interface PersistenciaGruposTiposEntidadesInterface {
      *
      * @param gruposTiposEntidades GrupoTipoEntidad que se quiere crear.
      */
-    public void crear(Grupostiposentidades gruposTiposEntidades);
+    public void crear(EntityManager em,Grupostiposentidades gruposTiposEntidades);
 
     /**
      * Método encargado de modificar un GrupoTipoEntidad de la base de datos.
@@ -32,7 +33,7 @@ public interface PersistenciaGruposTiposEntidadesInterface {
      * @param gruposTiposEntidades GrupoTipoEntidad con los cambios que se van a
      * realizar.
      */
-    public void editar(Grupostiposentidades gruposTiposEntidades);
+    public void editar(EntityManager em,Grupostiposentidades gruposTiposEntidades);
 
     /**
      * Método encargado de eliminar de la base de datos el GrupoTipoEntidad que
@@ -40,7 +41,7 @@ public interface PersistenciaGruposTiposEntidadesInterface {
      *
      * @param gruposTiposEntidades GrupoTipoEntidad que se quiere eliminar.
      */
-    public void borrar(Grupostiposentidades gruposTiposEntidades);
+    public void borrar(EntityManager em,Grupostiposentidades gruposTiposEntidades);
 
     /**
      * Método encargado de buscar el GrupoTipoEntidad con la secuencia dada por
@@ -50,7 +51,7 @@ public interface PersistenciaGruposTiposEntidadesInterface {
      * @return Retorna el GrupoTipoEntidad identificado con la secuencia dada
      * por parámetro.
      */
-    public Grupostiposentidades consultarGrupoTipoEntidad(BigInteger secuencia);
+    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos los GruposTiposEntidades existentes en
@@ -58,9 +59,9 @@ public interface PersistenciaGruposTiposEntidadesInterface {
      *
      * @return Retorna una lista de GruposTiposEntidades.
      */
-    public List<Grupostiposentidades> consultarGruposTiposEntidades();
+    public List<Grupostiposentidades> consultarGruposTiposEntidades(EntityManager em);
 
-    public BigInteger contarTiposEntidadesGrupoTipoEntidad(BigInteger secuencia);
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em,BigInteger secuencia);
 
-    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(BigInteger secuencia);
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em,BigInteger secuencia);
 }

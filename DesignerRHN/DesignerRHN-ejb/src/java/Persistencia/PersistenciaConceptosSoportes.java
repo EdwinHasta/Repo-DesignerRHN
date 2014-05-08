@@ -24,10 +24,10 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(ConceptosSoportes conceptosSoportes) {
+    public void crear(EntityManager em,ConceptosSoportes conceptosSoportes) {
         try {
             em.persist(conceptosSoportes);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public void editar(ConceptosSoportes conceptosSoportes) {
+    public void editar(EntityManager em,ConceptosSoportes conceptosSoportes) {
         try {
             em.merge(conceptosSoportes);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public void borrar(ConceptosSoportes conceptosSoportes) {
+    public void borrar(EntityManager em,ConceptosSoportes conceptosSoportes) {
         try {
             em.remove(em.merge(conceptosSoportes));
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public List<ConceptosSoportes> consultarConceptosSoportes() {
+    public List<ConceptosSoportes> consultarConceptosSoportes(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT te FROM ConceptosSoportes te");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ConceptosSoportes> conceptosSoportes = query.getResultList();
             return conceptosSoportes;
         } catch (Exception e) {
@@ -62,10 +63,11 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public ConceptosSoportes consultarConceptoSoporte(BigInteger secuencia) {
+    public ConceptosSoportes consultarConceptoSoporte(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM ConceptosSoportes te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ConceptosSoportes conceptosSoportes = (ConceptosSoportes) query.getSingleResult();
             return conceptosSoportes;
         } catch (Exception e) {
@@ -75,11 +77,12 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public BigInteger consultarConceptoSoporteConceptoOperador(BigInteger concepto, BigInteger operador) {
+    public BigInteger consultarConceptoSoporteConceptoOperador(EntityManager em,BigInteger concepto, BigInteger operador) {
         try {
             Query query = em.createQuery("SELECT COUNT(te) FROM ConceptosSoportes te WHERE te.concepto.secuencia = :concepto AND te.operando.secuencia = :operando");
             query.setParameter("concepto", concepto);
             query.setParameter("operando", operador);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigInteger conceptosSoportes = new BigInteger(query.getSingleResult().toString());
             return conceptosSoportes;
         } catch (Exception e) {

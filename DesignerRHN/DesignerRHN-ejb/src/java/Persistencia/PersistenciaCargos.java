@@ -26,27 +26,27 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Cargos cargos) {
+    public void crear(EntityManager em,Cargos cargos) {
         em.persist(cargos);
     }
 
     @Override
-    public void editar(Cargos cargos) {
+    public void editar(EntityManager em,Cargos cargos) {
         em.merge(cargos);
     }
 
 
     @Override
-    public void borrar(Cargos cargos) {
+    public void borrar(EntityManager em,Cargos cargos) {
         em.remove(em.merge(cargos));
     }
 
     @Override
-    public Cargos buscarCargoSecuencia(BigInteger secuencia) {
+    public Cargos buscarCargoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             BigInteger in;
             in = (BigInteger) secuencia;
@@ -58,9 +58,10 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     }
 
     @Override
-    public List<Cargos> consultarCargos() {
+    public List<Cargos> consultarCargos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT c FROM Cargos c ORDER BY c.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Cargos> cargos = query.getResultList();
             return cargos;
         } catch (Exception e) {
@@ -69,9 +70,9 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     }
 
     @Override
-    public List<Cargos> cargosSalario() {
+    public List<Cargos> cargosSalario(EntityManager em) {
         try {
-            List<Cargos> listaCargosSalario = consultarCargos();
+            List<Cargos> listaCargosSalario = consultarCargos(em);
             if (listaCargosSalario != null) {
                 for (int i = 0; i < listaCargosSalario.size(); i++) {
                     System.out.println("Secuencia: " + listaCargosSalario.get(i).getSecuencia());
@@ -90,10 +91,11 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
         }
     }
 @Override
-    public List<Cargos> buscarCargosPorSecuenciaEmpresa(BigInteger secEmpresa) {
+    public List<Cargos> buscarCargosPorSecuenciaEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Cargos c  WHERE c.empresa.secuencia=:secEmpresa");
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Cargos> cargos = query.getResultList();
             return cargos;
         } catch (Exception e) {

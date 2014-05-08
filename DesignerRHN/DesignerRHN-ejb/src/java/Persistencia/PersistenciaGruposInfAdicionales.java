@@ -26,11 +26,11 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(GruposInfAdicionales gruposInfAdicionales) {
+    public void crear(EntityManager em,GruposInfAdicionales gruposInfAdicionales) {
         try {
             em.persist(gruposInfAdicionales);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     }
 
     @Override
-    public void editar(GruposInfAdicionales gruposInfAdicionales) {
+    public void editar(EntityManager em,GruposInfAdicionales gruposInfAdicionales) {
         try {
             em.merge(gruposInfAdicionales);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     }
 
     @Override
-    public void borrar(GruposInfAdicionales gruposInfAdicionales) {
+    public void borrar(EntityManager em,GruposInfAdicionales gruposInfAdicionales) {
         try {
             em.remove(em.merge(gruposInfAdicionales));
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     }
 
     @Override
-    public GruposInfAdicionales buscarGrupoInfAdicional(BigInteger secuencia) {
+    public GruposInfAdicionales buscarGrupoInfAdicional(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(GruposInfAdicionales.class, secuencia);
         } catch (Exception e) {
@@ -67,7 +67,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     }
 
     @Override
-    public List<GruposInfAdicionales> buscarGruposInfAdicionales() {
+    public List<GruposInfAdicionales> buscarGruposInfAdicionales(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(GruposInfAdicionales.class));
@@ -78,7 +78,7 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
         }
     }
 
-    public BigInteger contadorInformacionesAdicionales(BigInteger secuencia) {
+    public BigInteger contadorInformacionesAdicionales(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM informacionesadicionales aa where grupo=?";

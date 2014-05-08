@@ -28,11 +28,11 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Estructuras estructuras) {
+    public void crear(EntityManager em,Estructuras estructuras) {
         try {
             em.persist(estructuras);
         } catch (Exception e) {
@@ -41,7 +41,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public void editar(Estructuras estructuras) {
+    public void editar(EntityManager em,Estructuras estructuras) {
         try {
             em.merge(estructuras);
         } catch (Exception e) {
@@ -50,12 +50,12 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public void borrar(Estructuras estructuras) {
+    public void borrar(EntityManager em,Estructuras estructuras) {
         em.remove(em.merge(estructuras));
     }
 
     @Override
-    public Estructuras buscarEstructura(BigInteger secuencia) {
+    public Estructuras buscarEstructura(EntityManager em,BigInteger secuencia) {
         try {
             return em.find(Estructuras.class, secuencia);
         } catch (Exception e) {
@@ -64,9 +64,10 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> estructuras() {
+    public List<Estructuras> estructuras(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e ORDER BY e.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = query.getResultList();
             return estructuras;
         } catch (Exception e) {
@@ -75,10 +76,11 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(BigInteger secOrganigrama) {
+    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em,BigInteger secOrganigrama) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.nombre");
             query.setParameter("secOrganigrama", secOrganigrama);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = query.getResultList();
             return estructuras;
         } catch (Exception e) {
@@ -88,10 +90,11 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPorOrganigrama(BigInteger secOrganigrama) {
+    public List<Estructuras> buscarEstructurasPorOrganigrama(EntityManager em,BigInteger secOrganigrama) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.codigo ASC");
             query.setParameter("secOrganigrama", secOrganigrama);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = query.getResultList();
             return estructuras;
         } catch (Exception e) {
@@ -101,7 +104,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarlistaValores(String fechaVigencia) {
+    public List<Estructuras> buscarlistaValores(EntityManager em,String fechaVigencia) {
         List<Estructuras> estructuras;
         System.out.println("Fecha: " + fechaVigencia);
         try {
@@ -125,10 +128,11 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> estructuraPadre(BigInteger secOrg) {
+    public List<Estructuras> estructuraPadre(EntityManager em,BigInteger secOrg) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia = :secOrg AND e.estructurapadre IS NULL");
             query.setParameter("secOrg", secOrg);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> listEstructuras = query.getResultList();
             return listEstructuras;
         } catch (Exception e) {
@@ -138,11 +142,12 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre, Short codigoEmpresa) {
+    public List<Estructuras> estructurasHijas(EntityManager em,BigInteger secEstructuraPadre, Short codigoEmpresa) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.empresa.codigo = :codigoEmpresa AND e.estructurapadre.secuencia = :secEstructuraPadre");
             query.setParameter("secEstructuraPadre", secEstructuraPadre);
             query.setParameter("codigoEmpresa", codigoEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> listEstructuras = query.getResultList();
             return listEstructuras;
         } catch (Exception e) {
@@ -152,9 +157,12 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructuras() {
+    public List<Estructuras> buscarEstructuras(EntityManager em) {
         try {
-            List<Estructuras> estructuras = (List<Estructuras>) em.createNamedQuery("Estructuras.findAll").getResultList();
+            Query query = em.createNamedQuery("Estructuras.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Estructuras> estructuras = (List<Estructuras>) query.getResultList();
+            
             return estructuras;
         } catch (Exception e) {
             System.out.println("Error buscarEstructuras PersistenciaEstructuras");
@@ -163,11 +171,12 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public Estructuras buscarEstructuraSecuencia(BigInteger secuencia) {
+    public Estructuras buscarEstructuraSecuencia(EntityManager em,BigInteger secuencia) {
         Estructuras estructura;
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             estructura = (Estructuras) query.getSingleResult();
             return estructura;
         } catch (Exception e) {
@@ -178,7 +187,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPadres(BigInteger secOrganigrama, BigInteger secEstructura) {
+    public List<Estructuras> buscarEstructurasPadres(EntityManager em,BigInteger secOrganigrama, BigInteger secEstructura) {
         try {
             String strQuery = "SELECT * FROM Estructuras WHERE organigrama =? AND secuencia != NVL(?,0) ORDER BY nombre ASC"; 
             Query query = em.createNativeQuery(strQuery, Estructuras.class);

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.GruposSalariales;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaGruposSalarialesInterface {
      *
      * @param gruposSalariales GrupoSalarial
      */
-    public void crear(GruposSalariales gruposSalariales);
+    public void crear(EntityManager em,GruposSalariales gruposSalariales);
 
     /**
      * Método encargado de modificar un GrupoSalarial de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaGruposSalarialesInterface {
      * @param gruposSalariales GrupoSalarial con los cambios que se van a
      * realizar.
      */
-    public void editar(GruposSalariales gruposSalariales);
+    public void editar(EntityManager em,GruposSalariales gruposSalariales);
 
     /**
      * Método encargado de eliminar de la base de datos el GrupoSalarial que
@@ -38,7 +39,7 @@ public interface PersistenciaGruposSalarialesInterface {
      *
      * @param gruposSalariales GrupoSalarial que se quiere eliminar.
      */
-    public void borrar(GruposSalariales gruposSalariales);
+    public void borrar(EntityManager em,GruposSalariales gruposSalariales);
 
     /**
      * Método encargado de buscar todos los GruposSalariales existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaGruposSalarialesInterface {
      *
      * @return Retorna una lista de GruposSalariales.
      */
-    public List<GruposSalariales> buscarGruposSalariales();
+    public List<GruposSalariales> buscarGruposSalariales(EntityManager em);
 
     /**
      * Método encargado de buscar el GrupoSalarial con la secuencia dada por
@@ -56,7 +57,7 @@ public interface PersistenciaGruposSalarialesInterface {
      * @return Retorna el GrupoSalarial identificado con la secuencia dada por
      * parámetro.
      */
-    public GruposSalariales buscarGrupoSalarialSecuencia(BigInteger secuencia);
+    public GruposSalariales buscarGrupoSalarialSecuencia(EntityManager em,BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos los GruposSalariales existentes en la
@@ -65,5 +66,5 @@ public interface PersistenciaGruposSalarialesInterface {
      * @param secEscalafon Secuencia del EscalafonSalarial;
      * @return Retorna una lista de GruposSalariales.
      */
-    public List<GruposSalariales> buscarGruposSalarialesParaEscalafonSalarial(BigInteger secEscalafon);
+    public List<GruposSalariales> buscarGruposSalarialesParaEscalafonSalarial(EntityManager em,BigInteger secEscalafon);
 }

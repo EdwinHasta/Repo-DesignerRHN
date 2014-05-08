@@ -21,11 +21,11 @@ public class PersistenciaCausasAusentismos implements PersistenciaCausasAusentis
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Causasausentismos causasAusentismos) {
+    public void crear(EntityManager em,Causasausentismos causasAusentismos) {
         try {
             em.merge(causasAusentismos);
         } catch (PersistenceException ex) {
@@ -34,19 +34,20 @@ public class PersistenciaCausasAusentismos implements PersistenciaCausasAusentis
     }
 
     @Override
-    public void editar(Causasausentismos causasAusentismos) {
+    public void editar(EntityManager em,Causasausentismos causasAusentismos) {
         em.merge(causasAusentismos);
     }
 
     @Override
-    public void borrar(Causasausentismos causasAusentismos) {
+    public void borrar(EntityManager em,Causasausentismos causasAusentismos) {
         em.remove(em.merge(causasAusentismos));
     }
 
     @Override
-    public List<Causasausentismos> buscarCausasAusentismos() {
+    public List<Causasausentismos> buscarCausasAusentismos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ca FROM Causasausentismos ca ORDER BY ca.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Causasausentismos> todasCausasAusentismos = query.getResultList();
             return todasCausasAusentismos;
         } catch (Exception e) {

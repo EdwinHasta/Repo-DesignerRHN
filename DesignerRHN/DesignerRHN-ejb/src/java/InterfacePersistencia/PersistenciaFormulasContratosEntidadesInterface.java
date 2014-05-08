@@ -10,6 +10,7 @@ import Entidades.Formulascontratos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -18,16 +19,16 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaFormulasContratosEntidadesInterface {
 
-    public void crear(FormulasContratosEntidades formulasAseguradas);
+    public void crear(EntityManager em,FormulasContratosEntidades formulasAseguradas);
 
-    public void editar(FormulasContratosEntidades formulasAseguradas);
+    public void editar(EntityManager em,FormulasContratosEntidades formulasAseguradas);
 
-    public void borrar(FormulasContratosEntidades formulasAseguradas);
+    public void borrar(EntityManager em,FormulasContratosEntidades formulasAseguradas);
 
-    public List<FormulasContratosEntidades> consultarFormulasContratosEntidades();
+    public List<FormulasContratosEntidades> consultarFormulasContratosEntidades(EntityManager em);
 
-    public FormulasContratosEntidades consultarFormulaContratoEntidad(BigInteger secuencia);
+    public FormulasContratosEntidades consultarFormulaContratoEntidad(EntityManager em,BigInteger secuencia);
 
 
-    public List<FormulasContratosEntidades> consultarFormulasContratosEntidadesPorFormulaContrato(BigInteger secFormulaContrato);
+    public List<FormulasContratosEntidades> consultarFormulasContratosEntidadesPorFormulaContrato(EntityManager em,BigInteger secFormulaContrato);
 }

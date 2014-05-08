@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.GruposInfAdicionales;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      *
      * @param gruposInfAdicionales GrupoInfAdicional que se quiere crear.
      */
-    public void crear(GruposInfAdicionales gruposInfAdicionales);
+    public void crear(EntityManager em,GruposInfAdicionales gruposInfAdicionales);
 
     /**
      * Método encargado de modificar un GrupoInfAdicional de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      * @param gruposInfAdicionales GrupoInfAdicional con los cambios que se van
      * a realizar.
      */
-    public void editar(GruposInfAdicionales gruposInfAdicionales);
+    public void editar(EntityManager em,GruposInfAdicionales gruposInfAdicionales);
 
     /**
      * Método encargado de eliminar de la base de datos el GrupoInfAdicional que
@@ -38,7 +39,7 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      *
      * @param gruposInfAdicionales GrupoInfAdicional que se quiere eliminar.
      */
-    public void borrar(GruposInfAdicionales gruposInfAdicionales);
+    public void borrar(EntityManager em,GruposInfAdicionales gruposInfAdicionales);
 
     /**
      * Método encargado de buscar el GrupoInfAdicional con la
@@ -49,7 +50,7 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      * @return Retorna el GrupoInfAdicional identificado con la
      * secGruposInfAdicionales dada por parámetro.
      */
-    public GruposInfAdicionales buscarGrupoInfAdicional(BigInteger secGruposInfAdicionales);
+    public GruposInfAdicionales buscarGrupoInfAdicional(EntityManager em,BigInteger secGruposInfAdicionales);
 
     /**
      * Método encargado de buscar todos los GruposInfAdicionales existentes en
@@ -57,7 +58,7 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      *
      * @return Retorna una lista de GruposInfAdicionales.
      */
-    public List<GruposInfAdicionales> buscarGruposInfAdicionales();
+    public List<GruposInfAdicionales> buscarGruposInfAdicionales(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre una
@@ -68,5 +69,5 @@ public interface PersistenciaGruposInfAdicionalesInterface {
      * @return Retorna el número de InformacionesAdicionales relacionados con la
      * moneda cuya secGruposInfAdicionales coincide con el parámetro.
      */
-    public BigInteger contadorInformacionesAdicionales(BigInteger secGruposInfAdicionales);
+    public BigInteger contadorInformacionesAdicionales(EntityManager em,BigInteger secGruposInfAdicionales);
 }

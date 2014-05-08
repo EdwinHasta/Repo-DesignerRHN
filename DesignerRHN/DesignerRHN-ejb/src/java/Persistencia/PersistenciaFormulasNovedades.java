@@ -25,11 +25,11 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(FormulasNovedades formulasNovedades) {
+    public void crear(EntityManager em,FormulasNovedades formulasNovedades) {
         try {
             em.persist(formulasNovedades);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     }
 
     @Override
-    public void editar(FormulasNovedades formulasNovedades) {
+    public void editar(EntityManager em,FormulasNovedades formulasNovedades) {
         try {
             em.merge(formulasNovedades);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     }
 
     @Override
-    public void borrar(FormulasNovedades formulasNovedades) {
+    public void borrar(EntityManager em,FormulasNovedades formulasNovedades) {
         try {
             em.remove(em.merge(formulasNovedades));
         } catch (Exception e) {
@@ -56,10 +56,12 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     }
 
     @Override
-    public List<FormulasNovedades> formulasNovedadesParaFormulaSecuencia(BigInteger secuencia) {
+    public List<FormulasNovedades> formulasNovedadesParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fn FROM FormulasNovedades fn WHERE fn.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
+            queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
+                    ;
             List<FormulasNovedades> formulasNovedades = queryFinal.getResultList();
             return formulasNovedades;
         } catch (Exception e) {
@@ -69,10 +71,11 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
     }
 
     @Override
-    public boolean verificarExistenciaFormulasNovedades(BigInteger secFormula) {
+    public boolean verificarExistenciaFormulasNovedades(EntityManager em,BigInteger secFormula) {
         try {
             Query query = em.createQuery("SELECT COUNT(fn) FROM FormulasNovedades fn WHERE fn.formula.secuencia = :secFormula");
             query.setParameter("secFormula", secFormula);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {

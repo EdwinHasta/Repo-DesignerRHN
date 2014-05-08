@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.ConsultasLiquidaciones;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la entidad 'ConsultasLiquidaciones',
@@ -18,10 +19,10 @@ public interface PersistenciaConsultasLiquidacionesInterface {
      * @param fechaFinal Fecha final del rango deseado.
      * @return Retorna la una lista con consultasLiquidaciones que estén cerradas y realizadas en un rango definido de fechas.
      */
-    public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal);
+    public List<ConsultasLiquidaciones> liquidacionesCerradas(EntityManager em,String fechaInicial, String fechaFinal);
     /**
      * Método encargado de consultar las liquidaciones no cerradas.
      * @return Retorna todas las consultasLiquidaciones realizadas para preNomina
      */
-    public List<ConsultasLiquidaciones> preNomina();
+    public List<ConsultasLiquidaciones> preNomina(EntityManager em);
 }

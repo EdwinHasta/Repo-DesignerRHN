@@ -25,11 +25,11 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(EvalEvaluadores evalEvaluadores) {
+    public void crear(EntityManager em,EvalEvaluadores evalEvaluadores) {
         try {
             em.persist(evalEvaluadores);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public void editar(EvalEvaluadores evalEvaluadores) {
+    public void editar(EntityManager em,EvalEvaluadores evalEvaluadores) {
         try {
             em.merge(evalEvaluadores);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public void borrar(EvalEvaluadores evalEvaluadores) {
+    public void borrar(EntityManager em,EvalEvaluadores evalEvaluadores) {
         try {
             em.remove(em.merge(evalEvaluadores));
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public EvalEvaluadores buscarEvalEvaluador(BigInteger secuenciaEvalEvaluadores) {
+    public EvalEvaluadores buscarEvalEvaluador(EntityManager em,BigInteger secuenciaEvalEvaluadores) {
         try {
             return em.find(EvalEvaluadores.class, secuenciaEvalEvaluadores);
         } catch (Exception e) {
@@ -66,9 +66,10 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public List<EvalEvaluadores> buscarEvalEvaluadores() {
+    public List<EvalEvaluadores> buscarEvalEvaluadores(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ev FROM EvalEvaluadores ev ORDER BY ev.codigo ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalEvaluadores> evalEvaluadores = query.getResultList();
             return evalEvaluadores;
         } catch (Exception e) {
@@ -78,11 +79,12 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public BigInteger verificarBorradoEvalPruebas(BigInteger secuencia) {
+    public BigInteger verificarBorradoEvalPruebas(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vp) FROM EvalPruebas vp WHERE vp.evalevaluador.secuencia =:secEvalEvalualores ");
             query.setParameter("secEvalEvalualores", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaEvalEvaluadores retorno ==" + retorno.intValue());
         } catch (Exception e) {

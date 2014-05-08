@@ -22,18 +22,20 @@ public class PersistenciaFamiliares implements PersistenciaFamiliaresInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public List<Familiares> familiaresPersona(BigInteger secuenciaPersona) {
+    public List<Familiares> familiaresPersona(EntityManager em,BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT COUNT(f) FROM Familiares f WHERE f.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT f FROM Familiares f WHERE f.persona.secuencia = :secuenciaPersona");
                 queryFinal.setParameter("secuenciaPersona", secuenciaPersona);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<Familiares> listFamiliares = queryFinal.getResultList();
                 return listFamiliares;
             }

@@ -23,13 +23,14 @@ public class PersistenciaCursos implements PersistenciaCursosInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-        public List<Cursos> cursos() {
+        public List<Cursos> cursos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT c FROM Cursos c ORDER BY c.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Cursos> cursos = query.getResultList();
             return cursos;
         } catch (Exception e) {

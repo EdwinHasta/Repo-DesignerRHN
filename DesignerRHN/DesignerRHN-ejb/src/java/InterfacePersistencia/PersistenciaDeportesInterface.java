@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Deportes;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaDeportesInterface {
      *
      * @param deportes Deporte que se quiere crear.
      */
-    public void crear(Deportes deportes);
+    public void crear(EntityManager em,Deportes deportes);
 
     /**
      * Método encargado de modificar un Deporte de la base de datos. Este método
@@ -29,7 +30,7 @@ public interface PersistenciaDeportesInterface {
      *
      * @param deportes Deporte con los cambios que se van a realizar.
      */
-    public void editar(Deportes deportes);
+    public void editar(EntityManager em,Deportes deportes);
 
     /**
      * Método encargado de eliminar de la base de datos el Deporte que entra por
@@ -37,41 +38,41 @@ public interface PersistenciaDeportesInterface {
      *
      * @param deportes Deporte que se quiere eliminar.
      */
-    public void borrar(Deportes deportes);
+    public void borrar(EntityManager em,Deportes deportes);
 
     /**
      * Método encargado de buscar el Deporte con la secuencia dada por parámetro.
      * @param secuencia Secuencia del Deporte que se quiere encontrar.
      * @return Retorna el Deporte cuya secuencia coincide con el parámetro dado.
      */
-    public Deportes buscarDeporte(BigInteger secuencia);
+    public Deportes buscarDeporte(EntityManager em,BigInteger secuencia);
     /**
      * Método encargado de buscar todos los Deportes existentes en la base de
      * datos.
      *
      * @return Retorna una lista de Deportes.
      */
-    public List<Deportes> buscarDeportes();
+    public List<Deportes> buscarDeportes(EntityManager em);
 
     /**
      * 
      * @param secuencia
      * @return
      */
-    public BigInteger contadorParametrosInformes(BigInteger secuencia);
+    public BigInteger contadorParametrosInformes(EntityManager em,BigInteger secuencia);
 
     /**
      * 
      * @param secuencia
      * @return
      */
-    public BigInteger contadorDeportesPersonas(BigInteger secuencia);
+    public BigInteger contadorDeportesPersonas(EntityManager em,BigInteger secuencia);
 
     /**
      * 
      * @param secuencia
      * @return
      */
-    public BigInteger verificarBorradoVigenciasDeportes(BigInteger secuencia);
+    public BigInteger verificarBorradoVigenciasDeportes(EntityManager em,BigInteger secuencia);
 
 }

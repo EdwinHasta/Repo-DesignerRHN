@@ -25,11 +25,10 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     @Override
-    public void crear(CentrosCostos centrosCostos) {
+    public void crear(EntityManager em,CentrosCostos centrosCostos) {
         try {
             if (centrosCostos.getManoobra() == null) {
                 System.out.println("PERSISTENCIA CENTROSCOSTOS MANO DE OBRA ES NULA ");
@@ -43,7 +42,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public void editar(CentrosCostos centrosCostos) {
+    public void editar(EntityManager em,CentrosCostos centrosCostos) {
         try {
             em.merge(centrosCostos);
         } catch (Exception e) {
@@ -52,7 +51,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public void borrar(CentrosCostos centrosCostos) {
+    public void borrar(EntityManager em,CentrosCostos centrosCostos) {
         try {
             em.remove(em.merge(centrosCostos));
         } catch (Exception e) {
@@ -61,9 +60,10 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public List<CentrosCostos> buscarCentrosCostos() {
+    public List<CentrosCostos> buscarCentrosCostos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT cc FROM CentrosCostos cc");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<CentrosCostos> centrosCostos = query.getResultList();
             return centrosCostos;
         } catch (Exception e) {
@@ -73,10 +73,11 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public CentrosCostos buscarCentroCostoSecuencia(BigInteger secuencia) {
+    public CentrosCostos buscarCentroCostoSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT cc FROM CentrosCostos cc WHERE cc.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             CentrosCostos centrosCostos = (CentrosCostos) query.getSingleResult();
             return centrosCostos;
         } catch (Exception e) {
@@ -87,10 +88,11 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public List<CentrosCostos> buscarCentrosCostosEmpr(BigInteger secEmpresa) {
+    public List<CentrosCostos> buscarCentrosCostosEmpr(EntityManager em,BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT cce FROM CentrosCostos cce WHERE cce.empresa.secuencia = :secuenciaEmpr AND cce.comodin='N' ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<CentrosCostos> centrosCostos = query.getResultList();
             return centrosCostos;
         } catch (Exception e) {
@@ -100,7 +102,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorComprobantesContables(BigInteger secuencia) {
+    public BigInteger contadorComprobantesContables(EntityManager em,BigInteger secuencia) {
         try {
 
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, comprobantescontables ccs WHERE cc.secuencia = ccs.centrocostoconsolidador AND cc.secuencia = ?";
@@ -116,7 +118,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorDetallesCCConsolidador(BigInteger secuencia) {
+    public BigInteger contadorDetallesCCConsolidador(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, detallescc dcc WHERE cc.secuencia = dcc.ccconsolidador AND cc.secuencia =?";
@@ -131,7 +133,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorDetallesCCDetalle(BigInteger secuencia) {
+    public BigInteger contadorDetallesCCDetalle(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, detallescc dcc WHERE cc.secuencia = dcc.ccdetalle AND cc.secuencia=?";
@@ -146,7 +148,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorEmpresas(BigInteger secuencia) {
+    public BigInteger contadorEmpresas(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, empresas e WHERE cc.secuencia = e.centrocosto AND cc.secuencia=?";
@@ -161,7 +163,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorEstructuras(BigInteger secuencia) {
+    public BigInteger contadorEstructuras(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, estructuras e WHERE cc.secuencia = e.centrocosto AND cc.secuencia=?";
@@ -176,7 +178,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconCondor(BigInteger secuencia) {
+    public BigInteger contadorInterconCondor(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_condor ic WHERE cc.secuencia = ic.centrocosto AND cc.secuencia=?";
@@ -191,7 +193,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconDynamics(BigInteger secuencia) {
+    public BigInteger contadorInterconDynamics(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_dynamics id WHERE cc.secuencia = id.centrocosto AND cc.secuencia=?";
@@ -206,7 +208,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconGeneral(BigInteger secuencia) {
+    public BigInteger contadorInterconGeneral(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_general ig WHERE cc.secuencia = ig.centrocosto AND cc.secuencia=?";
@@ -221,7 +223,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconHelisa(BigInteger secuencia) {
+    public BigInteger contadorInterconHelisa(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_helisa ih WHERE cc.secuencia = ih.centrocosto AND cc.secuencia=?";
@@ -236,7 +238,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconSapbo(BigInteger secuencia) {
+    public BigInteger contadorInterconSapbo(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_sapbo isp WHERE cc.secuencia = isp.centrocosto AND cc.secuencia=?";
@@ -251,7 +253,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconSiigo(BigInteger secuencia) {
+    public BigInteger contadorInterconSiigo(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_siigo isi WHERE cc.secuencia = isi.centrocosto AND cc.secuencia =?";
@@ -266,7 +268,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorInterconTotal(BigInteger secuencia) {
+    public BigInteger contadorInterconTotal(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, intercon_total it WHERE cc.secuencia = it.centrocosto AND cc.secuencia =?";
@@ -281,7 +283,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorNovedadesC(BigInteger secuencia) {
+    public BigInteger contadorNovedadesC(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, novedades n WHERE cc.secuencia = n.centrocostoc AND cc.secuencia =?";
@@ -296,7 +298,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorNovedadesD(BigInteger secuencia) {
+    public BigInteger contadorNovedadesD(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, novedades n WHERE cc.secuencia = n.centrocostod AND cc.secuencia =?";
@@ -311,7 +313,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorProcesosProductivos(BigInteger secuencia) {
+    public BigInteger contadorProcesosProductivos(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, procesosproductivos pp WHERE cc.secuencia = pp.centrocosto AND cc.secuencia =?";
@@ -326,7 +328,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorProyecciones(BigInteger secuencia) {
+    public BigInteger contadorProyecciones(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, proyecciones p WHERE cc.secuencia = p.centrocosto AND cc.secuencia =?";
@@ -341,7 +343,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorSolucionesNodosC(BigInteger secuencia) {
+    public BigInteger contadorSolucionesNodosC(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, solucionesnodos sn WHERE cc.secuencia = sn.centrocostoc AND cc.secuencia =?";
@@ -356,7 +358,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorSolucionesNodosD(BigInteger secuencia) {
+    public BigInteger contadorSolucionesNodosD(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, solucionesnodos sn WHERE cc.secuencia = sn.centrocostod AND cc.secuencia =?";
@@ -371,7 +373,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorSoPanoramas(BigInteger secuencia) {
+    public BigInteger contadorSoPanoramas(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, sopanoramas sp WHERE cc.secuencia = sp.centrocosto AND cc.secuencia =?";
@@ -386,7 +388,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorTerceros(BigInteger secuencia) {
+    public BigInteger contadorTerceros(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, terceros t WHERE cc.secuencia = t.centrocosto AND cc.secuencia =?";
@@ -401,7 +403,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorUnidadesRegistradas(BigInteger secuencia) {
+    public BigInteger contadorUnidadesRegistradas(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, unidadesregistradas ur WHERE cc.secuencia = ur.centrocosto AND cc.secuencia =?";
@@ -416,7 +418,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorVigenciasCuentasC(BigInteger secuencia) {
+    public BigInteger contadorVigenciasCuentasC(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, vigenciascuentas vc WHERE cc.secuencia = vc.consolidadorc AND cc.secuencia =?";
@@ -431,7 +433,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorVigenciasCuentasD(BigInteger secuencia) {
+    public BigInteger contadorVigenciasCuentasD(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, vigenciascuentas vc WHERE cc.secuencia = vc.consolidadord AND cc.secuencia =?";
@@ -446,7 +448,7 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public BigInteger contadorVigenciasProrrateos(BigInteger secuencia) {
+    public BigInteger contadorVigenciasProrrateos(EntityManager em,BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM centroscostos cc, vigenciasprorrateos vp WHERE cc.secuencia = vp.centrocosto AND cc.secuencia =?";
@@ -461,10 +463,11 @@ public class PersistenciaCentrosCostos implements PersistenciaCentrosCostosInter
     }
 
     @Override
-    public List<CentrosCostos> buscarCentroCostoPorSecuenciaEmpresa(BigInteger secEmpresa) {
+    public List<CentrosCostos> buscarCentroCostoPorSecuenciaEmpresa(EntityManager em,BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM CentrosCostos c WHERE EXISTS (SELECT e FROM Empresas e WHERE e.secuencia=c.empresa.secuencia AND e.secuencia=:secEmpresa) AND c.obsoleto!='S' ORDER BY c.codigo ASC");
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<CentrosCostos> centrosCostos = query.getResultList();
             return centrosCostos;
         } catch (Exception e) {

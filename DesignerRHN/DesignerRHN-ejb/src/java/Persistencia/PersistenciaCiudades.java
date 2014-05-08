@@ -25,11 +25,11 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-     public void crear(Ciudades ciudades) {
+     public void crear(EntityManager em,Ciudades ciudades) {
         try {
             em.merge(ciudades);
         } catch (PersistenceException ex) {
@@ -39,19 +39,20 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     }
 
     @Override
-    public void editar(Ciudades ciudades) {
+    public void editar(EntityManager em,Ciudades ciudades) {
         em.merge(ciudades);
     }
 
     @Override
-    public void borrar(Ciudades ciudades) {
+    public void borrar(EntityManager em,Ciudades ciudades) {
         em.remove(em.merge(ciudades));
     }
 
     @Override
-    public List<Ciudades> ciudades() {
+    public List<Ciudades> ciudades(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT c FROM Ciudades c ORDER BY c.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Ciudades> ciudades = query.getResultList();
             return ciudades;
         } catch (Exception e) {

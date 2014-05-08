@@ -9,13 +9,14 @@ package InterfacePersistencia;
 import Entidades.DetallesTiposCotizantes;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 
 public interface PersistenciaDetallesTiposCotizantesInterface {
     
-    public void crear(DetallesTiposCotizantes detallesTiposCotizantes);
-    public void editar(DetallesTiposCotizantes detallesTiposCotizantes);
-    public void borrar(DetallesTiposCotizantes detallesTiposCotizantes);
-    public List<DetallesTiposCotizantes> detallesTiposCotizantes(BigInteger tipoCotizante);
+    public void crear(EntityManager em,DetallesTiposCotizantes detallesTiposCotizantes);
+    public void editar(EntityManager em,DetallesTiposCotizantes detallesTiposCotizantes);
+    public void borrar(EntityManager em,DetallesTiposCotizantes detallesTiposCotizantes);
+    public List<DetallesTiposCotizantes> detallesTiposCotizantes(EntityManager em,BigInteger tipoCotizante);
     
 }

@@ -9,6 +9,7 @@ package InterfacePersistencia;
 import Entidades.DependenciasOperandos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -16,14 +17,14 @@ import java.util.List;
  */
 public interface PersistenciaDependenciasOperandosInterface {
     
-    public void crear(DependenciasOperandos dependenciasOperandos);
+    public void crear(EntityManager em,DependenciasOperandos dependenciasOperandos);
 
-    public void editar(DependenciasOperandos dependenciasOperandos);
+    public void editar(EntityManager em,DependenciasOperandos dependenciasOperandos);
 
-    public void borrar(DependenciasOperandos dependenciasOperandos);
+    public void borrar(EntityManager em,DependenciasOperandos dependenciasOperandos);
 
-    public List<DependenciasOperandos> dependenciasOperandos(BigInteger secuenciaOperando);
+    public List<DependenciasOperandos> dependenciasOperandos(EntityManager em,BigInteger secuenciaOperando);
     
-    public String nombreOperandos(int codigo);
+    public String nombreOperandos(EntityManager em,int codigo);
     
 }

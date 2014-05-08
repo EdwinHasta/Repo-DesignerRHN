@@ -26,11 +26,11 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Actividades actividades) {
+    public void crear(EntityManager em, Actividades actividades) {
         try {
             em.persist(actividades);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     }
 
     @Override
-    public void editar(Actividades actividades) {
+    public void editar(EntityManager em, Actividades actividades) {
         try {
             em.merge(actividades);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     }
 
     @Override
-    public void borrar(Actividades actividades) {
+    public void borrar(EntityManager em, Actividades actividades) {
         try {
             em.remove(em.merge(actividades));
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     }
 
     @Override
-    public List<Actividades> buscarActividades() {
+    public List<Actividades> buscarActividades(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Actividades.class));
@@ -68,12 +68,13 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
         }
     }
 
-    public BigInteger contarBienNecesidadesActividad(BigInteger secuencia) {
+    public BigInteger contarBienNecesidadesActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM biennecesidades WHERE actividad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador PersistenciaActividades contarTiposLegalizaciones persistencia " + retorno);
             return retorno;
@@ -83,12 +84,13 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
         }
     }
 
-    public BigInteger contarParametrosInformesActividad(BigInteger secuencia) {
+    public BigInteger contarParametrosInformesActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE actividadbienestar = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador PersistenciaActividades contarTiposLegalizaciones persistencia " + retorno);
             return retorno;

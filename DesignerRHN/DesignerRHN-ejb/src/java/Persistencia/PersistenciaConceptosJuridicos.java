@@ -24,11 +24,11 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(ConceptosJuridicos conceptosJuridicos) {
+    public void crear(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
         try {
             em.persist(conceptosJuridicos);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public void editar(ConceptosJuridicos conceptosJuridicos) {
+    public void editar(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
         try {
             em.merge(conceptosJuridicos);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public void borrar(ConceptosJuridicos conceptosJuridicos) {
+    public void borrar(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
         try {
             em.remove(em.merge(conceptosJuridicos));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public List<ConceptosJuridicos> buscarConceptosJuridicos() {
+    public List<ConceptosJuridicos> buscarConceptosJuridicos(EntityManager em) {
         try {
             List<ConceptosJuridicos> conceptosJuridicos = (List<ConceptosJuridicos>) em.createNamedQuery("ConceptosJuridicos.findAll").getResultList();
             return conceptosJuridicos;
@@ -66,10 +66,11 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public ConceptosJuridicos buscarConceptosJuridicosSecuencia(BigInteger secuencia) {
+    public ConceptosJuridicos buscarConceptosJuridicosSecuencia(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT cj FROM ConceptosJuridicos cj WHERE cj.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ConceptosJuridicos conceptosJuridicos = (ConceptosJuridicos) query.getSingleResult();
             return conceptosJuridicos;
         } catch (Exception e) {
@@ -80,10 +81,11 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
     }
 
     @Override
-    public List<ConceptosJuridicos> buscarConceptosJuridicosEmpresa(BigInteger secuencia) {
+    public List<ConceptosJuridicos> buscarConceptosJuridicosEmpresa(EntityManager em,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT cj FROM ConceptosJuridicos cj WHERE cj.empresa.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ConceptosJuridicos> conceptosJuridicos = (List<ConceptosJuridicos>) query.getResultList();
             return conceptosJuridicos;
         } catch (Exception e) {

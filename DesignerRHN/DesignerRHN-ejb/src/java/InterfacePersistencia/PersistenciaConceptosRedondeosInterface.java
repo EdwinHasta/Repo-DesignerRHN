@@ -7,6 +7,7 @@ package InterfacePersistencia;
 
 import Entidades.ConceptosRedondeos;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -14,11 +15,11 @@ import java.util.List;
  */
 public interface PersistenciaConceptosRedondeosInterface {
 
-    public List<ConceptosRedondeos> buscarConceptosRedondeos();
+    public List<ConceptosRedondeos> buscarConceptosRedondeos(EntityManager em);
 
-    public void crear(ConceptosRedondeos conceptosRedondeos);
+    public void crear(EntityManager em,ConceptosRedondeos conceptosRedondeos);
 
-    public void editar(ConceptosRedondeos conceptosRedondeos);
+    public void editar(EntityManager em,ConceptosRedondeos conceptosRedondeos);
 
-    public void borrar(ConceptosRedondeos conceptosRedondeos);
+    public void borrar(EntityManager em,ConceptosRedondeos conceptosRedondeos);
 }

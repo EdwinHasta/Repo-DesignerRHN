@@ -9,6 +9,7 @@ import Entidades.GruposViaticos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaGruposViaticosInterface {
      *
      * @param gruposViaticos GruposViaticos que se quiere crear.
      */
-    public void crear(GruposViaticos gruposViaticos);
+    public void crear(EntityManager em,GruposViaticos gruposViaticos);
 
     /**
      * Método encargado de modificar un GrupoViatico de la base de datos. Este
@@ -32,7 +33,7 @@ public interface PersistenciaGruposViaticosInterface {
      * @param gruposViaticos GruposViaticos con los cambios que se van a
      * realizar.
      */
-    public void editar(GruposViaticos gruposViaticos);
+    public void editar(EntityManager em,GruposViaticos gruposViaticos);
 
     /**
      * Método encargado de eliminar de la base de datos un GrupoViatico que
@@ -40,7 +41,7 @@ public interface PersistenciaGruposViaticosInterface {
      *
      * @param gruposViaticos GruposViaticos que se quiere eliminar.
      */
-    public void borrar(GruposViaticos gruposViaticos);
+    public void borrar(EntityManager em,GruposViaticos gruposViaticos);
 
     /**
      * Método encargado de buscar el GrupoViatico con la secuencia dada por
@@ -51,7 +52,7 @@ public interface PersistenciaGruposViaticosInterface {
      * @return Retorna el GrupoViatico identificado con la secuencia dada por
      * parámetro.
      */
-    public GruposViaticos buscarGrupoViatico(BigInteger secGruposViaticos);
+    public GruposViaticos buscarGrupoViatico(EntityManager em,BigInteger secGruposViaticos);
 
     /**
      * Método encargado de buscar todas los GruposViaticos existentes en la base
@@ -59,7 +60,7 @@ public interface PersistenciaGruposViaticosInterface {
      *
      * @return Retorna una lista de GruposViaticos.
      */
-    public List<GruposViaticos> buscarGruposViaticos();
+    public List<GruposViaticos> buscarGruposViaticos(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Grupo Viatico
@@ -70,7 +71,7 @@ public interface PersistenciaGruposViaticosInterface {
      * @return Retorna el número de Cargos relacionados con el GrupoViatico cuya
      * secGruposViaticos coincide con el parámetro.
      */
-    public BigInteger contadorCargos(BigInteger secGruposViaticos);
+    public BigInteger contadorCargos(EntityManager em,BigInteger secGruposViaticos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Grupo Viatico
@@ -81,7 +82,7 @@ public interface PersistenciaGruposViaticosInterface {
      * @return Retorna el número de Plantas relacionados con el GrupoViatico
      * cuya secGruposViaticos coincide con el parámetro.
      */
-    public BigInteger contadorPlantas(BigInteger secGruposViaticos);
+    public BigInteger contadorPlantas(EntityManager em,BigInteger secGruposViaticos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Grupo Viatico
@@ -92,7 +93,7 @@ public interface PersistenciaGruposViaticosInterface {
      * @return Retorna el número de TablasViaticos relacionados con el
      * GrupoViatico cuya secGruposViaticos coincide con el parámetro.
      */
-    public BigInteger contadorTablasViaticos(BigInteger secGruposViaticos);
+    public BigInteger contadorTablasViaticos(EntityManager em,BigInteger secGruposViaticos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Grupo Viatico
@@ -103,5 +104,5 @@ public interface PersistenciaGruposViaticosInterface {
      * @return Retorna el número de EersViaticos relacionados con el
      * GrupoViatico cuya secGruposViaticos coincide con el parámetro.
      */
-    public BigInteger contadorEersViaticos(BigInteger secGruposViaticos);
+    public BigInteger contadorEersViaticos(EntityManager em,BigInteger secGruposViaticos);
 }

@@ -21,19 +21,20 @@ public class PersistenciaHVHojasDeVida implements PersistenciaHVHojasDeVidaInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     
     @Override
-    public void editar(HVHojasDeVida hVHojasDeVida) {
+    public void editar(EntityManager em,HVHojasDeVida hVHojasDeVida) {
         em.merge(hVHojasDeVida);
     }
     
     @Override
-    public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secuenciaPersona) {
+    public HVHojasDeVida hvHojaDeVidaPersona(EntityManager em,BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT hv from HVHojasDeVida hv where hv.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             HVHojasDeVida hVHojasDeVida = (HVHojasDeVida) query.getSingleResult();
             return hVHojasDeVida;
         } catch (Exception e) {

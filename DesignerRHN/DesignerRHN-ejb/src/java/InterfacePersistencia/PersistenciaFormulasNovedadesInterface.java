@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.FormulasNovedades;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -23,13 +24,13 @@ public interface PersistenciaFormulasNovedadesInterface {
      * @return Retorna true si la formula existe en la tabla FormulasNovedades
      * de la base de datos.
      */
-    public boolean verificarExistenciaFormulasNovedades(BigInteger secFormula);
+    public boolean verificarExistenciaFormulasNovedades(EntityManager em,BigInteger secFormula);
 
-    public void crear(FormulasNovedades formulasNovedades);
+    public void crear(EntityManager em,FormulasNovedades formulasNovedades);
 
-    public void editar(FormulasNovedades formulasNovedades);
+    public void editar(EntityManager em,FormulasNovedades formulasNovedades);
 
-    public void borrar(FormulasNovedades formulasNovedades);
+    public void borrar(EntityManager em,FormulasNovedades formulasNovedades);
 
-    public List<FormulasNovedades> formulasNovedadesParaFormulaSecuencia(BigInteger secuencia);
+    public List<FormulasNovedades> formulasNovedadesParaFormulaSecuencia(EntityManager em,BigInteger secuencia);
 }
