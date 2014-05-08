@@ -15,6 +15,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -28,6 +29,7 @@ public class ControlEstructura implements Serializable {
 
     @EJB
     AdministrarEstructurasInterface administrarEstructuras;
+    
     private List<Organigramas> listaOrganigramas;
     private List<Organigramas> filtradoListaOrganigramas;
     private TreeNode arbolEstructuras;
@@ -119,6 +121,17 @@ public class ControlEstructura implements Serializable {
         nuevoOrganigrama.setEmpresa(new Empresas());
         nuevoOrganigrama.setEstado("A");
         index = -1;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEstructuras.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
     
     public void recibirPaginaEntrante(String pagina){

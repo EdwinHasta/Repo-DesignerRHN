@@ -18,10 +18,12 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -35,6 +37,8 @@ public class ControlEmplComprobantes implements Serializable {
     AdministrarEmplComprobantesInterface administrarComprobantes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
+    
     private Empleados empleado;
     private BigInteger secuenciaEmpleado;
     //TABLA 1
@@ -173,6 +177,18 @@ public class ControlEmplComprobantes implements Serializable {
         subtotalGasto = new BigDecimal(0);
         listaDetallesFormulas = null;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    }
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarComprobantes.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void recibirEmpleado(BigInteger sec) {
@@ -1616,7 +1632,7 @@ public class ControlEmplComprobantes implements Serializable {
             tipoListaCortesProcesos = 1;
         }
     }
-    
+
     //PARCIALES CONCEPTO
     public void parcialSolucionNodo(int indice, int tabla) {
         index = indice;

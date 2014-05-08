@@ -10,11 +10,13 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -26,6 +28,7 @@ public class ControlBarra implements Serializable {
 
     @EJB
     AdministrarBarraInterface administrarBarra;
+    
     private Integer totalEmpleadosParaLiquidar;
     private Integer totalEmpleadosLiquidados;
     private boolean permisoParaLiquidar;
@@ -64,6 +67,18 @@ public class ControlBarra implements Serializable {
         altoScrollLiquidacionesAbiertas = "139";
         altoScrollLiquidacionesCerradas = "139";
         banderaFiltros = 0;
+    }
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarBarra.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void contarLiquidados() {

@@ -15,10 +15,12 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -32,6 +34,7 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlDetalleCuenta implements Serializable {
 
+    
     @EJB
     AdministrarDetalleCuentaInterface administrarDetalleCuenta;
     @EJB
@@ -103,6 +106,18 @@ public class ControlDetalleCuenta implements Serializable {
         cualCeldaDebito = -1;
         nombreTabla = ":formExportarCredito:datosCreditoExportar";
         nombreXML = "CuentrasCreditoXML";
+    }
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarDetalleCuenta.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void recibirCuenta(BigInteger cuenta) {

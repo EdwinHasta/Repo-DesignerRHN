@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -36,6 +37,7 @@ public class ControlEstructuraPlanta implements Serializable {
     AdministrarEstructurasPlantasInterface administrarEstructuraPlanta;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //
     private List<Organigramas> listaOrganigramas;
     private List<Organigramas> filtrarListaOrganigramas;
@@ -160,6 +162,17 @@ public class ControlEstructuraPlanta implements Serializable {
         //Banderas
         bandera = 0;
         banderaEstructura = 0;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEstructuraPlanta.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public String valorPaginaAnterior() {

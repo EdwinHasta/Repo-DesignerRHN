@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -36,6 +37,8 @@ public class ControlEnfoques implements Serializable {
     AdministrarEnfoquesInterface administrarEnfoques;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    
     private List<Enfoques> listEnfoques;
     private List<Enfoques> filtrarEnfoques;
     private List<Enfoques> crearEnfoques;
@@ -58,7 +61,6 @@ public class ControlEnfoques implements Serializable {
     private String mensajeValidacion;
 
     public ControlEnfoques() {
-
         listEnfoques = null;
         crearEnfoques = new ArrayList<Enfoques>();
         modificarEnfoques = new ArrayList<Enfoques>();
@@ -67,6 +69,17 @@ public class ControlEnfoques implements Serializable {
         editarEnfoque = new Enfoques();
         nuevoEnfoque = new Enfoques();
         duplicarEnfoque = new Enfoques();
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEnfoques.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

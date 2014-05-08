@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -31,6 +32,7 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlEventos implements Serializable {
 
+    
     @EJB
     AdministrarEventosInterface administrarEventos;
     @EJB
@@ -69,6 +71,17 @@ public class ControlEventos implements Serializable {
         duplicarEvento = new Eventos();
         a = null;
         guardado = true;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEventos.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

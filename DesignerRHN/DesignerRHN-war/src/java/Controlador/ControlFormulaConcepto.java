@@ -19,6 +19,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -36,6 +37,7 @@ public class ControlFormulaConcepto implements Serializable {
     AdministrarFormulaConceptoInterface administrarFormulaConcepto;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //////////////Formulas//////////////////
     private Formulas formulaActual;
     ///////////FormulasConceptos////////////
@@ -117,6 +119,17 @@ public class ControlFormulaConcepto implements Serializable {
         nombreXML = "FormulaConcepto_XML";
         duplicarFormulaConcepto = new FormulasConceptos();
         cambiosFormulasConceptos = false;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFormulaConcepto.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void recibirFormula(BigInteger secuencia) {

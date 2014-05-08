@@ -10,11 +10,13 @@ import InterfaceAdministrar.AdministrarCerrarLiquidacionInterface;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -27,6 +29,7 @@ public class ControlCerrarLiquidacion implements Serializable {
 
     @EJB
     AdministrarCerrarLiquidacionInterface administrarCerrarLiquidacion;
+    
     private Integer totalEmpleadosParaLiquidar;
     private boolean permisoParaLiquidar;
     private String usuarioBD;
@@ -39,6 +42,17 @@ public class ControlCerrarLiquidacion implements Serializable {
     public ControlCerrarLiquidacion() {
         totalEmpleadosParaLiquidar = 0;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+    }
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarCerrarLiquidacion.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void tipoLiquidacion(String tipoLiquidacion){

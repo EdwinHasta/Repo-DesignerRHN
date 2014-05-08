@@ -18,6 +18,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -35,6 +36,8 @@ public class ControlEscalafonSalarial implements Serializable {
     AdministrarEscalafonesSalarialesInterface administrarEscalafonesSalariales;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    
     //
     private List<EscalafonesSalariales> listaEscalafonesSalariales;
     private List<EscalafonesSalariales> filtrarListaEscalafonesSalariales;
@@ -138,6 +141,17 @@ public class ControlEscalafonSalarial implements Serializable {
         secRegistro = null;
         secRegistroGS = null;
         backUpSecRegistroGS = null;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEscalafonesSalariales.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public boolean validarCamposNulosEscalafonSalarial(int i) {

@@ -9,9 +9,12 @@ import Entidades.Empresas;
 import InterfaceAdministrar.AdministrarPapelesInterface;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -73,6 +76,17 @@ public class ControlAcercaDe implements Serializable {
         correo1 = "gerencia@nomina.com.co";
         correo2 = "www.nomina.com.co/wiki";
         derechos = "1998 - 2014 Todos los Derechos Reservados";
+    }
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarPapeles.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void lovEmpresas() {

@@ -18,10 +18,12 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -35,6 +37,7 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlEmplNovedad implements Serializable {
 
+    
     @EJB
     AdministrarEmplNovedadInterface administrarEmplNovedad;
     @EJB
@@ -73,6 +76,18 @@ public class ControlEmplNovedad implements Serializable {
         guardado = true;
         secRegistro = null;
     }
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEmplNovedad.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
+    }
 
     //EMPLEADO DE LA VIGENCIA
     /**
@@ -86,7 +101,6 @@ public class ControlEmplNovedad implements Serializable {
         empleado = administrarEmplNovedad.actualEmpleado(empl);
     }
 
-    
     public void sencillo() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
@@ -378,7 +392,6 @@ public class ControlEmplNovedad implements Serializable {
     }
 
     //GETTERS AND SETTERS
-   
     public List<Novedades> getListNovedadesEmpleado() {
         try {
             if (listNovedadesEmpleado == null) {

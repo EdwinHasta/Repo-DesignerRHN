@@ -20,6 +20,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -37,6 +38,7 @@ public class ControlFormulaContrato implements Serializable {
     AdministrarFormulaContratoInterface administrarFormulaContrato;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //////////////Formulas//////////////////
     private Formulas formulaActual;
     ///////////Formulascontratos////////////
@@ -125,6 +127,16 @@ public class ControlFormulaContrato implements Serializable {
         nombreXML = "FormulaContrato_XML";
         duplicarFormulaContrato = new Formulascontratos();
         cambiosFormulaContrato = false;
+    }
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFormulaContrato.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void recibirFormula(BigInteger secuencia) {

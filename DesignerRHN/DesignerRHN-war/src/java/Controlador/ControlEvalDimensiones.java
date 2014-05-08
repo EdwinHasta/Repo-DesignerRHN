@@ -19,6 +19,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -32,6 +33,7 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlEvalDimensiones implements Serializable {
 
+    
     @EJB
     AdministrarEvalDimensionesInterface administrarEvalDimensiones;
     @EJB
@@ -68,6 +70,16 @@ public class ControlEvalDimensiones implements Serializable {
         editarEvalDimension = new EvalDimensiones();
         nuevoEvalDimension = new EvalDimensiones();
         duplicarEvalDimension = new EvalDimensiones();
+    }
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEvalDimensiones.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

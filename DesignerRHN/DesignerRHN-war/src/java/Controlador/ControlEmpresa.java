@@ -15,11 +15,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -37,6 +39,7 @@ public class ControlEmpresa implements Serializable {
     AdministrarEmpresasInterface administrarEmpresa;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     //
     private List<Empresas> listaEmpresas;
     private List<Empresas> filtrarListaEmpresas;
@@ -219,6 +222,18 @@ public class ControlEmpresa implements Serializable {
         bandera = 0;
         banderaVigencia = 0;
         banderaCircular = 0;
+    }
+    
+     @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEmpresa.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public String valorPaginaAnterior() {

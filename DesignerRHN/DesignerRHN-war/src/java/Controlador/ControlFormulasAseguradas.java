@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -38,6 +39,7 @@ public class ControlFormulasAseguradas implements Serializable {
     AdministrarFormulasAseguradasInterface administrarFormulasAseguradas;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     private List<FormulasAseguradas> listFormulasAseguradas;
     private List<FormulasAseguradas> filtrarFormulasAseguradas;
     private List<FormulasAseguradas> crearFormulasAseguradas;
@@ -111,6 +113,17 @@ public class ControlFormulasAseguradas implements Serializable {
         guardado = true;
         tamano = 302;
         formulaAseguradaSeleccionada = new FormulasAseguradas();
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFormulasAseguradas.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

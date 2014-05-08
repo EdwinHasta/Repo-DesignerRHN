@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -38,6 +39,7 @@ public class ControlFirmasReportes implements Serializable {
     AdministrarFirmasReportesInterface administrarFirmasReportes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     private List<FirmasReportes> listFirmasReportes;
     private List<FirmasReportes> filtrarFirmasReportes;
     private List<FirmasReportes> crearFirmasReportes;
@@ -106,6 +108,17 @@ public class ControlFirmasReportes implements Serializable {
         filtradoCargos = null;
         guardado = true;
         tamano = 302;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFirmasReportes.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

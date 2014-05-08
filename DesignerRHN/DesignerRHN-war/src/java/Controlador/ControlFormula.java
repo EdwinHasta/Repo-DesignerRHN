@@ -16,6 +16,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -29,6 +30,7 @@ public class ControlFormula implements Serializable {
     AdministrarFormulaInterface administrarFormula;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
 
     //Parametros que llegan
     private BigInteger secTiposFormulas;
@@ -112,6 +114,16 @@ public class ControlFormula implements Serializable {
         altoTabla = "184";
         tiposFormulas = null;
 
+    }
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFormula.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
     
     public void recibirPaginaEntrante(String pagina){

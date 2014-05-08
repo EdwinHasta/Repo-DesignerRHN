@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -35,6 +36,9 @@ public class ControlEnfermedades implements Serializable {
     AdministrarEnfermedadesInterface administrarEnfermedades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    
+    
     private List<Enfermedades> listEnfermedades;
     private List<Enfermedades> filtrarEnfermedades;
     private List<Enfermedades> crearEnfermedades;
@@ -68,6 +72,17 @@ public class ControlEnfermedades implements Serializable {
         duplicarEnfermedad = new Enfermedades();
         a = null;
         guardado = true;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEnfermedades.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

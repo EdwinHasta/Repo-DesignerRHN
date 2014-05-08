@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -37,6 +38,7 @@ public class ControlFestivos implements Serializable {
     AdministrarFestivosInterface administrarFestivos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     private List<Festivos> listFestivosPorPais;
     private List<Festivos> filtrarFestivosPorPais;
     private List<Festivos> crearFestivosPorPais;
@@ -74,6 +76,16 @@ public class ControlFestivos implements Serializable {
         nuevoFestivos.setPais(new Paises());
         duplicarFestivos = new Festivos();
         guardado = true;
+    }
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFestivos.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void recibirPais() {

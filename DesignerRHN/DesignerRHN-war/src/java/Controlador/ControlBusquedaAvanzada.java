@@ -71,11 +71,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.component.scrollpanel.ScrollPanel;
@@ -93,6 +95,7 @@ public class ControlBusquedaAvanzada implements Serializable {
      MODULO DE BUSQUEDA AVANZADA NOMINA
      */
     //Inyeccion EJB Administrar de cada modulo
+    
     @EJB
     AdministrarVigenciasCargosBusquedaAvanzadaInterface administrarVigenciaCargoBusquedaAvanzada;
     @EJB
@@ -705,6 +708,31 @@ public class ControlBusquedaAvanzada implements Serializable {
         listaCodigosEmpleado = new ArrayList<BigInteger>();
         createStaticColumns();
         cambioBtnPrueba();
+    }
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarVigenciaCargoBusquedaAvanzada.obtenerConexion(ses.getId());
+            administrarVigenciaLocalizacion.obtenerConexion(ses.getId());
+            administrarVigenciaSueldo.obtenerConexion(ses.getId());
+            administrarVigenciaTipoContrato.obtenerConexion(ses.getId());
+            administrarVigenciasTiposTrabajadores.obtenerConexion(ses.getId());
+            administrarVigenciaReformaLaboral.obtenerConexion(ses.getId());
+            administrarVigenciaNormaEmpleado.obtenerConexion(ses.getId());
+            administrarVigenciaContrato.obtenerConexion(ses.getId());
+            administrarVigenciasUbicaciones.obtenerConexion(ses.getId());
+            administrarVigenciaAfiliacion3.obtenerConexion(ses.getId());
+            administrarEmplVigenciaFormaPago.obtenerConexion(ses.getId());
+            administrarEmplMvrs.obtenerConexion(ses.getId());
+            administrarVigenciaJornada.obtenerConexion(ses.getId());
+            administrarBusquedaAvanzada.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno) {

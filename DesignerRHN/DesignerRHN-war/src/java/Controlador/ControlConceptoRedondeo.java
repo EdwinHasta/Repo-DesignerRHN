@@ -13,10 +13,12 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -30,10 +32,12 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlConceptoRedondeo implements Serializable {
 
+    
     @EJB
     AdministrarConceptosRedondeosInterface administrarConceptosRedondeos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
 
     //Lista ConceptosRedondeos
     private List<ConceptosRedondeos> listaConceptosRedondeos;
@@ -114,6 +118,18 @@ public class ControlConceptoRedondeo implements Serializable {
         duplicarConceptoRedondeo = new ConceptosRedondeos();
         secRegistro = null;
         cambiosPagina = true;
+    }
+    
+    @PostConstruct
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarConceptosRedondeos.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     //LISTA DE VALORES DINAMICA

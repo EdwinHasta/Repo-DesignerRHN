@@ -18,6 +18,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -35,6 +36,7 @@ public class ControlEvalActividades implements Serializable {
     AdministrarEvalActividadesInterface administrarEvalActividades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     private List<EvalActividades> listEvalActividades;
     private List<EvalActividades> filtrarEvalActividades;
     private List<EvalActividades> crearEvalActividades;
@@ -71,6 +73,17 @@ public class ControlEvalActividades implements Serializable {
         duplicarEvalActividades = new EvalActividades();
         guardado = true;
         tamano = 302;
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarEvalActividades.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void eventoFiltrar() {

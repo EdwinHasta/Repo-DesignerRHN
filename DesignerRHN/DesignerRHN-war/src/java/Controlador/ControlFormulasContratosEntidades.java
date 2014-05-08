@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -38,6 +39,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
     AdministrarFormulasContratosEntidadesInterface administrarFormulasContratosEntidades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
     private List<FormulasContratosEntidades> listFormulasContratosEntidades;
     private List<FormulasContratosEntidades> filtrarFormulasContratosEntidades;
     private List<FormulasContratosEntidades> crearFormulasContratosEntidades;
@@ -89,6 +91,17 @@ public class ControlFormulasContratosEntidades implements Serializable {
         //secuenciaFormulaSeleccionada = BigInteger.valueOf(4613967);
         formulaContratoSeleccionada = null;
 
+    }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFormulasContratosEntidades.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
     }
 
     public void recibirSecuenciaFormulaContrato(BigInteger secuenciaFormulaContratoActual, BigInteger secuenciaFormula) {

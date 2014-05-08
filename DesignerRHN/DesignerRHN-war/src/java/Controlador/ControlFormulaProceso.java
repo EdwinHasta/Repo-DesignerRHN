@@ -17,6 +17,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -31,9 +32,11 @@ import org.primefaces.context.RequestContext;
 public class ControlFormulaProceso implements Serializable {
 
     @EJB
-    AdministrarFormulaProcesoInterface administrarFormulaNovedad;
+    AdministrarFormulaProcesoInterface administrarFormulaProceso;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+    
+    
     private List<FormulasProcesos> listFormulasProcesos;
     private List<FormulasProcesos> filtrarListFormulasProcesos;
     private Formulas formulaActual;
@@ -105,9 +108,20 @@ public class ControlFormulaProceso implements Serializable {
         secRegistro = null;
         formulaActual = new Formulas();
     }
+    
+    public void inicializarAdministrador() {
+        try {
+            FacesContext x = FacesContext.getCurrentInstance();
+            HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarFormulaProceso.obtenerConexion(ses.getId());
+        } catch (Exception e) {
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
+            System.out.println("Causa: " + e.getCause());
+        }
+    }
 
     public void recibirFormula(BigInteger secuencia) {
-        formulaActual = administrarFormulaNovedad.formulaActual(secuencia);
+        formulaActual = administrarFormulaProceso.formulaActual(secuencia);
         listFormulasProcesos = getListFormulasProcesos();
     }
 
@@ -233,18 +247,18 @@ public class ControlFormulaProceso implements Serializable {
         if (guardado == false) {
             if (!listFormulasProcesosBorrar.isEmpty()) {
                 for (int i = 0; i < listFormulasProcesosBorrar.size(); i++) {
-                    administrarFormulaNovedad.borrarFormulasProcesos(listFormulasProcesosBorrar);
+                    administrarFormulaProceso.borrarFormulasProcesos(listFormulasProcesosBorrar);
                 }
                 listFormulasProcesosBorrar.clear();
             }
             if (!listFormulasProcesosCrear.isEmpty()) {
                 for (int i = 0; i < listFormulasProcesosCrear.size(); i++) {
-                    administrarFormulaNovedad.crearFormulasProcesos(listFormulasProcesosCrear);
+                    administrarFormulaProceso.crearFormulasProcesos(listFormulasProcesosCrear);
                 }
                 listFormulasProcesosCrear.clear();
             }
             if (!listFormulasProcesosModificar.isEmpty()) {
-                administrarFormulaNovedad.editarFormulasProcesos(listFormulasProcesosModificar);
+                administrarFormulaProceso.editarFormulasProcesos(listFormulasProcesosModificar);
                 listFormulasProcesosModificar.clear();
             }
             listFormulasProcesos = null;
@@ -802,7 +816,7 @@ public class ControlFormulaProceso implements Serializable {
         try {
             if (listFormulasProcesos == null) {
                 listFormulasProcesos = new ArrayList<FormulasProcesos>();
-                listFormulasProcesos = administrarFormulaNovedad.listFormulasProcesosParaFormula(formulaActual.getSecuencia());
+                listFormulasProcesos = administrarFormulaProceso.listFormulasProcesosParaFormula(formulaActual.getSecuencia());
                 return listFormulasProcesos;
             } else {
                 return listFormulasProcesos;
@@ -943,7 +957,7 @@ public class ControlFormulaProceso implements Serializable {
 
     public List<Procesos> getLovProcesos() {
         if (lovProcesos == null) {
-            lovProcesos = administrarFormulaNovedad.listProcesos(formulaActual.getSecuencia());
+            lovProcesos = administrarFormulaProceso.listProcesos(formulaActual.getSecuencia());
         }
         return lovProcesos;
     }
