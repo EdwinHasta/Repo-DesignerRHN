@@ -9,6 +9,7 @@ import Entidades.Pantallas;
 import Entidades.Tablas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.ejb.Local;
 
 /**
  * Interface encargada de determinar las operaciones lógicas necesarias para la pantalla 'CarpetaDesigner'.
