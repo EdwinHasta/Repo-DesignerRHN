@@ -31,4 +31,11 @@ public interface AdministrarCiudadesInterface {
      * @return Retorna una lista de Ciudades.
      */
     public List<Ciudades> consultarCiudades();
+    
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

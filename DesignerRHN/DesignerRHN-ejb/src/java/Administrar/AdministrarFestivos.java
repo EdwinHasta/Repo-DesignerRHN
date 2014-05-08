@@ -8,12 +8,14 @@ package Administrar;
 import Entidades.Festivos;
 import Entidades.Paises;
 import InterfaceAdministrar.AdministrarFestivosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaFestivosInterface;
 import InterfacePersistencia.PersistenciaPaisesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -26,37 +28,51 @@ public class AdministrarFestivos implements AdministrarFestivosInterface {
     PersistenciaPaisesInterface persistenciaPaises;
     @EJB
     PersistenciaFestivosInterface persistenciaFestivos;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
+	@Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     public void modificarFestivos(List<Festivos> listaFestivos) {
         for (int i = 0; i < listaFestivos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaFestivos.editar(listaFestivos.get(i));
+            persistenciaFestivos.editar(em,listaFestivos.get(i));
         }
     }
 
     public void borrarFestivos(List<Festivos> listaFestivos) {
         for (int i = 0; i < listaFestivos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaFestivos.borrar(listaFestivos.get(i));
+            persistenciaFestivos.borrar(em,listaFestivos.get(i));
         }
     }
 
     public void crearFestivos(List<Festivos> listaFestivos) {
         for (int i = 0; i < listaFestivos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaFestivos.crear(listaFestivos.get(i));
+            persistenciaFestivos.crear(em,listaFestivos.get(i));
         }
     }
 
     public List<Festivos> consultarFestivosPais(BigInteger secPais) {
         List<Festivos> listFestivos;
-        listFestivos = persistenciaFestivos.consultarFestivosPais(secPais);
+        listFestivos = persistenciaFestivos.consultarFestivosPais(em,secPais);
         return listFestivos;
     }
 
     public List<Paises> consultarLOVPaises() {
         List<Paises> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaPaises.consultarPaises();
+        listMotivosCambiosCargos = persistenciaPaises.consultarPaises(em);
         return listMotivosCambiosCargos;
     }
 

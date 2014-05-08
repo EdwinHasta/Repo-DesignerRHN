@@ -14,6 +14,12 @@ import java.util.List;
  */
 public interface AdministrarConceptoJuridicoInterface {
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    /**
      * Método encargado de crear ConceptosJuridicos.
      * @param listaConceptoJuridico Lista de los ConceptosJuridicos que se van a crear.
      */

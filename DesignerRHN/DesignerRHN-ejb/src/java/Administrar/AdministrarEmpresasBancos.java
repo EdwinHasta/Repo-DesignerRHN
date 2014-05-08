@@ -10,6 +10,7 @@ import Entidades.Ciudades;
 import Entidades.Empresas;
 import Entidades.EmpresasBancos;
 import InterfaceAdministrar.AdministrarEmpresasBancosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaBancosInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaEmpresasBancosInterface;
@@ -18,6 +19,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -42,57 +44,71 @@ public class AdministrarEmpresasBancos implements AdministrarEmpresasBancosInter
     PersistenciaCiudadesInterface persistenciaCiudades;
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     public void modificarEmpresasBancos(List<EmpresasBancos> listaEmpresasBancos) {
         for (int i = 0; i < listaEmpresasBancos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaEmpresasBancos.editar(listaEmpresasBancos.get(i));
+            persistenciaEmpresasBancos.editar(em,listaEmpresasBancos.get(i));
         }
     }
 
     public void borrarEmpresasBancos(List<EmpresasBancos> listaEmpresasBancos) {
         for (int i = 0; i < listaEmpresasBancos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaEmpresasBancos.borrar(listaEmpresasBancos.get(i));
+            persistenciaEmpresasBancos.borrar(em,listaEmpresasBancos.get(i));
         }
     }
 
     public void crearEmpresasBancos(List<EmpresasBancos> listaEmpresasBancos) {
         for (int i = 0; i < listaEmpresasBancos.size(); i++) {
-            persistenciaEmpresasBancos.crear(listaEmpresasBancos.get(i));
+            persistenciaEmpresasBancos.crear(em,listaEmpresasBancos.get(i));
         }
     }
 
     public List<EmpresasBancos> consultarEmpresasBancos() {
         List<EmpresasBancos> listaEmpresasBancos;
-        listaEmpresasBancos = persistenciaEmpresasBancos.consultarEmpresasBancos();
+        listaEmpresasBancos = persistenciaEmpresasBancos.consultarEmpresasBancos(em);
         return listaEmpresasBancos;
     }
 
     public EmpresasBancos consultarTipoIndicador(BigInteger secMotivoDemanda) {
         EmpresasBancos tiposIndicadores;
-        tiposIndicadores = persistenciaEmpresasBancos.consultarFirmaReporte(secMotivoDemanda);
+        tiposIndicadores = persistenciaEmpresasBancos.consultarFirmaReporte(em,secMotivoDemanda);
         return tiposIndicadores;
     }
 
     public List<Bancos> consultarLOVBancos() {
         List<Bancos> listLOVBancos;
-        listLOVBancos = persistenciaBancos.buscarBancos();
+        listLOVBancos = persistenciaBancos.buscarBancos(em);
         return listLOVBancos;
     }
 
     public List<Ciudades> consultarLOVCiudades() {
         List<Ciudades> listLOVCiudades;
-        listLOVCiudades = persistenciaCiudades.ciudades();
+        listLOVCiudades = persistenciaCiudades.ciudades(em);
         return listLOVCiudades;
     }
 
     public List<Empresas> consultarLOVEmpresas() {
         List<Empresas> listLOVEmpresas;
-        listLOVEmpresas = persistenciaEmpresas.consultarEmpresas();
+        listLOVEmpresas = persistenciaEmpresas.consultarEmpresas(em);
         return listLOVEmpresas;
     }
 }

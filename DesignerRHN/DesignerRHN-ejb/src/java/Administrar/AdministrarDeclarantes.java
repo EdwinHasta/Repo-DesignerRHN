@@ -9,6 +9,7 @@ import Entidades.Declarantes;
 import Entidades.RetencionesMinimas;
 import Entidades.TarifaDeseo;
 import InterfaceAdministrar.AdministrarDeclarantesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaDeclarantesInterface;
 import InterfacePersistencia.PersistenciaRetencionesMinimasInterface;
 import InterfacePersistencia.PersistenciaTarifaDeseoInterface;
@@ -17,6 +18,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -31,6 +33,15 @@ public class AdministrarDeclarantes implements AdministrarDeclarantesInterface {
     PersistenciaRetencionesMinimasInterface persistenciaRetencionesMinimas;
     @EJB
     PersistenciaTarifaDeseoInterface persistenciaTarifaDeseo;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     List<Declarantes> declarantesLista;
     List<TarifaDeseo> retencionesLista;
@@ -38,9 +49,14 @@ public class AdministrarDeclarantes implements AdministrarDeclarantesInterface {
     Declarantes declarantes;
 
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<Declarantes> declarantesPersona(BigInteger secPersona) {
         try {
-            declarantesLista = persistenciaDeclarantes.buscarDeclarantesPersona(secPersona);
+            declarantesLista = persistenciaDeclarantes.buscarDeclarantesPersona(em,secPersona);
         } catch (Exception e) {
             System.out.println("Error en Administrar Declarantes (declarantesPersona)");
             declarantesLista = null;
@@ -59,28 +75,28 @@ public class AdministrarDeclarantes implements AdministrarDeclarantesInterface {
                 listaDeclarantesModificados.get(i).setRetencionminima(null);
             }
             System.out.println("Modificando...");
-            
-            persistenciaDeclarantes.editar(listaDeclarantesModificados.get(i));
+
+            persistenciaDeclarantes.editar(em,listaDeclarantesModificados.get(i));
         }
     }
 
     @Override
     public void borrarDeclarantes(Declarantes declarantes) {
-        persistenciaDeclarantes.borrar(declarantes);
+        persistenciaDeclarantes.borrar(em,declarantes);
     }
 
     @Override
     public void crearDeclarantes(Declarantes declarantes) {
-        persistenciaDeclarantes.crear(declarantes);
+        persistenciaDeclarantes.crear(em,declarantes);
     }
 
     public List<TarifaDeseo> retencionesMinimas(Date fechaFinal) {
-        retencionesLista = persistenciaTarifaDeseo.retenciones(fechaFinal);
+        retencionesLista = persistenciaTarifaDeseo.retenciones(em,fechaFinal);
         return retencionesLista;
     }
-    
-    public List<RetencionesMinimas> retencionesMinimasLista(){
-        retencionesMinimasLista = persistenciaRetencionesMinimas.retenciones();
+
+    public List<RetencionesMinimas> retencionesMinimasLista() {
+        retencionesMinimasLista = persistenciaRetencionesMinimas.retenciones(em);
         return retencionesMinimasLista;
     }
 

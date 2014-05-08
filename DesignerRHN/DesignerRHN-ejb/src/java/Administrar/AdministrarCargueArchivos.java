@@ -208,18 +208,18 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     @Override
     public void crearTempNovedades(List<TempNovedades> listaTempNovedades) {
         for (int i = 0; i < listaTempNovedades.size(); i++) {
-            persistenciaTempNovedades.crear(listaTempNovedades.get(i));
+            persistenciaTempNovedades.crear(em,listaTempNovedades.get(i));
         }
     }
 
     @Override
     public void modificarTempNovedades(TempNovedades tempNovedades) {
-        persistenciaTempNovedades.editar(tempNovedades);
+        persistenciaTempNovedades.editar(em,tempNovedades);
     }
 
     @Override
     public void borrarRegistrosTempNovedades(String usuarioBD) {
-        persistenciaTempNovedades.borrarRegistrosTempNovedades(usuarioBD);
+        persistenciaTempNovedades.borrarRegistrosTempNovedades(em,usuarioBD);
     }
 
     @Override
@@ -229,43 +229,43 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
 
     @Override
     public BigInteger consultarParametrosEmpresa(String usuarioBD) {
-        return persistenciaParametrosEstructuras.buscarEmpresaParametros(usuarioBD);
+        return persistenciaParametrosEstructuras.buscarEmpresaParametros(em,usuarioBD);
     }
 
     @Override
     public List<TempNovedades> consultarTempNovedades(String usuarioBD) {
-        return persistenciaTempNovedades.obtenerTempNovedades(usuarioBD);
+        return persistenciaTempNovedades.obtenerTempNovedades(em,usuarioBD);
     }
 
     @Override
     public boolean verificarEmpleadoEmpresa(BigInteger codEmpleado, BigInteger secEmpresa) {
-        return persistenciaEmpleado.verificarCodigoEmpleado_Empresa(codEmpleado, secEmpresa);
+        return persistenciaEmpleado.verificarCodigoEmpleado_Empresa(em,codEmpleado, secEmpresa);
     }
 
     @Override
     public boolean verificarConcepto(BigInteger codConcepto) {
-        return persistenciaConceptos.verificarCodigoConcepto(codConcepto);
+        return persistenciaConceptos.verificarCodigoConcepto(em,codConcepto);
     }
 
     @Override
     public boolean verificarPeriodicidad(BigInteger codPeriodicidad) {
-        return persistenciaPeriodicidades.verificarCodigoPeriodicidad(codPeriodicidad);
+        return persistenciaPeriodicidades.verificarCodigoPeriodicidad(em,codPeriodicidad);
     }
 
     @Override
     public boolean verificarTercero(BigInteger nitTercero) {
-        return persistenciaTerceros.verificarTerceroPorNit(nitTercero);
+        return persistenciaTerceros.verificarTerceroPorNit(em,nitTercero);
     }
 
     @Override
     public boolean verificarTipoEmpleadoActivo(BigInteger codEmpleado, BigInteger secEmpresa) {
         Empleados empleado = consultarEmpleadoEmpresa(codEmpleado, secEmpresa);
-        return persistenciaVWActualesTiposTrabajadores.verificarTipoTrabajador(empleado);
+        return persistenciaVWActualesTiposTrabajadores.verificarTipoTrabajador(em,empleado);
     }
 
     @Override
     public Empleados consultarEmpleadoEmpresa(BigInteger codEmpleado, BigInteger secEmpresa) {
-        Empleados empleado = persistenciaEmpleado.buscarEmpleadoCodigo_Empresa(codEmpleado, secEmpresa);
+        Empleados empleado = persistenciaEmpleado.buscarEmpleadoCodigo_Empresa(em,codEmpleado, secEmpresa);
         return empleado;
     }
 
@@ -286,17 +286,17 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
 
     @Override
     public Conceptos verificarConceptoEmpresa(BigInteger codigoConcepto, BigInteger codigoEmpresa) {
-        return persistenciaConceptos.validarCodigoConcepto(codigoConcepto, codigoEmpresa);
+        return persistenciaConceptos.validarCodigoConcepto(em,codigoConcepto, codigoEmpresa);
     }
 
     @Override
     public String determinarTipoConcepto(BigInteger secConcepto) {
         String tipo = "MANUAL";
-        boolean verificar = persistenciaFormulasConceptos.verificarExistenciaConceptoFormulasConcepto(secConcepto);
+        boolean verificar = persistenciaFormulasConceptos.verificarExistenciaConceptoFormulasConcepto(em,secConcepto);
         if (verificar == true) {
-            List<FormulasConceptos> formulasConcepto = persistenciaFormulasConceptos.formulasConcepto(secConcepto);
+            List<FormulasConceptos> formulasConcepto = persistenciaFormulasConceptos.formulasConcepto(em,secConcepto);
             for (int i = 0; i < formulasConcepto.size(); i++) {
-                verificar = persistenciaFormulasNovedades.verificarExistenciaFormulasNovedades(formulasConcepto.get(i).getFormula().getSecuencia());
+                verificar = persistenciaFormulasNovedades.verificarExistenciaFormulasNovedades(em,formulasConcepto.get(i).getFormula().getSecuencia());
                 if (verificar == true) {
                     tipo = "SEMI-AUTOMATICO";
                 } else {
@@ -315,11 +315,11 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
     public boolean verificarZonaT(BigInteger secConcepto, BigInteger secRL, BigInteger secTC, BigInteger secTT) {
         try {
             boolean validarZonaT;
-            validarZonaT = persistenciaVigenciasConceptosRL.verificacionZonaTipoReformasLaborales(secConcepto, secRL);
+            validarZonaT = persistenciaVigenciasConceptosRL.verificacionZonaTipoReformasLaborales(em,secConcepto, secRL);
             if (validarZonaT == true) {
-                validarZonaT = persistenciaVigenciasConceptosTC.verificacionZonaTipoContrato(secConcepto, secTC);
+                validarZonaT = persistenciaVigenciasConceptosTC.verificacionZonaTipoContrato(em,secConcepto, secTC);
                 if (validarZonaT == true) {
-                    validarZonaT = persistenciaVigenciasConceptosTT.verificacionZonaTipoTrabajador(secConcepto, secTT);
+                    validarZonaT = persistenciaVigenciasConceptosTT.verificacionZonaTipoTrabajador(em,secConcepto, secTT);
                 }
             }
             return validarZonaT;
@@ -331,54 +331,54 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
 
     @Override
     public List<Formulas> consultarFormulasCargue() {
-        return persistenciaFormulas.buscarFormulasCarge();
+        return persistenciaFormulas.buscarFormulasCarge(em);
     }
 
     @Override
     public Formulas consultarFormulaCargueInicial() {
-        return persistenciaFormulas.buscarFormulaCargeInicial();
+        return persistenciaFormulas.buscarFormulaCargeInicial(em);
     }
 
     @Override
     public boolean verificarFormulaCargueConcepto(BigInteger secConcepto, BigInteger secFormula) {
-        return persistenciaFormulasConceptos.verificarFormulaCargue_Concepto(secConcepto, secFormula);
+        return persistenciaFormulasConceptos.verificarFormulaCargue_Concepto(em,secConcepto, secFormula);
     }
 
     @Override
     public boolean verificarNecesidadTercero(BigInteger secConcepto) {
-        return persistenciaVigenciasGruposConceptos.verificacionGrupoUnoConcepto(secConcepto);
+        return persistenciaVigenciasGruposConceptos.verificacionGrupoUnoConcepto(em,secConcepto);
     }
 
     @Override
     public boolean verificarTerceroEmpresa(BigInteger nit, BigInteger secEmpresa) {
-        return persistenciaTerceros.verificarTerceroParaEmpresaEmpleado(nit, secEmpresa);
+        return persistenciaTerceros.verificarTerceroParaEmpresaEmpleado(em,nit, secEmpresa);
     }
 
     @Override
     public List<String> consultarDocumentosSoporteCargadosUsuario(String usuarioBD) {
-        return persistenciaTempNovedades.obtenerDocumentosSoporteCargados(usuarioBD);
+        return persistenciaTempNovedades.obtenerDocumentosSoporteCargados(em,usuarioBD);
     }
 
     @Override
     public void cargarTempNovedades(Date fechaReporte, String nombreCorto, String usarFormula) {
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         String fechaR = formatoFecha.format(fechaReporte);
-        persistenciaTempNovedades.cargarTempNovedades(fechaR, nombreCorto, usarFormula);
+        persistenciaTempNovedades.cargarTempNovedades(em,fechaR, nombreCorto, usarFormula);
     }
 
     @Override
     public int reversarNovedades(ActualUsuario usuarioBD, String documentoSoporte) {
-        List<Novedades> listNovedades = persistenciaNovedades.novedadesParaReversar(usuarioBD.getSecuencia(), documentoSoporte);
+        List<Novedades> listNovedades = persistenciaNovedades.novedadesParaReversar(em,usuarioBD.getSecuencia(), documentoSoporte);
         int validarNoLiquidadas = 0;
         for (int i = 0; i < listNovedades.size(); i++) {
-            if (persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(listNovedades.get(i).getSecuencia()) > 0) {
+            if (persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(em,listNovedades.get(i).getSecuencia()) > 0) {
                 validarNoLiquidadas++;
             }
         }
         listNovedades.clear();
         if (validarNoLiquidadas == 0) {
-            persistenciaTempNovedades.reversarTempNovedades(usuarioBD.getAlias(), documentoSoporte);
-            return persistenciaNovedades.reversarNovedades(usuarioBD.getSecuencia(), documentoSoporte);
+            persistenciaTempNovedades.reversarTempNovedades(em,usuarioBD.getAlias(), documentoSoporte);
+            return persistenciaNovedades.reversarNovedades(em,usuarioBD.getSecuencia(), documentoSoporte);
         } else {
             return 0;
         }
@@ -389,17 +389,17 @@ public class AdministrarCargueArchivos implements AdministrarCargueArchivosInter
         ResultadoBorrarTodoNovedades resultadoProceso = new ResultadoBorrarTodoNovedades();
         int registrosBorrados = 0;
         for (int j = 0; j < documentosSoporte.size(); j++) {
-            List<Novedades> listNovedades = persistenciaNovedades.novedadesParaReversar(usuarioBD.getSecuencia(), documentosSoporte.get(j));
+            List<Novedades> listNovedades = persistenciaNovedades.novedadesParaReversar(em,usuarioBD.getSecuencia(), documentosSoporte.get(j));
             int validarNoLiquidadas = 0;
             for (int i = 0; i < listNovedades.size(); i++) {
-                if (persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(listNovedades.get(i).getSecuencia()) > 0) {
+                if (persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(em,listNovedades.get(i).getSecuencia()) > 0) {
                     validarNoLiquidadas++;
                 }
             }
             listNovedades.clear();
             if (validarNoLiquidadas == 0) {
-                registrosBorrados = registrosBorrados + persistenciaNovedades.reversarNovedades(usuarioBD.getSecuencia(), documentosSoporte.get(j));
-                persistenciaTempNovedades.reversarTempNovedades(usuarioBD.getAlias(), documentosSoporte.get(j));
+                registrosBorrados = registrosBorrados + persistenciaNovedades.reversarNovedades(em,usuarioBD.getSecuencia(), documentosSoporte.get(j));
+                persistenciaTempNovedades.reversarTempNovedades(em,usuarioBD.getAlias(), documentosSoporte.get(j));
             } else {
                 resultadoProceso.getDocumentosNoBorrados().add(documentosSoporte.get(j));
             }

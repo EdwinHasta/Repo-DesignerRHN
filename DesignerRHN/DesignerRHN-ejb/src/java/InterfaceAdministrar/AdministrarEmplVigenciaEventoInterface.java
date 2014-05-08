@@ -27,4 +27,12 @@ public interface AdministrarEmplVigenciaEventoInterface {
     public List<Eventos> listEventos();
 
     public Empleados empleadoActual(BigInteger secuencia);
+
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

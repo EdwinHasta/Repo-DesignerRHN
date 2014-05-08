@@ -18,6 +18,14 @@ import javax.ejb.Local;
 public interface AdministrarElementosCausasAccidentesInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+
+    /**
      * Método encargado de crear ElementosCausasAccidentes.
      *
      * @param listaElementosCausasAccidentes Lista de los
@@ -80,12 +88,13 @@ public interface AdministrarElementosCausasAccidentesInterface {
     public BigInteger contarSoAccidentesMedicosElementoCausaAccidente(BigInteger secElementoCausaAccidente);
 
     /**
-     * Método encargado de contar la cantidad de SoIndicadoresFr que una CausaAccidente
-     * tiene asociados.
+     * Método encargado de contar la cantidad de SoIndicadoresFr que una
+     * CausaAccidente tiene asociados.
      *
      * @param secCausaAccidente Secuencia de la CausaAccidente.
-     * @return Retorna un número indicando la cantidad de SoIndicadoresFr asociados
-     * a la CausaAccidente cuya secuencia coincide con el valor del parámetro.
+     * @return Retorna un número indicando la cantidad de SoIndicadoresFr
+     * asociados a la CausaAccidente cuya secuencia coincide con el valor del
+     * parámetro.
      */
     public BigInteger contarSoIndicadoresFrElementoCausaAccidente(BigInteger secCausaAccidente);
 }

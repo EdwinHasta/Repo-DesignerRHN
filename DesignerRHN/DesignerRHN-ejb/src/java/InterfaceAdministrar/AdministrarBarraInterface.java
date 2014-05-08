@@ -84,4 +84,11 @@ public interface AdministrarBarraInterface {
      * @return Retorna un String 'S' si se muestra el proceso despues de liquidar o 'N' de lo contrario.
      */
     public String consultarEstadoConsultaDatos(BigInteger secuenciaEmpresa);
+    
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

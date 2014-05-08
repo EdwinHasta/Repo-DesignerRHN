@@ -6,6 +6,7 @@ package Administrar;
 import Entidades.ConsultasLiquidaciones;
 import Entidades.ParametrosEstructuras;
 import InterfaceAdministrar.AdministrarBarraInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaCandadosInterface;
 import InterfacePersistencia.PersistenciaConsultasLiquidacionesInterface;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 /**
  * Clase Stateful. <br>
  * Clase encargada de realizar las operaciones lógicas para la pantalla 'Barra'.
@@ -62,71 +64,85 @@ public class AdministrarBarra implements AdministrarBarraInterface {
      */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
+    @Override
     public Integer contarEmpleadosParaLiquidar() {
-        return persistenciaParametrosEstados.empleadosParaLiquidar(consultarUsuarioBD());
+        return persistenciaParametrosEstados.empleadosParaLiquidar(em,consultarUsuarioBD());
     }
 
     @Override
     public Integer contarEmpleadosLiquidados() {
-        return persistenciaParametrosEstados.empleadosLiquidados(consultarUsuarioBD());
+        return persistenciaParametrosEstados.empleadosLiquidados(em,consultarUsuarioBD());
     }
 
     @Override
     public boolean verificarPermisosLiquidar(String usuarioBD) {
-        return persistenciaCandados.permisoLiquidar(usuarioBD);
+        return persistenciaCandados.permisoLiquidar(em,usuarioBD);
     }
 
     @Override
     public String consultarUsuarioBD() {
-        return persistenciaActualUsuario.actualAliasBD();
+        return persistenciaActualUsuario.actualAliasBD(em);
     }
 
     @Override
     public void liquidarNomina() {
-        persistenciaCandados.liquidar();
+        persistenciaCandados.liquidar(em);
     }
 
     @Override
     public String consultarEstadoLiquidacion(String usuarioBD) {
-        return persistenciaCandados.estadoLiquidacion(usuarioBD);
+        return persistenciaCandados.estadoLiquidacion(em,usuarioBD);
     }
 
     @Override
     public ParametrosEstructuras consultarParametrosLiquidacion() {
-        return persistenciaParametrosEstructuras.buscarParametro(consultarUsuarioBD());
+        return persistenciaParametrosEstructuras.buscarParametro(em,consultarUsuarioBD());
     }
 
     @Override
     public void inicializarParametrosEstados() {
-        persistenciaParametrosEstados.inicializarParametrosEstados();
+        persistenciaParametrosEstados.inicializarParametrosEstados(em);
     }
 
     @Override
     public Integer consultarProgresoLiquidacion(Integer totalEmpleadoALiquidar) {
-        return persistenciaCandados.progresoLiquidacion(totalEmpleadoALiquidar);
+        return persistenciaCandados.progresoLiquidacion(em,totalEmpleadoALiquidar);
     }
 
     @Override
     public void cancelarLiquidacion(String usuarioBD) {
-        persistenciaCandados.cancelarLiquidacion(usuarioBD);
+        persistenciaCandados.cancelarLiquidacion(em,usuarioBD);
     }
 
     @Override
     public List<ConsultasLiquidaciones> liquidacionesCerradas(String fechaInicial, String fechaFinal) {
-        return persistenciaConsultasLiquidaciones.liquidacionesCerradas(fechaInicial, fechaFinal);
+        return persistenciaConsultasLiquidaciones.liquidacionesCerradas(em,fechaInicial, fechaFinal);
     }
 
     @Override
     public List<ConsultasLiquidaciones> consultarPreNomina() {
-        return persistenciaConsultasLiquidaciones.preNomina();
+        return persistenciaConsultasLiquidaciones.preNomina(em);
     }
 
     @Override
     public String consultarEstadoConsultaDatos(BigInteger secuenciaEmpresa) {
-        return persistenciaEmpresas.estadoConsultaDatos(secuenciaEmpresa);
+        return persistenciaEmpresas.estadoConsultaDatos(em,secuenciaEmpresa);
     }
 }

@@ -5,17 +5,19 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarConceptosSoportesInterface;
-import Entidades.Operandos;
 import Entidades.Conceptos;
 import Entidades.ConceptosSoportes;
-import InterfacePersistencia.PersistenciaOperandosInterface;
+import Entidades.Operandos;
+import InterfaceAdministrar.AdministrarConceptosSoportesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaConceptosSoportesInterface;
+import InterfacePersistencia.PersistenciaOperandosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -38,58 +40,71 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
     PersistenciaOperandosInterface persistenciaOperandos;
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
-
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     public void modificarConceptosSoportes(List<ConceptosSoportes> listaConceptosSoportes) {
         for (int i = 0; i < listaConceptosSoportes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaConceptosSoportes.editar(listaConceptosSoportes.get(i));
+            persistenciaConceptosSoportes.editar(em,listaConceptosSoportes.get(i));
         }
     }
 
     public void borrarConceptosSoportes(List<ConceptosSoportes> listaConceptosSoportes) {
         for (int i = 0; i < listaConceptosSoportes.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaConceptosSoportes.borrar(listaConceptosSoportes.get(i));
+            persistenciaConceptosSoportes.borrar(em,listaConceptosSoportes.get(i));
         }
     }
 
     public void crearConceptosSoportes(List<ConceptosSoportes> listaConceptosSoportes) {
         for (int i = 0; i < listaConceptosSoportes.size(); i++) {
-            persistenciaConceptosSoportes.crear(listaConceptosSoportes.get(i));
+            persistenciaConceptosSoportes.crear(em,listaConceptosSoportes.get(i));
         }
     }
 
     @Override
     public List<ConceptosSoportes> consultarConceptosSoportes() {
         List<ConceptosSoportes> listaConceptosSoportes;
-        listaConceptosSoportes = persistenciaConceptosSoportes.consultarConceptosSoportes();
+        listaConceptosSoportes = persistenciaConceptosSoportes.consultarConceptosSoportes(em);
         return listaConceptosSoportes;
     }
 
     public List<Operandos> consultarLOVOperandos() {
         List<Operandos> listLOVOperandos;
-        listLOVOperandos = persistenciaOperandos.buscarOperandos();
+        listLOVOperandos = persistenciaOperandos.buscarOperandos(em);
         return listLOVOperandos;
     }
 
     @Override
     public List<Operandos> consultarLOVOperandosPorConcepto(BigInteger secConceptoSoporte) {
         List<Operandos> listLOVOperandos;
-        listLOVOperandos = persistenciaOperandos.operandoPorConceptoSoporte(secConceptoSoporte);
+        listLOVOperandos = persistenciaOperandos.operandoPorConceptoSoporte(em,secConceptoSoporte);
         return listLOVOperandos;
     }
 
     public List<Conceptos> consultarLOVConceptos() {
         List<Conceptos> listLOVConceptos;
-        listLOVConceptos = persistenciaConceptos.buscarConceptos();
+        listLOVConceptos = persistenciaConceptos.buscarConceptos(em);
         return listLOVConceptos;
     }
 
     public BigInteger contarConceptosOperandos(BigInteger concepto, BigInteger operando) {
-        BigInteger contarConceptosOperandos = persistenciaConceptosSoportes.consultarConceptoSoporteConceptoOperador(concepto, operando);
+        BigInteger contarConceptosOperandos = persistenciaConceptosSoportes.consultarConceptoSoporteConceptoOperador(em,concepto, operando);
         return contarConceptosOperandos;
     }
 }

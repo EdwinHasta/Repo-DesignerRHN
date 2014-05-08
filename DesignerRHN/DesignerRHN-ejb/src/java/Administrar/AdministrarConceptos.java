@@ -8,6 +8,7 @@ import Entidades.Empresas;
 import Entidades.Terceros;
 import Entidades.Unidades;
 import InterfaceAdministrar.AdministrarConceptosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -57,38 +59,51 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
      */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+        @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     @Override
     public List<Conceptos> consultarConceptosEmpresa(BigInteger secEmpresa) {
-        return persistenciaConceptos.conceptosPorEmpresa(secEmpresa);
+        return persistenciaConceptos.conceptosPorEmpresa(em,secEmpresa);
     }
 
     @Override
     public List<Conceptos> consultarConceptosEmpresaActivos_Inactivos(BigInteger secEmpresa, String estado) {
-        return persistenciaConceptos.conceptosEmpresaActivos_Inactivos(secEmpresa, estado);
+        return persistenciaConceptos.conceptosEmpresaActivos_Inactivos(em,secEmpresa, estado);
     }
 
     @Override
     public List<Conceptos> consultarConceptosEmpresaSinPasivos(BigInteger secEmpresa) {
-        return persistenciaConceptos.conceptosEmpresaSinPasivos(secEmpresa);
+        return persistenciaConceptos.conceptosEmpresaSinPasivos(em,secEmpresa);
     }
 
     @Override
     public List<Empresas> consultarEmpresas() {
-        return persistenciaEmpresas.consultarEmpresas();
+        return persistenciaEmpresas.consultarEmpresas(em);
     }
 
     @Override
     public List<Unidades> consultarLOVUnidades() {
-        return persistenciaUnidades.consultarUnidades();
+        return persistenciaUnidades.consultarUnidades(em);
     }
 
     @Override
     public List<Terceros> consultarLOVTerceros(BigInteger secEmpresa) {
-        return persistenciaTerceros.lovTerceros(secEmpresa);
+        return persistenciaTerceros.lovTerceros(em,secEmpresa);
     }
 
     @Override
@@ -102,9 +117,9 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
             }
             if (listConceptosModificados.get(i).getTercero().getSecuencia() == null) {
                 listConceptosModificados.get(i).setTercero(null);
-                persistenciaConceptos.editar(listConceptosModificados.get(i));
+                persistenciaConceptos.editar(em,listConceptosModificados.get(i));
             } else {
-                persistenciaConceptos.editar(listConceptosModificados.get(i));
+                persistenciaConceptos.editar(em,listConceptosModificados.get(i));
             }
         }
     }
@@ -121,9 +136,9 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
 
             if (listaConceptos.get(i).getTercero().getSecuencia() == null) {
                 listaConceptos.get(i).setTercero(null);
-                persistenciaConceptos.borrar(listaConceptos.get(i));
+                persistenciaConceptos.borrar(em,listaConceptos.get(i));
             } else {
-                persistenciaConceptos.borrar(listaConceptos.get(i));
+                persistenciaConceptos.borrar(em,listaConceptos.get(i));
             }
         }
     }
@@ -140,15 +155,15 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
 
             if (listaConceptos.get(i).getTercero().getSecuencia() == null) {
                 listaConceptos.get(i).setTercero(null);
-                persistenciaConceptos.crear(listaConceptos.get(i));
+                persistenciaConceptos.crear(em,listaConceptos.get(i));
             } else {
-                persistenciaConceptos.crear(listaConceptos.get(i));
+                persistenciaConceptos.crear(em,listaConceptos.get(i));
             }
         }
     }
 
     @Override
     public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
-        persistenciaConceptos.clonarConcepto(secConceptoOrigen, codigoConceptoNuevo, descripcionConceptoNuevo);
+        persistenciaConceptos.clonarConcepto(em,secConceptoOrigen, codigoConceptoNuevo, descripcionConceptoNuevo);
     }
 }

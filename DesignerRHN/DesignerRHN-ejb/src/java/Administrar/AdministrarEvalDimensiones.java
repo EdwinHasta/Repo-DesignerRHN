@@ -5,13 +5,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarEvalDimensionesInterface;
 import Entidades.EvalDimensiones;
+import InterfaceAdministrar.AdministrarEvalDimensionesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEvalDimensionesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarEvalDimensiones implements AdministrarEvalDimensionesInt
 
     @EJB
     PersistenciaEvalDimensionesInterface persistenciaTiposCentrosCostos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarEvalDimensiones(List<EvalDimensiones> listaEvalDimensiones) {
         for (int i = 0; i < listaEvalDimensiones.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposCentrosCostos.editar(listaEvalDimensiones.get(i));
+            persistenciaTiposCentrosCostos.editar(em,listaEvalDimensiones.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarEvalDimensiones implements AdministrarEvalDimensionesInt
     public void borrarEvalDimensiones(List<EvalDimensiones> listaEvalDimensiones) {
         for (int i = 0; i < listaEvalDimensiones.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposCentrosCostos.borrar(listaEvalDimensiones.get(i));
+            persistenciaTiposCentrosCostos.borrar(em,listaEvalDimensiones.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarEvalDimensiones implements AdministrarEvalDimensionesInt
     public void crearEvalDimensiones(List<EvalDimensiones> listaEvalDimensiones) {
         for (int i = 0; i < listaEvalDimensiones.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposCentrosCostos.crear(listaEvalDimensiones.get(i));
+            persistenciaTiposCentrosCostos.crear(em,listaEvalDimensiones.get(i));
         }
     }
 
     @Override
     public EvalDimensiones consultarEvalDimension(BigInteger secTipoCentrosCostos) {
         EvalDimensiones evalDimensiones;
-        evalDimensiones = persistenciaTiposCentrosCostos.buscarEvalDimension(secTipoCentrosCostos);
+        evalDimensiones = persistenciaTiposCentrosCostos.buscarEvalDimension(em,secTipoCentrosCostos);
         return evalDimensiones;
     }
 
     @Override
     public List<EvalDimensiones> consultarEvalDimensiones() {
         List<EvalDimensiones> listEvalDimensiones;
-        listEvalDimensiones = persistenciaTiposCentrosCostos.buscarEvalDimensiones();
+        listEvalDimensiones = persistenciaTiposCentrosCostos.buscarEvalDimensiones(em);
         return listEvalDimensiones;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarEvalDimensiones implements AdministrarEvalDimensionesInt
     public BigInteger verificarEvalPlanillas(BigInteger secuenciaTiposAuxilios) {
         BigInteger verificarEvalPlanillas = null;
         try {
-            verificarEvalPlanillas = persistenciaTiposCentrosCostos.contradorEvalPlanillas(secuenciaTiposAuxilios);
+            verificarEvalPlanillas = persistenciaTiposCentrosCostos.contradorEvalPlanillas(em,secuenciaTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRAREVALPLANILLAS verificarEvalPlanillas ERROR :" + e);
         } finally {

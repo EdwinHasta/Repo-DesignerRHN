@@ -3,22 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Administrar;
 
-import InterfaceAdministrar.AdministrarFirmasReportesInterface;
-import Entidades.FirmasReportes;
 import Entidades.Cargos;
 import Entidades.Empresas;
+import Entidades.FirmasReportes;
 import Entidades.Personas;
-import InterfacePersistencia.PersistenciaFirmasReportesInterface;
+import InterfaceAdministrar.AdministrarFirmasReportesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
+import InterfacePersistencia.PersistenciaFirmasReportesInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -27,7 +28,7 @@ import javax.ejb.Stateful;
 @Stateful
 public class AdministrarFirmasReportes implements AdministrarFirmasReportesInterface {
 
-     //--------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
     /**
@@ -43,21 +44,36 @@ public class AdministrarFirmasReportes implements AdministrarFirmasReportesInter
     PersistenciaPersonasInterface persistenciaPersonas;
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     public void modificarFirmasReportes(List<FirmasReportes> listaFirmasReportes) {
         for (int i = 0; i < listaFirmasReportes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaFirmasReportes.editar(listaFirmasReportes.get(i));
+            persistenciaFirmasReportes.editar(em,listaFirmasReportes.get(i));
         }
     }
 
     public void borrarFirmasReportes(List<FirmasReportes> listaFirmasReportes) {
         for (int i = 0; i < listaFirmasReportes.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaFirmasReportes.borrar(listaFirmasReportes.get(i));
+            persistenciaFirmasReportes.borrar(em,listaFirmasReportes.get(i));
         }
     }
 
@@ -72,36 +88,38 @@ public class AdministrarFirmasReportes implements AdministrarFirmasReportesInter
             System.out.println("PERSONA : " + listaFirmasReportes.get(i).getPersonaFirma().getNombre());
             System.out.println("CARGO : " + listaFirmasReportes.get(i).getCargo().getNombre());
             System.out.println("--------------DUPLICAR------------------------");
-            persistenciaFirmasReportes.crear(listaFirmasReportes.get(i));
+            persistenciaFirmasReportes.crear(em,listaFirmasReportes.get(i));
         }
     }
 
     @Override
     public List<FirmasReportes> consultarFirmasReportes() {
         List<FirmasReportes> listaFirmasReportes;
-        listaFirmasReportes = persistenciaFirmasReportes.consultarFirmasReportes();
+        listaFirmasReportes = persistenciaFirmasReportes.consultarFirmasReportes(em);
         return listaFirmasReportes;
     }
 
     public FirmasReportes consultarTipoIndicador(BigInteger secMotivoDemanda) {
         FirmasReportes tiposIndicadores;
-        tiposIndicadores = persistenciaFirmasReportes.consultarFirmaReporte(secMotivoDemanda);
+        tiposIndicadores = persistenciaFirmasReportes.consultarFirmaReporte(em,secMotivoDemanda);
         return tiposIndicadores;
     }
 
     public List<Cargos> consultarLOVCargos() {
         List<Cargos> listLOVCargos;
-        listLOVCargos = persistenciaCargos.consultarCargos();
+        listLOVCargos = persistenciaCargos.consultarCargos(em);
         return listLOVCargos;
     }
+
     public List<Personas> consultarLOVPersonas() {
         List<Personas> listLOVPersonas;
-        listLOVPersonas = persistenciaPersonas.consultarPersonas();
+        listLOVPersonas = persistenciaPersonas.consultarPersonas(em);
         return listLOVPersonas;
     }
+
     public List<Empresas> consultarLOVEmpresas() {
         List<Empresas> listLOVEmpresas;
-        listLOVEmpresas = persistenciaEmpresas.consultarEmpresas();
+        listLOVEmpresas = persistenciaEmpresas.consultarEmpresas(em);
         return listLOVEmpresas;
     }
 

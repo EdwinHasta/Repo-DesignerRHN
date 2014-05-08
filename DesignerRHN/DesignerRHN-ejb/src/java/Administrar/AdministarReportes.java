@@ -91,8 +91,8 @@ public class AdministarReportes implements AdministarReportesInterface {
 
         public String generarReporte(String nombreReporte, String tipoReporte, AsynchronousFilllListener asistenteReporte) {
         //try {
-        general = persistenciaGenerales.obtenerRutas();
-        String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
+        general = persistenciaGenerales.obtenerRutas(em);
+        String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
         String pathReporteGenerado = null;
         if (general != null && nombreUsuario != null) {
             SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
@@ -133,8 +133,8 @@ public class AdministarReportes implements AdministarReportesInterface {
     @Override
     public String generarReporte(String nombreReporte, String tipoReporte) {
         //try {
-        general = persistenciaGenerales.obtenerRutas();
-        String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
+        general = persistenciaGenerales.obtenerRutas(em);
+        String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
         String pathReporteGenerado = null;
         if (general != null && nombreUsuario != null) {
             SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
@@ -172,14 +172,14 @@ public class AdministarReportes implements AdministarReportesInterface {
     
     public void iniciarLlenadoReporte(String nombreReporte, AsynchronousFilllListener asistenteReporte) {
         if (general == null) {
-            general = persistenciaGenerales.obtenerRutas();
+            general = persistenciaGenerales.obtenerRutas(em);
         }
         String rutaReporte = general.getPathreportes();
         reporte.llenarReporte(nombreReporte, rutaReporte, asistenteReporte);
     }
     
     public String crearArchivoReporte(JasperPrint print, String tipoReporte) {
-        String nombreUsuario = persistenciaActualUsuario.actualAliasBD();
+        String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
         String pathReporteGenerado = null;
         if (general != null && nombreUsuario != null) {
             SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");

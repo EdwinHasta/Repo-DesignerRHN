@@ -87,9 +87,19 @@ public interface AdministrarDetallesEmpresasInterface {
     public List<Empresas> lovEmpresas();
 
     /**
-     * Método encargado de recuperar una Empresa por medio la la secuencia dada por parametro
+     * Método encargado de recuperar una Empresa por medio la la secuencia dada
+     * por parametro
+     *
      * @param secEmpresa Secuencia de la Empresa
      * @return Empresa referenciada por la secuencia dada
      */
     public Empresas empresaActual(BigInteger secEmpresa);
+
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

@@ -3,13 +3,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarElementosCausasAccidentesInterface;
 import Entidades.ElementosCausasAccidentes;
+import InterfaceAdministrar.AdministrarElementosCausasAccidentesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaElementosCausasAccidentesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -20,6 +22,7 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarElementosCausasAccidentes implements AdministrarElementosCausasAccidentesInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
@@ -30,17 +33,31 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
      */
     @EJB
     PersistenciaElementosCausasAccidentesInterface persistenciaElementosCausasAccidentes;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     @Override
     public void modificarElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes) {
         ElementosCausasAccidentes elementosCausasAccidentesSeleccionada;
         for (int i = 0; i < listaElementosCausasAccidentes.size(); i++) {
             System.out.println("Administrar Modificando...");
             elementosCausasAccidentesSeleccionada = listaElementosCausasAccidentes.get(i);
-            persistenciaElementosCausasAccidentes.editar(elementosCausasAccidentesSeleccionada);
+            persistenciaElementosCausasAccidentes.editar(em,elementosCausasAccidentesSeleccionada);
         }
     }
 
@@ -48,7 +65,7 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     public void borrarElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes) {
         for (int i = 0; i < listaElementosCausasAccidentes.size(); i++) {
             System.out.println("Borrando...");
-            persistenciaElementosCausasAccidentes.borrar(listaElementosCausasAccidentes.get(i));
+            persistenciaElementosCausasAccidentes.borrar(em,listaElementosCausasAccidentes.get(i));
         }
     }
 
@@ -56,19 +73,19 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     public void crearElementosCausasAccidentes(List<ElementosCausasAccidentes> listaElementosCausasAccidentes) {
         for (int i = 0; i < listaElementosCausasAccidentes.size(); i++) {
             System.out.println("Creando...");
-            persistenciaElementosCausasAccidentes.crear(listaElementosCausasAccidentes.get(i));
+            persistenciaElementosCausasAccidentes.crear(em,listaElementosCausasAccidentes.get(i));
         }
     }
 
     @Override
     public List<ElementosCausasAccidentes> consultarElementosCausasAccidentes() {
-        List<ElementosCausasAccidentes> listElementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementosCausasAccidentes();
+        List<ElementosCausasAccidentes> listElementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementosCausasAccidentes(em);
         return listElementosCausasAccidentes;
     }
 
     @Override
     public ElementosCausasAccidentes consultarElementoCausaAccidente(BigInteger secElementosCausasAccidentes) {
-        ElementosCausasAccidentes elementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementoCausaAccidente(secElementosCausasAccidentes);
+        ElementosCausasAccidentes elementosCausasAccidentes = persistenciaElementosCausasAccidentes.buscarElementoCausaAccidente(em,secElementosCausasAccidentes);
         return elementosCausasAccidentes;
     }
 
@@ -76,7 +93,7 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     public BigInteger contarSoAccidentesCausa(BigInteger secTiposAuxilios) {
         BigInteger contadorSoAccidentes = null;
         try {
-            contadorSoAccidentes = persistenciaElementosCausasAccidentes.contadorSoAccidentes(secTiposAuxilios);
+            contadorSoAccidentes = persistenciaElementosCausasAccidentes.contadorSoAccidentes(em,secTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARELEMENTOSCAUSASACCIDENTES contadorSoAccidentes ERROR :" + e);
         } finally {
@@ -88,7 +105,7 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     public BigInteger contarSoAccidentesMedicosElementoCausaAccidente(BigInteger secTiposAuxilios) {
         BigInteger contadorSoAccidentesMedicos = null;
         try {
-            contadorSoAccidentesMedicos = persistenciaElementosCausasAccidentes.contadorSoAccidentesMedicos(secTiposAuxilios);
+            contadorSoAccidentesMedicos = persistenciaElementosCausasAccidentes.contadorSoAccidentesMedicos(em,secTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARELEMENTOSCAUSASACCIDENTES contadorSoAccidentesMedicos ERROR :" + e);
         } finally {
@@ -100,7 +117,7 @@ public class AdministrarElementosCausasAccidentes implements AdministrarElemento
     public BigInteger contarSoIndicadoresFrElementoCausaAccidente(BigInteger secTiposAuxilios) {
         BigInteger contadorSoIndicadoresFr = null;
         try {
-            contadorSoIndicadoresFr = persistenciaElementosCausasAccidentes.contadorSoIndicadoresFr(secTiposAuxilios);
+            contadorSoIndicadoresFr = persistenciaElementosCausasAccidentes.contadorSoIndicadoresFr(em,secTiposAuxilios);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARELEMENTOSCAUSASACCIDENTES contadorSoIndicadoresFr ERROR :" + e);
         } finally {

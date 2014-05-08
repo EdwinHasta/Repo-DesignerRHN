@@ -35,4 +35,12 @@ public interface AdministrarDepartamentosInterface {
     public BigInteger contarSoAccidentesMedicosDepartamento(BigInteger secuenciaVigenciasIndicadores);
 
     public BigInteger contarCiudadesDepartamento(BigInteger secuenciaVigenciasIndicadores);
+
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

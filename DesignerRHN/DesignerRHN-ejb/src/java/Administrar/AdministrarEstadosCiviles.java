@@ -5,13 +5,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarEstadosCivilesInterface;
 import Entidades.EstadosCiviles;
+import InterfaceAdministrar.AdministrarEstadosCivilesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEstadosCivilesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarEstadosCiviles implements AdministrarEstadosCivilesInter
 
     @EJB
     PersistenciaEstadosCivilesInterface persistenciaEstadosCiviles;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles) {
         for (int i = 0; i < listaEstadosCiviles.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaEstadosCiviles.editar(listaEstadosCiviles.get(i));
+            persistenciaEstadosCiviles.editar(em,listaEstadosCiviles.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarEstadosCiviles implements AdministrarEstadosCivilesInter
     public void borrarEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles) {
         for (int i = 0; i < listaEstadosCiviles.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaEstadosCiviles.borrar(listaEstadosCiviles.get(i));
+            persistenciaEstadosCiviles.borrar(em,listaEstadosCiviles.get(i));
         }
     }
 
@@ -43,14 +59,14 @@ public class AdministrarEstadosCiviles implements AdministrarEstadosCivilesInter
     public void crearEstadosCiviles(List<EstadosCiviles> listaEstadosCiviles) {
         for (int i = 0; i < listaEstadosCiviles.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaEstadosCiviles.crear(listaEstadosCiviles.get(i));
+            persistenciaEstadosCiviles.crear(em,listaEstadosCiviles.get(i));
         }
     }
 
     @Override
     public List<EstadosCiviles> consultarEstadosCiviles() {
         List<EstadosCiviles> listEstadosCiviles;
-        listEstadosCiviles = persistenciaEstadosCiviles.consultarEstadosCiviles();
+        listEstadosCiviles = persistenciaEstadosCiviles.consultarEstadosCiviles(em);
         return listEstadosCiviles;
     }
 
@@ -59,7 +75,7 @@ public class AdministrarEstadosCiviles implements AdministrarEstadosCivilesInter
         BigInteger verificadorVigenciasEstadosCiviles = null;
         try {
             System.err.println("Secuencia verificarBorradoVigenciasEstadoCiviles  " + secuenciaEstadosCiviles);
-            verificadorVigenciasEstadosCiviles = persistenciaEstadosCiviles.contadorVigenciasEstadosCiviles(secuenciaEstadosCiviles);
+            verificadorVigenciasEstadosCiviles = persistenciaEstadosCiviles.contadorVigenciasEstadosCiviles(em,secuenciaEstadosCiviles);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarEstadosCiviles verificarBorradoVigenciasEstadoCiviles ERROR :" + e);
         } finally {

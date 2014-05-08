@@ -3,13 +3,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarClasesAccidentesInterface;
 import Entidades.ClasesAccidentes;
+import InterfaceAdministrar.AdministrarClasesAccidentesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaClasesAccidentesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -20,6 +22,7 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
@@ -31,16 +34,31 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
     @EJB
     PersistenciaClasesAccidentesInterface persistenciaClasesAccidentes;
 
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     @Override
     public void modificarClasesAccidentes(List<ClasesAccidentes> listClasesAccidentesModificada) {
         ClasesAccidentes clasesAccidentesSeleccionada;
         for (int i = 0; i < listClasesAccidentesModificada.size(); i++) {
             System.out.println("Administrar Modificando...");
             clasesAccidentesSeleccionada = listClasesAccidentesModificada.get(i);
-            persistenciaClasesAccidentes.editar(clasesAccidentesSeleccionada);
+            persistenciaClasesAccidentes.editar(em,clasesAccidentesSeleccionada);
         }
     }
 
@@ -48,7 +66,7 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
     public void borrarClasesAccidentes(List<ClasesAccidentes> listaClasesAccidentes) {
         for (int i = 0; i < listaClasesAccidentes.size(); i++) {
             System.out.println("Borrando...");
-            persistenciaClasesAccidentes.borrar(listaClasesAccidentes.get(i));
+            persistenciaClasesAccidentes.borrar(em,listaClasesAccidentes.get(i));
         }
     }
 
@@ -56,19 +74,19 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
     public void crearClasesAccidentes(List<ClasesAccidentes> listaClasesAccidentes) {
         for (int i = 0; i < listaClasesAccidentes.size(); i++) {
             System.out.println("Creando...");
-            persistenciaClasesAccidentes.crear(listaClasesAccidentes.get(i));
+            persistenciaClasesAccidentes.crear(em,listaClasesAccidentes.get(i));
         }
     }
 
     @Override
     public List<ClasesAccidentes> consultarClasesAccidentes() {
-        List<ClasesAccidentes> listClasesAccidentes = persistenciaClasesAccidentes.buscarClasesAccidentes();
+        List<ClasesAccidentes> listClasesAccidentes = persistenciaClasesAccidentes.buscarClasesAccidentes(em);
         return listClasesAccidentes;
     }
 
     @Override
     public ClasesAccidentes consultarClaseAccidente(BigInteger secClasesAccidentes) {
-        ClasesAccidentes clasesAccidentes = persistenciaClasesAccidentes.buscarClaseAccidente(secClasesAccidentes);
+        ClasesAccidentes clasesAccidentes = persistenciaClasesAccidentes.buscarClaseAccidente(em,secClasesAccidentes);
         return clasesAccidentes;
     }
 
@@ -77,7 +95,7 @@ public class AdministrarClasesAccidentes implements AdministrarClasesAccidentesI
         BigInteger verificarSoAccidtenesMedicos = null;
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            verificarSoAccidtenesMedicos = persistenciaClasesAccidentes.contadorSoAccidentesMedicos(secuenciaElementos);
+            verificarSoAccidtenesMedicos = persistenciaClasesAccidentes.contadorSoAccidentesMedicos(em,secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarClasesAccidentes verificarSoAccidtenesMedicos ERROR :" + e);
         } finally {

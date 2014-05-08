@@ -5,10 +5,11 @@
  */
 package Administrar;
 
+import Entidades.FormulasContratosEntidades;
 import Entidades.Formulascontratos;
 import Entidades.TiposEntidades;
-import Entidades.FormulasContratosEntidades;
 import InterfaceAdministrar.AdministrarFormulasContratosEntidadesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaFormulasContratosEntidadesInterface;
 import InterfacePersistencia.PersistenciaFormulasContratosInterface;
 import InterfacePersistencia.PersistenciaTiposEntidadesInterface;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -37,50 +39,64 @@ public class AdministrarFormulasContratosEntidades implements AdministrarFormula
     PersistenciaTiposEntidadesInterface persistenciaTiposEntidades;
     @EJB
     PersistenciaFormulasContratosInterface persistenciaFormulas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     public void modificarFormulasContratosEntidades(List<FormulasContratosEntidades> listaFormulasContratosEntidades) {
         for (int i = 0; i < listaFormulasContratosEntidades.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaFormulasContratosEntidades.editar(listaFormulasContratosEntidades.get(i));
+            persistenciaFormulasContratosEntidades.editar(em,listaFormulasContratosEntidades.get(i));
         }
     }
 
     public void borrarFormulasContratosEntidades(List<FormulasContratosEntidades> listaFormulasContratosEntidades) {
         for (int i = 0; i < listaFormulasContratosEntidades.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaFormulasContratosEntidades.borrar(listaFormulasContratosEntidades.get(i));
+            persistenciaFormulasContratosEntidades.borrar(em,listaFormulasContratosEntidades.get(i));
         }
     }
 
     public void crearFormulasContratosEntidades(List<FormulasContratosEntidades> listaFormulasContratosEntidades) {
         for (int i = 0; i < listaFormulasContratosEntidades.size(); i++) {
-            persistenciaFormulasContratosEntidades.crear(listaFormulasContratosEntidades.get(i));
+            persistenciaFormulasContratosEntidades.crear(em,listaFormulasContratosEntidades.get(i));
         }
     }
 
     @Override
     public List<FormulasContratosEntidades> consultarFormulasContratosEntidades() {
         List<FormulasContratosEntidades> LOVTiposEntidades;
-        return LOVTiposEntidades = persistenciaFormulasContratosEntidades.consultarFormulasContratosEntidades();
+        return LOVTiposEntidades = persistenciaFormulasContratosEntidades.consultarFormulasContratosEntidades(em);
     }
 
     @Override
     public List<FormulasContratosEntidades> consultarFormulasContratosEntidadesPorFormulaContrato(BigInteger secFormulaContrato) {
         List<FormulasContratosEntidades> LOVTiposEntidades;
-        return LOVTiposEntidades = persistenciaFormulasContratosEntidades.consultarFormulasContratosEntidadesPorFormulaContrato(secFormulaContrato);
+        return LOVTiposEntidades = persistenciaFormulasContratosEntidades.consultarFormulasContratosEntidadesPorFormulaContrato(em,secFormulaContrato);
     }
 
     public List<TiposEntidades> consultarLOVTiposEntidades() {
         List<TiposEntidades> LOVTiposEntidades;
-        return LOVTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades();
+        return LOVTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades(em);
     }
 
     @Override
     public Formulascontratos consultarFormulaDeFormulasContratosEntidades(BigInteger secFormulaContrato) {
-        Formulascontratos formulaConcepto = persistenciaFormulas.formulasContratosParaContratoFormulasContratosEntidades(secFormulaContrato);
+        Formulascontratos formulaConcepto = persistenciaFormulas.formulasContratosParaContratoFormulasContratosEntidades(em,secFormulaContrato);
         return formulaConcepto;
     }
 

@@ -3,13 +3,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarDeportesInterface;
 import Entidades.Deportes;
+import InterfaceAdministrar.AdministrarDeportesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaDeportesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -20,9 +22,11 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarDeportes implements AdministrarDeportesInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
+
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -30,6 +34,20 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
      */
     @EJB
     PersistenciaDeportesInterface persistenciaDeportes;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     //--------------------------------------------------------------------------
     //MÉTODOS
@@ -39,7 +57,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
         for (int i = 0; i < listDeportesModificadas.size(); i++) {
             System.out.println("Administrar Modificando...");
             Deportes deporteSeleccionado = listDeportesModificadas.get(i);
-            persistenciaDeportes.editar(deporteSeleccionado);
+            persistenciaDeportes.editar(em,deporteSeleccionado);
         }
     }
 
@@ -47,7 +65,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     public void borrarDeportes(List<Deportes> listaDeportes) {
         for (int i = 0; i < listaDeportes.size(); i++) {
             System.out.println("Borrando...");
-            persistenciaDeportes.borrar(listaDeportes.get(i));
+            persistenciaDeportes.borrar(em,listaDeportes.get(i));
         }
     }
 
@@ -55,19 +73,19 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     public void crearDeportes(List<Deportes> listaDeportes) {
         for (int i = 0; i < listaDeportes.size(); i++) {
             System.out.println("Creando...");
-            persistenciaDeportes.crear(listaDeportes.get(i));
+            persistenciaDeportes.crear(em,listaDeportes.get(i));
         }
     }
 
     @Override
     public List<Deportes> consultarDeportes() {
-        List<Deportes> listDeportes = persistenciaDeportes.buscarDeportes();
+        List<Deportes> listDeportes = persistenciaDeportes.buscarDeportes(em);
         return listDeportes;
     }
 
     @Override
     public Deportes consultarDeporte(BigInteger secDeportes) {
-        Deportes deportes = persistenciaDeportes.buscarDeporte(secDeportes);
+        Deportes deportes = persistenciaDeportes.buscarDeporte(em,secDeportes);
         return deportes;
     }
 
@@ -75,7 +93,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     public BigInteger contarVigenciasDeportesDeporte(BigInteger secDeporte) {
         BigInteger verificarBorradoVigenciasDeportes = null;
         try {
-            verificarBorradoVigenciasDeportes = persistenciaDeportes.verificarBorradoVigenciasDeportes(secDeporte);
+            verificarBorradoVigenciasDeportes = persistenciaDeportes.verificarBorradoVigenciasDeportes(em,secDeporte);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARDEPORTES verificarBorradoVigenciasDeportes ERROR :" + e);
         } finally {
@@ -87,7 +105,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     public BigInteger contarPersonasDeporte(BigInteger secDeporte) {
         BigInteger contadorDeportesPersonas = null;
         try {
-            contadorDeportesPersonas = persistenciaDeportes.contadorDeportesPersonas(secDeporte);
+            contadorDeportesPersonas = persistenciaDeportes.contadorDeportesPersonas(em,secDeporte);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARDEPORTES contadorDeportesPersonas ERROR :" + e);
         } finally {
@@ -99,7 +117,7 @@ public class AdministrarDeportes implements AdministrarDeportesInterface {
     public BigInteger contarParametrosInformesDeportes(BigInteger secDeporte) {
         BigInteger contadorParametrosInformes = null;
         try {
-            contadorParametrosInformes = persistenciaDeportes.contadorParametrosInformes(secDeporte);
+            contadorParametrosInformes = persistenciaDeportes.contadorParametrosInformes(em,secDeporte);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARDEPORTES contadorParametrosInformes ERROR :" + e);
         } finally {

@@ -106,4 +106,11 @@ public interface AdministrarCerrarLiquidacionInterface {
      * @param fechaHasta Fecha final del rango
      */
     public void abrirLiquidacion(Short codigoProceso, String fechaDesde, String fechaHasta);
+    
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

@@ -65,5 +65,12 @@ public interface AdministrarCategoriasInterface {
      * @return Retorna una lista de ClasesCategorias.
      */
     public List<Conceptos> lovConceptos();
+    
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 
 }

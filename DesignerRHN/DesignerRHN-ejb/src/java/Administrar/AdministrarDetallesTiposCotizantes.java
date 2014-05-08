@@ -8,12 +8,14 @@ package Administrar;
 import Entidades.DetallesTiposCotizantes;
 import Entidades.TiposEntidades;
 import InterfaceAdministrar.AdministrarDetallesTiposCotizantesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaDetallesTiposCotizantesInterface;
 import InterfacePersistencia.PersistenciaTiposEntidadesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -25,22 +27,36 @@ public class AdministrarDetallesTiposCotizantes implements AdministrarDetallesTi
     @EJB
     PersistenciaDetallesTiposCotizantesInterface persistenciaDetallesTiposCotizantes;
     @EJB
-    PersistenciaTiposEntidadesInterface persistenciaTiposEntidades; 
+    PersistenciaTiposEntidadesInterface persistenciaTiposEntidades;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     public List<DetallesTiposCotizantes> detallesTiposCotizantes(BigInteger secuenciaTipoCotizante) {
         List<DetallesTiposCotizantes> listaDetallesTiposCotizantes;
-        listaDetallesTiposCotizantes = persistenciaDetallesTiposCotizantes.detallesTiposCotizantes(secuenciaTipoCotizante);
+        listaDetallesTiposCotizantes = persistenciaDetallesTiposCotizantes.detallesTiposCotizantes(em,secuenciaTipoCotizante);
         return listaDetallesTiposCotizantes;
     }
 
     @Override
     public void borrarDetalleTipoCotizante(DetallesTiposCotizantes detallesTiposCotizantes) {
-        persistenciaDetallesTiposCotizantes.borrar(detallesTiposCotizantes);
+        persistenciaDetallesTiposCotizantes.borrar(em,detallesTiposCotizantes);
     }
 
     @Override
     public void crearDetalleTipoCotizante(DetallesTiposCotizantes detallesTiposCotizantes) {
-        persistenciaDetallesTiposCotizantes.crear(detallesTiposCotizantes);
+        persistenciaDetallesTiposCotizantes.crear(em,detallesTiposCotizantes);
     }
 
     @Override
@@ -59,14 +75,14 @@ public class AdministrarDetallesTiposCotizantes implements AdministrarDetallesTi
             if (listaDetallesTiposCotizantesModificar.get(i).getMaximosml() == null) {
                 listaDetallesTiposCotizantesModificar.get(i).setMaximosml(null);
             }
-            persistenciaDetallesTiposCotizantes.editar(listaDetallesTiposCotizantesModificar.get(i));
+            persistenciaDetallesTiposCotizantes.editar(em,listaDetallesTiposCotizantesModificar.get(i));
         }
     }
-    
+
     @Override
     public List<TiposEntidades> lovTiposEntidades() {
         List<TiposEntidades> listaTiposEntidades;
-        listaTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades();
+        listaTiposEntidades = persistenciaTiposEntidades.buscarTiposEntidades(em);
         return listaTiposEntidades;
     }
 }

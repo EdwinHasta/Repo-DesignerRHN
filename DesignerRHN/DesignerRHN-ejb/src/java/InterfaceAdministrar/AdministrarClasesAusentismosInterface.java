@@ -31,4 +31,11 @@ public interface AdministrarClasesAusentismosInterface {
     public BigInteger contarSoAusentismosClaseAusentismo(BigInteger secuenciaClasesAusentismos);
 
     public List<Tiposausentismos> consultarLOVTiposAusentismos();
+    
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

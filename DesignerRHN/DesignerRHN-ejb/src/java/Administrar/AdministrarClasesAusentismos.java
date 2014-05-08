@@ -8,12 +8,14 @@ package Administrar;
 import Entidades.Clasesausentismos;
 import Entidades.Tiposausentismos;
 import InterfaceAdministrar.AdministrarClasesAusentismosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaClasesAusentismosInterface;
 import InterfacePersistencia.PersistenciaTiposAusentismosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -26,32 +28,46 @@ public class AdministrarClasesAusentismos implements AdministrarClasesAusentismo
     PersistenciaClasesAusentismosInterface persistenciaClasesAusentismos;
     @EJB
     PersistenciaTiposAusentismosInterface PersistenciaTiposAusentismos;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+    
+        @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     public void modificarClasesAusentismos(List<Clasesausentismos> listClasesAusentismos) {
         for (int i = 0; i < listClasesAusentismos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaClasesAusentismos.editar(listClasesAusentismos.get(i));
+            persistenciaClasesAusentismos.editar(em,listClasesAusentismos.get(i));
         }
     }
 
     public void borrarClasesAusentismos(List<Clasesausentismos> listClasesAusentismos) {
         for (int i = 0; i < listClasesAusentismos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaClasesAusentismos.borrar(listClasesAusentismos.get(i));
+            persistenciaClasesAusentismos.borrar(em,listClasesAusentismos.get(i));
         }
     }
 
     public void crearClasesAusentismos(List<Clasesausentismos> listClasesAusentismos) {
         for (int i = 0; i < listClasesAusentismos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaClasesAusentismos.crear(listClasesAusentismos.get(i));
+            persistenciaClasesAusentismos.crear(em,listClasesAusentismos.get(i));
         }
     }
 
     @Override
     public List<Clasesausentismos> consultarClasesAusentismos() {
 
-        List<Clasesausentismos> listClasesAusentismos = persistenciaClasesAusentismos.buscarClasesAusentismos();
+        List<Clasesausentismos> listClasesAusentismos = persistenciaClasesAusentismos.buscarClasesAusentismos(em);
         return listClasesAusentismos;
     }
 
@@ -60,7 +76,7 @@ public class AdministrarClasesAusentismos implements AdministrarClasesAusentismo
 
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaClasesAusentismos);
-            verificadorHvReferencias = persistenciaClasesAusentismos.contadorCausasAusentismosClaseAusentismo(secuenciaClasesAusentismos);
+            verificadorHvReferencias = persistenciaClasesAusentismos.contadorCausasAusentismosClaseAusentismo(em,secuenciaClasesAusentismos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarClasesAusentismos contarCausasAusentismosClaseAusentismo ERROR :" + e);
         } finally {
@@ -73,7 +89,7 @@ public class AdministrarClasesAusentismos implements AdministrarClasesAusentismo
 
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaClasesAusentismos);
-            verificadorHvReferencias = persistenciaClasesAusentismos.contadorSoAusentismosClaseAusentismo(secuenciaClasesAusentismos);
+            verificadorHvReferencias = persistenciaClasesAusentismos.contadorSoAusentismosClaseAusentismo(em,secuenciaClasesAusentismos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarClasesAusentismos contarSoAusentismosClaseAusentismo ERROR :" + e);
         } finally {
@@ -83,7 +99,7 @@ public class AdministrarClasesAusentismos implements AdministrarClasesAusentismo
 
     public List<Tiposausentismos> consultarLOVTiposAusentismos() {
         List<Tiposausentismos> listTiposAusentismos = null;
-        listTiposAusentismos = PersistenciaTiposAusentismos.consultarTiposAusentismos();
+        listTiposAusentismos = PersistenciaTiposAusentismos.consultarTiposAusentismos(em);
         return listTiposAusentismos;
 
     }

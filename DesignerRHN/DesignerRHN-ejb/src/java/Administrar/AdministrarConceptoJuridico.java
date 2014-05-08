@@ -6,12 +6,14 @@ package Administrar;
 import Entidades.ConceptosJuridicos;
 import Entidades.Empresas;
 import InterfaceAdministrar.AdministrarConceptoJuridicoInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaConceptosJuridicosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -35,13 +37,26 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
      */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+        @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     @Override
     public List<ConceptosJuridicos> consultarConceptosJuridicosEmpresa(BigInteger secuencia) {
         try {
-            List<ConceptosJuridicos> conceptos = persistenciaConceptosJuridicos.buscarConceptosJuridicosEmpresa(secuencia);
+            List<ConceptosJuridicos> conceptos = persistenciaConceptosJuridicos.buscarConceptosJuridicosEmpresa(em,secuencia);
             return conceptos;
         } catch (Exception e) {
             System.out.println("Error listConceptosJuridicosPorEmpresa Admi : " + e.toString());
@@ -53,7 +68,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     public void crearConceptosJuridicos(List<ConceptosJuridicos> listCJ) {
         try {
             for (int i = 0; i < listCJ.size(); i++) {                
-                persistenciaConceptosJuridicos.crear(listCJ.get(i));
+                persistenciaConceptosJuridicos.crear(em,listCJ.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearConceptosJuridicos Admi : " + e.toString());
@@ -64,7 +79,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     public void editarConceptosJuridicos(List<ConceptosJuridicos> listCJ) {
         try {
             for (int i = 0; i < listCJ.size(); i++) {                
-                persistenciaConceptosJuridicos.editar(listCJ.get(i));
+                persistenciaConceptosJuridicos.editar(em,listCJ.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarConceptosJuridicos Admi : " + e.toString());
@@ -75,7 +90,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     public void borrarConceptosJuridicos(List<ConceptosJuridicos> listCJ) {
         try {
             for (int i = 0; i < listCJ.size(); i++) {
-                persistenciaConceptosJuridicos.borrar(listCJ.get(i));
+                persistenciaConceptosJuridicos.borrar(em,listCJ.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarConceptosJuridicos Admi : " + e.toString());
@@ -85,7 +100,7 @@ public class AdministrarConceptoJuridico implements AdministrarConceptoJuridicoI
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> empresas = persistenciaEmpresas.consultarEmpresas();
+            List<Empresas> empresas = persistenciaEmpresas.consultarEmpresas(em);
             return empresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Admi : " + e.toString());

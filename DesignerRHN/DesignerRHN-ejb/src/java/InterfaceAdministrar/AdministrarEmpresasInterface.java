@@ -20,6 +20,14 @@ import java.util.List;
 public interface AdministrarEmpresasInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+
+    /**
      * Método encargado de recuperar todas las Empresas.
      *
      * @return Retorna una lista de Empresas.
@@ -36,20 +44,22 @@ public interface AdministrarEmpresasInterface {
     /**
      * Método encargado de editar Conceptos.
      *
-     * @param listaE Lista de las Empresas  que se van a modificar.
+     * @param listaE Lista de las Empresas que se van a modificar.
      */
     public void editarEmpresas(List<Empresas> listaE);
 
     /**
      * Método encargado de borrar Conceptos.
      *
-     * @param listaE Lista de las Empresas  que se van a eliminar.
+     * @param listaE Lista de las Empresas que se van a eliminar.
      */
     public void borrarEmpresas(List<Empresas> listaE);
 
     /**
-     * Método encargado de recuperar todas las Circulares asociadas a la secuencia de una Empresa dada por parametro.
-     *  @param secuencia Secuencia de la Empresa
+     * Método encargado de recuperar todas las Circulares asociadas a la
+     * secuencia de una Empresa dada por parametro.
+     *
+     * @param secuencia Secuencia de la Empresa
      * @return Retorna una lista de Circulares.
      */
     public List<Circulares> listaCircularesParaEmpresa(BigInteger secuencia);
@@ -76,7 +86,9 @@ public interface AdministrarEmpresasInterface {
     public void borrarCirculares(List<Circulares> listaC);
 
     /**
-     * Método encargado de recuperar todas las VigenciasMonedasBases asociadas a la secuencia de una Empresa dada por parametro.
+     * Método encargado de recuperar todas las VigenciasMonedasBases asociadas a
+     * la secuencia de una Empresa dada por parametro.
+     *
      * @param secuencia Secuencia de la Empresa
      * @return Retorna una lista de VigenciasMonedasBases.
      */
@@ -92,7 +104,8 @@ public interface AdministrarEmpresasInterface {
     /**
      * Método encargado de editar VigenciasMonedasBases.
      *
-     * @param listaVMB Lista de las VigenciasMonedasBases que se van a modificar.
+     * @param listaVMB Lista de las VigenciasMonedasBases que se van a
+     * modificar.
      */
     public void editarVigenciasMonedasBases(List<VigenciasMonedasBases> listaVMB);
 

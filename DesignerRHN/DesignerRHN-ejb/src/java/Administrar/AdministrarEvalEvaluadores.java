@@ -5,13 +5,15 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarEvalEvaluadoresInterface;
 import Entidades.EvalEvaluadores;
+import InterfaceAdministrar.AdministrarEvalEvaluadoresInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEvalEvaluadoresInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,15 +24,30 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
 
     @EJB
     PersistenciaEvalEvaluadoresInterface persistenciaEvalEvaluadores;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     private EvalEvaluadores valEvaluadoresSeleccionado;
     private EvalEvaluadores valEvaluadores;
     private List<EvalEvaluadores> listEvalEvaluadores;
 
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public void modificarEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadores) {
         for (int i = 0; i < listEvalEvaluadores.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaEvalEvaluadores.editar(listEvalEvaluadores.get(i));
+            persistenciaEvalEvaluadores.editar(em,listEvalEvaluadores.get(i));
         }
     }
 
@@ -38,7 +55,7 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
     public void borrarEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadores) {
         for (int i = 0; i < listEvalEvaluadores.size(); i++) {
             System.out.println("Administrar Borrar...");
-            persistenciaEvalEvaluadores.borrar(listEvalEvaluadores.get(i));
+            persistenciaEvalEvaluadores.borrar(em,listEvalEvaluadores.get(i));
         }
     }
 
@@ -46,19 +63,19 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
     public void crearEvalEvaluadores(List<EvalEvaluadores> listEvalEvaluadores) {
         for (int i = 0; i < listEvalEvaluadores.size(); i++) {
             System.out.println("Administrar Crear...");
-            persistenciaEvalEvaluadores.crear(listEvalEvaluadores.get(i));
+            persistenciaEvalEvaluadores.crear(em,listEvalEvaluadores.get(i));
         }
     }
 
     @Override
     public List<EvalEvaluadores> consultarEvalEvaluadores() {
-        listEvalEvaluadores = persistenciaEvalEvaluadores.buscarEvalEvaluadores();
+        listEvalEvaluadores = persistenciaEvalEvaluadores.buscarEvalEvaluadores(em);
         return listEvalEvaluadores;
     }
 
     @Override
     public EvalEvaluadores consultarEvalEvaluador(BigInteger secEvalEvaluadores) {
-        valEvaluadores = persistenciaEvalEvaluadores.buscarEvalEvaluador(secEvalEvaluadores);
+        valEvaluadores = persistenciaEvalEvaluadores.buscarEvalEvaluador(em,secEvalEvaluadores);
         return valEvaluadores;
     }
 
@@ -66,7 +83,7 @@ public class AdministrarEvalEvaluadores implements AdministrarEvalEvaluadoresInt
     public BigInteger verificarEvalPruebas(BigInteger secuenciaMovitoCambioCargo) {
         BigInteger verificadorVP = new BigInteger("-1");
         try {
-            verificadorVP = persistenciaEvalEvaluadores.verificarBorradoEvalPruebas(secuenciaMovitoCambioCargo);
+            verificadorVP = persistenciaEvalEvaluadores.verificarBorradoEvalPruebas(em,secuenciaMovitoCambioCargo);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarEvalEvaluadores verificarBorradoVC ERROR :" + e);
         } finally {

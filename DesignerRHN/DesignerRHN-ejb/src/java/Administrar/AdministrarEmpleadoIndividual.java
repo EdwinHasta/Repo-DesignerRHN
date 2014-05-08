@@ -25,8 +25,8 @@ import Entidades.VigenciasEventos;
 import Entidades.VigenciasFormales;
 import Entidades.VigenciasIndicadores;
 import Entidades.VigenciasProyectos;
-import InterfacePersistencia.PersistenciaVigenciasProyectosInterface;
 import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDemandasInterface;
@@ -38,9 +38,12 @@ import InterfacePersistencia.PersistenciaFamiliaresInterface;
 import InterfacePersistencia.PersistenciaHVHojasDeVidaInterface;
 import InterfacePersistencia.PersistenciaHvEntrevistasInterface;
 import InterfacePersistencia.PersistenciaHvExperienciasLaboralesInterface;
+import InterfacePersistencia.PersistenciaHvReferenciasInterface;
 import InterfacePersistencia.PersistenciaIdiomasPersonasInterface;
 import InterfacePersistencia.PersistenciaInformacionesAdicionalesInterface;
+import InterfacePersistencia.PersistenciaPersonasInterface;
 import InterfacePersistencia.PersistenciaTelefonosInterface;
+import InterfacePersistencia.PersistenciaTiposDocumentosInterface;
 import InterfacePersistencia.PersistenciaVigenciasAficionesInterface;
 import InterfacePersistencia.PersistenciaVigenciasDeportesInterface;
 import InterfacePersistencia.PersistenciaVigenciasDomiciliariasInterface;
@@ -48,13 +51,12 @@ import InterfacePersistencia.PersistenciaVigenciasEstadosCivilesInterface;
 import InterfacePersistencia.PersistenciaVigenciasEventosInterface;
 import InterfacePersistencia.PersistenciaVigenciasFormalesInterface;
 import InterfacePersistencia.PersistenciaVigenciasIndicadoresInterface;
-import InterfacePersistencia.PersistenciaHvReferenciasInterface;
-import InterfacePersistencia.PersistenciaPersonasInterface;
-import InterfacePersistencia.PersistenciaTiposDocumentosInterface;
+import InterfacePersistencia.PersistenciaVigenciasProyectosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndividualInterface {
@@ -109,16 +111,30 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaPersonasInterface persistenciaPersonas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public HVHojasDeVida hvHojaDeVidaPersona(BigInteger secPersona) {
-        return persistenciaHVHojasDeVida.hvHojaDeVidaPersona(secPersona);
+        return persistenciaHVHojasDeVida.hvHojaDeVidaPersona(em,secPersona);
     }
 
     @Override
     public Telefonos primerTelefonoPersona(BigInteger secPersona) {
         List<Telefonos> listaTelefonos;
-        listaTelefonos = persistenciaTelefonos.telefonosPersona(secPersona);
+        listaTelefonos = persistenciaTelefonos.telefonosPersona(em,secPersona);
         if (listaTelefonos != null) {
             return listaTelefonos.get(0);
         } else {
@@ -129,7 +145,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public Direcciones primeraDireccionPersona(BigInteger secPersona) {
         List<Direcciones> listaDirecciones;
-        listaDirecciones = persistenciaDirecciones.direccionPersona(secPersona);
+        listaDirecciones = persistenciaDirecciones.direccionPersona(em,secPersona);
         if (listaDirecciones != null) {
             return listaDirecciones.get(0);
         } else {
@@ -140,7 +156,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasEstadosCiviles estadoCivilPersona(BigInteger secPersona) {
         List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles;
-        listaVigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPersona(secPersona);
+        listaVigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPersona(em,secPersona);
         if (listaVigenciasEstadosCiviles != null) {
             return listaVigenciasEstadosCiviles.get(0);
         } else {
@@ -151,7 +167,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public InformacionesAdicionales informacionAdicionalPersona(BigInteger secEmpleado) {
         List<InformacionesAdicionales> listaInformacionesAdicionales;
-        listaInformacionesAdicionales = persistenciaInformacionesAdicionales.informacionAdicionalPersona(secEmpleado);
+        listaInformacionesAdicionales = persistenciaInformacionesAdicionales.informacionAdicionalPersona(em,secEmpleado);
         if (listaInformacionesAdicionales != null) {
             return listaInformacionesAdicionales.get(0);
         } else {
@@ -162,7 +178,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public Encargaturas reemplazoPersona(BigInteger secEmpleado) {
         List<Encargaturas> listaEncargaturas;
-        listaEncargaturas = persistenciaEncargaturas.reemplazoPersona(secEmpleado);
+        listaEncargaturas = persistenciaEncargaturas.reemplazoPersona(em,secEmpleado);
         if (listaEncargaturas != null) {
             return listaEncargaturas.get(0);
         } else {
@@ -173,7 +189,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasFormales educacionPersona(BigInteger secPersona) {
         List<VigenciasFormales> listaVigenciasFormales;
-        listaVigenciasFormales = persistenciaVigenciasFormales.educacionPersona(secPersona);
+        listaVigenciasFormales = persistenciaVigenciasFormales.educacionPersona(em,secPersona);
         if (listaVigenciasFormales != null) {
             return listaVigenciasFormales.get(0);
         } else {
@@ -184,7 +200,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public IdiomasPersonas idiomasPersona(BigInteger secPersona) {
         List<IdiomasPersonas> listaIdiomasPersonas;
-        listaIdiomasPersonas = persistenciaIdiomasPersonas.idiomasPersona(secPersona);
+        listaIdiomasPersonas = persistenciaIdiomasPersonas.idiomasPersona(em,secPersona);
         if (listaIdiomasPersonas != null) {
             return listaIdiomasPersonas.get(0);
         } else {
@@ -195,7 +211,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasProyectos proyectosPersona(BigInteger secEmpleado) {
         List<VigenciasProyectos> listaVigenciasProyectos;
-        listaVigenciasProyectos = persistenciaVigenciasProyectos.proyectosEmpleado(secEmpleado);
+        listaVigenciasProyectos = persistenciaVigenciasProyectos.proyectosEmpleado(em,secEmpleado);
         if (listaVigenciasProyectos != null) {
             return listaVigenciasProyectos.get(0);
         } else {
@@ -206,7 +222,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public HvReferencias referenciasPersonalesPersona(BigInteger secHv) {
         List<HvReferencias> listaReferenciasPersonales;
-        listaReferenciasPersonales = persistenciaHvReferencias.referenciasPersonalesPersona(secHv);
+        listaReferenciasPersonales = persistenciaHvReferencias.referenciasPersonalesPersona(em,secHv);
         if (listaReferenciasPersonales != null) {
             return listaReferenciasPersonales.get(0);
         } else {
@@ -217,7 +233,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public HvReferencias referenciasFamiliaresPersona(BigInteger secHv) {
         List<HvReferencias> listaReferenciasPersonales;
-        listaReferenciasPersonales = persistenciaHvReferencias.contarReferenciasFamiliaresPersona(secHv);
+        listaReferenciasPersonales = persistenciaHvReferencias.contarReferenciasFamiliaresPersona(em,secHv);
         if (listaReferenciasPersonales != null) {
             return listaReferenciasPersonales.get(0);
         } else {
@@ -228,7 +244,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public HvExperienciasLaborales experienciaLaboralPersona(BigInteger secHv) {
         List<HvExperienciasLaborales> listaExperienciaLaboral;
-        listaExperienciaLaboral = persistenciaHvExperienciasLaborales.experienciaLaboralPersona(secHv);
+        listaExperienciaLaboral = persistenciaHvExperienciasLaborales.experienciaLaboralPersona(em,secHv);
         if (listaExperienciaLaboral != null) {
             return listaExperienciaLaboral.get(0);
         } else {
@@ -239,7 +255,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasEventos eventosPersona(BigInteger secEmpl) {
         List<VigenciasEventos> listaVigenciasEventos;
-        listaVigenciasEventos = persistenciaVigenciasEventos.eventosEmpleado(secEmpl);
+        listaVigenciasEventos = persistenciaVigenciasEventos.eventosEmpleado(em,secEmpl);
         if (listaVigenciasEventos != null) {
             return listaVigenciasEventos.get(0);
         } else {
@@ -250,7 +266,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasDeportes deportesPersona(BigInteger secPersona) {
         List<VigenciasDeportes> listaVigenciasDeportes;
-        listaVigenciasDeportes = persistenciaVigenciasDeportes.deportePersona(secPersona);
+        listaVigenciasDeportes = persistenciaVigenciasDeportes.deportePersona(em,secPersona);
         if (listaVigenciasDeportes != null) {
             return listaVigenciasDeportes.get(0);
         } else {
@@ -261,7 +277,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasAficiones aficionesPersona(BigInteger secPersona) {
         List<VigenciasAficiones> listaVigenciasAficiones;
-        listaVigenciasAficiones = persistenciaVigenciasAficiones.aficionesPersona(secPersona);
+        listaVigenciasAficiones = persistenciaVigenciasAficiones.aficionesPersona(em,secPersona);
         if (listaVigenciasAficiones != null) {
             return listaVigenciasAficiones.get(0);
         } else {
@@ -272,7 +288,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public Familiares familiaresPersona(BigInteger secPersona) {
         List<Familiares> listaFamiliares;
-        listaFamiliares = persistenciaFamiliares.familiaresPersona(secPersona);
+        listaFamiliares = persistenciaFamiliares.familiaresPersona(em,secPersona);
         if (listaFamiliares != null) {
             return listaFamiliares.get(0);
         } else {
@@ -283,7 +299,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public HvEntrevistas entrevistasPersona(BigInteger secHv) {
         List<HvEntrevistas> listaEntrevistas;
-        listaEntrevistas = persistenciaHvEntrevistas.entrevistasPersona(secHv);
+        listaEntrevistas = persistenciaHvEntrevistas.entrevistasPersona(em,secHv);
         if (listaEntrevistas != null) {
             return listaEntrevistas.get(0);
         } else {
@@ -294,7 +310,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasIndicadores indicadoresPersona(BigInteger secEmpl) {
         List<VigenciasIndicadores> listaVigenciasIndicadores;
-        listaVigenciasIndicadores = persistenciaVigenciasIndicadores.ultimosIndicadoresEmpleado(secEmpl);
+        listaVigenciasIndicadores = persistenciaVigenciasIndicadores.ultimosIndicadoresEmpleado(em,secEmpl);
         if (listaVigenciasIndicadores != null) {
             return listaVigenciasIndicadores.get(0);
         } else {
@@ -305,7 +321,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public Demandas demandasPersona(BigInteger secEmpl) {
         List<Demandas> listaDemandas;
-        listaDemandas = persistenciaDemandas.demandasPersona(secEmpl);
+        listaDemandas = persistenciaDemandas.demandasPersona(em,secEmpl);
         if (listaDemandas != null) {
             return listaDemandas.get(0);
         } else {
@@ -316,7 +332,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public VigenciasDomiciliarias visitasDomiciliariasPersona(BigInteger secPersona) {
         List<VigenciasDomiciliarias> listaVigenciasDomiciliarias;
-        listaVigenciasDomiciliarias = persistenciaVigenciasDomiciliarias.visitasDomiciliariasPersona(secPersona);
+        listaVigenciasDomiciliarias = persistenciaVigenciasDomiciliarias.visitasDomiciliariasPersona(em,secPersona);
         if (listaVigenciasDomiciliarias != null) {
             return listaVigenciasDomiciliarias.get(0);
         } else {
@@ -327,7 +343,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public EvalResultadosConv pruebasAplicadasPersona(BigInteger secEmpleado) {
         List<EvalResultadosConv> listaPruebasAplicadas;
-        listaPruebasAplicadas = persistenciaEvalResultadosConv.pruebasAplicadasPersona(secEmpleado);
+        listaPruebasAplicadas = persistenciaEvalResultadosConv.pruebasAplicadasPersona(em,secEmpleado);
         if (listaPruebasAplicadas != null) {
             return listaPruebasAplicadas.get(0);
         } else {
@@ -339,21 +355,21 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public List<TiposDocumentos> tiposDocumentos() {
         List<TiposDocumentos> listaTiposDocumentos;
-        listaTiposDocumentos = persistenciaTiposDocumentos.consultarTiposDocumentos();
+        listaTiposDocumentos = persistenciaTiposDocumentos.consultarTiposDocumentos(em);
         return listaTiposDocumentos;
     }
 
     @Override
     public List<Ciudades> ciudades() {
         List<Ciudades> listaCiudades;
-        listaCiudades = persistenciaCiudades.ciudades();
+        listaCiudades = persistenciaCiudades.ciudades(em);
         return listaCiudades;
     }
 
     @Override
     public List<Cargos> cargos() {
         List<Cargos> listaCargos;
-        listaCargos = persistenciaCargos.consultarCargos();
+        listaCargos = persistenciaCargos.consultarCargos(em);
         return listaCargos;
     }
 
@@ -361,7 +377,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     public Empleados buscarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {
-            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em,secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -372,7 +388,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public void modificarEmpleado(Empleados empleado) {
         try {
-            persistenciaEmpleado.editar(empleado);
+            persistenciaEmpleado.editar(em,empleado);
         } catch (Exception e) {
             System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarEmpleado");
         }
@@ -381,7 +397,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public void modificarHojaDeVida(HVHojasDeVida hojaVida) {
         try {
-            persistenciaHVHojasDeVida.editar(hojaVida);
+            persistenciaHVHojasDeVida.editar(em,hojaVida);
         } catch (Exception e) {
             System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarHojaDeVida");
         }
@@ -399,7 +415,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
             if (personas.getViviendapropia().equals("")) {
                 personas.setViviendapropia(null);
             }
-            persistenciaPersonas.editar(personas);
+            persistenciaPersonas.editar(em,personas);
         } catch (Exception e) {
             System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarPersona");
         }
@@ -408,7 +424,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
     @Override
     public void actualizarFotoPersona(BigInteger identificacion) {
         try {
-            persistenciaPersonas.actualizarFotoPersona(identificacion);
+            persistenciaPersonas.actualizarFotoPersona(em,identificacion);
         } catch (Exception e) {
             System.out.println("No se puede actalizar el estado de la Foto.");
         }

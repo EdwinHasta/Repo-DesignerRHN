@@ -233,5 +233,5 @@ public interface AdministrarCargueArchivosInterface {
      * @return Retorna un ResultadoBorrarTodoNovedades con los documentos que no fueron borrados y 
      * la cantidad de registros eliminados.
      */
-    public ResultadoBorrarTodoNovedades BorrarTodo(ActualUsuario usuarioBD, List<String> documentosSoporte);
+    public ResultadoBorrarTodoNovedades BorrarTodo(ActualUsuario usuarioBD, List<String> documentosSoporte);    
 }

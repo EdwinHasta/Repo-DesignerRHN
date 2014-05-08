@@ -8,6 +8,7 @@ import Entidades.Demandas;
 import Entidades.Empleados;
 import Entidades.MotivosDemandas;
 import InterfaceAdministrar.AdministrarEmplDemandaInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaDemandasInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaMotivosDemandasInterface;
@@ -15,6 +16,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -29,11 +31,25 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
     PersistenciaMotivosDemandasInterface persistenciaMotivosDemandas;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public Empleados actualEmpleado(BigInteger secuencia) {
         try {
-            Empleados empl = persistenciaEmpleado.buscarEmpleado(secuencia);
+            Empleados empl = persistenciaEmpleado.buscarEmpleado(em,secuencia);
             return empl;
         } catch (Exception e) {
             System.out.println("Error actualEmpleado Admi : " + e.toString());
@@ -44,7 +60,7 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
     @Override
     public List<MotivosDemandas> listMotivosDemandas() {
         try {
-            List<MotivosDemandas> listMotivosD = persistenciaMotivosDemandas.buscarMotivosDemandas();
+            List<MotivosDemandas> listMotivosD = persistenciaMotivosDemandas.buscarMotivosDemandas(em);
             return listMotivosD;
         } catch (Exception e) {
             System.out.println("Error listMotivosDemandas Admi : " + e.toString());
@@ -55,7 +71,7 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
     @Override
     public List<Demandas> listDemandasEmpleadoSecuencia(BigInteger secuencia) {
         try {
-            List<Demandas> listDemandas = persistenciaDemadas.demandasPersona(secuencia);
+            List<Demandas> listDemandas = persistenciaDemadas.demandasPersona(em,secuencia);
             return listDemandas;
         } catch (Exception e) {
             System.out.println("Error listDemandasEmpleadoSecuencia Admi : " + e.toString());
@@ -70,7 +86,7 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
                 if (listD.get(i).getMotivo().getSecuencia() == null) {
                     listD.get(i).setMotivo(null);
                 }
-                persistenciaDemadas.crear(listD.get(i));
+                persistenciaDemadas.crear(em,listD.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearDemandas Admi : " + e.toString());
@@ -84,7 +100,7 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
                 if (listD.get(i).getMotivo().getSecuencia() == null) {
                     listD.get(i).setMotivo(null);
                 }
-                persistenciaDemadas.editar(listD.get(i));
+                persistenciaDemadas.editar(em,listD.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarDemandas Admi : " + e.toString());
@@ -98,7 +114,7 @@ public class AdministrarEmplDemanda implements AdministrarEmplDemandaInterface {
                 if (listD.get(i).getMotivo().getSecuencia() == null) {
                     listD.get(i).setMotivo(null);
                 }
-                persistenciaDemadas.borrar(listD.get(i));
+                persistenciaDemadas.borrar(em,listD.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarDemandas Admi : " + e.toString());

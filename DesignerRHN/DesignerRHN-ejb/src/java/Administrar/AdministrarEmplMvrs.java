@@ -10,6 +10,7 @@ import Entidades.Mvrs;
 import Entidades.OtrosCertificados;
 import Entidades.TiposCertificados;
 import InterfaceAdministrar.AdministrarEmplMvrsInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaMotivosMvrsInterface;
 import InterfacePersistencia.PersistenciaMvrsInterface;
@@ -19,6 +20,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -37,12 +39,26 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
     PersistenciaMotivosMvrsInterface persistenciaMotivos;
     @EJB
     PersistenciaTiposCertificadosInterface persistenciaTiposCertificados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public List<OtrosCertificados> listOtrosCertificadosEmpleado(BigInteger secuencia) {
         try {
             List<OtrosCertificados> listOtrosCertificados;
-            listOtrosCertificados = persistenciaOtrosCertificados.buscarOtrosCertificadosEmpleado(secuencia);
+            listOtrosCertificados = persistenciaOtrosCertificados.buscarOtrosCertificadosEmpleado(em,secuencia);
             return listOtrosCertificados;
         } catch (Exception e) {
             System.out.println("Error listOtrosCertificadosEmpleado Admi : " + e.toString());
@@ -54,7 +70,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
     public List<Mvrs> listMvrsEmpleado(BigInteger secuenciaEmpl) {
         try {
             List<Mvrs> listMvrs;
-            listMvrs = persistenciaMvrs.buscarMvrsEmpleado(secuenciaEmpl);
+            listMvrs = persistenciaMvrs.buscarMvrsEmpleado(em,secuenciaEmpl);
             return listMvrs;
         } catch (Exception e) {
             System.out.println("Error listMvrsEmpleado Admi : " + e.toString());
@@ -69,7 +85,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
                 if (crearOtrosCertificados.get(i).getTipocertificado().getSecuencia() == null) {
                     crearOtrosCertificados.get(i).setTipocertificado(null);
                 }
-                persistenciaOtrosCertificados.crear(crearOtrosCertificados.get(i));
+                persistenciaOtrosCertificados.crear(em,crearOtrosCertificados.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en crearOtrosCertificados Admi : " + e.toString());
@@ -83,7 +99,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
                 if (modificarOtrosCertificados.get(i).getTipocertificado().getSecuencia() == null) {
                     modificarOtrosCertificados.get(i).setTipocertificado(null);
                 }
-                persistenciaOtrosCertificados.editar(modificarOtrosCertificados.get(i));
+                persistenciaOtrosCertificados.editar(em,modificarOtrosCertificados.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en modificarOtrosCertificados Admi : " + e.toString());
@@ -97,7 +113,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
                 if (borrarOtrosCertificados.get(i).getTipocertificado().getSecuencia() == null) {
                     borrarOtrosCertificados.get(i).setTipocertificado(null);
                 }
-                persistenciaOtrosCertificados.borrar(borrarOtrosCertificados.get(i));
+                persistenciaOtrosCertificados.borrar(em,borrarOtrosCertificados.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en borrarOtrosCertificados Admi : " + e.toString());
@@ -111,7 +127,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
                 if (crearMvrs.get(i).getMotivo().getSecuencia() == null) {
                     crearMvrs.get(i).setMotivo(null);
                 }
-                persistenciaMvrs.crear(crearMvrs.get(i));
+                persistenciaMvrs.crear(em,crearMvrs.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en crearMvrs Admi : " + e.toString());
@@ -125,7 +141,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
                 if (modificarMvrs.get(i).getMotivo().getSecuencia() == null) {
                     modificarMvrs.get(i).setMotivo(null);
                 }
-                persistenciaMvrs.editar(modificarMvrs.get(i));
+                persistenciaMvrs.editar(em,modificarMvrs.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en modificarMvrs Admi : " + e.toString());
@@ -139,7 +155,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
                 if (borrarMvrs.get(i).getMotivo().getSecuencia() == null) {
                     borrarMvrs.get(i).setMotivo(null);
                 }
-                persistenciaMvrs.borrar(borrarMvrs.get(i));
+                persistenciaMvrs.borrar(em,borrarMvrs.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error en borrarMvrs Admi : " + e.toString());
@@ -150,7 +166,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
     public List<Motivosmvrs> listMotivos() {
         try {
             List<Motivosmvrs> listMotivos;
-            listMotivos = persistenciaMotivos.buscarMotivosMvrs();
+            listMotivos = persistenciaMotivos.buscarMotivosMvrs(em);
             return listMotivos;
         } catch (Exception e) {
             System.out.println("Error listMotivos Admi : " + e.toString());
@@ -162,7 +178,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
     public List<TiposCertificados> listTiposCertificados() {
         try {
             List<TiposCertificados> listTiposCertificados;
-            listTiposCertificados = persistenciaTiposCertificados.buscarTiposCertificados();
+            listTiposCertificados = persistenciaTiposCertificados.buscarTiposCertificados(em);
             return listTiposCertificados;
         } catch (Exception e) {
             System.out.println("Error listTiposCertificados Admi : " + e.toString());
@@ -173,7 +189,7 @@ public class AdministrarEmplMvrs implements AdministrarEmplMvrsInterface {
     @Override
     public Empleados empleadoActual(BigInteger secuencia) {
         try {
-            Empleados empl = persistenciaEmpleados.buscarEmpleado(secuencia);
+            Empleados empl = persistenciaEmpleados.buscarEmpleado(em,secuencia);
             return empl;
         } catch (Exception e) {
             System.out.println("Error empleadoActual Admi : " + e.toString());

@@ -18,6 +18,14 @@ import javax.ejb.Local;
 public interface AdministrarEventosInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+
+    /**
      * Método encargado de modificar Eventos.
      *
      * @param listaEventos Lista Eventos que se van a modificar.

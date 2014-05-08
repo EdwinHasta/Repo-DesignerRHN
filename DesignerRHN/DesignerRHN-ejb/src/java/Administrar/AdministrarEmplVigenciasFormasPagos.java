@@ -11,16 +11,18 @@ import Entidades.Periodicidades;
 import Entidades.Sucursales;
 import Entidades.VigenciasFormasPagos;
 import InterfaceAdministrar.AdministrarEmplVigenciasFormasPagosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaFormasPagosInterface;
 import InterfacePersistencia.PersistenciaMetodosPagosInterface;
+import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaSucursalesInterface;
 import InterfacePersistencia.PersistenciaVigenciasFormasPagosInterface;
-import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -41,6 +43,16 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     PersistenciaMetodosPagosInterface PersistenciaMetodosPagos;
     @EJB
     PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     Empleados empleado;
     VigenciasFormasPagos vigenciaFormaPagoPorEmpleado;
     List<VigenciasFormasPagos> listVigenciasFormasPagosPorEmpleado;
@@ -50,9 +62,14 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     List<Periodicidades> listPeriodicidades;
 
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<VigenciasFormasPagos> consultarVigenciasFormasPagosPorEmpleado(BigInteger secEmpleado) {
         try {
-            listVigenciasFormasPagosPorEmpleado = PersistenciaVigenciasFormasPagos.buscarVigenciasFormasPagosPorEmpleado(secEmpleado);
+            listVigenciasFormasPagosPorEmpleado = PersistenciaVigenciasFormasPagos.buscarVigenciasFormasPagosPorEmpleado(em,secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Formas Pagos");
             listVigenciasFormasPagosPorEmpleado = null;
@@ -76,7 +93,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
                 System.out.println("ADMINISTRAR EMPLVIGENCIASFORMASPAGOS ES NULO...");
                 listaVigenciasFormasPagos.get(i).setSucursal(null);
             }
-            PersistenciaVigenciasFormasPagos.editar(listaVigenciasFormasPagos.get(i));
+            PersistenciaVigenciasFormasPagos.editar(em,listaVigenciasFormasPagos.get(i));
         }
     }
 
@@ -88,19 +105,19 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
                 System.out.println("ADMINISTRAR EMPLVIGENCIASFORMASPAGOS ES NULO...");
                 listaVigenciasFormasPagos.get(i).setSucursal(null);
             }
-            PersistenciaVigenciasFormasPagos.borrar(listaVigenciasFormasPagos.get(i));
+            PersistenciaVigenciasFormasPagos.borrar(em,listaVigenciasFormasPagos.get(i));
         }
     }
 
     @Override
     public void crearVigencasFormasPagos(VigenciasFormasPagos vigenciasFormasPagos) {
-        PersistenciaVigenciasFormasPagos.crear(vigenciasFormasPagos);
+        PersistenciaVigenciasFormasPagos.crear(em,vigenciasFormasPagos);
     }
 
     @Override
     public Empleados consultarEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(em,secuencia);
             return empleado;
         } catch (Exception e) {
             System.out.println("AdministrarVigenciasFormasPagos buscarEmpleado error" + e);
@@ -112,7 +129,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     @Override
     public List<Sucursales> consultarLOVSucursales() {
         try {
-            listSucursales = persistenciaSucursales.consultarSucursales();
+            listSucursales = persistenciaSucursales.consultarSucursales(em);
             return listSucursales;
         } catch (Exception e) {
             System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de sucursales " + e);
@@ -123,7 +140,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     @Override
     public List<FormasPagos> consultarLOVFormasPagos() {
         try {
-            listFormasPagos = PersistenciaFormasPagos.buscarFormasPagos();
+            listFormasPagos = PersistenciaFormasPagos.buscarFormasPagos(em);
             return listFormasPagos;
         } catch (Exception e) {
             System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Formas pagos " + e);
@@ -134,7 +151,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     @Override
     public List<MetodosPagos> consultarLOVMetodosPagos() {
         try {
-            listMetodosPagos = PersistenciaMetodosPagos.buscarMetodosPagos();
+            listMetodosPagos = PersistenciaMetodosPagos.buscarMetodosPagos(em);
             return listMetodosPagos;
         } catch (Exception e) {
             System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Metodos Pagos " + e);
@@ -145,7 +162,7 @@ public class AdministrarEmplVigenciasFormasPagos implements AdministrarEmplVigen
     @Override
     public List<Periodicidades> consultarLOVPerdiocidades() {
         try {
-            listPeriodicidades = persistenciaPeriodicidades.consultarPeriodicidades();
+            listPeriodicidades = persistenciaPeriodicidades.consultarPeriodicidades(em);
             return listPeriodicidades;
         } catch (Exception e) {
             System.err.println("AdministrarVigencasFormasPagos Error en la busqueda de Periodicidades " + e);

@@ -6,11 +6,13 @@ package Administrar;
 import Entidades.Contratos;
 import Entidades.TiposCotizantes;
 import InterfaceAdministrar.AdministrarContratosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaContratosInterface;
 import InterfacePersistencia.PersistenciaTiposCotizantesInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -21,9 +23,11 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarContratos implements AdministrarContratosInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
+
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -38,18 +42,32 @@ public class AdministrarContratos implements AdministrarContratosInterface {
      */
     @EJB
     PersistenciaTiposCotizantesInterface persistenciaTiposCotizantes;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<Contratos> consultarContratos() {
-        return persistenciaContratos.lovContratos();
+        return persistenciaContratos.lovContratos(em);
     }
 
     @Override
     public List<TiposCotizantes> consultaLOVTiposCotizantes() {
-        return persistenciaTiposCotizantes.lovTiposCotizantes();
+        return persistenciaTiposCotizantes.lovTiposCotizantes(em);
     }
 
     @Override
@@ -58,9 +76,9 @@ public class AdministrarContratos implements AdministrarContratosInterface {
             System.out.println("Modificando...");
             if (listContratosModificados.get(i).getTipocotizante().getSecuencia() == null) {
                 listContratosModificados.get(i).setTipocotizante(null);
-                persistenciaContratos.editar(listContratosModificados.get(i));
+                persistenciaContratos.editar(em,listContratosModificados.get(i));
             } else {
-                persistenciaContratos.editar(listContratosModificados.get(i));
+                persistenciaContratos.editar(em,listContratosModificados.get(i));
             }
         }
     }
@@ -71,9 +89,9 @@ public class AdministrarContratos implements AdministrarContratosInterface {
             System.out.println("Borrando...");
             if (listaContratos.get(i).getTipocotizante().getSecuencia() == null) {
                 listaContratos.get(i).setTipocotizante(null);
-                persistenciaContratos.borrar(listaContratos.get(i));
+                persistenciaContratos.borrar(em,listaContratos.get(i));
             } else {
-                persistenciaContratos.borrar(listaContratos.get(i));
+                persistenciaContratos.borrar(em,listaContratos.get(i));
             }
         }
     }
@@ -84,15 +102,15 @@ public class AdministrarContratos implements AdministrarContratosInterface {
             System.out.println("Creando...");
             if (listaContratos.get(i).getTipocotizante().getSecuencia() == null) {
                 listaContratos.get(i).setTipocotizante(null);
-                persistenciaContratos.crear(listaContratos.get(i));
+                persistenciaContratos.crear(em,listaContratos.get(i));
             } else {
-                persistenciaContratos.crear(listaContratos.get(i));
+                persistenciaContratos.crear(em,listaContratos.get(i));
             }
         }
     }
 
     @Override
     public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {
-        persistenciaContratos.reproducirContrato(codigoOrigen, codigoDestino);
+        persistenciaContratos.reproducirContrato(em,codigoOrigen, codigoDestino);
     }
 }

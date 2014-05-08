@@ -72,4 +72,11 @@ public interface AdministrarCarpetaDesignerInterface {
      * @param aficion Aficion que se van a eliminar.
      */
     public void borrarAficion(Aficiones aficion);
+    
+	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

@@ -2,11 +2,13 @@ package Administrar;
 
 import Entidades.Formulas;
 import InterfaceAdministrar.AdministrarFormulaInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaFormulasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarFormula implements AdministrarFormulaInterface {
@@ -14,9 +16,24 @@ public class AdministrarFormula implements AdministrarFormulaInterface {
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
 
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
     @Override
     public List<Formulas> formulas() {
-        return persistenciaFormulas.lovFormulas();
+        return persistenciaFormulas.lovFormulas(em);
     }
 
     @Override
@@ -28,34 +45,34 @@ public class AdministrarFormula implements AdministrarFormulaInterface {
             } else if (listFormulasModificadas.get(i).isPeriodicidadFormula() == false) {
                 listFormulasModificadas.get(i).setPeriodicidadindependiente("N");
             }
-            persistenciaFormulas.editar(listFormulasModificadas.get(i));
+            persistenciaFormulas.editar(em,listFormulasModificadas.get(i));
         }
     }
 
     @Override
     public void borrar(Formulas formula) {
-        persistenciaFormulas.borrar(formula);
+        persistenciaFormulas.borrar(em,formula);
     }
 
     @Override
     public void crear(Formulas formula) {
-        persistenciaFormulas.crear(formula);
+        persistenciaFormulas.crear(em,formula);
     }
 
     @Override
     public void clonarFormula(String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
-        persistenciaFormulas.clonarFormulas(nombreCortoOrigen, nombreCortoClon, nombreLargoClon, observacionClon);
+        persistenciaFormulas.clonarFormulas(em,nombreCortoOrigen, nombreCortoClon, nombreLargoClon, observacionClon);
     }
 
     @Override
     public void operandoFormula(BigInteger secFormula) {
-        persistenciaFormulas.operandoFormulas(secFormula);
+        persistenciaFormulas.operandoFormulas(em,secFormula);
     }
 
     @Override
     public Formulas buscarFormulaSecuencia(BigInteger secuencia) {
         try {
-            Formulas etc = persistenciaFormulas.buscarFormula(secuencia);
+            Formulas etc = persistenciaFormulas.buscarFormula(em,secuencia);
             return etc;
         } catch (Exception e) {
             System.out.println("Error buscarFormulaSecuencia Admi : " + e.toString());

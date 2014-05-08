@@ -7,6 +7,7 @@ import Entidades.CentrosCostos;
 import Entidades.Empresas;
 import Entidades.TiposCentrosCostos;
 import InterfaceAdministrar.AdministrarCentroCostosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCentrosCostosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaTiposCentrosCostosInterface;
@@ -15,6 +16,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -51,12 +53,28 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
      */
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
 
     //-------------------------------------------------------------------------------------
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     @Override
     public List<Empresas> buscarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas(em);
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("AdministrarCentroCostos: Falló al buscar las empresas /n" + e.getMessage());
@@ -69,7 +87,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             for (int i = 0; i < listaCentrosCostos.size(); i++) {
                 System.out.println("Modificando...");
-                persistenciaCentrosCostos.editar(listaCentrosCostos.get(i));
+                persistenciaCentrosCostos.editar(em,listaCentrosCostos.get(i));
             }
         } catch (Exception e) {
             System.err.println("AdministrarCentrosCostos: Falló al editar el CentroCosto /n" + e.getMessage());
@@ -82,7 +100,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             for (int i = 0; i < listaCentrosCostos.size(); i++) {
                 System.out.println("Borrando...");
-                persistenciaCentrosCostos.borrar(listaCentrosCostos.get(i));
+                persistenciaCentrosCostos.borrar(em,listaCentrosCostos.get(i));
             }
         } catch (Exception e) {
             System.err.println("ERROR AdministrarCentroCostos.borrarCentroCostos ERROR=====" + e.getMessage());
@@ -95,7 +113,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             for (int i = 0; i < listaCentrosCostos.size(); i++) {
                 System.out.println("Creando...");
-                persistenciaCentrosCostos.crear(listaCentrosCostos.get(i));
+                persistenciaCentrosCostos.crear(em,listaCentrosCostos.get(i));
             }
         } catch (Exception e) {
             System.err.println("ERROR AdministrarCentroCostos.crearCentroCostos ERROR======" + e.getMessage());
@@ -106,7 +124,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     public List<CentrosCostos> consultarCentrosCostosPorEmpresa(BigInteger secEmpresa) {
         try {
             System.out.println("ENTRE A AdministrarCentroCostos.buscarCentrosCostosPorEmpresa ");
-            List<CentrosCostos> listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(secEmpresa);
+            List<CentrosCostos> listaCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostosEmpr(em,secEmpresa);
             return listaCentrosCostos;
         } catch (Exception e) {
             System.out.println("Error en Administrar CentrosCostos (centrosCostosPorEmpresa)");
@@ -117,7 +135,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     @Override
     public List<TiposCentrosCostos> lovTiposCentrosCostos() {
         try {
-            List<TiposCentrosCostos> listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos();
+            List<TiposCentrosCostos> listaTiposCentrosCostos = persistenciaTiposCentrosCostos.buscarTiposCentrosCostos(em);
             return listaTiposCentrosCostos;
         } catch (Exception e) {
             System.out.println("\n AdministrarCentroCostos error en buscarTiposCentroCostos \n" + e.getMessage());
@@ -129,7 +147,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     public BigInteger contadorComprobantesContables(BigInteger secCentroCosto) {
         BigInteger contadorComprobantesContables;
         try {
-            contadorComprobantesContables = persistenciaCentrosCostos.contadorComprobantesContables(secCentroCosto);
+            contadorComprobantesContables = persistenciaCentrosCostos.contadorComprobantesContables(em,secCentroCosto);
             return contadorComprobantesContables;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorComprobantesContables ERROR===" + e.getMessage());
@@ -141,7 +159,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     public BigInteger contadorDetallesCCConsolidador(BigInteger secCentroCosto) {
 
         try {
-            BigInteger contadorDetallesCCConsolidador = persistenciaCentrosCostos.contadorDetallesCCConsolidador(secCentroCosto);
+            BigInteger contadorDetallesCCConsolidador = persistenciaCentrosCostos.contadorDetallesCCConsolidador(em,secCentroCosto);
             return contadorDetallesCCConsolidador;
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorDetallesCCConsolidador ERROR===" + e.getMessage());
@@ -153,7 +171,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
     public BigInteger contadorDetalleContable(BigInteger secCentroCosto) {
 
         try {
-            BigInteger contadorDetallesCCDetalle = persistenciaCentrosCostos.contadorDetallesCCDetalle(secCentroCosto);
+            BigInteger contadorDetallesCCDetalle = persistenciaCentrosCostos.contadorDetallesCCDetalle(em,secCentroCosto);
             return contadorDetallesCCDetalle;
 
         } catch (Exception e) {
@@ -168,7 +186,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorEmpresasV;
-            return contadorEmpresasV = persistenciaCentrosCostos.contadorEmpresas(secCentroCosto);
+            return contadorEmpresasV = persistenciaCentrosCostos.contadorEmpresas(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorEmpresas ERROR===" + e.getMessage());
 
@@ -181,7 +199,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorEstructuras;
-            return contadorEstructuras = persistenciaCentrosCostos.contadorEstructuras(secCentroCosto);
+            return contadorEstructuras = persistenciaCentrosCostos.contadorEstructuras(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorEstructuras ERROR===" + e.getMessage());
 
@@ -194,7 +212,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorInterconCondor;
-            return contadorInterconCondor = persistenciaCentrosCostos.contadorInterconCondor(secCentroCosto);
+            return contadorInterconCondor = persistenciaCentrosCostos.contadorInterconCondor(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconCondor ERROR===" + e.getMessage());
             return null;
@@ -206,7 +224,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorInterconDynamics;
-            return contadorInterconDynamics = persistenciaCentrosCostos.contadorInterconDynamics(secCentroCosto);
+            return contadorInterconDynamics = persistenciaCentrosCostos.contadorInterconDynamics(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconDynamics ERROR===" + e.getMessage());
 
@@ -220,7 +238,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             BigInteger contadorInterconGeneral;
 
-            return contadorInterconGeneral = persistenciaCentrosCostos.contadorInterconGeneral(secCentroCosto);
+            return contadorInterconGeneral = persistenciaCentrosCostos.contadorInterconGeneral(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconGeneral ERROR===" + e.getMessage());
 
@@ -233,7 +251,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorInterconHelisa;
-            return contadorInterconHelisa = persistenciaCentrosCostos.contadorInterconHelisa(secCentroCosto);
+            return contadorInterconHelisa = persistenciaCentrosCostos.contadorInterconHelisa(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconHelisa ERROR===" + e.getMessage());
 
@@ -246,7 +264,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorInterconSapbo;
-            return contadorInterconSapbo = persistenciaCentrosCostos.contadorInterconSapbo(secCentroCosto);
+            return contadorInterconSapbo = persistenciaCentrosCostos.contadorInterconSapbo(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconSapbo ERROR===" + e.getMessage());
             return null;
@@ -259,7 +277,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             BigInteger contadorInterconSiigo;
 
-            return contadorInterconSiigo = persistenciaCentrosCostos.contadorInterconSiigo(secCentroCosto);
+            return contadorInterconSiigo = persistenciaCentrosCostos.contadorInterconSiigo(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconSiigo ERROR===" + e.getMessage());
             return null;
@@ -272,7 +290,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             BigInteger contadorInterconTotal;
 
-            return contadorInterconTotal = persistenciaCentrosCostos.contadorInterconTotal(secCentroCosto);
+            return contadorInterconTotal = persistenciaCentrosCostos.contadorInterconTotal(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorInterconTotal ERROR===" + e.getMessage());
             return null;
@@ -285,7 +303,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             BigInteger contadorNovedadesD;
 
-            return contadorNovedadesD = persistenciaCentrosCostos.contadorNovedadesD(secCentroCosto);
+            return contadorNovedadesD = persistenciaCentrosCostos.contadorNovedadesD(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorNovedadesD ERROR===" + e.getMessage());
             return null;
@@ -298,7 +316,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
         try {
             BigInteger contadorNovedadesC;
 
-            return contadorNovedadesC = persistenciaCentrosCostos.contadorNovedadesC(secCentroCosto);
+            return contadorNovedadesC = persistenciaCentrosCostos.contadorNovedadesC(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorNovedadesC ERROR===" + e.getMessage());
             return null;
@@ -310,7 +328,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorProcesosProductivos;
-            return contadorProcesosProductivos = persistenciaCentrosCostos.contadorProcesosProductivos(secCentroCosto);
+            return contadorProcesosProductivos = persistenciaCentrosCostos.contadorProcesosProductivos(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorProcesosProductivos ERROR===" + e.getMessage());
             return null;
@@ -322,7 +340,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorProyecciones;
-            return contadorProyecciones = persistenciaCentrosCostos.contadorProyecciones(secCentroCosto);
+            return contadorProyecciones = persistenciaCentrosCostos.contadorProyecciones(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorProyecciones ERROR===" + e.getMessage());
             return null;
@@ -334,7 +352,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorSolucionesNodosC;
-            return contadorSolucionesNodosC = persistenciaCentrosCostos.contadorSolucionesNodosC(secCentroCosto);
+            return contadorSolucionesNodosC = persistenciaCentrosCostos.contadorSolucionesNodosC(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSolucionesNodosC ERROR===" + e.getMessage());
 
@@ -347,7 +365,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorSolucionesNodosD;
-            return contadorSolucionesNodosD = persistenciaCentrosCostos.contadorSolucionesNodosD(secCentroCosto);
+            return contadorSolucionesNodosD = persistenciaCentrosCostos.contadorSolucionesNodosD(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSolucionesNodosD ERROR===" + e.getMessage());
             return null;
@@ -359,7 +377,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorSoPanoramas;
-            return contadorSoPanoramas = persistenciaCentrosCostos.contadorSoPanoramas(secCentroCosto);
+            return contadorSoPanoramas = persistenciaCentrosCostos.contadorSoPanoramas(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorSoPanoramas ERROR===" + e.getMessage());
             return null;
@@ -371,7 +389,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorTerceros;
-            return contadorTerceros = persistenciaCentrosCostos.contadorTerceros(secCentroCosto);
+            return contadorTerceros = persistenciaCentrosCostos.contadorTerceros(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorTerceros ERROR===" + e.getMessage());
             return null;
@@ -383,7 +401,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorUnidadesRegistradas;
-            return contadorUnidadesRegistradas = persistenciaCentrosCostos.contadorUnidadesRegistradas(secCentroCosto);
+            return contadorUnidadesRegistradas = persistenciaCentrosCostos.contadorUnidadesRegistradas(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorUnidadesRegistradas ERROR===" + e.getMessage());
             return null;
@@ -395,7 +413,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorVigenciasCuentasC;
-            return contadorVigenciasCuentasC = persistenciaCentrosCostos.contadorVigenciasCuentasC(secCentroCosto);
+            return contadorVigenciasCuentasC = persistenciaCentrosCostos.contadorVigenciasCuentasC(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorVigenciasCuentasC ERROR===" + e.getMessage());
             return null;
@@ -407,7 +425,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorVigenciasCuentasD;
-            return contadorVigenciasCuentasD = persistenciaCentrosCostos.contadorVigenciasCuentasD(secCentroCosto);
+            return contadorVigenciasCuentasD = persistenciaCentrosCostos.contadorVigenciasCuentasD(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorVigenciasCuentasD ERROR===" + e.getMessage());
             return null;
@@ -419,7 +437,7 @@ public class AdministrarCentroCostos implements AdministrarCentroCostosInterface
 
         try {
             BigInteger contadorVigenciasProrrateos;
-            return contadorVigenciasProrrateos = persistenciaCentrosCostos.contadorVigenciasProrrateos(secCentroCosto);
+            return contadorVigenciasProrrateos = persistenciaCentrosCostos.contadorVigenciasProrrateos(em,secCentroCosto);
         } catch (Exception e) {
             System.out.println("ERROR administrarCentrosCostos.contadorVigenciasProrrateos ERROR===" + e.getMessage());
             return null;

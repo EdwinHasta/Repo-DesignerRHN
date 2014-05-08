@@ -8,6 +8,7 @@ import Entidades.Modulos;
 import Entidades.Pantallas;
 import Entidades.Tablas;
 import InterfaceAdministrar.AdministrarCarpetaDesignerInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaAficionesInterface;
 import InterfacePersistencia.PersistenciaModulosInterface;
 import InterfacePersistencia.PersistenciaPantallasInterface;
@@ -16,6 +17,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -72,13 +74,28 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
      * Atributo que representa la Aficion que será objetivo de una acción.
      */
     public Aficiones aficion;
+    	/**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+        @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+        
     @Override
     public List<Modulos> consultarModulos() {
         try {
-            listModulos = persistenciaModulos.buscarModulos();
+            listModulos = persistenciaModulos.buscarModulos(em);
             return listModulos;
         } catch (Exception e) {
             listModulos = null;
@@ -89,7 +106,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     @Override
     public List<Tablas> consultarTablas(BigInteger secuenciaMod) {
         try {
-            listTablas = persistenciaTablas.buscarTablas(secuenciaMod);
+            listTablas = persistenciaTablas.buscarTablas(em,secuenciaMod);
             return listTablas;
         } catch (Exception e) {
             listTablas = null;
@@ -100,7 +117,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     @Override
     public Pantallas consultarPantalla(BigInteger secuenciaTab) {
         try {
-            pantalla = persistenciaPantallas.buscarPantalla(secuenciaTab);
+            pantalla = persistenciaPantallas.buscarPantalla(em,secuenciaTab);
             return pantalla;
         } catch (Exception e) {
             pantalla = null;
@@ -111,7 +128,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     @Override
     public List<Aficiones> consultarAficiones() {
         try {
-            listAficiones = persistenciaAficiones.buscarAficiones();
+            listAficiones = persistenciaAficiones.buscarAficiones(em);
             return listAficiones;
         } catch (Exception e) {
             listAficiones = null;
@@ -121,7 +138,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     
     @Override
     public Aficiones consultarAficion(BigInteger secuencia) {
-        aficion = persistenciaAficiones.buscarAficion(secuencia);
+        aficion = persistenciaAficiones.buscarAficion(em,secuencia);
         return aficion;
     }
     
@@ -130,7 +147,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
         for (int i = 0; i < listAficiones.size(); i++) {
             System.out.println("Modificando...");
             aficion = listAficiones.get(i);
-            persistenciaAficiones.editar(aficion);
+            persistenciaAficiones.editar(em,aficion);
         }
     }
     
@@ -142,7 +159,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
         Integer max;
         Short respuesta;
         System.out.println("Hagalo!");
-        respuesta = persistenciaAficiones.maximoCodigoAficiones();
+        respuesta = persistenciaAficiones.maximoCodigoAficiones(em);
         max = respuesta.intValue();
         max = max + 1;
         return max;
@@ -150,17 +167,17 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     
     @Override
     public void crearAficion(Aficiones aficion) {
-        persistenciaAficiones.crear(aficion);
+        persistenciaAficiones.crear(em,aficion);
     }
     
     @Override
     public void borrarAficion(Aficiones aficion) {
-        persistenciaAficiones.borrar(aficion);
+        persistenciaAficiones.borrar(em,aficion);
     }
     
     @Override
     public Aficiones consultarAficionCodigo(Short cod) {
-        aficion = persistenciaAficiones.buscarAficionCodigo(cod);
+        aficion = persistenciaAficiones.buscarAficionCodigo(em,cod);
         return aficion;
     }
 }

@@ -6,13 +6,15 @@
 
 package Administrar;
 
-import InterfaceAdministrar.AdministrarClasesCategoriasInterface;
 import Entidades.ClasesCategorias;
+import InterfaceAdministrar.AdministrarClasesCategoriasInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaClasesCategoriasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -23,12 +25,26 @@ public class AdministrarClasesCategorias implements AdministrarClasesCategoriasI
 
    @EJB
     PersistenciaClasesCategoriasInterface persistenciaClasesCategorias;
+   /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+    
+        @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarClasesCategorias(List<ClasesCategorias> listaClasesCategorias) {
         for (int i = 0; i < listaClasesCategorias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaClasesCategorias.editar(listaClasesCategorias.get(i));
+            persistenciaClasesCategorias.editar(em,listaClasesCategorias.get(i));
         }
     }
 
@@ -36,7 +52,7 @@ public class AdministrarClasesCategorias implements AdministrarClasesCategoriasI
     public void borrarClasesCategorias(List<ClasesCategorias> listaClasesCategorias) {
         for (int i = 0; i < listaClasesCategorias.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaClasesCategorias.borrar(listaClasesCategorias.get(i));
+            persistenciaClasesCategorias.borrar(em,listaClasesCategorias.get(i));
         }
     }
 
@@ -44,20 +60,20 @@ public class AdministrarClasesCategorias implements AdministrarClasesCategoriasI
     public void crearClasesCategorias(List<ClasesCategorias> listaClasesCategorias) {
         for (int i = 0; i < listaClasesCategorias.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaClasesCategorias.crear(listaClasesCategorias.get(i));
+            persistenciaClasesCategorias.crear(em,listaClasesCategorias.get(i));
         }
     }
 
     public List<ClasesCategorias> consultarClasesCategorias() {
         List<ClasesCategorias> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaClasesCategorias.consultarClasesCategorias();
+        listMotivosCambiosCargos = persistenciaClasesCategorias.consultarClasesCategorias(em);
         return listMotivosCambiosCargos;
     }
 
     @Override
     public ClasesCategorias consultarClaseCategoria(BigInteger secClasesCategorias) {
         ClasesCategorias subCategoria;
-        subCategoria = persistenciaClasesCategorias.consultarClaseCategoria(secClasesCategorias);
+        subCategoria = persistenciaClasesCategorias.consultarClaseCategoria(em,secClasesCategorias);
         return subCategoria;
     }
 
@@ -66,7 +82,7 @@ public class AdministrarClasesCategorias implements AdministrarClasesCategoriasI
         BigInteger contarCategoriaClaseCategoria = null;
 
         try {
-            return contarCategoriaClaseCategoria = persistenciaClasesCategorias.contarCategoriasClaseCategoria(secClasesCategorias);
+            return contarCategoriaClaseCategoria = persistenciaClasesCategorias.contarCategoriasClaseCategoria(em,secClasesCategorias);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarClasesCategorias contarCategoriaClaseCategoria ERROR : " + e);
             return null;

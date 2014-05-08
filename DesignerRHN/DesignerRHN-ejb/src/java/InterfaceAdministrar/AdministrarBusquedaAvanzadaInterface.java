@@ -23,12 +23,20 @@ public interface AdministrarBusquedaAvanzadaInterface {
     public List<Empleados> ejecutarQueryBusquedaAvanzadaPorModulos(String query);
 
     public String armarQueryModulosBusquedaAvanzada(List<ParametrosQueryBusquedaAvanzada> listaParametro);
-    
+
     public List<ColumnasEscenarios> buscarColumnasEscenarios();
-    
+
     public List<ColumnasBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos);
-    
+
     public List<BigInteger> ejecutarQueryBusquedaAvanzadaPorModulosCodigo(String query);
-    
-public List<ResultadoBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos);
+
+    public List<ResultadoBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos);
+
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 }

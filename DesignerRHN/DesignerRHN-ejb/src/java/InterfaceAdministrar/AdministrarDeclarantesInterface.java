@@ -25,9 +25,17 @@ public interface AdministrarDeclarantesInterface {
     public void borrarDeclarantes(Declarantes declarantes);
 
     public void crearDeclarantes(Declarantes declarantes);
-    
+
     public List<TarifaDeseo> retencionesMinimas(Date fechaFinal);
-    
+
     public List<RetencionesMinimas> retencionesMinimasLista();
+
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene asociado la
+     * sesion del usuario que utiliza el aplicativo.
+     *
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
 
 }

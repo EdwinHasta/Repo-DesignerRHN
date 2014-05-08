@@ -7,6 +7,7 @@ import Entidades.Ciudades;
 import Entidades.Direcciones;
 import Entidades.Personas;
 import InterfaceAdministrar.AdministrarDireccionesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
 import InterfacePersistencia.PersistenciaDireccionesInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
@@ -14,6 +15,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -24,9 +26,11 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarDirecciones implements AdministrarDireccionesInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
+
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -48,14 +52,28 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
      */
     @EJB
     PersistenciaDireccionesInterface persistenciaDirecciones;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<Direcciones> consultarDireccionesPersona(BigInteger secPersona) {
         try {
-            return persistenciaDirecciones.direccionesPersona(secPersona);
+            return persistenciaDirecciones.direccionesPersona(em,secPersona);
         } catch (Exception e) {
             System.err.println("Error AdministrarTelefonos.telefonosPersona " + e);
             return null;
@@ -64,12 +82,12 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
 
     @Override
     public Personas consultarPersona(BigInteger secPersona) {
-        return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
+        return persistenciaPersonas.buscarPersonaSecuencia(em,secPersona);
     }
 
     @Override
     public List<Ciudades> consultarLOVCiudades() {
-        return PersistenciaCiudades.ciudades();
+        return PersistenciaCiudades.ciudades(em);
     }
 
     @Override
@@ -83,7 +101,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
             } else {
                 d = listaDirecciones.get(i);
             }
-            persistenciaDirecciones.editar(d);
+            persistenciaDirecciones.editar(em,d);
         }
     }
 
@@ -94,8 +112,8 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
             if (listaDirecciones.get(i).getHipoteca() == null) {
                 listaDirecciones.get(i).setHipoteca("N");
             }
-            persistenciaDirecciones.borrar(listaDirecciones.get(i));
-        }        
+            persistenciaDirecciones.borrar(em,listaDirecciones.get(i));
+        }
     }
 
     @Override
@@ -105,7 +123,7 @@ public class AdministrarDirecciones implements AdministrarDireccionesInterface {
             if (listaDirecciones.get(i).getHipoteca() == null) {
                 listaDirecciones.get(i).setHipoteca("N");
             }
-            persistenciaDirecciones.crear(listaDirecciones.get(i));
-        }      
+            persistenciaDirecciones.crear(em,listaDirecciones.get(i));
+        }
     }
 }

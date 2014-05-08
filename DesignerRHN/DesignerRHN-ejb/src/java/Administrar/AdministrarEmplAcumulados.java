@@ -4,14 +4,16 @@
 package Administrar;
 
 import Entidades.Empleados;
-import InterfaceAdministrar.AdministrarEmplAcumuladosInterface;
 import Entidades.VWAcumulados;
+import InterfaceAdministrar.AdministrarEmplAcumuladosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaVWAcumuladosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -22,6 +24,7 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarEmplAcumulados implements AdministrarEmplAcumuladosInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
@@ -39,26 +42,41 @@ public class AdministrarEmplAcumulados implements AdministrarEmplAcumuladosInter
      */
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<VWAcumulados> consultarVWAcumuladosEmpleado(BigInteger secEmpleado) {
         try {
-            return persistenciaVWAcumulados.buscarAcumuladosPorEmpleado(secEmpleado);
+            return persistenciaVWAcumulados.buscarAcumuladosPorEmpleado(em,secEmpleado);
         } catch (Exception e) {
             System.err.println("ERROR EN ADMINISTRAR EMPLACUMULADOS ERROR " + e);
             return null;
         }
     }
-    
+
     @Override
     public Empleados consultarEmpleado(BigInteger secEmplado) {
         try {
-            return persistenciaEmpleados.buscarEmpleadoSecuencia(secEmplado);
+            return persistenciaEmpleados.buscarEmpleadoSecuencia(em,secEmplado);
         } catch (Exception e) {
             System.err.println("ERROR Administrar emplAcumulados ERROR : " + e);
             return null;
-        } 
+        }
     }
 }

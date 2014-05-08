@@ -10,13 +10,15 @@ import Entidades.FormulasAseguradas;
 import Entidades.Periodicidades;
 import Entidades.Procesos;
 import InterfaceAdministrar.AdministrarFormulasAseguradasInterface;
-import InterfacePersistencia.PersistenciaFormulasInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaFormulasAseguradasInterface;
+import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaProcesosInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.ejb.Stateful;
  */
 @Stateful
 public class AdministrarFormulasAseguradas implements AdministrarFormulasAseguradasInterface {
+
     //-------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
@@ -40,9 +43,24 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
     PersistenciaProcesosInterface persistenciaProcesos;
     @EJB
     PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
+
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     public void modificarFormulasAseguradas(List<FormulasAseguradas> listaFormulasAseguradas) {
         for (int i = 0; i < listaFormulasAseguradas.size(); i++) {
@@ -50,7 +68,7 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
             if (listaFormulasAseguradas.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaFormulasAseguradas.get(i).setPeriodicidad(null);
             }
-            persistenciaFormulasAseguradas.editar(listaFormulasAseguradas.get(i));
+            persistenciaFormulasAseguradas.editar(em,listaFormulasAseguradas.get(i));
         }
     }
 
@@ -60,7 +78,7 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
             if (listaFormulasAseguradas.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaFormulasAseguradas.get(i).setPeriodicidad(null);
             }
-            persistenciaFormulasAseguradas.borrar(listaFormulasAseguradas.get(i));
+            persistenciaFormulasAseguradas.borrar(em,listaFormulasAseguradas.get(i));
         }
     }
 
@@ -69,33 +87,33 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
             if (listaFormulasAseguradas.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaFormulasAseguradas.get(i).setPeriodicidad(null);
             }
-            persistenciaFormulasAseguradas.crear(listaFormulasAseguradas.get(i));
+            persistenciaFormulasAseguradas.crear(em,listaFormulasAseguradas.get(i));
         }
     }
 
     @Override
     public List<FormulasAseguradas> consultarFormulasAseguradas() {
         List<FormulasAseguradas> listaFormulasAseguradas;
-        listaFormulasAseguradas = persistenciaFormulasAseguradas.consultarFormulasAseguradas();
+        listaFormulasAseguradas = persistenciaFormulasAseguradas.consultarFormulasAseguradas(em);
         return listaFormulasAseguradas;
     }
 
     @Override
     public List<Formulas> consultarLOVFormulas() {
         List<Formulas> listLOVFormulas;
-        listLOVFormulas = persistenciaFormulas.buscarFormulas();
+        listLOVFormulas = persistenciaFormulas.buscarFormulas(em);
         return listLOVFormulas;
     }
 
     public List<Procesos> consultarLOVProcesos() {
         List<Procesos> listLOVFormulas;
-        listLOVFormulas = persistenciaProcesos.buscarProcesos();
+        listLOVFormulas = persistenciaProcesos.buscarProcesos(em);
         return listLOVFormulas;
     }
 
     public List<Periodicidades> consultarLOVPPeriodicidades() {
         List<Periodicidades> listLOVFormulas;
-        listLOVFormulas = persistenciaPeriodicidades.consultarPeriodicidades();
+        listLOVFormulas = persistenciaPeriodicidades.consultarPeriodicidades(em);
         return listLOVFormulas;
     }
 

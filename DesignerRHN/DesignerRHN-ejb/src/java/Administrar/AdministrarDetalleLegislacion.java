@@ -9,6 +9,7 @@ import Entidades.Formulascontratos;
 import Entidades.Periodicidades;
 import Entidades.Terceros;
 import InterfaceAdministrar.AdministrarDetalleLegislacionInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaContratosInterface;
 import InterfacePersistencia.PersistenciaFormulasContratosInterface;
@@ -19,60 +20,85 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
- * Clase encargada de realizar las operaciones lógicas para la pantalla 'DetalleLegislacion'.
+ * Clase encargada de realizar las operaciones lógicas para la pantalla
+ * 'DetalleLegislacion'.
+ *
  * @author Andres Pineda.
  */
 @Stateless
 public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislacionInterface {
+
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaTerceros'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaTerceros'.
      */
     @EJB
     PersistenciaTercerosInterface persistenciaTerceros;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaPeriodicidades'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaPeriodicidades'.
      */
     @EJB
     PersistenciaPeriodicidadesInterface persistenciaPeriodicidades;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaConceptos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaConceptos'.
      */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulasContratos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaFormulasContratos'.
      */
     @EJB
     PersistenciaFormulasContratosInterface persistenciaFormulasContratos;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaFormulas'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaFormulas'.
      */
     @EJB
     PersistenciaFormulasInterface persistenciaFormulas;
     /**
      * Enterprise JavaBeans.<br>
-     * Atributo que representa la comunicación con la persistencia 'persistenciaContratos'.
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaContratos'.
      */
     @EJB
     PersistenciaContratosInterface persistenciaContratos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
-    @Override 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<Terceros> consultarLOVTerceros() {
         try {
-            List<Terceros> lista = persistenciaTerceros.buscarTerceros();
+            List<Terceros> lista = persistenciaTerceros.buscarTerceros(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listTerceros Admi : " + e.toString());
@@ -80,10 +106,10 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
         }
     }
 
-    @Override 
+    @Override
     public List<Periodicidades> consultarLOVPeriodicidades() {
         try {
-            List<Periodicidades> lista = persistenciaPeriodicidades.consultarPeriodicidades();
+            List<Periodicidades> lista = persistenciaPeriodicidades.consultarPeriodicidades(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listPeriodicidades Admi : " + e.toString());
@@ -91,10 +117,10 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
         }
     }
 
-    @Override 
+    @Override
     public List<Formulas> consultarLOVFormulas() {
         try {
-            List<Formulas> lista = persistenciaFormulas.buscarFormulas();
+            List<Formulas> lista = persistenciaFormulas.buscarFormulas(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listFormulas Admi : " + e.toString());
@@ -102,14 +128,14 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
         }
     }
 
-    @Override 
+    @Override
     public List<Formulascontratos> consultarListaFormulasContratosContrato(BigInteger secContrato) {
         try {
-            List<Formulascontratos> lista = persistenciaFormulasContratos.formulasContratosParaContratoSecuencia(secContrato);
+            List<Formulascontratos> lista = persistenciaFormulasContratos.formulasContratosParaContratoSecuencia(em,secContrato);
             int tam = lista.size();
             if (tam >= 1) {
                 for (int i = 0; i < tam; i++) {
-                    String aux = persistenciaConceptos.conceptoParaFormulaContrato(lista.get(i).getFormula().getSecuencia(), lista.get(i).getFechafinal());
+                    String aux = persistenciaConceptos.conceptoParaFormulaContrato(em,lista.get(i).getFormula().getSecuencia(), lista.get(i).getFechafinal());
                     lista.get(i).setStrConcepto(aux);
                 }
             }
@@ -120,28 +146,28 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
         }
     }
 
-    @Override 
+    @Override
     public void crearFormulasContratos(List<Formulascontratos> listaFormulasContratos) {
         try {
             for (int i = 0; i < listaFormulasContratos.size(); i++) {
                 if (listaFormulasContratos.get(i).getTercero().getSecuencia() == null) {
                     listaFormulasContratos.get(i).setTercero(null);
                 }
-                persistenciaFormulasContratos.crear(listaFormulasContratos.get(i));
+                persistenciaFormulasContratos.crear(em,listaFormulasContratos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearFormulaContrato Admi : " + e.toString());
         }
     }
 
-    @Override 
+    @Override
     public void borrarFormulasContratos(List<Formulascontratos> listaFormulasContratos) {
         try {
             for (int i = 0; i < listaFormulasContratos.size(); i++) {
                 if (listaFormulasContratos.get(i).getTercero().getSecuencia() == null) {
                     listaFormulasContratos.get(i).setTercero(null);
                 }
-                persistenciaFormulasContratos.borrar(listaFormulasContratos.get(i));
+                persistenciaFormulasContratos.borrar(em,listaFormulasContratos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarrFormulaContrato Admi : " + e.toString());
@@ -155,7 +181,7 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
                 if (listaFormulasContratos.get(i).getTercero().getSecuencia() == null) {
                     listaFormulasContratos.get(i).setTercero(null);
                 }
-                persistenciaFormulasContratos.editar(listaFormulasContratos.get(i));
+                persistenciaFormulasContratos.editar(em,listaFormulasContratos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarFormulaContrato Admi : " + e.toString());
@@ -165,10 +191,10 @@ public class AdministrarDetalleLegislacion implements AdministrarDetalleLegislac
     @Override
     public Contratos consultarContrato(BigInteger secContrato) {
         try {
-            Contratos act = persistenciaContratos.buscarContratoSecuencia(secContrato);
+            Contratos act = persistenciaContratos.buscarContratoSecuencia(em,secContrato);
             return act;
         } catch (Exception e) {
-            System.out.println("Error contratoActual Admi : "+e.toString());
+            System.out.println("Error contratoActual Admi : " + e.toString());
             return null;
         }
     }

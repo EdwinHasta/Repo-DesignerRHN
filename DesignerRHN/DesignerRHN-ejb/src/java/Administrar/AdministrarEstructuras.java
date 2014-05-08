@@ -9,6 +9,7 @@ import Entidades.Empresas;
 import Entidades.Estructuras;
 import Entidades.Organigramas;
 import InterfaceAdministrar.AdministrarEstructurasInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaEstructurasInterface;
@@ -17,6 +18,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -36,6 +38,15 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     PersistenciaOrganigramasInterface persistenciaOrganigramas;
     @EJB
     PersistenciaEmpresasInterface persistenciaEmpresas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     //------------------------------------------------------------------------------------------
     //ATRIBUTOS
@@ -65,9 +76,14 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     //Estructuras--------------------------------------------------------
 
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+
+    @Override
     public List<Estructuras> consultarTodoEstructuras() {
         try {
-            estructuras = persistenciaEstructuras.buscarEstructuras();
+            estructuras = persistenciaEstructuras.buscarEstructuras(em);
         } catch (Exception ex) {
             estructuras = null;
         }
@@ -77,7 +93,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public Estructuras consultarEstructuraPorSecuencia(BigInteger secuenciaE) {
         try {
-            estr = persistenciaEstructuras.buscarEstructura(secuenciaE);
+            estr = persistenciaEstructuras.buscarEstructura(em,secuenciaE);
         } catch (Exception ex) {
             estr = null;
         }
@@ -87,7 +103,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public List<Estructuras> consultarNativeQueryEstructuras(String fechaVigencia) {
         try {
-            estructurasLOV = persistenciaEstructuras.buscarlistaValores(fechaVigencia);
+            estructurasLOV = persistenciaEstructuras.buscarlistaValores(em,fechaVigencia);
             return estructurasLOV;
         } catch (Exception ex) {
             System.out.println("Administrar: Fallo al consultar el nativeQuery");
@@ -99,7 +115,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public List<Cargos> consultarTodoCargos() {
         try {
-            cargos = persistenciaCargos.consultarCargos();
+            cargos = persistenciaCargos.consultarCargos(em);
         } catch (Exception ex) {
             cargos = null;
         }
@@ -109,7 +125,7 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public Cargos consultarCargoPorSecuencia(BigInteger secuenciaC) {
         try {
-            cargo = persistenciaCargos.buscarCargoSecuencia(secuenciaC);
+            cargo = persistenciaCargos.buscarCargoSecuencia(em,secuenciaC);
         } catch (Exception ex) {
             cargo = null;
         }
@@ -120,9 +136,9 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
     @Override
     public List<Estructuras> estructuraPadre(short codigoOrg) {
         List<Estructuras> listaEstructurasPadre;
-        Organigramas organigrama = persistenciaOrganigramas.organigramaBaseArbol(codigoOrg);
+        Organigramas organigrama = persistenciaOrganigramas.organigramaBaseArbol(em,codigoOrg);
         if (organigrama != null) {
-            listaEstructurasPadre = persistenciaEstructuras.estructuraPadre(organigrama.getSecuencia());
+            listaEstructurasPadre = persistenciaEstructuras.estructuraPadre(em,organigrama.getSecuencia());
         } else {
             listaEstructurasPadre = null;
         }
@@ -131,19 +147,19 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
 
     public List<Estructuras> estructurasHijas(BigInteger secEstructuraPadre, Short codigoEmpresa) {
         List<Estructuras> listaEstructurasHijas;
-        listaEstructurasHijas = persistenciaEstructuras.estructurasHijas(secEstructuraPadre, codigoEmpresa);
+        listaEstructurasHijas = persistenciaEstructuras.estructurasHijas(em,secEstructuraPadre, codigoEmpresa);
         return listaEstructurasHijas;
     }
 
     public List<Organigramas> obtenerOrganigramas() {
         List<Organigramas> listaOrganigramas;
-        listaOrganigramas = persistenciaOrganigramas.buscarOrganigramas();
+        listaOrganigramas = persistenciaOrganigramas.buscarOrganigramas(em);
         return listaOrganigramas;
     }
 
     public List<Empresas> obtenerEmpresas() {
         List<Empresas> listaEmpresas;
-        listaEmpresas = persistenciaEmpresas.consultarEmpresas();
+        listaEmpresas = persistenciaEmpresas.consultarEmpresas(em);
         return listaEmpresas;
     }
 
@@ -151,29 +167,27 @@ public class AdministrarEstructuras implements AdministrarEstructurasInterface {
         for (int i = 0; i < listOrganigramasModificados.size(); i++) {
             System.out.println("Modificando...");
             org = listOrganigramasModificados.get(i);
-            persistenciaOrganigramas.editar(org);
+            persistenciaOrganigramas.editar(em,org);
         }
     }
 
     public void borrarOrganigrama(Organigramas organigrama) {
-        persistenciaOrganigramas.borrar(organigrama);
+        persistenciaOrganigramas.borrar(em,organigrama);
     }
 
     public void crearOrganigrama(Organigramas organigrama) {
-        persistenciaOrganigramas.crear(organigrama);
+        persistenciaOrganigramas.crear(em,organigrama);
     }
-    
-    
 
     @Override
     public List<Estructuras> Estructuras() {
         List<Estructuras> listaEstructuras;
-        listaEstructuras = persistenciaEstructuras.estructuras();
+        listaEstructuras = persistenciaEstructuras.estructuras(em);
         return listaEstructuras;
     }
 
     @Override
     public List<Estructuras> lovEstructuras() {
-        return persistenciaEstructuras.estructuras();
+        return persistenciaEstructuras.estructuras(em);
     }
 }
