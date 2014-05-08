@@ -10,6 +10,7 @@ import Entidades.OperandosLogs;
 import Entidades.Procesos;
 import Entidades.Tipospagos;
 import InterfaceAdministrar.AdministrarProcesosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaFormulasProcesosInterface;
 import InterfacePersistencia.PersistenciaOperandosInterface;
@@ -20,6 +21,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -75,7 +77,20 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
      */
     @EJB
     PersistenciaOperandosInterface persistenciaOperandos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------    
@@ -83,7 +98,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<Procesos> listaProcesos() {
         try {
-            List<Procesos> lista = persistenciaProcesos.buscarProcesos();
+            List<Procesos> lista = persistenciaProcesos.buscarProcesos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaProcesos Admi : " + e.toString());
@@ -99,7 +114,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
                 listaP.get(i).setDescripcion(textM);
                 String textC = listaP.get(i).getComentarios().toUpperCase();
                 listaP.get(i).setComentarios(textC);
-                persistenciaProcesos.crear(listaP.get(i));
+                persistenciaProcesos.crear(em, listaP.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearProcesos Admi : " + e.toString()
@@ -115,7 +130,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
                 listaP.get(i).setDescripcion(textM);
                 String textC = listaP.get(i).getComentarios().toUpperCase();
                 listaP.get(i).setComentarios(textC);
-                persistenciaProcesos.editar(listaP.get(i));
+                persistenciaProcesos.editar(em, listaP.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarProcesos Admi : " + e.toString()
@@ -127,7 +142,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void borrarProcesos(List<Procesos> listaP) {
         try {
             for (int i = 0; i < listaP.size(); i++) {
-                persistenciaProcesos.borrar(listaP.get(i));
+                persistenciaProcesos.borrar(em, listaP.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarProcesos Admi : " + e.toString()
@@ -138,7 +153,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<Tipospagos> lovTiposPagos() {
         try {
-            List<Tipospagos> lista = persistenciaTiposPagos.consultarTiposPagos();
+            List<Tipospagos> lista = persistenciaTiposPagos.consultarTiposPagos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovTiposPagos Admi : " + e.toString());
@@ -151,7 +166,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<FormulasProcesos> listaFormulasProcesosParaProcesoSecuencia(BigInteger secuencia) {
         try {
-            List<FormulasProcesos> lista = persistenciaFormulasProcesos.formulasProcesosParaProcesoSecuencia(secuencia);
+            List<FormulasProcesos> lista = persistenciaFormulasProcesos.formulasProcesosParaProcesoSecuencia(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaFormulasProcesosParaProcesoSecuencia Admi : " + e.toString());
@@ -163,7 +178,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void crearFormulasProcesos(List<FormulasProcesos> listaFP) {
         try {
             for (int i = 0; i < listaFP.size(); i++) {
-                persistenciaFormulasProcesos.crear(listaFP.get(i));
+                persistenciaFormulasProcesos.crear(em, listaFP.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearFormulasProcesos Admi : " + e.toString()
@@ -175,7 +190,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void editarFormulasProcesos(List<FormulasProcesos> listaFP) {
         try {
             for (int i = 0; i < listaFP.size(); i++) {
-                persistenciaFormulasProcesos.editar(listaFP.get(i));
+                persistenciaFormulasProcesos.editar(em, listaFP.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarFormulasProcesos Admi : " + e.toString()
@@ -187,7 +202,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void borrarFormulasProcesos(List<FormulasProcesos> listaFP) {
         try {
             for (int i = 0; i < listaFP.size(); i++) {
-                persistenciaFormulasProcesos.borrar(listaFP.get(i));
+                persistenciaFormulasProcesos.borrar(em, listaFP.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarFormulasProcesos Admi : " + e.toString()
@@ -198,7 +213,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<Formulas> lovFormulas() {
         try {
-            List<Formulas> lista = persistenciaFormulas.buscarFormulas();
+            List<Formulas> lista = persistenciaFormulas.buscarFormulas(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovFormulas Admi : " + e.toString());
@@ -211,7 +226,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<OperandosLogs> listaOperandosLogsParaProcesoSecuencia(BigInteger secuencia) {
         try {
-            List<OperandosLogs> lista = persistenciaOperandosLogs.buscarOperandosLogsParaProcesoSecuencia(secuencia);
+            List<OperandosLogs> lista = persistenciaOperandosLogs.buscarOperandosLogsParaProcesoSecuencia(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaOperandosLogsParaProcesoSecuencia Admi : " + e.toString());
@@ -224,7 +239,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
         try {
             for (int i = 0; i < listaOL.size(); i++) {
                 listaOL.get(i).setDescripcion(String.valueOf(listaOL.get(i).getOperando().getCodigo()));
-                persistenciaOperandosLogs.crear(listaOL.get(i));
+                persistenciaOperandosLogs.crear(em, listaOL.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearOperandosLogs Admi : " + e.toString()
@@ -236,7 +251,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void editarOperandosLogs(List<OperandosLogs> listaOL) {
         try {
             for (int i = 0; i < listaOL.size(); i++) {
-                persistenciaOperandosLogs.editar(listaOL.get(i));
+                persistenciaOperandosLogs.editar(em, listaOL.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarOperandosLogs Admi : " + e.toString()
@@ -248,7 +263,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     public void borrarOperandosLogs(List<OperandosLogs> listaOL) {
         try {
             for (int i = 0; i < listaOL.size(); i++) {
-                persistenciaOperandosLogs.borrar(listaOL.get(i));
+                persistenciaOperandosLogs.borrar(em, listaOL.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarOperandosLogs Admi : " + e.toString()
@@ -259,7 +274,7 @@ public class AdministrarProcesos implements AdministrarProcesosInterface {
     @Override
     public List<Operandos> lovOperandos() {
         try {
-            List<Operandos> lista = persistenciaOperandos.buscarOperandos();
+            List<Operandos> lista = persistenciaOperandos.buscarOperandos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovOperandos Admi : " + e.toString());

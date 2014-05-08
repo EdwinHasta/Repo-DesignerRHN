@@ -14,6 +14,7 @@ import Entidades.ParametrosInformes;
 import Entidades.TiposTelefonos;
 import Entidades.TiposTrabajadores;
 import InterfaceAdministrar.AdministrarNReportePersonalInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaAficionesInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
@@ -30,6 +31,7 @@ import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -81,12 +83,26 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     List<Aficiones> listAficiones;
     List<Idiomas> listIdiomas;
     List<Empresas> listEmpresas;
+        /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     
     @Override
     public ParametrosInformes parametrosDeReporte() {
         try {
-            usuarioActual = persistenciaActualUsuario.actualAliasBD();
-            parametroReporte = persistenciaParametrosInformes.buscarParametroInformeUsuario(usuarioActual);
+            usuarioActual = persistenciaActualUsuario.actualAliasBD(em);
+            parametroReporte = persistenciaParametrosInformes.buscarParametroInformeUsuario(em, usuarioActual);
             return parametroReporte;
         } catch (Exception e) {
             System.out.println("Error parametrosDeReporte Administrar" + e);
@@ -97,7 +113,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
-            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioPersonal();
+            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioPersonal(em);
             return listInforeportes;
         } catch (Exception e) {
             System.out.println("Error listInforeportesUsuario " + e);
@@ -108,7 +124,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public void modificarParametrosInformes(ParametrosInformes parametroInforme){
         try{
-            persistenciaParametrosInformes.editar(parametroInforme);
+            persistenciaParametrosInformes.editar(em, parametroInforme);
         }catch(Exception e){
             System.out.println("Error modificarParametrosInformes : "+e.toString());
         }
@@ -117,7 +133,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.consultarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas(em);
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Administrar : " + e.toString());
@@ -128,7 +144,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Idiomas> listIdiomas() {
         try {
-            listIdiomas = persistenciaIdiomas.buscarIdiomas();
+            listIdiomas = persistenciaIdiomas.buscarIdiomas(em);
             return listIdiomas;
         } catch (Exception e) {
             System.out.println("Error listIdiomas Administrar : " + e.toString());
@@ -139,7 +155,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Aficiones> listAficiones() {
         try {
-            listAficiones = persistenciaAficiones.buscarAficiones();
+            listAficiones = persistenciaAficiones.buscarAficiones(em);
             return listAficiones;
         } catch (Exception e) {
             System.out.println("Error listAficiones Administrar : " + e.toString());
@@ -150,7 +166,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Deportes> listDeportes() {
         try {
-            listDeportes = persistenciaDeportes.buscarDeportes();
+            listDeportes = persistenciaDeportes.buscarDeportes(em);
             return listDeportes;
         } catch (Exception e) {
             System.out.println("Error listDeportes Administrar : " + e.toString());
@@ -161,7 +177,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Ciudades> listCiudades() {
         try {
-            listCiudades = persistenciaCiudades.ciudades();
+            listCiudades = persistenciaCiudades.ciudades(em);
             return listCiudades;
         } catch (Exception e) {
             System.out.println("Error listCiudades Administrar : " + e.toString());
@@ -172,7 +188,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<TiposTrabajadores> listTiposTrabajadores() {
         try {
-            listTiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores();
+            listTiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
             return listTiposTrabajadores;
         } catch (Exception e) {
             System.out.println("Error listTiposTrabajadores Administrar : " + e.toString());
@@ -183,7 +199,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Estructuras> listEstructuras() {
         try {
-            listEstructuras = persistenciaEstructuras.buscarEstructuras();
+            listEstructuras = persistenciaEstructuras.buscarEstructuras(em);
             return listEstructuras;
         } catch (Exception e) {
             System.out.println("Error listEstructuras Administrar : " + e.toString());
@@ -194,7 +210,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<Empleados> listEmpleados() {
         try {
-            listEmpleados = persistenciaEmpleado.buscarEmpleados();
+            listEmpleados = persistenciaEmpleado.buscarEmpleados(em);
             return listEmpleados;
         } catch (Exception e) {
             System.out.println("Error listEmpleados Administrar : " + e.toString());
@@ -205,7 +221,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<TiposTelefonos> listTiposTelefonos() {
         try {
-            listTiposTelefonos = persistenciaTiposTelefonos.tiposTelefonos();
+            listTiposTelefonos = persistenciaTiposTelefonos.tiposTelefonos(em);
             return listTiposTelefonos;
         } catch (Exception e) {
             System.out.println("Error listTiposTelefonos Administrar : " + e.toString());
@@ -216,7 +232,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     @Override
     public List<EstadosCiviles> listEstadosCiviles() {
         try {
-            listEstadosCiviles = persistenciaEstadosCiviles.consultarEstadosCiviles();
+            listEstadosCiviles = persistenciaEstadosCiviles.consultarEstadosCiviles(em);
             return listEstadosCiviles;
         } catch (Exception e) {
             System.out.println("Error listEstadosCiviles Administrar : " + e.toString());
@@ -228,7 +244,7 @@ public class AdministrarNReportePersonal implements AdministrarNReportePersonalI
     public void guardarCambiosInfoReportes(List<Inforeportes> listaIR) {
         try {
             for (int i = 0; i < listaIR.size(); i++) {
-                persistenciaInforeportes.editar(listaIR.get(i));
+                persistenciaInforeportes.editar(em, listaIR.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error guardarCambiosInfoReportes Admi : " + e.toString());

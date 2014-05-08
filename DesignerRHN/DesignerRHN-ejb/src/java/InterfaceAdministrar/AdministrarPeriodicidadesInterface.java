@@ -17,7 +17,12 @@ import javax.ejb.Local;
  */
 @Local
 public interface AdministrarPeriodicidadesInterface {
-
+	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     /**
      * Método encargado de modificar Periodicidades.
      *

@@ -7,11 +7,13 @@ package Administrar;
 
 import InterfaceAdministrar.AdministrarMotivosPrestamosInterface;
 import Entidades.MotivosPrestamos;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosPrestamosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarMotivosPrestamos implements AdministrarMotivosPrestamosI
 
     @EJB
     PersistenciaMotivosPrestamosInterface persistenciaMotivosPrestamos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos) {
         for (int i = 0; i < listaMotivosPrestamos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaMotivosPrestamos.editar(listaMotivosPrestamos.get(i));
+            persistenciaMotivosPrestamos.editar(em, listaMotivosPrestamos.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarMotivosPrestamos implements AdministrarMotivosPrestamosI
     public void borrarMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos) {
         for (int i = 0; i < listaMotivosPrestamos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaMotivosPrestamos.borrar(listaMotivosPrestamos.get(i));
+            persistenciaMotivosPrestamos.borrar(em, listaMotivosPrestamos.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarMotivosPrestamos implements AdministrarMotivosPrestamosI
     public void crearMotivosPrestamos(List<MotivosPrestamos> listaMotivosPrestamos) {
         for (int i = 0; i < listaMotivosPrestamos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaMotivosPrestamos.crear(listaMotivosPrestamos.get(i));
+            persistenciaMotivosPrestamos.crear(em, listaMotivosPrestamos.get(i));
         }
     }
 
     @Override
     public List<MotivosPrestamos> mostrarMotivosPrestamos() {
         List<MotivosPrestamos> listMotivosPrestamos;
-        listMotivosPrestamos = persistenciaMotivosPrestamos.buscarMotivosPrestamos();
+        listMotivosPrestamos = persistenciaMotivosPrestamos.buscarMotivosPrestamos(em);
         return listMotivosPrestamos;
     }
 
     @Override
     public MotivosPrestamos mostrarMotivoPrestamo(BigInteger secMotivoPrestamo) {
         MotivosPrestamos motivosPrestamos;
-        motivosPrestamos = persistenciaMotivosPrestamos.buscarMotivoPrestamo(secMotivoPrestamo);
+        motivosPrestamos = persistenciaMotivosPrestamos.buscarMotivoPrestamo(em, secMotivoPrestamo);
         return motivosPrestamos;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarMotivosPrestamos implements AdministrarMotivosPrestamosI
     public BigInteger verificarEersPrestamosMotivoPrestamo(BigInteger secuenciaMotivosPrestamos) {
         try {
             BigInteger verificarBorradoEersPrestamos = null;
-            return verificarBorradoEersPrestamos = persistenciaMotivosPrestamos.contadorEersPrestamos(secuenciaMotivosPrestamos);
+            return verificarBorradoEersPrestamos = persistenciaMotivosPrestamos.contadorEersPrestamos(em, secuenciaMotivosPrestamos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARMOTIVOSPRESTAMOS VERIFICARDIASLABORALES ERROR :" + e);
             return null;

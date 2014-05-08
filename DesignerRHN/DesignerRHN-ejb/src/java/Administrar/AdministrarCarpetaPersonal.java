@@ -366,9 +366,9 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
             String tipo = vwActualesTiposTrabajadores.getTipoTrabajador().getTipo();
 
             if (tipo.equalsIgnoreCase("ACTIVO")) {
-                valor = persistenciaVWActualesSueldos.buscarSueldoActivo(secEmpleado);
+                valor = persistenciaVWActualesSueldos.buscarSueldoActivo(em, secEmpleado);
             } else if (tipo.equalsIgnoreCase("PENSIONADO")) {
-                valor = persistenciaVWActualesPensiones.buscarSueldoPensionado(secEmpleado);
+                valor = persistenciaVWActualesPensiones.buscarSueldoPensionado(em, secEmpleado);
             }
         } catch (Exception e) {
             valor = null;
@@ -492,7 +492,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     public List<VWActualesTiposTrabajadores> consultarEmpleadosTipoTrabajador(String tipo) {
         try {
-            List<VWActualesTiposTrabajadores> tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(tipo);
+            List<VWActualesTiposTrabajadores> tipoEmpleadoLista = persistenciaVWActualesTiposTrabajadores.FiltrarTipoTrabajador(em, tipo);
             return tipoEmpleadoLista;
         } catch (Exception e) {
             return null;
@@ -502,8 +502,8 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public DetallesEmpresas consultarDetalleEmpresaUsuario() {
         try {
-            Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa();
-            DetallesEmpresas detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(codigoEmpresa);
+            Short codigoEmpresa = persistenciaEmpresas.codigoEmpresa(em);
+            DetallesEmpresas detallesEmpresas = persistenciaDetallesEmpresas.buscarDetalleEmpresa(em, codigoEmpresa);
             return detallesEmpresas;
         } catch (Exception e) {
             return null;
@@ -513,7 +513,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public Usuarios consultarUsuario(String alias) {
         try {
-            Usuarios usuarios = persistenciaUsuarios.buscarUsuario(alias);
+            Usuarios usuarios = persistenciaUsuarios.buscarUsuario(em, alias);
             return usuarios;
         } catch (Exception e) {
             return null;
@@ -523,7 +523,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public ParametrosEstructuras consultarParametrosUsuario() {
         try {
-            ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(consultarAliasActualUsuario());
+            ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(em, consultarAliasActualUsuario());
             return parametrosEstructuras;
         } catch (Exception e) {
             return null;
@@ -543,7 +543,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public List<VWActualesTiposTrabajadores> consultarRapidaEmpleados() {
         try {
-            List<VWActualesTiposTrabajadores> busquedaRapidaEmpleado = persistenciaVWActualesTiposTrabajadores.busquedaRapidaTrabajadores();
+            List<VWActualesTiposTrabajadores> busquedaRapidaEmpleado = persistenciaVWActualesTiposTrabajadores.busquedaRapidaTrabajadores(em);
             return busquedaRapidaEmpleado;
         } catch (Exception e) {
             return null;
@@ -553,7 +553,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public Personas consultarFotoPersona(BigInteger identificacion) {
         try {
-            Personas persona = persistenciaPersonas.buscarFotoPersona(identificacion);
+            Personas persona = persistenciaPersonas.buscarFotoPersona(em, identificacion);
             return persona;
         } catch (Exception e) {
             return null;
@@ -563,7 +563,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public void actualizarFotoPersona(BigInteger identificacion) {
         try {
-            persistenciaPersonas.actualizarFotoPersona(identificacion);
+            persistenciaPersonas.actualizarFotoPersona(em, identificacion);
         } catch (Exception e) {
             System.out.println("No se puede actalizar el estado de la Foto.");
         }
@@ -572,7 +572,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     @Override
     public Empleados consultarEmpleado(BigInteger secuencia) {
         try {
-            Empleados empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            Empleados empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             Empleados empleado = null;
@@ -584,7 +584,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
     public void editarVigenciasCargos(List<VigenciasCargos> vigenciasCargos) {
         try {
             for (int i = 0; i < vigenciasCargos.size(); i++) {
-                persistenciaVigenciasCargos.editar(vigenciasCargos.get(i));
+                persistenciaVigenciasCargos.editar(em, vigenciasCargos.get(i));
             }
         } catch (Exception e) {
             System.out.println("Excepcion Administrar - No Se Guardo Nada ¬¬");
@@ -593,16 +593,16 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
 
     @Override
     public String consultarAliasActualUsuario() {
-        return persistenciaActualUsuario.actualAliasBD();
+        return persistenciaActualUsuario.actualAliasBD(em);
     }
 
     @Override
     public void borrarLiquidacionAutomatico() {
-        persistenciaCandados.borrarLiquidacionAutomatico();
+        persistenciaCandados.borrarLiquidacionAutomatico(em);
     }
 
     @Override
     public void borrarLiquidacionNoAutomatico() {
-        persistenciaCandados.borrarLiquidacionNoAutomatico();
+        persistenciaCandados.borrarLiquidacionNoAutomatico(em);
     }
 }

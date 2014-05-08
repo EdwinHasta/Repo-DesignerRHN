@@ -17,6 +17,7 @@ import Entidades.Terceros;
 import Entidades.TiposEmbargos;
 import Entidades.VWPrestamoDtosRealizados;
 import InterfaceAdministrar.AdministrarNovedadesEmbargosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaDetallesFormasDtosInterface;
 import InterfacePersistencia.PersistenciaEersPrestamosDtosInterface;
 import InterfacePersistencia.PersistenciaEersPrestamosInterface;
@@ -32,6 +33,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -64,62 +66,75 @@ public class AdministrarNovedadesEmbargos implements AdministrarNovedadesEmbargo
     PersistenciaVWPrestamoDtosRealizadosInterface persistenciaVWPrestamo;
     public EersPrestamosDtos dE;
     public EersPrestamos e;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
 
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    @Override
     public List<Empleados> listaEmpleados() {
-        return persistenciaEmpleados.empleadosNovedadEmbargo();
+        return persistenciaEmpleados.empleadosNovedadEmbargo(em);
     }
 
     @Override
     public List<Empleados> lovEmpleados() {
-        return persistenciaEmpleados.empleadosNovedadEmbargo();
+        return persistenciaEmpleados.empleadosNovedadEmbargo(em);
     }
 
     public List<TiposEmbargos> lovTiposEmbargos() {
-        return persistenciaTiposEmbargos.buscarTiposEmbargos();
+        return persistenciaTiposEmbargos.buscarTiposEmbargos(em);
     }
 
     public List<Juzgados> lovJuzgados() {
-        return persistenciaJuzgados.buscarJuzgados();
+        return persistenciaJuzgados.buscarJuzgados(em);
     }
 
     public List<MotivosEmbargos> lovMotivosEmbargos() {
-        return persistenciaMotivosEmbargos.buscarMotivosEmbargos();
+        return persistenciaMotivosEmbargos.buscarMotivosEmbargos(em);
     }
 
     public List<Terceros> lovTerceros() {
-        return persistenciaTerceros.buscarTerceros();
+        return persistenciaTerceros.buscarTerceros(em);
     }
 
     public List<Periodicidades> lovPeriodicidades() {
-        return persistenciaPeriodicidades.consultarPeriodicidades();
+        return persistenciaPeriodicidades.consultarPeriodicidades(em);
     }
 
     public List<FormasDtos> lovFormasDtos(BigInteger tipoEmbargo) {
-        return persistenciaFormasDtos.formasDescuentos(tipoEmbargo);
+        return persistenciaFormasDtos.formasDescuentos(em, tipoEmbargo);
     }
 
     //Segunda Tabla
     public List<EersPrestamos> eersPrestamosEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaEers.eersPrestamosEmpleado(secuenciaEmpleado);
+        return persistenciaEers.eersPrestamosEmpleado(em, secuenciaEmpleado);
     }
 
     //LOV Formas de descuento segunda tabla
     public List<DetallesFormasDtos> lovDetallesFormasDescuentos(BigInteger formasDtos) {
-        return persistenciaDetallesFormasDtos.detallesFormasDescuentos(formasDtos);
+        return persistenciaDetallesFormasDtos.detallesFormasDescuentos(em, formasDtos);
     }
 
     public List<FormasDtos> formasDescuentos(BigInteger tipoEmbargo) {
-        return persistenciaFormasDtos.formasDescuentos(tipoEmbargo);
+        return persistenciaFormasDtos.formasDescuentos(em, tipoEmbargo);
     }
 
     //Tercera Tabla
     public List<EersPrestamosDtos> eersPrestamosEmpleadoDtos(BigInteger secuenciaEersPrestamo) {
-        return persistenciaEersDtos.eersPrestamosDtosEmpleado(secuenciaEersPrestamo);
+        return persistenciaEersDtos.eersPrestamosDtosEmpleado(em, secuenciaEersPrestamo);
     }
 
     public List<VWPrestamoDtosRealizados> prestamosRealizados(BigInteger secuencia) {
-        return persistenciaVWPrestamo.buscarPrestamosDtos(secuencia);
+        return persistenciaVWPrestamo.buscarPrestamosDtos(em, secuencia);
     }
 
     //AGREGAR, BORRAR Y MODIFICAR DE LA TABLA DE ABAJO //
@@ -137,18 +152,18 @@ public class AdministrarNovedadesEmbargos implements AdministrarNovedadesEmbargo
                 listaDetallesEmbargosModificar.get(i).setSaldoinicial(null);
             }
 
-            persistenciaEersDtos.editar(dE);
+            persistenciaEersDtos.editar(em, dE);
         }
     }
 
     @Override
     public void borrarDetalleEmbargo(EersPrestamosDtos detallesEmbargos) {
-        persistenciaEersDtos.borrar(detallesEmbargos);
+        persistenciaEersDtos.borrar(em, detallesEmbargos);
     }
 
     @Override
     public void crearDetalleEmbargo(EersPrestamosDtos detallesEmbargos) {
-        persistenciaEersDtos.crear(detallesEmbargos);
+        persistenciaEersDtos.crear(em, detallesEmbargos);
     }
     //AGREGAR, BORRAR Y MODIFICAR DE LA TABLA DE Arriba //
 
@@ -176,17 +191,17 @@ public class AdministrarNovedadesEmbargos implements AdministrarNovedadesEmbargo
                 listaEmbargosModificar.get(i).setNumeroproceso(null);
             }
 
-            persistenciaEers.editar(listaEmbargosModificar.get(i));
+            persistenciaEers.editar(em, listaEmbargosModificar.get(i));
         }
     }
 
     @Override
     public void borrarEmbargo(EersPrestamos embargos) {
-        persistenciaEers.borrar(embargos);
+        persistenciaEers.borrar(em, embargos);
     }
 
     @Override
     public void crearEmbargo(EersPrestamos embargos) {
-        persistenciaEers.crear(embargos);
+        persistenciaEers.crear(em, embargos);
     }
 }

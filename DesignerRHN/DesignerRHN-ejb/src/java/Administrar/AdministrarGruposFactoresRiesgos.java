@@ -8,11 +8,13 @@ package Administrar;
 
 import Entidades.GruposFactoresRiesgos;
 import InterfaceAdministrar.AdministrarGruposFactoresRiesgosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaGruposFactoresRiesgosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -23,38 +25,51 @@ public class AdministrarGruposFactoresRiesgos implements AdministrarGruposFactor
 
      @EJB
     PersistenciaGruposFactoresRiesgosInterface persistenciaGruposFactoresRiesgos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     public void modificarGruposFactoresRiesgos(List<GruposFactoresRiesgos> listaGruposFactoresRiesgos) {
         for (int i = 0; i < listaGruposFactoresRiesgos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaGruposFactoresRiesgos.editar(listaGruposFactoresRiesgos.get(i));
+            persistenciaGruposFactoresRiesgos.editar(em, listaGruposFactoresRiesgos.get(i));
         }
     }
 
     public void borrarGruposFactoresRiesgos(List<GruposFactoresRiesgos> listaGruposFactoresRiesgos) {
         for (int i = 0; i < listaGruposFactoresRiesgos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaGruposFactoresRiesgos.borrar(listaGruposFactoresRiesgos.get(i));
+            persistenciaGruposFactoresRiesgos.borrar(em, listaGruposFactoresRiesgos.get(i));
         }
     }
 
     public void crearGruposFactoresRiesgos(List<GruposFactoresRiesgos> listaGruposFactoresRiesgos) {
         for (int i = 0; i < listaGruposFactoresRiesgos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaGruposFactoresRiesgos.crear(listaGruposFactoresRiesgos.get(i));
+            persistenciaGruposFactoresRiesgos.crear(em, listaGruposFactoresRiesgos.get(i));
         }
     }
 
      @Override
     public List<GruposFactoresRiesgos> consultarGruposFactoresRiesgos() {
         List<GruposFactoresRiesgos> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaGruposFactoresRiesgos.consultarGruposFactoresRiesgos();
+        listMotivosCambiosCargos = persistenciaGruposFactoresRiesgos.consultarGruposFactoresRiesgos(em);
         return listMotivosCambiosCargos;
     }
 
     public GruposFactoresRiesgos consultarGrupoFactorRiesgo(BigInteger secGruposFactoresRiesgos) {
         GruposFactoresRiesgos subCategoria;
-        subCategoria = persistenciaGruposFactoresRiesgos.consultarGrupoFactorRiesgo(secGruposFactoresRiesgos);
+        subCategoria = persistenciaGruposFactoresRiesgos.consultarGrupoFactorRiesgo(em, secGruposFactoresRiesgos);
         return subCategoria;
     }
 
@@ -62,7 +77,7 @@ public class AdministrarGruposFactoresRiesgos implements AdministrarGruposFactor
         BigInteger contarFactoresRiesgoGrupoFactorRiesgo = null;
 
         try {
-            return contarFactoresRiesgoGrupoFactorRiesgo = persistenciaGruposFactoresRiesgos.contarFactoresRiesgoGrupoFactorRiesgo(secGruposFactoresRiesgos);
+            return contarFactoresRiesgoGrupoFactorRiesgo = persistenciaGruposFactoresRiesgos.contarFactoresRiesgoGrupoFactorRiesgo(em, secGruposFactoresRiesgos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarGruposFactoresRiesgos contarFactoresRiesgoGrupoFactorRiesgo ERROR : " + e);
             return null;
@@ -73,7 +88,7 @@ public class AdministrarGruposFactoresRiesgos implements AdministrarGruposFactor
         BigInteger contarSoIndicadoresGrupoFactorRiesgo = null;
 
         try {
-            return contarSoIndicadoresGrupoFactorRiesgo = persistenciaGruposFactoresRiesgos.contarSoIndicadoresGrupoFactorRiesgo(secGruposFactoresRiesgos);
+            return contarSoIndicadoresGrupoFactorRiesgo = persistenciaGruposFactoresRiesgos.contarSoIndicadoresGrupoFactorRiesgo(em, secGruposFactoresRiesgos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarGruposFactoresRiesgos contarSoIndicadoresGrupoFactorRiesgo ERROR : " + e);
             return null;
@@ -84,7 +99,7 @@ public class AdministrarGruposFactoresRiesgos implements AdministrarGruposFactor
         BigInteger contarSoProActividadesGrupoFactorRiesgo = null;
 
         try {
-            return contarSoProActividadesGrupoFactorRiesgo = persistenciaGruposFactoresRiesgos.contarSoProActividadesGrupoFactorRiesgo(secGruposFactoresRiesgos);
+            return contarSoProActividadesGrupoFactorRiesgo = persistenciaGruposFactoresRiesgos.contarSoProActividadesGrupoFactorRiesgo(em, secGruposFactoresRiesgos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarGruposFactoresRiesgos contarSoProActividadesGrupoFactorRiesgo ERROR : " + e);
             return null;

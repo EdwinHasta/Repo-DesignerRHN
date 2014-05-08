@@ -9,7 +9,12 @@ import Entidades.Recordatorios;
 import java.util.List;
 
 public interface AdministrarRecordatoriosInterface {
-
+	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     public List<Recordatorios> recordatorios();
 
     public List<Recordatorios> mensajesRecordatorios();

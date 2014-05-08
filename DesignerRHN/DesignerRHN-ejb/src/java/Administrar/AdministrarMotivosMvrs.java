@@ -6,11 +6,13 @@ package Administrar;
 
 import InterfaceAdministrar.AdministrarMotivosMvrsInterface;
 import Entidades.Motivosmvrs;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosMvrsInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -21,12 +23,26 @@ public class AdministrarMotivosMvrs implements AdministrarMotivosMvrsInterface {
 
     @EJB
     PersistenciaMotivosMvrsInterface persistenciaMotivosMvrs;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs) {
         for (int i = 0; i < listaMotivosMvrs.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaMotivosMvrs.editar(listaMotivosMvrs.get(i));
+            persistenciaMotivosMvrs.editar(em, listaMotivosMvrs.get(i));
         }
     }
 
@@ -34,7 +50,7 @@ public class AdministrarMotivosMvrs implements AdministrarMotivosMvrsInterface {
     public void borrarMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs) {
         for (int i = 0; i < listaMotivosMvrs.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaMotivosMvrs.borrar(listaMotivosMvrs.get(i));
+            persistenciaMotivosMvrs.borrar(em, listaMotivosMvrs.get(i));
         }
     }
 
@@ -42,21 +58,21 @@ public class AdministrarMotivosMvrs implements AdministrarMotivosMvrsInterface {
     public void crearMotivosMvrs(List<Motivosmvrs> listaMotivosMvrs) {
         for (int i = 0; i < listaMotivosMvrs.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaMotivosMvrs.crear(listaMotivosMvrs.get(i));
+            persistenciaMotivosMvrs.crear(em, listaMotivosMvrs.get(i));
         }
     }
 
     @Override
     public List<Motivosmvrs> consultarMotivosMvrs() {
         List<Motivosmvrs> listMotivoMvrs;
-        listMotivoMvrs = persistenciaMotivosMvrs.buscarMotivosMvrs();
+        listMotivoMvrs = persistenciaMotivosMvrs.buscarMotivosMvrs(em);
         return listMotivoMvrs;
     }
 
     @Override
     public Motivosmvrs consultarMotivosMvrs(BigInteger secMotivosMvrs) {
         Motivosmvrs motivoMvrs;
-        motivoMvrs = persistenciaMotivosMvrs.buscarMotivosMvrs(secMotivosMvrs);
+        motivoMvrs = persistenciaMotivosMvrs.buscarMotivosMvrs(em, secMotivosMvrs);
         return motivoMvrs;
     }
 }

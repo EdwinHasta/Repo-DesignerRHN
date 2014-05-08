@@ -8,10 +8,12 @@ package Administrar;
 
 import Entidades.Recordatorios;
 import InterfaceAdministrar.AdministrarRecordatoriosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaRecordatoriosInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,29 +24,43 @@ public class AdministrarRecordatorios implements AdministrarRecordatoriosInterfa
 
     @EJB
     PersistenciaRecordatoriosInterface persistenciaRecordatorios;
+        /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     
     
     public List<Recordatorios> recordatorios(){
         List<Recordatorios> listaRecordatorios;
-        listaRecordatorios = persistenciaRecordatorios.proverbiosRecordatorios();
+        listaRecordatorios = persistenciaRecordatorios.proverbiosRecordatorios(em);
         return listaRecordatorios;
     }
     
     
     public List<Recordatorios> mensajesRecordatorios(){
         List<Recordatorios> listaMensajesRecordatorios;
-        listaMensajesRecordatorios = persistenciaRecordatorios.mensajesRecordatorios();
+        listaMensajesRecordatorios = persistenciaRecordatorios.mensajesRecordatorios(em);
         return listaMensajesRecordatorios;
     }
     
     
     public void borrar(Recordatorios proverbios) {
-        persistenciaRecordatorios.borrar(proverbios);
+        persistenciaRecordatorios.borrar(em, proverbios);
     }
 
     
     public void crear(Recordatorios proverbios) {
-        persistenciaRecordatorios.crear(proverbios);
+        persistenciaRecordatorios.crear(em, proverbios);
     }
 
     
@@ -54,18 +70,18 @@ public class AdministrarRecordatorios implements AdministrarRecordatoriosInterfa
             if (listaProverbiosModificar.get(i).getMensaje() == null) {
                 listaProverbiosModificar.get(i).setMensaje(null);
             }
-            persistenciaRecordatorios.editar(listaProverbiosModificar.get(i));
+            persistenciaRecordatorios.editar(em, listaProverbiosModificar.get(i));
         }
     }
     
     @Override
     public void borrarMU(Recordatorios mensajeUsuario) {
-        persistenciaRecordatorios.borrar(mensajeUsuario);
+        persistenciaRecordatorios.borrar(em, mensajeUsuario);
     }
 
     @Override
     public void crearMU(Recordatorios mensajeUsuario) {
-        persistenciaRecordatorios.crear(mensajeUsuario);
+        persistenciaRecordatorios.crear(em, mensajeUsuario);
     }
 
     @Override
@@ -84,7 +100,7 @@ public class AdministrarRecordatorios implements AdministrarRecordatoriosInterfa
             if (listaMensajesUsuariosModificar.get(i).getDia() == null) {
                 listaMensajesUsuariosModificar.get(i).setDia(null);
             }
-            persistenciaRecordatorios.editar(listaMensajesUsuariosModificar.get(i));
+            persistenciaRecordatorios.editar(em, listaMensajesUsuariosModificar.get(i));
         }
     }
 }

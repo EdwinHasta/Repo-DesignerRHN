@@ -10,6 +10,7 @@ import Entidades.Empresas;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
 import InterfaceAdministrar.AdministrarNReporteLaboralInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -19,6 +20,7 @@ import InterfacePersistencia.PersistenciaParametrosInformesInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -45,12 +47,26 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     List<Cargos> listCargos;
     List<Empresas> listEmpresas;
     List<Empleados> listEmpleados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public ParametrosInformes parametrosDeReporte() {
         try {
-            usuarioActual = persistenciaActualUsuario.actualAliasBD();
-            parametroReporte = persistenciaParametrosInformes.buscarParametroInformeUsuario(usuarioActual);
+            usuarioActual = persistenciaActualUsuario.actualAliasBD(em);
+            parametroReporte = persistenciaParametrosInformes.buscarParametroInformeUsuario(em, usuarioActual);
             return parametroReporte;
         } catch (Exception e) {
             System.out.println("Error parametrosDeReporte Administrar" + e);
@@ -61,7 +77,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Inforeportes> listInforeportesUsuario() {
         try {
-            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioLaboral();
+            listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioLaboral(em);
             System.out.println("Tamaño: " + listInforeportes.size());
             return listInforeportes;
         } catch (Exception e) {
@@ -73,7 +89,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public void modificarParametrosInformes(ParametrosInformes parametroInforme){
         try{
-            persistenciaParametrosInformes.editar(parametroInforme);
+            persistenciaParametrosInformes.editar(em, parametroInforme);
         }catch(Exception e){
             System.out.println("Error modificarParametrosInformes : "+e.toString());
         }
@@ -82,7 +98,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Cargos> listCargos(){
         try{
-            listCargos = persistenciaCargos.consultarCargos();
+            listCargos = persistenciaCargos.consultarCargos(em);
             return listCargos;
         }catch(Exception e){
             System.out.println("Error en listCargos Administrar: "+e.toString());
@@ -93,7 +109,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Empleados> listEmpleados(){
         try{
-            listEmpleados = persistenciaEmpleado.buscarEmpleados();
+            listEmpleados = persistenciaEmpleado.buscarEmpleados(em);
             return listEmpleados;
         }catch(Exception e){
             System.out.println("Error listEmpleados : "+e.toString());
@@ -104,7 +120,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.consultarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas(em);
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error listEmpresas Administrar : " + e.toString());
@@ -116,7 +132,7 @@ public class AdministrarNReporteLaboral implements AdministrarNReporteLaboralInt
     public void guardarCambiosInfoReportes(List<Inforeportes> listaIR) {
         try {
             for (int i = 0; i < listaIR.size(); i++) {
-                persistenciaInforeportes.editar(listaIR.get(i));
+                persistenciaInforeportes.editar(em, listaIR.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error guardarCambiosInfoReportes Admi : " + e.toString());

@@ -12,6 +12,7 @@ import Entidades.Periodicidades;
 import Entidades.Terceros;
 import Entidades.Usuarios;
 import InterfaceAdministrar.AdministrarNovedadesTercerosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -26,6 +27,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercerosInterface {
@@ -50,12 +52,26 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
     PersistenciaUsuariosInterface persistenciaUsuarios;
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     //Trae las novedades del empleado cuya secuencia se envía como parametro//
     @Override
     public List<Novedades> novedadesTercero(BigInteger secuenciaTercero) {
         try {
-            return persistenciaNovedades.novedadesTercero(secuenciaTercero);
+            return persistenciaNovedades.novedadesTercero(em, secuenciaTercero);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesTerceros.novedadesTercero" + e);
             return null;
@@ -64,56 +80,56 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
 
     //Listas de Conceptos, Formulas, Periodicidades, Terceros
     public List<Terceros> Terceros() {
-        return persistenciaTerceros.todosTerceros();
+        return persistenciaTerceros.todosTerceros(em);
     }
 
     @Override
     public List<Formulas> lovFormulas() {
-        return persistenciaFormulas.buscarFormulas();
+        return persistenciaFormulas.buscarFormulas(em);
     }
 
     @Override
     public List<Periodicidades> lovPeriodicidades() {
-        return persistenciaPeriodicidades.consultarPeriodicidades();
+        return persistenciaPeriodicidades.consultarPeriodicidades(em);
     }
 
     @Override
     public List<Terceros> lovTerceros() {
-        return persistenciaTerceros.buscarTerceros();
+        return persistenciaTerceros.buscarTerceros(em);
     }
 
     @Override
     public List<Empleados> lovEmpleados() {
-        return persistenciaEmpleados.empleadosNovedad();
+        return persistenciaEmpleados.empleadosNovedad(em);
     }
 
     @Override
     public List<Conceptos> lovConceptos() {
-        return persistenciaConceptos.buscarConceptos();
+        return persistenciaConceptos.buscarConceptos(em);
     }
 
     //Ver si está en soluciones formulas y de ser asi no borrarlo
     public int solucionesFormulas(BigInteger secuenciaNovedad) {
-        return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(secuenciaNovedad);
+        return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(em, secuenciaNovedad);
     }
     //Usuarios
 
     public String alias() {
-        return persistenciaActualUsuario.actualAliasBD();
+        return persistenciaActualUsuario.actualAliasBD(em);
     }
 
     public Usuarios usuarioBD(String alias) {
-        return persistenciaUsuarios.buscarUsuario(alias);
+        return persistenciaUsuarios.buscarUsuario(em, alias);
     }
 
     @Override
     public void borrarNovedades(Novedades novedades) {
-        persistenciaNovedades.borrar(novedades);
+        persistenciaNovedades.borrar(em, novedades);
     }
 
     @Override
     public void crearNovedades(Novedades novedades) {
-        persistenciaNovedades.crear(novedades);
+        persistenciaNovedades.crear(em, novedades);
     }
 
     @Override
@@ -133,13 +149,13 @@ public class AdministrarNovedadesTerceros implements AdministrarNovedadesTercero
             if (listaNovedadesModificar.get(i).getUnidadespartefraccion() == null) {
                 listaNovedadesModificar.get(i).setUnidadespartefraccion(null);
             }
-            persistenciaNovedades.editar(listaNovedadesModificar.get(i));
+            persistenciaNovedades.editar(em, listaNovedadesModificar.get(i));
         }
     }
 
     public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero) {
         try {
-            return persistenciaNovedades.todasNovedadesTercero(secuenciaTercero);
+            return persistenciaNovedades.todasNovedadesTercero(em, secuenciaTercero);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesTerceros.todasNovedadesConcepto" + e);
             return null;

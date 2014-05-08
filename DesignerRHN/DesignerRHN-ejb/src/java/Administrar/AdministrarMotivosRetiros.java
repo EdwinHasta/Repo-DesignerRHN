@@ -7,11 +7,13 @@ package Administrar;
 
 import Entidades.MotivosRetiros;
 import InterfaceAdministrar.AdministrarMotivosRetirosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosRetirosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,13 +24,27 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
 
     @EJB
     PersistenciaMotivosRetirosInterface persistenciaMotivosRetiros;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarMotivosRetiros(List<MotivosRetiros> listaMotivosRetiros) {
         for (int i = 0; i < listaMotivosRetiros.size(); i++) {
             System.out.println("Administrar Modificando...");
             System.out.println("Nombre " + listaMotivosRetiros.get(i).getNombre() + " Codigo " + listaMotivosRetiros.get(i).getCodigo());
-            persistenciaMotivosRetiros.editar(listaMotivosRetiros.get(i));
+            persistenciaMotivosRetiros.editar(em, listaMotivosRetiros.get(i));
         }
     }
 
@@ -37,7 +53,7 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
         for (int i = 0; i < listaMotivosRetiros.size(); i++) {
             System.out.println("Administrar Borrando...");
             System.out.println("Nombre " + listaMotivosRetiros.get(i).getNombre() + " Codigo " + listaMotivosRetiros.get(i).getCodigo());
-            persistenciaMotivosRetiros.borrar(listaMotivosRetiros.get(i));
+            persistenciaMotivosRetiros.borrar(em, listaMotivosRetiros.get(i));
         }
     }
 
@@ -46,20 +62,20 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
         for (int i = 0; i < listaMotivosRetiros.size(); i++) {
             System.out.println("Administrar Creando...");
             System.out.println("Nombre " + listaMotivosRetiros.get(i).getNombre() + " Codigo " + listaMotivosRetiros.get(i).getCodigo());
-            persistenciaMotivosRetiros.crear(listaMotivosRetiros.get(i));
+            persistenciaMotivosRetiros.crear(em, listaMotivosRetiros.get(i));
         }
     }
 
     public List<MotivosRetiros> consultarMotivosRetiros() {
         List<MotivosRetiros> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaMotivosRetiros.consultarMotivosRetiros();
+        listMotivosCambiosCargos = persistenciaMotivosRetiros.consultarMotivosRetiros(em);
         return listMotivosCambiosCargos;
     }
 
     @Override
     public MotivosRetiros consultarMotivoRetiro(BigInteger secMotivosRetiros) {
         MotivosRetiros subCategoria;
-        subCategoria = persistenciaMotivosRetiros.consultarMotivoRetiro(secMotivosRetiros);
+        subCategoria = persistenciaMotivosRetiros.consultarMotivoRetiro(em, secMotivosRetiros);
         return subCategoria;
     }
 
@@ -68,7 +84,7 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
         BigInteger contarHVExperienciasLaboralesMotivoRetiro = null;
 
         try {
-            return contarHVExperienciasLaboralesMotivoRetiro = persistenciaMotivosRetiros.contarHVExperienciasLaboralesMotivoRetiro(secMotivosRetiros);
+            return contarHVExperienciasLaboralesMotivoRetiro = persistenciaMotivosRetiros.contarHVExperienciasLaboralesMotivoRetiro(em, secMotivosRetiros);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosRetiros contarEscalafones ERROR : " + e);
             return null;
@@ -80,7 +96,7 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
         BigInteger contarNovedadesSistemasMotivoRetiro = null;
 
         try {
-            return contarNovedadesSistemasMotivoRetiro = persistenciaMotivosRetiros.contarNovedadesSistemasMotivoRetiro(secMotivosRetiros);
+            return contarNovedadesSistemasMotivoRetiro = persistenciaMotivosRetiros.contarNovedadesSistemasMotivoRetiro(em, secMotivosRetiros);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosRetiros contarEscalafones ERROR : " + e);
             return null;
@@ -92,7 +108,7 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
         BigInteger contarRetiMotivosRetirosMotivoRetiro = null;
 
         try {
-            return contarRetiMotivosRetirosMotivoRetiro = persistenciaMotivosRetiros.contarRetiMotivosRetirosMotivoRetiro(secMotivosRetiros);
+            return contarRetiMotivosRetirosMotivoRetiro = persistenciaMotivosRetiros.contarRetiMotivosRetirosMotivoRetiro(em, secMotivosRetiros);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosRetiros contarEscalafones ERROR : " + e);
             return null;
@@ -104,7 +120,7 @@ public class AdministrarMotivosRetiros implements AdministrarMotivosRetirosInter
         BigInteger contarRetiradosMotivoRetiro = null;
 
         try {
-            return contarRetiradosMotivoRetiro = persistenciaMotivosRetiros.contarRetiradosMotivoRetiro(secMotivosRetiros);
+            return contarRetiradosMotivoRetiro = persistenciaMotivosRetiros.contarRetiradosMotivoRetiro(em, secMotivosRetiros);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosRetiros contarRetiradosMotivoRetiro ERROR : " + e);
             return null;

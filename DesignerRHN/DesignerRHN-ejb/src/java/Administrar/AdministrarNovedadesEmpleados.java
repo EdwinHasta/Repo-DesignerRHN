@@ -14,6 +14,7 @@ import Entidades.Terceros;
 import Entidades.Usuarios;
 import Entidades.VWActualesTiposTrabajadores;
 import InterfaceAdministrar.AdministrarNovedadesEmpleadosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmpleadosInterface {
@@ -56,14 +58,27 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     PersistenciaUsuariosInterface persistenciaUsuarios;
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     //Trae los empleados con Novedades dependiendo el Tipo de Trabajador que sea.
 
     public List<PruebaEmpleados> empleadosNovedad() {
-        List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad();
+        List<Empleados> listaEmpleados = persistenciaEmpleados.empleadosNovedad(em);
         List<PruebaEmpleados> listaEmpleadosNovedad = new ArrayList<PruebaEmpleados>();
         for (int i = 0; i < listaEmpleados.size(); i++) {
-            PruebaEmpleados p = persistenciaPruebaEmpleados.empleadosAsignacion(listaEmpleados.get(i).getSecuencia());
+            PruebaEmpleados p = persistenciaPruebaEmpleados.empleadosAsignacion(em, listaEmpleados.get(i).getSecuencia());
 
             if (p != null) {
                 listaEmpleadosNovedad.add(p);
@@ -84,7 +99,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     @Override
     public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
         try {
-            return persistenciaNovedades.novedadesEmpleado(secuenciaEmpleado);
+            return persistenciaNovedades.novedadesEmpleado(em, secuenciaEmpleado);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesEmpleados.novedadesEmpleado" + e);
             return null;
@@ -93,7 +108,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     
     public List<Novedades> todasNovedades(BigInteger secuenciaEmpleado){
         try {
-            return persistenciaNovedades.todasNovedadesEmpleado(secuenciaEmpleado);
+            return persistenciaNovedades.todasNovedadesEmpleado(em, secuenciaEmpleado);
         } catch (Exception e) {
             System.err.println("Error AdministrarNovedadesEmpleados.todasNovedades" + e);
             return null;
@@ -102,69 +117,69 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
     
     //Ver si está en soluciones formulas y de ser asi no borrarlo
     public int solucionesFormulas(BigInteger secuenciaNovedad){
-        return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(secuenciaNovedad);
+        return persistenciaSolucionesFormulas.validarNovedadesNoLiquidadas(em, secuenciaNovedad);
     }
     
     public String alias(){
-        return persistenciaActualUsuario.actualAliasBD();
+        return persistenciaActualUsuario.actualAliasBD(em);
     }
     
     public Usuarios usuarioBD(String alias){
-        return persistenciaUsuarios.buscarUsuario(alias);
+        return persistenciaUsuarios.buscarUsuario(em, alias);
     }
     
     //Procesa un solo empleado para volverlo Pruebaempleado
     @Override
     public PruebaEmpleados novedadEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaPruebaEmpleados.empleadosAsignacion(secuenciaEmpleado);
+        return persistenciaPruebaEmpleados.empleadosAsignacion(em, secuenciaEmpleado);
     }
 
     //Busca el empleado con el Id que se envía
     @Override
     public Empleados elEmpleado(BigInteger secuenciaEmpleado) {
-        return persistenciaEmpleados.buscarEmpleado(secuenciaEmpleado);
+        return persistenciaEmpleados.buscarEmpleado(em, secuenciaEmpleado);
     }
 
     //Listas de Conceptos, Formulas, Periodicidades, Terceros
     @Override
     public List<Conceptos> lovConceptos() {
-        return persistenciaConceptos.buscarConceptos();
+        return persistenciaConceptos.buscarConceptos(em);
     }
 
     @Override
     public List<Formulas> lovFormulas() {
-        return persistenciaFormulas.buscarFormulas();
+        return persistenciaFormulas.buscarFormulas(em);
     }
 
     @Override
     public List<Periodicidades> lovPeriodicidades() {
-        return persistenciaPeriodicidades.consultarPeriodicidades();
+        return persistenciaPeriodicidades.consultarPeriodicidades(em);
     }
 
     @Override
     public List<Terceros> lovTerceros() {
-        return persistenciaTerceros.buscarTerceros();
+        return persistenciaTerceros.buscarTerceros(em);
     }
 
     @Override
     public List<Empleados> lovEmpleados() {
-        return persistenciaEmpleados.empleadosNovedad();
+        return persistenciaEmpleados.empleadosNovedad(em);
     }
 
     // Que tipo de Trabajador es
     @Override
     public List<VWActualesTiposTrabajadores> tiposTrabajadores() {
-        return persistenciaVWActualesTiposTrabajadores.tipoTrabajadorEmpleado();
+        return persistenciaVWActualesTiposTrabajadores.tipoTrabajadorEmpleado(em);
     }
 
     @Override
     public void borrarNovedades(Novedades novedades) {
-        persistenciaNovedades.borrar(novedades);
+        persistenciaNovedades.borrar(em, novedades);
     }
 
     @Override
     public void crearNovedades(Novedades novedades) {
-        persistenciaNovedades.crear(novedades);
+        persistenciaNovedades.crear(em, novedades);
     }
     
     
@@ -188,7 +203,7 @@ public class AdministrarNovedadesEmpleados implements AdministrarNovedadesEmplea
             if (listaNovedadesModificar.get(i).getUnidadespartefraccion() == null) {
                 listaNovedadesModificar.get(i).setUnidadespartefraccion(null);
             }
-            persistenciaNovedades.editar(listaNovedadesModificar.get(i));
+            persistenciaNovedades.editar(em, listaNovedadesModificar.get(i));
         }
     }
 }

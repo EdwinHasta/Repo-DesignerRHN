@@ -8,6 +8,7 @@ import Entidades.Empleados;
 import Entidades.Idiomas;
 import Entidades.IdiomasPersonas;
 import InterfaceAdministrar.AdministrarIdiomaPersonaInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaIdiomasInterface;
 import InterfacePersistencia.PersistenciaIdiomasPersonasInterface;
@@ -15,6 +16,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -30,6 +32,21 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
 
+        /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void crearIdiomasPersonas(List<IdiomasPersonas> listaID) {
         try {
@@ -37,7 +54,7 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
                 if (listaID.get(i).getIdioma().getSecuencia() == null) {
                     listaID.get(i).setIdioma(null);
                 }
-                persistenciaIdiomasPersonas.crear(listaID.get(i));
+                persistenciaIdiomasPersonas.crear(em, listaID.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearIdiomarPersonas Admi : " + e.toString());
@@ -51,7 +68,7 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
                 if (listaID.get(i).getIdioma().getSecuencia() == null) {
                     listaID.get(i).setIdioma(null);
                 }
-                persistenciaIdiomasPersonas.borrar(listaID.get(i));
+                persistenciaIdiomasPersonas.borrar(em, listaID.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearIdiomarPersonas Admi : " + e.toString());
@@ -65,7 +82,7 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
                 if (listaID.get(i).getIdioma().getSecuencia() == null) {
                     listaID.get(i).setIdioma(null);
                 }
-                persistenciaIdiomasPersonas.editar(listaID.get(i));
+                persistenciaIdiomasPersonas.editar(em, listaID.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearIdiomarPersonas Admi : " + e.toString());
@@ -75,7 +92,7 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     @Override
     public List<IdiomasPersonas> listIdiomasPersonas(BigInteger secuencia) { 
         try {
-            List<IdiomasPersonas> lista = persistenciaIdiomasPersonas.idiomasPersona(secuencia);
+            List<IdiomasPersonas> lista = persistenciaIdiomasPersonas.idiomasPersona(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listIdiomasPersonas Admi : " + e.toString());
@@ -86,7 +103,7 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     @Override
     public List<Idiomas> listIdiomas() {
         try {
-            List<Idiomas> lista = persistenciaIdiomas.buscarIdiomas();
+            List<Idiomas> lista = persistenciaIdiomas.buscarIdiomas(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lisIdiomas Admi : " + e.toString());
@@ -96,7 +113,7 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     
     public Empleados empleadoActual(BigInteger secuencia){
         try{
-            Empleados empl = persistenciaEmpleado.buscarEmpleado(secuencia);
+            Empleados empl = persistenciaEmpleado.buscarEmpleado(em, secuencia);
             return empl;
         }catch(Exception e){
             System.out.println("Error empleadoActual Admi : "+e.toString());

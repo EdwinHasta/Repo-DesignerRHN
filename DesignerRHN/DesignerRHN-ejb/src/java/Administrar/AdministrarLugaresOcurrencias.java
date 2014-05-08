@@ -8,11 +8,13 @@ package Administrar;
 
 import Entidades.LugaresOcurrencias;
 import InterfaceAdministrar.AdministrarLugaresOcurrenciasInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaLugaresOcurrenciasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -26,12 +28,26 @@ public class AdministrarLugaresOcurrencias implements AdministrarLugaresOcurrenc
     private LugaresOcurrencias lugarOcurrenciaSeleccionada;
     private LugaresOcurrencias lugarOcurrencia;
     private List<LugaresOcurrencias> listLugarOcurrencia;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
   @Override
     public void modificarLesiones(List<LugaresOcurrencias> listaLugaresOcurrencias) {
         for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaLugaresOcurrencias.editar(listaLugaresOcurrencias.get(i));
+            persistenciaLugaresOcurrencias.editar(em, listaLugaresOcurrencias.get(i));
         }
     }
 
@@ -39,7 +55,7 @@ public class AdministrarLugaresOcurrencias implements AdministrarLugaresOcurrenc
     public void borrarLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias) {
         for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaLugaresOcurrencias.borrar(listaLugaresOcurrencias.get(i));
+            persistenciaLugaresOcurrencias.borrar(em, listaLugaresOcurrencias.get(i));
         }
     }
 
@@ -47,19 +63,19 @@ public class AdministrarLugaresOcurrencias implements AdministrarLugaresOcurrenc
     public void crearLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias) {
         for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaLugaresOcurrencias.crear(listaLugaresOcurrencias.get(i));
+            persistenciaLugaresOcurrencias.crear(em, listaLugaresOcurrencias.get(i));
         }
     }
 
   @Override
     public List<LugaresOcurrencias> consultarLugaresOcurrencias() {
-        listLugarOcurrencia = persistenciaLugaresOcurrencias.buscarLugaresOcurrencias();
+        listLugarOcurrencia = persistenciaLugaresOcurrencias.buscarLugaresOcurrencias(em);
         return listLugarOcurrencia;
     }
 
   @Override
     public LugaresOcurrencias consultarLugarOcurrencia(BigInteger secLugarOcurrencia) {
-        lugarOcurrencia = persistenciaLugaresOcurrencias.buscarLugaresOcurrencias(secLugarOcurrencia);
+        lugarOcurrencia = persistenciaLugaresOcurrencias.buscarLugaresOcurrencias(em, secLugarOcurrencia);
         return lugarOcurrencia;
     }
 
@@ -67,7 +83,7 @@ public class AdministrarLugaresOcurrencias implements AdministrarLugaresOcurrenc
     public BigInteger verificarSoAccidentesLugarOcurrencia(BigInteger secuenciaLugaresOcurrencias) {
         BigInteger verificarSoAccidentes;
         try {
-            return verificarSoAccidentes = persistenciaLugaresOcurrencias.contadorSoAccidentes(secuenciaLugaresOcurrencias);
+            return verificarSoAccidentes = persistenciaLugaresOcurrencias.contadorSoAccidentes(em, secuenciaLugaresOcurrencias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARLUGARESOCURRENCIAS VERIFICAR SO ACCIDENTES ERROR : " + e);
             return null;

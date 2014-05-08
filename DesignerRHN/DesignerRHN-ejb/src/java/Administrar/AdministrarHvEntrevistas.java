@@ -9,12 +9,14 @@ import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
 import InterfaceAdministrar.AdministrarHvEntrevistasInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaHvEntrevistasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -27,12 +29,26 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     PersistenciaHvEntrevistasInterface persistenciaHvEntrevistas;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas) {
         for (int i = 0; i < listHvEntrevistas.size(); i++) {
             System.out.println("Modificando...");
-            persistenciaHvEntrevistas.editar(listHvEntrevistas.get(i));
+            persistenciaHvEntrevistas.editar(em, listHvEntrevistas.get(i));
         }
     }
 
@@ -40,7 +56,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     public void borrarHvEntrevistas(List<HvEntrevistas> listHvEntrevistas) {
         for (int i = 0; i < listHvEntrevistas.size(); i++) {
             System.out.println("Borrando...");
-            persistenciaHvEntrevistas.borrar(listHvEntrevistas.get(i));
+            persistenciaHvEntrevistas.borrar(em, listHvEntrevistas.get(i));
         }
     }
 
@@ -48,7 +64,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     public void crearHvEntrevistas(List<HvEntrevistas> listHvEntrevistas) {
         for (int i = 0; i < listHvEntrevistas.size(); i++) {
             System.out.println("Creando...");
-            persistenciaHvEntrevistas.crear(listHvEntrevistas.get(i));
+            persistenciaHvEntrevistas.crear(em, listHvEntrevistas.get(i));
         }
     }
 
@@ -56,7 +72,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     public List<HvEntrevistas> consultarHvEntrevistasPorEmpleado(BigInteger secEmpleado) {
         List<HvEntrevistas> listHvEntrevistas;
         try {
-            listHvEntrevistas = persistenciaHvEntrevistas.buscarHvEntrevistasPorEmpleado(secEmpleado);
+            listHvEntrevistas = persistenciaHvEntrevistas.buscarHvEntrevistasPorEmpleado(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en AdministrarHvEntrevistas hvEntrevistasPorEmplado");
             listHvEntrevistas = null;
@@ -67,7 +83,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     @Override
     public HvEntrevistas consultarHvEntrevista(BigInteger secHvEntrevista) {
         HvEntrevistas hvEntrevistas;
-        hvEntrevistas = persistenciaHvEntrevistas.buscarHvEntrevista(secHvEntrevista);
+        hvEntrevistas = persistenciaHvEntrevistas.buscarHvEntrevista(em, secHvEntrevista);
         return hvEntrevistas;
     }
 
@@ -75,7 +91,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     public Empleados consultarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {
-            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -88,7 +104,7 @@ public class AdministrarHvEntrevistas implements AdministrarHvEntrevistasInterfa
     public List<HVHojasDeVida> buscarHVHojasDeVida(BigInteger secuencia) {
         List<HVHojasDeVida> hvHojasDeVida;
         try {
-            hvHojasDeVida = persistenciaHvEntrevistas.buscarHvHojaDeVidaPorEmpleado(secuencia);
+            hvHojasDeVida = persistenciaHvEntrevistas.buscarHvHojaDeVidaPorEmpleado(em, secuencia);
             return hvHojasDeVida;
         } catch (Exception e) {
             hvHojasDeVida = null;

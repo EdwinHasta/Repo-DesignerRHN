@@ -15,6 +15,12 @@ import java.util.List;
  * @author Administrator
  */
 public interface AdministrarRastrosInterface {
+    	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     public List<Rastros> rastrosTabla(BigInteger secRegistro, String nombreTabla);
     public int obtenerTabla(BigInteger secRegistro, String nombreTabla);
     public List<Rastros> rastrosTablaHistoricos(String nombreTabla);
