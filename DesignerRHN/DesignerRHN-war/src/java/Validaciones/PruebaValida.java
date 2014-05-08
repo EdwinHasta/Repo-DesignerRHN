@@ -60,7 +60,7 @@ public class PruebaValida extends HttpServlet {
             aficion.setSecuencia(BigInteger.valueOf(0));
             aficion.setCodigo(codigo);
             aficion.setDescripcion(descaficion);
-            persistenciaAficiones.crear(aficion);
+            //persistenciaAficiones.crear(aficion);
             
         } finally {            
             out.close();
