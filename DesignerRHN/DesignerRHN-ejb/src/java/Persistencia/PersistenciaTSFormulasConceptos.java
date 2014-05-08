@@ -25,11 +25,12 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TSFormulasConceptos tSFormulasConceptos) {
+    public void crear(EntityManager em, TSFormulasConceptos tSFormulasConceptos) {
         try {
             em.persist(tSFormulasConceptos);
         } catch (Exception e) {
@@ -38,7 +39,7 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     }
 
     @Override
-    public void editar(TSFormulasConceptos tSFormulasConceptos) {
+    public void editar(EntityManager em, TSFormulasConceptos tSFormulasConceptos) {
         try {
             em.merge(tSFormulasConceptos);
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     }
 
     @Override
-    public void borrar(TSFormulasConceptos tSFormulasConceptos) {
+    public void borrar(EntityManager em, TSFormulasConceptos tSFormulasConceptos) {
         try {
             em.remove(em.merge(tSFormulasConceptos));
         } catch (Exception e) {
@@ -56,9 +57,10 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     }
 
     @Override
-    public List<TSFormulasConceptos> buscarTSFormulasConceptos() {
+    public List<TSFormulasConceptos> buscarTSFormulasConceptos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM TSFormulasConceptos t ORDER BY t.secuencia ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TSFormulasConceptos> tSFormulasConceptos = (List<TSFormulasConceptos>) query.getResultList();
             return tSFormulasConceptos;
         } catch (Exception e) {
@@ -68,10 +70,11 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     }
 
     @Override
-    public TSFormulasConceptos buscarTSFormulaConceptoSecuencia(BigInteger secTSFormula) {
+    public TSFormulasConceptos buscarTSFormulaConceptoSecuencia(EntityManager em, BigInteger secTSFormula) {
         try {
             Query query = em.createQuery("SELECT t FROM TSFormulasConceptos t WHERE t.secuencia = :secTSFormula");
             query.setParameter("secTSFormula", secTSFormula);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TSFormulasConceptos tSFormulasConceptos = (TSFormulasConceptos) query.getSingleResult();
             return tSFormulasConceptos;
         } catch (Exception e) {
@@ -82,10 +85,11 @@ public class PersistenciaTSFormulasConceptos implements PersistenciaTSFormulasCo
     }
 
     @Override
-    public List<TSFormulasConceptos> buscarTSFormulasConceptosPorSecuenciaTipoSueldo(BigInteger secTipoSueldo) {
+    public List<TSFormulasConceptos> buscarTSFormulasConceptosPorSecuenciaTipoSueldo(EntityManager em, BigInteger secTipoSueldo) {
         try {
             Query query = em.createQuery("SELECT t FROM TSFormulasConceptos t WHERE t.tiposueldo.secuencia =:secTipoSueldo");
             query.setParameter("secTipoSueldo", secTipoSueldo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TSFormulasConceptos> tEFormulasConceptos = (List<TSFormulasConceptos>) query.getResultList();
             return tEFormulasConceptos;
         } catch (Exception e) {

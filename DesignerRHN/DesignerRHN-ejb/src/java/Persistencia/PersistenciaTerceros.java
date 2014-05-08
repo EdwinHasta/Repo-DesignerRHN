@@ -22,11 +22,12 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(Terceros terceros) {
+    public void crear(EntityManager em, Terceros terceros) {
         try {
             em.persist(terceros);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
-    public void editar(Terceros terceros) {
+    public void editar(EntityManager em, Terceros terceros) {
         try {
             em.merge(terceros);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
-    public void borrar(Terceros terceros) {
+    public void borrar(EntityManager em, Terceros terceros) {
         try {
             em.remove(em.merge(terceros));
         } catch (Exception e) {
@@ -53,9 +54,10 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
     
     @Override
-    public List<Terceros> todosTerceros() {
+    public List<Terceros> todosTerceros(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t ORDER BY t.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> terceros = (List<Terceros>) query.getResultList();
             return terceros;
         } catch (Exception e) {
@@ -65,9 +67,10 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
-    public List<Terceros> buscarTerceros() {
+    public List<Terceros> buscarTerceros(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t, Empresas e, TercerosSucursales ts  WHERE t.secuencia = ts.tercero.secuencia AND t.empresa.secuencia = e.secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> terceros = (List<Terceros>) query.getResultList();
             return terceros;
         } catch (Exception e) {
@@ -77,10 +80,11 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
-    public Terceros buscarTercerosSecuencia(BigInteger secuencia) {
+    public Terceros buscarTercerosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Terceros terceros = (Terceros) query.getSingleResult();
             return terceros;
         } catch (Exception e) {
@@ -91,10 +95,11 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
-    public boolean verificarTerceroPorNit(BigInteger nit) {
+    public boolean verificarTerceroPorNit(EntityManager em, BigInteger nit) {
         try {
             Query query = em.createQuery("SELECT COUNT(t) FROM Terceros t WHERE t.nit = :nit");
             query.setParameter("nit", nit);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -104,12 +109,13 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
 
     @Override
-    public boolean verificarTerceroParaEmpresaEmpleado(BigInteger nit, BigInteger secEmpresa) {
+    public boolean verificarTerceroParaEmpresaEmpleado(EntityManager em, BigInteger nit, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT COUNT(t) FROM Terceros t "
                     + "WHERE t.nit = :nit AND t.empresa.secuencia = :secEmpresa");
             query.setParameter("nit", nit);
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -119,11 +125,12 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
     
     @Override
-    public List<Terceros> lovTerceros(BigInteger secEmpresa) {
+    public List<Terceros> lovTerceros(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT t FROM Terceros t "
                     + "WHERE t.empresa.secuencia = :secEmpresa ORDER BY t.nombre");
             query.setParameter("secEmpresa", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> listaTerceros = query.getResultList();
             return listaTerceros;
         } catch (Exception e) {
@@ -133,9 +140,10 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
     }
     
     @Override
-    public List<Terceros> tercerosEmbargos() {
+    public List<Terceros> tercerosEmbargos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t.nit, t.nombre, e.nombre FROM Terceros t, Empresas e Where e.secuencia=t.empresa ORDER BY t.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Terceros> listaTerceros = query.getResultList();
             return listaTerceros;
         } catch (Exception e) {

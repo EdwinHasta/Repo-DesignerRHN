@@ -27,25 +27,25 @@ public interface PersistenciaVWActualesTiposTrabajadoresInterface {
      * @param tipo Secuencia del TipoTrabajador.
      * @return Retorna una lista de VWActualesTiposTrabajadores asociados con el TipoTrabajador específicado.
      */
-    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(String tipo);
+    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(EntityManager em, String tipo);
     /**
      * Método encargado de buscar los TiposTrabajadores actuales, para esto se realiza la consulta
      * sobre la vista VWActualesAfiliacionesPension.
      * El término actual está dado por la fechaHasta de las liquidaciones.
      * @return Retorna una lista con todos los VWActualesTiposTrabajadores de la vista.
      */
-    public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores();
+    public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores(EntityManager em );
     /**
      * Método encargado de verificar si un empleado está 'ACTIVO' en el momento de la fechaHasta de la liquidación.
      * @param empleado Secuencia del empleado.
      * @return Retorna True si el empleado cuya secuencia coincide con la del parametro, es de tipo 'ACTIVO'.
      * False de lo contrario.
      */
-    public boolean verificarTipoTrabajador(Empleados empleado);
+    public boolean verificarTipoTrabajador(EntityManager em, Empleados empleado);
     /**
      * Método encargado de buscar los VWActualesTiposTrabajadores cuyo TipoTrabajador es de tipo
      * 'ACTIVO', 'PENSIONADO' o 'RETIRADO'.
      * @return Retorna una lista de VWActualesTiposTrabajadores.
      */
-    public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado();
+    public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado(EntityManager em );
 }

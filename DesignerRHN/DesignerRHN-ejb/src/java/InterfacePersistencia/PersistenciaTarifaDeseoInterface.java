@@ -9,6 +9,7 @@ package InterfacePersistencia;
 import Entidades.TarifaDeseo;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -16,6 +17,6 @@ import java.util.List;
  */
 public interface PersistenciaTarifaDeseoInterface {
     
-    public List<TarifaDeseo> retenciones(Date fechaFinal);
+    public List<TarifaDeseo> retenciones(EntityManager em, Date fechaFinal);
     
 }

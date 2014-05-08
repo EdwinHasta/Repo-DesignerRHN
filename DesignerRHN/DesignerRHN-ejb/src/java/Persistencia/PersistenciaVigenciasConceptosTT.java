@@ -22,11 +22,12 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override 
-    public void crear(VigenciasConceptosTT conceptosTT) {
+    public void crear(EntityManager em, VigenciasConceptosTT conceptosTT) {
         try {
             em.persist(conceptosTT);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     }
 
     @Override 
-    public void editar(VigenciasConceptosTT conceptosTT) {
+    public void editar(EntityManager em, VigenciasConceptosTT conceptosTT) {
         try {
             em.merge(conceptosTT);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     }
 
     @Override 
-    public void borrar(VigenciasConceptosTT conceptosTT) {
+    public void borrar(EntityManager em, VigenciasConceptosTT conceptosTT) {
         try {
             em.remove(em.merge(conceptosTT));
         } catch (Exception e) {
@@ -53,11 +54,12 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     }
 
     @Override
-    public boolean verificacionZonaTipoTrabajador(BigInteger secuenciaConcepto, BigInteger secuenciaTT) {
+    public boolean verificacionZonaTipoTrabajador(EntityManager em, BigInteger secuenciaConcepto, BigInteger secuenciaTT) {
         try {
             Query query = em.createQuery("SELECT vcTT FROM VigenciasConceptosTT vcTT WHERE vcTT.concepto.secuencia = :secuenciaConcepto AND vcTT.tipotrabajador.secuencia = :secuenciaTT");
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
             query.setParameter("secuenciaTT", secuenciaTT);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -67,10 +69,11 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
     }
     
     @Override
-    public List<VigenciasConceptosTT> listVigenciasConceptosTTPorConcepto(BigInteger secuenciaC){
+    public List<VigenciasConceptosTT> listVigenciasConceptosTTPorConcepto(EntityManager em, BigInteger secuenciaC){
         try {
             Query query = em.createQuery("SELECT vcTT FROM VigenciasConceptosTT vcTT WHERE vcTT.concepto.secuencia = :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaC);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasConceptosTT> resultado = (List<VigenciasConceptosTT>) query.getResultList();
             return resultado;
         } catch (Exception e) {

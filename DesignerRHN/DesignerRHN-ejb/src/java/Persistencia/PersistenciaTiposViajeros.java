@@ -24,11 +24,12 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(Tiposviajeros subCategorias) {
+    public void crear(EntityManager em, Tiposviajeros subCategorias) {
         try {
             em.persist(subCategorias);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     }
 
     @Override
-    public void editar(Tiposviajeros subCategorias) {
+    public void editar(EntityManager em, Tiposviajeros subCategorias) {
         try {
             em.merge(subCategorias);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     }
 
     @Override
-    public void borrar(Tiposviajeros subCategorias) {
+    public void borrar(EntityManager em, Tiposviajeros subCategorias) {
         try {
             em.remove(em.merge(subCategorias));
         } catch (Exception e) {
@@ -55,9 +56,10 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     }
 
     @Override
-    public List<Tiposviajeros> consultarTiposViajeros() {
+    public List<Tiposviajeros> consultarTiposViajeros(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM Tiposviajeros  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tiposviajeros> listTiposViajeros = query.getResultList();
             return listTiposViajeros;
         } catch (Exception e) {
@@ -68,10 +70,11 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     }
 
     @Override
-    public Tiposviajeros consultarSubCategoria(BigInteger secSubCategoria) {
+    public Tiposviajeros consultarSubCategoria(EntityManager em, BigInteger secSubCategoria) {
         try {
-            Query query = em.createNamedQuery("SELECT sc FROM Tiposviajeros sc WHERE sc.secuencia=:secuencia");
+            Query query = em.createQuery("SELECT sc FROM Tiposviajeros sc WHERE sc.secuencia=:secuencia");
             query.setParameter("secuencia", secSubCategoria);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Tiposviajeros subCategorias = (Tiposviajeros) query.getSingleResult();
             return subCategorias;
         } catch (Exception e) {
@@ -80,7 +83,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     }
 
     @Override
-    public BigInteger contarVigenciasViajerosTipoViajero(BigInteger secuencia) {
+    public BigInteger contarVigenciasViajerosTipoViajero(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasviajeros WHERE tipoviajero = ?";
@@ -96,7 +99,7 @@ public class PersistenciaTiposViajeros implements PersistenciaTiposViajerosInter
     }
 
     @Override
-    public BigInteger contarTiposLegalizacionesTipoViajero(BigInteger secuencia) {
+    public BigInteger contarTiposLegalizacionesTipoViajero(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM tiposlegalizaciones WHERE tipoviajero = ?";

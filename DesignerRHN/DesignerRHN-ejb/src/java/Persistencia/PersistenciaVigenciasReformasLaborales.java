@@ -20,17 +20,16 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author Andres Pineda
  */
 @Stateless
-
 public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigenciasReformasLaboralesInterface{
     
    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(VigenciasReformasLaborales vigenciaRefLab) {
+    public void crear(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
         try {
             em.persist(vigenciaRefLab);
         } catch (Exception e) {
@@ -39,7 +38,7 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     }
 
     @Override
-    public void editar(VigenciasReformasLaborales vigenciaRefLab) {
+    public void editar(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
         try {
             em.merge(vigenciaRefLab);
         } catch (Exception e) {
@@ -48,22 +47,23 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     }
 
     @Override
-    public void borrar(VigenciasReformasLaborales vigenciaRefLab) {
+    public void borrar(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
         em.remove(em.merge(vigenciaRefLab));
     }
 
     @Override
-    public List<VigenciasReformasLaborales> buscarVigenciasRefLab() {
+    public List<VigenciasReformasLaborales> buscarVigenciasRefLab(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasReformasLaborales.class));
         return em.createQuery(cq).getResultList();
     }
     
     @Override
-    public List<VigenciasReformasLaborales> buscarVigenciasReformasLaboralesEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasReformasLaborales> buscarVigenciasReformasLaboralesEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vrl FROM VigenciasReformasLaborales vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasReformasLaborales> vigenciasRefLab = query.getResultList();
             return vigenciasRefLab;
         } catch (Exception e) {
@@ -73,9 +73,10 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
     }
     
     @Override
-    public VigenciasReformasLaborales buscarVigenciaReformaLaboralSecuencia(BigInteger secVRL){
+    public VigenciasReformasLaborales buscarVigenciaReformaLaboralSecuencia(EntityManager em, BigInteger secVRL){
         try{
             Query query = em.createNamedQuery("VigenciasReformasLaborales.findBySecuencia").setParameter("secuencia", secVRL);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasReformasLaborales vigenciaRefLab = (VigenciasReformasLaborales)query.getSingleResult();
             return vigenciaRefLab;
         }catch(Exception e){

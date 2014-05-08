@@ -22,18 +22,21 @@ public class PersistenciaVigenciasDomiciliarias implements PersistenciaVigencias
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
+*/
+    
     @Override
-    public List<VigenciasDomiciliarias> visitasDomiciliariasPersona(BigInteger secuenciaPersona) {
+    public List<VigenciasDomiciliarias> visitasDomiciliariasPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT COUNT(vd) FROM VigenciasDomiciliarias vd WHERE vd.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT vd FROM VigenciasDomiciliarias vd WHERE vd.persona.secuencia = :secuenciaPersona and vd.fecha = (SELECT MAX(vdo.fecha) FROM VigenciasDomiciliarias vdo WHERE vdo.persona.secuencia = :secuenciaPersona)");
                 queryFinal.setParameter("secuenciaPersona", secuenciaPersona);
+                queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<VigenciasDomiciliarias> listaVigenciasDomiciliarias = queryFinal.getResultList();
                 return listaVigenciasDomiciliarias;
             }

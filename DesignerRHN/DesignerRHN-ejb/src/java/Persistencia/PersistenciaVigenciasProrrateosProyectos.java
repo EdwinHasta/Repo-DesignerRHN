@@ -24,11 +24,12 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
+    public void crear(EntityManager em, VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
             em.persist(vigenciasProrrateosProyectos);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     }
 
     @Override
-    public void editar(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
+    public void editar(EntityManager em, VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
             em.merge(vigenciasProrrateosProyectos);
         } catch (Exception e) {
@@ -46,9 +47,8 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     }
 
     @Override
-    public void borrar(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
+    public void borrar(EntityManager em, VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
-            System.out.println("");
             em.remove(em.merge(vigenciasProrrateosProyectos));
         } catch (Exception e) {
             System.out.println("No se pudo borrar el registro VigenciasProrrateosProyectos");
@@ -56,7 +56,7 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     }
 
     @Override
-    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectos() {
+    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectos(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasProrrateosProyectos.class));
@@ -68,10 +68,11 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     }
 
     @Override
-    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vpp FROM VigenciasProrrateosProyectos vpp WHERE vpp.vigencialocalizacion.empleado.secuencia = :secuenciaEmpl ORDER BY vpp.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasProrrateosProyectos> prorrateosProyectos = query.getResultList();
             return prorrateosProyectos;
         } catch (Exception e) {
@@ -81,9 +82,10 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     }
 
     @Override
-    public VigenciasProrrateosProyectos buscarVigenciasProrrateosProyectosSecuencia(BigInteger secVPP) {
+    public VigenciasProrrateosProyectos buscarVigenciasProrrateosProyectosSecuencia(EntityManager em, BigInteger secVPP) {
         try {
             Query query = em.createNamedQuery("VigenciasProrrateosProyectos.findBySecuencia").setParameter("secuencia", secVPP);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasProrrateosProyectos prorrateosProyectos = (VigenciasProrrateosProyectos) query.getSingleResult();
             return prorrateosProyectos;
         } catch (Exception e) {
@@ -93,10 +95,11 @@ public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVig
     }
 
     @Override
-    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosVigenciaSecuencia(BigInteger secVigencia) {
+    public List<VigenciasProrrateosProyectos> buscarVigenciasProrrateosProyectosVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
             Query query = em.createQuery("SELECT vpp FROM VigenciasProrrateosProyectos vpp WHERE vpp.vigencialocalizacion.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasProrrateosProyectos> prorrateosProyectos = query.getResultList();
             return prorrateosProyectos;
         } catch (Exception e) {

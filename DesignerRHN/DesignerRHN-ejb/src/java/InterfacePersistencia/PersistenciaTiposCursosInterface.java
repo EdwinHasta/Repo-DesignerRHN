@@ -9,6 +9,7 @@ import Entidades.TiposCursos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,15 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaTiposCursosInterface {
 
-    public void crear(TiposCursos tiposCursos);
+    public void crear(EntityManager em, TiposCursos tiposCursos);
 
-    public void editar(TiposCursos tiposCursos);
+    public void editar(EntityManager em, TiposCursos tiposCursos);
 
-    public void borrar(TiposCursos tiposCursos);
+    public void borrar(EntityManager em, TiposCursos tiposCursos);
 
-    public List<TiposCursos> consultarTiposCursos();
+    public List<TiposCursos> consultarTiposCursos(EntityManager em);
 
-    public TiposCursos consultarTipoCurso(BigInteger secuencia);
+    public TiposCursos consultarTipoCurso(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarCursosTipoCurso(BigInteger secuencia);
+    public BigInteger contarCursosTipoCurso(EntityManager em, BigInteger secuencia);
 }

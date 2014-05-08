@@ -24,26 +24,27 @@ public class PersistenciaVigenciasFormasPagos implements PersistenciaVigenciasFo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasFormasPagos vigenciasFormasPagos) {
+    public void crear(EntityManager em, VigenciasFormasPagos vigenciasFormasPagos) {
         em.persist(vigenciasFormasPagos);
     }
 
     @Override
-    public void editar(VigenciasFormasPagos vigenciasFormasPagos) {
+    public void editar(EntityManager em, VigenciasFormasPagos vigenciasFormasPagos) {
         em.merge(vigenciasFormasPagos);
     }
 
     @Override
-    public void borrar(VigenciasFormasPagos vigenciasFormasPagos) {
+    public void borrar(EntityManager em, VigenciasFormasPagos vigenciasFormasPagos) {
         em.remove(em.merge(vigenciasFormasPagos));
     }
 
     @Override
-    public VigenciasFormasPagos buscarVigenciaFormaPago(BigInteger secuencia) {
+    public VigenciasFormasPagos buscarVigenciaFormaPago(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(VigenciasFormasPagos.class, secuencia);
         } catch (Exception e) {
@@ -53,11 +54,11 @@ public class PersistenciaVigenciasFormasPagos implements PersistenciaVigenciasFo
     }
 
     @Override
-    public List<VigenciasFormasPagos> buscarVigenciasFormasPagosPorEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasFormasPagos> buscarVigenciasFormasPagosPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vfp FROM VigenciasFormasPagos vfp WHERE vfp.empleado.secuencia = :secuenciaEmpl ORDER BY vfp.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasFormasPagos> vigenciasNormasEmpleados = query.getResultList();
             return vigenciasNormasEmpleados;
         } catch (Exception e) {
@@ -67,7 +68,7 @@ public class PersistenciaVigenciasFormasPagos implements PersistenciaVigenciasFo
     }
 
     @Override
-    public List<VigenciasFormasPagos> buscarVigenciasFormasPagos() {
+    public List<VigenciasFormasPagos> buscarVigenciasFormasPagos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasFormasPagos.class));
         return em.createQuery(cq).getResultList();

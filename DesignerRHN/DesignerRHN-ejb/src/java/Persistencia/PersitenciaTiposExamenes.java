@@ -23,26 +23,27 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
     
     @Override
-     public void crear(TiposExamenes tiposExamenes) {
+     public void crear(EntityManager em, TiposExamenes tiposExamenes) {
         em.persist(tiposExamenes);
     }
 
     @Override
-    public void editar(TiposExamenes tiposExamenes) {
+    public void editar(EntityManager em, TiposExamenes tiposExamenes) {
         em.merge(tiposExamenes);
     }
 
     @Override
-    public void borrar(TiposExamenes tiposExamenes) {
+    public void borrar(EntityManager em, TiposExamenes tiposExamenes) {
         em.remove(em.merge(tiposExamenes));
     }
 
     @Override
-    public TiposExamenes buscarTipoExamen(BigInteger secuencia) {
+    public TiposExamenes buscarTipoExamen(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposExamenes.class, secuencia);
         } catch (Exception e) {
@@ -51,15 +52,16 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
     }
 
     @Override
-    public List<TiposExamenes> buscarTiposExamenes() {
+    public List<TiposExamenes> buscarTiposExamenes(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM TiposExamenes te ORDER BY te.codigo ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposExamenes> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
 
     }
 
     @Override
-    public BigInteger contadorTiposExamenesCargos(BigInteger secuencia) {
+    public BigInteger contadorTiposExamenesCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  tiposexamenescargos tec , tiposexamenes te WHERE tec.tipoexamen=te.secuencia AND te.secuencia = ?";
@@ -75,7 +77,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
     }
 
     @Override
-    public BigInteger contadorVigenciasExamenesMedicos(BigInteger secuencia) {
+    public BigInteger contadorVigenciasExamenesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciasexamenesmedicos vem , tiposexamenes te WHERE vem.tipoexamen=te.secuencia  AND te.secuencia = ?";

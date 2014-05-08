@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la vista 'VWActualesPensiones' 
@@ -19,5 +20,5 @@ public interface PersistenciaVWActualesPensionesInterface {
      * @param secuencia Secuencia del empleado.
      * @return Retorna el valor de la pensión actual de un empleado.
      */
-    public BigDecimal buscarSueldoPensionado(BigInteger secuencia);
+    public BigDecimal buscarSueldoPensionado(EntityManager em, BigInteger secuencia);
 }

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposReemplazos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposReemplazosInterface {
      *
      * @param tiposReemplazos TipoReemplazo que se quiere crear.
      */
-    public void crear(TiposReemplazos tiposReemplazos);
+    public void crear(EntityManager em, TiposReemplazos tiposReemplazos);
 
     /**
      * Método encargado de modificar un TipoReemplazo de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaTiposReemplazosInterface {
      * @param tiposReemplazos TiposReemplazos con los cambios que se van a
      * realizar.
      */
-    public void editar(TiposReemplazos tiposReemplazos);
+    public void editar(EntityManager em, TiposReemplazos tiposReemplazos);
 
     /**
      * Método encargado de eliminar de la base de datos un TipoReemplazo que
@@ -38,7 +39,7 @@ public interface PersistenciaTiposReemplazosInterface {
      *
      * @param tiposReemplazos TiposReemplazos que se quiere eliminar.
      */
-    public void borrar(TiposReemplazos tiposReemplazos);
+    public void borrar(EntityManager em, TiposReemplazos tiposReemplazos);
 
     /**
      * Método encargado de buscar un TipoReemplazo con la secTiposReemplazos dada por
@@ -48,7 +49,7 @@ public interface PersistenciaTiposReemplazosInterface {
      * @return Retorna la Moneda identificada con la secTiposReemplazos dada por
      * parámetro.
      */
-    public TiposReemplazos buscarTipoReemplazo(BigInteger secTiposReemplazos);
+    public TiposReemplazos buscarTipoReemplazo(EntityManager em, BigInteger secTiposReemplazos);
 
     /**
      * Método encargado de buscar todos los TiposReemplazos existentes en la
@@ -56,7 +57,7 @@ public interface PersistenciaTiposReemplazosInterface {
      *
      * @return Retorna una lista de TiposReemplazos ordenados por código.
      */
-    public List<TiposReemplazos> buscarTiposReemplazos();
+    public List<TiposReemplazos> buscarTiposReemplazos(EntityManager em );
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoReemplazo
@@ -67,7 +68,7 @@ public interface PersistenciaTiposReemplazosInterface {
      * @return Retorna el número de proyectos relacionados con el TipoReemplazo
      * cuya secTiposReemplazos coincide con el parámetro.
      */
-    public BigInteger contadorEncargaturas(BigInteger secTiposReemplazos);
+    public BigInteger contadorEncargaturas(EntityManager em, BigInteger secTiposReemplazos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoReemplazo
@@ -78,7 +79,7 @@ public interface PersistenciaTiposReemplazosInterface {
      * @return Retorna el número de proyectos relacionados con el TipoReemplazo
      * cuya secTiposReemplazos coincide con el parámetro.
      */
-    public BigInteger contadorProgramacionesTiempos(BigInteger secTiposReemplazos);
+    public BigInteger contadorProgramacionesTiempos(EntityManager em, BigInteger secTiposReemplazos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoReemplazo
@@ -89,5 +90,5 @@ public interface PersistenciaTiposReemplazosInterface {
      * @return Retorna el número de proyectos relacionados con el TipoReemplazo
      * cuya secTiposReemplazos coincide con el parámetro.
      */
-    public BigInteger contadorReemplazos(BigInteger secTiposReemplazos);
+    public BigInteger contadorReemplazos(EntityManager em, BigInteger secTiposReemplazos);
 }

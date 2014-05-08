@@ -23,14 +23,16 @@ public class PersistenciaVWAcumulados implements PersistenciaVWAcumuladosInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public List<VWAcumulados> buscarAcumuladosPorEmpleado(BigInteger secuencia) {
+    public List<VWAcumulados> buscarAcumuladosPorEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vwa FROM VWAcumulados vwa WHERE vwa.empleado.secuencia = :secuenciaEmpl ORDER BY vwa.fechaPago DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VWAcumulados> VWAcumuladosPorEmpleado = query.getResultList();
             return VWAcumuladosPorEmpleado;
         } catch (Exception e) {

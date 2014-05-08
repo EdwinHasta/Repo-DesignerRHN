@@ -25,11 +25,12 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TercerosSucursales tercerosSucursales) {
+    public void crear(EntityManager em, TercerosSucursales tercerosSucursales) {
         try {
             em.persist(tercerosSucursales);
         } catch (Exception e) {
@@ -38,7 +39,7 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     }
 
     @Override
-    public void editar(TercerosSucursales tercerosSucursales) {
+    public void editar(EntityManager em, TercerosSucursales tercerosSucursales) {
         try {
             em.merge(tercerosSucursales);
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     }
 
     @Override
-    public void borrar(TercerosSucursales tercerosSucursales) {
+    public void borrar(EntityManager em, TercerosSucursales tercerosSucursales) {
         try {
             em.remove(em.merge(tercerosSucursales));
         } catch (Exception e) {
@@ -56,9 +57,11 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     }
 
     @Override
-    public List<TercerosSucursales> buscarTercerosSucursales() {
+    public List<TercerosSucursales> buscarTercerosSucursales(EntityManager em) {
         try {
-            List<TercerosSucursales> tercerosSucursales = (List<TercerosSucursales>) em.createNamedQuery("TercerosSucursales.findAll").getResultList();
+            Query query = em.createNamedQuery("TercerosSucursales.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<TercerosSucursales> tercerosSucursales = (List<TercerosSucursales>) query.getResultList();
             return tercerosSucursales;
         } catch (Exception e) {
             System.out.println("Error buscarTercerosSucursales");
@@ -67,11 +70,12 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     }
 
     @Override
-    public TercerosSucursales buscarTercerosSucursalesSecuencia(BigInteger secuencia) {
+    public TercerosSucursales buscarTercerosSucursalesSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT ts FROM TercerosSucursales ts WHERE ts.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TercerosSucursales tercerosSucursales = (TercerosSucursales) query.getSingleResult();
             return tercerosSucursales;
         } catch (Exception e) {
@@ -82,10 +86,11 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
     }
 
     @Override
-    public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(BigInteger secuencia) {
+    public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT ts FROM TercerosSucursales ts WHERE ts.tercero.secuencia = :secuenciaT");
             query.setParameter("secuenciaT", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TercerosSucursales> listTercerosS = query.getResultList();
             return listTercerosS;
         } catch (Exception e) {

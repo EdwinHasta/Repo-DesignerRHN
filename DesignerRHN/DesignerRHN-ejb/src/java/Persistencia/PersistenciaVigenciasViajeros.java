@@ -24,22 +24,23 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
-    public void crear(VigenciasViajeros vigenciaViajero) {
+    public void crear(EntityManager em, VigenciasViajeros vigenciaViajero) {
         em.persist(vigenciaViajero);
     }
 
-    public void editar(VigenciasViajeros vigenciaViajero) {
+    public void editar(EntityManager em, VigenciasViajeros vigenciaViajero) {
         em.merge(vigenciaViajero);
     }
 
-    public void borrar(VigenciasViajeros vigenciaViajero) {
+    public void borrar(EntityManager em, VigenciasViajeros vigenciaViajero) {
         em.remove(em.merge(vigenciaViajero));
     }
 
-    public VigenciasViajeros consultarTipoExamen(BigInteger secuencia) {
+    public VigenciasViajeros consultarTipoExamen(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(VigenciasViajeros.class, secuencia);
         } catch (Exception e) {
@@ -47,10 +48,11 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
         }
     }
 
-    public List<VigenciasViajeros> consultarVigenciasViajerosPorEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasViajeros> consultarVigenciasViajerosPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vrl FROM VigenciasViajeros vrl WHERE vrl.empleado.secuencia = :secuenciaEmpl ORDER BY vrl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasViajeros> vigenciasRefLab = query.getResultList();
             System.out.println("TIPO VIAJERO: " + vigenciasRefLab.get(0).getTipoViajero().getNombre());
             return vigenciasRefLab;
@@ -60,8 +62,9 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
         }
     }
 
-    public List<VigenciasViajeros> consultarVigenciasViajeros() {
+    public List<VigenciasViajeros> consultarVigenciasViajeros(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM VigenciasViajeros te ORDER BY te.fechavigencia ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasViajeros> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
 

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.VigenciasMonedasBases;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaVigenciasMonedasBasesInterface {
      *
      * @param monedasBases VigenciaMonedaBase que se quiere crear.
      */
-    public void crear(VigenciasMonedasBases monedasBases);
+    public void crear(EntityManager em, VigenciasMonedasBases monedasBases);
 
     /**
      * Método encargado de modificar una VigenciaMonedaBase de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaVigenciasMonedasBasesInterface {
      *
      * @param monedasBases VigenciaMonedaBase con los cambios que se van a realizar.
      */
-    public void editar(VigenciasMonedasBases monedasBases);
+    public void editar(EntityManager em, VigenciasMonedasBases monedasBases);
 
     /**
      * Método encargado de eliminar de la base de datos la VigenciaMonedaBase que entra
@@ -37,7 +38,7 @@ public interface PersistenciaVigenciasMonedasBasesInterface {
      *
      * @param monedasBases VigenciaMonedaBase que se quiere eliminar.
      */
-    public void borrar(VigenciasMonedasBases monedasBases);
+    public void borrar(EntityManager em, VigenciasMonedasBases monedasBases);
 
     /**
      * Método encargado de buscar todas las VigenciasMonedasBases existentes en la base de
@@ -45,7 +46,7 @@ public interface PersistenciaVigenciasMonedasBasesInterface {
      *
      * @return Retorna una lista de VigenciasMonedasBases.
      */
-    public List<VigenciasMonedasBases> buscarVigenciasMonedasBases();
+    public List<VigenciasMonedasBases> buscarVigenciasMonedasBases(EntityManager em );
 
     /**
      * Método encargado de buscar la VigenciaMonedaBase con la secuencia dada por
@@ -55,7 +56,7 @@ public interface PersistenciaVigenciasMonedasBasesInterface {
      * @return Retorna la VigenciaMonedaBase identificado con la secuencia dada por
      * parámetro.
      */
-    public VigenciasMonedasBases buscarVigenciaMonedaBaseSecuencia(BigInteger secuencia);
+    public VigenciasMonedasBases buscarVigenciaMonedaBaseSecuencia(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos las VigenciasMonedasBases existentes en la base de
@@ -64,6 +65,6 @@ public interface PersistenciaVigenciasMonedasBasesInterface {
      * @param secuencia Secuencia de la empresa
      * @return Retorna una lista de VigenciasMonedasBases.
      */
-    public List<VigenciasMonedasBases> buscarVigenciasMonedasBasesPorSecuenciaEmpresa(BigInteger secuencia);
+    public List<VigenciasMonedasBases> buscarVigenciasMonedasBasesPorSecuenciaEmpresa(EntityManager em, BigInteger secuencia);
 
 }

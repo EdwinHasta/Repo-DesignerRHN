@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 /**
  * Clase Stateless.<br> 
  * Clase encargada de realizar operaciones sobre la tabla 'VigenciasNoFormales'
@@ -23,11 +24,12 @@ public class PersistenciaVigenciasNoFormales implements PersistenciaVigenciasNoF
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
     
     @Override
-     public void crear(VigenciasNoFormales vigenciasNoFormales) {
+     public void crear(EntityManager em, VigenciasNoFormales vigenciasNoFormales) {
         try {
             em.merge(vigenciasNoFormales);
         } catch (PersistenceException ex) {
@@ -36,27 +38,28 @@ public class PersistenciaVigenciasNoFormales implements PersistenciaVigenciasNoF
     }
 
     @Override
-    public void editar(VigenciasNoFormales vigenciasNoFormales) {
+    public void editar(EntityManager em, VigenciasNoFormales vigenciasNoFormales) {
         em.merge(vigenciasNoFormales);
     }
 
     @Override
-    public void borrar(VigenciasNoFormales vigenciasNoFormales) {
+    public void borrar(EntityManager em, VigenciasNoFormales vigenciasNoFormales) {
         em.remove(em.merge(vigenciasNoFormales));
     }
 
     @Override
-    public List<VigenciasNoFormales> buscarVigenciasNoFormales() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+    public List<VigenciasNoFormales> buscarVigenciasNoFormales(EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasNoFormales.class));
         return em.createQuery(cq).getResultList();
     }
 
    @Override
-    public List<VigenciasNoFormales> vigenciasNoFormalesPersona(BigInteger secuenciaPersona) {
+    public List<VigenciasNoFormales> vigenciasNoFormalesPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT vNF FROM VigenciasNoFormales vNF WHERE vNF.persona.secuencia = :secuenciaPersona ORDER BY vNF.fechavigencia DESC");
             query.setParameter("secuenciaPersona", secuenciaPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasNoFormales> listaVigenciasNoFormales = query.getResultList();
             return listaVigenciasNoFormales;
         } catch (Exception e) {

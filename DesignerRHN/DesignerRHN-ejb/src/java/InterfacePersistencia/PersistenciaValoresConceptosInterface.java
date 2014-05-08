@@ -9,6 +9,7 @@ import Entidades.ValoresConceptos;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,14 +18,14 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaValoresConceptosInterface {
 
-    public void crear(ValoresConceptos valoresConceptos);
+    public void crear(EntityManager em, ValoresConceptos valoresConceptos);
 
-    public void editar(ValoresConceptos valoresConceptos);
+    public void editar(EntityManager em, ValoresConceptos valoresConceptos);
 
-    public void borrar(ValoresConceptos valoresConceptos);
+    public void borrar(EntityManager em, ValoresConceptos valoresConceptos);
 
-    public List<ValoresConceptos> consultarValoresConceptos();
+    public List<ValoresConceptos> consultarValoresConceptos(EntityManager em );
 
-    public ValoresConceptos consultarValorConcepto(BigInteger secuencia);
-     public BigInteger consultarConceptoValorConcepto(BigInteger concepto);
+    public ValoresConceptos consultarValorConcepto(EntityManager em, BigInteger secuencia);
+     public BigInteger consultarConceptoValorConcepto(EntityManager em, BigInteger concepto);
 }

@@ -24,11 +24,12 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasCompensaciones vigenciasCompensaciones) {
+    public void crear(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
         try {
             em.persist(vigenciasCompensaciones);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public void editar(VigenciasCompensaciones vigenciasCompensaciones) {
+    public void editar(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
         try {
             em.merge(vigenciasCompensaciones);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public void borrar(VigenciasCompensaciones vigenciasCompensaciones) {
+    public void borrar(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
         try {
             em.remove(em.merge(vigenciasCompensaciones));
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasCompensaciones> buscarVigenciasCompensaciones() {
+    public List<VigenciasCompensaciones> buscarVigenciasCompensaciones(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasCompensaciones.class));
@@ -67,10 +68,11 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesEmpleado(BigInteger secuencia) {
+    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.vigenciajornada.empleado.secuencia = :secuenciaEmpl ORDER BY vc.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCompensaciones> vigenciasCompensaciones = query.getResultList();
             return vigenciasCompensaciones;
         } catch (Exception e) {
@@ -80,9 +82,10 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public VigenciasCompensaciones buscarVigenciaCompensacionSecuencia(BigInteger secuencia) {
+    public VigenciasCompensaciones buscarVigenciaCompensacionSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createNamedQuery("VigenciasCompensaciones.findBySecuencia").setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasCompensaciones vigenciasCompensaciones = (VigenciasCompensaciones) query.getSingleResult();
             return vigenciasCompensaciones;
         } catch (Exception e) {
@@ -92,10 +95,11 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciaSecuencia(BigInteger secuencia) {
+    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.vigenciajornada.secuencia =:secVigencia ORDER BY vc.fechainicial DESC");
             query.setParameter("secVigencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCompensaciones> vigenciasCompensaciones = query.getResultList();
             return vigenciasCompensaciones;
         } catch (Exception e) {
@@ -105,10 +109,11 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
     
     @Override
-    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesTipoCompensacion (String tipoC){
+    public List<VigenciasCompensaciones> buscarVigenciasCompensacionesTipoCompensacion (EntityManager em, String tipoC){
         try{
            Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.tipocompensacion =:tipoCompensacion ORDER BY  vc.fechainicial DESC");
            query.setParameter("tipoCompensacion", tipoC);
+           query.setHint("javax.persistence.cache.storeMode", "REFRESH");
            List<VigenciasCompensaciones> vigenciasCompensaciones = query.getResultList();
            return vigenciasCompensaciones;
         }catch(Exception e){
@@ -118,11 +123,12 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     }
     
     @Override
-     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciayCompensacion(String tipoC,BigInteger secuencia) {
+     public List<VigenciasCompensaciones> buscarVigenciasCompensacionesVigenciayCompensacion(EntityManager em, String tipoC,BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCompensaciones vc WHERE vc.tipocompensacion =:tipoCompensacion AND vc.vigenciajornada.secuencia =:secVigencia ORDER BY  vc.fechainicial DESC");
             query.setParameter("tipoCompensacion", tipoC);
             query.setParameter("tipoCompensacion", tipoC);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCompensaciones> vigenciasCompensaciones = query.getResultList();
             return vigenciasCompensaciones;
         } catch (Exception e) {

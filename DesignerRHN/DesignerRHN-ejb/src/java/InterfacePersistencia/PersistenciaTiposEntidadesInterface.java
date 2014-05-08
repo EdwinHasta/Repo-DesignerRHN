@@ -35,7 +35,7 @@ public interface PersistenciaTiposEntidadesInterface {
      * Método encargado de buscar todos los TiposEntidades existentes en la base de datos.
      * @return Retorna una lista de TiposEntidades.
      */
-    public List<TiposEntidades> buscarTiposEntidades(EntityManager em);
+    public List<TiposEntidades> buscarTiposEntidades(EntityManager em );
     /**
      * Método encargado de buscar el TipoEntidad con la secTipoEntidad dada por parámetro.
      * @param secTipoEntidad Secuencia del TipoEntidad que se quiere encontrar.
@@ -64,7 +64,7 @@ public interface PersistenciaTiposEntidadesInterface {
      * @return Retorna una lista de TiposEntidades si se cumplen las condiciones anteriormente mencionadas, de lo contrario
      * retorna null.
      */
-    public List<TiposEntidades> buscarTiposEntidadesIBCS(EntityManager em);
+    public List<TiposEntidades> buscarTiposEntidadesIBCS(EntityManager em );
     /**
      * Método encargado de buscar los TiposEntidades con la secuencia del GrupoTipoEntidad.
      * @param secuencia Secuencia del GrupoTipoEntidad.

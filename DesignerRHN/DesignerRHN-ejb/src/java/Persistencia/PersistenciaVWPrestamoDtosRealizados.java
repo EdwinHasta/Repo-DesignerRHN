@@ -25,14 +25,16 @@ public class PersistenciaVWPrestamoDtosRealizados implements PersistenciaVWPrest
 /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public List<VWPrestamoDtosRealizados> buscarPrestamosDtos(BigInteger secuencia) {
+    public List<VWPrestamoDtosRealizados> buscarPrestamosDtos(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWPrestamoDtosRealizados vw WHERE vw.eerprestamodto.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VWPrestamoDtosRealizados> listaPrestamos =  query.getResultList();
             return listaPrestamos;
         } catch (Exception e) {

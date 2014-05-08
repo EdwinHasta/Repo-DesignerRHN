@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.UbicacionesGeograficas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -21,7 +22,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      *
      * @param ubicacionGeografica UbicacionesGeograficas que se quiere crear.
      */
-    public void crear(UbicacionesGeograficas ubicacionGeografica);
+    public void crear(EntityManager em, UbicacionesGeograficas ubicacionGeografica);
 
     /**
      * Método encargado de modificar un UbicacionesGeograficas de la base de
@@ -31,7 +32,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * @param ubicacionGeografica UbicacionesGeograficas con los cambios que se
      * van a realizar.
      */
-    public void editar(UbicacionesGeograficas ubicacionGeografica);
+    public void editar(EntityManager em, UbicacionesGeograficas ubicacionGeografica);
 
     /**
      * Método encargado de eliminar de la base de datos el
@@ -39,7 +40,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      *
      * @param ubicacionGeografica UbicacionesGeograficas que se quiere eliminar.
      */
-    public void borrar(UbicacionesGeograficas ubicacionGeografica);
+    public void borrar(EntityManager em, UbicacionesGeograficas ubicacionGeografica);
 
     /**
      * Método encargado de buscar todas las UbicacionesGeograficas existentes en
@@ -47,7 +48,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      *
      * @return Retorna una lista de UbicacionesGeograficas.
      */
-    public List<UbicacionesGeograficas> consultarUbicacionesGeograficas();
+    public List<UbicacionesGeograficas> consultarUbicacionesGeograficas(EntityManager em );
 
     /**
      * Método encargado de buscar el UbicacionesGeografica con la
@@ -58,7 +59,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * @return Retorna el UbicacionesGeografica identificado con la
      * secUbicacionesGeografica dada por parámetro.
      */
-    public UbicacionesGeograficas consultarUbicacionGeografica(BigInteger secUbicacionesGeograficas);
+    public UbicacionesGeograficas consultarUbicacionGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
 
     /**
      * Método encargado de buscar los UbicacionesGeografica de una empresa
@@ -69,7 +70,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * @return Retorna una lista de CentrosCostos que pertenecen a la empresa
      * con secUbicacionesGeografica igual a la pasada por parametro.
      */
-    public List<UbicacionesGeograficas> consultarUbicacionesGeograficasPorEmpresa(BigInteger secEmpresa);
+    public List<UbicacionesGeograficas> consultarUbicacionesGeograficasPorEmpresa(EntityManager em, BigInteger secEmpresa);
 
     /**
      * Método encargado de revisar si existe una relación entre un
@@ -81,7 +82,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * UbicacionesGeograficas cuya secUbicacionesGeograficas coincide con el
      * parámetro.
      */
-    public BigInteger contarAfiliacionesEntidadesUbicacionGeografica(BigInteger secUbicacionesGeograficas);
+    public BigInteger contarAfiliacionesEntidadesUbicacionGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
 
     /**
      * Método encargado de revisar si existe una relación entre un
@@ -93,7 +94,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * UbicacionesGeograficas cuya secUbicacionesGeograficas coincide con el
      * parámetro.
      */
-    public BigInteger contarInspeccionesUbicacionGeografica(BigInteger secUbicacionesGeograficas);
+    public BigInteger contarInspeccionesUbicacionGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
 
     /**
      * Método encargado de revisar si existe una relación entre un
@@ -105,7 +106,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * UbicacionesGeograficas cuya secUbicacionesGeograficas coincide con el
      * parámetro.
      */
-    public BigInteger contarParametrosInformesUbicacionGeografica(BigInteger secUbicacionesGeograficas);
+    public BigInteger contarParametrosInformesUbicacionGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
 
     /**
      * Método encargado de revisar si existe una relación entre un
@@ -117,7 +118,7 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * UbicacionesGeograficas cuya secUbicacionesGeograficas coincide con el
      * parámetro.
      */
-    public BigInteger contarRevisionesUbicacionGeografica(BigInteger secUbicacionesGeograficas);
+    public BigInteger contarRevisionesUbicacionGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
 
     /**
      * Método encargado de revisar si existe una relación entre un
@@ -129,5 +130,5 @@ public interface PersistenciaUbicacionesGeograficasInterface {
      * UbicacionesGeograficas cuya secUbicacionesGeograficas coincide con el
      * parámetro.
      */
-    public BigInteger contarVigenciasUbicacionesGeografica(BigInteger secUbicacionesGeograficas);
+    public BigInteger contarVigenciasUbicacionesGeografica(EntityManager em, BigInteger secUbicacionesGeograficas);
 }

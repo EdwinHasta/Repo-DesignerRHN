@@ -24,8 +24,9 @@ public class PersistenciaTiposConclusiones implements PersistenciaTiposConclusio
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+*/
 
     public void crear(EntityManager em, TiposConclusiones tiposConclusiones) {
         try {

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Tiposausentismos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
@@ -21,7 +22,7 @@ public interface PersistenciaTiposAusentismosInterface {
      *
      * @param tiposAusentismos TipoAusentismo que se quiere crear.
      */
-    public void crear(Tiposausentismos tiposAusentismos);
+    public void crear(EntityManager em, Tiposausentismos tiposAusentismos);
 
     /**
      * Método encargado de modificar un TipoAusentismo de la base de datos. Este
@@ -31,7 +32,7 @@ public interface PersistenciaTiposAusentismosInterface {
      * @param tiposAusentismos TipoAusentismo con los cambios que se van a
      * realizar.
      */
-    public void editar(Tiposausentismos tiposAusentismos);
+    public void editar(EntityManager em, Tiposausentismos tiposAusentismos);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoAusentismo que
@@ -39,7 +40,7 @@ public interface PersistenciaTiposAusentismosInterface {
      *
      * @param tiposAusentismos TipoAusentismo que se quiere eliminar.
      */
-    public void borrar(Tiposausentismos tiposAusentismos);
+    public void borrar(EntityManager em, Tiposausentismos tiposAusentismos);
 
     /**
      * Método encargado de buscar todos los TiposAusentismos existentes en la
@@ -47,7 +48,7 @@ public interface PersistenciaTiposAusentismosInterface {
      *
      * @return Retorna una lista de TiposAusentismos ordenados por código.
      */
-    public List<Tiposausentismos> consultarTiposAusentismos();
+    public List<Tiposausentismos> consultarTiposAusentismos(EntityManager em);
 
     /**
      * Método encargado de buscar una TipoAusentismo con la secTipoAusentismo
@@ -58,7 +59,7 @@ public interface PersistenciaTiposAusentismosInterface {
      * @return Retorna el secTiposAusentismos identificada con la secCategoria
      * dada por parámetro.
      */
-    public Tiposausentismos consultarTipoAusentismo(BigInteger secTiposAusentismos);
+    public Tiposausentismos consultarTipoAusentismo(EntityManager em, BigInteger secTiposAusentismos);
 
     /**
      * Metodo encargado de contar cuantas Categorias estar relacionadas con la
@@ -67,7 +68,7 @@ public interface PersistenciaTiposAusentismosInterface {
      * @param secTiposAusentismos Secuencia de la TipoAusentismo
      * @return el numero de relaciones que tiene esa secuencia
      */
-    public BigInteger contarClasesAusentimosTipoAusentismo(BigInteger secTiposAusentismos);
+    public BigInteger contarClasesAusentimosTipoAusentismo(EntityManager em, BigInteger secTiposAusentismos);
 
     /**
      * Metodo encargado de contar cuantas Categorias estar relacionadas con la
@@ -76,5 +77,5 @@ public interface PersistenciaTiposAusentismosInterface {
      * @param secTiposAusentismos Secuencia de la TipoAusentismo
      * @return el numero de relaciones que tiene esa secuencia
      */
-    public BigInteger contarSOAusentimosTipoAusentismo(BigInteger secTiposAusentismos);
+    public BigInteger contarSOAusentimosTipoAusentismo(EntityManager em, BigInteger secTiposAusentismos);
 }

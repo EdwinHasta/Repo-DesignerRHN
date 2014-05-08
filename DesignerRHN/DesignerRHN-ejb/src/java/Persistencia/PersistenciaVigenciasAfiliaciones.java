@@ -24,11 +24,12 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasAfiliaciones vigenciasAfiliaciones) {
+    public void crear(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
             em.persist(vigenciasAfiliaciones);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public void editar(VigenciasAfiliaciones vigenciasAfiliaciones) {
+    public void editar(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
             em.merge(vigenciasAfiliaciones);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public void borrar(VigenciasAfiliaciones vigenciasAfiliaciones) {
+    public void borrar(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
             em.remove(em.merge(vigenciasAfiliaciones));
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliaciones() {
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliaciones(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(VigenciasAfiliaciones.class));
@@ -67,10 +68,11 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(BigInteger secuencia) {
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.empleado.secuencia = :secuenciaEmpl ORDER BY va.fechainicial DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasAfiliaciones> vigenciasAfiliaciones = query.getResultList();
             return vigenciasAfiliaciones;
         } catch (Exception e) {
@@ -80,9 +82,10 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(BigInteger secuencia) {
+    public VigenciasAfiliaciones buscarVigenciasAfiliacionesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createNamedQuery("VigenciasAfiliaciones.findBySecuencia").setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasAfiliaciones vigenciasAfiliaciones = (VigenciasAfiliaciones) query.getSingleResult();
             return vigenciasAfiliaciones;
         } catch (Exception e) {
@@ -92,10 +95,11 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
     }
 
     @Override
-    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(BigInteger secuencia) {
+    public List<VigenciasAfiliaciones> buscarVigenciasAfiliacionesVigenciaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT va FROM VigenciasAfiliaciones va WHERE va.vigenciasueldo.secuencia = :secVigencia");
             query.setParameter("secVigencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasAfiliaciones> vigenciasAfiliaciones = query.getResultList();
             return vigenciasAfiliaciones;
         } catch (Exception e) {

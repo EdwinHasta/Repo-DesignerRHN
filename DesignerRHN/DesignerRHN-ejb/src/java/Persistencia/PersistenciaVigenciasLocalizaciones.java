@@ -24,11 +24,12 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasLocalizaciones vigenciasLocalizaciones) {
+    public void crear(EntityManager em, VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
             em.persist(vigenciasLocalizaciones);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
     }
 
     @Override
-    public void editar(VigenciasLocalizaciones vigenciasLocalizaciones) {
+    public void editar(EntityManager em, VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
             em.merge(vigenciasLocalizaciones);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
     }
     
     @Override
-    public void borrar(VigenciasLocalizaciones vigenciasLocalizaciones) {
+    public void borrar(EntityManager em, VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
             em.remove(em.merge(vigenciasLocalizaciones));
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
     }
  
     @Override
-    public List<VigenciasLocalizaciones> buscarVigenciasLocalizaciones() {
+    public List<VigenciasLocalizaciones> buscarVigenciasLocalizaciones(EntityManager em) {
         try{
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasLocalizaciones.class));
@@ -67,12 +68,13 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasLocalizaciones> buscarVigenciasLocalizacionesEmpleado(BigInteger secuencia) {
+    public List<VigenciasLocalizaciones> buscarVigenciasLocalizacionesEmpleado(EntityManager em, BigInteger secuencia) {
         System.out.println("Entro buscarVigenciasLocalizacionesEmpleado PersistenciaVL");
         try {
             System.out.println("Entro if buscarVigenciasLocalizacionesEmpleado PersistenciaVL");
             Query query = em.createQuery("SELECT vl FROM VigenciasLocalizaciones vl WHERE vl.empleado.secuencia = :secuenciaEmpl ORDER BY vl.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasLocalizaciones> vigenciasLocalizaciones = query.getResultList();
             return vigenciasLocalizaciones;
         } catch (Exception e) {
@@ -82,9 +84,10 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
     }
 
     @Override
-    public VigenciasLocalizaciones buscarVigenciasLocalizacionesSecuencia(BigInteger secuencia) {
+    public VigenciasLocalizaciones buscarVigenciasLocalizacionesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createNamedQuery("VigenciasLocalizaciones.findBySecuencia").setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasLocalizaciones vigenciasLocalizaciones = (VigenciasLocalizaciones) query.getSingleResult();
             return vigenciasLocalizaciones;
         } catch (Exception e) {

@@ -7,6 +7,7 @@ package InterfacePersistencia;
 
 import Entidades.VigenciasRetencionesMinimas;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -14,12 +15,12 @@ import java.util.List;
  */
 public interface PersistenciaVigenciasRetencionesMinimasInterface {
 
-    public void crear(VigenciasRetencionesMinimas vretenciones);
+    public void crear(EntityManager em, VigenciasRetencionesMinimas vretenciones);
 
-    public void editar(VigenciasRetencionesMinimas vretenciones);
+    public void editar(EntityManager em, VigenciasRetencionesMinimas vretenciones);
 
-    public void borrar(VigenciasRetencionesMinimas vretenciones);
+    public void borrar(EntityManager em, VigenciasRetencionesMinimas vretenciones);
 
-    public List<VigenciasRetencionesMinimas> buscarVigenciasRetencionesMinimas();
+    public List<VigenciasRetencionesMinimas> buscarVigenciasRetencionesMinimas(EntityManager em );
 
 }

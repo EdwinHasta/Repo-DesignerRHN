@@ -3,6 +3,7 @@ package InterfacePersistencia;
 import Entidades.Tablas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Tablas' 
@@ -16,6 +17,6 @@ public interface PersistenciaTablasInterface {
      * @param secuenciaMod Secuencia del Modulo.
      * @return Retorna una lista de Tablas.
      */
-    public List<Tablas> buscarTablas(BigInteger secuenciaMod);
+    public List<Tablas> buscarTablas(EntityManager em, BigInteger secuenciaMod);
 
 }

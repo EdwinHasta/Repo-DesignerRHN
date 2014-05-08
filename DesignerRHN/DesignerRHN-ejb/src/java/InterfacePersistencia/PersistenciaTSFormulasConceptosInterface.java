@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TSFormulasConceptos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTSFormulasConceptosInterface {
      *
      * @param tSFormulasConceptos TSFormulaConcepto que se quiere crear.
      */
-    public void crear(TSFormulasConceptos tSFormulasConceptos);
+    public void crear(EntityManager em, TSFormulasConceptos tSFormulasConceptos);
 
     /**
      * Método encargado de modificar un TSFormulaConcepto de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaTSFormulasConceptosInterface {
      * @param tSFormulasConceptos TSFormulaConcepto con los cambios que se van a
      * realizar.
      */
-    public void editar(TSFormulasConceptos tSFormulasConceptos);
+    public void editar(EntityManager em, TSFormulasConceptos tSFormulasConceptos);
 
     /**
      * Método encargado de eliminar de la base de datos el TSFormulaConcepto que
@@ -38,7 +39,7 @@ public interface PersistenciaTSFormulasConceptosInterface {
      *
      * @param tSFormulasConceptos TSFormulaConcepto que se quiere eliminar.
      */
-    public void borrar(TSFormulasConceptos tSFormulasConceptos);
+    public void borrar(EntityManager em, TSFormulasConceptos tSFormulasConceptos);
 
     /**
      * Método encargado de buscar todos los TSFormulasConceptos existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaTSFormulasConceptosInterface {
      *
      * @return Retorna una lista de TSFormulasConceptos.
      */
-    public List<TSFormulasConceptos> buscarTSFormulasConceptos();
+    public List<TSFormulasConceptos> buscarTSFormulasConceptos(EntityManager em);
 
     /**
      * Método encargado de buscar el TSFormulaConcepto con la secuencia dada por
@@ -57,7 +58,7 @@ public interface PersistenciaTSFormulasConceptosInterface {
      * @return Retorna el TSFormulaConcepto identificado con la secuencia dada
      * por parámetro.
      */
-    public TSFormulasConceptos buscarTSFormulaConceptoSecuencia(BigInteger secTSFormula);
+    public TSFormulasConceptos buscarTSFormulaConceptoSecuencia(EntityManager em, BigInteger secTSFormula);
 
     /**
      * Método encargado de buscar todos los TSFormulasConceptos existentes en la
@@ -67,6 +68,6 @@ public interface PersistenciaTSFormulasConceptosInterface {
      * @return Retorna una lista de TSFormulasConceptos para el
      * TSGrupoTipoEntidad dado por parametro.
      */
-    public List<TSFormulasConceptos> buscarTSFormulasConceptosPorSecuenciaTipoSueldo(BigInteger secTipoSueldo);
+    public List<TSFormulasConceptos> buscarTSFormulasConceptosPorSecuenciaTipoSueldo(EntityManager em, BigInteger secTipoSueldo);
 
 }

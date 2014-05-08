@@ -21,14 +21,16 @@ public class PersistenciaUsuarios implements PersistenciaUsuariosInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public Usuarios buscarUsuario(String alias) {
+    public Usuarios buscarUsuario(EntityManager em, String alias) {
         try {
             Query query = em.createQuery("SELECT u FROM Usuarios u WHERE u.alias= :alias");
             query.setParameter("alias",alias);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Usuarios usuarios = (Usuarios) query.getSingleResult();
             return usuarios;
         } catch (Exception e) {

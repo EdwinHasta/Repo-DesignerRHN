@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package Persistencia;
 
 import Entidades.Festivos;
@@ -15,17 +15,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
- */
+*
+* @author user
+*/
 @Stateless
 public class PersistenciaFestivos implements PersistenciaFestivosInterface {
 
     /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
+* Atributo EntityManager. Representa la comunicación con la base de datos.
+*/
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
+private EntityManager em;*/
     public void crear(EntityManager em, Festivos festivos) {
         em.persist(festivos);
     }

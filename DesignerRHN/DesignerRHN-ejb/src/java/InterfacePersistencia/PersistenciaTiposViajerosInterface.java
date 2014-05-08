@@ -9,6 +9,7 @@ import Entidades.Tiposviajeros;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaTiposViajerosInterface {
      *
      * @param subCategorias Moneda que se quiere crear.
      */
-    public void crear(Tiposviajeros subCategorias);
+    public void crear(EntityManager em, Tiposviajeros subCategorias);
 
     /**
      * Método encargado de modificar un TipoViajero de la base de datos. Este
@@ -31,7 +32,7 @@ public interface PersistenciaTiposViajerosInterface {
      *
      * @param subCategorias TiposViajeros con los cambios que se van a realizar.
      */
-    public void editar(Tiposviajeros subCategorias);
+    public void editar(EntityManager em, Tiposviajeros subCategorias);
 
     /**
      * Método encargado de eliminar de la base de datos un TipoViajero que entra
@@ -39,7 +40,7 @@ public interface PersistenciaTiposViajerosInterface {
      *
      * @param subCategorias TiposViajeros que se quiere eliminar.
      */
-    public void borrar(Tiposviajeros subCategorias);
+    public void borrar(EntityManager em, Tiposviajeros subCategorias);
 
     /**
      * Método encargado de buscar todas los TiposViajeros existentes en la base
@@ -47,7 +48,7 @@ public interface PersistenciaTiposViajerosInterface {
      *
      * @return Retorna una lista de TiposViajeros.
      */
-    public List<Tiposviajeros> consultarTiposViajeros();
+    public List<Tiposviajeros> consultarTiposViajeros(EntityManager em );
 
     /**
      * Método encargado de buscar el TipoViajero con la secTiposViajeros dada
@@ -58,7 +59,7 @@ public interface PersistenciaTiposViajerosInterface {
      * @return Retorna el TipoViajero identificado con la secTiposViajeros dada
      * por parámetro.
      */
-    public Tiposviajeros consultarSubCategoria(BigInteger secTiposViajeros);
+    public Tiposviajeros consultarSubCategoria(EntityManager em, BigInteger secTiposViajeros);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoViajero
@@ -69,7 +70,7 @@ public interface PersistenciaTiposViajerosInterface {
      * @return Retorna el número de VigenciasViajeros relacionados con el
      * TipoViajero cuya secTiposViajeros coincide con el parámetro.
      */
-    public BigInteger contarVigenciasViajerosTipoViajero(BigInteger secTiposViajeros);
+    public BigInteger contarVigenciasViajerosTipoViajero(EntityManager em, BigInteger secTiposViajeros);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoViajero
@@ -80,5 +81,5 @@ public interface PersistenciaTiposViajerosInterface {
      * @return Retorna el número de TiposLegalizaciones relacionados con el
      * TipoViajero cuya secTiposViajeros coincide con el parámetro.
      */
-    public BigInteger contarTiposLegalizacionesTipoViajero(BigInteger secTiposViajeros);
+    public BigInteger contarTiposLegalizacionesTipoViajero(EntityManager em, BigInteger secTiposViajeros);
 }

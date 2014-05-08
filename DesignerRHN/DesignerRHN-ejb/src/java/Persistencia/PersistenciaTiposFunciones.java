@@ -28,11 +28,12 @@ public class PersistenciaTiposFunciones implements PersistenciaTiposFuncionesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
     
     @Override
-    public void crear(TiposFunciones tiposFunciones) {
+    public void crear(EntityManager em, TiposFunciones tiposFunciones) {
         try {
             em.merge(tiposFunciones);
         } catch (Exception e) {
@@ -41,7 +42,7 @@ public class PersistenciaTiposFunciones implements PersistenciaTiposFuncionesInt
     }
 
     @Override
-    public void editar(TiposFunciones tiposFunciones) {
+    public void editar(EntityManager em, TiposFunciones tiposFunciones) {
         try {
             em.merge(tiposFunciones);
         } catch (Exception e) {
@@ -50,7 +51,7 @@ public class PersistenciaTiposFunciones implements PersistenciaTiposFuncionesInt
     }
 
     @Override
-    public void borrar(TiposFunciones tiposFunciones) {
+    public void borrar(EntityManager em, TiposFunciones tiposFunciones) {
         try {
             em.remove(em.merge(tiposFunciones));
         } catch (Exception e) {
@@ -59,11 +60,12 @@ public class PersistenciaTiposFunciones implements PersistenciaTiposFuncionesInt
     }
 
     @Override
-    public List<TiposFunciones> tiposFunciones(BigInteger secuenciaOperando, String tipo) {
+    public List<TiposFunciones> tiposFunciones(EntityManager em, BigInteger secuenciaOperando, String tipo) {
         try {
             Query query = em.createQuery("SELECT DISTINCT tf FROM TiposFunciones tf, Operandos op WHERE tf.operando.secuencia =:secuenciaOperando and op.tipo=:tipo");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setParameter("tipo", tipo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposFunciones> tiposFunciones = query.getResultList();
             List<TiposFunciones> tiposFuncionesResult = new ArrayList<TiposFunciones>(tiposFunciones);
 

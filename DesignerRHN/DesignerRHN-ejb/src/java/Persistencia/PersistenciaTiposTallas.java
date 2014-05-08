@@ -23,26 +23,27 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
     
     @Override
-    public void crear(TiposTallas tiposTallas) {
+    public void crear(EntityManager em, TiposTallas tiposTallas) {
         em.persist(tiposTallas);
     }
 
     @Override
-    public void editar(TiposTallas tiposTallas) {
+    public void editar(EntityManager em, TiposTallas tiposTallas) {
         em.merge(tiposTallas);
     }
 
     @Override
-    public void borrar(TiposTallas tiposTallas) {
+    public void borrar(EntityManager em, TiposTallas tiposTallas) {
         em.remove(em.merge(tiposTallas));
     }
 
     @Override
-    public TiposTallas buscarTipoTalla(BigInteger secuenciaTT) {
+    public TiposTallas buscarTipoTalla(EntityManager em, BigInteger secuenciaTT) {
         try {
             return em.find(TiposTallas.class, secuenciaTT);
         } catch (Exception e) {
@@ -51,14 +52,15 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
     }
 
     @Override
-    public List<TiposTallas> buscarTiposTallas() {
+    public List<TiposTallas> buscarTiposTallas(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM TiposTallas m ORDER BY m.codigo ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposTallas> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
     }
 
     @Override
-    public BigInteger contadorElementos(BigInteger secuencia) {
+    public BigInteger contadorElementos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*)FROM  elementos e WHERE e.tipotalla = ?";
@@ -74,7 +76,7 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
     }
 
     @Override
-    public BigInteger contadorVigenciasTallas(BigInteger secuencia) {
+    public BigInteger contadorVigenciasTallas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciastallas vt WHERE vt.tipotalla = ?";

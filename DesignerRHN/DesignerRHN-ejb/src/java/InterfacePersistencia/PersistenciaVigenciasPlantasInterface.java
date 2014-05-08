@@ -9,6 +9,7 @@ import Entidades.VigenciasPlantas;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaVigenciasPlantasInterface {
      *
      * @param vigenciasPlantas VigenciaPlanta que se quiere crear.
      */
-    public void crear(VigenciasPlantas vigenciasPlantas);
+    public void crear(EntityManager em, VigenciasPlantas vigenciasPlantas);
 
     /**
      * Método encargado de modificar una VigenciaPlanta de la base de datos.
@@ -32,7 +33,7 @@ public interface PersistenciaVigenciasPlantasInterface {
      * @param vigenciasPlantas VigenciaPlanta con los cambios que se van a
      * realizar.
      */
-    public void editar(VigenciasPlantas vigenciasPlantas);
+    public void editar(EntityManager em, VigenciasPlantas vigenciasPlantas);
 
     /**
      * Método encargado de eliminar de la base de datos la VigenciaPlanta que
@@ -40,7 +41,7 @@ public interface PersistenciaVigenciasPlantasInterface {
      *
      * @param vigenciasPlantas VigenciaPlanta que se quiere eliminar.
      */
-    public void borrar(VigenciasPlantas vigenciasPlantas);
+    public void borrar(EntityManager em, VigenciasPlantas vigenciasPlantas);
 
     /**
      * Método encargado de buscar todos los VigenciaPlantaes existentes en la
@@ -48,7 +49,7 @@ public interface PersistenciaVigenciasPlantasInterface {
      *
      * @return Retorna una lista de VigenciaPlantaes ordenados por nombre.
      */
-    public List<VigenciasPlantas> consultarVigenciasPlantas();
+    public List<VigenciasPlantas> consultarVigenciasPlantas(EntityManager em );
 
     /**
      * Método encargado de buscar el VigenciaPlanta con la secVigenciasPlantas
@@ -59,7 +60,7 @@ public interface PersistenciaVigenciasPlantasInterface {
      * @return Retorna el VigenciaPlanta identificado con la secVigenciasPlantas
      * dada por parámetro.
      */
-    public VigenciasPlantas consultarVigenciaPlanta(BigInteger secVigenciasPlantas);
+    public VigenciasPlantas consultarVigenciaPlanta(EntityManager em, BigInteger secVigenciasPlantas);
 
     /**
      * Método encargado de contar los Plantas que están asociados a una
@@ -69,5 +70,5 @@ public interface PersistenciaVigenciasPlantasInterface {
      * @return Retorna la cantidad de Plantas cuyo VigenciaPlanta tiene como
      * secVigenciasPlantas el valor dado por parámetro.
      */
-    public BigInteger contarPlantasVigenciaPlanta(BigInteger secVigenciasPlantas);
+    public BigInteger contarPlantasVigenciaPlanta(EntityManager em, BigInteger secVigenciasPlantas);
 }

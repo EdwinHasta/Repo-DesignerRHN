@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.TiposFormulas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public interface PersistenciaTiposFormulasInterface {
 
-    public void crear(TiposFormulas tiposFormulas);
+    public void crear(EntityManager em, TiposFormulas tiposFormulas);
 
-    public void editar(TiposFormulas tiposFormulas);
+    public void editar(EntityManager em, TiposFormulas tiposFormulas);
 
-    public void borrar(TiposFormulas tiposFormulas);
+    public void borrar(EntityManager em, TiposFormulas tiposFormulas);
 
-    public List<TiposFormulas> tiposFormulas(BigInteger secuenciaOperando, String tipo);
+    public List<TiposFormulas> tiposFormulas(EntityManager em, BigInteger secuenciaOperando, String tipo);
     
 }

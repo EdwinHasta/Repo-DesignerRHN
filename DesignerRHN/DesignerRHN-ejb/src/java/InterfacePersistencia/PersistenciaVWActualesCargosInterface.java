@@ -20,13 +20,13 @@ public interface PersistenciaVWActualesCargosInterface {
      * realiza la consulta sobre la vista VWActualesCargos. El término actual
      * está dado por la fechaHasta de las liquidaciones.
      *
-     * @param entity EntityManager encargado de la comunicación con la base de
+     * @param em EntityManager encargado de la comunicación con la base de
      * datos.
      * @param secuencia Secuencia del empleado.
      * @return Retorna una VWActualesCargos con la información del Cargo actual
      * de un empleado.
      */
-    public VWActualesCargos buscarCargoEmpleado(EntityManager entity, BigInteger secuencia);
+    public VWActualesCargos buscarCargoEmpleado(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de contar la cantidad de empleados que se encuentran
@@ -35,6 +35,6 @@ public interface PersistenciaVWActualesCargosInterface {
      * @param secEstructura Secuencia de la Estructura.
      * @return Conteo de empleados
      */
-    public Long conteoCodigosEmpleados(BigInteger secEstructura);
+    public Long conteoCodigosEmpleados(EntityManager em, BigInteger secEstructura);
 
 }

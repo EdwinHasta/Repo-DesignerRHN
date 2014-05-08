@@ -25,11 +25,12 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(UbicacionesGeograficas ubicacionGeografica) {
+    public void crear(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
         try {
 
             if (ubicacionGeografica.getZona() != null) {
@@ -44,7 +45,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public void editar(UbicacionesGeograficas ubicacionGeografica) {
+    public void editar(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
         try {
             em.merge(ubicacionGeografica);
         } catch (Exception e) {
@@ -53,7 +54,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public void borrar(UbicacionesGeograficas ubicacionGeografica) {
+    public void borrar(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
         try {
             em.remove(em.merge(ubicacionGeografica));
         } catch (Exception e) {
@@ -62,9 +63,10 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
      @Override
-    public List<UbicacionesGeograficas> consultarUbicacionesGeograficas() {
+    public List<UbicacionesGeograficas> consultarUbicacionesGeograficas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT u FROM UbicacionesGeograficas u ORDER BY u.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<UbicacionesGeograficas> ubicacionesGeograficas = query.getResultList();
             return ubicacionesGeograficas;
         } catch (Exception e) {
@@ -74,10 +76,11 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public UbicacionesGeograficas consultarUbicacionGeografica(BigInteger secuencia) {
+    public UbicacionesGeograficas consultarUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT cc FROM UbicacionesGeograficas cc WHERE cc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             UbicacionesGeograficas ubicacionGeografica = (UbicacionesGeograficas) query.getSingleResult();
             return ubicacionGeografica;
         } catch (Exception e) {
@@ -88,10 +91,11 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public List<UbicacionesGeograficas> consultarUbicacionesGeograficasPorEmpresa(BigInteger secEmpresa) {
+    public List<UbicacionesGeograficas> consultarUbicacionesGeograficasPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT cce FROM UbicacionesGeograficas cce WHERE cce.empresa.secuencia = :secuenciaEmpr ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<UbicacionesGeograficas> ubicacionGeografica = query.getResultList();
             return ubicacionGeografica;
         } catch (Exception e) {
@@ -101,7 +105,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public BigInteger contarAfiliacionesEntidadesUbicacionGeografica(BigInteger secuencia) {
+    public BigInteger contarAfiliacionesEntidadesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM afiliacionesentidades WHERE ubicaciongeografica = ?";
@@ -116,7 +120,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public BigInteger contarInspeccionesUbicacionGeografica(BigInteger secuencia) {
+    public BigInteger contarInspeccionesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM inspecciones WHERE ubicaciongeografica = ?";
@@ -131,7 +135,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public BigInteger contarParametrosInformesUbicacionGeografica(BigInteger secuencia) {
+    public BigInteger contarParametrosInformesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE ubicaciongeografica = ?";
@@ -146,7 +150,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public BigInteger contarRevisionesUbicacionGeografica(BigInteger secuencia) {
+    public BigInteger contarRevisionesUbicacionGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM revisiones WHERE ubicaciongeografica = ?";
@@ -161,7 +165,7 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     }
 
     @Override
-    public BigInteger contarVigenciasUbicacionesGeografica(BigInteger secuencia) {
+    public BigInteger contarVigenciasUbicacionesGeografica(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasubicaciones WHERE ubicacion = ?";

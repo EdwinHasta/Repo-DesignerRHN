@@ -24,11 +24,12 @@ public class PersistenciaTarifaDeseo implements PersistenciaTarifaDeseoInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public List<TarifaDeseo> retenciones(Date fechaFinal) {
+    public List<TarifaDeseo> retenciones(EntityManager em, Date fechaFinal) {
         try {
             String sqlQuery = ("select rownum id,rm.retencion retencion,rm.secuencia secuenciaretencion, vrm.fechavigencia vigencia,\n"
                     + "to_char(\n"

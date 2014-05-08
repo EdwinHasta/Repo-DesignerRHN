@@ -24,26 +24,27 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TiposReemplazos tiposReemplazos) {
+    public void crear(EntityManager em, TiposReemplazos tiposReemplazos) {
         em.persist(tiposReemplazos);
     }
 
     @Override
-    public void editar(TiposReemplazos tiposReemplazos) {
+    public void editar(EntityManager em, TiposReemplazos tiposReemplazos) {
         em.merge(tiposReemplazos);
     }
 
     @Override
-    public void borrar(TiposReemplazos tiposReemplazos) {
+    public void borrar(EntityManager em, TiposReemplazos tiposReemplazos) {
         em.remove(em.merge(tiposReemplazos));
     }
 
     @Override
-    public TiposReemplazos buscarTipoReemplazo(BigInteger secuenciaTR) {
+    public TiposReemplazos buscarTipoReemplazo(EntityManager em, BigInteger secuenciaTR) {
         try {
             return em.find(TiposReemplazos.class, secuenciaTR);
         } catch (Exception e) {
@@ -52,9 +53,10 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     }
 
     @Override
-    public List<TiposReemplazos> buscarTiposReemplazos() {
+    public List<TiposReemplazos> buscarTiposReemplazos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tR FROM TiposReemplazos tR ORDER BY tr.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposReemplazos> tiposReemplazos = query.getResultList();
             return tiposReemplazos;
         } catch (Exception e) {
@@ -63,7 +65,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     }
 
     @Override
-    public BigInteger contadorEncargaturas(BigInteger secuencia) {
+    public BigInteger contadorEncargaturas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM encargaturas WHERE tiporeemplazo = ?";
@@ -79,7 +81,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     }
 
     @Override
-    public BigInteger contadorProgramacionesTiempos(BigInteger secuencia) {
+    public BigInteger contadorProgramacionesTiempos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM programacionestiempos  WHERE tiporeemplazo = ?";
@@ -95,7 +97,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     }
 
     @Override
-    public BigInteger contadorReemplazos(BigInteger secuencia) {
+    public BigInteger contadorReemplazos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM reemplazos WHERE tiporeemplazo = ?";

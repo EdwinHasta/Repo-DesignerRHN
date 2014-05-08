@@ -7,6 +7,7 @@ package InterfacePersistencia;
 
 import Entidades.TiposRedondeos;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -14,5 +15,5 @@ import java.util.List;
  */
 public interface PersistenciaTiposRedondeosInterface {
 
-    public List<TiposRedondeos> buscarTiposRedondeos();
+    public List<TiposRedondeos> buscarTiposRedondeos(EntityManager em );
 }

@@ -23,11 +23,12 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasUbicaciones vigenciaUbicacion) {
+    public void crear(EntityManager em, VigenciasUbicaciones vigenciaUbicacion) {
         try {
             em.merge(vigenciaUbicacion);
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
     }
 
     @Override
-    public void editar(VigenciasUbicaciones vigenciaUbicacion) {
+    public void editar(EntityManager em, VigenciasUbicaciones vigenciaUbicacion) {
         try {
             em.merge(vigenciaUbicacion);
         } catch (Exception e) {
@@ -45,12 +46,12 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
     }
 
     @Override
-    public void borrar(VigenciasUbicaciones vigenciaUbicacion) {
+    public void borrar(EntityManager em, VigenciasUbicaciones vigenciaUbicacion) {
         em.remove(em.merge(vigenciaUbicacion));
     }
 
     @Override
-    public VigenciasUbicaciones buscarVigenciaUbicacion(BigInteger secuencia) {
+    public VigenciasUbicaciones buscarVigenciaUbicacion(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(VigenciasUbicaciones.class, secuencia);
         } catch (Exception e) {
@@ -59,17 +60,18 @@ public class PersistenciaVigenciasUbicaciones implements PersistenciaVigenciasUb
     }
 
     @Override
-    public List<VigenciasUbicaciones> buscarVigenciasUbicaciones() {
+    public List<VigenciasUbicaciones> buscarVigenciasUbicaciones(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasUbicaciones.class));
         return em.createQuery(cq).getResultList();
     }
     
     @Override
-    public List<VigenciasUbicaciones> buscarVigenciaUbicacionesEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasUbicaciones> buscarVigenciaUbicacionesEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vu FROM VigenciasUbicaciones vu WHERE vu.empleado.secuencia = :secuenciaEmpl ORDER BY vu.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasUbicaciones> vigenciasUbicaciones = query.getResultList();
             return vigenciasUbicaciones;
         } catch (Exception e) {

@@ -22,11 +22,12 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TiposTelefonos tiposTelefonos) {
+    public void crear(EntityManager em, TiposTelefonos tiposTelefonos) {
         try {
             em.persist(tiposTelefonos);
         } catch (Exception e) {
@@ -35,12 +36,12 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     }
 
     @Override
-    public void editar(TiposTelefonos tiposTelefonos) {
+    public void editar(EntityManager em, TiposTelefonos tiposTelefonos) {
         em.merge(tiposTelefonos);
     }
 
     @Override
-    public void borrar(TiposTelefonos tiposTelefonos) {
+    public void borrar(EntityManager em, TiposTelefonos tiposTelefonos) {
         try {
             em.remove(em.merge(tiposTelefonos));
         } catch (Exception e) {
@@ -49,7 +50,7 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     }
 
     @Override
-    public TiposTelefonos buscarTipoTelefonos(BigInteger secuencia) {
+    public TiposTelefonos buscarTipoTelefonos(EntityManager em, BigInteger secuencia) {
         try {
             BigInteger sec = new BigInteger(secuencia.toString());            
             return em.find(TiposTelefonos.class, sec);
@@ -59,9 +60,10 @@ public class PersistenciaTiposTelefonos implements PersistenciaTiposTelefonosInt
     }
 
     @Override
-    public List<TiposTelefonos> tiposTelefonos() {
+    public List<TiposTelefonos> tiposTelefonos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tt FROM TiposTelefonos tt ORDER BY tt.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposTelefonos> listaTiposTelefonos = query.getResultList();
             return listaTiposTelefonos;
         } catch (Exception e) {

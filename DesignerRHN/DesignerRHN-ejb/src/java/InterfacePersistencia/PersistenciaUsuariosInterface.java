@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.Usuarios;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosContratos' 
  * de la base de datos.
@@ -15,5 +16,5 @@ public interface PersistenciaUsuariosInterface {
      * @param alias Alias del Usuario que se quiere encontrar.
      * @return Retorna el Usuario identificado con el alias dado por parámetro.
      */
-    public Usuarios buscarUsuario(String alias);
+    public Usuarios buscarUsuario(EntityManager em, String alias);
 }

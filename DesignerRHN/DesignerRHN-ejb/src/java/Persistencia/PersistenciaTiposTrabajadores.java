@@ -24,11 +24,12 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TiposTrabajadores tiposTrabajadores) {
+    public void crear(EntityManager em, TiposTrabajadores tiposTrabajadores) {
         try{
         em.persist(tiposTrabajadores);
         }catch(Exception e){
@@ -37,12 +38,12 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     }
 
     @Override
-    public void editar(TiposTrabajadores tiposTrabajadores) {
+    public void editar(EntityManager em, TiposTrabajadores tiposTrabajadores) {
         em.merge(tiposTrabajadores);
     }
 
     @Override
-    public void borrar(TiposTrabajadores tiposTrabajadores) {
+    public void borrar(EntityManager em, TiposTrabajadores tiposTrabajadores) {
         try{
             em.remove(em.merge(tiposTrabajadores));
         }catch(Exception e){
@@ -51,16 +52,17 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     }
 
     @Override
-    public List<TiposTrabajadores> buscarTiposTrabajadores() {
+    public List<TiposTrabajadores> buscarTiposTrabajadores(EntityManager em) {
         List<TiposTrabajadores> tipoTLista = (List<TiposTrabajadores>) em.createNamedQuery("TiposTrabajadores.findAll").getResultList();
         return tipoTLista;
     }
 
     @Override
-    public TiposTrabajadores buscarTipoTrabajadorSecuencia(BigInteger secuencia) {
+    public TiposTrabajadores buscarTipoTrabajadorSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT tt FROM TiposTrabajadores e WHERE tt.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposTrabajadores tipoT = (TiposTrabajadores) query.getSingleResult();
             return tipoT;
         } catch (Exception e) {
@@ -70,7 +72,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
     }
     
     @Override
-    public TiposTrabajadores buscarTipoTrabajadorCodigo (BigDecimal codigo){
+    public TiposTrabajadores buscarTipoTrabajadorCodigo (EntityManager em, BigDecimal codigo){
         try{
             Query query = em.createNamedQuery("TiposTrabajadores.findByCodigo").setParameter("codigo", codigo);
              TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();

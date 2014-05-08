@@ -9,6 +9,7 @@ import Entidades.TiposConclusiones;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,15 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaTiposConclusionesInterface {
 
-    public void crear(TiposConclusiones tiposConclusiones);
+    public void crear(EntityManager em, TiposConclusiones tiposConclusiones);
 
-    public void editar(TiposConclusiones tiposConclusiones);
+    public void editar(EntityManager em, TiposConclusiones tiposConclusiones);
 
-    public void borrar(TiposConclusiones tiposConclusiones);
+    public void borrar(EntityManager em, TiposConclusiones tiposConclusiones);
 
-    public List<TiposConclusiones> consultarTiposConclusiones();
+    public List<TiposConclusiones> consultarTiposConclusiones(EntityManager em);
 
-    public TiposConclusiones consultarTipoConclusion(BigInteger secuencia);
+    public TiposConclusiones consultarTipoConclusion(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarChequeosMedicosTipoConclusion(BigInteger secuencia);
+    public BigInteger contarChequeosMedicosTipoConclusion(EntityManager em, BigInteger secuencia);
 }

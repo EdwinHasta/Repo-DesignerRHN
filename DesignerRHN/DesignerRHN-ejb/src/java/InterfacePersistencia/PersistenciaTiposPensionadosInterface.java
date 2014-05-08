@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposPensionados;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposPensionadosInterface {
      *
      * @param tiposPensionados TipoPensionado que se quiere crear.
      */
-    public void crear(TiposPensionados tiposPensionados);
+    public void crear(EntityManager em, TiposPensionados tiposPensionados);
 
     /**
      * Método encargado de modificar un TipoPensionado de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaTiposPensionadosInterface {
      * @param tiposPensionados TipoPensionado con los cambios que se van a
      * realizar.
      */
-    public void editar(TiposPensionados tiposPensionados);
+    public void editar(EntityManager em, TiposPensionados tiposPensionados);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoPensionado que
@@ -38,7 +39,7 @@ public interface PersistenciaTiposPensionadosInterface {
      *
      * @param tiposPensionados TipoPensionado que se quiere eliminar.
      */
-    public void borrar(TiposPensionados tiposPensionados);
+    public void borrar(EntityManager em, TiposPensionados tiposPensionados);
 
     /**
      * Método encargado de buscar todos los TiposPensionados existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaTiposPensionadosInterface {
      *
      * @return Retorna una lista de TiposPensionados.
      */
-    public List<TiposPensionados> consultarTiposPensionados();
+    public List<TiposPensionados> consultarTiposPensionados(EntityManager em );
 
     /**
      * Método encargado de buscar el TipoPensionado con la secTiposPensionados
@@ -57,7 +58,7 @@ public interface PersistenciaTiposPensionadosInterface {
      * @return Retorna el TipoPensionado identificado con la secTiposPensionados
      * dada por parámetro.
      */
-    public TiposPensionados consultarTipoPensionado(BigInteger secTiposPensionados);
+    public TiposPensionados consultarTipoPensionado(EntityManager em, BigInteger secTiposPensionados);
 
     /**
      * Metodo encargado de contar cuantas Persionados estan relacionadas con la
@@ -66,5 +67,5 @@ public interface PersistenciaTiposPensionadosInterface {
      * @param secTiposPensionados Secuencia de la TipoPension
      * @return Cuantos Persionados tienen la secClasesPensiones recivida
      */
-    public BigInteger contarPensionadosTipoPension(BigInteger secTiposPensionados);
+    public BigInteger contarPensionadosTipoPension(EntityManager em, BigInteger secTiposPensionados);
 }

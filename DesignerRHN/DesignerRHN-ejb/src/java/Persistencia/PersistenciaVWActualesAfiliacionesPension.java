@@ -21,8 +21,8 @@ public class PersistenciaVWActualesAfiliacionesPension implements PersistenciaVW
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     public VWActualesAfiliacionesPension buscarAfiliacionPension(EntityManager em, BigInteger secuencia) {
 

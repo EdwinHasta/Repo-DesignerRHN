@@ -24,26 +24,27 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
     
     @Override
-    public void crear(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+    public void crear(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         em.persist(vigenciasNormasEmpleados);
     }
 
     @Override
-    public void editar(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+    public void editar(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         em.merge(vigenciasNormasEmpleados);
     }
 
     @Override
-    public void borrar(VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+    public void borrar(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
         em.remove(em.merge(vigenciasNormasEmpleados));
     }
 
     @Override
-    public VigenciasNormasEmpleados buscarVigenciasNormasEmpleado(BigInteger secuencia) {
+    public VigenciasNormasEmpleados buscarVigenciasNormasEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(VigenciasNormasEmpleados.class, secuencia);
         } catch (Exception e) {
@@ -52,10 +53,11 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
     }
 
     @Override
-    public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleadosEmpl(BigInteger secuencia) {
+    public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleadosEmpl(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vne FROM VigenciasNormasEmpleados vne WHERE vne.empleado.secuencia = :secuenciaEmpl ORDER BY vne.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasNormasEmpleados> vigenciasNormasEmpleados = query.getResultList();
             return vigenciasNormasEmpleados;
         } catch (Exception e) {
@@ -65,7 +67,7 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
     }
        
     @Override
-    public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleados() {
+    public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleados(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasNormasEmpleados.class));
         return em.createQuery(cq).getResultList();

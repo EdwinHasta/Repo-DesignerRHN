@@ -25,8 +25,9 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+*/
 
     @Override
     public void crear(EntityManager em, TiposEntidades tiposEntidades) {
@@ -72,8 +73,8 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     public TiposEntidades buscarTiposEntidadesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.secuencia = :secuencia");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposEntidades tiposEntidades = (TiposEntidades) query.getSingleResult();
             return tiposEntidades;
         } catch (Exception e) {
@@ -88,8 +89,8 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
         try {
             BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAfiliaciones va WHERE va.tipoentidad.secuencia = :secuencia");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secTipoEntidad);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             return retorno = new BigInteger(query.getSingleResult().toString());
         } catch (Exception e) {
             System.err.println("Error PersistenciaTiposEntidades.verificarBorrado.");
@@ -103,8 +104,8 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
         try {
             BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(fce) FROM FormulasContratosEntidades fce WHERE fce.tipoentidad.secuencia = :secuencia");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secTipoEntidad);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             return retorno = new BigInteger(query.getSingleResult().toString());
         } catch (Exception e) {
             System.err.println("Error PersistenciaTiposEntidades.verificarBorradoFCE.");

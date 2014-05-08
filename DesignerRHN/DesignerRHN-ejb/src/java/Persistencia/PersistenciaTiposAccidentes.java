@@ -24,22 +24,23 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
-    public void crear(TiposAccidentes tiposAccidentes) {
+    public void crear(EntityManager em, TiposAccidentes tiposAccidentes) {
         em.persist(tiposAccidentes);
     }
 
-    public void editar(TiposAccidentes tiposAccidentes) {
+    public void editar(EntityManager em, TiposAccidentes tiposAccidentes) {
         em.merge(tiposAccidentes);
     }
 
-    public void borrar(TiposAccidentes tiposAccidentes) {
+    public void borrar(EntityManager em, TiposAccidentes tiposAccidentes) {
         em.remove(em.merge(tiposAccidentes));
     }
 
-    public TiposAccidentes buscarTipoAccidente(BigInteger secuenciaTA) {
+    public TiposAccidentes buscarTipoAccidente(EntityManager em, BigInteger secuenciaTA) {
         try {
             return em.find(TiposAccidentes.class, secuenciaTA);
         } catch (Exception e) {
@@ -47,9 +48,10 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
         }
     }
 
-    public List<TiposAccidentes> buscarTiposAccidentes() {
+    public List<TiposAccidentes> buscarTiposAccidentes(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM TiposAccidentes  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposAccidentes> listPartesCuerpo = query.getResultList();
             return listPartesCuerpo;
         } catch (Exception e) {
@@ -60,7 +62,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     }
 
     // NATIVE QUERY
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM soaccidentesmedicos WHERE tipoaccidente = ?";
@@ -76,7 +78,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     }
 
     // NATIVE QUERY
-    public BigInteger contadorAccidentes(BigInteger secuencia) {
+    public BigInteger contadorAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM accidentes WHERE se.tipoaccidente = ?";

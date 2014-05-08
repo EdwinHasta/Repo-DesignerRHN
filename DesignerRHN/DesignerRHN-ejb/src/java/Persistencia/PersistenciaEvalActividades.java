@@ -1,8 +1,8 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+* To change this license header, choose License Headers in Project Properties.
+* To change this template file, choose Tools | Templates
+* and open the template in the editor.
+*/
 package Persistencia;
 
 import Entidades.EvalActividades;
@@ -15,17 +15,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- *
- * @author user
- */
+*
+* @author user
+*/
 @Stateless
 public class PersistenciaEvalActividades implements PersistenciaEvalActividadesInterface {
 
     /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
+* Atributo EntityManager. Representa la comunicación con la base de datos.
+*/
    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
+private EntityManager em;*/
 
     public void crear(EntityManager em,EvalActividades evalCompetencias) {
         try {
@@ -53,7 +53,7 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
 
     public List<EvalActividades> consultarEvalActividades(EntityManager em) {
         try {
-            Query query = em.createQuery("SELECT t FROM EvalActividades t ORDER BY t.codigo  ASC");
+            Query query = em.createQuery("SELECT t FROM EvalActividades t ORDER BY t.codigo ASC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<EvalActividades> evalActividades = query.getResultList();
             return evalActividades;

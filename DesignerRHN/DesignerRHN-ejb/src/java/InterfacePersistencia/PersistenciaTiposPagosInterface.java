@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Tipospagos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposPagosInterface {
      *
      * @param tipospagos Tipopago que se quiere crear.
      */
-    public void crear(Tipospagos tipospagos);
+    public void crear(EntityManager em, Tipospagos tipospagos);
 
     /**
      * Método encargado de modificar un Tipopago de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaTiposPagosInterface {
      *
      * @param tipospagos Tipopago con los cambios que se van a realizar.
      */
-    public void editar(Tipospagos tipospagos);
+    public void editar(EntityManager em, Tipospagos tipospagos);
 
     /**
      * Método encargado de eliminar de la base de datos el Tipopago que entra
@@ -37,7 +38,7 @@ public interface PersistenciaTiposPagosInterface {
      *
      * @param tipospagos Tipopago que se quiere eliminar.
      */
-    public void borrar(Tipospagos tipospagos);
+    public void borrar(EntityManager em, Tipospagos tipospagos);
 
     /**
      * Método encargado de buscar todos los Tipospagos existentes en la base de
@@ -45,7 +46,7 @@ public interface PersistenciaTiposPagosInterface {
      *
      * @return Retorna una lista de Tipospagos.
      */
-    public List<Tipospagos> consultarTiposPagos();
+    public List<Tipospagos> consultarTiposPagos(EntityManager em );
 
     /**
      * Método encargado de buscar el Tipopago con la secuencia dada por
@@ -55,7 +56,7 @@ public interface PersistenciaTiposPagosInterface {
      * @return Retorna el Tipopago identificado con la secuencia dada por
      * parámetro.
      */
-    public Tipospagos consultarTipoPago(BigInteger secuencia);
+    public Tipospagos consultarTipoPago(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarProcesosTipoPago(BigInteger secuencia);
+    public BigInteger contarProcesosTipoPago(EntityManager em, BigInteger secuencia);
 }

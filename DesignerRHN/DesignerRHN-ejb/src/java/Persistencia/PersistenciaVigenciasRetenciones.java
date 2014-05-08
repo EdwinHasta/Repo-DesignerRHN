@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -23,27 +24,30 @@ public class PersistenciaVigenciasRetenciones implements PersistenciaVigenciasRe
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasRetenciones vretenciones) {
+    public void crear(EntityManager em, VigenciasRetenciones vretenciones) {
         em.persist(vretenciones);
     }
 
     @Override
-    public void editar(VigenciasRetenciones vretenciones) {
+    public void editar(EntityManager em, VigenciasRetenciones vretenciones) {
         em.merge(vretenciones);
     }
 
     @Override
-    public void borrar(VigenciasRetenciones vretenciones) {
+    public void borrar(EntityManager em, VigenciasRetenciones vretenciones) {
         em.remove(em.merge(vretenciones));
     }
     
     @Override
-    public List<VigenciasRetenciones> buscarVigenciasRetenciones() {
-        List<VigenciasRetenciones> setsLista = (List<VigenciasRetenciones>) em.createNamedQuery("VigenciasRetenciones.findAll").getResultList();
+    public List<VigenciasRetenciones> buscarVigenciasRetenciones(EntityManager em) {
+        Query query = em.createNamedQuery("VigenciasRetenciones.findAll");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+        List<VigenciasRetenciones> setsLista = (List<VigenciasRetenciones>) query.getResultList();
         return setsLista;
     }
 }

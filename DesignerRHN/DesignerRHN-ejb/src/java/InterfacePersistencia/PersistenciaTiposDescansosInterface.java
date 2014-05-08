@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposDescansos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposDescansosInterface {
      *
      * @param tiposDescansos TipoDescanso que se quiere crear.
      */
-    public void crear(TiposDescansos tiposDescansos);
+    public void crear(EntityManager em, TiposDescansos tiposDescansos);
 
     /**
      * Método encargado de modificar un TipoDescanso de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaTiposDescansosInterface {
      *
      * @param tiposDescansos TipoDescanso con los cambios que se van a realizar.
      */
-    public void editar(TiposDescansos tiposDescansos);
+    public void editar(EntityManager em, TiposDescansos tiposDescansos);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoDescanso que
@@ -37,7 +38,7 @@ public interface PersistenciaTiposDescansosInterface {
      *
      * @param tiposDescansos TipoDescanso que se quiere eliminar.
      */
-    public void borrar(TiposDescansos tiposDescansos);
+    public void borrar(EntityManager em, TiposDescansos tiposDescansos);
 
     /**
      * Método encargado de buscar todos los TiposDescansos existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaTiposDescansosInterface {
      *
      * @return Retorna una lista de TiposDescansos.
      */
-    public List<TiposDescansos> consultarTiposDescansos();
+    public List<TiposDescansos> consultarTiposDescansos(EntityManager em);
 
     /**
      * Método encargado de buscar el TipoDescanso con la secuencia dada por
@@ -55,7 +56,7 @@ public interface PersistenciaTiposDescansosInterface {
      * @return Retorna el TipoDescanso identificado con la secuencia dada por
      * parámetro.
      */
-    public TiposDescansos consultarTipoDescanso(BigInteger secuencia);
+    public TiposDescansos consultarTipoDescanso(EntityManager em, BigInteger secuencia);
 
     /**
      * *
@@ -66,5 +67,5 @@ public interface PersistenciaTiposDescansosInterface {
      * @return Cuantas VigenciasJornadas tienen relacion con la secuencia
      * recivida
      */
-    public BigInteger contarVigenciasJornadasTipoDescanso(BigInteger secTiposDescansos);
+    public BigInteger contarVigenciasJornadasTipoDescanso(EntityManager em, BigInteger secTiposDescansos);
 }

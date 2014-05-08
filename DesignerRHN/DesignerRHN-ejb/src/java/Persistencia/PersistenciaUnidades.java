@@ -21,11 +21,12 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(Unidades unidad) {
+    public void crear(EntityManager em, Unidades unidad) {
         try {
             em.persist(unidad);
         } catch (Exception e) {
@@ -34,7 +35,7 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface{
     }
 
     @Override
-    public void editar(Unidades unidad) {
+    public void editar(EntityManager em, Unidades unidad) {
         try {
             em.merge(unidad);
         } catch (Exception e) {
@@ -43,7 +44,7 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface{
     }
 
     @Override
-    public void borrar(Unidades unidad) {
+    public void borrar(EntityManager em, Unidades unidad) {
         try {
             em.remove(em.merge(unidad));
         } catch (Exception e) {
@@ -52,9 +53,10 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface{
     }
 
     @Override
-    public List<Unidades> consultarUnidades() {
+    public List<Unidades> consultarUnidades(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT u FROM Unidades u ORDER BY u.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Unidades> listaUnidades = query.getResultList();
             return listaUnidades;
         } catch (Exception e) {

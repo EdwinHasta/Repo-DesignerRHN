@@ -23,11 +23,12 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasCuentas vigenciasCuentas) {
+    public void crear(EntityManager em, VigenciasCuentas vigenciasCuentas) {
         try {
             em.persist(vigenciasCuentas);
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     }
 
     @Override
-    public void editar(VigenciasCuentas vigenciasCuentas) {
+    public void editar(EntityManager em, VigenciasCuentas vigenciasCuentas) {
         try {
             em.merge(vigenciasCuentas);
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     }
 
     @Override
-    public void borrar(VigenciasCuentas vigenciasCuentas) {
+    public void borrar(EntityManager em, VigenciasCuentas vigenciasCuentas) {
         try {
             em.remove(em.merge(vigenciasCuentas));
         } catch (Exception e) {
@@ -54,16 +55,19 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     }
 
     @Override
-    public List<VigenciasCuentas> buscarVigenciasCuentas() {
-        List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) em.createNamedQuery("VigenciasCuentas.findAll").getResultList();
+    public List<VigenciasCuentas> buscarVigenciasCuentas(EntityManager em) {
+        Query query = em.createNamedQuery("VigenciasCuentas.findAll");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+        List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
         return vigenciasCuentas;
     }
 
     @Override
-    public VigenciasCuentas buscarVigenciaCuentaSecuencia(BigInteger secuencia) {
+    public VigenciasCuentas buscarVigenciaCuentaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasCuentas vigenciasCuentas = (VigenciasCuentas) query.getSingleResult();
             return vigenciasCuentas;
         } catch (Exception e) {
@@ -73,10 +77,11 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     }
 
     @Override
-    public List<VigenciasCuentas> buscarVigenciasCuentasPorCredito(BigInteger secuencia) {
+    public List<VigenciasCuentas> buscarVigenciasCuentasPorCredito(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.cuentac.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
             return vigenciasCuentas;
         } catch (Exception e) {
@@ -87,10 +92,11 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     }
 
     @Override
-    public List<VigenciasCuentas> buscarVigenciasCuentasPorDebito(BigInteger secuencia) {
+    public List<VigenciasCuentas> buscarVigenciasCuentasPorDebito(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.cuentad.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
             return vigenciasCuentas;
         } catch (Exception e) {
@@ -101,10 +107,11 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
     }
     
     @Override
-    public List<VigenciasCuentas> buscarVigenciasCuentasPorConcepto(BigInteger secuencia) {
+    public List<VigenciasCuentas> buscarVigenciasCuentasPorConcepto(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vc FROM VigenciasCuentas vc WHERE vc.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCuentas> vigenciasCuentas = (List<VigenciasCuentas>) query.getResultList();
             return vigenciasCuentas;
         } catch (Exception e) {

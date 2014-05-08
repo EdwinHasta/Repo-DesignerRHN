@@ -9,6 +9,7 @@ package InterfacePersistencia;
 import Entidades.Vacaciones;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -16,5 +17,5 @@ import java.util.List;
  */
 public interface PersistenciaVacacionesInterface {
     
-    public List<Vacaciones> periodoVacaciones(BigInteger secuenciaEmpleado);
+    public List<Vacaciones> periodoVacaciones(EntityManager em, BigInteger secuenciaEmpleado);
 }

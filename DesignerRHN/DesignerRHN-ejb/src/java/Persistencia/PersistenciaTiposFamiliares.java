@@ -25,8 +25,8 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     public void crear(EntityManager em, TiposFamiliares tiposFamiliares) {
         em.persist(tiposFamiliares);

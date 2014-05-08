@@ -23,11 +23,12 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasGruposSalariales vigenciasGruposSalariales) {
+    public void crear(EntityManager em, VigenciasGruposSalariales vigenciasGruposSalariales) {
         try {
             em.persist(vigenciasGruposSalariales);
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     }
 
     @Override
-    public void editar(VigenciasGruposSalariales vigenciasGruposSalariales) {
+    public void editar(EntityManager em, VigenciasGruposSalariales vigenciasGruposSalariales) {
         try {
             em.merge(vigenciasGruposSalariales);
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     }
 
     @Override
-    public void borrar(VigenciasGruposSalariales vigenciasGruposSalariales) {
+    public void borrar(EntityManager em, VigenciasGruposSalariales vigenciasGruposSalariales) {
         try {
             em.remove(em.merge(vigenciasGruposSalariales));
         } catch (Exception e) {
@@ -54,9 +55,11 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     }
 
     @Override
-    public List<VigenciasGruposSalariales> buscarVigenciasGruposSalariales() {
+    public List<VigenciasGruposSalariales> buscarVigenciasGruposSalariales(EntityManager em) {
         try {
-            List<VigenciasGruposSalariales> vigenciasGruposSalariales = (List<VigenciasGruposSalariales>) em.createNamedQuery("VigenciasGruposSalariales.findAll").getResultList();
+            Query query = em.createNamedQuery("VigenciasGruposSalariales.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<VigenciasGruposSalariales> vigenciasGruposSalariales = (List<VigenciasGruposSalariales>) query.getResultList();
             return vigenciasGruposSalariales;
         } catch (Exception e) {
             System.out.println("Error buscarVigenciasGruposSalariales PersistenciaVigenciasGruposSalariales : " + e.toString());
@@ -65,10 +68,11 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     }
 
     @Override
-    public VigenciasGruposSalariales buscarVigenciaGrupoSalarialSecuencia(BigInteger secuencia) {
+    public VigenciasGruposSalariales buscarVigenciaGrupoSalarialSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vgs FROM VigenciasGruposSalariales vgs WHERE vgs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasGruposSalariales vigenciasGruposSalariales = (VigenciasGruposSalariales) query.getSingleResult();
             return vigenciasGruposSalariales;
         } catch (Exception e) {
@@ -79,10 +83,11 @@ public class PersistenciaVigenciasGruposSalariales implements PersistenciaVigenc
     }
     
     @Override
-    public List<VigenciasGruposSalariales> buscarVigenciaGrupoSalarialSecuenciaGrupoSal(BigInteger secuencia) {
+    public List<VigenciasGruposSalariales> buscarVigenciaGrupoSalarialSecuenciaGrupoSal(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vgs FROM VigenciasGruposSalariales vgs WHERE vgs.gruposalarial.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasGruposSalariales> vigenciasGruposSalariales = (List<VigenciasGruposSalariales>) query.getResultList();
             return vigenciasGruposSalariales;
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import Entidades.TiposTallas;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -22,7 +23,7 @@ public interface PersistenciaTiposTallasInterface {
      *
      * @param tiposTallas TipoTalla que se quiere crear.
      */
-    public void crear(TiposTallas tiposTallas);
+    public void crear(EntityManager em, TiposTallas tiposTallas);
 
     /**
      * Método encargado de modificar un TipoTalla de la base de datos. Este
@@ -31,7 +32,7 @@ public interface PersistenciaTiposTallasInterface {
      *
      * @param tiposTallas TipoTalla con los cambios que se van a realizar.
      */
-    public void editar(TiposTallas tiposTallas);
+    public void editar(EntityManager em, TiposTallas tiposTallas);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoTalla que entra
@@ -39,7 +40,7 @@ public interface PersistenciaTiposTallasInterface {
      *
      * @param tiposTallas TipoTalla con los cambios que se van a realizar.
      */
-    public void borrar(TiposTallas tiposTallas);
+    public void borrar(EntityManager em, TiposTallas tiposTallas);
 
     /**
      * Método encargado de buscar el TipoTalla con la secuencia dada por
@@ -49,7 +50,7 @@ public interface PersistenciaTiposTallasInterface {
      * @return Retorna el TipoTalla identificada con la secuencia dada por
      * parámetro.
      */
-    public TiposTallas buscarTipoTalla(BigInteger secuencia);
+    public TiposTallas buscarTipoTalla(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar todos los TiposTallas existentes en la base de
@@ -57,7 +58,7 @@ public interface PersistenciaTiposTallasInterface {
      *
      * @return Retorna una lista de TiposTallas.
      */
-    public List<TiposTallas> buscarTiposTallas();
+    public List<TiposTallas> buscarTiposTallas(EntityManager em );
 
     /**
      * Método encargado de recuperar cuantos Elementos están asociados a un
@@ -67,7 +68,7 @@ public interface PersistenciaTiposTallasInterface {
      * @return Retorna el número de Elementos cuyo atributo 'TipoTalla' tiene
      * como secuencia el valor dado por parámetro.
      */
-    public BigInteger contadorElementos(BigInteger secuencia);
+    public BigInteger contadorElementos(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de recuperar cuantos VigenciasTallas están asociados a
@@ -77,5 +78,5 @@ public interface PersistenciaTiposTallasInterface {
      * @return Retorna el número de VigenciasTallas cuyo atributo 'TipoTalla'
      * tiene como secuencia el valor dado por parámetro.
      */
-    public BigInteger contadorVigenciasTallas(BigInteger secuencia);
+    public BigInteger contadorVigenciasTallas(EntityManager em, BigInteger secuencia);
 }

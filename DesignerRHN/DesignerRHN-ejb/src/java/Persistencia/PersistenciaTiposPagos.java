@@ -25,11 +25,11 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Tipospagos tipospagos) {
+    public void crear(EntityManager em, Tipospagos tipospagos) {
         try {
             em.persist(tipospagos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     }
 
     @Override
-    public void editar(Tipospagos tipospagos) {
+    public void editar(EntityManager em, Tipospagos tipospagos) {
         try {
             em.merge(tipospagos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     }
 
     @Override
-    public void borrar(Tipospagos tipospagos) {
+    public void borrar(EntityManager em, Tipospagos tipospagos) {
         try {
             em.remove(em.merge(tipospagos));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     }
 
     @Override
-    public List<Tipospagos> consultarTiposPagos() {
+    public List<Tipospagos> consultarTiposPagos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM Tipospagos t ORDER BY t.codigo  ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tipospagos> tipospagos = query.getResultList();
             return tipospagos;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
     }
 
     @Override
-    public Tipospagos consultarTipoPago(BigInteger secuencia) {
+    public Tipospagos consultarTipoPago(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM Tipospagos t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Tipospagos tipospagos = (Tipospagos) query.getSingleResult();
             return tipospagos;
         } catch (Exception e) {
@@ -81,7 +83,7 @@ public class PersistenciaTiposPagos implements PersistenciaTiposPagosInterface {
         }
     }
 
-    public BigInteger contarProcesosTipoPago(BigInteger secuencia) {
+    public BigInteger contarProcesosTipoPago(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*)FROM procesos WHERE tipopago =?";

@@ -21,8 +21,9 @@ public class PersistenciaVWActualesAfiliacionesSalud implements PersistenciaVWAc
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     public VWActualesAfiliacionesSalud buscarAfiliacionSalud(EntityManager em, BigInteger secuencia) {
         try {

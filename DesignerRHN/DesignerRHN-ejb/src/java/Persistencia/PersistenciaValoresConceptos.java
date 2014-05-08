@@ -26,10 +26,11 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
      /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
-    public void crear(ValoresConceptos valoresConceptos) {
+    public void crear(EntityManager em, ValoresConceptos valoresConceptos) {
         try {
             em.persist(valoresConceptos);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
         }
     }
 
-    public void editar(ValoresConceptos valoresConceptos) {
+    public void editar(EntityManager em, ValoresConceptos valoresConceptos) {
         try {
             em.merge(valoresConceptos);
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
         }
     }
 
-    public void borrar(ValoresConceptos valoresConceptos) {
+    public void borrar(EntityManager em, ValoresConceptos valoresConceptos) {
         try {
             em.remove(em.merge(valoresConceptos));
         } catch (Exception e) {
@@ -53,9 +54,10 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
         }
     }
 
-    public List<ValoresConceptos> consultarValoresConceptos() {
+    public List<ValoresConceptos> consultarValoresConceptos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT te FROM ValoresConceptos te");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ValoresConceptos> valoresConceptos = query.getResultList();
             return valoresConceptos;
         } catch (Exception e) {
@@ -64,10 +66,11 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
         }
     }
 
-    public ValoresConceptos consultarValorConcepto(BigInteger secuencia) {
+    public ValoresConceptos consultarValorConcepto(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM ValoresConceptos te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ValoresConceptos valoresConceptos = (ValoresConceptos) query.getSingleResult();
             return valoresConceptos;
         } catch (Exception e) {
@@ -77,10 +80,11 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
         }
     }
 
-    public BigInteger consultarConceptoValorConcepto(BigInteger concepto) {
+    public BigInteger consultarConceptoValorConcepto(EntityManager em, BigInteger concepto) {
         try {
             Query query = em.createQuery("SELECT COUNT(te) FROM ValoresConceptos te WHERE te.concepto.secuencia = :concepto");
             query.setParameter("concepto", concepto);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigInteger conceptosSoportes = new BigInteger(query.getSingleResult().toString());
             return conceptosSoportes;
         } catch (Exception e) {

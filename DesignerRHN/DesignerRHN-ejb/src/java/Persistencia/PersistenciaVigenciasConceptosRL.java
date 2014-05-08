@@ -22,11 +22,12 @@ public class PersistenciaVigenciasConceptosRL implements PersistenciaVigenciasCo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasConceptosRL vigenciasConceptosRL) {
+    public void crear(EntityManager em, VigenciasConceptosRL vigenciasConceptosRL) {
         try {
             em.persist(vigenciasConceptosRL);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaVigenciasConceptosRL implements PersistenciaVigenciasCo
     }
 
     @Override
-    public void editar(VigenciasConceptosRL vigenciasConceptosRL) {
+    public void editar(EntityManager em, VigenciasConceptosRL vigenciasConceptosRL) {
         try {
             em.merge(vigenciasConceptosRL);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaVigenciasConceptosRL implements PersistenciaVigenciasCo
     }
 
     @Override
-    public void borrar(VigenciasConceptosRL vigenciasConceptosRL) {
+    public void borrar(EntityManager em, VigenciasConceptosRL vigenciasConceptosRL) {
         try {
             em.remove(em.merge(vigenciasConceptosRL));
         } catch (Exception e) {
@@ -53,11 +54,12 @@ public class PersistenciaVigenciasConceptosRL implements PersistenciaVigenciasCo
     }
     
     @Override
-    public boolean verificacionZonaTipoReformasLaborales(BigInteger secuenciaC, BigInteger secuenciaTS) {
+    public boolean verificacionZonaTipoReformasLaborales(EntityManager em, BigInteger secuenciaC, BigInteger secuenciaTS) {
         try {
             Query query = em.createQuery("SELECT COUNT(vcRL) FROM VigenciasConceptosRL vcRL WHERE vcRL.concepto.secuencia = :secuenciaConcepto AND vcRL.tiposalario.secuencia = :secuenciaTS");
             query.setParameter("secuenciaConcepto", secuenciaC);
             query.setParameter("secuenciaTS", secuenciaTS);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -67,10 +69,11 @@ public class PersistenciaVigenciasConceptosRL implements PersistenciaVigenciasCo
     }
     
     @Override
-    public List<VigenciasConceptosRL> listVigenciasConceptosRLPorConcepto(BigInteger secuencia){
+    public List<VigenciasConceptosRL> listVigenciasConceptosRLPorConcepto(EntityManager em, BigInteger secuencia){
         try {
             Query query = em.createQuery("SELECT vcRL FROM VigenciasConceptosRL vcRL WHERE vcRL.concepto.secuencia = :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasConceptosRL> resultado = (List<VigenciasConceptosRL>) query.getResultList();
             return resultado;
         } catch (Exception e) {

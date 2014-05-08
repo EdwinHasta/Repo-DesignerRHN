@@ -24,11 +24,12 @@ public class PersistenciaTiposRedondeos implements PersistenciaTiposRedondeosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public List<TiposRedondeos> buscarTiposRedondeos() {
+    public List<TiposRedondeos> buscarTiposRedondeos(EntityManager em ) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(TiposRedondeos.class));

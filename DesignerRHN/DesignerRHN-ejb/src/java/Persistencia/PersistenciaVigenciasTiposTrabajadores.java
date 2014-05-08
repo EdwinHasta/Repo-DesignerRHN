@@ -23,11 +23,12 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
+    public void crear(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
             em.persist(vigenciasTiposTrabajadores);
             System.out.println("Creo la vigencia");
@@ -37,7 +38,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     }
 
     @Override
-    public void editar(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
+    public void editar(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
             em.merge(vigenciasTiposTrabajadores);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     }
 
     @Override
-    public void borrar(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
+    public void borrar(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
             em.remove(em.merge(vigenciasTiposTrabajadores));
         } catch (Exception e) {
@@ -55,18 +56,18 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     }
 
     @Override
-    public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadores() {
+    public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadores(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasTiposTrabajadores.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasTiposTrabajadores> buscarVigenciasTiposTrabajadoresEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :secuenciaEmpl ORDER BY vtt.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadores = query.getResultList();
             return vigenciasTiposTrabajadores;
         } catch (Exception e) {
@@ -76,9 +77,10 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     }
 
     @Override
-    public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(BigInteger secVTT) {
+    public VigenciasTiposTrabajadores buscarVigenciasTiposTrabajadoresSecuencia(EntityManager em, BigInteger secVTT) {
         try {
             Query query = em.createNamedQuery("VigenciasTiposTrabajadores.findBySecuencia").setParameter("secuencia", secVTT);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasTiposTrabajadores vigenciasTiposTrabajadores = (VigenciasTiposTrabajadores) query.getSingleResult();
             return vigenciasTiposTrabajadores;
         } catch (Exception e) {
@@ -87,11 +89,12 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
     }
     
     @Override
-    public List<VigenciasTiposTrabajadores> buscarEmpleados() {
+    public List<VigenciasTiposTrabajadores> buscarEmpleados(EntityManager em) {
 
         Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt "
                 + "WHERE vtt.fechavigencia = (SELECT MAX(vttt.fechavigencia) "
                 + "FROM VigenciasTiposTrabajadores vttt)");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         return query.getResultList();
     }
 }

@@ -9,6 +9,7 @@ package InterfacePersistencia;
 import Entidades.VWPrestamoDtosRealizados;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -16,6 +17,6 @@ import java.util.List;
  */
 public interface PersistenciaVWPrestamoDtosRealizadosInterface {
     
-    public List<VWPrestamoDtosRealizados> buscarPrestamosDtos(BigInteger secuencia);
+    public List<VWPrestamoDtosRealizados> buscarPrestamosDtos(EntityManager em, BigInteger secuencia);
     
 }

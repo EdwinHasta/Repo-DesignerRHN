@@ -23,9 +23,9 @@ import javax.persistence.Query;
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
+*/
     
     public VWActualesTiposTrabajadores buscarTipoTrabajador(EntityManager em, BigInteger secuencia) {
         try {
@@ -41,7 +41,7 @@ import javax.persistence.Query;
     }
 
     @Override
-    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(String p_tipo) {
+    public List<VWActualesTiposTrabajadores> FiltrarTipoTrabajador(EntityManager em, String p_tipo) {
         try {
             if (!p_tipo.isEmpty()) {
                 List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findByTipoTrabajador")
@@ -61,7 +61,7 @@ import javax.persistence.Query;
     }
 
     @Override
-    public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores() {
+    public List<VWActualesTiposTrabajadores> busquedaRapidaTrabajadores(EntityManager em) {
         try {
             List<VWActualesTiposTrabajadores> vwActualesTiposTrabajadoresLista = (List<VWActualesTiposTrabajadores>) em.createNamedQuery("VWActualesTiposTrabajadores.findAll")
                     .getResultList();
@@ -74,10 +74,11 @@ import javax.persistence.Query;
 
     //VALIDACION ARCHIVO PLANO
     @Override
-    public boolean verificarTipoTrabajador(Empleados empleado) {
+    public boolean verificarTipoTrabajador(EntityManager em, Empleados empleado) {
         try {
             Query query = em.createQuery("SELECT vw.tipoTrabajador.tipo FROM VWActualesTiposTrabajadores vw WHERE vw.empleado.secuencia= :secuencia");
             query.setParameter("secuencia", empleado.getSecuencia());
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             String tipoEmpleado = (String) query.getSingleResult();
             return tipoEmpleado.equalsIgnoreCase("ACTIVO");
         } catch (Exception e) {
@@ -87,9 +88,10 @@ import javax.persistence.Query;
     }
     
     @Override
-    public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado() {
+    public List<VWActualesTiposTrabajadores> tipoTrabajadorEmpleado(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesTiposTrabajadores vw where vw.tipoTrabajador.tipo IN ('ACTIVO','PENSIONADO','RETIRADO')");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VWActualesTiposTrabajadores> tipoEmpleado = query.getResultList();
             System.out.println("Tiene: " + tipoEmpleado.size()+ " registros");
             return tipoEmpleado;

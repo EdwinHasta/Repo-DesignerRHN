@@ -23,11 +23,12 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TiposAsociaciones tiposAsociaciones) {
+    public void crear(EntityManager em, TiposAsociaciones tiposAsociaciones) {
         try {
             em.persist(tiposAsociaciones);
         } catch (Exception e) {
@@ -36,7 +37,7 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     }
 
     @Override
-    public void editar(TiposAsociaciones tiposAsociaciones) {
+    public void editar(EntityManager em, TiposAsociaciones tiposAsociaciones) {
         try {
             em.merge(tiposAsociaciones);
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     }
 
     @Override
-    public void borrar(TiposAsociaciones tiposAsociaciones) {
+    public void borrar(EntityManager em, TiposAsociaciones tiposAsociaciones) {
         try {
             em.remove(em.merge(tiposAsociaciones));
         } catch (Exception e) {
@@ -54,9 +55,11 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     }
 
     @Override
-    public List<TiposAsociaciones> buscarTiposAsociaciones() {
+    public List<TiposAsociaciones> buscarTiposAsociaciones(EntityManager em) {
         try {
-            List<TiposAsociaciones> tiposAsociaciones = (List<TiposAsociaciones>) em.createNamedQuery("TiposAsociaciones.findAll").getResultList();
+            Query query = em.createNamedQuery("TiposAsociaciones.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<TiposAsociaciones> tiposAsociaciones = (List<TiposAsociaciones>) query.getResultList();
             return tiposAsociaciones;
         } catch (Exception e) {
             System.out.println("Error buscarTiposAsociaciones");
@@ -65,11 +68,12 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
     }
 
     @Override
-    public TiposAsociaciones buscarTiposAsociacionesSecuencia(BigInteger secuencia) {
+    public TiposAsociaciones buscarTiposAsociacionesSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT t FROM TiposAsociaciones t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposAsociaciones tiposAsociaciones = (TiposAsociaciones) query.getSingleResult();
             return tiposAsociaciones;
         } catch (Exception e) {

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposEmbargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.ejb.Local;
 import javax.persistence.EntityManager;
 
 /**
@@ -13,7 +14,7 @@ import javax.persistence.EntityManager;
  * de la base de datos.
  * @author betelgeuse
  */
-
+@Local
 public interface PersistenciaTiposEmbargosInterface {
     /**
      * Método encargado de insertar un TipoEmbargo en la base de datos.
@@ -42,7 +43,7 @@ public interface PersistenciaTiposEmbargosInterface {
      * Método encargado de buscar todos los TiposEmbargos existentes en la base de datos, ordenadas por código.
      * @return Retorna una lista de TiposEmbargos.
      */
-    public List<TiposEmbargos> buscarTiposEmbargos(EntityManager em);
+    public List<TiposEmbargos> buscarTiposEmbargos(EntityManager em );
     /**
      * Método encargado de recuperar cuantos EerPrestamos están asociados a un TipoEmbargo específico.
      * @param secTiposEmbargos Secuencia de TipoEmbargo.

@@ -21,8 +21,9 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaTiposEducaciones implements PersistenciaTiposEducacionesInterface{
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+*/
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */

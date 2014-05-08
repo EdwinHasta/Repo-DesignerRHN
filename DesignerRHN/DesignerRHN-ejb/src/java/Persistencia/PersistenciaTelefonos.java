@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaQuery;
 /**
  * Clase Stateless.<br> 
  * Clase encargada de realizar operaciones sobre la tabla 'Telefonos'
@@ -22,11 +23,11 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
-
+*/
     @Override
-    public void crear(Telefonos telefonos) {
+    public void crear(EntityManager em, Telefonos telefonos) {
         try {
             Telefonos t = em.merge(telefonos);
             
@@ -36,35 +37,36 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
     }
 
     @Override
-    public void editar(Telefonos telefonos) {
+    public void editar(EntityManager em, Telefonos telefonos) {
         em.merge(telefonos);
     }
 
     @Override
-    public void borrar(Telefonos telefonos) {
+    public void borrar(EntityManager em, Telefonos telefonos) {
         em.remove(em.merge(telefonos));
     }
 
     @Override
-    public Telefonos buscarTelefono(BigInteger secuencia) {
+    public Telefonos buscarTelefono(EntityManager em, BigInteger secuencia) {
         return em.find(Telefonos.class, secuencia);
     }
 
     @Override
-    public List<Telefonos> buscarTelefonos() {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+    public List<Telefonos> buscarTelefonos(EntityManager em) {
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Telefonos.class));
         return em.createQuery(cq).getResultList();
     } 
  
     @Override
-    public List<Telefonos> telefonosPersona(BigInteger secuenciaPersona) {
+    public List<Telefonos> telefonosPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT t "
                                        + "FROM Telefonos t "
                                        + "WHERE t.persona.secuencia = :secuenciaPersona "
                                        + "ORDER BY t.fechavigencia DESC");
             query.setParameter("secuenciaPersona", secuenciaPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Telefonos> listaTelefonos = query.getResultList();
             return listaTelefonos;
         } catch (Exception e) {

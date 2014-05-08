@@ -13,17 +13,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'TiposDescansos' de la
- * base de datos.
- *
+ * Clase Stateless.<br> 
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposDescansos'
+ * de la base de datos.
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface {
+public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface{
 
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
+
     @Override
     public void crear(EntityManager em, TiposDescansos tiposDescansos) {
         try {
@@ -54,10 +54,12 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     @Override
     public List<TiposDescansos> consultarTiposDescansos(EntityManager em) {
         try {
-            Query query = em.createNamedQuery("TiposDescansos.findAll");
+            //List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) em.createNamedQuery("TiposDescansos.findAll").getResultList();
+            //return tiposDescansos;
+            Query query = em.createQuery("SELECT t FROM TiposDescansos t");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) query.getResultList();
-            return tiposDescansos;
+            List<TiposDescansos> listaTiposDescansos = query.getResultList();
+            return listaTiposDescansos;
         } catch (Exception e) {
             System.out.println("Error buscarTiposDescansos PersistenciaTiposDescansos");
             return null;
@@ -78,7 +80,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
             return tiposDescansos;
         }
     }
-
+    
     public BigInteger contarVigenciasJornadasTipoDescanso(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

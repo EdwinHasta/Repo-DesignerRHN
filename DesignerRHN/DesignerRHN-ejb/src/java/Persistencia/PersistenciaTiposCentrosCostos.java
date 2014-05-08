@@ -22,13 +22,15 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author betelgeuse
  */
 @Stateless
+//@LocalBean
 public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosCostosInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    EntityManager em;
+*/
 
     @Override
     public void crear(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {

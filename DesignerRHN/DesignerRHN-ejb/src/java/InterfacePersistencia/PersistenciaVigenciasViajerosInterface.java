@@ -9,6 +9,7 @@ import Entidades.VigenciasViajeros;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,15 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaVigenciasViajerosInterface {
 
-    public void crear(VigenciasViajeros vigenciaViajero);
+    public void crear(EntityManager em, VigenciasViajeros vigenciaViajero);
 
-    public void editar(VigenciasViajeros vigenciaViajero);
+    public void editar(EntityManager em, VigenciasViajeros vigenciaViajero);
 
-    public void borrar(VigenciasViajeros vigenciaViajero);
+    public void borrar(EntityManager em, VigenciasViajeros vigenciaViajero);
 
-    public VigenciasViajeros consultarTipoExamen(BigInteger secuencia);
+    public VigenciasViajeros consultarTipoExamen(EntityManager em, BigInteger secuencia);
 
-    public List<VigenciasViajeros> consultarVigenciasViajeros();
+    public List<VigenciasViajeros> consultarVigenciasViajeros(EntityManager em );
 
-    public List<VigenciasViajeros> consultarVigenciasViajerosPorEmpleado(BigInteger secEmpleado);
+    public List<VigenciasViajeros> consultarVigenciasViajerosPorEmpleado(EntityManager em, BigInteger secEmpleado);
 }

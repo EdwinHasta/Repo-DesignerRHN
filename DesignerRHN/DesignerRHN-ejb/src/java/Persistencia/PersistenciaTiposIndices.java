@@ -24,10 +24,10 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
-    public void crear(TiposIndices tiposIndices) {
+    public void crear(EntityManager em, TiposIndices tiposIndices) {
         try {
             em.persist(tiposIndices);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
         }
     }
 
-    public void editar(TiposIndices tiposIndices) {
+    public void editar(EntityManager em, TiposIndices tiposIndices) {
         try {
             em.merge(tiposIndices);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
         }
     }
 
-    public void borrar(TiposIndices tiposIndices) {
+    public void borrar(EntityManager em, TiposIndices tiposIndices) {
         try {
             em.remove(em.merge(tiposIndices));
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
         }
     }
 
-    public List<TiposIndices> consultarTiposIndices() {
+    public List<TiposIndices> consultarTiposIndices(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM TiposIndices t ORDER BY t.codigo  ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposIndices> evalActividades = query.getResultList();
             return evalActividades;
         } catch (Exception e) {
@@ -62,9 +63,10 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
         }
     }
 
-    public TiposIndices consultarTipoIndice(BigInteger secuencia) {
+    public TiposIndices consultarTipoIndice(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM TiposIndices t WHERE t.secuencia =:secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secuencia);
             TiposIndices tiposIndices = (TiposIndices) query.getSingleResult();
             return tiposIndices;
@@ -75,7 +77,7 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
         }
     }
 
-    public BigInteger contarIndicesTipoIndice(BigInteger secuencia) {
+    public BigInteger contarIndicesTipoIndice(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM indices WHERE tipoindice = ?";

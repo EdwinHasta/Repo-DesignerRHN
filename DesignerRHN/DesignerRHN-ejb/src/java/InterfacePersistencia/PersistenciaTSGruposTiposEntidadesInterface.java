@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TSGruposTiposEntidades;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTSGruposTiposEntidadesInterface {
      *
      * @param tSGruposTiposEntidades TSGrupoTipoEntidad que se quiere crear.
      */
-    public void crear(TSGruposTiposEntidades tSGruposTiposEntidades);
+    public void crear(EntityManager em, TSGruposTiposEntidades tSGruposTiposEntidades);
 
     /**
      * Método encargado de modificar un TSGrupoTipoEntidad de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaTSGruposTiposEntidadesInterface {
      * @param tSGruposTiposEntidades TSGrupoTipoEntidad con los cambios que se
      * van a realizar.
      */
-    public void editar(TSGruposTiposEntidades tSGruposTiposEntidades);
+    public void editar(EntityManager em, TSGruposTiposEntidades tSGruposTiposEntidades);
 
     /**
      * Método encargado de eliminar de la base de datos el TSGrupoTipoEntidad
@@ -38,7 +39,7 @@ public interface PersistenciaTSGruposTiposEntidadesInterface {
      *
      * @param tSGruposTiposEntidades TSGrupoTipoEntidad que se quiere eliminar.
      */
-    public void borrar(TSGruposTiposEntidades tSGruposTiposEntidades);
+    public void borrar(EntityManager em, TSGruposTiposEntidades tSGruposTiposEntidades);
 
     /**
      * Método encargado de buscar todos los TSGruposTiposEntidades existentes en la base
@@ -46,7 +47,7 @@ public interface PersistenciaTSGruposTiposEntidadesInterface {
      *
      * @return Retorna una lista de TSGruposTiposEntidades.
      */
-    public List<TSGruposTiposEntidades> buscarTSGruposTiposEntidades();
+    public List<TSGruposTiposEntidades> buscarTSGruposTiposEntidades(EntityManager em);
 
     /**
      * Método encargado de buscar el TSGrupoTipoEntidad con la secuencia dada por
@@ -56,7 +57,7 @@ public interface PersistenciaTSGruposTiposEntidadesInterface {
      * @return Retorna el TSGrupoTipoEntidad identificado con la secuencia dada por
      * parámetro.
      */
-    public TSGruposTiposEntidades buscarTSGrupoTipoEntidadSecuencia(BigInteger secTSGrupo);
+    public TSGruposTiposEntidades buscarTSGrupoTipoEntidadSecuencia(EntityManager em, BigInteger secTSGrupo);
 
     /**
      * Método encargado de buscar todos los TSGruposTiposEntidades existentes en la base
@@ -65,6 +66,6 @@ public interface PersistenciaTSGruposTiposEntidadesInterface {
      * @param secTipoSueldo Secuencia del TipoSueldo.
      * @return Retorna una lista de TSGruposTiposEntidades para el TipoSueldo dado por parametro.
      */
-    public List<TSGruposTiposEntidades> buscarTSGruposTiposEntidadesPorSecuenciaTipoSueldo(BigInteger secTipoSueldo);
+    public List<TSGruposTiposEntidades> buscarTSGruposTiposEntidadesPorSecuenciaTipoSueldo(EntityManager em, BigInteger secTipoSueldo);
 
 }

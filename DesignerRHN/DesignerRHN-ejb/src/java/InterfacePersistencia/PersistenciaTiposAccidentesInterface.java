@@ -9,6 +9,7 @@ import Entidades.TiposAccidentes;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaTiposAccidentesInterface {
      *
      * @param tiposAccidentes Moneda que se quiere crear.
      */
-    public void crear(TiposAccidentes tiposAccidentes);
+    public void crear(EntityManager em, TiposAccidentes tiposAccidentes);
 
     /**
      * Método encargado de modificar un TipoAccidente de la base de datos. Este
@@ -32,7 +33,7 @@ public interface PersistenciaTiposAccidentesInterface {
      * @param tiposAccidentes TiposAccidentes con los cambios que se van a
      * realizar.
      */
-    public void editar(TiposAccidentes tiposAccidentes);
+    public void editar(EntityManager em, TiposAccidentes tiposAccidentes);
 
     /**
      * Método encargado de eliminar de la base de datos un TipoAccidente que
@@ -40,7 +41,7 @@ public interface PersistenciaTiposAccidentesInterface {
      *
      * @param tiposAccidentes TiposAccidentes que se quiere eliminar.
      */
-    public void borrar(TiposAccidentes tiposAccidentes);
+    public void borrar(EntityManager em, TiposAccidentes tiposAccidentes);
 
     /**
      * Método encargado de buscar el TipoAccidente con la secTiposAccidentes dada por
@@ -50,7 +51,7 @@ public interface PersistenciaTiposAccidentesInterface {
      * @return Retorna el TipoAccidente identificado con la secTiposAccidentes dada por
      * parámetro.
      */
-    public TiposAccidentes buscarTipoAccidente(BigInteger secTiposAccidentes);
+    public TiposAccidentes buscarTipoAccidente(EntityManager em, BigInteger secTiposAccidentes);
 
     /**
      * Método encargado de buscar todas los TiposAccidentes existentes en la
@@ -58,7 +59,7 @@ public interface PersistenciaTiposAccidentesInterface {
      *
      * @return Retorna una lista de TiposAccidentes.
      */
-    public List<TiposAccidentes> buscarTiposAccidentes();
+    public List<TiposAccidentes> buscarTiposAccidentes(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoAccidente
@@ -69,7 +70,7 @@ public interface PersistenciaTiposAccidentesInterface {
      * @return Retorna el número de SoAccidenteMedico relacionados con la moneda
      * cuya secTiposAccidentes coincide con el parámetro.
      */
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secTiposAccidentes);
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secTiposAccidentes);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoAccidente
@@ -80,5 +81,5 @@ public interface PersistenciaTiposAccidentesInterface {
      * @return Retorna el número de Accidentes relacionados con la moneda cuya
      * secTiposAccidentes coincide con el parámetro.
      */
-    public BigInteger contadorAccidentes(BigInteger secTiposAccidentes);
+    public BigInteger contadorAccidentes(EntityManager em, BigInteger secTiposAccidentes);
 }

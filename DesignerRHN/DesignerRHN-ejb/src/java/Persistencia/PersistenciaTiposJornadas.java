@@ -23,26 +23,26 @@ public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(TiposJornadas tiposJornadas) {
+    public void crear(EntityManager em, TiposJornadas tiposJornadas) {
         em.persist(tiposJornadas);
     }
 
     @Override
-    public void editar(TiposJornadas tiposJornadas) {
+    public void editar(EntityManager em, TiposJornadas tiposJornadas) {
         em.merge(tiposJornadas);
     }
 
     @Override
-    public void borrar(TiposJornadas tiposJornadas) {
+    public void borrar(EntityManager em, TiposJornadas tiposJornadas) {
         em.remove(em.merge(tiposJornadas));
     }
 
     @Override
-    public TiposJornadas buscarTipoJornada(BigInteger secuencia) {
+    public TiposJornadas buscarTipoJornada(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposJornadas.class, secuencia);
         } catch (Exception e) {
@@ -52,9 +52,10 @@ public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInter
     }
 
     @Override
-    public List<TiposJornadas> buscarTiposJornadas() {
+    public List<TiposJornadas> buscarTiposJornadas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tj FROM TiposJornadas tj ORDER BY tj.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposJornadas> tiposJornadas = query.getResultList();
             return tiposJornadas;
         } catch (Exception e) {

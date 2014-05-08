@@ -9,6 +9,7 @@ package InterfacePersistencia;
 import Entidades.TiposFunciones;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -16,12 +17,12 @@ import java.util.List;
  */
 public interface PersistenciaTiposFuncionesInterface {
     
-    public List<TiposFunciones> tiposFunciones(BigInteger secuenciaOperando, String tipo);
+    public List<TiposFunciones> tiposFunciones(EntityManager em, BigInteger secuenciaOperando, String tipo);
     
-    public void crear(TiposFunciones tiposFunciones);
+    public void crear(EntityManager em, TiposFunciones tiposFunciones);
 
-    public void editar(TiposFunciones tiposFunciones);
+    public void editar(EntityManager em, TiposFunciones tiposFunciones);
     
-    public void borrar(TiposFunciones tiposFunciones);
+    public void borrar(EntityManager em, TiposFunciones tiposFunciones);
     
 }

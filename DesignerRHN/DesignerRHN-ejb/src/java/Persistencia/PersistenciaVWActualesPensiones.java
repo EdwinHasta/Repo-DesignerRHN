@@ -22,14 +22,16 @@ public class PersistenciaVWActualesPensiones implements  PersistenciaVWActualesP
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public BigDecimal buscarSueldoPensionado(BigInteger secuencia) {
+    public BigDecimal buscarSueldoPensionado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vw FROM VWActualesPensiones vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VWActualesPensiones vWActualesPensiones = (VWActualesPensiones) query.getSingleResult();          
             return vWActualesPensiones.getValor();
         } catch (Exception e) {

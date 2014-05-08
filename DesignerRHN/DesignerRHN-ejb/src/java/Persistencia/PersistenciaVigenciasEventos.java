@@ -22,29 +22,31 @@ public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEvento
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasEventos vigenciasEventos) {
+    public void crear(EntityManager em, VigenciasEventos vigenciasEventos) {
         em.persist(vigenciasEventos);
     }
 
     @Override
-    public void editar(VigenciasEventos vigenciasEventos) {
+    public void editar(EntityManager em, VigenciasEventos vigenciasEventos) {
         em.merge(vigenciasEventos);
     }
 
     @Override
-    public void borrar(VigenciasEventos vigenciasEventos) {
+    public void borrar(EntityManager em, VigenciasEventos vigenciasEventos) {
         em.remove(em.merge(vigenciasEventos));
     }
 
     @Override
-    public List<VigenciasEventos> eventosEmpleado(BigInteger secuenciaEmpl) {
+    public List<VigenciasEventos> eventosEmpleado(EntityManager em, BigInteger secuenciaEmpl) {
         try {
             Query query = em.createQuery("SELECT COUNT(ve) FROM VigenciasEventos ve WHERE ve.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuenciaEmpl);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT ve FROM VigenciasEventos ve WHERE ve.empleado.secuencia = :secuenciaEmpl and ve.fechainicial = (SELECT MAX(vev.fechainicial) FROM VigenciasEventos vev WHERE vev.empleado.secuencia = :secuenciaEmpl)");
@@ -60,10 +62,11 @@ public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEvento
     }
 
     @Override
-    public List<VigenciasEventos> vigenciasEventosSecuenciaEmpleado(BigInteger secuencia) {
+    public List<VigenciasEventos> vigenciasEventosSecuenciaEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT ve FROM VigenciasEventos ve WHERE ve.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasEventos> resultado = (List<VigenciasEventos>) query.getResultList();
             return resultado;
         } catch (Exception e) {

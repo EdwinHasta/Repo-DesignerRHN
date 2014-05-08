@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.VigenciasDomiciliarias;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'VigenciasDomiciliarias' 
@@ -18,5 +19,5 @@ public interface PersistenciaVigenciasDomiciliariasInterface {
      * @param secuencia Secuencia de la Persona.
      * @return Retorna una lista de las VigenciasDomiciliarias asociadas a una Persona.
      */
-    public List<VigenciasDomiciliarias> visitasDomiciliariasPersona(BigInteger secuencia) ;
+    public List<VigenciasDomiciliarias> visitasDomiciliariasPersona(EntityManager em, BigInteger secuencia) ;
 }

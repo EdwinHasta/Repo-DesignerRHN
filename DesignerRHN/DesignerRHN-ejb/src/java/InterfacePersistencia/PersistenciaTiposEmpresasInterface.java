@@ -8,13 +8,14 @@ package InterfacePersistencia;
 import Entidades.TiposEmpresas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.ejb.Local;
 import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-
+@Local
 public interface PersistenciaTiposEmpresasInterface {
 
     /**
@@ -58,7 +59,7 @@ public interface PersistenciaTiposEmpresasInterface {
      *
      * @return Retorna una lista de TiposEmpresas.
      */
-    public List<TiposEmpresas> buscarTiposEmpresas(EntityManager em);
+    public List<TiposEmpresas> buscarTiposEmpresas(EntityManager em );
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoEmpresa

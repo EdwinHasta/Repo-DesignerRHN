@@ -24,11 +24,12 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasJornadas vigenciasJornadas) {
+    public void crear(EntityManager em, VigenciasJornadas vigenciasJornadas) {
         try {
             em.persist(vigenciasJornadas);
         } catch (Exception e) {
@@ -37,7 +38,7 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     }
 
     @Override
-    public void editar(VigenciasJornadas vigenciasJornadas) {
+    public void editar(EntityManager em, VigenciasJornadas vigenciasJornadas) {
         try {
             em.merge(vigenciasJornadas);
         } catch (Exception e) {
@@ -46,7 +47,7 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     }
 
     @Override
-    public void borrar(VigenciasJornadas vigenciasJornadas) {
+    public void borrar(EntityManager em, VigenciasJornadas vigenciasJornadas) {
         try {
             em.remove(em.merge(vigenciasJornadas));
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     }
 
     @Override
-    public List<VigenciasJornadas> buscarVigenciasJornadas() {
+    public List<VigenciasJornadas> buscarVigenciasJornadas(EntityManager em) {
         try{
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasJornadas.class));
@@ -67,10 +68,11 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     }
 
     @Override
-    public List<VigenciasJornadas> buscarVigenciasJornadasEmpleado(BigInteger secuencia) {
+    public List<VigenciasJornadas> buscarVigenciasJornadasEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vj FROM VigenciasJornadas vj WHERE vj.empleado.secuencia = :secuenciaEmpl ORDER BY vj.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasJornadas> vigenciasJornadas = query.getResultList();
             return vigenciasJornadas;
         } catch (Exception e) {
@@ -80,9 +82,10 @@ public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJorna
     }
 
     @Override
-    public VigenciasJornadas buscarVigenciasJornadasSecuencia(BigInteger secuencia) {
+    public VigenciasJornadas buscarVigenciasJornadasSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createNamedQuery("VigenciasJornadas.findBySecuencia").setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasJornadas vigenciasJornadas = (VigenciasJornadas) query.getSingleResult();
             return vigenciasJornadas;
         } catch (Exception e) {

@@ -27,11 +27,12 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasCargos vigenciasCargos) {
+    public void crear(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
             em.merge(vigenciasCargos);
         } catch (Exception e) {
@@ -40,7 +41,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     }
 
     @Override
-    public void editar(VigenciasCargos vigenciasCargos) {
+    public void editar(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
             em.merge(vigenciasCargos);
         } catch (Exception e) {
@@ -49,7 +50,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     }
 
     @Override
-    public void borrar(VigenciasCargos vigenciasCargos) {
+    public void borrar(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
             em.remove(em.merge(vigenciasCargos));
         } catch (Exception e) {
@@ -58,7 +59,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     }
 
     @Override
-    public VigenciasCargos buscarVigenciaCargo(BigInteger secuencia) {
+    public VigenciasCargos buscarVigenciaCargo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(VigenciasCargos.class, secuencia);
         } catch (Exception e) {
@@ -67,7 +68,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     }
 
     @Override
-    public List<VigenciasCargos> buscarVigenciasCargos() {
+    public List<VigenciasCargos> buscarVigenciasCargos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasCargos.class));
         return em.createQuery(cq).getResultList();

@@ -22,11 +22,12 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VWVacaPendientesEmpleados vacaP) {
+    public void crear(EntityManager em, VWVacaPendientesEmpleados vacaP) {
         try {
             em.persist(vacaP);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     }
 
     @Override
-    public void editar(VWVacaPendientesEmpleados vacaP) {
+    public void editar(EntityManager em, VWVacaPendientesEmpleados vacaP) {
         try {
             em.merge(vacaP);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     }
 
     @Override
-    public void borrar(VWVacaPendientesEmpleados vacaP) {
+    public void borrar(EntityManager em, VWVacaPendientesEmpleados vacaP) {
         try {
             em.remove(em.merge(vacaP));
         } catch (Exception e) {
@@ -53,11 +54,12 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     }
 
     @Override
-    public List<VWVacaPendientesEmpleados> vacaEmpleadoPendientes(BigInteger secuencia) {
+    public List<VWVacaPendientesEmpleados> vacaEmpleadoPendientes(EntityManager em, BigInteger secuencia) {
         List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
             String script ="SELECT vwv FROM VWVacaPendientesEmpleados vwv WHERE vwv.empleado = :empleado AND vwv.diaspendientes > 0";
             Query query = em.createQuery(script).setParameter("empleado", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             listaVacaPendientesEmpleados = query.getResultList();
         } catch (Exception e) {
             System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleados.");
@@ -68,11 +70,12 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     }
 
     @Override
-    public List<VWVacaPendientesEmpleados> vacaEmpleadoDisfrutadas(BigInteger sec) {
+    public List<VWVacaPendientesEmpleados> vacaEmpleadoDisfrutadas(EntityManager em, BigInteger sec) {
         List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
             String script ="SELECT vwv FROM VWVacaPendientesEmpleados vwv WHERE vwv.empleado = :empleado AND vwv.diaspendientes <= 0";
             Query query = em.createQuery(script).setParameter("empleado", sec);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             listaVacaPendientesEmpleados = query.getResultList();
         } catch (Exception e) {
             System.err.println("PersistenciaVWVacaPendientesEmpleados.buscarVacaPendientesEmpleadosDisfrutadas");
@@ -83,7 +86,7 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
     }
 
     @Override
-    public List<VWVacaPendientesEmpleados> buscarVacaPendientesEmpleados(BigInteger secuenciaEmpleado) {
+    public List<VWVacaPendientesEmpleados> buscarVacaPendientesEmpleados(EntityManager em, BigInteger secuenciaEmpleado) {
         List<VWVacaPendientesEmpleados> listaVacaPendientesEmpleados = null;
         try {
             listaVacaPendientesEmpleados = em.createNamedQuery("VWVacaPendientesEmpleados.findByEmpleado").setParameter("empleado", secuenciaEmpleado).getResultList();

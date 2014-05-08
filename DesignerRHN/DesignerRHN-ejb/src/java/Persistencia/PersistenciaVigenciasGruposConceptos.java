@@ -22,11 +22,12 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasGruposConceptos vigenciasGruposConceptos) {
+    public void crear(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos) {
         try {
             em.persist(vigenciasGruposConceptos);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     }
 
     @Override
-    public void editar(VigenciasGruposConceptos vigenciasGruposConceptos) {
+    public void editar(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos) {
         try {
             em.merge(vigenciasGruposConceptos);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     }
 
     @Override
-    public void borrar(VigenciasGruposConceptos vigenciasGruposConceptos) {
+    public void borrar(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos) {
         try {
             em.remove(em.merge(vigenciasGruposConceptos));
         } catch (Exception e) {
@@ -53,10 +54,11 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     }
 
     @Override
-    public boolean verificacionGrupoUnoConcepto(BigInteger secuenciaConcepto) {
+    public boolean verificacionGrupoUnoConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
             Query query = em.createQuery("SELECT COUNT(vgc) FROM VigenciasGruposConceptos vgc WHERE vgc.concepto.secuencia = :secuenciaConcepto AND vgc.gruposConceptos.codigo = 1");
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -66,10 +68,11 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     }
 
     @Override
-    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorConcepto(BigInteger secuenciaC) {
+    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorConcepto(EntityManager em, BigInteger secuenciaC) {
         try {
             Query query = em.createQuery("SELECT vgc FROM VigenciasGruposConceptos vgc WHERE vgc.concepto.secuencia = :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaC);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasGruposConceptos> resultado = (List<VigenciasGruposConceptos>) query.getResultList();
             return resultado;
         } catch (Exception e) {
@@ -79,7 +82,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
     }
     
     @Override
-    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorGrupoConcepto(BigInteger secuenciaG) {
+    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorGrupoConcepto(EntityManager em, BigInteger secuenciaG) {
         try {
             String sqlQuery = ("SELECT *\n"
                     + "FROM VIGENCIASGRUPOSCONCEPTOS V\n"

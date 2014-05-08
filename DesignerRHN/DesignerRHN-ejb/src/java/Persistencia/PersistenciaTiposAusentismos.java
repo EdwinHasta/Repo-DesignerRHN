@@ -24,8 +24,9 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+*/
 
     @Override
     public void crear(EntityManager em, Tiposausentismos tiposAusentismos) {
@@ -47,7 +48,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     }
 
     @Override
-    public List<Tiposausentismos> consultarTiposAusentismos(EntityManager em, ) {
+    public List<Tiposausentismos> consultarTiposAusentismos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ta FROM Tiposausentismos ta ORDER BY ta.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

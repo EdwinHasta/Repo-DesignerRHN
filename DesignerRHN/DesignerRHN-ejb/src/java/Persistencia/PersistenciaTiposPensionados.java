@@ -25,11 +25,12 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(TiposPensionados tiposPensionados) {
+    public void crear(EntityManager em, TiposPensionados tiposPensionados) {
         try {
             em.persist(tiposPensionados);
         } catch (Exception e) {
@@ -38,7 +39,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
 
     @Override
-    public void editar(TiposPensionados tiposPensionados) {
+    public void editar(EntityManager em, TiposPensionados tiposPensionados) {
         try {
             em.merge(tiposPensionados);
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
 
     @Override
-    public void borrar(TiposPensionados tiposPensionados) {
+    public void borrar(EntityManager em, TiposPensionados tiposPensionados) {
         try {
             em.remove(em.merge(tiposPensionados));
         } catch (Exception e) {
@@ -56,10 +57,14 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
 
     @Override
-    public List<TiposPensionados> consultarTiposPensionados() {
+    public List<TiposPensionados> consultarTiposPensionados(EntityManager em) {
         try {
-            List<TiposPensionados> tiposPensionadosLista = (List<TiposPensionados>) em.createNamedQuery("TiposPensionados.findAll").getResultList();
-            return tiposPensionadosLista;
+            //List<TiposPensionados> tiposPensionadosLista = (List<TiposPensionados>) em.createNamedQuery("TiposPensionados.findAll").getResultList();
+            //return tiposPensionadosLista;
+            Query query = em.createQuery("SELECT t FROM TiposPensionados t");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<TiposPensionados> listaTiposPensionados = query.getResultList();
+            return listaTiposPensionados;
         } catch (Exception e) {
             System.out.println("Error buscarTiposPensionados PersistenciaTiposPensionados");
             return null;
@@ -67,11 +72,12 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
 
     @Override
-    public TiposPensionados consultarTipoPensionado(BigInteger secuencia) {
+    public TiposPensionados consultarTipoPensionado(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT tp FROM TiposPensionados tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposPensionados tipoP = (TiposPensionados) query.getSingleResult();
             return tipoP;
         } catch (Exception e) {
@@ -82,7 +88,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     }
 
     @Override
-    public BigInteger contarPensionadosTipoPension(BigInteger secuencia) {
+    public BigInteger contarPensionadosTipoPension(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM pensionados WHERE tipopensionado=?";

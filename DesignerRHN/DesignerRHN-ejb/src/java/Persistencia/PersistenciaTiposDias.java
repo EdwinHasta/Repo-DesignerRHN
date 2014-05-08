@@ -25,8 +25,10 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+*/
+
     @Override
     public void crear(EntityManager em, TiposDias tiposDias) {
         em.persist(tiposDias);

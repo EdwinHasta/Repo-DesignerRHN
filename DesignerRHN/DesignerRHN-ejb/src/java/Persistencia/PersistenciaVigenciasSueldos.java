@@ -22,32 +22,34 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
-    public void crear(VigenciasSueldos vigenciasSueldos) {
+    public void crear(EntityManager em, VigenciasSueldos vigenciasSueldos) {
         em.persist(vigenciasSueldos);
     }
 
-    public void editar(VigenciasSueldos vigenciasSueldos) {
+    public void editar(EntityManager em, VigenciasSueldos vigenciasSueldos) {
         em.merge(vigenciasSueldos);
     }
 
-    public void borrar(VigenciasSueldos vigenciasSueldos) {
+    public void borrar(EntityManager em, VigenciasSueldos vigenciasSueldos) {
         em.remove(em.merge(vigenciasSueldos));
     }
 
-    public List<VigenciasSueldos> buscarVigenciasSeldos() {
+    public List<VigenciasSueldos> buscarVigenciasSeldos(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasSueldos.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<VigenciasSueldos> buscarVigenciasSueldosEmpleado(BigInteger secEmpleado) {
+    public List<VigenciasSueldos> buscarVigenciasSueldosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT vs FROM VigenciasSueldos vs WHERE vs.empleado.secuencia = :secuenciaEmpl ORDER BY vs.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasSueldos> vigenciasSueldos = query.getResultList();
             return vigenciasSueldos;
         } catch (Exception e) {
@@ -57,9 +59,10 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     }
 
     @Override
-    public VigenciasSueldos buscarVigenciasSueldosSecuencia(BigInteger secVS) {
+    public VigenciasSueldos buscarVigenciasSueldosSecuencia(EntityManager em, BigInteger secVS) {
         try {
             Query query = em.createNamedQuery("VigenciasSueldos.findBySecuencia").setParameter("secuencia", secVS);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasSueldos vigenciasSueldos = (VigenciasSueldos) query.getSingleResult();
             return vigenciasSueldos;
         } catch (Exception e) {
@@ -69,7 +72,7 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
     }
 
     @Override
-    public List<VigenciasSueldos> buscarVigenciasSueldosEmpleadoRecientes(BigInteger secEmpleado) {
+    public List<VigenciasSueldos> buscarVigenciasSueldosEmpleadoRecientes(EntityManager em, BigInteger secEmpleado) {
         try {
             String consulta = "SELECT * FROM VIGENCIASSUELDOS v "
                     + "WHERE v.fechavigencia = ("

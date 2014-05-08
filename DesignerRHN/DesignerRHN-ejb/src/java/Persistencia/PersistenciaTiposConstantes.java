@@ -26,8 +26,9 @@ public class PersistenciaTiposConstantes implements PersistenciaTiposConstantesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
     
     @Override
     public void crear(EntityManager em, TiposConstantes tiposConstantes) {
@@ -65,6 +66,7 @@ public class PersistenciaTiposConstantes implements PersistenciaTiposConstantesI
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposConstantes> tiposConstantes = query.getResultList();
             List<TiposConstantes> tiposConstantesResult = new ArrayList<TiposConstantes>(tiposConstantes);
+
             System.out.println("tiposConstantes" + tiposConstantesResult);
             return tiposConstantesResult;
         } catch (Exception e) {

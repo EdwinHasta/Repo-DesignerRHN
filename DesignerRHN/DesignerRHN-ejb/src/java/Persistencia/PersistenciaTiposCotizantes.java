@@ -21,8 +21,9 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+*/
 
     
     @Override

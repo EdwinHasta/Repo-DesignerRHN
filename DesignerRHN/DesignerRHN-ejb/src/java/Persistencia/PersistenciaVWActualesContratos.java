@@ -21,8 +21,9 @@ public class PersistenciaVWActualesContratos implements PersistenciaVWActualesCo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     public VWActualesContratos buscarContrato(EntityManager em, BigInteger secuencia) {
 

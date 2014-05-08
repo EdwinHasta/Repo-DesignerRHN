@@ -25,11 +25,12 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasTiposContratos vigenciasTiposContratos) {
+    public void crear(EntityManager em, VigenciasTiposContratos vigenciasTiposContratos) {
         try {
             em.merge(vigenciasTiposContratos);
         } catch (Exception e) {
@@ -38,7 +39,7 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public void editar(VigenciasTiposContratos vigenciasTiposContratos) {
+    public void editar(EntityManager em, VigenciasTiposContratos vigenciasTiposContratos) {
         try {
             em.merge(vigenciasTiposContratos);
         } catch (Exception e) {
@@ -47,12 +48,12 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public void borrar(VigenciasTiposContratos vigenciasTiposContratos) {
+    public void borrar(EntityManager em, VigenciasTiposContratos vigenciasTiposContratos) {
         em.remove(em.merge(vigenciasTiposContratos));
     }
 
     @Override
-    public VigenciasTiposContratos buscarVigenciaTipoContrato(BigInteger secuencia) {
+    public VigenciasTiposContratos buscarVigenciaTipoContrato(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(VigenciasTiposContratos.class, secuencia);
         } catch (Exception e) {
@@ -61,17 +62,18 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public List<VigenciasTiposContratos> buscarVigenciasTiposContratos() {
+    public List<VigenciasTiposContratos> buscarVigenciasTiposContratos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(VigenciasTiposContratos.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(BigInteger secuencia) {
+    public List<VigenciasTiposContratos> buscarVigenciaTipoContratoEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vtc FROM VigenciasTiposContratos vtc WHERE vtc.empleado.secuencia = :secuenciaEmpl ORDER BY vtc.fechavigencia DESC");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasTiposContratos> vigenciasTiposContratos = (List<VigenciasTiposContratos>) query.getResultList();
             return vigenciasTiposContratos;
         } catch (Exception e) {
@@ -81,11 +83,12 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
     }
 
     @Override
-    public Date fechaMaxContratacion(Empleados secuencia) {
+    public Date fechaMaxContratacion(EntityManager em, Empleados secuencia) {
         try{
             Date fechaContratacion;
             Query query = em.createQuery("SELECT vwac.fechaVigencia FROM VWActualesTiposContratos vwac WHERE vwac.empleado =:empleado");
             query.setParameter("empleado", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             fechaContratacion = (Date) query.getSingleResult();
             return fechaContratacion;
         }catch(Exception e){

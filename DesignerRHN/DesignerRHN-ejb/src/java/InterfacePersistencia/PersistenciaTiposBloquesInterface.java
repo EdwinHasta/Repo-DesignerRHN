@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.TiposBloques;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public interface PersistenciaTiposBloquesInterface {
 
-    public void crear(TiposBloques tiposBloques);
+    public void crear(EntityManager em, TiposBloques tiposBloques);
 
-    public void editar(TiposBloques tiposBloques);
+    public void editar(EntityManager em, TiposBloques tiposBloques);
 
-    public void borrar(TiposBloques tiposBloques);
+    public void borrar(EntityManager em, TiposBloques tiposBloques);
 
-    public List<TiposBloques> tiposBloques(BigInteger secuenciaOperando, String tipo);
+    public List<TiposBloques> tiposBloques(EntityManager em, BigInteger secuenciaOperando, String tipo);
     
 }

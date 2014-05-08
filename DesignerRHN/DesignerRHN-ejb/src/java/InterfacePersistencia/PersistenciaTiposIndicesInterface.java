@@ -9,6 +9,7 @@ import Entidades.TiposIndices;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,15 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaTiposIndicesInterface {
 
-    public void crear(TiposIndices tiposIndices);
+    public void crear(EntityManager em, TiposIndices tiposIndices);
 
-    public void editar(TiposIndices tiposIndices);
+    public void editar(EntityManager em, TiposIndices tiposIndices);
 
-    public void borrar(TiposIndices tiposIndices);
+    public void borrar(EntityManager em, TiposIndices tiposIndices);
 
-    public List<TiposIndices> consultarTiposIndices();
+    public List<TiposIndices> consultarTiposIndices(EntityManager em );
 
-    public TiposIndices consultarTipoIndice(BigInteger secuencia);
+    public TiposIndices consultarTipoIndice(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarIndicesTipoIndice(BigInteger secuencia);
+    public BigInteger contarIndicesTipoIndice(EntityManager em, BigInteger secuencia);
 }

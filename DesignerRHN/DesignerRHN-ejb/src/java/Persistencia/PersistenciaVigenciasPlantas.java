@@ -24,22 +24,23 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
   /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
-    public void crear(VigenciasPlantas vigenciasPlantas) {
+    public void crear(EntityManager em, VigenciasPlantas vigenciasPlantas) {
         em.persist(vigenciasPlantas);
     }
 
-    public void editar(VigenciasPlantas vigenciasPlantas) {
+    public void editar(EntityManager em, VigenciasPlantas vigenciasPlantas) {
         em.merge(vigenciasPlantas);
     }
 
-    public void borrar(VigenciasPlantas vigenciasPlantas) {
+    public void borrar(EntityManager em, VigenciasPlantas vigenciasPlantas) {
         em.remove(em.merge(vigenciasPlantas));
     }
 
-    public VigenciasPlantas consultarVigenciaPlanta(BigInteger secVigenciasPlantas) {
+    public VigenciasPlantas consultarVigenciaPlanta(EntityManager em, BigInteger secVigenciasPlantas) {
         try {
             return em.find(VigenciasPlantas.class, secVigenciasPlantas);
         } catch (Exception e) {
@@ -47,14 +48,15 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
         }
     }
 
-    public List<VigenciasPlantas> consultarVigenciasPlantas() {
+    public List<VigenciasPlantas> consultarVigenciasPlantas(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM VigenciasPlantas te ORDER BY te.codigo ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasPlantas> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
 
     }
 
-      public BigInteger contarPlantasVigenciaPlanta(BigInteger secuencia) {
+      public BigInteger contarPlantasVigenciaPlanta(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM plantas WHERE vigencia = ?";

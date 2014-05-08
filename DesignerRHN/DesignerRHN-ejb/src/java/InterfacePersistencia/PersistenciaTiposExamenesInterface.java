@@ -7,6 +7,7 @@ import Entidades.TiposExamenes;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'TiposExamenes' 
@@ -19,30 +20,30 @@ public interface PersistenciaTiposExamenesInterface {
      * Método encargado de insertar un TipoExamen en la base de datos.
      * @param tiposExamenes TipoExamen que se quiere crear.
      */
-    public void crear(TiposExamenes tiposExamenes);
+    public void crear(EntityManager em, TiposExamenes tiposExamenes);
     /**
      * Método encargado de modificar un TipoExamen de la base de datos.
      * Este método recibe la información del parámetro para hacer un 'merge' con la 
      * información de la base de datos.
      * @param tiposExamenes TipoExamen con los cambios que se van a realizar.
      */
-    public void editar(TiposExamenes tiposExamenes);
+    public void editar(EntityManager em, TiposExamenes tiposExamenes);
     /**
      * Método encargado de eliminar de la base de datos el TipoExamen que entra por parámetro.
      * @param tiposExamenes TipoExamen que se quiere eliminar.
      */
-    public void borrar(TiposExamenes tiposExamenes);
+    public void borrar(EntityManager em, TiposExamenes tiposExamenes);
     /**
      * Método encargado de buscar el TipoExamen con la secTipoExamen dada por parámetro.
      * @param secTipoExamen Secuencia del TipoExamen que se quiere encontrar.
      * @return Retorna el TipoExamen identificado con la secTipoExamen dada por parámetro.
      */
-    public TiposExamenes buscarTipoExamen(BigInteger secTipoExamen);
+    public TiposExamenes buscarTipoExamen(EntityManager em, BigInteger secTipoExamen);
     /**
      * Método encargado de buscar todos los TiposExamenes existentes en la base de datos, ordenados por código.
      * @return Retorna una lista de TiposExamenes.
      */
-    public List<TiposExamenes> buscarTiposExamenes();
+    public List<TiposExamenes> buscarTiposExamenes(EntityManager em );
     /**
      * Método encargado de revisar si existe una relacion entre un TipoExamen definido y algún TipoExamenCargo.
      * Ademas de la revision, cuenta cuantas relaciones existen.
@@ -50,7 +51,7 @@ public interface PersistenciaTiposExamenesInterface {
      * @return Retorna el número de relaciones entre el TipoExamen cuya secTipoExamen coincida con la dada por parámetro y 
      * la tabla TiposExamenesCargos
      */
-    public BigInteger contadorTiposExamenesCargos(BigInteger secTipoExamen);
+    public BigInteger contadorTiposExamenesCargos(EntityManager em, BigInteger secTipoExamen);
     /**
      * Método encargado de revisar si existe una relacion entre un TipoExamen definido y alguna VigenciasExamenesMedicos.
      * Ademas de la revision, cuenta cuantas relaciones existen.
@@ -58,5 +59,5 @@ public interface PersistenciaTiposExamenesInterface {
      * @return Retorna el número de relaciones entre el TipoExamen cuya secTipoExamen coincida con la dada por parámetro y 
      * la tabla VigenciasExamenesMedicos
      */
-    public BigInteger contadorVigenciasExamenesMedicos(BigInteger secTipoExamen);
+    public BigInteger contadorVigenciasExamenesMedicos(EntityManager em, BigInteger secTipoExamen);
 }

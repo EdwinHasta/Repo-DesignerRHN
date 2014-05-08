@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.TiposConstantes;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,12 +16,12 @@ import java.util.List;
  */
 public interface PersistenciaTiposConstantesInterface {
 
-    public void crear(TiposConstantes tiposConstantes);
+    public void crear(EntityManager em, TiposConstantes tiposConstantes);
 
-    public void editar(TiposConstantes tiposConstantes);
+    public void editar(EntityManager em, TiposConstantes tiposConstantes);
 
-    public void borrar(TiposConstantes tiposConstantes);
+    public void borrar(EntityManager em, TiposConstantes tiposConstantes);
 
-    public List<TiposConstantes> tiposConstantes(BigInteger secuenciaOperando, String tipo);
+    public List<TiposConstantes> tiposConstantes(EntityManager em, BigInteger secuenciaOperando, String tipo);
     
 }

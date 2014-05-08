@@ -22,11 +22,12 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
    
     @Override
-    public void crear(VigenciasAficiones vigenciasAficiones) {
+    public void crear(EntityManager em, VigenciasAficiones vigenciasAficiones) {
         try {
             em.merge(vigenciasAficiones);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     }
    
     @Override
-    public void editar(VigenciasAficiones vigenciasAficiones) {
+    public void editar(EntityManager em, VigenciasAficiones vigenciasAficiones) {
         try {
             em.merge(vigenciasAficiones);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     }
    
     @Override
-    public void borrar(VigenciasAficiones vigenciasAficiones) {
+    public void borrar(EntityManager em, VigenciasAficiones vigenciasAficiones) {
         try {
             em.remove(em.merge(vigenciasAficiones));
         } catch (Exception e) {
@@ -53,7 +54,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     }
    
     @Override
-    public VigenciasAficiones buscarvigenciaAficion(BigInteger secuencia) {
+    public VigenciasAficiones buscarvigenciaAficion(EntityManager em, BigInteger secuencia) {
         try {
             BigInteger in = (BigInteger) secuencia;
             return em.find(VigenciasAficiones.class, in);
@@ -64,14 +65,16 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     }
     
     @Override
-    public List<VigenciasAficiones> aficionesPersona(BigInteger secuencia) {
+    public List<VigenciasAficiones> aficionesPersona(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAficiones va WHERE va.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT va FROM VigenciasAficiones va WHERE va.persona.secuencia = :secuenciaPersona and va.fechainicial = (SELECT MAX(vaf.fechainicial) FROM VigenciasAficiones vaf WHERE vaf.persona.secuencia = :secuenciaPersona)");
                 queryFinal.setParameter("secuenciaPersona", secuencia);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<VigenciasAficiones> listVigenciasAficiones = queryFinal.getResultList();
                 return listVigenciasAficiones;
             }
@@ -83,10 +86,11 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
     }
     
     @Override
-    public List<VigenciasAficiones> aficionesTotalesSecuenciaPersona(BigInteger secuencia){
+    public List<VigenciasAficiones> aficionesTotalesSecuenciaPersona(EntityManager em, BigInteger secuencia){
         try{
         Query queryFinal = em.createQuery("SELECT va FROM VigenciasAficiones va WHERE va.persona.secuencia = :secuenciaPersona;");
                 queryFinal.setParameter("secuenciaPersona", secuencia);
+                queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<VigenciasAficiones> listVigenciasAficiones = queryFinal.getResultList();
                 return listVigenciasAficiones;
         }catch(Exception e){

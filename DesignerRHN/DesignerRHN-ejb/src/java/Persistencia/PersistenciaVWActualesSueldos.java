@@ -21,14 +21,16 @@ public class PersistenciaVWActualesSueldos implements PersistenciaVWActualesSuel
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public BigDecimal buscarSueldoActivo(BigInteger secuencia) {
+    public BigDecimal buscarSueldoActivo(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT SUM(vw.valor) FROM VWActualesSueldos vw WHERE vw.empleado.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigDecimal vwActualesSueldosValor = (BigDecimal) query.getSingleResult();
             return vwActualesSueldosValor;
         } catch (Exception e) {

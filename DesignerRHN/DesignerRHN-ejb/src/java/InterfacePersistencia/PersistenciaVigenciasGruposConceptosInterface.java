@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.VigenciasGruposConceptos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -22,7 +23,7 @@ public interface PersistenciaVigenciasGruposConceptosInterface {
      * @param vigenciasGruposConceptos VigenciaGrupoConcepto que se quiere
      * crear.
      */
-    public void crear(VigenciasGruposConceptos vigenciasGruposConceptos);
+    public void crear(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos);
 
     /**
      * Método encargado de modificar una VigenciaGrupoConcepto de la base de
@@ -32,7 +33,7 @@ public interface PersistenciaVigenciasGruposConceptosInterface {
      * @param vigenciasGruposConceptos VigenciaGrupoConcepto con los cambios que
      * se van a realizar.
      */
-    public void editar(VigenciasGruposConceptos vigenciasGruposConceptos);
+    public void editar(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos);
 
     /**
      * Método encargado de eliminar de la base de datos la VigenciaGrupoConcepto
@@ -41,7 +42,7 @@ public interface PersistenciaVigenciasGruposConceptosInterface {
      * @param vigenciasGruposConceptos VigenciaGrupoConcepto que se quiere
      * eliminar.
      */
-    public void borrar(VigenciasGruposConceptos vigenciasGruposConceptos);
+    public void borrar(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos);
 
     /**
      * Método encargado de buscar las VigenciasGruposConceptos asociadas a un
@@ -52,7 +53,7 @@ public interface PersistenciaVigenciasGruposConceptosInterface {
      * asociadas con el concepto cuya secuencia coincide con la secuencia dada
      * por parámetro.
      */
-    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorConcepto(BigInteger secuencia);
+    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorConcepto(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de verificar la existencia de por lo menos una
@@ -63,7 +64,7 @@ public interface PersistenciaVigenciasGruposConceptosInterface {
      * @return Retorna True si existe al menos una VigenciaGrupoConcepto cuyo
      * Concepto tenga como secuencia la dada por el parámetro "secuencia".
      */
-    public boolean verificacionGrupoUnoConcepto(BigInteger secuencia);
+    public boolean verificacionGrupoUnoConcepto(EntityManager em, BigInteger secuencia);
     
     /**
      * Método encargado de buscar las VigenciasGruposConceptos asociadas a un
@@ -74,6 +75,6 @@ public interface PersistenciaVigenciasGruposConceptosInterface {
      * asociadas con el grupo concepto cuya secuencia coincide con la secuencia dada
      * por parámetro.
      */
-    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorGrupoConcepto(BigInteger secuenciaG);
+    public List<VigenciasGruposConceptos> listVigenciasGruposConceptosPorGrupoConcepto(EntityManager em, BigInteger secuenciaG);
 
     }

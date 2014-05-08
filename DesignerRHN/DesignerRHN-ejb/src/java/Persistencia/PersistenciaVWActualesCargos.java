@@ -24,8 +24,8 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
     public VWActualesCargos buscarCargoEmpleado(EntityManager entity, BigInteger secuencia) {
@@ -43,10 +43,11 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
     }
 
     @Override  
-    public Long conteoCodigosEmpleados(BigInteger secEstructura) {
+    public Long conteoCodigosEmpleados(EntityManager em, BigInteger secEstructura) {
         try {
             Query query = em.createQuery("SELECT COUNT (em.codigoempleado) FROM VWActualesCargos vc, Empleados em WHERE vc.empleado.secuencia = em.secuencia AND vc.estructura = :secEstructura AND EXISTS (SELECT vt FROM VWActualesTiposTrabajadores vt, TiposTrabajadores tt WHERE vt.empleado.secuencia = em.secuencia AND vt.tipoTrabajador.secuencia  = tt.secuencia AND tt.tipo = 'ACTIVO')");
             query.setParameter("secEstructura", secEstructura);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long conteo = (Long) query.getSingleResult();
             return conteo;
         } catch (Exception e) {

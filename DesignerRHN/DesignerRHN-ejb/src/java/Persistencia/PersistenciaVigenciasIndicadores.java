@@ -22,11 +22,12 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public void crear(VigenciasIndicadores vigenciasIndicadores) {
+    public void crear(EntityManager em, VigenciasIndicadores vigenciasIndicadores) {
         try {
             em.persist(vigenciasIndicadores);
         } catch (Exception e) {
@@ -35,7 +36,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public void editar(VigenciasIndicadores vigenciasIndicadores) {
+    public void editar(EntityManager em, VigenciasIndicadores vigenciasIndicadores) {
         try {
             em.merge(vigenciasIndicadores);
         } catch (Exception e) {
@@ -44,7 +45,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public void borrar(VigenciasIndicadores vigenciasIndicadores) {
+    public void borrar(EntityManager em, VigenciasIndicadores vigenciasIndicadores) {
         try {
             em.remove(em.merge(vigenciasIndicadores));
         } catch (Exception e) {
@@ -53,9 +54,10 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public List<VigenciasIndicadores> buscarVigenciasIndicadores() {
+    public List<VigenciasIndicadores> buscarVigenciasIndicadores(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT vi FROM VigenciasIndicadores vi ORDER BY vi.secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasIndicadores> vigenciasIndicadores = query.getResultList();
             return vigenciasIndicadores;
         } catch (Exception e) {
@@ -65,10 +67,11 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public VigenciasIndicadores buscarVigenciaIndicadorSecuencia(BigInteger secuencia) {
+    public VigenciasIndicadores buscarVigenciaIndicadorSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             VigenciasIndicadores vigenciasIndicadores = (VigenciasIndicadores) query.getSingleResult();
             return vigenciasIndicadores;
         } catch (Exception e) {
@@ -79,10 +82,11 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public List<VigenciasIndicadores> ultimosIndicadoresEmpleado(BigInteger secuencia) {
+    public List<VigenciasIndicadores> ultimosIndicadoresEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT COUNT(vi) FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl");
             query.setParameter("secuenciaEmpl", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl and vi.fechainicial = (SELECT MAX(vin.fechainicial) FROM VigenciasIndicadores vin WHERE vin.empleado.secuencia = :secuenciaEmpl)");
@@ -98,10 +102,11 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
     }
 
     @Override
-    public List<VigenciasIndicadores> indicadoresTotalesEmpleadoSecuencia(BigInteger secuencia) {
+    public List<VigenciasIndicadores> indicadoresTotalesEmpleadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT vi FROM VigenciasIndicadores vi WHERE vi.empleado.secuencia = :secuenciaEmpl");
                 queryFinal.setParameter("secuenciaEmpl", secuencia);
+                queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<VigenciasIndicadores> listaVigenciasIndicadores = queryFinal.getResultList();
                 return listaVigenciasIndicadores;
         } catch (Exception e) {

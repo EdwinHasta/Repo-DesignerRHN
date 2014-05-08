@@ -23,17 +23,19 @@ public class PersistenciaTablas implements PersistenciaTablasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
     private EntityManager em;
+*/
 
     @Override
-    public List<Tablas> buscarTablas(BigInteger secuenciaMod) {
+    public List<Tablas> buscarTablas(EntityManager em, BigInteger secuenciaMod) {
         try {
             Query query = em.createQuery("select t from Tablas t where t.modulo.secuencia = :secuenciaMod "
              +" and t.tipo in ('SISTEMA','CONFIGURACION' ) "
              +" and EXISTS (SELECT p FROM Pantallas p where t = p.tabla)"
              +"order by t.nombre");
             query.setParameter("secuenciaMod", secuenciaMod);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tablas> tablas = (List<Tablas>) query.getResultList();
             return tablas;
         } catch (Exception e) {

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.VigenciasEstadosCiviles;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaVigenciasEstadosCivilesInterface {
      *
      * @param vigenciasEstadosCiviles VigenciaEstadoCivil que se quiere crear.
      */
-    public void crear(VigenciasEstadosCiviles vigenciasEstadosCiviles);
+    public void crear(EntityManager em, VigenciasEstadosCiviles vigenciasEstadosCiviles);
 
     /**
      * Método encargado de modificar una VigenciaEstadoCivil de la base de
@@ -30,7 +31,7 @@ public interface PersistenciaVigenciasEstadosCivilesInterface {
      * @param vigenciasEstadosCiviles VigenciaEstadoCivil con los cambios que se
      * van a realizar.
      */
-    public void editar(VigenciasEstadosCiviles vigenciasEstadosCiviles);
+    public void editar(EntityManager em, VigenciasEstadosCiviles vigenciasEstadosCiviles);
 
     /**
      * Método encargado de eliminar de la base de datos la VigenciaEstadoCivil
@@ -39,7 +40,7 @@ public interface PersistenciaVigenciasEstadosCivilesInterface {
      * @param vigenciasEstadosCiviles VigenciaEstadoCivil que se quiere
      * eliminar.
      */
-    public void borrar(VigenciasEstadosCiviles vigenciasEstadosCiviles);
+    public void borrar(EntityManager em, VigenciasEstadosCiviles vigenciasEstadosCiviles);
 
     /**
      * Método encargado de buscar la VigenciaEstadoCivil con la secuencia dada
@@ -50,7 +51,7 @@ public interface PersistenciaVigenciasEstadosCivilesInterface {
      * @return Retorna la VigenciaEstadoCivil identificada con la secuencia dada
      * por parámetro.
      */
-    public VigenciasEstadosCiviles buscarVigenciaEstadoCivil(BigInteger secuencia);
+    public VigenciasEstadosCiviles buscarVigenciaEstadoCivil(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar todas las VigenciasEstadosCiviles existentes
@@ -58,7 +59,7 @@ public interface PersistenciaVigenciasEstadosCivilesInterface {
      *
      * @return Retorna una lista de VigenciasEstadosCiviles.
      */
-    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCiviles();
+    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCiviles(EntityManager em );
 
     /**
      * Método encargado de buscar las últimas VigenciasEstadosCiviles
@@ -68,7 +69,7 @@ public interface PersistenciaVigenciasEstadosCivilesInterface {
      * @return Retorna una lista de las VigenciasEstadosCiviles asociadas a una
      * Persona.
      */
-    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPersona(BigInteger secuencia);
+    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPersona(EntityManager em, BigInteger secuencia);
 
-    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPorPersona(BigInteger secuenciaPersona);
+    public List<VigenciasEstadosCiviles> consultarVigenciasEstadosCivilesPorPersona(EntityManager em, BigInteger secuenciaPersona);
 }

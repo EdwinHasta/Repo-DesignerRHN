@@ -9,6 +9,7 @@ import Entidades.TiposFamiliares;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,7 +23,7 @@ public interface PersistenciaTiposFamiliaresInterface {
      *
      * @param tiposFamiliares Moneda que se quiere crear.
      */
-    public void crear(TiposFamiliares tiposFamiliares);
+    public void crear(EntityManager em, TiposFamiliares tiposFamiliares);
 
     /**
      * Método encargado de modificar un TipoFamiliar de la base de datos. Este
@@ -32,7 +33,7 @@ public interface PersistenciaTiposFamiliaresInterface {
      * @param tiposFamiliares TiposFamiliares con los cambios que se van a
      * realizar.
      */
-    public void editar(TiposFamiliares tiposFamiliares);
+    public void editar(EntityManager em, TiposFamiliares tiposFamiliares);
 
     /**
      * Método encargado de eliminar de la base de datos un TipoFamiliar que
@@ -40,7 +41,7 @@ public interface PersistenciaTiposFamiliaresInterface {
      *
      * @param tiposFamiliares TiposFamiliares que se quiere eliminar.
      */
-    public void borrar(TiposFamiliares tiposFamiliares);
+    public void borrar(EntityManager em, TiposFamiliares tiposFamiliares);
 
     /**
      * Método encargado de buscar el TipoFamiliar con la secTiposFamiliares dada por
@@ -50,7 +51,7 @@ public interface PersistenciaTiposFamiliaresInterface {
      * @return Retorna el TipoFamiliar identificado con la secTiposFamiliares dada por
      * parámetro.
      */
-    public TiposFamiliares buscarTiposFamiliares(BigInteger secTiposFamiliares);
+    public TiposFamiliares buscarTiposFamiliares(EntityManager em, BigInteger secTiposFamiliares);
 
     /**
      * Método encargado de buscar todas los TiposFamiliares existentes en la
@@ -58,7 +59,7 @@ public interface PersistenciaTiposFamiliaresInterface {
      *
      * @return Retorna una lista de TiposFamiliares.
      */
-    public List<TiposFamiliares> buscarTiposFamiliares();
+    public List<TiposFamiliares> buscarTiposFamiliares(EntityManager em );
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoFamiliar
@@ -69,6 +70,6 @@ public interface PersistenciaTiposFamiliaresInterface {
      * @return Retorna el número de HvReferencia relacionados con el
      * TipoFamiliar cuya secTiposFamiliares coincide con el parámetro.
      */
-    public BigInteger contadorHvReferencias(BigInteger secTiposFamiliares);
+    public BigInteger contadorHvReferencias(EntityManager em, BigInteger secTiposFamiliares);
 
 }

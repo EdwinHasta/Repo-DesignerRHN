@@ -9,6 +9,7 @@ import Entidades.TiposUnidades;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -17,15 +18,15 @@ import javax.ejb.Local;
 @Local
 public interface PersistenciaTiposUnidadesInterface {
 
-    public void crear(TiposUnidades tiposUnidades);
+    public void crear(EntityManager em, TiposUnidades tiposUnidades);
 
-    public void editar(TiposUnidades tiposUnidades);
+    public void editar(EntityManager em, TiposUnidades tiposUnidades);
 
-    public void borrar(TiposUnidades tiposUnidades);
+    public void borrar(EntityManager em, TiposUnidades tiposUnidades);
 
-    public List<TiposUnidades> consultarTiposUnidades();
+    public List<TiposUnidades> consultarTiposUnidades(EntityManager em );
 
-    public TiposUnidades consultarTipoUnidad(BigInteger secuencia);
+    public TiposUnidades consultarTipoUnidad(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarUnidadesTipoUnidad(BigInteger secuencia);
+    public BigInteger contarUnidadesTipoUnidad(EntityManager em, BigInteger secuencia);
 }

@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposIndicadores;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposIndicadoresInterface {
      *
      * @param tiposIndicadores TipoIndicador que se quiere crear.
      */
-    public void crear(TiposIndicadores tiposIndicadores);
+    public void crear(EntityManager em, TiposIndicadores tiposIndicadores);
 
     /**
      * Método encargado de modificar un TipoIndicador de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaTiposIndicadoresInterface {
      * @param tiposIndicadores TipoIndicador con los cambios que se van a
      * realizar.
      */
-    public void editar(TiposIndicadores tiposIndicadores);
+    public void editar(EntityManager em, TiposIndicadores tiposIndicadores);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoIndicador que
@@ -38,7 +39,7 @@ public interface PersistenciaTiposIndicadoresInterface {
      *
      * @param tiposIndicadores TipoIndicador que se quiere eliminar.
      */
-    public void borrar(TiposIndicadores tiposIndicadores);
+    public void borrar(EntityManager em, TiposIndicadores tiposIndicadores);
 
     /**
      * Método encargado de buscar todos los TiposIndicadores existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaTiposIndicadoresInterface {
      *
      * @return Retorna una lista de TiposIndicadores.
      */
-    public List<TiposIndicadores> buscarTiposIndicadores();
+    public List<TiposIndicadores> buscarTiposIndicadores(EntityManager em );
 
     /**
      * Método encargado de buscar el TipoIndicador con la secTiposIndicadores dada por
@@ -56,7 +57,7 @@ public interface PersistenciaTiposIndicadoresInterface {
      * @return Retorna el TipoIndicador identificado con la secTiposIndicadores dada por
      * parámetro.
      */
-    public TiposIndicadores buscarTiposIndicadoresSecuencia(BigInteger secTiposIndicadores);
+    public TiposIndicadores buscarTiposIndicadoresSecuencia(EntityManager em, BigInteger secTiposIndicadores);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoIndicador
@@ -67,5 +68,5 @@ public interface PersistenciaTiposIndicadoresInterface {
      * @return Retorna el número de proyectos relacionados con el TipoIndicador
      * cuya secTiposIndicadoresTR coincide con el parámetro.
      */
-    public BigInteger contadorVigenciasIndicadores(BigInteger secTiposIndicadores);
+    public BigInteger contadorVigenciasIndicadores(EntityManager em, BigInteger secTiposIndicadores);
 }
