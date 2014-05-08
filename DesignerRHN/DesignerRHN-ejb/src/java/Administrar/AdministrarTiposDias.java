@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarTiposDias implements AdministrarTiposDiasInterface {
 
     @EJB
     PersistenciaTiposDiasInterface persistenciaTiposDias;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarTiposDias(List<TiposDias> listaTiposDias) {
         for (int i = 0; i < listaTiposDias.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposDias.editar(listaTiposDias.get(i));
+            persistenciaTiposDias.editar(em, listaTiposDias.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarTiposDias implements AdministrarTiposDiasInterface {
     public void borrarTiposDias(List<TiposDias> listaTiposDias) {
         for (int i = 0; i < listaTiposDias.size(); i++) {
             System.out.println("Administrar Borrar...");
-            persistenciaTiposDias.borrar(listaTiposDias.get(i));
+            persistenciaTiposDias.borrar(em, listaTiposDias.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarTiposDias implements AdministrarTiposDiasInterface {
     public void crearTiposDias(List<TiposDias> listaTiposDias) {
         for (int i = 0; i < listaTiposDias.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposDias.crear(listaTiposDias.get(i));
+            persistenciaTiposDias.crear(em, listaTiposDias.get(i));
         }
     }
 
     @Override
     public List<TiposDias> mostrarTiposDias() {
         List<TiposDias> listTiposDias;
-        listTiposDias = persistenciaTiposDias.buscarTiposDias();
+        listTiposDias = persistenciaTiposDias.buscarTiposDias(em);
         return listTiposDias;
     }
 
     @Override
     public TiposDias mostrarTipoDia(BigInteger secTipoDia) {
         TiposDias tiposDias;
-        tiposDias = persistenciaTiposDias.buscarTipoDia(secTipoDia);
+        tiposDias = persistenciaTiposDias.buscarTipoDia(em, secTipoDia);
         return tiposDias;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarTiposDias implements AdministrarTiposDiasInterface {
     public BigInteger verificarDiasLaborales(BigInteger secuenciaTiposDias) {
         BigInteger verificarBorradoDiasLaborales;
         try {
-            return verificarBorradoDiasLaborales = persistenciaTiposDias.contadorDiasLaborales(secuenciaTiposDias);
+            return verificarBorradoDiasLaborales = persistenciaTiposDias.contadorDiasLaborales(em, secuenciaTiposDias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSDIAS VERIFICARDIASLABORALES ERROR :" + e);
             return null;
@@ -74,12 +90,15 @@ public class AdministrarTiposDias implements AdministrarTiposDiasInterface {
 
     @Override
     public BigInteger verificarExtrasRecargos(BigInteger secuenciaTiposDias) {
-        BigInteger verificarBorradoExtrasRecargos;
+        BigInteger verificarBorradoExtrasRecargos = null;
         try {
-            return verificarBorradoExtrasRecargos = persistenciaTiposDias.contadorExtrasRecargos(secuenciaTiposDias);
+            verificarBorradoExtrasRecargos = persistenciaTiposDias.contadorExtrasRecargos(em, secuenciaTiposDias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSDIAS VERIFICAREXTRASRECARGOS ERROR :" + e);
-            return null;
+            verificarBorradoExtrasRecargos = null;
+        }
+        finally{
+            return verificarBorradoExtrasRecargos;
         }
     }
 }

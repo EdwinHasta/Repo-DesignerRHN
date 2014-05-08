@@ -19,6 +19,14 @@ import java.util.List;
  * @author PROYECTO01
  */
 public interface AdministrarVigenciasCargosBusquedaAvanzadaInterface {
+    
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     /**
      * Método encargado de recuperar los Estructuras necesarios para la lista de valores.
      * @return Retorna una lista de Estructuras.

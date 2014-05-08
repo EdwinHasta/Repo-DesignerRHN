@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -25,15 +27,29 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     Empleados empleado;
     List<VWVacaPendientesEmpleados> vacaciones;
     BigDecimal unidades;
+    private EntityManager em;
     //
 
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
+    @Override
     public void crearVacaPendiente(VWVacaPendientesEmpleados vaca) {
         try {
-            persistenciaVWVacaPendientesEmpleados.crear(vaca);
+            persistenciaVWVacaPendientesEmpleados.crear(em, vaca);
         } catch (Exception e) {
             System.out.println("Error en crearVacaPeniente Admi : " + e.toString());
         }
@@ -42,7 +58,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     @Override
     public void editarVacaPendiente(VWVacaPendientesEmpleados vaca) {
         try {
-            persistenciaVWVacaPendientesEmpleados.editar(vaca);
+            persistenciaVWVacaPendientesEmpleados.editar(em, vaca);
         } catch (Exception e) {
             System.out.println("Error en editarVacaPendiente Admi : " + e.toString());
         }
@@ -51,7 +67,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     @Override
     public void borrarVacaPendiente(VWVacaPendientesEmpleados vaca) {
         try {
-            persistenciaVWVacaPendientesEmpleados.borrar(vaca);
+            persistenciaVWVacaPendientesEmpleados.borrar(em, vaca);
         } catch (Exception e) {
             System.out.println("Error en borrarVacaPendiente Admi : " + e.toString());
         }
@@ -60,7 +76,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     @Override
     public List<VWVacaPendientesEmpleados> vacaPendientesPendientes(Empleados empl) {
         try {
-            vacaciones = persistenciaVWVacaPendientesEmpleados.vacaEmpleadoPendientes(empl.getSecuencia());
+            vacaciones = persistenciaVWVacaPendientesEmpleados.vacaEmpleadoPendientes(em, empl.getSecuencia());
             return vacaciones;
         } catch (Exception e) {
             System.out.println("Error en vacaPendientesMayorCero Admi : " + e.toString());
@@ -71,7 +87,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     @Override
     public List<VWVacaPendientesEmpleados> vacaPendientesDisfrutadas(Empleados empl) {
         try {
-            vacaciones = persistenciaVWVacaPendientesEmpleados.vacaEmpleadoDisfrutadas(empl.getSecuencia());
+            vacaciones = persistenciaVWVacaPendientesEmpleados.vacaEmpleadoDisfrutadas(em, empl.getSecuencia());
             return vacaciones;
         } catch (Exception e) {
             System.out.println("Error en vacaPendientesIgualCero Admi : " + e.toString());
@@ -82,7 +98,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     @Override
     public Empleados obtenerEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleado.buscarEmpleado(secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleado(em, secuencia);
             return empleado;
         } catch (Exception e) {
             System.out.println("Error en obtener empleado Admi : " + e.toString());
@@ -93,7 +109,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     @Override
     public BigDecimal diasProvisionadosEmpleado(Empleados empl) {
         try {
-            unidades = persistenciaSolucionesNodos.diasProvisionados(empl.getSecuencia());
+            unidades = persistenciaSolucionesNodos.diasProvisionados(em, empl.getSecuencia());
             return unidades;
         } catch (Exception e) {
             System.out.println("Error en diasProvisionadosEmpleado Admi : " + e.toString());

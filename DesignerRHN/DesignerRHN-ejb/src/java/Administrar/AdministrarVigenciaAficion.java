@@ -15,6 +15,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -29,12 +31,25 @@ public class AdministrarVigenciaAficion implements AdministrarVigenciaAficionInt
     PersistenciaVigenciasAficionesInterface persistenciaVigenciasAficiones;
     @EJB
     PersistenciaAficionesInterface persistenciaAficiones;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     
     @Override
     public List<VigenciasAficiones> listVigenciasAficionesPersona(BigInteger secuenciaP) {
         try {
-            List<VigenciasAficiones> retorno = persistenciaVigenciasAficiones.aficionesTotalesSecuenciaPersona(secuenciaP);
+            List<VigenciasAficiones> retorno = persistenciaVigenciasAficiones.aficionesTotalesSecuenciaPersona(em, secuenciaP);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error listVigenciasAficionesPersona Admi : " + e.toString());
@@ -49,7 +64,7 @@ public class AdministrarVigenciaAficion implements AdministrarVigenciaAficionInt
                 if (listVA.get(i).getAficion().getSecuencia() == null) {
                     listVA.get(i).setAficion(null);
                 }
-                persistenciaVigenciasAficiones.crear(listVA.get(i));
+                persistenciaVigenciasAficiones.crear(em, listVA.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearVigenciasAficiones Admi : " + e.toString());
@@ -63,7 +78,7 @@ public class AdministrarVigenciaAficion implements AdministrarVigenciaAficionInt
                 if (listVA.get(i).getAficion().getSecuencia() == null) {
                     listVA.get(i).setAficion(null);
                 }
-                persistenciaVigenciasAficiones.editar(listVA.get(i));
+                persistenciaVigenciasAficiones.editar(em, listVA.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarVigenciasAficiones Admi : " + e.toString());
@@ -77,7 +92,7 @@ public class AdministrarVigenciaAficion implements AdministrarVigenciaAficionInt
                 if (listVA.get(i).getAficion().getSecuencia() == null) {
                     listVA.get(i).setAficion(null);
                 }
-                persistenciaVigenciasAficiones.borrar(listVA.get(i));
+                persistenciaVigenciasAficiones.borrar(em, listVA.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarVigenciasAficiones Admi : " + e.toString());
@@ -87,7 +102,7 @@ public class AdministrarVigenciaAficion implements AdministrarVigenciaAficionInt
     @Override
     public List<Aficiones> listAficiones() {
         try {
-            List<Aficiones> retorno = persistenciaAficiones.buscarAficiones();
+            List<Aficiones> retorno = persistenciaAficiones.buscarAficiones(em);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error listAficiones Admi : " + e.toString());
@@ -98,7 +113,7 @@ public class AdministrarVigenciaAficion implements AdministrarVigenciaAficionInt
     @Override
     public Empleados empleadoActual(BigInteger secuencia) {
         try {
-            Empleados retorno = persistenciaEmpleado.buscarEmpleado(secuencia);
+            Empleados retorno = persistenciaEmpleado.buscarEmpleado(em, secuencia);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error empleadoActual Admi : " + e.toString());

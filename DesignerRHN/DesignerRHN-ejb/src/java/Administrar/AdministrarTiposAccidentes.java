@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,38 +24,52 @@ public class AdministrarTiposAccidentes implements AdministrarTiposAccidentesInt
 
     @EJB
     PersistenciaTiposAccidentesInterface persistenciaTiposAccidentes;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes) {
         for (int i = 0; i < listaTiposAccidentes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposAccidentes.editar(listaTiposAccidentes.get(i));
+            persistenciaTiposAccidentes.editar(em, listaTiposAccidentes.get(i));
         }
     }
     @Override
     public void borrarTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes) {
         for (int i = 0; i < listaTiposAccidentes.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposAccidentes.borrar(listaTiposAccidentes.get(i));
+            persistenciaTiposAccidentes.borrar(em, listaTiposAccidentes.get(i));
         }
     }
     @Override
     public void crearTiposAccidentes(List<TiposAccidentes> listaTiposAccidentes) {
         for (int i = 0; i < listaTiposAccidentes.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposAccidentes.crear(listaTiposAccidentes.get(i));
+            persistenciaTiposAccidentes.crear(em, listaTiposAccidentes.get(i));
         }
     }
     @Override
     public List<TiposAccidentes> consultarTiposAccidentes() {
         List<TiposAccidentes> listTiposAccidentes;
-        listTiposAccidentes = persistenciaTiposAccidentes.buscarTiposAccidentes();
+        listTiposAccidentes = persistenciaTiposAccidentes.buscarTiposAccidentes(em);
         return listTiposAccidentes;
     }
     @Override
     public TiposAccidentes consultarTiposAccidentes(BigInteger secTiposAccidentes) {
         TiposAccidentes tiposAccidentes;
-        tiposAccidentes = persistenciaTiposAccidentes.buscarTipoAccidente(secTiposAccidentes);
+        tiposAccidentes = persistenciaTiposAccidentes.buscarTipoAccidente(em, secTiposAccidentes);
         return tiposAccidentes;
     }
     @Override
@@ -61,7 +77,7 @@ public class AdministrarTiposAccidentes implements AdministrarTiposAccidentesInt
         BigInteger verificarSoAccidentesMedicos;
 
         try {
-            return verificarSoAccidentesMedicos = persistenciaTiposAccidentes.contadorSoAccidentesMedicos(secuenciaTiposAccidentes);
+            return verificarSoAccidentesMedicos = persistenciaTiposAccidentes.contadorSoAccidentesMedicos(em, secuenciaTiposAccidentes);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSACCIDENTES verificarSoAccidentesMedicos ERROR :" + e);
             return null;
@@ -70,13 +86,14 @@ public class AdministrarTiposAccidentes implements AdministrarTiposAccidentesInt
     }
     @Override
     public BigInteger contarAccidentesTipoAccidente(BigInteger secuenciaTiposAccidentes) {
-        BigInteger verificarBorradoAccidentes;
+        BigInteger verificarBorradoAccidentes = null;
         try {
-            return verificarBorradoAccidentes = persistenciaTiposAccidentes.contadorAccidentes(secuenciaTiposAccidentes);
+            verificarBorradoAccidentes = persistenciaTiposAccidentes.contadorAccidentes(em, secuenciaTiposAccidentes);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSACCIDENTES verificarBorradoAccidentes ERROR :" + e);
-            return null;
+            verificarBorradoAccidentes = null;
         } finally {
+            return verificarBorradoAccidentes;
         }
     }
 }

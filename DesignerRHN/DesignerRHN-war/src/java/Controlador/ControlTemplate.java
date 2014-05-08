@@ -61,10 +61,10 @@ public class ControlTemplate implements Serializable {
 
     public void informacionUsuario() {
         /*try {
-            validarSession();
-        } catch (IOException e) {
-            System.out.println("mierdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!");
-        }*/
+         validarSession();
+         } catch (IOException e) {
+         System.out.println("mierdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!");
+         }*/
         actualUsuario = administrarTemplate.consultarActualUsuario();
         if (actualUsuario != null) {
             nombreUsuario = actualUsuario.getPersona().getNombreCompleto();
@@ -74,13 +74,15 @@ public class ControlTemplate implements Serializable {
     }
 
     public void cerrarSession() throws IOException {
+        FacesContext x = FacesContext.getCurrentInstance();
+        HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+        administrarTemplate.cerrarSession(ses.getId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.invalidateSession();
         ec.redirect(ec.getRequestContextPath() + "/iniciored.xhtml");
     }
 
     public void validarSession() throws IOException {
-        System.out.println("Hola bebo");
         FacesContext x = FacesContext.getCurrentInstance();
         HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
         boolean resultado = administrarTemplate.obtenerConexion(ses.getId());

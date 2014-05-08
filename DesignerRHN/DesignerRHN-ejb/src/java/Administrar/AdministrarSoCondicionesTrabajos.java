@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,38 +24,52 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
 
     @EJB
     PersistenciaSoCondicionesTrabajosInterface persistenciaSoCondicionesTrabajos;
-
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarSoCondicionesTrabajos(List<SoCondicionesTrabajos> listSoCondicionesTrabajos) {
         for (int i = 0; i < listSoCondicionesTrabajos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaSoCondicionesTrabajos.editar(listSoCondicionesTrabajos.get(i));
+            persistenciaSoCondicionesTrabajos.editar(em, listSoCondicionesTrabajos.get(i));
         }
     }
     @Override
     public void borrarSoCondicionesTrabajos(List<SoCondicionesTrabajos> listSoCondicionesTrabajos) {
         for (int i = 0; i < listSoCondicionesTrabajos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaSoCondicionesTrabajos.borrar(listSoCondicionesTrabajos.get(i));
+            persistenciaSoCondicionesTrabajos.borrar(em, listSoCondicionesTrabajos.get(i));
         }
     }
     @Override
     public void crearSoCondicionesTrabajos(List<SoCondicionesTrabajos> listSoCondicionesTrabajos) {
         for (int i = 0; i < listSoCondicionesTrabajos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaSoCondicionesTrabajos.crear(listSoCondicionesTrabajos.get(i));
+            persistenciaSoCondicionesTrabajos.crear(em, listSoCondicionesTrabajos.get(i));
         }
     }
     @Override
     public List<SoCondicionesTrabajos> consultarSoCondicionesTrabajos() {
         List<SoCondicionesTrabajos> listSoCondicionesTrabajos;
-        listSoCondicionesTrabajos = persistenciaSoCondicionesTrabajos.buscarSoCondicionesTrabajos();
+        listSoCondicionesTrabajos = persistenciaSoCondicionesTrabajos.buscarSoCondicionesTrabajos(em);
         return listSoCondicionesTrabajos;
     }
     @Override
     public SoCondicionesTrabajos consultarSoCondicionTrabajo(BigInteger secSoCondicionesTrabajos) {
         SoCondicionesTrabajos soCondicionesTrabajos;
-        soCondicionesTrabajos = persistenciaSoCondicionesTrabajos.buscarSoCondicionTrabajo(secSoCondicionesTrabajos);
+        soCondicionesTrabajos = persistenciaSoCondicionesTrabajos.buscarSoCondicionTrabajo(em, secSoCondicionesTrabajos);
         return soCondicionesTrabajos;
     }
     @Override
@@ -61,7 +77,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             BigInteger verificarInspecciones;
-            return verificarInspecciones = persistenciaSoCondicionesTrabajos.contadorInspecciones(secuenciaElementos);
+            return verificarInspecciones = persistenciaSoCondicionesTrabajos.contadorInspecciones(em, secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarSoCondicionesTrabajos verificarInspecciones ERROR :" + e);
             return null;
@@ -72,7 +88,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         try {
             BigInteger verificarSoAccidtenesMedicos;
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
-            return verificarSoAccidtenesMedicos = persistenciaSoCondicionesTrabajos.contadorSoAccidentesMedicos(secuenciaElementos);
+            return verificarSoAccidtenesMedicos = persistenciaSoCondicionesTrabajos.contadorSoAccidentesMedicos(em, secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarSoCondicionesTrabajos verificarSoAccidtenesMedicos ERROR :" + e);
             return null;
@@ -83,7 +99,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             BigInteger verificarSoDetallesPanoramas;
-            return verificarSoDetallesPanoramas = persistenciaSoCondicionesTrabajos.contadorSoDetallesPanoramas(secuenciaElementos);
+            return verificarSoDetallesPanoramas = persistenciaSoCondicionesTrabajos.contadorSoDetallesPanoramas(em, secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarSoCondicionesTrabajos verificarSoDetallesPanoramas ERROR :" + e);
             return null;
@@ -94,7 +110,7 @@ public class AdministrarSoCondicionesTrabajos implements AdministrarSoCondicione
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaElementos);
             BigInteger verificarSoExposicionesFr;
-            return verificarSoExposicionesFr = persistenciaSoCondicionesTrabajos.contadorSoExposicionesFr(secuenciaElementos);
+            return verificarSoExposicionesFr = persistenciaSoCondicionesTrabajos.contadorSoExposicionesFr(em, secuenciaElementos);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarClasesAccidentes verificarSoExposicionesFr ERROR :" + e);
             return null;

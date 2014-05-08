@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarTiposPensionados implements AdministrarTiposPensionadosI
 
     @EJB
     PersistenciaTiposPensionadosInterface persistenciaTiposPensionados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarTiposPensionados(List<TiposPensionados> listaTiposPensionados) {
         for (int i = 0; i < listaTiposPensionados.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposPensionados.editar(listaTiposPensionados.get(i));
+            persistenciaTiposPensionados.editar(em, listaTiposPensionados.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarTiposPensionados implements AdministrarTiposPensionadosI
     public void borrarTiposPensionados(List<TiposPensionados> listaTiposPensionados) {
         for (int i = 0; i < listaTiposPensionados.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposPensionados.borrar(listaTiposPensionados.get(i));
+            persistenciaTiposPensionados.borrar(em, listaTiposPensionados.get(i));
         }
     }
 
@@ -43,20 +59,20 @@ public class AdministrarTiposPensionados implements AdministrarTiposPensionadosI
     public void crearTiposPensionados(List<TiposPensionados> listaTiposPensionados) {
         for (int i = 0; i < listaTiposPensionados.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposPensionados.crear(listaTiposPensionados.get(i));
+            persistenciaTiposPensionados.crear(em, listaTiposPensionados.get(i));
         }
     }
 
     public List<TiposPensionados> consultarTiposPensionados() {
         List<TiposPensionados> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaTiposPensionados.consultarTiposPensionados();
+        listMotivosCambiosCargos = persistenciaTiposPensionados.consultarTiposPensionados(em);
         return listMotivosCambiosCargos;
     }
 
     @Override
     public TiposPensionados consultarTipoPensionado(BigInteger secTiposPensionados) {
         TiposPensionados subCategoria;
-        subCategoria = persistenciaTiposPensionados.consultarTipoPensionado(secTiposPensionados);
+        subCategoria = persistenciaTiposPensionados.consultarTipoPensionado(em, secTiposPensionados);
         return subCategoria;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarTiposPensionados implements AdministrarTiposPensionadosI
         BigInteger contarRetiradosTipoPensionado = null;
 
         try {
-            return contarRetiradosTipoPensionado = persistenciaTiposPensionados.contarPensionadosTipoPension(secTiposPensionados);
+            return contarRetiradosTipoPensionado = persistenciaTiposPensionados.contarPensionadosTipoPension(em, secTiposPensionados);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposPensionados contarEscalafones ERROR : " + e);
             return null;

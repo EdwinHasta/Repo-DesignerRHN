@@ -200,6 +200,7 @@ public class ControlNReporteNomina implements Serializable {
         estadoReporte = false;
     }
 
+    
     public void iniciarPagina() {
         activoMostrarTodos = true;
         activoBuscarReporte = false;

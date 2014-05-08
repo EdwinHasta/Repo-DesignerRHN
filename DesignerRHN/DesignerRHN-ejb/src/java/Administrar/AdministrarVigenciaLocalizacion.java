@@ -22,6 +22,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Remove;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -46,6 +48,13 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     PersistenciaCentrosCostosInterface persistenciaCentrosCostos;
     @EJB
     PersistenciaVigenciasProrrateosProyectosInterface persistenciaVigenciasProrrateosProyectos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     
     //Vigencias Prorrateos
     List<VigenciasProrrateos> vigenciasProrrateos;
@@ -63,11 +72,17 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     List<Estructuras> estructuras;
     List<Proyectos> proyectos;
     List<CentrosCostos> centrosCostos;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public List<VigenciasLocalizaciones> VigenciasLocalizacionesEmpleado(BigInteger secEmpleado) {
         try {
-            vigenciasLocalizaciones = persistenciaVigenciasLocalizaciones.buscarVigenciasLocalizacionesEmpleado(secEmpleado);
+            vigenciasLocalizaciones = persistenciaVigenciasLocalizaciones.buscarVigenciasLocalizacionesEmpleado(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Localizaciones (VigenciasLocalizacionesEmpleado)");
             vigenciasLocalizaciones = null;
@@ -90,7 +105,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
                     listVLModificadas.get(i).setLocalizacion(null);
                 }
                 vigenciaLocalizacion = listVLModificadas.get(i);
-                persistenciaVigenciasLocalizaciones.editar(vigenciaLocalizacion);
+                persistenciaVigenciasLocalizaciones.editar(em, vigenciaLocalizacion);
             }
         } catch (Exception e) {
             System.out.println("Error modificarVL AdmiVigLoc");
@@ -100,7 +115,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public void borrarVL(VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
-            persistenciaVigenciasLocalizaciones.borrar(vigenciasLocalizaciones);
+            persistenciaVigenciasLocalizaciones.borrar(em, vigenciasLocalizaciones);
         } catch (Exception e) {
             System.out.println("Error borrarVL AdmiVigLoc");
         }
@@ -109,7 +124,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public void crearVL(VigenciasLocalizaciones vigenciasLocalizaciones) {
         try {
-            persistenciaVigenciasLocalizaciones.crear(vigenciasLocalizaciones);
+            persistenciaVigenciasLocalizaciones.crear(em, vigenciasLocalizaciones);
         } catch (Exception e) {
             System.out.println("Error crearVL AdmiVigLoc");
         }
@@ -118,7 +133,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             System.out.println("Error buscarEmpleado Adm");
@@ -130,7 +145,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public List<MotivosLocalizaciones> motivosLocalizaciones() {
         try {
-            motivosLocalizaciones = persistenciaMotivosLocalizaciones.buscarMotivosLocalizaciones();
+            motivosLocalizaciones = persistenciaMotivosLocalizaciones.buscarMotivosLocalizaciones(em);
             return motivosLocalizaciones;
         } catch (Exception e) {
             System.out.println("Error motivosLocalizaciones AdministrarVigenciasdLocalizaciones");
@@ -141,7 +156,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public List<Estructuras> estructuras() {
         try {
-            estructuras = persistenciaEstructuras.buscarEstructuras();
+            estructuras = persistenciaEstructuras.buscarEstructuras(em);
             return estructuras;
         } catch (Exception e) {
             System.out.println("Error estructuras AdministrarVigenciasdLocalizaciones");
@@ -152,7 +167,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public List<Proyectos> proyectos() {
         try {
-            proyectos = persistenciaProyectos.proyectos();
+            proyectos = persistenciaProyectos.proyectos(em);
             return proyectos;
         } catch (Exception e) {
             System.out.println("Error proyectos AdministrarVigenciasdLocalizaciones");
@@ -163,7 +178,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public List<VigenciasProrrateos> VigenciasProrrateosVigencia(BigInteger secVigencia) {
         try {
-            vigenciasProrrateos = persistenciaVigenciasProrrateos.buscarVigenciasProrrateosVigenciaSecuencia(secVigencia);
+            vigenciasProrrateos = persistenciaVigenciasProrrateos.buscarVigenciasProrrateosVigenciaSecuencia(em, secVigencia);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Localizaciones (VigenciasProrrateosVigencia)");
             vigenciasProrrateos = null;
@@ -183,7 +198,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
                     listVPModificadas.get(i).setCentrocosto(null);
                 }
                 vigenciaProrrateo = listVPModificadas.get(i);
-                persistenciaVigenciasProrrateos.editar(vigenciaProrrateo);
+                persistenciaVigenciasProrrateos.editar(em, vigenciaProrrateo);
             }
         } catch (Exception e) {
             System.out.println("Error modificarVP AdmiVigLoc");
@@ -194,7 +209,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public void borrarVP(VigenciasProrrateos vigenciasProrrateos) {
         try {
-            persistenciaVigenciasProrrateos.borrar(vigenciasProrrateos);
+            persistenciaVigenciasProrrateos.borrar(em, vigenciasProrrateos);
         } catch (Exception e) {
             System.out.println("Error borrarVP AdmiVigLoc");
         }
@@ -204,7 +219,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public void crearVP(VigenciasProrrateos vigenciasProrrateos) {
         try {
-            persistenciaVigenciasProrrateos.crear(vigenciasProrrateos);
+            persistenciaVigenciasProrrateos.crear(em, vigenciasProrrateos);
         } catch (Exception e) {
             System.out.println("Error crearVP AdmiVigLoc");
         }
@@ -213,7 +228,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public  List<CentrosCostos> centrosCostos(){
         try{
-            centrosCostos = persistenciaCentrosCostos.buscarCentrosCostos();
+            centrosCostos = persistenciaCentrosCostos.buscarCentrosCostos(em);
             return centrosCostos;
         }catch(Exception e){
             System.out.println("Error centrosCostos Admi");
@@ -225,7 +240,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public List<VigenciasProrrateosProyectos> VigenciasProrrateosProyectosVigencia(BigInteger secVigencia) {
        try {
-            vigenciasProrrateosProyectos = persistenciaVigenciasProrrateosProyectos.buscarVigenciasProrrateosProyectosVigenciaSecuencia(secVigencia);
+            vigenciasProrrateosProyectos = persistenciaVigenciasProrrateosProyectos.buscarVigenciasProrrateosProyectosVigenciaSecuencia(em, secVigencia);
         } catch (Exception e) {
             vigenciasProrrateosProyectos = null;
         }
@@ -242,7 +257,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
                         listVPPModificadas.get(i).setProyecto(null);
                     }
                 vigenciaProrrateoProyecto = listVPPModificadas.get(i);
-                persistenciaVigenciasProrrateosProyectos.editar(vigenciaProrrateoProyecto);
+                persistenciaVigenciasProrrateosProyectos.editar(em, vigenciaProrrateoProyecto);
             }
         } catch (Exception e) {
             System.out.println("Error modificarVPP AdmiVigLoc");
@@ -254,7 +269,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public void borrarVPP(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
-            persistenciaVigenciasProrrateosProyectos.borrar(vigenciasProrrateosProyectos);
+            persistenciaVigenciasProrrateosProyectos.borrar(em, vigenciasProrrateosProyectos);
         } catch (Exception e) {
             System.out.println("Error borrarVPP AdmiVigLoc");
         }
@@ -265,7 +280,7 @@ public class AdministrarVigenciaLocalizacion implements AdministrarVigenciaLocal
     @Override
     public void crearVPP(VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
-            persistenciaVigenciasProrrateosProyectos.crear(vigenciasProrrateosProyectos);
+            persistenciaVigenciasProrrateosProyectos.crear(em, vigenciasProrrateosProyectos);
         } catch (Exception e) {
             System.out.println("Error crearVPP AdmiVigLoc");
         }

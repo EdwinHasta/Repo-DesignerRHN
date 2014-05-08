@@ -10,18 +10,34 @@ import InterfacePersistencia.PersistenciaTiposTelefonosInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarTiposTelefonos implements AdministrarTiposTelefonosInterface{
 
     @EJB
     PersistenciaTiposTelefonosInterface persistenciaTiposTelefonos;
-    private TiposTelefonos tt;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private TiposTelefonos tt;
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public List<TiposTelefonos> tiposTelefonos() {
         List<TiposTelefonos> listaTiposTelefonos;
-        listaTiposTelefonos = persistenciaTiposTelefonos.tiposTelefonos();
+        listaTiposTelefonos = persistenciaTiposTelefonos.tiposTelefonos(em);
         return listaTiposTelefonos;
     }
 
@@ -34,17 +50,17 @@ public class AdministrarTiposTelefonos implements AdministrarTiposTelefonosInter
             } else {
                 tt = listaTiposTelefonosModificar.get(i);
             }
-            persistenciaTiposTelefonos.editar(tt);
+            persistenciaTiposTelefonos.editar(em, tt);
         }
     }
 
     @Override
     public void borrarTipoTelefono(TiposTelefonos tipoTelefono) {
-        persistenciaTiposTelefonos.borrar(tipoTelefono);
+        persistenciaTiposTelefonos.borrar(em, tipoTelefono);
     }
 
     @Override
     public void crearTipoTelefono(TiposTelefonos tipoTelefono) {
-        persistenciaTiposTelefonos.crear(tipoTelefono);
+        persistenciaTiposTelefonos.crear(em, tipoTelefono);
     }
 }

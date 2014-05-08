@@ -17,6 +17,13 @@ import java.util.List;
 public interface AdministrarVigenciasReformasLaboralesInterface {
 
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Metodo que obtiene la lista de VigenciasReformasLaborales de un Empleado
      * @param secEmpleado Secuencia del Empleado
      * @return Lista de VigenciasReformasLaborales de un Empleado

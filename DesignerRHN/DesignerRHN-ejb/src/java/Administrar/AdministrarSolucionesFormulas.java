@@ -14,6 +14,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -49,11 +51,25 @@ public class AdministrarSolucionesFormulas implements AdministrarSolucionesFormu
      */
     @EJB
     PersistenciaSolucionesFormulasInterface persistenciaSolucionesFormulas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public List<SolucionesFormulas> listaSolucionesFormulaParaEmpleadoYNovedad(BigInteger secEmpleado, BigInteger secNovedad) {
         try {
-            List<SolucionesFormulas> lista = persistenciaSolucionesFormulas.listaSolucionesFormulasParaEmpleadoYNovedad(secEmpleado, secNovedad);
+            List<SolucionesFormulas> lista = persistenciaSolucionesFormulas.listaSolucionesFormulasParaEmpleadoYNovedad(em, secEmpleado, secNovedad);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaSolucionesFormulaParaEmpleadoYNovedad Admi : " + e.toString());
@@ -64,7 +80,7 @@ public class AdministrarSolucionesFormulas implements AdministrarSolucionesFormu
     @Override
     public Empleados empleadoActual(BigInteger codEmpleado) {
         try {
-            Empleados empl = persistenciaEmpleado.buscarEmpleadoTipo(codEmpleado);
+            Empleados empl = persistenciaEmpleado.buscarEmpleadoTipo(em, codEmpleado);
             return empl;
         } catch (Exception e) {
             System.out.println("Error empleadoActual Admi : " + e.toString());
@@ -75,7 +91,7 @@ public class AdministrarSolucionesFormulas implements AdministrarSolucionesFormu
     @Override
     public Novedades novedadActual(BigInteger secNovedad) {
         try {
-            Novedades novedad = persistenciaNovedades.buscarNovedad(secNovedad);
+            Novedades novedad = persistenciaNovedades.buscarNovedad(em, secNovedad);
             return novedad;
         } catch (Exception e) {
             System.out.println("Error novedadActual Admi : " + e.toString());

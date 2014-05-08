@@ -18,6 +18,13 @@ import javax.ejb.Local;
 @Local
 public interface AdministrarSucursalesPilaInterface {
 
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public List<Empresas> buscarEmpresas();
 
     public void modificarSucursalesPila(List<SucursalesPila> listaSucursalesPila);

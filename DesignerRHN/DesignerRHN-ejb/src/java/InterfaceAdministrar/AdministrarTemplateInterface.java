@@ -16,5 +16,7 @@ public interface AdministrarTemplateInterface {
     public boolean obtenerConexion(String idSesion);
 
     public ActualUsuario consultarActualUsuario();
+    
+    public void cerrarSession(String idSesion);
 
 }

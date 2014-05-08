@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarVigenciasUbicaciones implements AdministrarVigenciasUbicacionesInterface{
@@ -21,14 +23,29 @@ public class AdministrarVigenciasUbicaciones implements AdministrarVigenciasUbic
     PersistenciaVigenciasUbicacionesInterface persistenciaVigenciasUbicaciones;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     private List<VigenciasUbicaciones> vigenciasUbicaciones;
     private VigenciasUbicaciones vu;
     private Empleados empleado;
     private List<UbicacionesGeograficas> ubicacionesGeograficas;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
+    @Override
     public List<VigenciasUbicaciones> vigenciasUbicacionesEmpleado(BigInteger secEmpleado) {
         try {
-            vigenciasUbicaciones = persistenciaVigenciasUbicaciones.buscarVigenciaUbicacionesEmpleado(secEmpleado);
+            vigenciasUbicaciones = persistenciaVigenciasUbicaciones.buscarVigenciaUbicacionesEmpleado(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en Administrar Vigencias Ubiaciones (vigenciasUbicacionesEmpleado)");
             vigenciasUbicaciones = null;
@@ -36,25 +53,29 @@ public class AdministrarVigenciasUbicaciones implements AdministrarVigenciasUbic
         return vigenciasUbicaciones;
     }
 
+    @Override
     public void modificarVU(List<VigenciasUbicaciones> listVUModificadas) {
         for (int i = 0; i < listVUModificadas.size(); i++) {
             System.out.println("Modificando...");
             vu = listVUModificadas.get(i);
-            persistenciaVigenciasUbicaciones.editar(vu);
+            persistenciaVigenciasUbicaciones.editar(em, vu);
         }
     }
 
+    @Override
     public void borrarVU(VigenciasUbicaciones vigenciasUbicaciones) {
-        persistenciaVigenciasUbicaciones.borrar(vigenciasUbicaciones);
+        persistenciaVigenciasUbicaciones.borrar(em, vigenciasUbicaciones);
     }
 
+    @Override
     public void crearVU(VigenciasUbicaciones vigenciasUbicaciones) {
-        persistenciaVigenciasUbicaciones.crear(vigenciasUbicaciones);
+        persistenciaVigenciasUbicaciones.crear(em, vigenciasUbicaciones);
     }
 
+    @Override
     public Empleados buscarEmpleado(BigInteger secuencia) {
         try {
-            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -62,9 +83,10 @@ public class AdministrarVigenciasUbicaciones implements AdministrarVigenciasUbic
         }
     }
 
+    @Override
     public List<UbicacionesGeograficas> ubicacionesGeograficas() {
         try {
-            ubicacionesGeograficas = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficas();
+            ubicacionesGeograficas = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficas(em);
             return ubicacionesGeograficas;
         } catch (Exception e) {
             return null;

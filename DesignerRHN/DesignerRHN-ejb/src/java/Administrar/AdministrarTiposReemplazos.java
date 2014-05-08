@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -21,12 +23,26 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
 
     @EJB
     PersistenciaTiposReemplazosInterface persistenciaTiposReemplazos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos) {
         for (int i = 0; i < listaTiposReemplazos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposReemplazos.editar(listaTiposReemplazos.get(i));
+            persistenciaTiposReemplazos.editar(em, listaTiposReemplazos.get(i));
         }
     }
 
@@ -34,7 +50,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
     public void borrarTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos) {
         for (int i = 0; i < listaTiposReemplazos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposReemplazos.borrar(listaTiposReemplazos.get(i));
+            persistenciaTiposReemplazos.borrar(em, listaTiposReemplazos.get(i));
         }
     }
 
@@ -42,21 +58,21 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
     public void crearTiposReemplazos(List<TiposReemplazos> listaTiposReemplazos) {
         for (int i = 0; i < listaTiposReemplazos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposReemplazos.crear(listaTiposReemplazos.get(i));
+            persistenciaTiposReemplazos.crear(em, listaTiposReemplazos.get(i));
         }
     }
 
     @Override
     public List<TiposReemplazos> consultarTiposReemplazos() {
         List<TiposReemplazos> listTiposReemplazos;
-        listTiposReemplazos = persistenciaTiposReemplazos.buscarTiposReemplazos();
+        listTiposReemplazos = persistenciaTiposReemplazos.buscarTiposReemplazos(em);
         return listTiposReemplazos;
     }
 
     @Override
     public TiposReemplazos consultarTipoReemplazo(BigInteger secMotivoDemanda) {
         TiposReemplazos tiposReemplazo;
-        tiposReemplazo = persistenciaTiposReemplazos.buscarTipoReemplazo(secMotivoDemanda);
+        tiposReemplazo = persistenciaTiposReemplazos.buscarTipoReemplazo(em, secMotivoDemanda);
         return tiposReemplazo;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
         BigInteger verificarBorradoEncargaturas = null;
         try {
             System.out.println("Secuencia Vigencias Indicadores " + secuenciaTiposReemplazos);
-            return verificarBorradoEncargaturas = persistenciaTiposReemplazos.contadorEncargaturas(secuenciaTiposReemplazos);
+            return verificarBorradoEncargaturas = persistenciaTiposReemplazos.contadorEncargaturas(em, secuenciaTiposReemplazos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSREEMPLAZOS VERIFICARBORRADOENCARGATURAS ERROR :" + e);
 
@@ -78,7 +94,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
         BigInteger verificarBorradoProgramacionesTiempos = null;
         try {
             System.out.println("Secuencia Vigencias Indicadores " + secuenciaTiposReemplazos);
-            return verificarBorradoProgramacionesTiempos = persistenciaTiposReemplazos.contadorProgramacionesTiempos(secuenciaTiposReemplazos);
+            return verificarBorradoProgramacionesTiempos = persistenciaTiposReemplazos.contadorProgramacionesTiempos(em, secuenciaTiposReemplazos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSREEMPLAZOS VERIFICARBORRADOPROGRAMACIONESTIEMPOS ERROR :" + e);
 
@@ -91,7 +107,7 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
         BigInteger verificarBorradoReemplazos = null;
         try {
             System.out.println("Secuencia Vigencias Indicadores " + secuenciaTiposReemplazos);
-            return verificarBorradoReemplazos = persistenciaTiposReemplazos.contadorReemplazos(secuenciaTiposReemplazos);
+            return verificarBorradoReemplazos = persistenciaTiposReemplazos.contadorReemplazos(em, secuenciaTiposReemplazos);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARTIPOSREEMPLAZOS VERIFICARBORRADOREEMPLAZOS ERROR :" + e);
 
@@ -101,6 +117,6 @@ public class AdministrarTiposReemplazos implements AdministrarTiposReemplazosInt
 
     @Override
     public List<TiposReemplazos> consultarLOVTiposReemplazos() {
-        return persistenciaTiposReemplazos.buscarTiposReemplazos();
+        return persistenciaTiposReemplazos.buscarTiposReemplazos(em);
     }
 }

@@ -19,6 +19,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarVigenciasNoFormales implements AdministrarVigenciasNoFormalesInterface {
@@ -33,12 +35,26 @@ public class AdministrarVigenciasNoFormales implements AdministrarVigenciasNoFor
     PersistenciaInstitucionesInterface persistenciaInstituciones;
     @EJB
     PersistenciaAdiestramientosNFInterface persistenciaAdiestramientosNF;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     private VigenciasNoFormales vNF;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     
     @Override
     public List<VigenciasNoFormales> vigenciasNoFormalesPersona(BigInteger secPersona) {
         try {
-            return persistenciaVigenciasNoFormales.vigenciasNoFormalesPersona(secPersona);
+            return persistenciaVigenciasNoFormales.vigenciasNoFormalesPersona(em, secPersona);
         } catch (Exception e) {
             System.err.println("Error AdministrarVigenciasNoFormales.vigenciasNoFormalesPersona " + e);
             return null;
@@ -47,24 +63,24 @@ public class AdministrarVigenciasNoFormales implements AdministrarVigenciasNoFor
 
     @Override
     public Personas encontrarPersona(BigInteger secPersona) {
-        return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
+        return persistenciaPersonas.buscarPersonaSecuencia(em, secPersona);
     }
     
     //Listas de Valores Cursos, Instituciones, Adiestramiento
     
     @Override
     public List<Cursos> lovCursos() {
-        return persistenciaCursos.cursos();
+        return persistenciaCursos.cursos(em);
     }
 
     @Override
     public List<Instituciones> lovInstituciones() {
-        return persistenciaInstituciones.instituciones();
+        return persistenciaInstituciones.instituciones(em);
     }
     
     @Override
     public List<AdiestramientosNF> lovAdiestramientosNF() {
-        return persistenciaAdiestramientosNF.adiestramientosNF();
+        return persistenciaAdiestramientosNF.adiestramientosNF(em);
     }
     
     @Override
@@ -91,19 +107,19 @@ public class AdministrarVigenciasNoFormales implements AdministrarVigenciasNoFor
             }
             
             
-            persistenciaVigenciasNoFormales.editar(vNF);
+            persistenciaVigenciasNoFormales.editar(em, vNF);
         }
     }
 
     @Override
     public void borrarVigenciaNoFormal(VigenciasNoFormales vigenciasNoFormales) {
-        persistenciaVigenciasNoFormales.borrar(vigenciasNoFormales);
+        persistenciaVigenciasNoFormales.borrar(em, vigenciasNoFormales);
     }
 
 
     @Override
     public void crearVigenciaNoFormal(VigenciasNoFormales vigenciasNoFormales) {
-        persistenciaVigenciasNoFormales.crear(vigenciasNoFormales);
+        persistenciaVigenciasNoFormales.crear(em, vigenciasNoFormales);
     }
     
 

@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -82,7 +83,7 @@ public class ControlInicioRed implements Serializable {
         acceso = false;
         msgSesion = "Iniciando sesión, por favor espere...";
     }
-
+    
     public void ingresar() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();

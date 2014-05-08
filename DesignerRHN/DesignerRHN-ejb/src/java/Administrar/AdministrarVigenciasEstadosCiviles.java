@@ -16,6 +16,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -33,6 +35,20 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
     PersistenciaEstadosCivilesInterface persistenciaEstadosCiviles;
     @EJB
     PersistenciaVigenciasEstadosCivilesInterface persistenciaVigenciasEstadosCiviles;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     /**
      * Creacion de metodos
@@ -41,7 +57,7 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
         List<VigenciasEstadosCiviles> vigenciasEstadosCiviles; //esta lista es la que se mostrara en la tabla de vigencias
 
         try {
-            vigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPorPersona(secEmpleado);
+            vigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPorPersona(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en ADMINISTRARVIGENCIANORMALABORAL (vigenciasUbicacionesEmpleado)");
             vigenciasEstadosCiviles = null;
@@ -53,7 +69,7 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
         List<VigenciasEstadosCiviles> vigenciasEstadosCiviles; //esta lista es la que se mostrara en la tabla de vigencias
 
         try {
-            vigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCiviles();
+            vigenciasEstadosCiviles = persistenciaVigenciasEstadosCiviles.consultarVigenciasEstadosCiviles(em);
         } catch (Exception e) {
             System.out.println("Error en ADMINISTRARVIGENCIANORMALABORAL (vigenciasUbicacionesEmpleado)");
             vigenciasEstadosCiviles = null;
@@ -65,7 +81,7 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
     public void modificarVigenciasEstadosCiviles(List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles) {
         for (int i = 0; i < listaVigenciasEstadosCiviles.size(); i++) {
             System.out.println("Modificando...");
-            persistenciaVigenciasEstadosCiviles.editar(listaVigenciasEstadosCiviles.get(i));
+            persistenciaVigenciasEstadosCiviles.editar(em, listaVigenciasEstadosCiviles.get(i));
         }
     }
 
@@ -73,7 +89,7 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
     public void borrarVigenciasEstadosCiviles(List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles) {
         for (int i = 0; i < listaVigenciasEstadosCiviles.size(); i++) {
             System.out.println("borrar...");
-            persistenciaVigenciasEstadosCiviles.borrar(listaVigenciasEstadosCiviles.get(i));
+            persistenciaVigenciasEstadosCiviles.borrar(em, listaVigenciasEstadosCiviles.get(i));
         }
     }
 
@@ -81,14 +97,14 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
     public void crearVigenciasEstadosCiviles(List<VigenciasEstadosCiviles> listaVigenciasEstadosCiviles) {
         for (int i = 0; i < listaVigenciasEstadosCiviles.size(); i++) {
             System.out.println("crear...");
-            persistenciaVigenciasEstadosCiviles.crear(listaVigenciasEstadosCiviles.get(i));
+            persistenciaVigenciasEstadosCiviles.crear(em, listaVigenciasEstadosCiviles.get(i));
         }
     }
 
     public Empleados consultarEmpleado(BigInteger secuencia) {
         Empleados empleado;
         try {
-            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(secuencia);
+            empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
             empleado = null;
@@ -101,7 +117,7 @@ public class AdministrarVigenciasEstadosCiviles implements AdministrarVigenciasE
         List<EstadosCiviles> normasLaborales;
 
         try {
-            normasLaborales = persistenciaEstadosCiviles.consultarEstadosCiviles();
+            normasLaborales = persistenciaEstadosCiviles.consultarEstadosCiviles(em);
             return normasLaborales;
         } catch (Exception e) {
             System.err.println("ERROR EN AdministrarVigencianormaLaboral en NormasLabolares ERROR " + e);

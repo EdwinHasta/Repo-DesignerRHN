@@ -16,6 +16,13 @@ import java.util.List;
  */
 public interface AdministrarVigenciaAficionInterface {
 
+    /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
     public List<VigenciasAficiones> listVigenciasAficionesPersona(BigInteger secuenciaP);
 
     public void crearVigenciasAficiones(List<VigenciasAficiones> listVA);

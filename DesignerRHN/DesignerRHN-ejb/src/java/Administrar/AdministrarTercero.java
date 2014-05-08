@@ -13,6 +13,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -29,6 +31,13 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     PersistenciaCiudadesInterface persistenciaCiudades;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     //
     List<Empresas> listEmpresas;
     List<Terceros> listTerceros;
@@ -36,11 +45,17 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     List<TercerosSucursales> listTercerosSurcursales;
     TercerosSucursales terceroSucursal;
     List<Ciudades> listCiudades;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public List<Terceros> obtenerListTerceros(BigInteger secuencia) {
         try {
-            listTerceros = persistenciaTerceros.lovTerceros(secuencia);
+            listTerceros = persistenciaTerceros.lovTerceros(em, secuencia);
             return listTerceros;
         } catch (Exception e) {
             System.out.println("Error en obtenerListTerceros Admi : " + e.toString());
@@ -51,7 +66,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public void modificarTercero(Terceros t) {
         try {
-            persistenciaTerceros.editar(t);
+            persistenciaTerceros.editar(em, t);
         } catch (Exception e) {
             System.out.println("Error en modificarTercero Admi : " + e.toString());
         }
@@ -60,7 +75,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public void borrarTercero(Terceros t) {
         try {
-            persistenciaTerceros.borrar(t);
+            persistenciaTerceros.borrar(em, t);
         } catch (Exception e) {
             System.out.println("Error en borrarTercero Admi : " + e.toString());
 
@@ -70,7 +85,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public void crearTercero(Terceros t) {
         try {
-            persistenciaTerceros.crear(t);
+            persistenciaTerceros.crear(em, t);
         } catch (Exception e) {
             System.out.println("Error en crearTercero Admi : " + e.toString());
 
@@ -80,7 +95,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public List<TercerosSucursales> obtenerListTercerosSucursales(BigInteger secuencia) {
         try {
-            listTercerosSurcursales = persistenciaTercerosSucursales.buscarTercerosSucursalesPorTerceroSecuencia(secuencia);
+            listTercerosSurcursales = persistenciaTercerosSucursales.buscarTercerosSucursalesPorTerceroSecuencia(em, secuencia);
             return listTercerosSurcursales;
         } catch (Exception e) {
             System.out.println("Error obtenerListTercerosSucursales Admi : " + e.toString());
@@ -91,7 +106,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public void modificarTerceroSucursales(TercerosSucursales t) {
         try {
-            persistenciaTercerosSucursales.borrar(t);
+            persistenciaTercerosSucursales.borrar(em, t);
         } catch (Exception e) {
             System.out.println("Error en modificarTerceroSucursales Admi : " + e.toString());
         }
@@ -100,7 +115,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public void borrarTerceroSucursales(TercerosSucursales t) {
         try {
-            persistenciaTercerosSucursales.borrar(t);
+            persistenciaTercerosSucursales.borrar(em, t);
         } catch (Exception e) {
             System.out.println("Error en borrarTerceroSucursales Admi : " + e.toString());
         }
@@ -109,7 +124,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public void crearTerceroSucursales(TercerosSucursales t) {
         try {
-            persistenciaTercerosSucursales.borrar(t);
+            persistenciaTercerosSucursales.borrar(em, t);
         } catch (Exception e) {
             System.out.println("Error en crearTerceroSucursales Admi : " + e.toString());
         }
@@ -118,7 +133,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public List<Empresas> listEmpresas() {
         try {
-            listEmpresas = persistenciaEmpresas.consultarEmpresas();
+            listEmpresas = persistenciaEmpresas.consultarEmpresas(em);
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error en listEmpresas Admi : "+e.toString());
@@ -129,7 +144,7 @@ public class AdministrarTercero implements AdministrarTerceroInterface{
     @Override
     public List<Ciudades> listCiudades(){
         try{
-            listCiudades = persistenciaCiudades.ciudades();
+            listCiudades = persistenciaCiudades.ciudades(em);
             return listCiudades;
         }catch(Exception e){
             System.out.println("Error en listCiudades Admi : "+e.toString());

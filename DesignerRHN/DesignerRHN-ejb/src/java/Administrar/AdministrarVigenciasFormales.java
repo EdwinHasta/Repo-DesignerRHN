@@ -21,6 +21,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarVigenciasFormales implements AdministrarVigenciasFormalesInterface {
@@ -37,13 +39,26 @@ public class AdministrarVigenciasFormales implements AdministrarVigenciasFormale
     PersistenciaInstitucionesInterface persistenciaInstituciones;
     @EJB
     PersistenciaAdiestramientosFInterface persistenciaAdiestramientosF;
-    private VigenciasFormales vF;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     
+    private VigenciasFormales vF;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public List<VigenciasFormales> vigenciasFormalesPersona(BigInteger secPersona) {
         try {
-            return persistenciaVigenciasFormales.vigenciasFormalesPersona(secPersona);
+            return persistenciaVigenciasFormales.vigenciasFormalesPersona(em, secPersona);
         } catch (Exception e) {
             System.err.println("Error AdministrarVigenciasFormales.vigenciasFormalesPersona " + e);
             return null;
@@ -52,28 +67,28 @@ public class AdministrarVigenciasFormales implements AdministrarVigenciasFormale
 
     @Override
     public Personas encontrarPersona(BigInteger secPersona) {
-        return persistenciaPersonas.buscarPersonaSecuencia(secPersona);
+        return persistenciaPersonas.buscarPersonaSecuencia(em, secPersona);
     }
 
     //Listas de Valores Educacion, Profesion, Instituciones, Adiestramiento
     @Override
     public List<TiposEducaciones> lovTiposEducaciones() {
-        return persistenciaTiposEducaciones.tiposEducaciones();
+        return persistenciaTiposEducaciones.tiposEducaciones(em);
     }
 
     @Override
     public List<Profesiones> lovProfesiones() {
-        return persistenciaProfesiones.profesiones();
+        return persistenciaProfesiones.profesiones(em);
     }
 
     @Override
     public List<Instituciones> lovInstituciones() {
-        return persistenciaInstituciones.instituciones();
+        return persistenciaInstituciones.instituciones(em);
     }
     
     @Override
     public List<AdiestramientosF> lovAdiestramientosF() {
-        return persistenciaAdiestramientosF.adiestramientosF();
+        return persistenciaAdiestramientosF.adiestramientosF(em);
     }
     
         @Override
@@ -106,19 +121,19 @@ public class AdministrarVigenciasFormales implements AdministrarVigenciasFormale
             }
             
             
-            persistenciaVigenciasFormales.editar(vF);
+            persistenciaVigenciasFormales.editar(em, vF);
         }
     }
 
     @Override
     public void borrarVigenciaFormal(VigenciasFormales vigenciasFormales) {
-        persistenciaVigenciasFormales.borrar(vigenciasFormales);
+        persistenciaVigenciasFormales.borrar(em, vigenciasFormales);
     }
 
 
     @Override
     public void crearVigenciaFormal(VigenciasFormales vigenciasFormales) {
-        persistenciaVigenciasFormales.crear(vigenciasFormales);
+        persistenciaVigenciasFormales.crear(em, vigenciasFormales);
     }
     
 }

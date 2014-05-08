@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,39 +24,53 @@ public class AdministrarTiposFamiliares implements AdministrarTiposFamiliaresInt
 
     @EJB
     PersistenciaTiposFamiliaresInterface persistenciaTiposFamiliares;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
     private TiposFamiliares tiposFamiliaresSeleccionada;
     private TiposFamiliares tiposFamiliares;
     private List<TiposFamiliares> listTiposFamiliares;
+    private EntityManager em;
 
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarTiposFamiliares(List<TiposFamiliares> listTiposFamiliares) {
         for (int i = 0; i < listTiposFamiliares.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposFamiliares.editar(listTiposFamiliares.get(i));
+            persistenciaTiposFamiliares.editar(em, listTiposFamiliares.get(i));
         }
     }
    @Override
     public void borrarTiposFamiliares(List<TiposFamiliares> listTiposFamiliares) {
         for (int i = 0; i < listTiposFamiliares.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposFamiliares.borrar(listTiposFamiliares.get(i));
+            persistenciaTiposFamiliares.borrar(em, listTiposFamiliares.get(i));
         }
     }
    @Override
     public void crearTiposFamiliares(List<TiposFamiliares> listTiposFamiliares) {
         for (int i = 0; i < listTiposFamiliares.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposFamiliares.crear(listTiposFamiliares.get(i));
+            persistenciaTiposFamiliares.crear(em, listTiposFamiliares.get(i));
         }
     }
 
     public List<TiposFamiliares> consultarTiposFamiliares() {
-        listTiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares();
+        listTiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares(em);
         return listTiposFamiliares;
     }
    @Override
     public TiposFamiliares consultarTipoExamen(BigInteger secTipoEmpresa) {
-        tiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares(secTipoEmpresa);
+        tiposFamiliares = persistenciaTiposFamiliares.buscarTiposFamiliares(em, secTipoEmpresa);
         return tiposFamiliares;
     }
    @Override
@@ -63,7 +79,7 @@ public class AdministrarTiposFamiliares implements AdministrarTiposFamiliaresInt
 
         try {
             System.err.println("Secuencia Borrado Elementos" + secuenciaTiposFamiliares);
-            verificadorHvReferencias = persistenciaTiposFamiliares.contadorHvReferencias(secuenciaTiposFamiliares);
+            verificadorHvReferencias = persistenciaTiposFamiliares.contadorHvReferencias(em, secuenciaTiposFamiliares);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarTiposFamiliares verificarBorradoElementos ERROR :" + e);
         } finally {

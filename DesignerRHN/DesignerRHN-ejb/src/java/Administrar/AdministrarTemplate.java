@@ -45,4 +45,11 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
     public ActualUsuario consultarActualUsuario() {
         return persistenciaActualUsuario.actualUsuarioBD(em);
     }
+    
+    public void cerrarSession(String idSesion) {
+        if (em.isOpen()) {
+            em.getEntityManagerFactory().close();
+            administrarSesiones.borrarSesion(idSesion);
+        }
+    }
 }

@@ -14,6 +14,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  * Clase Stateful. <br>
@@ -49,14 +51,28 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
      */
     @EJB
     PersistenciaTiposDiasInterface persistenciaTiposDias;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+    
+    private EntityManager em;
 
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------    
     @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
+    @Override
     public List<TiposContratos> listaTiposContratos() {
         try {
-            List<TiposContratos> lista = persistenciaTiposContratos.tiposContratos();
+            List<TiposContratos> lista = persistenciaTiposContratos.tiposContratos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaTiposContratos Admi : " + e.toString());
@@ -68,7 +84,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void crearTiposContratos(List<TiposContratos> listaTC) {
         try {
             for (int i = 0; i < listaTC.size(); i++) {
-                persistenciaTiposContratos.crear(listaTC.get(i));
+                persistenciaTiposContratos.crear(em, listaTC.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearTiposContratos Admi : " + e.toString());
@@ -79,7 +95,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void editarTiposContratos(List<TiposContratos> listaTC) {
         try {
             for (int i = 0; i < listaTC.size(); i++) {
-                persistenciaTiposContratos.editar(listaTC.get(i));
+                persistenciaTiposContratos.editar(em, listaTC.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarTiposContratos Admi : " + e.toString());
@@ -90,7 +106,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void borrarTiposContratos(List<TiposContratos> listaTC) {
         try {
             for (int i = 0; i < listaTC.size(); i++) {
-                persistenciaTiposContratos.borrar(listaTC.get(i));
+                persistenciaTiposContratos.borrar(em, listaTC.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarTiposContratos Admi : " + e.toString());
@@ -100,7 +116,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     @Override
     public List<DiasLaborables> listaDiasLaborablesParaTipoContrato(BigInteger secTipoContrato) {
         try {
-            List<DiasLaborables> lista = persistenciaDiasLaborables.diasLaborablesParaSecuenciaTipoContrato(secTipoContrato);
+            List<DiasLaborables> lista = persistenciaDiasLaborables.diasLaborablesParaSecuenciaTipoContrato(em, secTipoContrato);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaDiasLaborablesParaTipoContrato Admi : " + e.toString());
@@ -112,7 +128,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void crearDiasLaborables(List<DiasLaborables> listaDL) {
         try {
             for (int i = 0; i < listaDL.size(); i++) {
-                persistenciaDiasLaborables.crear(listaDL.get(i));
+                persistenciaDiasLaborables.crear(em, listaDL.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearDiasLaborables Admi : " + e.toString());
@@ -123,7 +139,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void editarDiasLaborables(List<DiasLaborables> listaDL) {
         try {
             for (int i = 0; i < listaDL.size(); i++) {
-                persistenciaDiasLaborables.editar(listaDL.get(i));
+                persistenciaDiasLaborables.editar(em, listaDL.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarDiasLaborables Admi : " + e.toString());
@@ -134,7 +150,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     public void borrarDiasLaborables(List<DiasLaborables> listaDL) {
         try {
             for (int i = 0; i < listaDL.size(); i++) {
-                persistenciaDiasLaborables.borrar(listaDL.get(i));
+                persistenciaDiasLaborables.borrar(em, listaDL.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarDiasLaborables Admi : " + e.toString());
@@ -144,7 +160,7 @@ public class AdministrarTiposContratos implements AdministrarTiposContratosInter
     @Override
     public List<TiposDias> lovTiposDias() {
         try {
-            List<TiposDias> lista = persistenciaTiposDias.buscarTiposDias();
+            List<TiposDias> lista = persistenciaTiposDias.buscarTiposDias(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovTiposDias Admi : " + e.toString());

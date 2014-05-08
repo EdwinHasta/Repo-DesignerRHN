@@ -20,6 +20,13 @@ import java.util.List;
 public interface AdministrarVigenciasSueldosInterface {
     
     /**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
+    
+    /**
      * Obtiene las VigenciasSueldos de un Empleado
      * @param secEmpleado Secuencia Empleado
      * @return Lista de VigenciasSueldos del empleado en cuestion

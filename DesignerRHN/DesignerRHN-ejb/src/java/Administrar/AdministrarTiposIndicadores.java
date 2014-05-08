@@ -12,6 +12,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarTiposIndicadores implements AdministrarTiposIndicadoresI
 
     @EJB
     PersistenciaTiposIndicadoresInterface persistenciaTiposIndicadores;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+	
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
 
     @Override
     public void modificarTiposIndicadores(List<TiposIndicadores> listTiposIndicadores) {
         for (int i = 0; i < listTiposIndicadores.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaTiposIndicadores.editar(listTiposIndicadores.get(i));
+            persistenciaTiposIndicadores.editar(em, listTiposIndicadores.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarTiposIndicadores implements AdministrarTiposIndicadoresI
     public void borrarTiposIndicadores(List<TiposIndicadores> listTiposIndicadores) {
         for (int i = 0; i < listTiposIndicadores.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaTiposIndicadores.borrar(listTiposIndicadores.get(i));
+            persistenciaTiposIndicadores.borrar(em, listTiposIndicadores.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarTiposIndicadores implements AdministrarTiposIndicadoresI
     public void crearTiposIndicadores(List<TiposIndicadores> listTiposIndicadores) {
         for (int i = 0; i < listTiposIndicadores.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaTiposIndicadores.crear(listTiposIndicadores.get(i));
+            persistenciaTiposIndicadores.crear(em, listTiposIndicadores.get(i));
         }
     }
 
     @Override
     public List<TiposIndicadores> consultarTiposIndicadores() {
         List<TiposIndicadores> listTiposIndicadores;
-        listTiposIndicadores = persistenciaTiposIndicadores.buscarTiposIndicadores();
+        listTiposIndicadores = persistenciaTiposIndicadores.buscarTiposIndicadores(em);
         return listTiposIndicadores;
     }
 
     @Override
     public TiposIndicadores consultarTipoIndicador(BigInteger secMotivoDemanda) {
         TiposIndicadores tiposIndicadores;
-        tiposIndicadores = persistenciaTiposIndicadores.buscarTiposIndicadoresSecuencia(secMotivoDemanda);
+        tiposIndicadores = persistenciaTiposIndicadores.buscarTiposIndicadoresSecuencia(em, secMotivoDemanda);
         return tiposIndicadores;
     }
 
@@ -67,7 +83,7 @@ public class AdministrarTiposIndicadores implements AdministrarTiposIndicadoresI
 
         try {
             System.err.println("Secuencia Vigencias Indicadores " + secuenciaVigenciasIndicadores);
-            verificadorVigenciasIndicadores = persistenciaTiposIndicadores.contadorVigenciasIndicadores(secuenciaVigenciasIndicadores);
+            verificadorVigenciasIndicadores = persistenciaTiposIndicadores.contadorVigenciasIndicadores(em, secuenciaVigenciasIndicadores);
         } catch (Exception e) {
             System.err.println("ERROR AdmnistrarTiposIndicadores verificarBorradoVigenciasIndicadores ERROR :" + e);
         } finally {

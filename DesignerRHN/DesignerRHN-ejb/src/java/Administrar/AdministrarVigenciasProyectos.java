@@ -20,6 +20,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyectosInterface{
@@ -36,13 +38,26 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
     PersistenciaCargosInterface persistenciaCargos;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
     
     private VigenciasProyectos vP;
+    private EntityManager em;
+    
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     
     @Override
     public List<VigenciasProyectos> vigenciasProyectosEmpleado(BigInteger secEmpleado) {
         try {
-            return persistenciaVigenciasProyectos.vigenciasProyectosEmpleado(secEmpleado);
+            return persistenciaVigenciasProyectos.vigenciasProyectosEmpleado(em, secEmpleado);
         } catch (Exception e) {
             System.err.println("Error AdministrarVigenciasProyectos.vigenciasProyectosPersona " + e);
             return null;
@@ -50,23 +65,23 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
     }
 
     public Empleados encontrarEmpleado(BigInteger secEmpleado) {
-        return persistenciaEmpleados.buscarEmpleado(secEmpleado);
+        return persistenciaEmpleados.buscarEmpleado(em, secEmpleado);
     }
 
     //Listas de Valores Educacion, Profesion, Instituciones, Adiestramiento
     @Override
     public List<Proyectos> lovProyectos() {
-        return persistenciaProyectos.proyectos();
+        return persistenciaProyectos.proyectos(em);
     }
 
     @Override
     public List<PryRoles> lovPryRoles() {
-        return persistenciaPryRoles.pryroles();
+        return persistenciaPryRoles.pryroles(em);
     }
 
     @Override
     public List<Cargos> lovCargos() {
-        return persistenciaCargos.consultarCargos();
+        return persistenciaCargos.consultarCargos(em);
     }
        
     @Override
@@ -93,25 +108,25 @@ public class AdministrarVigenciasProyectos implements AdministrarVigenciasProyec
             }
                        
             
-            persistenciaVigenciasProyectos.editar(vP);
+            persistenciaVigenciasProyectos.editar(em, vP);
         }
     }
 
     @Override
     public void borrarVigenciaProyecto(VigenciasProyectos vigenciasProyectos) {
-        persistenciaVigenciasProyectos.borrar(vigenciasProyectos);
+        persistenciaVigenciasProyectos.borrar(em, vigenciasProyectos);
     }
 
 
     @Override
     public void crearVigenciaProyecto(VigenciasProyectos vigenciasProyectos) {
-        persistenciaVigenciasProyectos.crear(vigenciasProyectos);
+        persistenciaVigenciasProyectos.crear(em, vigenciasProyectos);
     }
     
     @Override
     public Proyectos buscarProyectoPorNombreVigencia(String nombre){
         try{
-            Proyectos proyecto = persistenciaProyectos.buscarProyectoNombre(nombre);
+            Proyectos proyecto = persistenciaProyectos.buscarProyectoNombre(em, nombre);
             return proyecto;
         } catch(Exception e){
             return null;
