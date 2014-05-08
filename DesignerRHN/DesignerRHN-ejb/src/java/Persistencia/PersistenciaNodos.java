@@ -24,11 +24,11 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Nodos nodos) {
+    public void crear(EntityManager em, Nodos nodos) {
         try {
             em.persist(nodos);
         } catch (PersistenceException ex) {
@@ -37,20 +37,21 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     }
 
     @Override
-    public void editar(Nodos nodos) {
+    public void editar(EntityManager em, Nodos nodos) {
         em.merge(nodos);
     }
 
     @Override
-    public void borrar(Nodos nodos) {
+    public void borrar(EntityManager em, Nodos nodos) {
         em.remove(em.merge(nodos));
     }
 
     @Override
-    public Nodos buscarNodoSecuencia(BigInteger secuencia) {
+    public Nodos buscarNodoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT n FROM Nodos n WHERE n.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Nodos nodos = (Nodos) query.getSingleResult();
             return nodos;
         } catch (Exception e) {
@@ -61,9 +62,10 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     }
 
     @Override
-    public List<Nodos> listNodos() {
+    public List<Nodos> listNodos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT n FROM Nodos n");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Nodos> nodos = (List<Nodos>) query.getResultList();
             return nodos;
         } catch (Exception e) {
@@ -73,10 +75,11 @@ public class PersistenciaNodos implements PersistenciaNodosInterface {
     }
 
     @Override
-    public List<Nodos> buscarNodosPorSecuenciaHistoriaFormula(BigInteger secuencia) {
+    public List<Nodos> buscarNodosPorSecuenciaHistoriaFormula(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT n FROM Nodos n WHERE n.historiaformula.secuencia=:secuenciaHF ORDER BY n.posicion ASC");
             query.setParameter("secuenciaHF", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Nodos> nodos = query.getResultList();
             return nodos;
         } catch (Exception e) {

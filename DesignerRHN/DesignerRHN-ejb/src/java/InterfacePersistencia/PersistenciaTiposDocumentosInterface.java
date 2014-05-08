@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposDocumentos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposDocumentosInterface {
      *
      * @param tiposDocumentos Moneda que se quiere crear.
      */
-    public void crear(TiposDocumentos tiposDocumentos);
+    public void crear(EntityManager em, TiposDocumentos tiposDocumentos);
 
     /**
      * Método encargado de modificar un TipoDocumento de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaTiposDocumentosInterface {
      * @param tiposDocumentos TiposViajeros con los cambios que se van a
      * realizar.
      */
-    public void editar(TiposDocumentos tiposDocumentos);
+    public void editar(EntityManager em, TiposDocumentos tiposDocumentos);
 
     /**
      * Método encargado de eliminar de la base de datos un TipoDocumento que
@@ -38,7 +39,7 @@ public interface PersistenciaTiposDocumentosInterface {
      *
      * @param tiposDocumentos TiposViajeros que se quiere eliminar.
      */
-    public void borrar(TiposDocumentos tiposDocumentos);
+    public void borrar(EntityManager em, TiposDocumentos tiposDocumentos);
 
     /**
      * Método encargado de buscar todos los TiposDocumentos existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaTiposDocumentosInterface {
      *
      * @return Retorna una lista de TiposDocumentos ordenados por nombreCorto.
      */
-    public List<TiposDocumentos> consultarTiposDocumentos();
+    public List<TiposDocumentos> consultarTiposDocumentos(EntityManager em);
 
     /**
      * Método encargado de buscar el TipoDocumento con la secTiposDocumentos
@@ -57,7 +58,7 @@ public interface PersistenciaTiposDocumentosInterface {
      * @return Retorna el TipoDocumento identificado con la secTiposDocumentos
      * dada por parámetro.
      */
-    public TiposDocumentos consultarTipoDocumento(BigInteger secTiposDocumentos);
+    public TiposDocumentos consultarTipoDocumento(EntityManager em, BigInteger secTiposDocumentos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoDocumento
@@ -68,7 +69,7 @@ public interface PersistenciaTiposDocumentosInterface {
      * @return Retorna el número de Codeudores relacionados con el TipoDocumento
      * cuya secTiposDocumentos coincide con el parámetro.
      */
-    public BigInteger contarCodeudoresTipoDocumento(BigInteger secTiposDocumentos);
+    public BigInteger contarCodeudoresTipoDocumento(EntityManager em, BigInteger secTiposDocumentos);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoDocumento
@@ -79,6 +80,6 @@ public interface PersistenciaTiposDocumentosInterface {
      * @return Retorna el número de Personas relacionados con el TipoDocumento
      * cuya secTiposDocumentos coincide con el parámetro.
      */
-    public BigInteger contarPersonasTipoDocumento(BigInteger secTiposDocumentos);
+    public BigInteger contarPersonasTipoDocumento(EntityManager em, BigInteger secTiposDocumentos);
 
 }

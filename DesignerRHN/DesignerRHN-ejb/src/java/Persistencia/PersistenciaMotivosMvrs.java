@@ -24,26 +24,26 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Motivosmvrs motivosMvrs) {
+    public void crear(EntityManager em, Motivosmvrs motivosMvrs) {
         em.persist(motivosMvrs);
     }
 
     @Override
-    public void editar(Motivosmvrs motivosMvrs) {
+    public void editar(EntityManager em, Motivosmvrs motivosMvrs) {
         em.merge(motivosMvrs);
     }
 
     @Override
-    public void borrar(Motivosmvrs motivosMvrs) {
+    public void borrar(EntityManager em, Motivosmvrs motivosMvrs) {
         em.remove(em.merge(motivosMvrs));
     }
 
     @Override
-    public Motivosmvrs buscarMotivosMvrs(BigInteger secuenciaMM) {
+    public Motivosmvrs buscarMotivosMvrs(EntityManager em, BigInteger secuenciaMM) {
         try {
             return em.find(Motivosmvrs.class, secuenciaMM);
         } catch (Exception e) {
@@ -52,8 +52,9 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
     }
 
     //@Override
-    public List<Motivosmvrs> buscarMotivosMvrs() {
+    public List<Motivosmvrs> buscarMotivosMvrs(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM Motivosmvrs m");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Motivosmvrs> lista = query.getResultList();
         return lista;
     }

@@ -25,11 +25,11 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(ProcesosProductivos procesos) {
+    public void crear(EntityManager em, ProcesosProductivos procesos) {
         try {
             em.persist(procesos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     }
 
     @Override
-    public void editar(ProcesosProductivos procesos) {
+    public void editar(EntityManager em, ProcesosProductivos procesos) {
         try {
             em.merge(procesos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     }
 
     @Override
-    public void borrar(ProcesosProductivos procesos) {
+    public void borrar(EntityManager em, ProcesosProductivos procesos) {
         try {
             em.remove(em.merge(procesos));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     }
 
     @Override
-    public List<ProcesosProductivos> consultarProcesosProductivos() {
+    public List<ProcesosProductivos> consultarProcesosProductivos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT pp FROM ProcesosProductivos pp ORDER BY pp.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<ProcesosProductivos> procesos = query.getResultList();
             return procesos;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
     }
 
     @Override
-    public ProcesosProductivos consultarProcesosProductivos(BigInteger secuencia) {
+    public ProcesosProductivos consultarProcesosProductivos(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT pp FROM ProcesosProductivos pp WHERE pp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ProcesosProductivos procesos = (ProcesosProductivos) query.getSingleResult();
             return procesos;
         } catch (Exception e) {
@@ -81,7 +83,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
         }
     }
 
-    public BigInteger contarUnidadesProducidasProcesoProductivo(BigInteger secuencia) {
+    public BigInteger contarUnidadesProducidasProcesoProductivo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT (*)FROM unidadesproducidas WHERE procesoproductivo = ?";
@@ -96,7 +98,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
         }
     }
 
-    public BigInteger contarTarifasProductosProcesoProductivo(BigInteger secuencia) {
+    public BigInteger contarTarifasProductosProcesoProductivo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT (*)FROM tarifasproductos WHERE procesoproductivo = ?";
@@ -111,7 +113,7 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
         }
     }
     
-    public BigInteger contarCargosProcesoProductivo(BigInteger secuencia) {
+    public BigInteger contarCargosProcesoProductivo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT (*)FROM cargos WHERE procesoproductivo =  ?";

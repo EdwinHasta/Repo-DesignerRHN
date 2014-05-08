@@ -25,11 +25,10 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     @Override
-    public void crear(PryPlataformas plataformas) {
+    public void crear(EntityManager em, PryPlataformas plataformas) {
         try {
             em.persist(plataformas);
         } catch (Exception e) {
@@ -38,7 +37,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     }
 
     @Override
-    public void editar(PryPlataformas plataformas) {
+    public void editar(EntityManager em, PryPlataformas plataformas) {
         try {
             em.merge(plataformas);
         } catch (Exception e) {
@@ -47,7 +46,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     }
 
     @Override
-    public void borrar(PryPlataformas plataformas) {
+    public void borrar(EntityManager em, PryPlataformas plataformas) {
         try {
             em.remove(em.merge(plataformas));
         } catch (Exception e) {
@@ -56,9 +55,11 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     }
 
     @Override
-    public List<PryPlataformas> buscarPryPlataformas() {
+    public List<PryPlataformas> buscarPryPlataformas(EntityManager em) {
         try {
-            List<PryPlataformas> plataformas = (List<PryPlataformas>) em.createNamedQuery("PryPlataformas.findAll").getResultList();
+            Query query = em.createNamedQuery("PryPlataformas.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<PryPlataformas> plataformas = (List<PryPlataformas>) query.getResultList();
             return plataformas;
         } catch (Exception e) {
             System.out.println("Error buscarPryPlataformas PersistenciaPryPlataformas : " + e.toString());
@@ -67,10 +68,11 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
     }
 
     @Override
-    public PryPlataformas buscarPryPlataformaSecuencia(BigInteger secuencia) {
+    public PryPlataformas buscarPryPlataformaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT p FROM PryPlataformas p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             PryPlataformas plataformas = (PryPlataformas) query.getSingleResult();
             return plataformas;
         } catch (Exception e) {
@@ -80,7 +82,7 @@ public class PersistenciaPryPlataformas implements PersistenciaPryPlataformasInt
         }
     }
 
-    public BigInteger contadorProyectos(BigInteger secuencia) {
+    public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM proyectos p , pry_plataformas pp WHERE p.pry_plataforma = pp.secuencia AND pp.secuencia = ?";

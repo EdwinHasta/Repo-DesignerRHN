@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposDetalles;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposDetallesInterface {
      *
      * @param tiposDetalles TipoDetalle que se quiere crear.
      */
-    public void crear(TiposDetalles tiposDetalles);
+    public void crear(EntityManager em, TiposDetalles tiposDetalles);
 
     /**
      * Método encargado de modificar un TipoDetalle de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaTiposDetallesInterface {
      *
      * @param tiposDetalles TipoDetalle con los cambios que se van a realizar.
      */
-    public void editar(TiposDetalles tiposDetalles);
+    public void editar(EntityManager em, TiposDetalles tiposDetalles);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoDetalle que entra
@@ -37,7 +38,7 @@ public interface PersistenciaTiposDetallesInterface {
      *
      * @param tiposDetalles TipoDetalle que se quiere eliminar.
      */
-    public void borrar(TiposDetalles tiposDetalles);
+    public void borrar(EntityManager em, TiposDetalles tiposDetalles);
 
     /**
      * Método encargado de buscar todos los TiposDetalles existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaTiposDetallesInterface {
      *
      * @return Retorna una lista de TiposDetalles.
      */
-    public List<TiposDetalles> buscarTiposDetalles();
+    public List<TiposDetalles> buscarTiposDetalles(EntityManager em);
 
     /**
      * Método encargado de buscar el TipoDetalle con la secuencia dada por
@@ -55,6 +56,6 @@ public interface PersistenciaTiposDetallesInterface {
      * @return Retorna el TipoDetalle identificado con la secuencia dada por
      * parámetro.
      */
-    public TiposDetalles buscarTiposDetallesSecuencia(BigInteger secuencia);
+    public TiposDetalles buscarTiposDetallesSecuencia(EntityManager em, BigInteger secuencia);
 
 }

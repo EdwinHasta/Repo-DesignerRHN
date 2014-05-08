@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.MotivosDefinitivas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaMotivosDefinitivasInterface {
      *
      * @param motivosDefinitivas MotivoDefinitiva que se quiere crear.
      */
-    public void crear(MotivosDefinitivas motivosDefinitivas);
+    public void crear(EntityManager em, MotivosDefinitivas motivosDefinitivas);
 
     /**
      * Método encargado de modificar un MotivoDefinitiva de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaMotivosDefinitivasInterface {
      * @param motivosDefinitivas MotivoDefinitiva con los cambios que se van a
      * realizar.
      */
-    public void editar(MotivosDefinitivas motivosDefinitivas);
+    public void editar(EntityManager em, MotivosDefinitivas motivosDefinitivas);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoDefinitiva que
@@ -38,7 +39,7 @@ public interface PersistenciaMotivosDefinitivasInterface {
      *
      * @param motivosDefinitivas MotivoDefinitiva que se quiere eliminar.
      */
-    public void borrar(MotivosDefinitivas motivosDefinitivas);
+    public void borrar(EntityManager em, MotivosDefinitivas motivosDefinitivas);
 
     /**
      * Método encargado de buscar todos los Motivosdefinitivas existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaMotivosDefinitivasInterface {
      *
      * @return Retorna una lista de Motivosdefinitivas ordenados por código.
      */
-    public List<MotivosDefinitivas> buscarMotivosDefinitivas();
+    public List<MotivosDefinitivas> buscarMotivosDefinitivas(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Motivo
@@ -57,7 +58,7 @@ public interface PersistenciaMotivosDefinitivasInterface {
      * @return Retorna el número de Novedades Sistemas relacionados con la
      * moneda cuya secMotivosDefinitivas coincide con el parámetro.
      */
-    public BigInteger contadorNovedadesSistema(BigInteger secMotivosDefinitivas);
+    public BigInteger contadorNovedadesSistema(EntityManager em, BigInteger secMotivosDefinitivas);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Motivo
@@ -68,7 +69,7 @@ public interface PersistenciaMotivosDefinitivasInterface {
      * @return Retorna el número de Parameto Cambio Masivo relacionados con la
      * moneda cuya secMotivosDefinitivas coincide con el parámetro.
      */
-    public BigInteger contadorParametrosCambiosMasivos(BigInteger secMotivosDefinitivas);
+    public BigInteger contadorParametrosCambiosMasivos(EntityManager em, BigInteger secMotivosDefinitivas);
 
     /**
      * Método encargado de buscar el MotivoDefinitiva con la
@@ -79,5 +80,5 @@ public interface PersistenciaMotivosDefinitivasInterface {
      * @return Retorna el MotivoDefinitiva identificado con la
      * secMotivosDefinitivas dada por parámetro.
      */
-    public MotivosDefinitivas buscarMotivoDefinitiva(BigInteger secMotivosDefinitivas);
+    public MotivosDefinitivas buscarMotivoDefinitiva(EntityManager em, BigInteger secMotivosDefinitivas);
 }

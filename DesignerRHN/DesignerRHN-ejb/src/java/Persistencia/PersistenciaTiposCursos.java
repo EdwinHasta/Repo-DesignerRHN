@@ -24,11 +24,11 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposCursos tiposCursos) {
+    public void crear(EntityManager em, TiposCursos tiposCursos) {
         try {
             em.persist(tiposCursos);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     }
 
     @Override
-    public void editar(TiposCursos tiposCursos) {
+    public void editar(EntityManager em, TiposCursos tiposCursos) {
         try {
             em.merge(tiposCursos);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     }
 
     @Override
-    public void borrar(TiposCursos tiposCursos) {
+    public void borrar(EntityManager em, TiposCursos tiposCursos) {
         try {
             em.remove(em.merge(tiposCursos));
         } catch (Exception e) {
@@ -55,9 +55,10 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     }
 
     @Override
-    public List<TiposCursos> consultarTiposCursos() {
+    public List<TiposCursos> consultarTiposCursos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT g FROM TiposCursos g ORDER BY g.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List< TiposCursos> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
 
@@ -68,10 +69,11 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     }
 
     @Override
-    public TiposCursos consultarTipoCurso(BigInteger secuencia) {
+    public TiposCursos consultarTipoCurso(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM TiposCursos te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposCursos tiposCursos = (TiposCursos) query.getSingleResult();
             return tiposCursos;
         } catch (Exception e) {
@@ -82,7 +84,7 @@ public class PersistenciaTiposCursos implements PersistenciaTiposCursosInterface
     }
 
     @Override
-    public BigInteger contarCursosTipoCurso(BigInteger secuencia) {
+    public BigInteger contarCursosTipoCurso(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM cursos WHERE tipocurso = ?";

@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.MotivosReemplazos;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'MotivosReemplazos' 
@@ -16,6 +17,6 @@ public interface PersistenciaMotivosReemplazosInterface {
      * Método encargado de buscar todos los MotivosReemplazos existentes en la base de datos, ordenados por código.
      * @return Retorna una lista de MotivosReemplazos ordenados por código.
      */
-    public List<MotivosReemplazos> motivosReemplazos();
+    public List<MotivosReemplazos> motivosReemplazos(EntityManager em);
     
 }

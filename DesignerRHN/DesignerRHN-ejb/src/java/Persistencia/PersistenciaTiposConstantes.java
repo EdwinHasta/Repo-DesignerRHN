@@ -30,7 +30,7 @@ public class PersistenciaTiposConstantes implements PersistenciaTiposConstantesI
     private EntityManager em;
     
     @Override
-    public void crear(TiposConstantes tiposConstantes) {
+    public void crear(EntityManager em, TiposConstantes tiposConstantes) {
         try {
             em.merge(tiposConstantes);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaTiposConstantes implements PersistenciaTiposConstantesI
     }
 
     @Override
-    public void editar(TiposConstantes tiposConstantes) {
+    public void editar(EntityManager em, TiposConstantes tiposConstantes) {
         try {
             em.merge(tiposConstantes);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaTiposConstantes implements PersistenciaTiposConstantesI
     }
 
     @Override
-    public void borrar(TiposConstantes tiposConstantes) {
+    public void borrar(EntityManager em, TiposConstantes tiposConstantes) {
         try {
             em.remove(em.merge(tiposConstantes));
         } catch (Exception e) {
@@ -57,14 +57,14 @@ public class PersistenciaTiposConstantes implements PersistenciaTiposConstantesI
     }
 
     @Override
-    public List<TiposConstantes> tiposConstantes(BigInteger secuenciaOperando, String tipo) {
+    public List<TiposConstantes> tiposConstantes(EntityManager em, BigInteger secuenciaOperando, String tipo) {
         try {
             Query query = em.createQuery("SELECT DISTINCT tf FROM TiposConstantes tf, Operandos op WHERE tf.operando.secuencia =:secuenciaOperando and op.tipo=:tipo ORDER BY tf.fechafinal DESC");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setParameter("tipo", tipo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposConstantes> tiposConstantes = query.getResultList();
             List<TiposConstantes> tiposConstantesResult = new ArrayList<TiposConstantes>(tiposConstantes);
-
             System.out.println("tiposConstantes" + tiposConstantesResult);
             return tiposConstantesResult;
         } catch (Exception e) {

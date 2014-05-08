@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Monedas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -22,14 +23,14 @@ public interface PersistenciaMonedasInterface {
      *
      * @return Retorna una lista de Monedas.
      */
-    public List<Monedas> consultarMonedas();
+    public List<Monedas> consultarMonedas(EntityManager em);
 
     /**
      * Método encargado de insertar una Moneda en la base de datos.
      *
      * @param monedas Nibeda que se quiere crear.
      */
-    public void crear(Monedas monedas);
+    public void crear(EntityManager em, Monedas monedas);
 
     /**
      * Método encargado de modificar una Moneda de la base de datos. Este método
@@ -38,7 +39,7 @@ public interface PersistenciaMonedasInterface {
      *
      * @param monedas Monedas con los cambios que se van a realizar.
      */
-    public void editar(Monedas monedas);
+    public void editar(EntityManager em, Monedas monedas);
 
     /**
      * Método encargado de eliminar de la base de datos una Moneda que entra por
@@ -46,7 +47,7 @@ public interface PersistenciaMonedasInterface {
      *
      * @param monedas Monedas que se quiere eliminar.
      */
-    public void borrar(Monedas monedas);
+    public void borrar(EntityManager em, Monedas monedas);
 
     /**
      * Método encargado de buscar una Moneda con la secuencia dada por
@@ -56,7 +57,7 @@ public interface PersistenciaMonedasInterface {
      * @return Retorna la Moneda identificado con la secuencia dada por
      * parámetro.
      */
-    public Monedas consultarMoneda(BigInteger secuencia);
+    public Monedas consultarMoneda(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Moneda
@@ -67,5 +68,5 @@ public interface PersistenciaMonedasInterface {
      * @return Retorna el número de proyectos relacionados con la moneda cuya
      * secuencia coincide con el parámetro.
      */
-    public BigInteger contadorProyectos(BigInteger secuencia);
+    public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia);
 }

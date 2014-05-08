@@ -22,17 +22,16 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author betelgeuse
  */
 @Stateless
-@LocalBean
 public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosCostosInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    EntityManager em;
 
     @Override
-    public void crear(TiposCentrosCostos TiposCentrosCostos) {
+    public void crear(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {
         try {
             em.persist(TiposCentrosCostos);
         } catch (Exception e) {
@@ -41,7 +40,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public void editar(TiposCentrosCostos TiposCentrosCostos) {
+    public void editar(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {
         try {
             em.merge(TiposCentrosCostos);
         } catch (Exception e) {
@@ -50,7 +49,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public void borrar(TiposCentrosCostos TiposCentrosCostos) {
+    public void borrar(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {
         try {
             em.remove(em.merge(TiposCentrosCostos));
         } catch (Exception e) {
@@ -59,7 +58,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public TiposCentrosCostos buscarTipoCentrosCostos(BigInteger secuencia) {
+    public TiposCentrosCostos buscarTipoCentrosCostos(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposCentrosCostos.class, secuencia);
         } catch (Exception e) {
@@ -69,7 +68,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public List<TiposCentrosCostos> buscarTiposCentrosCostos() {
+    public List<TiposCentrosCostos> buscarTiposCentrosCostos(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(TiposCentrosCostos.class));
@@ -81,11 +80,12 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public BigInteger verificarBorradoCentrosCostos(BigInteger secuencia) {
+    public BigInteger verificarBorradoCentrosCostos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(cc) FROM CentrosCostos cc WHERE cc.tipocentrocosto.secuencia = :secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaTiposCentrosCostos retorno ==" + retorno.intValue());
 
@@ -97,11 +97,12 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasCuentas(BigInteger secuencia) {
+    public BigInteger verificarBorradoVigenciasCuentas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vc) FROM VigenciasCuentas vc WHERE vc.tipocc.secuencia  = :secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaTiposCentrosCostos retorno ==" + retorno.intValue());
 
@@ -113,7 +114,7 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
     }
 
     @Override
-    public BigInteger verificarBorradoRiesgosProfesionales(BigInteger secuencia) {
+    public BigInteger verificarBorradoRiesgosProfesionales(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM riesgosprofesionales WHERE tipocentrocosto = ?";

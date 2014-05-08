@@ -24,11 +24,11 @@ public class PersistenciaSoaccidentes implements PersistenciaSoaccidentesInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Soaccidentes soaccidentes) {
+    public void crear(EntityManager em, Soaccidentes soaccidentes) {
         try {
             em.merge(soaccidentes);
         } catch (PersistenceException ex) {
@@ -37,20 +37,21 @@ public class PersistenciaSoaccidentes implements PersistenciaSoaccidentesInterfa
     }
 
     @Override
-    public void editar(Soaccidentes soaccidentes) {
+    public void editar(EntityManager em, Soaccidentes soaccidentes) {
         em.merge(soaccidentes);
     }
 
     @Override
-    public void borrar(Soaccidentes soaccidentes) {
+    public void borrar(EntityManager em, Soaccidentes soaccidentes) {
         em.remove(em.merge(soaccidentes));
     }
 
     @Override
-    public List<Soaccidentes> accidentesEmpleado(BigInteger secuenciaEmpleado) {
+    public List<Soaccidentes> accidentesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT soa FROM Soaccidentes soa WHERE soa.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Soaccidentes> todosAccidentes = query.getResultList();
             return todosAccidentes;
         } catch (Exception e) {

@@ -24,21 +24,21 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposEmbargos tiposEmbargos) {
+    public void crear(EntityManager em, TiposEmbargos tiposEmbargos) {
         em.persist(tiposEmbargos);
     }
 
     @Override
-    public void editar(TiposEmbargos tiposEmbargos) {
+    public void editar(EntityManager em, TiposEmbargos tiposEmbargos) {
         em.merge(tiposEmbargos);
     }
 
     @Override
-    public void borrar(TiposEmbargos tiposEmbargos) {
+    public void borrar(EntityManager em, TiposEmbargos tiposEmbargos) {
         try {
             em.remove(em.merge(tiposEmbargos));
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
     }
 
     @Override
-    public TiposEmbargos buscarTipoEmbargo(BigInteger secuencia) {
+    public TiposEmbargos buscarTipoEmbargo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposEmbargos.class, secuencia);
         } catch (Exception e) {
@@ -57,14 +57,15 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
     }
 
     @Override
-    public List<TiposEmbargos> buscarTiposEmbargos() {
+    public List<TiposEmbargos> buscarTiposEmbargos(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM TiposEmbargos m ORDER BY m.codigo ASC");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposEmbargos> listaMotivosPrestamos = query.getResultList();
         return listaMotivosPrestamos;
     }
 
     @Override
-    public BigInteger contadorEerPrestamos(BigInteger secuencia) {
+    public BigInteger contadorEerPrestamos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = " SELECT COUNT(*)FROM eersprestamos ee WHERE ee.tipoembargo = ? ";
@@ -81,7 +82,7 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
     }
 
     @Override
-    public BigInteger contadorFormasDtos(BigInteger secuencia) {
+    public BigInteger contadorFormasDtos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = " SELECT COUNT(*)FROM formasdtos fdts WHERE fdts.tipoembargo = ? ";

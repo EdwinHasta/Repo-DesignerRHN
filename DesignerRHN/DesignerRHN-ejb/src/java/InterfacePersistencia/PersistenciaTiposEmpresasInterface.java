@@ -8,13 +8,13 @@ package InterfacePersistencia;
 import Entidades.TiposEmpresas;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
+
 public interface PersistenciaTiposEmpresasInterface {
 
     /**
@@ -22,7 +22,7 @@ public interface PersistenciaTiposEmpresasInterface {
      *
      * @param tiposEmpresas TiposEmpresa que se quiere crear.
      */
-    public void crear(TiposEmpresas tiposEmpresas);
+    public void crear(EntityManager em, TiposEmpresas tiposEmpresas);
 
     /**
      * Método encargado de modificar un TipoEmpresa de la base de datos. Este
@@ -31,7 +31,7 @@ public interface PersistenciaTiposEmpresasInterface {
      *
      * @param tiposEmpresas TiposEmpresas con los cambios que se van a realizar.
      */
-    public void editar(TiposEmpresas tiposEmpresas);
+    public void editar(EntityManager em, TiposEmpresas tiposEmpresas);
 
     /**
      * Método encargado de eliminar de la base de datos un TipoEmpresa que entra
@@ -39,7 +39,7 @@ public interface PersistenciaTiposEmpresasInterface {
      *
      * @param tiposEmpresas TiposEmpresas que se quiere eliminar.
      */
-    public void borrar(TiposEmpresas tiposEmpresas);
+    public void borrar(EntityManager em, TiposEmpresas tiposEmpresas);
 
     /**
      * Método encargado de buscar el TipoEmpresa con la secTiposEmpresas dada
@@ -50,7 +50,7 @@ public interface PersistenciaTiposEmpresasInterface {
      * @return Retorna el TipoEmpresa identificado con la secTiposEmpresas dada
      * por parámetro.
      */
-    public TiposEmpresas buscarTipoEmpresa(BigInteger secTiposEmpresas);
+    public TiposEmpresas buscarTipoEmpresa(EntityManager em, BigInteger secTiposEmpresas);
 
     /**
      * Método encargado de buscar todas los TiposEmpresas existentes en la base
@@ -58,7 +58,7 @@ public interface PersistenciaTiposEmpresasInterface {
      *
      * @return Retorna una lista de TiposEmpresas.
      */
-    public List<TiposEmpresas> buscarTiposEmpresas();
+    public List<TiposEmpresas> buscarTiposEmpresas(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TipoEmpresa
@@ -69,5 +69,5 @@ public interface PersistenciaTiposEmpresasInterface {
      * @return Retorna el número de SueldoMercado relacionados con la moneda
      * cuya secTiposEmpresas coincide con el parámetro.
      */
-    public BigInteger contadorSueldosMercados(BigInteger secTiposEmpresas);
+    public BigInteger contadorSueldosMercados(EntityManager em, BigInteger secTiposEmpresas);
 }

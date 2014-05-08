@@ -6,7 +6,7 @@ package InterfacePersistencia;
 import Entidades.MetodosPagos;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -14,7 +14,6 @@ import javax.ejb.Local;
  *
  * @author betelgeuse
  */
-@Local
 public interface PersistenciaMetodosPagosInterface {
 
     /**
@@ -22,7 +21,7 @@ public interface PersistenciaMetodosPagosInterface {
      *
      * @param metodosPagos MetodoPago que se quiere crear.
      */
-    public void crear(MetodosPagos metodosPagos);
+    public void crear(EntityManager em, MetodosPagos metodosPagos);
 
     /**
      * Método encargado de modificar un MetodoPago de la base de datos. Este
@@ -31,7 +30,7 @@ public interface PersistenciaMetodosPagosInterface {
      *
      * @param metodosPagos MetodoPago con los cambios que se van a realizar.
      */
-    public void editar(MetodosPagos metodosPagos);
+    public void editar(EntityManager em, MetodosPagos metodosPagos);
 
     /**
      * Método encargado de eliminar de la base de datos el MetodoPago que entra
@@ -39,7 +38,7 @@ public interface PersistenciaMetodosPagosInterface {
      *
      * @param metodosPagos MetodoPago que se quiere eliminar.
      */
-    public void borrar(MetodosPagos metodosPagos);
+    public void borrar(EntityManager em, MetodosPagos metodosPagos);
 
     /**
      * Método encargado de buscar el MetodoPago con la secMetodosPagos dada por
@@ -50,7 +49,7 @@ public interface PersistenciaMetodosPagosInterface {
      * @return Retorna el MetodoPago identificado con la secMetodosPagos dada
      * por parámetro.
      */
-    public MetodosPagos buscarMetodosPagosEmpleado(BigInteger secMetodosPagos);
+    public MetodosPagos buscarMetodosPagosEmpleado(EntityManager em, BigInteger secMetodosPagos);
 
     /**
      * Método encargado de buscar todos los MetodosPagos existentes en la base
@@ -58,7 +57,7 @@ public interface PersistenciaMetodosPagosInterface {
      *
      * @return Retorna una lista de MetodosPagos.
      */
-    public List<MetodosPagos> buscarMetodosPagos();
+    public List<MetodosPagos> buscarMetodosPagos(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre una MetodoPago
@@ -69,5 +68,5 @@ public interface PersistenciaMetodosPagosInterface {
      * @return Retorna el número de VigenciasFormasPagos relacionados con el
      * MetodoPago cuya secMetodosPagos coincide con el parámetro.
      */
-    public BigInteger contadorvigenciasformaspagos(BigInteger secMetodosPagos);
+    public BigInteger contadorvigenciasformaspagos(EntityManager em, BigInteger secMetodosPagos);
 }

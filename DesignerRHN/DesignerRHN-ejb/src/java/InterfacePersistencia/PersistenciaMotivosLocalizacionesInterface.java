@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.MotivosLocalizaciones;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaMotivosLocalizacionesInterface {
      *
      * @param motivosLocalizaciones MotivoLocalizacion que se quiere crear.
      */
-    public void crear(MotivosLocalizaciones motivosLocalizaciones);
+    public void crear(EntityManager em, MotivosLocalizaciones motivosLocalizaciones);
 
     /**
      * Método encargado de modificar un MotivoLocalizacion de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaMotivosLocalizacionesInterface {
      * @param motivosLocalizaciones MotivoLocalizacion con los cambios que se
      * van a realizar.
      */
-    public void editar(MotivosLocalizaciones motivosLocalizaciones);
+    public void editar(EntityManager em, MotivosLocalizaciones motivosLocalizaciones);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoLocalizacion
@@ -38,7 +39,7 @@ public interface PersistenciaMotivosLocalizacionesInterface {
      *
      * @param motivosLocalizaciones MotivoLocalizacion que se quiere eliminar.
      */
-    public void borrar(MotivosLocalizaciones motivosLocalizaciones);
+    public void borrar(EntityManager em, MotivosLocalizaciones motivosLocalizaciones);
 
     /**
      * Método encargado de buscar todos los MotivosLocalizaciones existentes en
@@ -46,7 +47,7 @@ public interface PersistenciaMotivosLocalizacionesInterface {
      *
      * @return Retorna una lista de MotivosLocalizaciones.
      */
-    public List<MotivosLocalizaciones> buscarMotivosLocalizaciones();
+    public List<MotivosLocalizaciones> buscarMotivosLocalizaciones(EntityManager em);
 
     /**
      * Método encargado de buscar el MotivoLocalizacion con la
@@ -57,7 +58,7 @@ public interface PersistenciaMotivosLocalizacionesInterface {
      * @return Retorna el MotivoLocalizacion identificado con la
      * secMotivosLocalizaciones dada por parámetro.
      */
-    public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secMotivosLocalizaciones);
+    public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(EntityManager em, BigInteger secMotivosLocalizaciones);
 
-    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(BigInteger secMotivoLocalizacion);
+    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(EntityManager em, BigInteger secMotivoLocalizacion);
 }

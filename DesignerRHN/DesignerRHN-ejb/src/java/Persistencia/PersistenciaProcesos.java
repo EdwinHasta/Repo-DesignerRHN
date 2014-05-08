@@ -23,11 +23,11 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-    public void crear(Procesos procesos) {
+    public void crear(EntityManager em, Procesos procesos) {
         try {
             em.persist(procesos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     }
 
     @Override
-    public void editar(Procesos procesos) {
+    public void editar(EntityManager em, Procesos procesos) {
         try {
             em.merge(procesos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     }
 
     @Override
-    public void borrar(Procesos procesos) {
+    public void borrar(EntityManager em, Procesos procesos) {
         try {
             em.remove(em.merge(procesos));
         } catch (Exception e) {
@@ -54,9 +54,10 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     }
    
     @Override
-    public List<Procesos> buscarProcesos() {
+    public List<Procesos> buscarProcesos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM Procesos t ORDER BY t.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Procesos> procesos = query.getResultList();
             return procesos;
         } catch (Exception e) {
@@ -66,10 +67,11 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     }
 
     @Override
-    public Procesos buscarProcesosSecuencia(BigInteger secuencia) {
+    public Procesos buscarProcesosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM Procesos t WHERE t.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Procesos procesos = (Procesos) query.getSingleResult();
             return procesos;
         } catch (Exception e) {
@@ -80,9 +82,10 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     }
 
     @Override
-    public List<Procesos> lovProcesos() {
+    public List<Procesos> lovProcesos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT p FROM Procesos p ORDER BY p.descripcion");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Procesos> listaProcesos = query.getResultList();
             return listaProcesos;
         } catch (Exception e) {
@@ -92,7 +95,7 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     }
 
     @Override
-    public List<Procesos> procesosParametros() {
+    public List<Procesos> procesosParametros(EntityManager em) {
         try {
             String sqlQuery = "SELECT P.* FROM PROCESOS P\n"
                     + "                   WHERE EXISTS (SELECT 'x' FROM usuariosprocesos up, usuarios u \n"

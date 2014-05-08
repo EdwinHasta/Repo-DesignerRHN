@@ -25,11 +25,11 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Idiomas idiomas) {
+    public void crear(EntityManager em, Idiomas idiomas) {
         try {
             em.persist(idiomas);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
     }
 
     @Override
-    public void editar(Idiomas idiomas) {
+    public void editar(EntityManager em, Idiomas idiomas) {
         try {
             em.merge(idiomas);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
     }
 
     @Override
-    public void borrar(Idiomas idiomas) {
+    public void borrar(EntityManager em, Idiomas idiomas) {
         try {
             em.remove(em.merge(idiomas));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
         }
     }
 
-    public Idiomas buscarIdioma(BigInteger secuenciaI) {
+    public Idiomas buscarIdioma(EntityManager em, BigInteger secuenciaI) {
         try {
             return em.find(Idiomas.class, secuenciaI);
         } catch (Exception e) {
@@ -64,9 +64,10 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
     }
 
     @Override
-    public List<Idiomas> buscarIdiomas() {
+    public List<Idiomas> buscarIdiomas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT i FROM Idiomas i");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Idiomas> idioma = (List<Idiomas>) query.getResultList();
             return idioma;
         } catch (Exception e) {
@@ -75,7 +76,7 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
         }
     }
 
-    public BigInteger contadorIdiomasPersonas(BigInteger secuencia) {
+    public BigInteger contadorIdiomasPersonas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM idiomaspersonas WHERE idioma = ?";

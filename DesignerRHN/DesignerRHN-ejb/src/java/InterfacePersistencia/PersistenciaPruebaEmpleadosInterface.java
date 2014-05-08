@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.PruebaEmpleados;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan para agrupar la información de un empleado. 
@@ -18,5 +19,5 @@ public interface PersistenciaPruebaEmpleadosInterface {
      * @param secEmpleado Secuencia del empleado del que se quiere la información.
      * @return Retorna una PruebaEmpleado con la informacion del empleado.
      */
-    public PruebaEmpleados empleadosAsignacion(BigInteger secEmpleado);
+    public PruebaEmpleados empleadosAsignacion(EntityManager em, BigInteger secEmpleado);
 }

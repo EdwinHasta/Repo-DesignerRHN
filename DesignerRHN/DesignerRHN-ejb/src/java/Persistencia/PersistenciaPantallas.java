@@ -22,14 +22,15 @@ public class PersistenciaPantallas implements PersistenciaPantallasInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public Pantallas buscarPantalla(BigInteger secuenciaTab) {
+    public Pantallas buscarPantalla(EntityManager em, BigInteger secuenciaTab) {
         try {
             Query query = em.createQuery("SELECT p from Pantallas p where p.tabla.secuencia = :secuenciaTab");
             query.setParameter("secuenciaTab", secuenciaTab);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Pantallas pantalla = (Pantallas) query.getSingleResult();
             return pantalla;
 

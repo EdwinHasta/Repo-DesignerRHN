@@ -25,22 +25,22 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
-    public void crear(TiposFamiliares tiposFamiliares) {
+    public void crear(EntityManager em, TiposFamiliares tiposFamiliares) {
         em.persist(tiposFamiliares);
     }
 
-    public void editar(TiposFamiliares tiposFamiliares) {
+    public void editar(EntityManager em, TiposFamiliares tiposFamiliares) {
         em.merge(tiposFamiliares);
     }
 
-    public void borrar(TiposFamiliares tiposFamiliares) {
+    public void borrar(EntityManager em, TiposFamiliares tiposFamiliares) {
         em.remove(em.merge(tiposFamiliares));
     }
 
-    public TiposFamiliares buscarTiposFamiliares(BigInteger secuenciaTF) {
+    public TiposFamiliares buscarTiposFamiliares(EntityManager em, BigInteger secuenciaTF) {
         try {
             return em.find(TiposFamiliares.class, secuenciaTF);
         } catch (Exception e) {
@@ -48,14 +48,15 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
         }
     }
 
-    public List<TiposFamiliares> buscarTiposFamiliares() {
+    public List<TiposFamiliares> buscarTiposFamiliares(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM TiposFamiliares te ORDER BY te.codigo ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposFamiliares> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
 
     }
 
-    public BigInteger contadorHvReferencias(BigInteger secuencia) {
+    public BigInteger contadorHvReferencias(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  hvreferencias hvr WHERE parentesco =?";

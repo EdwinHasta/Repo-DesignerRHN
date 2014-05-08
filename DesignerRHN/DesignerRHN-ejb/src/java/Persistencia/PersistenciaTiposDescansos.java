@@ -13,19 +13,19 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposDescansos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposDescansos' de la
+ * base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface{
+public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface {
 
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     @Override
-    public void crear(TiposDescansos tiposDescansos) {
+    public void crear(EntityManager em, TiposDescansos tiposDescansos) {
         try {
             em.persist(tiposDescansos);
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     }
 
     @Override
-    public void editar(TiposDescansos tiposDescansos) {
+    public void editar(EntityManager em, TiposDescansos tiposDescansos) {
         try {
             em.merge(tiposDescansos);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     }
 
     @Override
-    public void borrar(TiposDescansos tiposDescansos) {
+    public void borrar(EntityManager em, TiposDescansos tiposDescansos) {
         try {
             em.remove(em.merge(tiposDescansos));
         } catch (Exception e) {
@@ -52,9 +52,11 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     }
 
     @Override
-    public List<TiposDescansos> consultarTiposDescansos() {
+    public List<TiposDescansos> consultarTiposDescansos(EntityManager em) {
         try {
-            List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) em.createNamedQuery("TiposDescansos.findAll").getResultList();
+            Query query = em.createNamedQuery("TiposDescansos.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<TiposDescansos> tiposDescansos = (List<TiposDescansos>) query.getResultList();
             return tiposDescansos;
         } catch (Exception e) {
             System.out.println("Error buscarTiposDescansos PersistenciaTiposDescansos");
@@ -63,10 +65,11 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     }
 
     @Override
-    public TiposDescansos consultarTipoDescanso(BigInteger secuencia) {
+    public TiposDescansos consultarTipoDescanso(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT tp FROM TiposDescansos tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposDescansos tiposDescansos = (TiposDescansos) query.getSingleResult();
             return tiposDescansos;
         } catch (Exception e) {
@@ -75,8 +78,8 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
             return tiposDescansos;
         }
     }
-    
-    public BigInteger contarVigenciasJornadasTipoDescanso(BigInteger secuencia) {
+
+    public BigInteger contarVigenciasJornadasTipoDescanso(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasjornadas WHERE tipodescanso=?";

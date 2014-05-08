@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Periodicidades;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaPeriodicidadesInterface {
      *
      * @param periodicidades Periodicidad que se quiere crear.
      */
-    public void crear(Periodicidades periodicidades);
+    public void crear(EntityManager em, Periodicidades periodicidades);
 
     /**
      * Método encargado de modificar una Periodicidad de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaPeriodicidadesInterface {
      *
      * @param periodicidades Periodicidad con los cambios que se van a realizar.
      */
-    public void editar(Periodicidades periodicidades);
+    public void editar(EntityManager em, Periodicidades periodicidades);
 
     /**
      * Método encargado de eliminar de la base de datos la Periodicidad que
@@ -37,7 +38,7 @@ public interface PersistenciaPeriodicidadesInterface {
      *
      * @param periodicidades Periodicidad que se quiere eliminar.
      */
-    public void borrar(Periodicidades periodicidades);
+    public void borrar(EntityManager em, Periodicidades periodicidades);
 
     /**
      * Método encargado de buscar la Periodicidad con la secPeriodicidades dada
@@ -48,7 +49,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Retorna la Periodicidad identificada con la secPeriodicidades
      * dada por parámetro.
      */
-    public Periodicidades consultarPeriodicidad(BigInteger secPeriodicidades);
+    public Periodicidades consultarPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Método encargado de buscar todas las Periodicidades existentes en la base
@@ -56,7 +57,7 @@ public interface PersistenciaPeriodicidadesInterface {
      *
      * @return Retorna una lista de Periodicidades.
      */
-    public List<Periodicidades> consultarPeriodicidades();
+    public List<Periodicidades> consultarPeriodicidades(EntityManager em);
 
     /**
      * Método encargado de verificar si hay al menos una Periodicidad con el
@@ -66,7 +67,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Retorna true si existe alguna Periodicidad con el código dado por
      * parámetro.
      */
-    public boolean verificarCodigoPeriodicidad(BigInteger codigoPeriodicidad);
+    public boolean verificarCodigoPeriodicidad(EntityManager em, BigInteger codigoPeriodicidad);
 
     /**
      * Metodo encargado de contar cuantas CPCompromisos estan relacionadas con
@@ -76,7 +77,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas CPCompromisos tienen relacion con la secPeriodicidades
      * recibida
      */
-    public BigInteger contarCPCompromisosPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarCPCompromisosPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas DetallesPeriodicidades estan
@@ -86,7 +87,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas DetallesPeriodicidades tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarDetallesPeriodicidadesPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarDetallesPeriodicidadesPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas EersPrestamosDtos estan relacionadas
@@ -96,7 +97,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas EersPrestamosDtos tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarEersPrestamosDtosPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarEersPrestamosDtosPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas Empresas estan relacionadas con la
@@ -106,7 +107,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas Empresas tienen relacion con la secPeriodicidades
      * recibida
      */
-    public BigInteger contarEmpresasPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarEmpresasPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas FormulasAseguradas estan relacionadas
@@ -116,7 +117,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas FormulasAseguradas tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarFormulasAseguradasPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarFormulasAseguradasPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas FormulasContratos estan relacionadas
@@ -126,7 +127,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas FormulasContratos tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarFormulasContratosPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarFormulasContratosPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas GruposProvisiones estan relacionadas
@@ -136,7 +137,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas GruposProvisiones tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarGruposProvisionesPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarGruposProvisionesPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas Novedad estan relacionadas con la
@@ -145,7 +146,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @param secPeriodicidades Secuencia de la Periodicidad
      * @return Cuantas Novedad tienen relacion con la secPeriodicidades recibida
      */
-    public BigInteger contarNovedadesPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarNovedadesPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas ParametrosCambiosMasivos estan
@@ -155,7 +156,7 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas ParametrosCambiosMasivos tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarParametrosCambiosMasivosPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarParametrosCambiosMasivosPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 
     /**
      * Metodo encargado de contar cuantas VigenciasFormasPagos estan
@@ -165,5 +166,5 @@ public interface PersistenciaPeriodicidadesInterface {
      * @return Cuantas VigenciasFormasPagos tienen relacion con la
      * secPeriodicidades recibida
      */
-    public BigInteger contarVigenciasFormasPagosPeriodicidad(BigInteger secPeriodicidades);
+    public BigInteger contarVigenciasFormasPagosPeriodicidad(EntityManager em, BigInteger secPeriodicidades);
 }

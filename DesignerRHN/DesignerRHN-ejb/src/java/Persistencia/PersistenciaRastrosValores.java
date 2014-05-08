@@ -22,14 +22,15 @@ public class PersistenciaRastrosValores implements PersistenciaRastrosValoresInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-    public List<RastrosValores> rastroValores(BigInteger secRastro) {
+    public List<RastrosValores> rastroValores(EntityManager em, BigInteger secRastro) {
         try {
             Query query = em.createQuery("SELECT rv FROM RastrosValores rv WHERE rv.rastro.secuencia = :secRastro");
             query.setParameter("secRastro", secRastro);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<RastrosValores> listaRastroV =query.getResultList();
             return listaRastroV;
 

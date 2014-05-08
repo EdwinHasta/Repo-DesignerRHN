@@ -24,22 +24,22 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
-    public void crear(TiposEmpresas tiposEmpresas) {
+    public void crear(EntityManager em, TiposEmpresas tiposEmpresas) {
         em.persist(tiposEmpresas);
     }
 
-    public void editar(TiposEmpresas tiposEmpresas) {
+    public void editar(EntityManager em, TiposEmpresas tiposEmpresas) {
         em.merge(tiposEmpresas);
     }
 
-    public void borrar(TiposEmpresas tiposEmpresas) {
+    public void borrar(EntityManager em, TiposEmpresas tiposEmpresas) {
         em.remove(em.merge(tiposEmpresas));
     }
 
-    public TiposEmpresas buscarTipoEmpresa(BigInteger secuenciaTE) {
+    public TiposEmpresas buscarTipoEmpresa(EntityManager em, BigInteger secuenciaTE) {
         try {
             return em.find(TiposEmpresas.class, secuenciaTE);
         } catch (Exception e) {
@@ -47,15 +47,16 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
         }
     }
 
-    public List<TiposEmpresas> buscarTiposEmpresas() {
+    public List<TiposEmpresas> buscarTiposEmpresas(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM TiposEmpresas m ORDER BY m.codigo ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposEmpresas> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
 
     }
 
     @Override
-    public BigInteger contadorSueldosMercados(BigInteger secuencia) {
+    public BigInteger contadorSueldosMercados(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT (*)FROM sueldosmercados sm WHERE tipoempresa = ?";

@@ -25,11 +25,11 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(SubCategorias subCategorias) {
+    public void crear(EntityManager em, SubCategorias subCategorias) {
         try {
             em.persist(subCategorias);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     }
 
     @Override
-    public void editar(SubCategorias subCategorias) {
+    public void editar(EntityManager em, SubCategorias subCategorias) {
         try {
             em.merge(subCategorias);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     }
 
     @Override
-    public void borrar(SubCategorias subCategorias) {
+    public void borrar(EntityManager em, SubCategorias subCategorias) {
         try {
             em.remove(em.merge(subCategorias));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     }
 
     @Override
-    public List<SubCategorias> consultarSubCategorias() {
+    public List<SubCategorias> consultarSubCategorias(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM SubCategorias  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SubCategorias> listSubCategorias = query.getResultList();
             return listSubCategorias;
         } catch (Exception e) {
@@ -69,9 +70,10 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     }
 
     @Override
-    public SubCategorias consultarSubCategoria(BigInteger secSubCategoria) {
+    public SubCategorias consultarSubCategoria(EntityManager em, BigInteger secSubCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT sc FROM SubCategorias sc WHERE sc.secuencia=:secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secSubCategoria);
             SubCategorias subCategorias = (SubCategorias) query.getSingleResult();
             return subCategorias;
@@ -81,7 +83,7 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
     }
 
     @Override
-    public BigInteger contarEscalafones(BigInteger secuencia) {
+    public BigInteger contarEscalafones(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM escalafones WHERE subcategoria = ?";

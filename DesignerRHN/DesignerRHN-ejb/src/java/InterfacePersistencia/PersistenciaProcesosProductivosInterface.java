@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.ProcesosProductivos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaProcesosProductivosInterface {
      *
      * @param procesos ProcesoProductivo que se quiere crear.
      */
-    public void crear(ProcesosProductivos procesos);
+    public void crear(EntityManager em, ProcesosProductivos procesos);
 
     /**
      * Método encargado de modificar un ProcesoProductivo de la base de datos.
@@ -29,7 +30,7 @@ public interface PersistenciaProcesosProductivosInterface {
      *
      * @param procesos ProcesoProductivo con los cambios que se van a realizar.
      */
-    public void editar(ProcesosProductivos procesos);
+    public void editar(EntityManager em, ProcesosProductivos procesos);
 
     /**
      * Método encargado de eliminar de la base de datos el ProcesoProductivo que
@@ -37,7 +38,7 @@ public interface PersistenciaProcesosProductivosInterface {
      *
      * @param procesos ProcesoProductivo que se quiere eliminar.
      */
-    public void borrar(ProcesosProductivos procesos);
+    public void borrar(EntityManager em, ProcesosProductivos procesos);
 
     /**
      * Método encargado de buscar todos los ProcesosProductivos existentes en la
@@ -45,7 +46,7 @@ public interface PersistenciaProcesosProductivosInterface {
      *
      * @return Retorna una lista de ProcesosProductivos.
      */
-    public List<ProcesosProductivos> consultarProcesosProductivos();
+    public List<ProcesosProductivos> consultarProcesosProductivos(EntityManager em);
 
     /**
      * Método encargado de buscar el ProcesoProductivo con la secuencia dada por
@@ -55,11 +56,11 @@ public interface PersistenciaProcesosProductivosInterface {
      * @return Retorna el ProcesoProductivo identificado con la secuencia dada
      * por parámetro.
      */
-    public ProcesosProductivos consultarProcesosProductivos(BigInteger secuencia);
+    public ProcesosProductivos consultarProcesosProductivos(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarUnidadesProducidasProcesoProductivo(BigInteger secuencia);
+    public BigInteger contarUnidadesProducidasProcesoProductivo(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarTarifasProductosProcesoProductivo(BigInteger secuencia);
+    public BigInteger contarTarifasProductosProcesoProductivo(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarCargosProcesoProductivo(BigInteger secuencia);
+    public BigInteger contarCargosProcesoProductivo(EntityManager em, BigInteger secuencia);
 }

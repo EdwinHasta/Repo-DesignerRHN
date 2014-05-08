@@ -25,26 +25,25 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     @Override
-    public void crear(TiposDias tiposDias) {
+    public void crear(EntityManager em, TiposDias tiposDias) {
         em.persist(tiposDias);
     }
 
     @Override
-    public void editar(TiposDias tiposDias) {
+    public void editar(EntityManager em, TiposDias tiposDias) {
         em.merge(tiposDias);
     }
 
     @Override
-    public void borrar(TiposDias tiposDias) {
+    public void borrar(EntityManager em, TiposDias tiposDias) {
         em.remove(em.merge(tiposDias));
     }
 
     @Override
-    public TiposDias buscarTipoDia(BigInteger secuencia) {
+    public TiposDias buscarTipoDia(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposDias.class, secuencia);
         } catch (Exception e) {
@@ -54,9 +53,10 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     }
 
     @Override
-    public List<TiposDias> buscarTiposDias() {
+    public List<TiposDias> buscarTiposDias(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT td FROM TiposDias td ORDER BY td.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDias> tiposDias = query.getResultList();
             return tiposDias;
         } catch (Exception e) {
@@ -66,7 +66,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     }
 
     @Override
-    public BigInteger contadorDiasLaborales(BigInteger secuencia) {
+    public BigInteger contadorDiasLaborales(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = " SELECT COUNT(*)FROM diaslaborables WHERE tipodia = ? ";
@@ -83,7 +83,7 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     }
 
     @Override
-    public BigInteger contadorExtrasRecargos(BigInteger secuencia) {
+    public BigInteger contadorExtrasRecargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*)FROM extrasrecargos WHERE tipodia = ? ";

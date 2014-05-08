@@ -25,29 +25,28 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     @Override
-    public void crear(MotivosDefinitivas motivosDefinitivas) {
+    public void crear(EntityManager em, MotivosDefinitivas motivosDefinitivas) {
         em.persist(motivosDefinitivas);
     }
 
     @Override
-    public void editar(MotivosDefinitivas motivosDefinitivas) {
+    public void editar(EntityManager em, MotivosDefinitivas motivosDefinitivas) {
         em.merge(motivosDefinitivas);
     }
 
     @Override
-    public void borrar(MotivosDefinitivas motivosDefinitivas) {
+    public void borrar(EntityManager em, MotivosDefinitivas motivosDefinitivas) {
         em.remove(em.merge(motivosDefinitivas));
     }
 
     @Override
-    public List<MotivosDefinitivas> buscarMotivosDefinitivas() {
+    public List<MotivosDefinitivas> buscarMotivosDefinitivas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT md FROM MotivosDefinitivas md ORDER BY md.codigo ASC");
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosDefinitivas> motivoD = query.getResultList();
             return motivoD;
         } catch (Exception e) {
@@ -57,7 +56,7 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     }
 
     @Override
-    public MotivosDefinitivas buscarMotivoDefinitiva(BigInteger secuenciaME) {
+    public MotivosDefinitivas buscarMotivoDefinitiva(EntityManager em, BigInteger secuenciaME) {
         try {
             return em.find(MotivosDefinitivas.class, secuenciaME);
         } catch (Exception e) {
@@ -66,7 +65,7 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     }
 
     @Override
-    public BigInteger contadorNovedadesSistema(BigInteger secuencia) {
+    public BigInteger contadorNovedadesSistema(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivodefinitiva = ? ";
@@ -83,7 +82,7 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
     }
 
     @Override
-    public BigInteger contadorParametrosCambiosMasivos(BigInteger secuencia) {
+    public BigInteger contadorParametrosCambiosMasivos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM parametroscambiosmasivos WHERE retimotivodefinitiva =  ? ";

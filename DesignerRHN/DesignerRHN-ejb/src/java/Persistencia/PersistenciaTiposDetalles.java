@@ -25,11 +25,11 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposDetalles tiposDetalles) {
+    public void crear(EntityManager em, TiposDetalles tiposDetalles) {
         try {
             em.persist(tiposDetalles);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     }
 
     @Override
-    public void editar(TiposDetalles tiposDetalles) {
+    public void editar(EntityManager em, TiposDetalles tiposDetalles) {
         try {
             em.merge(tiposDetalles);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     }
 
     @Override
-    public void borrar(TiposDetalles tiposDetalles) {
+    public void borrar(EntityManager em, TiposDetalles tiposDetalles) {
         try {
             em.remove(em.merge(tiposDetalles));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     }
 
     @Override
-    public List<TiposDetalles> buscarTiposDetalles() {
+    public List<TiposDetalles> buscarTiposDetalles(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT td FROM TiposDetalles td ORDER BY td.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDetalles> tiposDetalles = query.getResultList();
             return tiposDetalles;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
     }
 
     @Override
-    public TiposDetalles buscarTiposDetallesSecuencia(BigInteger secuencia) {
+    public TiposDetalles buscarTiposDetallesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT td FROM TiposDetalles td WHERE td.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposDetalles tiposDetalles = (TiposDetalles) query.getSingleResult();
             return tiposDetalles;
         } catch (Exception e) {

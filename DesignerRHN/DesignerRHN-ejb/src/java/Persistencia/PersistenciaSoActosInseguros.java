@@ -24,26 +24,26 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-     public void crear(SoActosInseguros SoActosInseguros) {
+     public void crear(EntityManager em, SoActosInseguros SoActosInseguros) {
         em.persist(SoActosInseguros);
     }
 
     @Override
-    public void editar(SoActosInseguros SoActosInseguros) {
+    public void editar(EntityManager em, SoActosInseguros SoActosInseguros) {
         em.merge(SoActosInseguros);
     }
 
     @Override
-    public void borrar(SoActosInseguros SoActosInseguros) {
+    public void borrar(EntityManager em, SoActosInseguros SoActosInseguros) {
         em.remove(em.merge(SoActosInseguros));
     }
 
     @Override
-    public SoActosInseguros buscarSoActoInseguro(BigInteger secuenciaSCAP) {
+    public SoActosInseguros buscarSoActoInseguro(EntityManager em, BigInteger secuenciaSCAP) {
         try {
             return em.find(SoActosInseguros.class, secuenciaSCAP);
         } catch (Exception e) {
@@ -52,9 +52,10 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
     }
 
     @Override
-    public List<SoActosInseguros> buscarSoActosInseguros() {
+    public List<SoActosInseguros> buscarSoActosInseguros(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM SoActosInseguros  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SoActosInseguros> listSoCondicionesAmbientalesP = query.getResultList();
             return listSoCondicionesAmbientalesP;
         } catch (Exception e) {
@@ -64,7 +65,7 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
     }
 
     @Override
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sam WHERE sam.actoinseguro = ?";

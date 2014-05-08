@@ -27,22 +27,22 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     private EntityManager em;
 
     @Override
-    public void crear(Lesiones lesiones) {
+    public void crear(EntityManager em, Lesiones lesiones) {
         em.persist(lesiones);
     }
 
     @Override
-    public void editar(Lesiones lesiones) {
+    public void editar(EntityManager em, Lesiones lesiones) {
         em.merge(lesiones);
     }
 
     @Override
-    public void borrar(Lesiones lesiones) {
+    public void borrar(EntityManager em, Lesiones lesiones) {
         em.remove(em.merge(lesiones));
     }
 
     @Override
-    public Lesiones buscarLesion(BigInteger secuenciaL) {
+    public Lesiones buscarLesion(EntityManager em, BigInteger secuenciaL) {
         try {
             return em.find(Lesiones.class, secuenciaL);
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     }
 
     @Override
-    public List<Lesiones> buscarLesiones() {
+    public List<Lesiones> buscarLesiones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM Lesiones l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Lesiones> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
         } catch (Exception e) {
@@ -63,7 +64,7 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     }
 
     @Override
-    public BigInteger contadorDetallesLicensias(BigInteger secuencia) {
+    public BigInteger contadorDetallesLicensias(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM  detalleslicencias dl WHERE dl.lesion= ?";
@@ -79,7 +80,7 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
     }
 
     @Override
-    public BigInteger contadorSoAccidentesDomesticos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesDomesticos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sm WHERE sm.lesion = ?";

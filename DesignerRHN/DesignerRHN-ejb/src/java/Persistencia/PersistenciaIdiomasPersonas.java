@@ -22,11 +22,11 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(IdiomasPersonas idiomasPersonas) {
+    public void crear(EntityManager em, IdiomasPersonas idiomasPersonas) {
         try {
             em.persist(idiomasPersonas);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     }
 
     @Override
-    public void editar(IdiomasPersonas idiomasPersonas) {
+    public void editar(EntityManager em, IdiomasPersonas idiomasPersonas) {
         try {
             em.merge(idiomasPersonas);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     }
 
     @Override
-    public void borrar(IdiomasPersonas idiomasPersonas) {
+    public void borrar(EntityManager em, IdiomasPersonas idiomasPersonas) {
         try {
             em.remove(em.merge(idiomasPersonas));
         } catch (Exception e) {
@@ -53,14 +53,16 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     }
     
     @Override
-    public List<IdiomasPersonas> idiomasPersona(BigInteger secuenciaPersona) {
+    public List<IdiomasPersonas> idiomasPersona(EntityManager em, BigInteger secuenciaPersona) {
         try {
             Query query = em.createQuery("SELECT COUNT(ip) FROM IdiomasPersonas ip WHERE ip.persona.secuencia = :secuenciaPersona");
             query.setParameter("secuenciaPersona", secuenciaPersona);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT ip FROM IdiomasPersonas ip WHERE ip.persona.secuencia = :secuenciaPersona");
                 queryFinal.setParameter("secuenciaPersona", secuenciaPersona);
+                queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<IdiomasPersonas> listaIdiomasPersonas = queryFinal.getResultList();
                 return listaIdiomasPersonas;
             }
@@ -72,9 +74,10 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
     }
 
     @Override
-    public List<IdiomasPersonas> totalIdiomasPersonas() {
+    public List<IdiomasPersonas> totalIdiomasPersonas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ip FROM IdiomasPersonas ip");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<IdiomasPersonas> resultado = (List<IdiomasPersonas>) query.getResultList();
             return resultado;
         } catch (Exception e) {

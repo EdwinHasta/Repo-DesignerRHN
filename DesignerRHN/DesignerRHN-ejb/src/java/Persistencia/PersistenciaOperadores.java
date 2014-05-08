@@ -21,12 +21,12 @@ import javax.persistence.criteria.CriteriaQuery;
 public class PersistenciaOperadores implements PersistenciaOperadoresInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
-     */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//     */
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public List<Operadores> buscarOperadores(){
+    public List<Operadores> buscarOperadores(EntityManager em){
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Operadores.class));

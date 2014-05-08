@@ -3,10 +3,10 @@
  */
 package InterfacePersistencia;
 
-import javax.ejb.Local;
 import Entidades.MotivosEmbargos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -14,7 +14,6 @@ import java.util.List;
  *
  * @author betelgeuse
  */
-@Local
 public interface PersistenciaMotivosEmbargosInterface {
 
     /**
@@ -22,7 +21,7 @@ public interface PersistenciaMotivosEmbargosInterface {
      *
      * @param motivosEmbargos MotivoEmbargo que se quiere crear.
      */
-    public void crear(MotivosEmbargos motivosEmbargos);
+    public void crear(EntityManager em, MotivosEmbargos motivosEmbargos);
 
     /**
      * Método encargado de modificar un MotivoEmbargo de la base de datos. Este
@@ -32,7 +31,7 @@ public interface PersistenciaMotivosEmbargosInterface {
      * @param motivosEmbargos MotivoEmbargo con los cambios que se van a
      * realizar.
      */
-    public void editar(MotivosEmbargos motivosEmbargos);
+    public void editar(EntityManager em, MotivosEmbargos motivosEmbargos);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoEmbargo que
@@ -40,7 +39,7 @@ public interface PersistenciaMotivosEmbargosInterface {
      *
      * @param motivosEmbargos MotivoEmbargo que se quiere eliminar.
      */
-    public void borrar(MotivosEmbargos motivosEmbargos);
+    public void borrar(EntityManager em, MotivosEmbargos motivosEmbargos);
 
     /**
      * Método encargado de buscar el MotivoEmbargo con la secMotivosEmbargos dada por
@@ -50,7 +49,7 @@ public interface PersistenciaMotivosEmbargosInterface {
      * @return Retorna el MotivoEmbargo identificado con la secMotivosEmbargos dada por
      * parámetro.
      */
-    public MotivosEmbargos buscarMotivoEmbargo(BigInteger secMotivosEmbargos);
+    public MotivosEmbargos buscarMotivoEmbargo(EntityManager em, BigInteger secMotivosEmbargos);
 
     /**
      * Método encargado de buscar todos los MotivosEmbargos existentes en la
@@ -58,7 +57,7 @@ public interface PersistenciaMotivosEmbargosInterface {
      *
      * @return Retorna una lista de MotivosEmbargos.
      */
-    public List<MotivosEmbargos> buscarMotivosEmbargos();
+    public List<MotivosEmbargos> buscarMotivosEmbargos(EntityManager em);
 
     /**
      * Método encargado de contar los EersPrestamos que están asociados a un
@@ -68,7 +67,7 @@ public interface PersistenciaMotivosEmbargosInterface {
      * @return Retorna la cantidad de EersPrestamos cuyo MotivoEmbargo tiene
      * como secMotivosEmbargos el valor dado por parámetro.
      */
-    public BigInteger contadorEersPrestamos(BigInteger secMotivosEmbargos);
+    public BigInteger contadorEersPrestamos(EntityManager em, BigInteger secMotivosEmbargos);
 
     /**
      * Método encargado de contar los Embargos que están asociados a un
@@ -78,5 +77,5 @@ public interface PersistenciaMotivosEmbargosInterface {
      * @return Retorna la cantidad de Embargos cuyo MotivoEmbargo tiene como
      * secMotivosEmbargos el valor dado por parámetro.
      */
-    public BigInteger contadorEmbargos(BigInteger secMotivosEmbargos);
+    public BigInteger contadorEmbargos(EntityManager em, BigInteger secMotivosEmbargos);
 }

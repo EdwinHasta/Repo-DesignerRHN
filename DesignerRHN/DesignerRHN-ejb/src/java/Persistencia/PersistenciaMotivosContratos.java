@@ -24,11 +24,11 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(MotivosContratos motivosContratos) {
+    public void crear(EntityManager em, MotivosContratos motivosContratos) {
         try {
             em.persist(motivosContratos);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public void editar(MotivosContratos motivosContratos) {
+    public void editar(EntityManager em, MotivosContratos motivosContratos) {
         try {
             em.merge(motivosContratos);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public void borrar(MotivosContratos motivosContratos) {
+    public void borrar(EntityManager em, MotivosContratos motivosContratos) {
         try {
             em.remove(em.merge(motivosContratos));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public MotivosContratos buscarMotivoContrato(BigInteger secuenciaMotivosContratos) {
+    public MotivosContratos buscarMotivoContrato(EntityManager em, BigInteger secuenciaMotivosContratos) {
         try {
             return em.find(MotivosContratos.class, secuenciaMotivosContratos);
         } catch (Exception e) {
@@ -65,9 +65,10 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public List<MotivosContratos> motivosContratos() {
+    public List<MotivosContratos> motivosContratos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT m FROM MotivosContratos m ORDER BY m.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosContratos> motivosContratos = query.getResultList();
             return motivosContratos;
         } catch (Exception e) {
@@ -76,7 +77,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public List<MotivosContratos> buscarMotivosContratos() {
+    public List<MotivosContratos> buscarMotivosContratos(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(MotivosContratos.class));
@@ -88,11 +89,12 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasTiposContratos(BigInteger secuencia) {
+    public BigInteger verificarBorradoVigenciasTiposContratos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(v) FROM VigenciasTiposContratos v WHERE v.motivocontrato.secuencia =:secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger (query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosContratos retorno ==" + retorno.intValue());
 

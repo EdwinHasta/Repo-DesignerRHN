@@ -28,11 +28,11 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(NovedadesSistema novedades) {
+    public void crear(EntityManager em, NovedadesSistema novedades) {
         try {
             em.merge(novedades);
         } catch (PersistenceException ex) {
@@ -41,20 +41,21 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
     }
 
     @Override
-    public void editar(NovedadesSistema novedades) {
+    public void editar(EntityManager em, NovedadesSistema novedades) {
         em.merge(novedades);
     }
 
     @Override
-    public void borrar(NovedadesSistema novedades) {
+    public void borrar(EntityManager em, NovedadesSistema novedades) {
         em.remove(em.merge(novedades));
     }
 
     @Override
-    public List<NovedadesSistema> novedadesEmpleado(BigInteger secuenciaEmpleado) {
+    public List<NovedadesSistema> novedadesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.tipo = 'DEFINITIVA' and n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<NovedadesSistema> novedadesSistema = query.getResultList();
             return novedadesSistema;
         } catch (Exception e) {
@@ -63,10 +64,11 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
         }
     }
 
-    public List<NovedadesSistema> novedadesEmpleadoVacaciones(BigInteger secuenciaEmpleado) {
+    public List<NovedadesSistema> novedadesEmpleadoVacaciones(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT n FROM NovedadesSistema n WHERE n.empleado.secuencia = :secuenciaEmpleado ORDER BY n.fechainicialdisfrute DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<NovedadesSistema> novedadesSistema = query.getResultList();
             return novedadesSistema;
         } catch (Exception e) {

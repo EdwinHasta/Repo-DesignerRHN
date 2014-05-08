@@ -22,22 +22,22 @@ import javax.persistence.Query;
 public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//     */
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Juzgados juzgados) {
+    public void crear(EntityManager em, Juzgados juzgados) {
         em.persist(juzgados);
     }
 
     @Override
-    public void editar(Juzgados juzgados) {
+    public void editar(EntityManager em, Juzgados juzgados) {
         em.merge(juzgados);
     }
 
     @Override
-    public void borrar(Juzgados juzgados) {
+    public void borrar(EntityManager em, Juzgados juzgados) {
         try {
             em.remove(em.merge(juzgados));
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     }
 
     @Override
-    public Juzgados buscarJuzgado(BigInteger secuencia) {
+    public Juzgados buscarJuzgado(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Juzgados.class, secuencia);
         } catch (Exception e) {
@@ -56,17 +56,19 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     }
 
     @Override
-    public List<Juzgados> buscarJuzgados() {
+    public List<Juzgados> buscarJuzgados(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM Juzgados m ORDER BY m.codigo ASC");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Juzgados> listaMotivosPrestamos = query.getResultList();
         return listaMotivosPrestamos;
     }
 
     @Override
-    public List<Juzgados> buscarJuzgadosPorCiudad(BigInteger secCiudad) {
+    public List<Juzgados> buscarJuzgadosPorCiudad(EntityManager em, BigInteger secCiudad) {
         try {
             Query query = em.createQuery("SELECT cce FROM Juzgados cce WHERE cce.ciudad.secuencia = :secuenciaJuzgado ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaJuzgado", secCiudad);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Juzgados> listaJuzgadosPorCiudad = query.getResultList();
             return listaJuzgadosPorCiudad;
         } catch (Exception e) {
@@ -76,7 +78,7 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
     }
 
     @Override
-    public BigInteger contadorEerPrestamos(BigInteger secuencia) {
+    public BigInteger contadorEerPrestamos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             System.out.println("Persistencia secuencia borrado " + secuencia);

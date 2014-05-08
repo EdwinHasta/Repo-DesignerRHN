@@ -23,21 +23,21 @@ public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-    public void crear(MotivosPrestamos motivosPrestamos) {
+    public void crear(EntityManager em, MotivosPrestamos motivosPrestamos) {
         em.persist(motivosPrestamos);
     }
 
     @Override
-    public void editar(MotivosPrestamos motivosPrestamos) {
+    public void editar(EntityManager em, MotivosPrestamos motivosPrestamos) {
         em.merge(motivosPrestamos);
     }
 
     @Override
-    public void borrar(MotivosPrestamos motivosPrestamos) {
+    public void borrar(EntityManager em, MotivosPrestamos motivosPrestamos) {
         try {
             em.remove(em.merge(motivosPrestamos));
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamo
     }
 
     @Override
-    public MotivosPrestamos buscarMotivoPrestamo(BigInteger secuencia) {
+    public MotivosPrestamos buscarMotivoPrestamo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(MotivosPrestamos.class, secuencia);
         } catch (Exception e) {
@@ -56,14 +56,15 @@ public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamo
     }
 
     @Override
-    public List<MotivosPrestamos> buscarMotivosPrestamos() {
+    public List<MotivosPrestamos> buscarMotivosPrestamos(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM MotivosPrestamos m ORDER BY m.codigo ASC");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<MotivosPrestamos> listaMotivosPrestamos = query.getResultList();
         return listaMotivosPrestamos;
     }
 
     @Override
-    public BigInteger contadorEersPrestamos(BigInteger secuencia) {
+    public BigInteger contadorEersPrestamos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM eersprestamos eer WHERE eer.motivoprestamo = ?";

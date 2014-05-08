@@ -23,11 +23,11 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Proyectos proyectos) {
+    public void crear(EntityManager em, Proyectos proyectos) {
         try {
             em.persist(proyectos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }
 
     @Override
-    public void editar(Proyectos proyectos) {
+    public void editar(EntityManager em, Proyectos proyectos) {
         try {
             em.merge(proyectos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }
 
     @Override
-    public void borrar(Proyectos proyectos) {
+    public void borrar(EntityManager em, Proyectos proyectos) {
         try {
             em.remove(em.merge(proyectos));
         } catch (Exception e) {
@@ -54,10 +54,11 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }    
     
     @Override
-    public Proyectos buscarProyectoSecuencia(BigInteger secuencia) {
+    public Proyectos buscarProyectoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Proyectos proyectos = (Proyectos) query.getSingleResult();
             return proyectos;
         } catch (Exception e) {
@@ -68,9 +69,10 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }
      
    @Override
-    public List<Proyectos> proyectos() {
+    public List<Proyectos> proyectos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT p FROM Proyectos p ORDER BY p.empresa.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Proyectos> proyectos = query.getResultList();
             return proyectos;
         } catch (Exception e) {
@@ -79,10 +81,11 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
     }
    
     @Override
-   public Proyectos buscarProyectoNombre(String nombreP){
+   public Proyectos buscarProyectoNombre(EntityManager em, String nombreP){
        try{
            Query query = em.createQuery("SELECT p FROM Proyectos p WHERE p.nombreproyecto =:nombreP");
            query.setParameter("nombreP", nombreP);
+           query.setHint("javax.persistence.cache.storeMode", "REFRESH");
            Proyectos pry = (Proyectos) query.getSingleResult();
            return pry;
        }catch(Exception e){

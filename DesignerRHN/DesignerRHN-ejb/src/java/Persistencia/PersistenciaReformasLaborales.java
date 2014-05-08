@@ -22,36 +22,38 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(ReformasLaborales reformaLaboral) {
+    public void crear(EntityManager em, ReformasLaborales reformaLaboral) {
         em.persist(reformaLaboral);
     }
 
     @Override
-    public void editar(ReformasLaborales reformaLaboral) {
+    public void editar(EntityManager em, ReformasLaborales reformaLaboral) {
         em.merge(reformaLaboral);
     }
 
     @Override
-    public void borrar(ReformasLaborales reformaLaboral) {
+    public void borrar(EntityManager em, ReformasLaborales reformaLaboral) {
         em.remove(em.merge(reformaLaboral));
     }
 
     @Override
-    public List<ReformasLaborales> buscarReformasLaborales() {
+    public List<ReformasLaborales> buscarReformasLaborales(EntityManager em) {
         Query query = em.createQuery("SELECT e FROM ReformasLaborales e ORDER BY e.codigo ASC");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<ReformasLaborales> reformaLista = (List<ReformasLaborales>) query.getResultList();
         return reformaLista;
     }
 
     @Override
-    public ReformasLaborales buscarReformaSecuencia(BigInteger secuencia) {
+    public ReformasLaborales buscarReformaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT e FROM ReformasLaborales e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ReformasLaborales reformaL = (ReformasLaborales) query.getSingleResult();
             return reformaL;
         } catch (Exception e) {

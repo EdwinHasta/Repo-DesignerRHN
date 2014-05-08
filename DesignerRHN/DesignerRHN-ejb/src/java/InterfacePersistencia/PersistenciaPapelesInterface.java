@@ -8,13 +8,13 @@ package InterfacePersistencia;
 import Entidades.Papeles;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
+
 public interface PersistenciaPapelesInterface {
 
     /**
@@ -22,7 +22,7 @@ public interface PersistenciaPapelesInterface {
      *
      * @param papel Papel que se quiere crear.
      */
-    public void crear(Papeles papel);
+    public void crear(EntityManager em, Papeles papel);
 
     /**
      * Método encargado de modificar un Papel de la base de datos. Este método
@@ -31,7 +31,7 @@ public interface PersistenciaPapelesInterface {
      *
      * @param papel Papel con los cambios que se van a realizar.
      */
-    public void editar(Papeles papel);
+    public void editar(EntityManager em, Papeles papel);
 
     /**
      * Método encargado de eliminar de la base de datos el Papel que entra por
@@ -39,7 +39,7 @@ public interface PersistenciaPapelesInterface {
      *
      * @param papel Papel con los cambios que se van a realizar.
      */
-    public void borrar(Papeles papel);
+    public void borrar(EntityManager em, Papeles papel);
 
     /**
      * Método encargado de buscar todos los Papeles existentes en la base de
@@ -47,7 +47,7 @@ public interface PersistenciaPapelesInterface {
      *
      * @return Retorna una lista de Papeles.
      */
-    public List<Papeles> consultarPapeles();
+    public List<Papeles> consultarPapeles(EntityManager em);
 
     /**
      * Método encargado de buscar los Papeles de una empresa específica.
@@ -57,7 +57,7 @@ public interface PersistenciaPapelesInterface {
      * @return Retorna una lista de Pepeles que pertenecen a la empresa con
      * secEmpresa igual a la pasada por parametro.
      */
-    public List<Papeles> consultarPapelesEmpresa(BigInteger secEmpresa);
+    public List<Papeles> consultarPapelesEmpresa(EntityManager em, BigInteger secEmpresa);
 
     /**
      * Método encargado de buscar el Papel con la secPapel dada por parámetro.
@@ -65,7 +65,7 @@ public interface PersistenciaPapelesInterface {
      * @param secPapel Secuencia del Papel que se quiere encontrar.
      * @return Retorna el Papel identificado con la secPapel dada por parámetro.
      */
-    public Papeles consultarPapel(BigInteger secPapel);
+    public Papeles consultarPapel(EntityManager em, BigInteger secPapel);
 
     /**
      * Método encargado de contar cuantas VigenciasCargos están asociados a un
@@ -75,5 +75,5 @@ public interface PersistenciaPapelesInterface {
      * @return Retorna el número de VigenciasCargos cuyo atributo 'papel' tiene
      * como secuencia el valor dado por parámetro.
      */
-    public BigInteger contarVigenciasCargosPapel(BigInteger secPapel);
+    public BigInteger contarVigenciasCargosPapel(EntityManager em, BigInteger secPapel);
 }

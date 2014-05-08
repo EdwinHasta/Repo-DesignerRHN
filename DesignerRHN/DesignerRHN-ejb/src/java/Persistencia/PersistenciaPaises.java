@@ -25,11 +25,11 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Paises tiposAusentismos) {
+    public void crear(EntityManager em, Paises tiposAusentismos) {
         try {
             em.merge(tiposAusentismos);
         } catch (PersistenceException ex) {
@@ -38,19 +38,20 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
     }
 
     @Override
-    public void editar(Paises tiposAusentismos) {
+    public void editar(EntityManager em, Paises tiposAusentismos) {
         em.merge(tiposAusentismos);
     }
 
     @Override
-    public void borrar(Paises tiposAusentismos) {
+    public void borrar(EntityManager em, Paises tiposAusentismos) {
         em.remove(em.merge(tiposAusentismos));
     }
 
     @Override
-    public List<Paises> consultarPaises() {
+    public List<Paises> consultarPaises(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ta FROM Paises ta ORDER BY ta.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Paises> todosPaises = query.getResultList();
             return todosPaises;
         } catch (Exception e) {
@@ -59,10 +60,11 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
         }
     }
 
-    public Paises consultarPais(BigInteger secClaseCategoria) {
+    public Paises consultarPais(EntityManager em, BigInteger secClaseCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT cc FROM Paises cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Paises clasesCategorias = (Paises) query.getSingleResult();
             return clasesCategorias;
         } catch (Exception e) {
@@ -70,7 +72,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
         }
     }
 
-    public BigInteger contarDepartamentosPais(BigInteger secuencia) {
+    public BigInteger contarDepartamentosPais(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM departamentos WHERE pais = ?";
@@ -85,7 +87,7 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
         }
     }
 
-    public BigInteger contarFestivosPais(BigInteger secuencia) {
+    public BigInteger contarFestivosPais(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM festivos WHERE pais = ?";

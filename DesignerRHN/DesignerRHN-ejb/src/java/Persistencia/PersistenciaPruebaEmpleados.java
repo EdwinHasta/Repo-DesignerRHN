@@ -22,15 +22,16 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public PruebaEmpleados empleadosAsignacion(BigInteger secEmpleado) {
+    public PruebaEmpleados empleadosAsignacion(EntityManager em, BigInteger secEmpleado) {
         try {
             PruebaEmpleados pruebaEmpleado = null;            
             Query queryValidacion = em.createQuery("SELECT COUNT(vwa) FROM VWActualesSueldos vwa WHERE vwa.empleado.secuencia = :secEmpleado");
             queryValidacion.setParameter("secEmpleado", secEmpleado);
+            queryValidacion.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) queryValidacion.getSingleResult();
             if (resultado > 0) {
                 String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.PRIMERAPELLIDO||' '||P.SEGUNDOAPELLIDO||' '||P.NOMBRE NOMBRE, SUM(VWA.valor) VALOR\n"
@@ -45,6 +46,7 @@ public class PersistenciaPruebaEmpleados implements PersistenciaPruebaEmpleadosI
             } else {               
                 Query queryValidacion2 = em.createQuery("SELECT COUNT(vwp) FROM VWActualesPensiones vwp WHERE vwp.empleado.secuencia = :secEmpleado");
                 queryValidacion2.setParameter("secEmpleado", secEmpleado);
+                queryValidacion2.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 Long resultado2 = (Long) queryValidacion2.getSingleResult();
                 if(resultado2 > 0){
                 String sqlQuery = "SELECT E.secuencia ID, E.codigoempleado CODIGO, P.nombre NOMBRE, SUM(VWP.valor) VALOR\n"

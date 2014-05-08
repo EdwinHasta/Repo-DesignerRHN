@@ -26,11 +26,11 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Novedades novedades) {
+    public void crear(EntityManager em, Novedades novedades) {
         try {
             em.persist(novedades);
         } catch (PersistenceException ex) {
@@ -39,21 +39,22 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public void editar(Novedades novedades) {
+    public void editar(EntityManager em, Novedades novedades) {
         em.merge(novedades);
     }
 
     @Override
-    public void borrar(Novedades novedades) {
+    public void borrar(EntityManager em, Novedades novedades) {
         em.remove(em.merge(novedades));
     }
 
     @Override
-    public Novedades buscarNovedad(BigInteger secNovedad) {
+    public Novedades buscarNovedad(EntityManager em, BigInteger secNovedad) {
         try {
             if (secNovedad != null) {
                 Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.secuencia = :secNovedad");
                 query.setParameter("secNovedad", secNovedad);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 Novedades novedad = (Novedades) query.getSingleResult();
                 return novedad;
             } else {
@@ -66,11 +67,12 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public List<Novedades> novedadesParaReversar(BigInteger usuarioBD, String documentoSoporte) {
+    public List<Novedades> novedadesParaReversar(EntityManager em, BigInteger usuarioBD, String documentoSoporte) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.usuarioreporta.secuencia = :usuarioBD AND n.documentosoporte = :documentoSoporte");
             query.setParameter("usuarioBD", usuarioBD);
             query.setParameter("documentoSoporte", documentoSoporte);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Novedades> listNovedades = query.getResultList();
             return listNovedades;
         } catch (Exception e) {
@@ -80,10 +82,11 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public List<Novedades> todasNovedadesEmpleado(BigInteger secuenciaEmpleado) {
+    public List<Novedades> todasNovedadesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Novedades> todasNovedades = query.getResultList();
             return todasNovedades;
         } catch (Exception e) {
@@ -93,10 +96,11 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public List<Novedades> todasNovedadesConcepto(BigInteger secuenciaConcepto) {
+    public List<Novedades> todasNovedadesConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.concepto.secuencia= :secuenciaConcepto");
             query.setParameter("secuenciaConcepto", secuenciaConcepto);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Novedades> todasNovedades = query.getResultList();
             return todasNovedades;
         } catch (Exception e) {
@@ -106,10 +110,11 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public List<Novedades> todasNovedadesTercero(BigInteger secuenciaTercero) {
+    public List<Novedades> todasNovedadesTercero(EntityManager em, BigInteger secuenciaTercero) {
         try {
             Query query = em.createQuery("SELECT n FROM Novedades n WHERE n.tercero.secuencia= :secuenciaTercero");
             query.setParameter("secuenciaTercero", secuenciaTercero);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Novedades> todasNovedades = query.getResultList();
             return todasNovedades;
         } catch (Exception e) {
@@ -119,11 +124,12 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public int reversarNovedades(BigInteger usuarioBD, String documentoSoporte) {
+    public int reversarNovedades(EntityManager em, BigInteger usuarioBD, String documentoSoporte) {
         try {
             Query query = em.createQuery("DELETE FROM Novedades n WHERE n.usuarioreporta.secuencia = :usuarioBD AND n.documentosoporte = :documentoSoporte");
             query.setParameter("usuarioBD", usuarioBD);
             query.setParameter("documentoSoporte", documentoSoporte);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             int rows = query.executeUpdate();
             return rows;
         } catch (Exception e) {
@@ -133,7 +139,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
     }
 
     @Override
-    public List<Novedades> novedadesEmpleado(BigInteger secuenciaEmpleado) {
+    public List<Novedades> novedadesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT * FROM Novedades n WHERE  n.empleado = ? AND n.tipo IN ('FIJA','PAGO POR FUERA','OCASIONAL') and ((n.fechafinal IS NULL AND NVL(SALDO,99999) > 0) OR (n.saldo > 0 and n.fechainicial >= (SELECT fechadesdecausado FROM vwactualesfechas)) OR n.fechafinal > (SELECT fechadesdecausado FROM vwactualesfechas )) ORDER BY n.fechafinal";
@@ -147,7 +153,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
 
-    public List<Novedades> novedadesConcepto(BigInteger secuenciaConcepto) {
+    public List<Novedades> novedadesConcepto(EntityManager em, BigInteger secuenciaConcepto) {
         try {
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT N.* from novedades N where N.concepto = ? and tipo in ('FIJA','PAGO POR FUERA','OCASIONAL' ) and \n"
@@ -163,7 +169,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
         }
     }
 
-    public List<Novedades> novedadesTercero(BigInteger secuenciaTercero) {
+    public List<Novedades> novedadesTercero(EntityManager em, BigInteger secuenciaTercero) {
         try {
             List<Novedades> listaNovedades;
             String sqlQuery = "SELECT N.* from novedades N where N.tercero = ? and tipo in ('FIJA','PAGO POR FUERA','OCASIONAL' )\n"

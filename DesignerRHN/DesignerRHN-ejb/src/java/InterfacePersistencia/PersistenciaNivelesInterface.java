@@ -8,13 +8,13 @@ package InterfacePersistencia;
 import Entidades.Niveles;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author User
  */
-@Local
+
 public interface PersistenciaNivelesInterface {
 
     /**
@@ -22,7 +22,7 @@ public interface PersistenciaNivelesInterface {
      *
      * @param niveles Nivel que se quiere crear.
      */
-    public void crear(Niveles niveles);
+    public void crear(EntityManager em, Niveles niveles);
 
     /**
      * Método encargado de modificar un Nivel de la base de datos. Este método
@@ -31,7 +31,7 @@ public interface PersistenciaNivelesInterface {
      *
      * @param niveles Nivel con los cambios que se van a realizar.
      */
-    public void editar(Niveles niveles);
+    public void editar(EntityManager em, Niveles niveles);
 
     /**
      * Método encargado de eliminar de la base de datos el Nivel que entra por
@@ -39,7 +39,7 @@ public interface PersistenciaNivelesInterface {
      *
      * @param niveles Nivel que se quiere eliminar.
      */
-    public void borrar(Niveles niveles);
+    public void borrar(EntityManager em, Niveles niveles);
 
     /**
      * Método encargado de buscar todos los Niveles existentes en la base de
@@ -47,7 +47,7 @@ public interface PersistenciaNivelesInterface {
      *
      * @return Retorna una lista de Niveles ordenados por nombre.
      */
-    public List<Niveles> consultarNiveles();
+    public List<Niveles> consultarNiveles(EntityManager em);
 
     /**
      * Método encargado de buscar el Nivel con la secNiveles dada por parámetro.
@@ -56,7 +56,7 @@ public interface PersistenciaNivelesInterface {
      * @return Retorna el Nivel identificado con la secNiveles dada por
      * parámetro.
      */
-    public Niveles consultarNivel(BigInteger secNiveles);
+    public Niveles consultarNivel(EntityManager em, BigInteger secNiveles);
 
     /**
      * Método encargado de contar los EvalConvocatorias que están asociados a un
@@ -66,7 +66,7 @@ public interface PersistenciaNivelesInterface {
      * @return Retorna la cantidad de EvalConvocatorias cuyo Nivel tiene como
      * secNiveles el valor dado por parámetro.
      */
-    public BigInteger contarEvalConvocatoriasNivel(BigInteger secNiveles);
+    public BigInteger contarEvalConvocatoriasNivel(EntityManager em, BigInteger secNiveles);
 
     /**
      * Método encargado de contar los Plantas que están asociados a un Nivel
@@ -76,7 +76,7 @@ public interface PersistenciaNivelesInterface {
      * @return Retorna la cantidad de Plantas cuyo Nivel tiene como secNiveles
      * el valor dado por parámetro.
      */
-    public BigInteger contarPlantasNivel(BigInteger secNiveles);
+    public BigInteger contarPlantasNivel(EntityManager em, BigInteger secNiveles);
 
     /**
      * Método encargado de contar los PlantasPersonales que están asociados a un
@@ -86,5 +86,5 @@ public interface PersistenciaNivelesInterface {
      * @return Retorna la cantidad de PlantasPersonales cuyo Nivel tiene como
      * secNiveles el valor dado por parámetro.
      */
-    public BigInteger contarPlantasPersonalesNivel(BigInteger secNiveles);
+    public BigInteger contarPlantasPersonalesNivel(EntityManager em, BigInteger secNiveles);
 }

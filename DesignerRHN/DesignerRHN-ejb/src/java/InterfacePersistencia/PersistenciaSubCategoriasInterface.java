@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.SubCategorias;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaSubCategoriasInterface {
      *
      * @param subCategorias SubCategoria que se quiere crear.
      */
-    public void crear(SubCategorias subCategorias);
+    public void crear(EntityManager em, SubCategorias subCategorias);
 
     /**
      * Método encargado de modificar una SubCategoria de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaSubCategoriasInterface {
      *
      * @param subCategorias SubCategoria con los cambios que se van a realizar.
      */
-    public void editar(SubCategorias subCategorias);
+    public void editar(EntityManager em, SubCategorias subCategorias);
 
     /**
      * Método encargado de eliminar de la base de datos la SubCategoria que
@@ -37,7 +38,7 @@ public interface PersistenciaSubCategoriasInterface {
      *
      * @param subCategorias SubCategoria que se quiere eliminar.
      */
-    public void borrar(SubCategorias subCategorias);
+    public void borrar(EntityManager em, SubCategorias subCategorias);
 
     /**
      * Método encargado de buscar todos las SubCategorias existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaSubCategoriasInterface {
      *
      * @return Retorna una lista de SubCategorias
      */
-    public List<SubCategorias> consultarSubCategorias();
+    public List<SubCategorias> consultarSubCategorias(EntityManager em);
 
     /**
      * Método encargado de buscar una secSubCategoria con la secEscalafon dada
@@ -56,7 +57,7 @@ public interface PersistenciaSubCategoriasInterface {
      * @return Retorna la SubCategoria identificado con la secSubCategoria dada
      * por parámetro.
      */
-    public SubCategorias consultarSubCategoria(BigInteger secSubCategoria);
+    public SubCategorias consultarSubCategoria(EntityManager em, BigInteger secSubCategoria);
 
     /**
      * *
@@ -67,5 +68,5 @@ public interface PersistenciaSubCategoriasInterface {
      * @return Cuantos Escalafones estan relacionados con la secuencia de la
      * SubCategoria
      */
-    public BigInteger contarEscalafones(BigInteger secSubCategoria);
+    public BigInteger contarEscalafones(EntityManager em, BigInteger secSubCategoria);
 }

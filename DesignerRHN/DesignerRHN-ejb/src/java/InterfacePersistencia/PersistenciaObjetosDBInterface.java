@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.ObjetosDB;
+import javax.persistence.EntityManager;
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'ObjetosDB' 
  * de la base de datos.
@@ -15,5 +16,5 @@ public interface PersistenciaObjetosDBInterface {
      * @param nombreTabla Nombre del ObjetoDB
      * @return Retorna el ObjetoDB con nombre igual al dado por parámetro.
      */
-    public ObjetosDB obtenerObjetoTabla(String nombreTabla);
+    public ObjetosDB obtenerObjetoTabla(EntityManager em, String nombreTabla);
 }

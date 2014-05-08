@@ -24,11 +24,11 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Inforeportes inforeportes) {
+    public void crear(EntityManager em, Inforeportes inforeportes) {
         try {
             em.merge(inforeportes);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public void editar(Inforeportes inforeportes) {
+    public void editar(EntityManager em, Inforeportes inforeportes) {
         try {
             em.merge(inforeportes);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public void borrar(Inforeportes inforeportes) {
+    public void borrar(EntityManager em, Inforeportes inforeportes) {
         try {
             em.remove(em.merge(inforeportes));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportes() {
+    public List<Inforeportes> buscarInforeportes(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Inforeportes.class));
@@ -67,9 +67,10 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportesUsuarioNomina() {
+    public List<Inforeportes> buscarInforeportesUsuarioNomina(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'NOM' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : " + inforeportes.size());
             return inforeportes;
@@ -80,9 +81,10 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportesUsuarioLaboral() {
+    public List<Inforeportes> buscarInforeportesUsuarioLaboral(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'LBL' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : " + inforeportes.size());
             return inforeportes;
@@ -93,9 +95,10 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportesUsuarioBanco() {
+    public List<Inforeportes> buscarInforeportesUsuarioBanco(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'BAN' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : " + inforeportes.size());
             return inforeportes;
@@ -106,9 +109,10 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportesUsuarioContabilidad() {
+    public List<Inforeportes> buscarInforeportesUsuarioContabilidad(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'CON' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : " + inforeportes.size());
             return inforeportes;
@@ -119,9 +123,10 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
 
     @Override
-    public List<Inforeportes> buscarInforeportesUsuarioPersonal() {
+    public List<Inforeportes> buscarInforeportesUsuarioPersonal(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'PER' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : " + inforeportes.size());
             return inforeportes;
@@ -132,9 +137,10 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
     }
     
     @Override
-     public List<Inforeportes> buscarInforeportesUsuarioBienestar() {
+     public List<Inforeportes> buscarInforeportesUsuarioBienestar(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'BIN' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
             System.out.println("Size : " + inforeportes.size());
             return inforeportes;

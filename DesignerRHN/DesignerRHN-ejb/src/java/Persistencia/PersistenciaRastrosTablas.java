@@ -19,15 +19,16 @@ import javax.persistence.Query;
 public class PersistenciaRastrosTablas implements PersistenciaRastrosTablasInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//     */
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-    public boolean verificarRastroTabla(BigInteger secObjetoTabla) {
+    public boolean verificarRastroTabla(EntityManager em, BigInteger secObjetoTabla) {
         try {
             Query query = em.createQuery("SELECT COUNT(rt) FROM RastrosTablas rt WHERE rt.objeto.secuencia = :secObjetoTabla");
             query.setParameter("secObjetoTabla", secObjetoTabla);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 return true;

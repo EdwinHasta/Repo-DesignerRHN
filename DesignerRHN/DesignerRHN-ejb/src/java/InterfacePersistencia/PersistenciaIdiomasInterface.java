@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Idiomas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaIdiomasInterface {
      *
      * @param idiomas Idioma que se quiere crear.
      */
-    public void crear(Idiomas idiomas);
+    public void crear(EntityManager em, Idiomas idiomas);
 
     /**
      * Método encargado de modificar un Idioma de la base de datos. Este método
@@ -29,7 +30,7 @@ public interface PersistenciaIdiomasInterface {
      *
      * @param idiomas Idioma con los cambios que se van a realizar.
      */
-    public void editar(Idiomas idiomas);
+    public void editar(EntityManager em, Idiomas idiomas);
 
     /**
      * Método encargado de eliminar de la base de datos el Idioma que entra por
@@ -37,7 +38,7 @@ public interface PersistenciaIdiomasInterface {
      *
      * @param idiomas Idioma que se quiere eliminar.
      */
-    public void borrar(Idiomas idiomas);
+    public void borrar(EntityManager em, Idiomas idiomas);
 
     /**
      * Método encargado de buscar todos los Idiomas existentes en la base de
@@ -45,7 +46,7 @@ public interface PersistenciaIdiomasInterface {
      *
      * @return Retorna una lista de Idiomas.
      */
-    public List<Idiomas> buscarIdiomas();
+    public List<Idiomas> buscarIdiomas(EntityManager em);
 
     /**
      * Método encargado de buscar un Idioma con la secuencia dada por parámetro.
@@ -54,7 +55,7 @@ public interface PersistenciaIdiomasInterface {
      * @return Retorna el Idioma identificado con la secuencia dada por
      * parámetro.
      */
-    public Idiomas buscarIdioma(BigInteger secIdiomas);
+    public Idiomas buscarIdioma(EntityManager em, BigInteger secIdiomas);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Idioma
@@ -65,5 +66,5 @@ public interface PersistenciaIdiomasInterface {
      * @return Retorna el número de IdiomasPersonas relacionados con un Idioma
      * cuya secIdiomas coincide con el parámetro.
      */
-    public BigInteger contadorIdiomasPersonas(BigInteger secIdiomas);
+    public BigInteger contadorIdiomasPersonas(EntityManager em, BigInteger secIdiomas);
 }

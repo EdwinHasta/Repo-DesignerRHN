@@ -26,11 +26,11 @@ public class PersistenciaTiposFormulas implements PersistenciaTiposFormulasInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-    public void crear(TiposFormulas tiposFormulas) {
+    public void crear(EntityManager em, TiposFormulas tiposFormulas) {
         try {
             em.merge(tiposFormulas);
         } catch (Exception e) {
@@ -39,7 +39,7 @@ public class PersistenciaTiposFormulas implements PersistenciaTiposFormulasInter
     }
 
     @Override
-    public void editar(TiposFormulas tiposFormulas) {
+    public void editar(EntityManager em, TiposFormulas tiposFormulas) {
         try {
             em.merge(tiposFormulas);
         } catch (Exception e) {
@@ -48,7 +48,7 @@ public class PersistenciaTiposFormulas implements PersistenciaTiposFormulasInter
     }
 
     @Override
-    public void borrar(TiposFormulas tiposFormulas) {
+    public void borrar(EntityManager em, TiposFormulas tiposFormulas) {
         try {
             em.remove(em.merge(tiposFormulas));
         } catch (Exception e) {
@@ -57,11 +57,12 @@ public class PersistenciaTiposFormulas implements PersistenciaTiposFormulasInter
     }
 
     @Override
-    public List<TiposFormulas> tiposFormulas(BigInteger secuenciaOperando, String tipo) {
+    public List<TiposFormulas> tiposFormulas(EntityManager em, BigInteger secuenciaOperando, String tipo) {
         try {
             Query query = em.createQuery("SELECT DISTINCT tf FROM TiposFormulas tf, Operandos op WHERE tf.operando.secuencia =:secuenciaOperando and op.tipo=:tipo ORDER BY tf.fechafinal DESC");
             query.setParameter("secuenciaOperando", secuenciaOperando);
             query.setParameter("tipo", tipo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposFormulas> tiposFormulas = query.getResultList();
             List<TiposFormulas> tiposFormulasResult = new ArrayList<TiposFormulas>(tiposFormulas);
 

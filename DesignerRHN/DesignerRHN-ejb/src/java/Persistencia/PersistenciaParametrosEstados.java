@@ -21,11 +21,11 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public Integer empleadosParaLiquidar(String usuarioBD) {
+    public Integer empleadosParaLiquidar(EntityManager em, String usuarioBD) {
         try {
             String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = ? and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=?))";
             Query query = em.createNativeQuery(sqlQuery);
@@ -41,7 +41,7 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
     }
 
     @Override
-    public Integer empleadosLiquidados(String usuarioBD) {
+    public Integer empleadosLiquidados(EntityManager em, String usuarioBD) {
         try {
             String sqlQuery = "SELECT COUNT(*) FROM PARAMETROSESTADOS pe WHERE exists (select p.secuencia from parametros p, parametrosinstancias pi, usuariosinstancias ui , usuarios u where p.secuencia = pe.parametro and u.secuencia = p.usuario and pi.parametro = p.secuencia and ui.instancia = pi.instancia and u.alias = ? and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=?)) and pe.estado = 'LIQUIDADO'";
             Query query = em.createNativeQuery(sqlQuery);
@@ -57,7 +57,7 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
     }
 
     @Override
-    public void inicializarParametrosEstados() {
+    public void inicializarParametrosEstados(EntityManager em) {
         try {
             String sqlQuery = "UPDATE PARAMETROSESTADOS pe SET ESTADO= 'A LIQUIDAR'\n"
                     + "        where  ESTADO = 'LIQUIDADO'\n"
@@ -74,10 +74,11 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
     }
     
     @Override
-    public String parametrosComprobantes(BigInteger secuenciaParametro) {
+    public String parametrosComprobantes(EntityManager em, BigInteger secuenciaParametro) {
         try {
             Query query = em.createQuery("SELECT pe.estado FROM ParametrosEstados pe WHERE pe.parametros.secuencia = :secuenciaParametro");
             query.setParameter("secuenciaParametro", secuenciaParametro);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             String estadoParametro = (String) query.getSingleResult();
             return estadoParametro;
         } catch (Exception e) {

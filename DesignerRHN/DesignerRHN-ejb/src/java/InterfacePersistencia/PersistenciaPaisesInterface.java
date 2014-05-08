@@ -8,26 +8,25 @@ package InterfacePersistencia;
 import Entidades.Paises;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
 public interface PersistenciaPaisesInterface {
 
-    public void crear(Paises tiposAusentismos);
+    public void crear(EntityManager em, Paises tiposAusentismos);
 
-    public void editar(Paises tiposAusentismos);
+    public void editar(EntityManager em, Paises tiposAusentismos);
 
-    public void borrar(Paises tiposAusentismos);
+    public void borrar(EntityManager em, Paises tiposAusentismos);
 
-    public List<Paises> consultarPaises();
+    public List<Paises> consultarPaises(EntityManager em);
 
-    public Paises consultarPais(BigInteger secClaseCategoria);
+    public Paises consultarPais(EntityManager em, BigInteger secClaseCategoria);
 
-    public BigInteger contarDepartamentosPais(BigInteger secuencia);
+    public BigInteger contarDepartamentosPais(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarFestivosPais(BigInteger secuencia);
+    public BigInteger contarFestivosPais(EntityManager em, BigInteger secuencia);
 }

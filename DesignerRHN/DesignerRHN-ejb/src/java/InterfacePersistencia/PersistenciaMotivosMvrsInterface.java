@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Motivosmvrs;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaMotivosMvrsInterface {
      *
      * @param motivosMvrs MotivoMvrs que se quiere crear.
      */
-    public void crear(Motivosmvrs motivosMvrs);
+    public void crear(EntityManager em, Motivosmvrs motivosMvrs);
 
     /**
      * Método encargado de modificar un MotivoMvrs de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaMotivosMvrsInterface {
      *
      * @param motivosMvrs MotivoMvrs con los cambios que se van a realizar.
      */
-    public void editar(Motivosmvrs motivosMvrs);
+    public void editar(EntityManager em, Motivosmvrs motivosMvrs);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoMvrs que entra
@@ -37,7 +38,7 @@ public interface PersistenciaMotivosMvrsInterface {
      *
      * @param motivosMvrs MotivoMvrs que se quiere eliminar.
      */
-    public void borrar(Motivosmvrs motivosMvrs);
+    public void borrar(EntityManager em, Motivosmvrs motivosMvrs);
 
     /**
      * Método encargado de buscar el MotivoMvrs con la secMotivosMvrs dada por
@@ -47,7 +48,7 @@ public interface PersistenciaMotivosMvrsInterface {
      * @return Retorna el MotivoMvrs identificado con la secMotivosMvrs dada por
      * parámetro.
      */
-    public Motivosmvrs buscarMotivosMvrs(BigInteger secMotivosMvrs);
+    public Motivosmvrs buscarMotivosMvrs(EntityManager em, BigInteger secMotivosMvrs);
 
     /**
      * Método encargado de buscar todos los MotivosMvrs existentes en la base de
@@ -55,5 +56,5 @@ public interface PersistenciaMotivosMvrsInterface {
      *
      * @return Retorna una lista de MotivosMvrs.
      */
-    public List<Motivosmvrs> buscarMotivosMvrs();
+    public List<Motivosmvrs> buscarMotivosMvrs(EntityManager em);
 }

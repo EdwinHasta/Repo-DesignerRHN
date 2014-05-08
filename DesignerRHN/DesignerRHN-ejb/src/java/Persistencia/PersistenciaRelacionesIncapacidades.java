@@ -22,12 +22,12 @@ public class PersistenciaRelacionesIncapacidades implements PersistenciaRelacion
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     //Trae las relaciones en base al ausentismo seleccionado
     @Override
-    public String relaciones(BigInteger secuenciaAusentismo) {
+    public String relaciones(EntityManager em, BigInteger secuenciaAusentismo) {
         try {
             String sqlQuery = ("SELECT COUNT(ri.ano||'.'||ri.mes) FROM RelacionesIncapacidades ri, Soausentismos so WHERE ri.soausentismo = so.secuencia AND so.secuencia = ?");
             Query query = em.createNativeQuery(sqlQuery);

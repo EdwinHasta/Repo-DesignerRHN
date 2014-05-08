@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.Pantallas;
 import java.math.BigInteger;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la tabla 'Pantallas' 
@@ -17,6 +18,6 @@ public interface PersistenciaPantallasInterface {
      * @param secuenciaTab Secuencia de la tabla.
      * @return Retorna una Pantalla.
      */
-    public Pantallas buscarPantalla(BigInteger secuenciaTab);
+    public Pantallas buscarPantalla(EntityManager em, BigInteger secuenciaTab);
 
 }

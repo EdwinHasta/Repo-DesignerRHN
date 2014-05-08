@@ -8,13 +8,12 @@ package InterfacePersistencia;
 import Entidades.LugaresOcurrencias;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
 public interface PersistenciaLugaresOcurrenciasInterface {
 
     /**
@@ -22,7 +21,7 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      *
      * @param lugaresOcurrencias que se quiere crear.
      */
-    public void crear(LugaresOcurrencias lugaresOcurrencias);
+    public void crear(EntityManager em, LugaresOcurrencias lugaresOcurrencias);
 
     /**
      * Método encargado de modificar un Lugar Ocurrencia de la base de datos.
@@ -32,7 +31,7 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      * @param lugaresOcurrencias LugaresOcurrencias con los cambios que se van a
      * realizar.
      */
-    public void editar(LugaresOcurrencias lugaresOcurrencias);
+    public void editar(EntityManager em, LugaresOcurrencias lugaresOcurrencias);
 
     /**
      * Método encargado de eliminar de la base de datos un LugarOcurrencia que
@@ -40,7 +39,7 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      *
      * @param lugaresOcurrencias LugaresOcurrencias que se quiere eliminar.
      */
-    public void borrar(LugaresOcurrencias lugaresOcurrencias);
+    public void borrar(EntityManager em, LugaresOcurrencias lugaresOcurrencias);
 
     /**
      * Método encargado de buscar un LugarOcurrencia con la secLugaresOcurrencias dada por
@@ -51,7 +50,7 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      * @return Retorna un LugarOcurrencia identificado con la secLugaresOcurrencias dada por
      * parámetro.
      */
-    public LugaresOcurrencias buscarLugaresOcurrencias(BigInteger secLugaresOcurrencias);
+    public LugaresOcurrencias buscarLugaresOcurrencias(EntityManager em, BigInteger secLugaresOcurrencias);
 
     /**
      * Método encargado de buscar todas los LugaresOcurrencias existentes en la
@@ -59,7 +58,7 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      *
      * @return Retorna una lista de Lugares Ocurrencias.
      */
-    public List<LugaresOcurrencias> buscarLugaresOcurrencias();
+    public List<LugaresOcurrencias> buscarLugaresOcurrencias(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre una
@@ -70,5 +69,5 @@ public interface PersistenciaLugaresOcurrenciasInterface {
      * @return Retorna el número de SoAccidntes relacionados con el
      * LugarOcurrencia cuya secLugaresOcurrencias coincide con el parámetro.
      */
-    public BigInteger contadorSoAccidentes(BigInteger secLugaresOcurrencias);
+    public BigInteger contadorSoAccidentes(EntityManager em, BigInteger secLugaresOcurrencias);
 }

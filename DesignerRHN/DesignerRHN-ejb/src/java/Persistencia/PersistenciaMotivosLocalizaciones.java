@@ -25,11 +25,11 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(MotivosLocalizaciones motivosLocalizaciones) {
+    public void crear(EntityManager em, MotivosLocalizaciones motivosLocalizaciones) {
         try {
             em.persist(motivosLocalizaciones);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     }
 
     @Override
-    public void editar(MotivosLocalizaciones motivosLocalizaciones) {
+    public void editar(EntityManager em, MotivosLocalizaciones motivosLocalizaciones) {
         try {
             em.merge(motivosLocalizaciones);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     }
 
     @Override
-    public void borrar(MotivosLocalizaciones motivosLocalizaciones) {
+    public void borrar(EntityManager em, MotivosLocalizaciones motivosLocalizaciones) {
         try {
             em.remove(em.merge(motivosLocalizaciones));
         } catch (Exception e) {
@@ -56,9 +56,11 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     }
 
     @Override
-    public List<MotivosLocalizaciones> buscarMotivosLocalizaciones() {
+    public List<MotivosLocalizaciones> buscarMotivosLocalizaciones(EntityManager em) {
         try {
-            List<MotivosLocalizaciones> motivosL = (List<MotivosLocalizaciones>) em.createNamedQuery("MotivosLocalizaciones.findAll").getResultList();
+            Query query = em.createNamedQuery("MotivosLocalizaciones.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<MotivosLocalizaciones> motivosL = (List<MotivosLocalizaciones>) query.getResultList();
             return motivosL;
         } catch (Exception e) {
             System.out.println("Error buscarMotivosLocalizaciones PersistenciaMotivosLovalizaciones");
@@ -67,10 +69,11 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
     }
 
     @Override
-    public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(BigInteger secuencia) {
+    public MotivosLocalizaciones buscarMotivoLocalizacionSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT m FROM MotivosLocalizaciones m WHERE m.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             MotivosLocalizaciones motivoL = (MotivosLocalizaciones) query.getSingleResult();
             return motivoL;
         } catch (Exception e) {
@@ -80,7 +83,7 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
         }
     }
 
-    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(BigInteger secMotivoLocalizacion) {
+    public BigInteger contarVigenciasLocalizacionesMotivoLocalizacion(EntityManager em, BigInteger secMotivoLocalizacion) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciaslocalizaciones WHERE motivo =?";

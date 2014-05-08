@@ -14,20 +14,22 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'JornadasLaborales'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'JornadasLaborales' de
+ * la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaJornadasLaborales implements PersistenciaJornadasLaboralesInterface{
+public class PersistenciaJornadasLaborales implements PersistenciaJornadasLaboralesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(JornadasLaborales jornadasLaborales) {
+    public void crear(EntityManager em, JornadasLaborales jornadasLaborales) {
         try {
             em.persist(jornadasLaborales);
         } catch (Exception e) {
@@ -36,7 +38,7 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     }
 
     @Override
-    public void editar(JornadasLaborales jornadasLaborales) {
+    public void editar(EntityManager em, JornadasLaborales jornadasLaborales) {
         try {
             em.merge(jornadasLaborales);
         } catch (Exception e) {
@@ -45,7 +47,7 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     }
 
     @Override
-    public void borrar(JornadasLaborales jornadasLaborales) {
+    public void borrar(EntityManager em, JornadasLaborales jornadasLaborales) {
         try {
             em.remove(em.merge(jornadasLaborales));
         } catch (Exception e) {
@@ -54,9 +56,11 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     }
 
     @Override
-    public List<JornadasLaborales> buscarJornadasLaborales() {
+    public List<JornadasLaborales> buscarJornadasLaborales(EntityManager em) {
         try {
-            List<JornadasLaborales> jornadasLaborales = (List<JornadasLaborales>) em.createNamedQuery("JornadasLaborales.findAll").getResultList();
+            Query query = em.createNamedQuery("JornadasLaborales.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<JornadasLaborales> jornadasLaborales = (List<JornadasLaborales>) query.getResultList();
             return jornadasLaborales;
         } catch (Exception e) {
             System.out.println("Error buscarJornadasLaborales PersistenciaJornadasLaborales");
@@ -65,10 +69,11 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
     }
 
     @Override
-    public JornadasLaborales buscarJornadaLaboralSecuencia(BigInteger secuencia) {
+    public JornadasLaborales buscarJornadaLaboralSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT jl FROM JornadasLaborales jl WHERE jl.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             JornadasLaborales jornadasLaborales = (JornadasLaborales) query.getSingleResult();
             return jornadasLaborales;
         } catch (Exception e) {

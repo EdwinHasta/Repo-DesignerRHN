@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TEFormulasConceptos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTEFormulasConceptosInterface {
      *
      * @param tEFormulasConceptos TEFormulaConcepto que se quiere crear.
      */
-    public void crear(TEFormulasConceptos tEFormulasConceptos);
+    public void crear(EntityManager em, TEFormulasConceptos tEFormulasConceptos);
 
     /**
      * Método encargado de modificar un TEFormulaConcepto de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaTEFormulasConceptosInterface {
      * @param tEFormulasConceptos TEFormulaConcepto con los cambios que se
      * van a realizar.
      */
-    public void editar(TEFormulasConceptos tEFormulasConceptos);
+    public void editar(EntityManager em, TEFormulasConceptos tEFormulasConceptos);
 
     /**
      * Método encargado de eliminar de la base de datos el TEFormulaConcepto
@@ -38,7 +39,7 @@ public interface PersistenciaTEFormulasConceptosInterface {
      *
      * @param tEFormulasConceptos TEFormulaConcepto que se quiere eliminar.
      */
-    public void borrar(TEFormulasConceptos tEFormulasConceptos);
+    public void borrar(EntityManager em, TEFormulasConceptos tEFormulasConceptos);
 
     /**
      * Método encargado de buscar todos los TEFormulasConceptos existentes en
@@ -46,7 +47,7 @@ public interface PersistenciaTEFormulasConceptosInterface {
      *
      * @return Retorna una lista de TEFormulasConceptos.
      */
-    public List<TEFormulasConceptos> buscarTEFormulasConceptos();
+    public List<TEFormulasConceptos> buscarTEFormulasConceptos(EntityManager em);
 
     /**
      * Método encargado de buscar el TEFormulaConcepto con la secuencia dada por
@@ -56,7 +57,7 @@ public interface PersistenciaTEFormulasConceptosInterface {
      * @return Retorna el TEFormulaConcepto identificado con la secuencia dada
      * por parámetro.
      */
-    public TEFormulasConceptos buscarTEFormulaConceptoSecuencia(BigInteger secTEFormula);
+    public TEFormulasConceptos buscarTEFormulaConceptoSecuencia(EntityManager em, BigInteger secTEFormula);
 
     /**
      * Método encargado de buscar todos los TEFormulasConceptos existentes en
@@ -66,6 +67,6 @@ public interface PersistenciaTEFormulasConceptosInterface {
      * @return Retorna una lista de TEFormulasConceptos para el TSGrupoTipoEntidad
      * dado por parametro.
      */
-    public List<TEFormulasConceptos> buscarTEFormulasConceptosPorSecuenciaTSGrupoTipoEntidad(BigInteger secTSGrupo);
+    public List<TEFormulasConceptos> buscarTEFormulasConceptosPorSecuenciaTSGrupoTipoEntidad(EntityManager em, BigInteger secTSGrupo);
 
 }

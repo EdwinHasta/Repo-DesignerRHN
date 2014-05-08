@@ -24,11 +24,11 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
 
     @Override
-    public void crear(Tiposausentismos tiposAusentismos) {
+    public void crear(EntityManager em, Tiposausentismos tiposAusentismos) {
         try {
             em.merge(tiposAusentismos);
         } catch (PersistenceException ex) {
@@ -37,19 +37,20 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
     }
 
     @Override
-    public void editar(Tiposausentismos tiposAusentismos) {
+    public void editar(EntityManager em, Tiposausentismos tiposAusentismos) {
         em.merge(tiposAusentismos);
     }
 
     @Override
-    public void borrar(Tiposausentismos tiposAusentismos) {
+    public void borrar(EntityManager em, Tiposausentismos tiposAusentismos) {
         em.remove(em.merge(tiposAusentismos));
     }
 
     @Override
-    public List<Tiposausentismos> consultarTiposAusentismos() {
+    public List<Tiposausentismos> consultarTiposAusentismos(EntityManager em, ) {
         try {
             Query query = em.createQuery("SELECT ta FROM Tiposausentismos ta ORDER BY ta.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Tiposausentismos> todosTiposAusentismos = query.getResultList();
             return todosTiposAusentismos;
         } catch (Exception e) {
@@ -58,10 +59,11 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
         }
     }
     
-     public Tiposausentismos consultarTipoAusentismo(BigInteger secClaseCategoria) {
+     public Tiposausentismos consultarTipoAusentismo(EntityManager em, BigInteger secClaseCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT cc FROM Tiposausentismos cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Tiposausentismos clasesCategorias = (Tiposausentismos) query.getSingleResult();
             return clasesCategorias;
         } catch (Exception e) {
@@ -69,7 +71,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
         }
     }
      
-     public BigInteger contarClasesAusentimosTipoAusentismo(BigInteger secuencia) {
+     public BigInteger contarClasesAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM clasesausentismos WHERE tipo = ?";
@@ -83,7 +85,7 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
             return retorno;
         }
     }
-     public BigInteger contarSOAusentimosTipoAusentismo(BigInteger secuencia) {
+     public BigInteger contarSOAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soausentismos WHERE tipo = ?";

@@ -22,22 +22,22 @@ import javax.persistence.criteria.CriteriaQuery;
 @Stateless
 public class PersistenciaSoPoblacionObjetivos implements PersistenciaSoPoblacionObjetivosInterface {
 
-   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
-    public void crear(SoPoblacionObjetivos soPoblacionObjetivos) {
+    public void crear(EntityManager em, SoPoblacionObjetivos soPoblacionObjetivos) {
         em.persist(soPoblacionObjetivos);
     }
 
-    public void editar(SoPoblacionObjetivos soPoblacionObjetivos) {
+    public void editar(EntityManager em, SoPoblacionObjetivos soPoblacionObjetivos) {
         em.merge(soPoblacionObjetivos);
     }
 
-    public void borrar(SoPoblacionObjetivos soPoblacionObjetivos) {
+    public void borrar(EntityManager em, SoPoblacionObjetivos soPoblacionObjetivos) {
         em.remove(em.merge(soPoblacionObjetivos));
     }
 
-    public SoPoblacionObjetivos buscarSoPoblacionObjetivo(BigInteger secuencia) {
+    public SoPoblacionObjetivos buscarSoPoblacionObjetivo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(SoPoblacionObjetivos.class, secuencia);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaSoPoblacionObjetivos implements PersistenciaSoPoblacion
         }
     }
 
-    public List<SoPoblacionObjetivos> consultarSoPoblacionObjetivos() {
+    public List<SoPoblacionObjetivos> consultarSoPoblacionObjetivos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(SoPoblacionObjetivos.class));
         return em.createQuery(cq).getResultList();

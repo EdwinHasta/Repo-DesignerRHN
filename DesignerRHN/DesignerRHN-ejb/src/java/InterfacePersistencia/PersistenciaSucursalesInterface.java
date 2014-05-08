@@ -6,7 +6,7 @@ package InterfacePersistencia;
 import Entidades.Sucursales;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -14,7 +14,7 @@ import javax.ejb.Local;
  *
  * @author betelgeuse
  */
-@Local
+
 public interface PersistenciaSucursalesInterface {
 
     /**
@@ -22,7 +22,7 @@ public interface PersistenciaSucursalesInterface {
      *
      * @param sucursales Sucursal que se quiere crear.
      */
-    public void crear(Sucursales sucursales);
+    public void crear(EntityManager em, Sucursales sucursales);
 
     /**
      * Método encargado de modificar una Sucursal de la base de datos. Este
@@ -31,7 +31,7 @@ public interface PersistenciaSucursalesInterface {
      *
      * @param sucursales Sucursal con los cambios que se van a realizar.
      */
-    public void editar(Sucursales sucursales);
+    public void editar(EntityManager em, Sucursales sucursales);
 
     /**
      * Método encargado de eliminar de la base de datos la Sucursal que entra
@@ -39,7 +39,7 @@ public interface PersistenciaSucursalesInterface {
      *
      * @param sucursales Sucursal que se quiere eliminar.
      */
-    public void borrar(Sucursales sucursales);
+    public void borrar(EntityManager em, Sucursales sucursales);
 
     /**
      * Método encargado de buscar la Sucursal con la secuencia dada por
@@ -49,7 +49,7 @@ public interface PersistenciaSucursalesInterface {
      * @return Retorna la Sucursal identificada con la secuencia dada por
      * parámetro.
      */
-    public Sucursales buscarSucursal(BigInteger secuencia);
+    public Sucursales buscarSucursal(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar todas las Sucursales existentes en la base de
@@ -57,7 +57,7 @@ public interface PersistenciaSucursalesInterface {
      *
      * @return Retorna una lista de Sucursales.
      */
-    public List<Sucursales> consultarSucursales();
+    public List<Sucursales> consultarSucursales(EntityManager em);
 
-    public BigInteger contarVigenciasFormasPagosSucursal(BigInteger secuencia);
+    public BigInteger contarVigenciasFormasPagosSucursal(EntityManager em, BigInteger secuencia);
 }

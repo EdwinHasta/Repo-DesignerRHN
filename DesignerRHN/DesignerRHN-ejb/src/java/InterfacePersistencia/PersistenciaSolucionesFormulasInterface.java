@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.SolucionesFormulas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -23,7 +24,7 @@ public interface PersistenciaSolucionesFormulasInterface {
      * @param secNovedad Secuencia de la Novedad
      * @return Retorna 1 si existe la relación y 0 de lo contrario.
      */
-    public int validarNovedadesNoLiquidadas(BigInteger secNovedad);
+    public int validarNovedadesNoLiquidadas(EntityManager em, BigInteger secNovedad);
 
     /**
      * Metodo encargado de obtener la lista de SolucionesFormulas para un
@@ -34,5 +35,5 @@ public interface PersistenciaSolucionesFormulasInterface {
      * @return Retorna la lista de SolucionesFormulas para el Empleado Y Novedad
      * referenciado.
      */
-    public List<SolucionesFormulas> listaSolucionesFormulasParaEmpleadoYNovedad(BigInteger secEmpleado, BigInteger secNovedad);
+    public List<SolucionesFormulas> listaSolucionesFormulasParaEmpleadoYNovedad(EntityManager em, BigInteger secEmpleado, BigInteger secNovedad);
 }

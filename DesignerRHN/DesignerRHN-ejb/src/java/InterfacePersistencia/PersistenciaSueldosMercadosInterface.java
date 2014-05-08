@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.SueldosMercados;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaSueldosMercadosInterface {
      *
      * @param sueldosMercados SueldoMercado que se quiere crear.
      */
-    public void crear(SueldosMercados sueldosMercados);
+    public void crear(EntityManager em, SueldosMercados sueldosMercados);
 
     /**
      * Método encargado de modificar un SueldoMercado de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaSueldosMercadosInterface {
      * @param sueldosMercados SueldoMercado con los cambios que se van a
      * realizar.
      */
-    public void editar(SueldosMercados sueldosMercados);
+    public void editar(EntityManager em, SueldosMercados sueldosMercados);
 
     /**
      * Método encargado de eliminar de la base de datos el SueldoMercado que
@@ -38,7 +39,7 @@ public interface PersistenciaSueldosMercadosInterface {
      *
      * @param sueldosMercados SueldoMercado que se quiere eliminar.
      */
-    public void borrar(SueldosMercados sueldosMercados);
+    public void borrar(EntityManager em, SueldosMercados sueldosMercados);
 
     /**
      * Método encargado de buscar todos los SueldosMercados existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaSueldosMercadosInterface {
      *
      * @return Retorna una lista de SueldosMercados.
      */
-    public List<SueldosMercados> buscarSueldosMercados();
+    public List<SueldosMercados> buscarSueldosMercados(EntityManager em);
 
     /**
      * Método encargado de buscar el SueldoMercado con la secuencia dada por
@@ -56,7 +57,7 @@ public interface PersistenciaSueldosMercadosInterface {
      * @return Retorna el SueldoMercado identificado con la secuencia dada por
      * parámetro.
      */
-    public SueldosMercados buscarSueldosMercadosSecuencia(BigInteger secuencia);
+    public SueldosMercados buscarSueldosMercadosSecuencia(EntityManager em, BigInteger secuencia);
 
     /**
      * Método encargado de buscar los SueldosMercados existentes para un Cargo
@@ -65,5 +66,5 @@ public interface PersistenciaSueldosMercadosInterface {
      * @param secCargo Secuencia del Cargo que se quiere encontrar.
      * @return Retorna una lista de SueldosMercados.
      */
-    public List<SueldosMercados> buscarSueldosMercadosPorSecuenciaCargo(BigInteger secCargo);
+    public List<SueldosMercados> buscarSueldosMercadosPorSecuenciaCargo(EntityManager em, BigInteger secCargo);
 }

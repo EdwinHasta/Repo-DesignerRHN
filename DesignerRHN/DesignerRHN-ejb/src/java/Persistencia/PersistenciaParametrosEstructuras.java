@@ -23,19 +23,20 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void editar(ParametrosEstructuras parametroEstructura) {
+    public void editar(EntityManager em, ParametrosEstructuras parametroEstructura) {
         em.merge(parametroEstructura);
     }
 
     @Override
-    public BigInteger buscarEmpresaParametros(String usuarioBD) {
+    public BigInteger buscarEmpresaParametros(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT p.estructura.organigrama.empresa.secuencia FROM ParametrosEstructuras p WHERE p.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigInteger secEmpresa = (BigInteger) query.getSingleResult();
             return secEmpresa;
         } catch (Exception e) {
@@ -43,14 +44,16 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
         }
     }
 
-    public ParametrosEstructuras buscarParametro(String usuarioBD) {
+    public ParametrosEstructuras buscarParametro(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");                
                 query.setParameter("usuarioBD", usuarioBD);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 ParametrosEstructuras parametroEstructura = (ParametrosEstructuras) query.getSingleResult();
                 return parametroEstructura;
             } else {
@@ -63,7 +66,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     }
 
     @Override
-    public void adicionarEmpleados(BigInteger secParametroEstructura) {
+    public void adicionarEmpleados(EntityManager em, BigInteger secParametroEstructura) {
         try {
             String sqlQuery = "call PARAMETROS_PKG.InsertarParametrosProceso(?)";
             Query query = em.createNativeQuery(sqlQuery);
@@ -75,7 +78,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     }
 
     @Override
-    public Integer empleadosParametrizados(BigInteger secProceso) {
+    public Integer empleadosParametrizados(EntityManager em, BigInteger secProceso) {
         try {
             String sqlQuery = "SELECT COUNT(*)\n"
                     + "FROM PARAMETROSESTRUCTURAS P \n"
@@ -95,7 +98,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
     }
 
     @Override
-    public Integer diasDiferenciaFechas(String fechaInicial, String fechaFinal) {
+    public Integer diasDiferenciaFechas(EntityManager em, String fechaInicial, String fechaFinal) {
         try {
             String sqlQuery = "SELECT DIAS360(to_date( ?, 'dd/MM/yyyy'), to_date( ?, 'dd/MM/yyyy')) Dias FROM dual";
             Query query = em.createNativeQuery(sqlQuery);

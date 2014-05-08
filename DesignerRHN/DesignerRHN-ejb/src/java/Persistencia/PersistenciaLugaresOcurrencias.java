@@ -24,26 +24,26 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(LugaresOcurrencias lugaresOcurrencias) {
+    public void crear(EntityManager em, LugaresOcurrencias lugaresOcurrencias) {
         em.persist(lugaresOcurrencias);
     }
 
     @Override
-    public void editar(LugaresOcurrencias lugaresOcurrencias) {
+    public void editar(EntityManager em, LugaresOcurrencias lugaresOcurrencias) {
         em.merge(lugaresOcurrencias);
     }
 
     @Override
-    public void borrar(LugaresOcurrencias lugaresOcurrencias) {
+    public void borrar(EntityManager em, LugaresOcurrencias lugaresOcurrencias) {
         em.remove(em.merge(lugaresOcurrencias));
     }
 
     @Override
-    public LugaresOcurrencias buscarLugaresOcurrencias(BigInteger secuenciaLO) {
+    public LugaresOcurrencias buscarLugaresOcurrencias(EntityManager em, BigInteger secuenciaLO) {
         try {
             return em.find(LugaresOcurrencias.class, secuenciaLO);
         } catch (Exception e) {
@@ -52,9 +52,10 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
     }
 
     @Override
-    public List<LugaresOcurrencias> buscarLugaresOcurrencias() {
+    public List<LugaresOcurrencias> buscarLugaresOcurrencias(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM LugaresOcurrencias l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<LugaresOcurrencias> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
         } catch (Exception e) {
@@ -66,7 +67,7 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
 
     // NATIVE QUERY
     @Override
-    public BigInteger contadorSoAccidentes(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentes WHERE sitioocurrencia = ?";

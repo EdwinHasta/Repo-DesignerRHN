@@ -20,8 +20,8 @@ import javax.persistence.Query;
 public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInterface {
 
     
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
     public Recordatorios recordatorioRandom(EntityManager entity) {
@@ -77,9 +77,10 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     }
     
     @Override
-    public List<Recordatorios> proverbiosRecordatorios() {
+    public List<Recordatorios> proverbiosRecordatorios(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT r FROM Recordatorios r WHERE r.tipo = 'PROVERBIO'");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Recordatorios> recordatorios = query.getResultList();
             return recordatorios;
         } catch (Exception e) {
@@ -88,7 +89,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     }
     
     @Override
-    public List<Recordatorios> mensajesRecordatorios() {
+    public List<Recordatorios> mensajesRecordatorios(EntityManager em) {
         try {
             String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='RECORDATORIO'and usuario =(SELECT U.SECUENCIA FROM USUARIOS U "
                     + "WHERE U.ALIAS=USER)";
@@ -102,7 +103,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     }
     
      @Override
-    public void crear(Recordatorios recordatorios) {
+    public void crear(EntityManager em, Recordatorios recordatorios) {
         try {
             em.persist(recordatorios);
         } catch (Exception e) {
@@ -111,7 +112,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     }
 
     @Override
-    public void editar(Recordatorios recordatorios) {
+    public void editar(EntityManager em, Recordatorios recordatorios) {
         try {
             em.merge(recordatorios);
         } catch (Exception e) {
@@ -120,7 +121,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     }
 
     @Override
-    public void borrar(Recordatorios recordatorios) {
+    public void borrar(EntityManager em, Recordatorios recordatorios) {
         try {
             em.remove(em.merge(recordatorios));
         } catch (Exception e) {

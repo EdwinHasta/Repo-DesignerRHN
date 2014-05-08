@@ -6,7 +6,7 @@ package InterfacePersistencia;
 import Entidades.MotivosPrestamos;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -14,7 +14,6 @@ import javax.ejb.Local;
  *
  * @author John Pineda.
  */
-@Local
 public interface PersistenciaMotivosPrestamosInterface {
 
     /**
@@ -22,7 +21,7 @@ public interface PersistenciaMotivosPrestamosInterface {
      *
      * @param motivosPrestamos MotivoPrestamo que se quiere crear.
      */
-    public void crear(MotivosPrestamos motivosPrestamos);
+    public void crear(EntityManager em, MotivosPrestamos motivosPrestamos);
 
     /**
      * Método encargado de modificar un MotivoPrestamo de la base de datos. Este
@@ -32,7 +31,7 @@ public interface PersistenciaMotivosPrestamosInterface {
      * @param motivosPrestamos MotivoPrestamo con los cambios que se van a
      * realizar.
      */
-    public void editar(MotivosPrestamos motivosPrestamos);
+    public void editar(EntityManager em, MotivosPrestamos motivosPrestamos);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoPrestamo que
@@ -40,7 +39,7 @@ public interface PersistenciaMotivosPrestamosInterface {
      *
      * @param motivosPrestamos MotivoPrestamo que se quiere eliminar.
      */
-    public void borrar(MotivosPrestamos motivosPrestamos);
+    public void borrar(EntityManager em, MotivosPrestamos motivosPrestamos);
 
     /**
      * Método encargado de buscar el MotivoPrestamo con la secMotivosPrestamos dada por
@@ -50,7 +49,7 @@ public interface PersistenciaMotivosPrestamosInterface {
      * @return Retorna el MotivoPrestamo identificado con la secMotivosPrestamos dada por
      * parámetro.
      */
-    public MotivosPrestamos buscarMotivoPrestamo(BigInteger secMotivosPrestamos);
+    public MotivosPrestamos buscarMotivoPrestamo(EntityManager em, BigInteger secMotivosPrestamos);
 
     /**
      * Método encargado de buscar todos los MotivosPrestamos existentes en la
@@ -58,7 +57,7 @@ public interface PersistenciaMotivosPrestamosInterface {
      *
      * @return Retorna una lista de MotivosPrestamos.
      */
-    public List<MotivosPrestamos> buscarMotivosPrestamos();
+    public List<MotivosPrestamos> buscarMotivosPrestamos(EntityManager em);
 
     /**
      * Método encargado de contar los EersPrestamos que están asociados a un
@@ -68,5 +67,5 @@ public interface PersistenciaMotivosPrestamosInterface {
      * @return Retorna la cantidad de EersPrestamos cuyo MotivoPrestamo tiene
      * como secMotivosPrestamos el valor dado por parámetro.
      */
-    public BigInteger contadorEersPrestamos(BigInteger secMotivosPrestamos);
+    public BigInteger contadorEersPrestamos(EntityManager em, BigInteger secMotivosPrestamos);
 }

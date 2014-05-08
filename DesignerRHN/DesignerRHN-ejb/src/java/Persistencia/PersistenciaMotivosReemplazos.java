@@ -22,13 +22,14 @@ public class PersistenciaMotivosReemplazos implements PersistenciaMotivosReempla
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-        public List<MotivosReemplazos> motivosReemplazos() {
+        public List<MotivosReemplazos> motivosReemplazos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT mR FROM MotivosReemplazos mR ORDER BY mR.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosReemplazos> motivosReemplazos = query.getResultList();
             return motivosReemplazos;
         } catch (Exception e) {

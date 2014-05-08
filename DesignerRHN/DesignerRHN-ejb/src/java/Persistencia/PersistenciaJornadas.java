@@ -24,10 +24,10 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    EntityManager em;
 
-    public void crear(Jornadas jornadas) {
+    public void crear(EntityManager em, Jornadas jornadas) {
         try {
             em.persist(jornadas);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
-    public void editar(Jornadas jornadas) {
+    public void editar(EntityManager em, Jornadas jornadas) {
         try {
             em.merge(jornadas);
         } catch (Exception e) {
@@ -43,7 +43,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
-    public void borrar(Jornadas jornadas) {
+    public void borrar(EntityManager em, Jornadas jornadas) {
         try {
             em.remove(em.merge(jornadas));
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
-    public Jornadas consultarJornada(BigInteger secuencia) {
+    public Jornadas consultarJornada(EntityManager em, BigInteger secuencia) {
         try {
 
             return em.find(Jornadas.class, secuencia);
@@ -62,9 +62,10 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
-    public List<Jornadas> consultarJornadas() {
+    public List<Jornadas> consultarJornadas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ta FROM Jornadas ta ORDER BY ta.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Jornadas> todosJornadas = query.getResultList();
             return todosJornadas;
         } catch (Exception e) {
@@ -73,7 +74,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
-    public BigInteger contarTarifasEscalafonesJornada(BigInteger secuencia) {
+    public BigInteger contarTarifasEscalafonesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT FROM(*)tarifasescalafones WHERE jornada =?";
@@ -88,7 +89,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
         }
     }
 
-    public BigInteger contarJornadasLaboralesJornada(BigInteger secuencia) {
+    public BigInteger contarJornadasLaboralesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT FROM(*)jornadaslaborales WHERE jornada =?";

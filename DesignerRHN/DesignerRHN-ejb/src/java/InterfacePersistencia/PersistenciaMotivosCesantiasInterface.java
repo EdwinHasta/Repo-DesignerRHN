@@ -8,13 +8,13 @@ package InterfacePersistencia;
 import Entidades.MotivosCesantias;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
+import javax.persistence.EntityManager;
 public interface PersistenciaMotivosCesantiasInterface {
 
     /**
@@ -22,7 +22,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      *
      * @param motivosCesantias Nibeda que se quiere crear.
      */
-    public void crear(MotivosCesantias motivosCesantias);
+    public void crear(EntityManager em, MotivosCesantias motivosCesantias);
 
     /**
      * Método encargado de modificar un Motivo Cesantia de la base de datos.
@@ -31,7 +31,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      *
      * @param motivosCesantias Monedas con los cambios que se van a realizar.
      */
-    public void editar(MotivosCesantias motivosCesantias);
+    public void editar(EntityManager em, MotivosCesantias motivosCesantias);
 
     /**
      * Método encargado de eliminar de la base de datos un Motivo Cesantia que
@@ -39,7 +39,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      *
      * @param motivosCesantias Monedas que se quiere eliminar.
      */
-    public void borrar(MotivosCesantias motivosCesantias);
+    public void borrar(EntityManager em, MotivosCesantias motivosCesantias);
 
     /**
      * Método encargado de buscar la Moneda con la secMotivosCesantias dada por parámetro.
@@ -48,7 +48,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      * @return Retorna la Moneda identificada con la secMotivosCesantias dada por
      * parámetro.
      */
-    public MotivosCesantias buscarMotivoCensantia(BigInteger secMotivosCesantias);
+    public MotivosCesantias buscarMotivoCensantia(EntityManager em, BigInteger secMotivosCesantias);
 
     /**
      * Método encargado de buscar todas los Motivos Cesantias existentes en la
@@ -56,7 +56,7 @@ public interface PersistenciaMotivosCesantiasInterface {
      *
      * @return Retorna una lista de MotivosCesantias.
      */
-    public List<MotivosCesantias> buscarMotivosCesantias();
+    public List<MotivosCesantias> buscarMotivosCesantias(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un Motivo
@@ -67,5 +67,5 @@ public interface PersistenciaMotivosCesantiasInterface {
      * @return Retorna el número de proyectos relacionados con el Motivo
      * Censantia cuya secMotivosCesantias coincide con el parámetro.
      */
-    public BigInteger contadorNovedadesSistema(BigInteger secMotivosCesantias);
+    public BigInteger contadorNovedadesSistema(EntityManager em, BigInteger secMotivosCesantias);
 }

@@ -22,11 +22,11 @@ public class PersistenciaSoausentismosProrrogas implements PersistenciaSoausenti
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public List<SoausentismosProrrogas> prorrogas(BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo) {
+    public List<SoausentismosProrrogas> prorrogas(EntityManager em, BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo) {
         try {
             String sqlQuery = "SELECT soa.secuencia, soa.fechafinaus+1 finsiguiente, ca.DESCRIPCION,\n"
                     + "(select dc.CODIGO from DIAGNOSTICOSCATEGORIAS dc where dc.secuencia = soa.diagnosticocategoria) codigodiagnostico,\n"

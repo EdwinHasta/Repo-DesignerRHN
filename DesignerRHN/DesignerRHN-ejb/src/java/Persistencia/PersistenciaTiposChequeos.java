@@ -22,26 +22,26 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-     public void crear(TiposChequeos tiposChequeos) {
+     public void crear(EntityManager em, TiposChequeos tiposChequeos) {
         em.persist(tiposChequeos);
     }
      
     @Override
-    public void editar(TiposChequeos tiposChequeos) {
+    public void editar(EntityManager em, TiposChequeos tiposChequeos) {
         em.merge(tiposChequeos);
     }
     
     @Override
-    public void borrar(TiposChequeos tiposChequeos) {
+    public void borrar(EntityManager em, TiposChequeos tiposChequeos) {
         em.remove(em.merge(tiposChequeos));
     }
     
     @Override
-    public TiposChequeos buscarTipoChequeo(BigInteger secuenciaTC) {
+    public TiposChequeos buscarTipoChequeo(EntityManager em, BigInteger secuenciaTC) {
         try {
             return em.find(TiposChequeos.class, secuenciaTC);
         } catch (Exception e) {
@@ -50,9 +50,10 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     }
     
     @Override
-    public List<TiposChequeos> buscarTiposChequeos() {
+    public List<TiposChequeos> buscarTiposChequeos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tc FROM TiposChequeos tc ORDER BY tc.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposChequeos> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
         } catch (Exception e) {
@@ -62,7 +63,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     }
    
     @Override
-    public BigInteger contadorChequeosMedicos(BigInteger secuencia) {
+    public BigInteger contadorChequeosMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             System.out.println("Persistencia secuencia borrado " + secuencia);
@@ -80,7 +81,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
     }
 
     @Override
-    public BigInteger contadorTiposExamenesCargos(BigInteger secuencia) {
+    public BigInteger contadorTiposExamenesCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             System.out.println("Persistencia secuencia borrado " + secuencia);

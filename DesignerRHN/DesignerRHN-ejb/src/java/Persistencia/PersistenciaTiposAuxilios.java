@@ -23,21 +23,21 @@ public class PersistenciaTiposAuxilios implements PersistenciaTiposAuxiliosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;*/
     
     @Override
-    public void crear(TiposAuxilios tiposAuxilios) {
+    public void crear(EntityManager em, TiposAuxilios tiposAuxilios) {
         em.persist(tiposAuxilios);
     }
 
     @Override
-    public void editar(TiposAuxilios tiposAuxilios) {
+    public void editar(EntityManager em, TiposAuxilios tiposAuxilios) {
         em.merge(tiposAuxilios);
     }
 
     @Override
-    public void borrar(TiposAuxilios tiposAuxilios) {
+    public void borrar(EntityManager em, TiposAuxilios tiposAuxilios) {
         try {
             em.remove(em.merge(tiposAuxilios));
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaTiposAuxilios implements PersistenciaTiposAuxiliosInter
     }
 
     @Override
-    public TiposAuxilios buscarTipoAuxilio(BigInteger secuencia) {
+    public TiposAuxilios buscarTipoAuxilio(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposAuxilios.class, secuencia);
         } catch (Exception e) {
@@ -56,14 +56,15 @@ public class PersistenciaTiposAuxilios implements PersistenciaTiposAuxiliosInter
     }
 
     @Override
-    public List<TiposAuxilios> buscarTiposAuxilios() {
+    public List<TiposAuxilios> buscarTiposAuxilios(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM TiposAuxilios m ORDER BY m.codigo ASC");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposAuxilios> listaMotivosEmbargos = query.getResultList();
         return listaMotivosEmbargos;
     }
 
     @Override
-    public BigInteger contadorTablasAuxilios(BigInteger secuencia) {
+    public BigInteger contadorTablasAuxilios(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM tablasauxilios ta WHERE ta.tipoauxilio = ? ";

@@ -24,11 +24,11 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(ParametrosInformes parametrosInformes) {
+    public void crear(EntityManager em, ParametrosInformes parametrosInformes) {
         try {
             em.persist(parametrosInformes);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     }
 
     @Override
-    public void editar(ParametrosInformes parametrosInformes) {
+    public void editar(EntityManager em, ParametrosInformes parametrosInformes) {
         try {
             em.merge(parametrosInformes);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     }
 
     @Override
-    public void borrar(ParametrosInformes parametrosInformes) {
+    public void borrar(EntityManager em, ParametrosInformes parametrosInformes) {
         try {
             em.remove(em.merge(parametrosInformes));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     }
 
     @Override
-    public ParametrosInformes buscarParametroInforme(BigInteger secuencia) {
+    public ParametrosInformes buscarParametroInforme(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(ParametrosInformes.class, secuencia);
         } catch (Exception e) {
@@ -65,7 +65,7 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     }
 
     @Override
-    public List<ParametrosInformes> buscarParametrosInformes() {
+    public List<ParametrosInformes> buscarParametrosInformes(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(ParametrosInformes.class));
@@ -77,10 +77,11 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
     }
 
     @Override
-    public ParametrosInformes buscarParametroInformeUsuario(String alias) {
+    public ParametrosInformes buscarParametroInformeUsuario(EntityManager em, String alias) {
         try {
             Query query = em.createQuery("SELECT pi FROM ParametrosInformes pi WHERE pi.usuario =:Alias");
             query.setParameter("Alias", alias);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             ParametrosInformes parametrosInformes = (ParametrosInformes) query.getSingleResult();
             return parametrosInformes;
         } catch (Exception e) {

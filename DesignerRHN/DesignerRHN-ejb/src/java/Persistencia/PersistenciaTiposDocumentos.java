@@ -25,11 +25,11 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposDocumentos tiposDocumentos) {
+    public void crear(EntityManager em, TiposDocumentos tiposDocumentos) {
         try {
             em.persist(tiposDocumentos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     }
 
     @Override
-    public void editar(TiposDocumentos tiposDocumentos) {
+    public void editar(EntityManager em, TiposDocumentos tiposDocumentos) {
         try {
             em.merge(tiposDocumentos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     }
 
     @Override
-    public void borrar(TiposDocumentos tiposDocumentos) {
+    public void borrar(EntityManager em, TiposDocumentos tiposDocumentos) {
         try {
             em.remove(em.merge(tiposDocumentos));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     }
 
     @Override
-    public List<TiposDocumentos> consultarTiposDocumentos() {
+    public List<TiposDocumentos> consultarTiposDocumentos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT td FROM TiposDocumentos td ORDER BY td.nombrecorto");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposDocumentos> listaTiposDocumentos = query.getResultList();
             return listaTiposDocumentos;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     }
 
     @Override
-    public TiposDocumentos consultarTipoDocumento(BigInteger secuencia) {
+    public TiposDocumentos consultarTipoDocumento(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT tp FROM TiposDocumentos tp WHERE tp.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposDocumentos tiposDescansos = (TiposDocumentos) query.getSingleResult();
             return tiposDescansos;
         } catch (Exception e) {
@@ -82,7 +84,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     }
 
     @Override
-    public BigInteger contarCodeudoresTipoDocumento(BigInteger secuencia) {
+    public BigInteger contarCodeudoresTipoDocumento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM codeudores WHERE tipodocumento=?";
@@ -98,7 +100,7 @@ public class PersistenciaTiposDocumentos implements PersistenciaTiposDocumentosI
     }
     
     @Override
-    public BigInteger contarPersonasTipoDocumento(BigInteger secuencia) {
+    public BigInteger contarPersonasTipoDocumento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM personas WHERE tipodocumento=?";

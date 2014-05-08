@@ -25,28 +25,29 @@ public class PersistenciaSectoresEvaluaciones implements PersistenciaSectoresEva
    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(SectoresEvaluaciones sectoresEvaluaciones) {
+    public void crear(EntityManager em, SectoresEvaluaciones sectoresEvaluaciones) {
         em.persist(sectoresEvaluaciones);
     }
 
     @Override
-    public void editar(SectoresEvaluaciones sectoresEvaluaciones) {
+    public void editar(EntityManager em, SectoresEvaluaciones sectoresEvaluaciones) {
         em.merge(sectoresEvaluaciones);
     }
 
     @Override
-    public void borrar(SectoresEvaluaciones sectoresEvaluaciones) {
+    public void borrar(EntityManager em, SectoresEvaluaciones sectoresEvaluaciones) {
         em.remove(em.merge(sectoresEvaluaciones));
     }
 
     @Override
-    public List<SectoresEvaluaciones> consultarSectoresEvaluaciones() {
+    public List<SectoresEvaluaciones> consultarSectoresEvaluaciones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM SectoresEvaluaciones  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SectoresEvaluaciones> listTiposViajeros = query.getResultList();
             return listTiposViajeros;
         } catch (Exception e) {
@@ -57,11 +58,12 @@ public class PersistenciaSectoresEvaluaciones implements PersistenciaSectoresEva
     }
 
     @Override
-    public SectoresEvaluaciones consultarSectorEvaluacion(BigInteger secuencia) {
+    public SectoresEvaluaciones consultarSectorEvaluacion(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT mr FROM SectoresEvaluaciones mr WHERE mr.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             SectoresEvaluaciones motivoR = (SectoresEvaluaciones) query.getSingleResult();
             return motivoR;
         } catch (Exception e) {

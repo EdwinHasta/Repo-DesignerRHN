@@ -23,36 +23,37 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Mvrs mvrs) {
+    public void crear(EntityManager em, Mvrs mvrs) {
         em.persist(mvrs);
     }
 
     @Override
-    public void editar(Mvrs mvrs) {
+    public void editar(EntityManager em, Mvrs mvrs) {
         em.merge(mvrs);
     }
 
     @Override
-    public void borrar(Mvrs mvrs) {
+    public void borrar(EntityManager em, Mvrs mvrs) {
         em.remove(em.merge(mvrs));
     }
 
     @Override
-    public List<Mvrs> buscarMvrs() {
+    public List<Mvrs> buscarMvrs(EntityManager em) {
         List<Mvrs> mvrs = (List<Mvrs>) em.createNamedQuery("Mvrs.findAll").getResultList();
         return mvrs;
     }
 
     @Override
-    public Mvrs buscarMvrSecuencia(BigInteger secuencia) {
+    public Mvrs buscarMvrSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT mvrs FROM Mvrs mvrs WHERE mvrs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Mvrs mvrs = (Mvrs) query.getSingleResult();
             return mvrs;
         } catch (Exception e) {
@@ -62,10 +63,11 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
     }
 
     @Override
-    public List<Mvrs> buscarMvrsEmpleado(BigInteger secuencia) {
+    public List<Mvrs> buscarMvrsEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT mvrs FROM Mvrs mvrs WHERE mvrs.empleado.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Mvrs> mvrs = (List<Mvrs>) query.getResultList();
             return mvrs;
         } catch (Exception e) {

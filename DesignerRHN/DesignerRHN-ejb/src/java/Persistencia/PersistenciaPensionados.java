@@ -24,11 +24,11 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Pensionados pensionados) {
+    public void crear(EntityManager em, Pensionados pensionados) {
         try {
             System.out.println("Persistencia pensionados : "+pensionados.getSecuencia());
             em.persist(pensionados);
@@ -38,7 +38,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     }
     
     @Override
-    public void editar(Pensionados pensionados) {
+    public void editar(EntityManager em, Pensionados pensionados) {
         try {
             em.merge(pensionados);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     }
 
     @Override
-    public void borrar(Pensionados pensionados) {
+    public void borrar(EntityManager em, Pensionados pensionados) {
         try {
             em.remove(em.merge(pensionados));
         } catch (Exception e) {
@@ -56,7 +56,7 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     }
 
     @Override
-    public Pensionados buscarPensionado(BigInteger secuencia) {
+    public Pensionados buscarPensionado(EntityManager em, BigInteger secuencia) {
         try {
             BigInteger in = (BigInteger) secuencia;
             return em.find(Pensionados.class, in);
@@ -67,18 +67,18 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     }
 
     @Override
-    public List<Pensionados> buscarPensionados() {
+    public List<Pensionados> buscarPensionados(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Pensionados.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<Pensionados> buscarPensionadosEmpleado(BigInteger secEmpleado) {
+    public List<Pensionados> buscarPensionadosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT p FROM Pensionados p WHERE p.vigenciatipotrabajador.empleado.secuencia = :secuenciaEmpl ORDER BY p.fechainiciopension DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Pensionados> pensionados = query.getResultList();
             return pensionados;
         } catch (Exception e) {
@@ -88,11 +88,12 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
     }
     
     @Override
-    public Pensionados buscarPensionVigenciaSecuencia(BigInteger secVigencia) {
+    public Pensionados buscarPensionVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
             System.out.println("secVigencia : "+secVigencia);
             Query query = em.createQuery("SELECT p FROM Pensionados p WHERE p.vigenciatipotrabajador.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Pensionados pensionVigencia = (Pensionados) query.getSingleResult();
             return pensionVigencia;
         } catch (Exception e) {

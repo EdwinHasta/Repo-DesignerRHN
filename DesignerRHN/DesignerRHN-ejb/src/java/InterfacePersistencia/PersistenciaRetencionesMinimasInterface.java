@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.RetencionesMinimas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,14 +16,14 @@ import java.util.List;
  */
 public interface PersistenciaRetencionesMinimasInterface {
 
-    public List<RetencionesMinimas> retenciones();
+    public List<RetencionesMinimas> retenciones(EntityManager em);
 
-    public void crear(RetencionesMinimas retenciones);
+    public void crear(EntityManager em, RetencionesMinimas retenciones);
 
-    public void editar(RetencionesMinimas retenciones);
+    public void editar(EntityManager em, RetencionesMinimas retenciones);
 
-    public void borrar(RetencionesMinimas retenciones);
+    public void borrar(EntityManager em, RetencionesMinimas retenciones);
 
-    public List<RetencionesMinimas> buscarRetencionesMinimasVig(BigInteger secRetencion);
+    public List<RetencionesMinimas> buscarRetencionesMinimasVig(EntityManager em, BigInteger secRetencion);
 
 }

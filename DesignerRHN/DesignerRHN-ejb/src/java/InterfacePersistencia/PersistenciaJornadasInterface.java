@@ -8,26 +8,25 @@ package InterfacePersistencia;
 import Entidades.Jornadas;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
 public interface PersistenciaJornadasInterface {
 
-    public void crear(Jornadas jornadas);
+    public void crear(EntityManager em, Jornadas jornadas);
 
-    public void editar(Jornadas jornadas);
+    public void editar(EntityManager em, Jornadas jornadas);
 
-    public void borrar(Jornadas jornadas);
+    public void borrar(EntityManager em, Jornadas jornadas);
 
-    public Jornadas consultarJornada(BigInteger secuencia);
+    public Jornadas consultarJornada(EntityManager em, BigInteger secuencia);
 
-    public List<Jornadas> consultarJornadas();
+    public List<Jornadas> consultarJornadas(EntityManager em);
 
-    public BigInteger contarTarifasEscalafonesJornada(BigInteger secuencia);
+    public BigInteger contarTarifasEscalafonesJornada(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contarJornadasLaboralesJornada(BigInteger secuencia);
+    public BigInteger contarJornadasLaboralesJornada(EntityManager em, BigInteger secuencia);
 }

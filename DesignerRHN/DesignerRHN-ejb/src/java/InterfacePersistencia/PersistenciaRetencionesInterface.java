@@ -8,6 +8,7 @@ package InterfacePersistencia;
 import Entidades.Retenciones;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -15,13 +16,13 @@ import java.util.List;
  */
 public interface PersistenciaRetencionesInterface {
 
-    public void crear(Retenciones retenciones);
+    public void crear(EntityManager em, Retenciones retenciones);
 
-    public void editar(Retenciones retenciones);
+    public void editar(EntityManager em, Retenciones retenciones);
 
-    public void borrar(Retenciones retenciones);
+    public void borrar(EntityManager em, Retenciones retenciones);
 
-    public List<Retenciones> buscarRetenciones();
+    public List<Retenciones> buscarRetenciones(EntityManager em);
 
-    public List<Retenciones> buscarRetencionesVig(BigInteger secRetencion);
+    public List<Retenciones> buscarRetencionesVig(EntityManager em, BigInteger secRetencion);
 }

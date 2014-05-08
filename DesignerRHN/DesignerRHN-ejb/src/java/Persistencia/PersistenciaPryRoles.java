@@ -21,13 +21,14 @@ public class PersistenciaPryRoles implements PersistenciaPryRolesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public List<PryRoles> pryroles() {
+    public List<PryRoles> pryroles(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT p FROM PryRoles p ORDER BY p.descripcion ");
+            em.createNamedQuery("PryPlataformas.findAll");
             List<PryRoles> pryroles = query.getResultList();
             return pryroles;
         } catch (Exception e) {

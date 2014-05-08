@@ -25,28 +25,29 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(MotivosRetiros motivosRetiros) {
+    public void crear(EntityManager em, MotivosRetiros motivosRetiros) {
         em.persist(motivosRetiros);
     }
 
     @Override
-    public void editar(MotivosRetiros motivosRetiros) {
+    public void editar(EntityManager em, MotivosRetiros motivosRetiros) {
         em.merge(motivosRetiros);
     }
 
     @Override
-    public void borrar(MotivosRetiros motivosRetiros) {
+    public void borrar(EntityManager em, MotivosRetiros motivosRetiros) {
         em.remove(em.merge(motivosRetiros));
     }
 
     @Override
-    public List<MotivosRetiros> consultarMotivosRetiros() {
+    public List<MotivosRetiros> consultarMotivosRetiros(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM MotivosRetiros  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosRetiros> listTiposViajeros = query.getResultList();
             return listTiposViajeros;
         } catch (Exception e) {
@@ -57,11 +58,12 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
     }
 
     @Override
-    public MotivosRetiros consultarMotivoRetiro(BigInteger secuencia) {
+    public MotivosRetiros consultarMotivoRetiro(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT mr FROM MotivosRetiros mr WHERE mr.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             MotivosRetiros motivoR = (MotivosRetiros) query.getSingleResult();
             return motivoR;
         } catch (Exception e) {
@@ -71,7 +73,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
 
     }
 
-    public BigInteger contarHVExperienciasLaboralesMotivoRetiro(BigInteger secuencia) {
+    public BigInteger contarHVExperienciasLaboralesMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM hvexperienciaslaborales WHERE motivoretiro = ?";
@@ -86,7 +88,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
         }
     }
 
-    public BigInteger contarNovedadesSistemasMotivoRetiro(BigInteger secuencia) {
+    public BigInteger contarNovedadesSistemasMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM novedadessistema WHERE motivoretiro = ?";
@@ -101,7 +103,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
         }
     }
 
-    public BigInteger contarRetiMotivosRetirosMotivoRetiro(BigInteger secuencia) {
+    public BigInteger contarRetiMotivosRetirosMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM parametroscambiosmasivos WHERE retimotivoretiro = ?";
@@ -116,7 +118,7 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
         }
     }
 
-    public BigInteger contarRetiradosMotivoRetiro(BigInteger secuencia) {
+    public BigInteger contarRetiradosMotivoRetiro(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM retirados WHERE motivoretiro = ?";

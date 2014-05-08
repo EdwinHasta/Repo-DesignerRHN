@@ -25,14 +25,15 @@ public class PersistenciaSolucionesFormulas implements PersistenciaSolucionesFor
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public int validarNovedadesNoLiquidadas(BigInteger secNovedad) {
+    public int validarNovedadesNoLiquidadas(EntityManager em, BigInteger secNovedad) {
         try {
             Query query = em.createQuery("SELECT COUNT(sf) FROM SolucionesFormulas sf WHERE sf.novedad.secuencia = :secNovedad");
             query.setParameter("secNovedad", secNovedad);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 return 1;
@@ -45,17 +46,19 @@ public class PersistenciaSolucionesFormulas implements PersistenciaSolucionesFor
     }
 
     @Override
-    public List<SolucionesFormulas> listaSolucionesFormulasParaEmpleadoYNovedad(BigInteger secEmpleado, BigInteger secNovedad) {
+    public List<SolucionesFormulas> listaSolucionesFormulasParaEmpleadoYNovedad(EntityManager em, BigInteger secEmpleado, BigInteger secNovedad) {
         try {
             List<SolucionesFormulas> lista = null;
             if (secNovedad == null) {
                 Query query = em.createQuery("SELECT sf FROM SolucionesFormulas sf WHERE sf.solucionnodo.empleado.secuencia =:secEmpleado");
                 query.setParameter("secEmpleado", secEmpleado);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 lista = query.getResultList();
             } else {
                 Query query = em.createQuery("SELECT sf FROM SolucionesFormulas sf WHERE sf.solucionnodo.empleado.secuencia =:secEmpleado AND sf.novedad.secuencia =:secNovedad");
                 query.setParameter("secEmpleado", secEmpleado);
                 query.setParameter("secNovedad", secNovedad);
+                query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 lista = query.getResultList();
             }
             return lista;

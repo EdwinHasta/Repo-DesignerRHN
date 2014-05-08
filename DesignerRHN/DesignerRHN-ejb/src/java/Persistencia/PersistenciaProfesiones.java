@@ -21,13 +21,14 @@ public class PersistenciaProfesiones implements PersistenciaProfesionesInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-        public List<Profesiones> profesiones() {
+        public List<Profesiones> profesiones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT p FROM Profesiones p ORDER BY p.descripcion");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Profesiones> profesiones = query.getResultList();
             return profesiones;
         } catch (Exception e) {

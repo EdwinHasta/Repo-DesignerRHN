@@ -26,29 +26,30 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Periodicidades periodicidades) {
+    public void crear(EntityManager em, Periodicidades periodicidades) {
         em.persist(periodicidades);
     }
 
     @Override
-    public void editar(Periodicidades periodicidades) {
+    public void editar(EntityManager em, Periodicidades periodicidades) {
         em.merge(periodicidades);
     }
 
     @Override
-    public void borrar(Periodicidades periodicidades) {
+    public void borrar(EntityManager em, Periodicidades periodicidades) {
         em.remove(em.merge(periodicidades));
     }
 
     @Override
-    public boolean verificarCodigoPeriodicidad(BigInteger codigoPeriodicidad) {
+    public boolean verificarCodigoPeriodicidad(EntityManager em, BigInteger codigoPeriodicidad) {
         try {
             Query query = em.createQuery("SELECT COUNT(p) FROM Periodicidades p WHERE p.codigo = :codigo");
             query.setParameter("codigo", codigoPeriodicidad);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
@@ -58,7 +59,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public Periodicidades consultarPeriodicidad(BigInteger secuencia) {
+    public Periodicidades consultarPeriodicidad(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Periodicidades.class, secuencia);
         } catch (Exception e) {
@@ -67,14 +68,15 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
         }
     }
 
-    public List<Periodicidades> consultarPeriodicidades() {
+    public List<Periodicidades> consultarPeriodicidades(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM Periodicidades m");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Periodicidades> lista = query.getResultList();
         return lista;
     }
 
     @Override
-    public BigInteger contarCPCompromisosPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarCPCompromisosPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM cpcompromisos WHERE periodicidad = ?";
@@ -90,7 +92,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarDetallesPeriodicidadesPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarDetallesPeriodicidadesPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM detallesperiodicidades WHERE periodicidad = ?";
@@ -106,7 +108,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarEersPrestamosDtosPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarEersPrestamosDtosPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM eersprestamosdtos WHERE periodicidad = ?";
@@ -122,7 +124,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarEmpresasPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarEmpresasPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM empresas WHERE minimaperiodicidad = ?";
@@ -138,7 +140,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarFormulasAseguradasPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarFormulasAseguradasPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM formulasaseguradas WHERE periodicidad = ?";
@@ -154,7 +156,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarFormulasContratosPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarFormulasContratosPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM formulascontratos WHERE periodicidad = ?";
@@ -170,7 +172,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarGruposProvisionesPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarGruposProvisionesPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM gruposprovisiones WHERE periodicidadcorte = ?";
@@ -186,7 +188,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarNovedadesPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarNovedadesPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM novedades WHERE periodicidad = ?";
@@ -202,7 +204,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarParametrosCambiosMasivosPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarParametrosCambiosMasivosPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM parametroscambiosmasivos WHERE noveperiodicidad = ?";
@@ -218,7 +220,7 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     }
 
     @Override
-    public BigInteger contarVigenciasFormasPagosPeriodicidad(BigInteger secuencia) {
+    public BigInteger contarVigenciasFormasPagosPeriodicidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE formapago = ?";

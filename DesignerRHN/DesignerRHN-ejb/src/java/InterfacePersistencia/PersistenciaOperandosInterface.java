@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Operandos;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -21,17 +22,17 @@ public interface PersistenciaOperandosInterface {
      *
      * @return Retorna una lista de Operandos.
      */
-    public List<Operandos> buscarOperandos();
+    public List<Operandos> buscarOperandos(EntityManager em);
 
-    public void crear(Operandos operandos);
+    public void crear(EntityManager em, Operandos operandos);
 
-    public void editar(Operandos operandos);
+    public void editar(EntityManager em, Operandos operandos);
 
-    public void borrar(Operandos operandos);
+    public void borrar(EntityManager em, Operandos operandos);
 
-    public String valores(BigInteger secuenciaOperando);
+    public String valores(EntityManager em, BigInteger secuenciaOperando);
 
-    public Operandos operandosPorSecuencia(BigInteger secuencia);
+    public Operandos operandosPorSecuencia(EntityManager em, BigInteger secuencia);
 
-    public List<Operandos> operandoPorConceptoSoporte(BigInteger secConceptoSoporte);
+    public List<Operandos> operandoPorConceptoSoporte(EntityManager em, BigInteger secConceptoSoporte);
 }

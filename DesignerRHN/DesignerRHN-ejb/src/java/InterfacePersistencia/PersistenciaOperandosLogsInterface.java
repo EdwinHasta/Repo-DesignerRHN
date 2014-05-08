@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.OperandosLogs;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -15,14 +16,14 @@ import java.util.List;
  */
 public interface PersistenciaOperandosLogsInterface {
 
-    public List<OperandosLogs> buscarOperandosLogs();
+    public List<OperandosLogs> buscarOperandosLogs(EntityManager em);
 
     /**
      * Método encargado de insertar un OperandoLog en la base de datos.
      *
      * @param operandos OperandoLog que se quiere crear.
      */
-    public void crear(OperandosLogs operandos);
+    public void crear(EntityManager em, OperandosLogs operandos);
 
     /**
      * Método encargado de modificar un OperandoLog de la base de datos. Este
@@ -31,7 +32,7 @@ public interface PersistenciaOperandosLogsInterface {
      *
      * @param operandos OperandoLog con los cambios que se van a realizar.
      */
-    public void editar(OperandosLogs operandos);
+    public void editar(EntityManager em, OperandosLogs operandos);
 
     /**
      * Método encargado de eliminar de la base de datos el OperandoLog que entra
@@ -39,7 +40,7 @@ public interface PersistenciaOperandosLogsInterface {
      *
      * @param operandos OperandoLog que se quiere eliminar.
      */
-    public void borrar(OperandosLogs operandos);
+    public void borrar(EntityManager em, OperandosLogs operandos);
 
     /**
      * Método encargado de obtener los OperandosLogs para un Proceso
@@ -48,5 +49,5 @@ public interface PersistenciaOperandosLogsInterface {
      * @param secProceso Secuencia del Proceso
      * @return Lista de OperandosLogs
      */
-    public List<OperandosLogs> buscarOperandosLogsParaProcesoSecuencia(BigInteger secProceso);
+    public List<OperandosLogs> buscarOperandosLogsParaProcesoSecuencia(EntityManager em, BigInteger secProceso);
 }

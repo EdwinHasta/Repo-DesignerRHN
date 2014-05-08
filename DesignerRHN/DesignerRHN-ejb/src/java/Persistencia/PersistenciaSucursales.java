@@ -24,26 +24,26 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     
     @Override
-    public void crear(Sucursales sucursales) {
+    public void crear(EntityManager em, Sucursales sucursales) {
         em.persist(sucursales);
     }
 
     @Override
-    public void editar(Sucursales sucursales) {
+    public void editar(EntityManager em, Sucursales sucursales) {
         em.merge(sucursales);
     }
 
     @Override
-    public void borrar(Sucursales sucursales) {
+    public void borrar(EntityManager em, Sucursales sucursales) {
         em.remove(em.merge(sucursales));
     }
 
     @Override
-    public Sucursales buscarSucursal(BigInteger secuencia) {
+    public Sucursales buscarSucursal(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Sucursales.class, secuencia);
         } catch (Exception e) {
@@ -53,13 +53,14 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
     }
 
     @Override
-    public List<Sucursales> consultarSucursales() {
+    public List<Sucursales> consultarSucursales(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM Sucursales m");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Sucursales> lista = query.getResultList();
         return lista;
     }
     
-     public BigInteger contarVigenciasFormasPagosSucursal(BigInteger secuencia) {
+     public BigInteger contarVigenciasFormasPagosSucursal(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE sucursal = ?";

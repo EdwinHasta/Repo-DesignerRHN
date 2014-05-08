@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.TiposDias;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaTiposDiasInterface {
      *
      * @param tiposDias TipoDia que se quiere crear.
      */
-    public void crear(TiposDias tiposDias);
+    public void crear(EntityManager em, TiposDias tiposDias);
 
     /**
      * Método encargado de modificar un TipoDia de la base de datos. Este método
@@ -29,7 +30,7 @@ public interface PersistenciaTiposDiasInterface {
      *
      * @param tiposDias TipoDia con los cambios que se van a realizar.
      */
-    public void editar(TiposDias tiposDias);
+    public void editar(EntityManager em, TiposDias tiposDias);
 
     /**
      * Método encargado de eliminar de la base de datos el TipoDia que entra por
@@ -37,7 +38,7 @@ public interface PersistenciaTiposDiasInterface {
      *
      * @param tiposDias TipoDia que se quiere eliminar.
      */
-    public void borrar(TiposDias tiposDias);
+    public void borrar(EntityManager em, TiposDias tiposDias);
 
     /**
      * Método encargado de buscar el TipoDia con la secTiposDias dada por
@@ -47,7 +48,7 @@ public interface PersistenciaTiposDiasInterface {
      * @return Retorna el TipoDia identificado con la secTiposDias dada por
      * parámetro.
      */
-    public TiposDias buscarTipoDia(BigInteger secTiposDias);
+    public TiposDias buscarTipoDia(EntityManager em, BigInteger secTiposDias);
 
     /**
      * Método encargado de buscar todos los TiposDias existentes en la base de
@@ -55,7 +56,7 @@ public interface PersistenciaTiposDiasInterface {
      *
      * @return Retorna una lista de TipoDias.
      */
-    public List<TiposDias> buscarTiposDias();
+    public List<TiposDias> buscarTiposDias(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TiposDias
@@ -66,7 +67,7 @@ public interface PersistenciaTiposDiasInterface {
      * @return Retorna el número de relaciones entre el TiposDias cuya secTiposDias
      * coincida con la dada por parámetro y la tabla DiasLaborales
      */
-    public BigInteger contadorDiasLaborales(BigInteger secTiposDias);
+    public BigInteger contadorDiasLaborales(EntityManager em, BigInteger secTiposDias);
 
     /**
      * Método encargado de revisar si existe una relacion entre un TiposDias
@@ -77,5 +78,5 @@ public interface PersistenciaTiposDiasInterface {
      * @return Retorna el número de relaciones entre el TiposDias cuya secTiposDias
      * coincida con la dada por parámetro y la tabla ExtrasRecargos
      */
-    public BigInteger contadorExtrasRecargos(BigInteger secTiposDias);
+    public BigInteger contadorExtrasRecargos(EntityManager em, BigInteger secTiposDias);
 }

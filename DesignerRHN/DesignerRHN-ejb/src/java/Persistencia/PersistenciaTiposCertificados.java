@@ -23,26 +23,26 @@ public class PersistenciaTiposCertificados implements PersistenciaTiposCertifica
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposCertificados motivosMvrs) {
+    public void crear(EntityManager em, TiposCertificados motivosMvrs) {
         em.persist(motivosMvrs);
     }
 
     @Override
-    public void editar(TiposCertificados motivosMvrs) {
+    public void editar(EntityManager em, TiposCertificados motivosMvrs) {
         em.merge(motivosMvrs);
     }
 
     @Override
-    public void borrar(TiposCertificados motivosMvrs) {
+    public void borrar(EntityManager em, TiposCertificados motivosMvrs) {
         em.remove(em.merge(motivosMvrs));
     }
 
     @Override
-    public TiposCertificados buscarTipoCertificado(BigInteger secuencia) {
+    public TiposCertificados buscarTipoCertificado(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(TiposCertificados.class, secuencia);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class PersistenciaTiposCertificados implements PersistenciaTiposCertifica
     }
 
     @Override
-    public List<TiposCertificados> buscarTiposCertificados() {
+    public List<TiposCertificados> buscarTiposCertificados(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(TiposCertificados.class));
         return em.createQuery(cq).getResultList();

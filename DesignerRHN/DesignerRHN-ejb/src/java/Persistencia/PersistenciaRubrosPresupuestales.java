@@ -13,21 +13,23 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br> 
+ * Clase Stateless. <br>
  * Clase encargada de realizar operaciones sobre la tabla 'RubrosPresupuestales'
  * de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresupuestalesInterface{
+public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresupuestalesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Rubrospresupuestales rubrospresupuestales) {
+    public void crear(EntityManager em, Rubrospresupuestales rubrospresupuestales) {
         try {
             em.persist(rubrospresupuestales);
         } catch (Exception e) {
@@ -36,7 +38,7 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     }
 
     @Override
-    public void editar(Rubrospresupuestales rubrospresupuestales) {
+    public void editar(EntityManager em, Rubrospresupuestales rubrospresupuestales) {
         try {
             em.merge(rubrospresupuestales);
         } catch (Exception e) {
@@ -45,7 +47,7 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     }
 
     @Override
-    public void borrar(Rubrospresupuestales rubrospresupuestales) {
+    public void borrar(EntityManager em, Rubrospresupuestales rubrospresupuestales) {
         try {
             em.remove(em.merge(rubrospresupuestales));
         } catch (Exception e) {
@@ -54,9 +56,11 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     }
 
     @Override
-    public List<Rubrospresupuestales> buscarRubros() {
+    public List<Rubrospresupuestales> buscarRubros(EntityManager em) {
         try {
-            List<Rubrospresupuestales> rubrospresupuestales = (List<Rubrospresupuestales>) em.createNamedQuery("Rubrospresupuestales.findAll").getResultList();
+            Query query = em.createNamedQuery("Rubrospresupuestales.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Rubrospresupuestales> rubrospresupuestales = (List<Rubrospresupuestales>) query.getResultList();
             return rubrospresupuestales;
         } catch (Exception e) {
             System.out.println("Error buscarCuentas PersistenciaCuentas : " + e.toString());
@@ -65,10 +69,11 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
     }
 
     @Override
-    public Rubrospresupuestales buscarRubrosSecuencia(BigInteger secuencia) {
+    public Rubrospresupuestales buscarRubrosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Rubrospresupuestales c WHERE c.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Rubrospresupuestales cuentas = (Rubrospresupuestales) query.getSingleResult();
             return cuentas;
         } catch (Exception e) {

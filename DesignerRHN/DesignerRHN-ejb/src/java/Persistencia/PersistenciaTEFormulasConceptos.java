@@ -25,11 +25,11 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TEFormulasConceptos tEFormulasConceptos) {
+    public void crear(EntityManager em, TEFormulasConceptos tEFormulasConceptos) {
         try {
             em.persist(tEFormulasConceptos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
     }
 
     @Override
-    public void editar(TEFormulasConceptos tEFormulasConceptos) {
+    public void editar(EntityManager em, TEFormulasConceptos tEFormulasConceptos) {
         try {
             em.merge(tEFormulasConceptos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
     }
 
     @Override
-    public void borrar(TEFormulasConceptos tEFormulasConceptos) {
+    public void borrar(EntityManager em, TEFormulasConceptos tEFormulasConceptos) {
         try {
             em.remove(em.merge(tEFormulasConceptos));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
     }
 
     @Override
-    public List<TEFormulasConceptos> buscarTEFormulasConceptos() {
+    public List<TEFormulasConceptos> buscarTEFormulasConceptos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT t FROM TEFormulasConceptos t ORDER BY t.secuencia ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TEFormulasConceptos> tEFormulasConceptos = (List<TEFormulasConceptos>) query.getResultList();
             return tEFormulasConceptos;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
     }
 
     @Override
-    public TEFormulasConceptos buscarTEFormulaConceptoSecuencia(BigInteger secTEFormula) {
+    public TEFormulasConceptos buscarTEFormulaConceptoSecuencia(EntityManager em, BigInteger secTEFormula) {
         try {
             Query query = em.createQuery("SELECT t FROM TEFormulasConceptos t WHERE t.secuencia = :secTEFormula");
             query.setParameter("secTEFormula", secTEFormula);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TEFormulasConceptos tEFormulasConceptos = (TEFormulasConceptos) query.getSingleResult();
             return tEFormulasConceptos;
         } catch (Exception e) {
@@ -82,10 +84,11 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
     }
 
     @Override
-    public List<TEFormulasConceptos> buscarTEFormulasConceptosPorSecuenciaTSGrupoTipoEntidad(BigInteger secTSGrupo) {
+    public List<TEFormulasConceptos> buscarTEFormulasConceptosPorSecuenciaTSGrupoTipoEntidad(EntityManager em, BigInteger secTSGrupo) {
         try {
             Query query = em.createQuery("SELECT t FROM TEFormulasConceptos t WHERE t.tsgrupotipoentidad.secuencia =:secTSGrupo");
             query.setParameter("secTSGrupo", secTSGrupo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TEFormulasConceptos> tEFormulasConceptos = (List<TEFormulasConceptos>) query.getResultList();
             return tEFormulasConceptos;
         } catch (Exception e) {

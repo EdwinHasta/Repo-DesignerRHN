@@ -21,15 +21,16 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaTiposEducaciones implements PersistenciaTiposEducacionesInterface{
-@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     @Override
-    public List<TiposEducaciones> tiposEducaciones() {
+    public List<TiposEducaciones> tiposEducaciones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tE FROM TiposEducaciones tE ORDER BY tE.nombre");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEducaciones> tiposEducaciones = query.getResultList();
             return tiposEducaciones;
         } catch (Exception e) {

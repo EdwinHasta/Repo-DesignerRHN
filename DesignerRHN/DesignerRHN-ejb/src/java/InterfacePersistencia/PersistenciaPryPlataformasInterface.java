@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.PryPlataformas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaPryPlataformasInterface {
      *
      * @param plataformas PryPlataforma que se quiere crear.
      */
-    public void crear(PryPlataformas plataformas);
+    public void crear(EntityManager em, PryPlataformas plataformas);
 
     /**
      * Método encargado de modificar un PryPlataforma de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaPryPlataformasInterface {
      *
      * @param plataformas PryPlataforma con los cambios que se van a realizar.
      */
-    public void editar(PryPlataformas plataformas);
+    public void editar(EntityManager em, PryPlataformas plataformas);
 
     /**
      * Método encargado de eliminar de la base de datos el PryPlataforma que
@@ -37,7 +38,7 @@ public interface PersistenciaPryPlataformasInterface {
      *
      * @param plataformas PryPlataforma que se quiere eliminar.
      */
-    public void borrar(PryPlataformas plataformas);
+    public void borrar(EntityManager em, PryPlataformas plataformas);
 
     /**
      * Método encargado de buscar todos los PryPlataformas existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaPryPlataformasInterface {
      *
      * @return Retorna una lista de PryPlataformas.
      */
-    public List<PryPlataformas> buscarPryPlataformas();
+    public List<PryPlataformas> buscarPryPlataformas(EntityManager em);
 
     /**
      * Método encargado de buscar el PryPlataforma con la secuencia dada por
@@ -55,7 +56,7 @@ public interface PersistenciaPryPlataformasInterface {
      * @return Retorna el PryPlataforma identificado con la secuencia dada por
      * parámetro.
      */
-    public PryPlataformas buscarPryPlataformaSecuencia(BigInteger secuencia);
+    public PryPlataformas buscarPryPlataformaSecuencia(EntityManager em, BigInteger secuencia);
 
-    public BigInteger contadorProyectos(BigInteger secuencia);
+    public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia);
 }

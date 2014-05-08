@@ -23,7 +23,7 @@ public interface PersistenciaRecordatoriosInterface {
     /**
      * Método encargado de buscar los mensajes de los recordatorios de tipo 'RECORDATORIO', con fecha igual al día actual,
      * pertenecientes al usuario que está usando el aplicativo o no están asociados a ningún usuario.
-     * (día actual hace referencia al díe en la que el usuario ingresa al aplicativo)
+     * (EntityManager em, día actual hace referencia al díe en la que el usuario ingresa al aplicativo)
      * @param entity EntityManager encargado de la comunicación con la base de datos.
      * @return Retorna una lista de Strings con los mensajes de los recordatorios de tipo 'RECORDATORIO' que cumplen las condiciones.
      */
@@ -31,16 +31,16 @@ public interface PersistenciaRecordatoriosInterface {
     /**
      * Método encargado de buscar los mensajes de los recordatorios de tipo 'CONSULTA', con fecha igual al día actual,
      * pertenecientes al usuario que está usando el aplicativo o no están asociados a ningún usuario.
-     * (día actual hace referencia al díe en la que el usuario ingresa al aplicativo)
+     * (EntityManager em, día actual hace referencia al díe en la que el usuario ingresa al aplicativo)
      * @param entity EntityManager encargado de la comunicación con la base de datos.
      * @return Retorna una lista de recordatorios de tipo 'CONSULTA' que cumplen las condiciones.
      */
     public List<Recordatorios> consultasInicio(EntityManager entity);
     
-    public List<Recordatorios> proverbiosRecordatorios();
+    public List<Recordatorios> proverbiosRecordatorios(EntityManager em);
     
-    public List<Recordatorios> mensajesRecordatorios();
-    public void crear(Recordatorios recordatorios);
-    public void borrar(Recordatorios recordatorios);
-    public void editar(Recordatorios recordatorios);
+    public List<Recordatorios> mensajesRecordatorios(EntityManager em);
+    public void crear(EntityManager em, Recordatorios recordatorios);
+    public void borrar(EntityManager em, Recordatorios recordatorios);
+    public void editar(EntityManager em, Recordatorios recordatorios);
 }

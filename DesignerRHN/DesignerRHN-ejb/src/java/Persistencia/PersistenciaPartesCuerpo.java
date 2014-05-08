@@ -23,26 +23,26 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(PartesCuerpo partesCuerpo) {
+    public void crear(EntityManager em, PartesCuerpo partesCuerpo) {
         em.persist(partesCuerpo);
     }
 
     @Override
-    public void editar(PartesCuerpo partesCuerpo) {
+    public void editar(EntityManager em, PartesCuerpo partesCuerpo) {
         em.merge(partesCuerpo);
     }
 
     @Override
-    public void borrar(PartesCuerpo partesCuerpo) {
+    public void borrar(EntityManager em, PartesCuerpo partesCuerpo) {
         em.remove(em.merge(partesCuerpo));
     }
 
     @Override
-    public PartesCuerpo buscarParteCuerpo(BigInteger secuencia) {
+    public PartesCuerpo buscarParteCuerpo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(PartesCuerpo.class, secuencia);
         } catch (Exception e) {
@@ -51,9 +51,10 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     }
 
     @Override
-    public List<PartesCuerpo> buscarPartesCuerpo() {
+    public List<PartesCuerpo> buscarPartesCuerpo(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM PartesCuerpo  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PartesCuerpo> listPartesCuerpo = query.getResultList();
             return listPartesCuerpo;
         } catch (Exception e) {
@@ -63,7 +64,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     }
 
     @Override
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM soaccidentesmedicos so WHERE so.parte = ?";
@@ -79,7 +80,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     }
 
     @Override
-    public BigInteger contadorDetallesExamenes(BigInteger secuencia) {
+    public BigInteger contadorDetallesExamenes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM sodetallesexamenes se WHERE se.partecuerpo = ?";
@@ -95,7 +96,7 @@ public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterfa
     }
 
     @Override
-    public BigInteger contadorSoDetallesRevisiones(BigInteger secuencia) {
+    public BigInteger contadorSoDetallesRevisiones(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM sodetallesrevisiones sr WHERE sr.organo = ?";

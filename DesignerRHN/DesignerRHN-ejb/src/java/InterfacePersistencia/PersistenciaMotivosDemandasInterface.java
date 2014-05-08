@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.MotivosDemandas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaMotivosDemandasInterface {
      *
      * @param motivosDemandas MotivoDemanda que se quiere crear.
      */
-    public void crear(MotivosDemandas motivosDemandas);
+    public void crear(EntityManager em, MotivosDemandas motivosDemandas);
 
     /**
      * Método encargado de modificar un MotivoDemanda de la base de datos. Este
@@ -30,7 +31,7 @@ public interface PersistenciaMotivosDemandasInterface {
      * @param motivosDemandas MotivoDemanda con los cambios que se van a
      * realizar.
      */
-    public void editar(MotivosDemandas motivosDemandas);
+    public void editar(EntityManager em, MotivosDemandas motivosDemandas);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoDemanda que
@@ -38,7 +39,7 @@ public interface PersistenciaMotivosDemandasInterface {
      *
      * @param motivosDemandas MotivoDemanda que se quiere eliminar.
      */
-    public void borrar(MotivosDemandas motivosDemandas);
+    public void borrar(EntityManager em, MotivosDemandas motivosDemandas);
 
     /**
      * Método encargado de buscar todos los MotivosDemandas existentes en la
@@ -47,7 +48,7 @@ public interface PersistenciaMotivosDemandasInterface {
      * @return Retorna una lista de MotivosDemandas ordenados por
      * secMotivosDemandas.
      */
-    public List<MotivosDemandas> buscarMotivosDemandas();
+    public List<MotivosDemandas> buscarMotivosDemandas(EntityManager em);
 
     /**
      * Método encargado de revisar si existe una relacion entre un MotivoDemanda
@@ -58,7 +59,7 @@ public interface PersistenciaMotivosDemandasInterface {
      * @return Retorna el número de Demandas relacionados con el Motivo Demanda
      * cuya secMotivosDemandas coincide con el parámetro.
      */
-    public BigInteger contadorDemandas(BigInteger secMotivosDemandas);
+    public BigInteger contadorDemandas(EntityManager em, BigInteger secMotivosDemandas);
 
     /**
      * Método encargado de buscar el MotivoDemanda con la secMotivosDemandas
@@ -69,5 +70,5 @@ public interface PersistenciaMotivosDemandasInterface {
      * @return Retorna el MotivoDemanda identificado con la secMotivosDemandas
      * dada por parámetro.
      */
-    public MotivosDemandas buscarMotivoDemanda(BigInteger secMotivosDemandas);
+    public MotivosDemandas buscarMotivoDemanda(EntityManager em, BigInteger secMotivosDemandas);
 }

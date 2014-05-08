@@ -24,26 +24,26 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(SoCondicionesTrabajos soCondicionesTrabajos) {
+    public void crear(EntityManager em, SoCondicionesTrabajos soCondicionesTrabajos) {
         em.persist(soCondicionesTrabajos);
     }
 
     @Override
-    public void editar(SoCondicionesTrabajos soCondicionesTrabajos) {
+    public void editar(EntityManager em, SoCondicionesTrabajos soCondicionesTrabajos) {
         em.merge(soCondicionesTrabajos);
     }
 
     @Override
-    public void borrar(SoCondicionesTrabajos soCondicionesTrabajos) {
+    public void borrar(EntityManager em, SoCondicionesTrabajos soCondicionesTrabajos) {
         em.remove(em.merge(soCondicionesTrabajos));
     }
 
     @Override
-    public SoCondicionesTrabajos buscarSoCondicionTrabajo(BigInteger secuencia) {
+    public SoCondicionesTrabajos buscarSoCondicionTrabajo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(SoCondicionesTrabajos.class, secuencia);
         } catch (Exception e) {
@@ -53,9 +53,10 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     }
 
     @Override
-    public List<SoCondicionesTrabajos> buscarSoCondicionesTrabajos() {
+    public List<SoCondicionesTrabajos> buscarSoCondicionesTrabajos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT soct FROM SoCondicionesTrabajos soct ORDER BY soct.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SoCondicionesTrabajos> listaSOCondicionesTrabajos = query.getResultList();
             return listaSOCondicionesTrabajos;
         } catch (Exception e) {
@@ -66,7 +67,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     }
 
     @Override
-    public BigInteger contadorInspecciones(BigInteger secuencia) {
+    public BigInteger contadorInspecciones(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM inspecciones ins WHERE ins.factorriesgo = ?";
@@ -82,7 +83,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     }
 
     @Override
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos soa WHERE soa.factorriesgo = ?";
@@ -98,7 +99,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     }
 
     @Override
-    public BigInteger contadorSoDetallesPanoramas(BigInteger secuencia) {
+    public BigInteger contadorSoDetallesPanoramas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , sodetallespanoramas sop WHERE st.secuencia = sop.condiciontrabajo and sop.secuencia =?";
@@ -114,7 +115,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
     }
 
     @Override
-    public BigInteger contadorSoExposicionesFr(BigInteger secuencia) {
+    public BigInteger contadorSoExposicionesFr(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , soexposicionesfr  ser WHERE st.secuencia = ser.indicador and ser.secuencia = ?";

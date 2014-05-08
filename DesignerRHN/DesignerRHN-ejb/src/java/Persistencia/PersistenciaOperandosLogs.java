@@ -26,11 +26,11 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public List<OperandosLogs> buscarOperandosLogs() {
+    public List<OperandosLogs> buscarOperandosLogs(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(OperandosLogs.class));
@@ -42,7 +42,7 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     }
 
     @Override
-    public void crear(OperandosLogs operandos) {
+    public void crear(EntityManager em, OperandosLogs operandos) {
         try {
             em.persist(operandos);
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     }
 
     @Override
-    public void editar(OperandosLogs operandos) {
+    public void editar(EntityManager em, OperandosLogs operandos) {
         try {
             em.merge(operandos);
         } catch (Exception e) {
@@ -60,7 +60,7 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     }
 
     @Override
-    public void borrar(OperandosLogs operandos) {
+    public void borrar(EntityManager em, OperandosLogs operandos) {
         try {
             em.remove(em.merge(operandos));
         } catch (Exception e) {
@@ -69,10 +69,11 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
     }
 
     @Override
-    public List<OperandosLogs> buscarOperandosLogsParaProcesoSecuencia(BigInteger secProceso) {
+    public List<OperandosLogs> buscarOperandosLogsParaProcesoSecuencia(EntityManager em, BigInteger secProceso) {
         try {
             Query query = em.createQuery("SELECT ol FROM OperandosLogs ol WHERE ol.proceso.secuencia=:secProceso");
             query.setParameter("secProceso", secProceso);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<OperandosLogs> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;
         } catch (Exception e) {

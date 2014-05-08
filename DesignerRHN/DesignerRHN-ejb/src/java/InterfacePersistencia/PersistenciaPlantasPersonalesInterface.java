@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.PlantasPersonales;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaPlantasPersonalesInterface {
      *
      * @param plantasPersonales PlantaPersonal que se quiere crear.
      */
-    public void crear(PlantasPersonales plantasPersonales);
+    public void crear(EntityManager em, PlantasPersonales plantasPersonales);
 
     /**
      * Método encargado de modificar una PlantaPersonal de la base de datos.
@@ -30,7 +31,7 @@ public interface PersistenciaPlantasPersonalesInterface {
      * @param plantasPersonales PlantaPersonal con los cambios que se van a
      * realizar.
      */
-    public void editar(PlantasPersonales plantasPersonales);
+    public void editar(EntityManager em, PlantasPersonales plantasPersonales);
 
     /**
      * Método encargado de eliminar de la base de datos la PlantaPersonal que
@@ -38,7 +39,7 @@ public interface PersistenciaPlantasPersonalesInterface {
      *
      * @param plantasPersonales PlantaPersonal que se quiere eliminar.
      */
-    public void borrar(PlantasPersonales plantasPersonales);
+    public void borrar(EntityManager em, PlantasPersonales plantasPersonales);
 
     /**
      * Método encargado de buscar todos las PlantasPersonales existentes en la
@@ -46,7 +47,7 @@ public interface PersistenciaPlantasPersonalesInterface {
      *
      * @return Retorna una lista de PlantasPersonales.
      */
-    public List<PlantasPersonales> consultarPlantasPersonales();
+    public List<PlantasPersonales> consultarPlantasPersonales(EntityManager em);
 
     /**
      * Método encargado de sumar en la tabla PlantasPersonales la cantidad de
@@ -55,6 +56,6 @@ public interface PersistenciaPlantasPersonalesInterface {
      * @param secEstructura Secuencia Estructura
      * @return Conteo de la Estructura en la tabla PlantasPersonales
      */
-    public BigInteger consultarCantidadEstructuras(BigInteger secEstructura);
+    public BigInteger consultarCantidadEstructuras(EntityManager em, BigInteger secEstructura);
 
 }

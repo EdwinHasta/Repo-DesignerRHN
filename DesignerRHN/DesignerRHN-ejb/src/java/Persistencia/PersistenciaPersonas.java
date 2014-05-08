@@ -22,41 +22,42 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Personas personas) {
+    public void crear(EntityManager em, Personas personas) {
         em.persist(personas);
     }
 
     @Override
-    public void editar(Personas personas) {
+    public void editar(EntityManager em, Personas personas) {
         em.merge(personas);
     }
 
     @Override
-    public void borrar(Personas personas) {
+    public void borrar(EntityManager em, Personas personas) {
         em.remove(em.merge(personas));
     }
 
     @Override
-    public Personas buscarPersona(BigInteger secuencia) {
+    public Personas buscarPersona(EntityManager em, BigInteger secuencia) {
         return em.find(Personas.class, secuencia);
     }
 
     @Override
-    public List<Personas> consultarPersonas() {
+    public List<Personas> consultarPersonas(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Personas.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public void actualizarFotoPersona(BigInteger identificacion) {
+    public void actualizarFotoPersona(EntityManager em, BigInteger identificacion) {
         try {
             Query query = em.createQuery("update Personas p set pathfoto='S' where p.numerodocumento =:identificacion");
             query.setParameter("identificacion", identificacion);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
         } catch (Exception e) {
             System.out.println("No se pudo agregar estado de fotografia");
@@ -64,10 +65,11 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     }
 
     @Override
-    public Personas buscarFotoPersona(BigInteger identificacion) {
+    public Personas buscarFotoPersona(EntityManager em, BigInteger identificacion) {
         try {
             Query query = em.createQuery("SELECT p from Personas p where p.numerodocumento = :identificacion");
             query.setParameter("identificacion", identificacion);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Personas persona = (Personas) query.getSingleResult();
             return persona;
         } catch (Exception e) {
@@ -77,11 +79,12 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     }
 
     @Override
-    public Personas buscarPersonaSecuencia(BigInteger secuencia) {
+    public Personas buscarPersonaSecuencia(EntityManager em, BigInteger secuencia) {
         Personas persona;
         try {
             Query query = em.createQuery("SELECT p FROM Personas p WHERE p.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             persona = (Personas) query.getSingleResult();
             return persona;
         } catch (Exception e) {

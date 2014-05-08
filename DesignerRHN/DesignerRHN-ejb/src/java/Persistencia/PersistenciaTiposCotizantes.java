@@ -21,12 +21,12 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     
     @Override
-    public void crear(TiposCotizantes tiposCotizantes) {
+    public void crear(EntityManager em, TiposCotizantes tiposCotizantes) {
         try {
             em.persist(tiposCotizantes);
         } catch (Exception e) {
@@ -35,7 +35,7 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     }
 
     @Override
-    public void editar(TiposCotizantes tiposCotizantes) {
+    public void editar(EntityManager em, TiposCotizantes tiposCotizantes) {
         try {
             em.merge(tiposCotizantes);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     }
 
     @Override
-    public void borrar(TiposCotizantes tiposCotizantes) {
+    public void borrar(EntityManager em, TiposCotizantes tiposCotizantes) {
         try {
             em.remove(em.merge(tiposCotizantes));
         } catch (Exception e) {
@@ -53,9 +53,10 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     }
     
     @Override
-    public List<TiposCotizantes> lovTiposCotizantes() {
+    public List<TiposCotizantes> lovTiposCotizantes(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tc FROM TiposCotizantes tc ORDER BY tc.codigo ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposCotizantes> listaTiposCotizantes = query.getResultList();
             return listaTiposCotizantes;
         } catch (Exception e) {

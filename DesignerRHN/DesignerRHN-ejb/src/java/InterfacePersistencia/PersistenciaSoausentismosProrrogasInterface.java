@@ -7,6 +7,7 @@ package InterfacePersistencia;
 import Entidades.SoausentismosProrrogas;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la entidad 'SoausentismosProrrogas',
@@ -21,5 +22,5 @@ public interface PersistenciaSoausentismosProrrogasInterface {
      * @param secuenciaAusentismo Secuencia del Ausentismo.
      * @return Retorna una lista de SoausentismosProrrogas con las condiciones dadas por parámetros.
      */
-    public List<SoausentismosProrrogas> prorrogas(BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo);    
+    public List<SoausentismosProrrogas> prorrogas(EntityManager em, BigInteger secEmpleado, BigInteger secuenciaCausa, BigInteger secuenciaAusentismo);    
 }

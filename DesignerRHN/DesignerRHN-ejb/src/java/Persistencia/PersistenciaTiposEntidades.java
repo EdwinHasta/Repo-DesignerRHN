@@ -25,11 +25,11 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposEntidades tiposEntidades) {
+    public void crear(EntityManager em, TiposEntidades tiposEntidades) {
         try {
             em.persist(tiposEntidades);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public void editar(TiposEntidades tiposEntidades) {
+    public void editar(EntityManager em, TiposEntidades tiposEntidades) {
         try {
             em.merge(tiposEntidades);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public void borrar(TiposEntidades tiposEntidades) {
+    public void borrar(EntityManager em, TiposEntidades tiposEntidades) {
         try {
             em.remove(em.merge(tiposEntidades));
         } catch (Exception e) {
@@ -56,9 +56,10 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public List<TiposEntidades> buscarTiposEntidades() {
+    public List<TiposEntidades> buscarTiposEntidades(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT te FROM TiposEntidades te");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEntidades> tiposEntidades = query.getResultList();
             return tiposEntidades;
         } catch (Exception e) {
@@ -68,9 +69,10 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public TiposEntidades buscarTiposEntidadesSecuencia(BigInteger secuencia) {
+    public TiposEntidades buscarTiposEntidadesSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.secuencia = :secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secuencia);
             TiposEntidades tiposEntidades = (TiposEntidades) query.getSingleResult();
             return tiposEntidades;
@@ -82,10 +84,11 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public BigInteger verificarBorrado(BigInteger secTipoEntidad) {
+    public BigInteger verificarBorrado(EntityManager em, BigInteger secTipoEntidad) {
         try {
             BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(va) FROM VigenciasAfiliaciones va WHERE va.tipoentidad.secuencia = :secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secTipoEntidad);
             return retorno = new BigInteger(query.getSingleResult().toString());
         } catch (Exception e) {
@@ -96,10 +99,11 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public BigInteger verificarBorradoFCE(BigInteger secTipoEntidad) {
+    public BigInteger verificarBorradoFCE(EntityManager em, BigInteger secTipoEntidad) {
         try {
             BigInteger retorno = new BigInteger("-1");
             Query query = em.createQuery("SELECT COUNT(fce) FROM FormulasContratosEntidades fce WHERE fce.tipoentidad.secuencia = :secuencia");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("secuencia", secTipoEntidad);
             return retorno = new BigInteger(query.getSingleResult().toString());
         } catch (Exception e) {
@@ -110,9 +114,10 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public List<TiposEntidades> buscarTiposEntidadesIBCS() {
+    public List<TiposEntidades> buscarTiposEntidadesIBCS(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE EXISTS (SELECT gte FROM Grupostiposentidades gte WHERE gte.secuencia = te.grupo.secuencia AND gte.codigo IN(1,8))");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) query.getResultList();
             return tiposEntidades;
         } catch (Exception e) {
@@ -123,10 +128,11 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     }
 
     @Override
-    public List<TiposEntidades> buscarTiposEntidadesPorSecuenciaGrupo(BigInteger secuencia) {
+    public List<TiposEntidades> buscarTiposEntidadesPorSecuenciaGrupo(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.grupo.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposEntidades> tiposEntidades = (List<TiposEntidades>) query.getResultList();
             return tiposEntidades;
         } catch (Exception e) {

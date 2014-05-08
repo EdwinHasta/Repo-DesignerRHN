@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.Parametros;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -27,14 +28,14 @@ public interface PersistenciaParametrosInterface {
      * @param usuarioBD Secuencia del usuario que esta usando el aplicativo.
      * @return Retorna una lista de Parámetros.
      */
-    public List<Parametros> parametrosComprobantes(String usuarioBD);
+    public List<Parametros> parametrosComprobantes(EntityManager em, String usuarioBD);
 
     /**
      * Método encargado de buscar los Parámetros de todos los empleados.
      *
      * @return Retorna una lista de Parámetros.
      */
-    public List<Parametros> empleadosParametros();
+    public List<Parametros> empleadosParametros(EntityManager em);
 
     /**
      * Método encargado de eliminar de la base de datos el Parámetro que entra
@@ -42,22 +43,22 @@ public interface PersistenciaParametrosInterface {
      *
      * @param parametro Parámetro que se quiere eliminar.
      */
-    public void borrar(Parametros parametro);
+    public void borrar(EntityManager em, Parametros parametro);
 
     /**
      * Método encargado de eliminar los Parámetros de un ParametroEstructura.
-     * (En un PámetroEstructura están guardados los parámetros de liquidación,
+     * (EntityManager em, En un PámetroEstructura están guardados los parámetros de liquidación,
      * mientras que en un Parámetro estan los empleados y unas referencias a
      * otras tablas)
      *
      * @param secParametrosEstructuras Secuencia de un ParametroEstructura.
      */
-    public void borrarParametros(BigInteger secParametrosEstructuras);
+    public void borrarParametros(EntityManager em, BigInteger secParametrosEstructuras);
 
     /**
      * Método encargado de crear un Parámetro en la base de datos.
      *
      * @param parametro Parámetro que se quiere crear.
      */
-    public void crear(Parametros parametro);
+    public void crear(EntityManager em, Parametros parametro);
 }

@@ -23,11 +23,11 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(SectoresEconomicos sectoresEconomicos) {
+    public void crear(EntityManager em, SectoresEconomicos sectoresEconomicos) {
         try {
             em.persist(sectoresEconomicos);
         } catch (Exception e) {
@@ -36,7 +36,7 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     }
 
     @Override
-    public void editar(SectoresEconomicos sectoresEconomicos) {
+    public void editar(EntityManager em, SectoresEconomicos sectoresEconomicos) {
         try {
             em.merge(sectoresEconomicos);
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     }
 
     @Override
-    public void borrar(SectoresEconomicos sectoresEconomicos) {
+    public void borrar(EntityManager em, SectoresEconomicos sectoresEconomicos) {
         try {
             em.remove(em.merge(sectoresEconomicos));
         } catch (Exception e) {
@@ -54,9 +54,10 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     }
 
     @Override
-    public List<SectoresEconomicos> buscarSectoresEconomicos() {
+    public List<SectoresEconomicos> buscarSectoresEconomicos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT se FROM SectoresEconomicos se");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SectoresEconomicos> sectoresEconomicos = (List<SectoresEconomicos>) query.getResultList();
             return sectoresEconomicos;
         } catch (Exception e) {
@@ -66,10 +67,11 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
     }
 
     @Override
-    public SectoresEconomicos buscarSectoresEconomicosSecuencia(BigInteger secuencia) {
+    public SectoresEconomicos buscarSectoresEconomicosSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT se FROM SectoresEconomicos se WHERE se.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             SectoresEconomicos sectoresEconomicos = (SectoresEconomicos) query.getSingleResult();
             return sectoresEconomicos;
         } catch (Exception e) {

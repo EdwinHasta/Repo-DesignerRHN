@@ -25,36 +25,38 @@ public class PersistenciaRetenciones implements PersistenciaRetencionesInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Retenciones retenciones) {
+    public void crear(EntityManager em, Retenciones retenciones) {
         em.persist(retenciones);
     }
 
     @Override
-    public void editar(Retenciones retenciones) {
+    public void editar(EntityManager em, Retenciones retenciones) {
         em.merge(retenciones);
     }
 
     @Override
-    public void borrar(Retenciones retenciones) {
+    public void borrar(EntityManager em, Retenciones retenciones) {
         em.remove(em.merge(retenciones));
     }
     
     @Override
-    public List<Retenciones> buscarRetenciones() {
-        List<Retenciones> setsLista = (List<Retenciones>) em.createNamedQuery("Retenciones.findAll").getResultList();
+    public List<Retenciones> buscarRetenciones(EntityManager em) {
+        Query query = em.createNamedQuery("Retenciones.findAll");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+        List<Retenciones> setsLista = (List<Retenciones>) query.getResultList();
         return setsLista;
     }
 
     @Override
-    public List<Retenciones> buscarRetencionesVig(BigInteger secRetencion){
+    public List<Retenciones> buscarRetencionesVig(EntityManager em, BigInteger secRetencion){
         try {
             Query query = em.createQuery("SELECT r FROM Retenciones r WHERE r.vigencia.secuencia = :secRetencion");
             query.setParameter("secRetencion", secRetencion);
-            
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Retenciones> retenciones = query.getResultList();
             return retenciones;
         } catch (Exception e) {

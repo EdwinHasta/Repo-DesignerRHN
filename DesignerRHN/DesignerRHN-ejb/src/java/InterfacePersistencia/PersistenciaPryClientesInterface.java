@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.PryClientes;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaPryClientesInterface {
      *
      * @param pryClientes Moneda que se quiere crear.
      */
-    public void crear(PryClientes pryClientes);
+    public void crear(EntityManager em, PryClientes pryClientes);
 
     /**
      * Método encargado de modificar un PryCliente de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaPryClientesInterface {
      *
      * @param pryClientes PryClientes con los cambios que se van a realizar.
      */
-    public void editar(PryClientes pryClientes);
+    public void editar(EntityManager em, PryClientes pryClientes);
 
     /**
      * Método encargado de eliminar de la base de datos un PryCliente que entra
@@ -37,7 +38,7 @@ public interface PersistenciaPryClientesInterface {
      *
      * @param pryClientes PryClientes que se quiere eliminar.
      */
-    public void borrar(PryClientes pryClientes);
+    public void borrar(EntityManager em, PryClientes pryClientes);
 
     /**
      * Método encargado de buscar el PryCliente con la secPryClientes dada por
@@ -47,7 +48,7 @@ public interface PersistenciaPryClientesInterface {
      * @return Retorna el PryCliente identificado con la secPryClientes dada por
      * parámetro.
      */
-    public PryClientes buscarPryCliente(BigInteger secPryClientes);
+    public PryClientes buscarPryCliente(EntityManager em, BigInteger secPryClientes);
 
     /**
      * Método encargado de revisar si existe una relacion entre una Moneda
@@ -58,7 +59,7 @@ public interface PersistenciaPryClientesInterface {
      * @return Retorna el número de proyectos relacionados con el PryCliente
      * cuya secPryClientes coincide con el parámetro.
      */
-    public BigInteger contadorProyectos(BigInteger secPryClientes);
+    public BigInteger contadorProyectos(EntityManager em, BigInteger secPryClientes);
 
     /**
      * Método encargado de buscar todos los PryClientes existentes en la base de
@@ -66,6 +67,6 @@ public interface PersistenciaPryClientesInterface {
      *
      * @return Retorna una lista de PryClientes ordenados por nombre.
      */
-    public List<PryClientes> buscarPryClientes();
+    public List<PryClientes> buscarPryClientes(EntityManager em);
 
 }

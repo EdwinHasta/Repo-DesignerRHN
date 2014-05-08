@@ -25,11 +25,11 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(PlantasPersonales plantasPersonales) {
+    public void crear(EntityManager em, PlantasPersonales plantasPersonales) {
         try {
             em.merge(plantasPersonales);
         } catch (Exception ex) {
@@ -38,7 +38,7 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     }
 
     @Override
-    public void editar(PlantasPersonales plantasPersonales) {
+    public void editar(EntityManager em, PlantasPersonales plantasPersonales) {
         try {
             em.merge(plantasPersonales);
         } catch (Exception ex) {
@@ -47,7 +47,7 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     }
 
     @Override
-    public void borrar(PlantasPersonales plantasPersonales) {
+    public void borrar(EntityManager em, PlantasPersonales plantasPersonales) {
         try {
             em.remove(em.merge(plantasPersonales));
         } catch (Exception ex) {
@@ -56,9 +56,10 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     }
 
     @Override
-    public List<PlantasPersonales> consultarPlantasPersonales() {
+    public List<PlantasPersonales> consultarPlantasPersonales(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT pp FROM PlantasPersonales pp ORDER BY pp.cantidad");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PlantasPersonales> plantasPersonales = query.getResultList();
             return plantasPersonales;
         } catch (Exception e) {
@@ -68,10 +69,11 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
     }
 
     @Override 
-    public BigInteger consultarCantidadEstructuras(BigInteger secEstructura) {
+    public BigInteger consultarCantidadEstructuras(EntityManager em, BigInteger secEstructura) {
         try {
             Query query = em.createQuery("SELECT SUM(pp.cantidad) FROM PlantasPersonales pp WHERE pp.estructura.secuencia=:secEstructura");
             query.setParameter("secEstructura", secEstructura);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigInteger total = (BigInteger) query.getSingleResult();
             return total;
         } catch (Exception e) {

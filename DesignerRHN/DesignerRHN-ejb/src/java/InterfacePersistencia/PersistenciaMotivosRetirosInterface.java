@@ -6,6 +6,7 @@ package InterfacePersistencia;
 import Entidades.MotivosRetiros;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityManager;
 
 /**
  * Interface encargada de determinar las operaciones que se realizan sobre la
@@ -20,7 +21,7 @@ public interface PersistenciaMotivosRetirosInterface {
      *
      * @param motivosRetiros MotivoRetiro que se quiere crear.
      */
-    public void crear(MotivosRetiros motivosRetiros);
+    public void crear(EntityManager em, MotivosRetiros motivosRetiros);
 
     /**
      * Método encargado de modificar un MotivoRetiro de la base de datos. Este
@@ -29,7 +30,7 @@ public interface PersistenciaMotivosRetirosInterface {
      *
      * @param motivosRetiros MotivoRetiro con los cambios que se van a realizar.
      */
-    public void editar(MotivosRetiros motivosRetiros);
+    public void editar(EntityManager em, MotivosRetiros motivosRetiros);
 
     /**
      * Método encargado de eliminar de la base de datos el MotivoRetiro que
@@ -37,7 +38,7 @@ public interface PersistenciaMotivosRetirosInterface {
      *
      * @param motivosRetiros MotivoRetiro que se quiere eliminar.
      */
-    public void borrar(MotivosRetiros motivosRetiros);
+    public void borrar(EntityManager em, MotivosRetiros motivosRetiros);
 
     /**
      * Método encargado de buscar todos los MotivosRetiros existentes en la base
@@ -45,7 +46,7 @@ public interface PersistenciaMotivosRetirosInterface {
      *
      * @return Retorna una lista de MotivosRetiros.
      */
-    public List<MotivosRetiros> consultarMotivosRetiros();
+    public List<MotivosRetiros> consultarMotivosRetiros(EntityManager em);
 
     /**
      * Método encargado de buscar el MotivoRetiro con la secMotivosRetiros dada
@@ -56,7 +57,7 @@ public interface PersistenciaMotivosRetirosInterface {
      * @return Retorna el MotivoRetiro identificado con la secMotivosRetiros
      * dada por parámetro.
      */
-    public MotivosRetiros consultarMotivoRetiro(BigInteger secMotivosRetiros);
+    public MotivosRetiros consultarMotivoRetiro(EntityManager em, BigInteger secMotivosRetiros);
 
     /**
      * Metodo encargado de contar cuantas HVExperianciasLaborales estan
@@ -66,7 +67,7 @@ public interface PersistenciaMotivosRetirosInterface {
      * @return Cuantos HVExperienciasLaborales tienen la secuencia
      * secMotivosRetiros recivida
      */
-    public BigInteger contarHVExperienciasLaboralesMotivoRetiro(BigInteger secMotivosRetiros);
+    public BigInteger contarHVExperienciasLaboralesMotivoRetiro(EntityManager em, BigInteger secMotivosRetiros);
 
     /**
      * Metodo encargado de contar cuantas NoveradesSistema estan relacionadas
@@ -76,7 +77,7 @@ public interface PersistenciaMotivosRetirosInterface {
      * @return Cuantos NoveradesSistema tienen la secuencia secMotivosRetiros
      * recivida
      */
-    public BigInteger contarNovedadesSistemasMotivoRetiro(BigInteger secMotivosRetiros);
+    public BigInteger contarNovedadesSistemasMotivoRetiro(EntityManager em, BigInteger secMotivosRetiros);
 
     /**
      * Metodo encargado de contar cuantas RetiMotivosRetiros estan relacionadas
@@ -86,7 +87,7 @@ public interface PersistenciaMotivosRetirosInterface {
      * @return Cuantos RetiMotivosRetiros tienen la secuencia secMotivosRetiros
      * recivida
      */
-    public BigInteger contarRetiMotivosRetirosMotivoRetiro(BigInteger secMotivosRetiros);
+    public BigInteger contarRetiMotivosRetirosMotivoRetiro(EntityManager em, BigInteger secMotivosRetiros);
 
     /**
      * Metodo encargado de contar cuantas Retirados estan relacionadas con la
@@ -95,5 +96,5 @@ public interface PersistenciaMotivosRetirosInterface {
      * @param secMotivosRetiros Secuencia del MotivoRetiro
      * @return Cuantos Retirados tienen la secuencia secMotivosRetiros recivida
      */
-    public BigInteger contarRetiradosMotivoRetiro(BigInteger secMotivosRetiros);
+    public BigInteger contarRetiradosMotivoRetiro(EntityManager em, BigInteger secMotivosRetiros);
 }

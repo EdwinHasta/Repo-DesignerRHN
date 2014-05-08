@@ -24,10 +24,9 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-
-    public void crear(Papeles papel) {
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
+    public void crear(EntityManager em, Papeles papel) {
         try {
             em.persist(papel);
         } catch (Exception e) {
@@ -35,7 +34,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
         }
     }
 
-    public void editar(Papeles papel) {
+    public void editar(EntityManager em, Papeles papel) {
         try {
             em.merge(papel);
         } catch (Exception e) {
@@ -43,7 +42,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
         }
     }
 
-    public void borrar(Papeles papel) {
+    public void borrar(EntityManager em, Papeles papel) {
         try {
             em.remove(em.merge(papel));
         } catch (Exception e) {
@@ -51,9 +50,11 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
         }
     }
 
-    public List<Papeles> consultarPapeles() {
+    public List<Papeles> consultarPapeles(EntityManager em) {
         try {
-            List<Papeles> listaPapeles = (List<Papeles>) em.createNamedQuery("Papeles.findAll").getResultList();
+            Query query = em.createNamedQuery("Papeles.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Papeles> listaPapeles = (List<Papeles>) query.getResultList();
             return listaPapeles;
         } catch (Exception e) {
             System.err.println("ERROR PERSISTENCIAPAPELES AL CONSULTARPAPELES ERROR : " + e);
@@ -61,10 +62,11 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
         }
     }
 
-    public Papeles consultarPapel(BigInteger secuencia) {
+    public Papeles consultarPapel(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT papelillo FROM Papeles papelillo WHERE papelillo.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Papeles papel = (Papeles) query.getSingleResult();
             return papel;
         } catch (Exception e) {
@@ -74,10 +76,11 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
         }
     }
 
-    public List<Papeles> consultarPapelesEmpresa(BigInteger secEmpresa) {
+    public List<Papeles> consultarPapelesEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT papelillo FROM Papeles papelillo WHERE papelillo.empresa.secuencia = :secuenciaEmpr ORDER BY papelillo.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Papeles> centrosCostos = query.getResultList();
             return centrosCostos;
         } catch (Exception e) {
@@ -86,7 +89,7 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
         }
     }
 
-    public BigInteger contarVigenciasCargosPapel(BigInteger secuencia) {
+    public BigInteger contarVigenciasCargosPapel(EntityManager em, BigInteger secuencia) {
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciascargos WHERE papel = ?";
             Query query = em.createNativeQuery(sqlQuery);

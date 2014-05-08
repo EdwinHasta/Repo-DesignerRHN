@@ -24,11 +24,11 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Retirados retirados) {
+    public void crear(EntityManager em, Retirados retirados) {
         try {
             em.persist(retirados);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     }
 
     @Override
-    public void editar(Retirados retirados) {
+    public void editar(EntityManager em, Retirados retirados) {
         try {
             em.merge(retirados);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     }
 
     @Override
-    public void borrar(Retirados retirados) {
+    public void borrar(EntityManager em, Retirados retirados) {
         try{
             em.remove(em.merge(retirados));
         }catch(Exception e){
@@ -54,18 +54,18 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     }
 
     @Override
-    public List<Retirados> buscarRetirados() {
+    public List<Retirados> buscarRetirados(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Retirados.class));
         return em.createQuery(cq).getResultList();
     }
     
     @Override
-    public List<Retirados> buscarRetirosEmpleado(BigInteger secEmpleado) {
+    public List<Retirados> buscarRetirosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
             Query query = em.createQuery("SELECT r FROM Retirados r WHERE r.vigenciatipotrabajador.empleado.secuencia = :secuenciaEmpl ORDER BY r.fecharetiro DESC");
             query.setParameter("secuenciaEmpl", secEmpleado);
-
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Retirados> retiros = query.getResultList();
             return retiros;
         } catch (Exception e) {
@@ -75,9 +75,10 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     }
 
     @Override
-    public Retirados buscarRetiroSecuencia(BigInteger secuencia) {
+    public Retirados buscarRetiroSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createNamedQuery("Retirados.findBySecuencia").setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Retirados retiro = (Retirados) query.getSingleResult();
             return retiro;
         } catch (Exception e) {
@@ -86,10 +87,11 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
     }
     
     @Override
-    public Retirados buscarRetiroVigenciaSecuencia(BigInteger secVigencia) {
+    public Retirados buscarRetiroVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
             Query query = em.createQuery("SELECT r FROM Retirados r WHERE r.vigenciatipotrabajador.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Retirados retiroVigencia = (Retirados) query.getSingleResult();
             return retiroVigencia;
         } catch (Exception e) {

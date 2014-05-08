@@ -25,11 +25,11 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(MotivosDemandas motivosDemandas) {
+    public void crear(EntityManager em, MotivosDemandas motivosDemandas) {
         try {
             em.persist(motivosDemandas);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
     }
 
     @Override
-    public void editar(MotivosDemandas motivosDemandas) {
+    public void editar(EntityManager em, MotivosDemandas motivosDemandas) {
         try {
             em.merge(motivosDemandas);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
     }
 
     @Override
-    public void borrar(MotivosDemandas motivosDemandas) {
+    public void borrar(EntityManager em, MotivosDemandas motivosDemandas) {
         try {
             em.remove(em.merge(motivosDemandas));
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
         }
     }
 
-    public MotivosDemandas buscarMotivoDemanda(BigInteger secuenciaE) {
+    public MotivosDemandas buscarMotivoDemanda(EntityManager em, BigInteger secuenciaE) {
         try {
             return em.find(MotivosDemandas.class, secuenciaE);
         } catch (Exception e) {
@@ -64,9 +64,10 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
     }
 
     @Override
-    public List<MotivosDemandas> buscarMotivosDemandas() {
+    public List<MotivosDemandas> buscarMotivosDemandas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT g FROM MotivosDemandas g ORDER BY g.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<MotivosDemandas> motivosDemandas = query.getResultList();
             return motivosDemandas;
         } catch (Exception e) {
@@ -75,7 +76,7 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
         }
     }
 
-    public BigInteger contadorDemandas(BigInteger secuencia) {
+    public BigInteger contadorDemandas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM demandas WHERE motivo = ?";

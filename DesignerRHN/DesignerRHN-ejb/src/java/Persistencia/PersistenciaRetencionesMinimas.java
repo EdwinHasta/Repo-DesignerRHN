@@ -25,14 +25,15 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     //Trae las relaciones en base al ausentismo seleccionado
     @Override
-    public List<RetencionesMinimas> retenciones() {
+    public List<RetencionesMinimas> retenciones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT u FROM RetencionesMinimas u ORDER BY u.retencion ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<RetencionesMinimas> resultado = query.getResultList();
             for (int i = 0; i < resultado.size(); i++) {
                 System.out.println("resultado : " + resultado.get(i).getSecuencia());
@@ -47,26 +48,26 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
     }
     
     @Override
-    public void crear(RetencionesMinimas retenciones) {
+    public void crear(EntityManager em, RetencionesMinimas retenciones) {
         em.persist(retenciones);
     }
 
     @Override
-    public void editar(RetencionesMinimas retenciones) {
+    public void editar(EntityManager em, RetencionesMinimas retenciones) {
         em.merge(retenciones);
     }
 
     @Override
-    public void borrar(RetencionesMinimas retenciones) {
+    public void borrar(EntityManager em, RetencionesMinimas retenciones) {
         em.remove(em.merge(retenciones));
     }
 
     @Override
-    public List<RetencionesMinimas> buscarRetencionesMinimasVig(BigInteger secRetencion){
+    public List<RetencionesMinimas> buscarRetencionesMinimasVig(EntityManager em, BigInteger secRetencion){
         try {
             Query query = em.createQuery("SELECT r FROM RetencionesMinimas r WHERE r.vigenciaretencionminima.secuencia = :secRetencion");
             query.setParameter("secRetencion", secRetencion);
-            
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<RetencionesMinimas> retenciones = query.getResultList();
             return retenciones;
         } catch (Exception e) {

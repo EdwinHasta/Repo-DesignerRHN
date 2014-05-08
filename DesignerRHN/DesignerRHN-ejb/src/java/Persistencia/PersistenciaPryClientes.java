@@ -25,22 +25,22 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
-    public void crear(PryClientes pryClientes) {
+    public void crear(EntityManager em, PryClientes pryClientes) {
         em.persist(pryClientes);
     }
 
-    public void editar(PryClientes pryClientes) {
+    public void editar(EntityManager em, PryClientes pryClientes) {
         em.merge(pryClientes);
     }
 
-    public void borrar(PryClientes pryClientes) {
+    public void borrar(EntityManager em, PryClientes pryClientes) {
         em.remove(em.merge(pryClientes));
     }
 
-    public PryClientes buscarPryCliente(BigInteger secuenciaPC) {
+    public PryClientes buscarPryCliente(EntityManager em, BigInteger secuenciaPC) {
         try {
             return em.find(PryClientes.class, secuenciaPC);
         } catch (Exception e) {
@@ -49,9 +49,10 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
     }
 
     @Override
-    public List<PryClientes> buscarPryClientes() {
+    public List<PryClientes> buscarPryClientes(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT pc FROM PryClientes pc ORDER BY pc.nombre ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<PryClientes> pryclientes = query.getResultList();
             return pryclientes;
         } catch (Exception e) {
@@ -59,7 +60,7 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
         }
     }
 
-    public BigInteger contadorProyectos(BigInteger secuencia) {
+    public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*)FROM  proyectos WHERE pry_cliente = ?";

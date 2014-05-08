@@ -26,11 +26,11 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public List<Operandos> buscarOperandos() {
+    public List<Operandos> buscarOperandos(EntityManager em) {
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(Operandos.class));
@@ -41,10 +41,11 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
         }
     }
 
-    public List<Operandos> operandoPorConceptoSoporte(BigInteger secConceptoSoporte) {
+    public List<Operandos> operandoPorConceptoSoporte(EntityManager em, BigInteger secConceptoSoporte) {
         try {
             Query query = em.createQuery("SELECT o FROM Operandos o, ConceptosSoportes cs WHERE cs.operando.secuencia = o.secuencia AND cs.concepto.secuencia = :secConceptoSoporte ");
             query.setParameter("secConceptoSoporte", secConceptoSoporte);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Operandos> operandos = query.getResultList();
             return operandos;
         } catch (Exception e) {
@@ -54,7 +55,7 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     }
 
     @Override
-    public void crear(Operandos operandos) {
+    public void crear(EntityManager em, Operandos operandos) {
         try {
             em.persist(operandos);
         } catch (Exception e) {
@@ -63,7 +64,7 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     }
 
     @Override
-    public void editar(Operandos operandos) {
+    public void editar(EntityManager em, Operandos operandos) {
         try {
             em.merge(operandos);
         } catch (Exception e) {
@@ -72,7 +73,7 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     }
 
     @Override
-    public void borrar(Operandos operandos) {
+    public void borrar(EntityManager em, Operandos operandos) {
         try {
             em.remove(em.merge(operandos));
         } catch (Exception e) {
@@ -81,7 +82,7 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     }
 
     @Override
-    public String valores(BigInteger secuenciaOperando) {
+    public String valores(EntityManager em, BigInteger secuenciaOperando) {
         try {
             String valor;
             Query query = em.createNativeQuery("SELECT DECODE(tc.tipo,'C',tc.valorstring,'N',to_char(tc.valorreal),to_char(tc.valordate,'DD/MM/YYYY')) FROM TIPOSCONSTANTES tc WHERE tc.operando=? AND tc.fechainicial=(select max(tci.fechainicial) from tiposconstantes tci WHERE tci.operando= ?)");
@@ -95,10 +96,11 @@ public class PersistenciaOperandos implements PersistenciaOperandosInterface {
     }
 
     @Override
-    public Operandos operandosPorSecuencia(BigInteger secOperando) {
+    public Operandos operandosPorSecuencia(EntityManager em, BigInteger secOperando) {
         try {
             Query query = em.createQuery("SELECT o FROM Operandos o WHERE o.secuencia=:secOperando");
             query.setParameter("secOperando", secOperando);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Operandos operandos = (Operandos) query.getSingleResult();
             return operandos;
         } catch (Exception e) {

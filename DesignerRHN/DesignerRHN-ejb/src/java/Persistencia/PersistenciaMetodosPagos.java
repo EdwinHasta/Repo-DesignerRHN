@@ -26,26 +26,26 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(MetodosPagos metodosPagos) {
+    public void crear(EntityManager em, MetodosPagos metodosPagos) {
         em.persist(metodosPagos);
     }
 
     @Override
-    public void editar(MetodosPagos metodosPagos) {
+    public void editar(EntityManager em, MetodosPagos metodosPagos) {
         em.merge(metodosPagos);
     }
 
     @Override
-    public void borrar(MetodosPagos metodosPagos) {
+    public void borrar(EntityManager em, MetodosPagos metodosPagos) {
         em.remove(em.merge(metodosPagos));
     }
 
     @Override
-    public MetodosPagos buscarMetodosPagosEmpleado(BigInteger secuencia) {
+    public MetodosPagos buscarMetodosPagosEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(MetodosPagos.class, secuencia);
         } catch (Exception e) {
@@ -55,13 +55,13 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
     }
 
     @Override
-    public List<MetodosPagos> buscarMetodosPagos() {
+    public List<MetodosPagos> buscarMetodosPagos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(MetodosPagos.class));
         return em.createQuery(cq).getResultList();
     }
 
-    public BigInteger contadorvigenciasformaspagos(BigInteger secuencia) {
+    public BigInteger contadorvigenciasformaspagos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE metodopago = ?";

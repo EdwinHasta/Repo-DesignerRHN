@@ -26,26 +26,26 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Monedas monedas) {
+    public void crear(EntityManager em, Monedas monedas) {
         em.persist(monedas);
     }
 
     @Override
-    public void editar(Monedas monedas) {
+    public void editar(EntityManager em, Monedas monedas) {
         em.merge(monedas);
     }
 
     @Override
-    public void borrar(Monedas monedas) {
+    public void borrar(EntityManager em, Monedas monedas) {
         em.remove(em.merge(monedas));
     }
 
     @Override
-    public BigInteger contadorProyectos(BigInteger secuencia) {
+    public BigInteger contadorProyectos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM proyectos WHERE tipomoneda = ?";
@@ -61,7 +61,7 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     }
 
     @Override
-    public Monedas consultarMoneda(BigInteger secuenciaTI) {
+    public Monedas consultarMoneda(EntityManager em, BigInteger secuenciaTI) {
         try {
             return em.find(Monedas.class, secuenciaTI);
         } catch (Exception e) {
@@ -70,8 +70,9 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
     }
 
     @Override
-    public List<Monedas> consultarMonedas() {
+    public List<Monedas> consultarMonedas(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM Monedas m ORDER BY m.codigo ASC ");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<Monedas> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
 

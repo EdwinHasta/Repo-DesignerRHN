@@ -23,11 +23,11 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//   @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Instituciones instituciones) {
+    public void crear(EntityManager em, Instituciones instituciones) {
         try {
             em.persist(instituciones);
         } catch (Exception e) {
@@ -36,12 +36,12 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
     }
 
     @Override
-    public void editar(Instituciones instituciones) {
+    public void editar(EntityManager em, Instituciones instituciones) {
         em.merge(instituciones);
     }
 
     @Override
-    public void borrar(Instituciones instituciones) {
+    public void borrar(EntityManager em, Instituciones instituciones) {
         try {
             em.remove(em.merge(instituciones));
         } catch (Exception e) {
@@ -50,7 +50,7 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
     }
 
     @Override
-    public Instituciones buscarInstitucion(BigInteger secuencia) {
+    public Instituciones buscarInstitucion(EntityManager em, BigInteger secuencia) {
         try {
             BigInteger sec = new BigInteger(secuencia.toString());
             return em.find(Instituciones.class, sec);
@@ -60,9 +60,10 @@ public class PersistenciaInstituciones implements PersistenciaInstitucionesInter
     }
 
    @Override
-    public List<Instituciones> instituciones() {
+    public List<Instituciones> instituciones(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT i FROM Instituciones i");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Instituciones> listaInstituciones = query.getResultList();
             return listaInstituciones;
         } catch (Exception e) {

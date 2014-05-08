@@ -24,10 +24,10 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
-    public void crear(SucursalesPila sucursalesPilas) {
+    public void crear(EntityManager em, SucursalesPila sucursalesPilas) {
         try {
             em.merge(sucursalesPilas);
         } catch (Exception ex) {
@@ -35,18 +35,19 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public void editar(SucursalesPila sucursalesPilas) {
+    public void editar(EntityManager em, SucursalesPila sucursalesPilas) {
         em.merge(sucursalesPilas);
     }
 
-    public void borrar(SucursalesPila sucursalesPilas) {
+    public void borrar(EntityManager em, SucursalesPila sucursalesPilas) {
         em.remove(em.merge(sucursalesPilas));
     }
 
     @Override
-    public List<SucursalesPila> consultarSucursalesPila() {
+    public List<SucursalesPila> consultarSucursalesPila(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT ta FROM SucursalesPila ta ORDER BY ta.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SucursalesPila> todosSucursalesPila = query.getResultList();
             return todosSucursalesPila;
         } catch (Exception e) {
@@ -55,10 +56,11 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public List<SucursalesPila> consultarSucursalesPilaPorEmpresa(BigInteger secEmpresa) {
+    public List<SucursalesPila> consultarSucursalesPilaPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT cce FROM SucursalesPila cce WHERE cce.empresa.secuencia = :secuenciaEmpr ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SucursalesPila> centrosCostos = query.getResultList();
             return centrosCostos;
         } catch (Exception e) {
@@ -67,7 +69,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public BigInteger contarUbicacionesGeograficasSucursal_Pila(BigInteger secuencia) {
+    public BigInteger contarUbicacionesGeograficasSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM ubicacionesgeograficas WHERE sucursal_pila = ?";
@@ -82,7 +84,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public BigInteger contarParametrosInformesSucursal_Pila(BigInteger secuencia) {
+    public BigInteger contarParametrosInformesSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE sucursal_pila = ?";
@@ -97,7 +99,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public BigInteger contarOdiscorReaccionesCabSucursal_Pila(BigInteger secuencia) {
+    public BigInteger contarOdiscorReaccionesCabSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM odiscorReccionescab WHERE sucursal_pila = ?";
@@ -112,7 +114,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public BigInteger contarOdisCabecerasSucursal_Pila(BigInteger secuencia) {
+    public BigInteger contarOdisCabecerasSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM odiscabeceras WHERE sucursal_pila = ?";
@@ -127,7 +129,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public BigInteger contarNovedadesCorreccionesAutolSucursal_Pila(BigInteger secuencia) {
+    public BigInteger contarNovedadesCorreccionesAutolSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM novedadescorreccionesautol WHERE sucursal_pila = ?";
@@ -142,7 +144,7 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
         }
     }
 
-    public BigInteger contarNovedadesAutoLiquidacionesSucursal_Pila(BigInteger secuencia) {
+    public BigInteger contarNovedadesAutoLiquidacionesSucursal_Pila(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM novedadesautoliquidaciones WHERE sucursal_pila = ?";

@@ -26,33 +26,33 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(SolucionesNodos solucionNodo) {
+    public void crear(EntityManager em, SolucionesNodos solucionNodo) {
         em.persist(solucionNodo);
     }
 
     @Override
-    public void editar(SolucionesNodos solucionNodo) {
+    public void editar(EntityManager em, SolucionesNodos solucionNodo) {
         em.merge(solucionNodo);
     }
 
     @Override
-    public void borrar(SolucionesNodos solucionNodo) {
+    public void borrar(EntityManager em, SolucionesNodos solucionNodo) {
         em.remove(em.merge(solucionNodo));
     }
 
     @Override
-    public List<SolucionesNodos> buscarSolucionesNodos() {
+    public List<SolucionesNodos> buscarSolucionesNodos(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(SolucionesNodos.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<SolucionesNodos> solucionNodoCorteProcesoEmpleado(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
+    public List<SolucionesNodos> solucionNodoCorteProcesoEmpleado(EntityManager em, BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN ('PAGO','DESCUENTO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
@@ -67,7 +67,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public List<SolucionesNodos> solucionNodoCorteProcesoEmpleador(BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
+    public List<SolucionesNodos> solucionNodoCorteProcesoEmpleador(EntityManager em, BigInteger secuenciaCorteProceso, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT sn FROM SolucionesNodos sn WHERE sn.estado = 'CERRADO' AND sn.tipo IN  ('PASIVO','GASTO','NETO') AND sn.corteproceso.secuencia = :secuenciaCorteProceso AND sn.empleado.secuencia = :secuenciaEmpleado ORDER BY sn.concepto.codigo ASC");
             query.setParameter("secuenciaCorteProceso", secuenciaCorteProceso);
@@ -82,7 +82,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public BigDecimal diasProvisionados(BigInteger secuencia) {
+    public BigDecimal diasProvisionados(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT SN1.unidades "
                     + "FROM SolucionesNodos SN1, Conceptos c "
@@ -112,7 +112,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public Long validacionTercerosVigenciaAfiliacion(BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigInteger secuenciaTer) {
+    public Long validacionTercerosVigenciaAfiliacion(EntityManager em, BigInteger secuencia, Date fechaInicial, BigDecimal secuenciaTE, BigInteger secuenciaTer) {
         try {
             Query query = em.createQuery("SELECT count(v)  "
                     + "FROM SolucionesNodos v "
@@ -141,7 +141,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public List<SolucionesNodos> solucionNodoEmpleado(BigInteger secuenciaEmpleado) {
+    public List<SolucionesNodos> solucionNodoEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT sn "
                     + "FROM SolucionesNodos sn "
@@ -160,7 +160,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public List<SolucionesNodos> solucionNodoEmpleador(BigInteger secuenciaEmpleado) {
+    public List<SolucionesNodos> solucionNodoEmpleador(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT sn "
                     + "FROM SolucionesNodos sn "
@@ -179,7 +179,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public Integer ContarProcesosSN(BigInteger secProceso) {
+    public Integer ContarProcesosSN(EntityManager em, BigInteger secProceso) {
         try {
             String sqlQuery = "SELECT COUNT(distinct empleado)\n"
                     + "  FROM solucionesnodos sn\n"
@@ -202,7 +202,7 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
     }
 
     @Override
-    public boolean solucionesNodosParaConcepto(BigInteger secuencia) {
+    public boolean solucionesNodosParaConcepto(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn WHERE sn.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);

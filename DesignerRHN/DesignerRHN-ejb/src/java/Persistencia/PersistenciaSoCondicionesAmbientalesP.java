@@ -24,26 +24,26 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
+    public void crear(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
         em.persist(soCondicionesAmbientalesP);
     }
 
     @Override
-    public void editar(SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
+    public void editar(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
         em.merge(soCondicionesAmbientalesP);
     }
 
     @Override
-    public void borrar(SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
+    public void borrar(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
         em.remove(em.merge(soCondicionesAmbientalesP));
     }
 
     @Override
-    public SoCondicionesAmbientalesP buscarSoCondicionAmbientalP(BigInteger secuencia) {
+    public SoCondicionesAmbientalesP buscarSoCondicionAmbientalP(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(SoCondicionesAmbientalesP.class, secuencia);
         } catch (Exception e) {
@@ -52,9 +52,10 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
     }
 
     @Override
-    public List<SoCondicionesAmbientalesP> buscarSoCondicionesAmbientalesP() {
+    public List<SoCondicionesAmbientalesP> buscarSoCondicionesAmbientalesP(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT l FROM SoCondicionesAmbientalesP  l ORDER BY l.codigo ASC ");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<SoCondicionesAmbientalesP> listSoCondicionesAmbientalesP = query.getResultList();
             return listSoCondicionesAmbientalesP;
         } catch (Exception e) {
@@ -65,7 +66,7 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
     }
 
     @Override
-    public BigInteger contadorSoAccidentesMedicos(BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sam WHERE sam.condicionambientalp = ?";

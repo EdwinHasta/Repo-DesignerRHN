@@ -22,30 +22,31 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(TiposContratos tiposContratos) {
+    public void crear(EntityManager em, TiposContratos tiposContratos) {
         em.persist(tiposContratos);
     }
     
     @Override
-    public void editar(TiposContratos tiposContratos) {
+    public void editar(EntityManager em, TiposContratos tiposContratos) {
         em.merge(tiposContratos);
     }
 
     @Override
-    public void borrar(TiposContratos tiposContratos) {
+    public void borrar(EntityManager em, TiposContratos tiposContratos) {
         em.remove(em.merge(tiposContratos));
     }
     
     @Override
-    public TiposContratos buscarTipoContratoSecuencia(BigInteger secuencia) {
+    public TiposContratos buscarTipoContratoSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT e FROM TiposContratos e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             TiposContratos tipoC = (TiposContratos) query.getSingleResult();
             return tipoC;
         } catch (Exception e) {
@@ -55,9 +56,10 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
     }
     
     @Override
-     public List<TiposContratos> tiposContratos() {
+     public List<TiposContratos> tiposContratos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tc FROM TiposContratos tc ORDER BY tc.codigo");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposContratos> tiposContratos = query.getResultList();
             return tiposContratos;
         } catch (Exception e) {

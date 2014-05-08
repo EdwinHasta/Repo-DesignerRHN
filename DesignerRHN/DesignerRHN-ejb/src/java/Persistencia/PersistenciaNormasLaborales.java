@@ -29,26 +29,26 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(NormasLaborales normasLaborales) {
+    public void crear(EntityManager em, NormasLaborales normasLaborales) {
         em.persist(normasLaborales);
     }
 
     @Override
-    public void editar(NormasLaborales normasLaborales) {
+    public void editar(EntityManager em, NormasLaborales normasLaborales) {
         em.merge(normasLaborales);
     }
 
     @Override
-    public void borrar(NormasLaborales normasLaborales) {
+    public void borrar(EntityManager em, NormasLaborales normasLaborales) {
         em.remove(em.merge(normasLaborales));
     }
 
     @Override
-    public NormasLaborales consultarNormaLaboral(BigInteger secuenciaNL) {
+    public NormasLaborales consultarNormaLaboral(EntityManager em, BigInteger secuenciaNL) {
         try {
             return em.find(NormasLaborales.class, secuenciaNL);
         } catch (Exception e) {
@@ -57,18 +57,20 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
     }
 
     @Override
-    public List<NormasLaborales> consultarNormasLaborales() {
+    public List<NormasLaborales> consultarNormasLaborales(EntityManager em) {
         Query query = em.createQuery("SELECT m FROM NormasLaborales m");
+        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<NormasLaborales> lista = query.getResultList();
         return lista;
     }
 
     @Override
-    public BigInteger contarVigenciasNormasEmpleadosNormaLaboral(BigInteger secuencia) {
+    public BigInteger contarVigenciasNormasEmpleadosNormaLaboral(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vn) FROM VigenciasNormasEmpleados vn WHERE vn.normalaboral.secuencia =:secNormaLaboral ");
             query.setParameter("secNormaLaboral", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosCambiosSueldos retorno ==" + retorno.intValue());
 

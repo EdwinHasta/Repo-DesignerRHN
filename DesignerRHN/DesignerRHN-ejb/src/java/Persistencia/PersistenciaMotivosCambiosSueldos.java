@@ -13,22 +13,25 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosCambiosSueldos'
- * de la base de datos.
- * (Para verificar que esta asociado a una VigenciaSueldo, se realiza la operacion sobre la tabla VigenciasSueldos)
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'MotivosCambiosSueldos' de la base de datos. (Para verificar que esta
+ * asociado a una VigenciaSueldo, se realiza la operacion sobre la tabla
+ * VigenciasSueldos)
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCambiosSueldosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(MotivosCambiosSueldos motivosCambiosSueldos) {
+    public void crear(EntityManager em, MotivosCambiosSueldos motivosCambiosSueldos) {
         try {
             em.persist(motivosCambiosSueldos);
         } catch (Exception e) {
@@ -37,7 +40,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     }
 
     @Override
-    public void editar(MotivosCambiosSueldos motivosCambiosSueldos) {
+    public void editar(EntityManager em, MotivosCambiosSueldos motivosCambiosSueldos) {
         try {
             em.merge(motivosCambiosSueldos);
         } catch (Exception e) {
@@ -46,7 +49,7 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     }
 
     @Override
-    public void borrar(MotivosCambiosSueldos motivosCambiosSueldos) {
+    public void borrar(EntityManager em, MotivosCambiosSueldos motivosCambiosSueldos) {
         try {
             em.remove(em.merge(motivosCambiosSueldos));
         } catch (Exception e) {
@@ -55,9 +58,11 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     }
 
     @Override
-    public List<MotivosCambiosSueldos> buscarMotivosCambiosSueldos() {
+    public List<MotivosCambiosSueldos> buscarMotivosCambiosSueldos(EntityManager em) {
         try {
-            List<MotivosCambiosSueldos> motivosCambiosSueldos = (List<MotivosCambiosSueldos>) em.createNamedQuery("MotivosCambiosSueldos.findAll").getResultList();
+            Query query = em.createNamedQuery("MotivosCambiosSueldos.findAll");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<MotivosCambiosSueldos> motivosCambiosSueldos = (List<MotivosCambiosSueldos>) query.getResultList();
             return motivosCambiosSueldos;
         } catch (Exception e) {
             System.out.println("Error buscarMotivosCambiosSueldos PersistenciaMotivoCambioSueldo : " + e.toString());
@@ -66,11 +71,12 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     }
 
     @Override
-    public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(BigInteger secuencia) {
+    public MotivosCambiosSueldos buscarMotivoCambioSueldoSecuencia(EntityManager em, BigInteger secuencia) {
 
         try {
             Query query = em.createQuery("SELECT mcs FROM MotivosCambiosSueldos mcs WHERE mcs.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             MotivosCambiosSueldos motivosCambiosSueldos = (MotivosCambiosSueldos) query.getSingleResult();
             return motivosCambiosSueldos;
         } catch (Exception e) {
@@ -81,12 +87,13 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasSueldos(BigInteger secuencia) {
+    public BigInteger verificarBorradoVigenciasSueldos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vs) FROM VigenciasSueldos vs WHERE vs.motivocambiosueldo.secuencia =:secMotivosCambiosSueldos ");
             query.setParameter("secMotivosCambiosSueldos", secuencia);
-            retorno = new BigInteger (query.getSingleResult().toString());
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosCambiosSueldos retorno ==" + retorno.intValue());
         } catch (Exception e) {
             System.err.println("ERROR EN PersistenciaMotivosCambiosSueldos verificarBorradoVigenciasSueldos ERROR :" + e);

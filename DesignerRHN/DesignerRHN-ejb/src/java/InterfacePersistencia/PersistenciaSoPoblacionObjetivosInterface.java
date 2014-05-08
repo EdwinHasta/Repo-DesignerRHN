@@ -8,22 +8,22 @@ package InterfacePersistencia;
 import Entidades.SoPoblacionObjetivos;
 import java.math.BigInteger;
 import java.util.List;
-import javax.ejb.Local;
+import javax.persistence.EntityManager;
 
 /**
  *
  * @author user
  */
-@Local
+
 public interface PersistenciaSoPoblacionObjetivosInterface {
 
-    public void crear(SoPoblacionObjetivos soPoblacionObjetivos);
+    public void crear(EntityManager em, SoPoblacionObjetivos soPoblacionObjetivos);
 
-    public void editar(SoPoblacionObjetivos soPoblacionObjetivos);
+    public void editar(EntityManager em, SoPoblacionObjetivos soPoblacionObjetivos);
 
-    public void borrar(SoPoblacionObjetivos soPoblacionObjetivos);
+    public void borrar(EntityManager em, SoPoblacionObjetivos soPoblacionObjetivos);
 
-    public SoPoblacionObjetivos buscarSoPoblacionObjetivo(BigInteger secuencia);
+    public SoPoblacionObjetivos buscarSoPoblacionObjetivo(EntityManager em, BigInteger secuencia);
 
-    public List<SoPoblacionObjetivos> consultarSoPoblacionObjetivos();
+    public List<SoPoblacionObjetivos> consultarSoPoblacionObjetivos(EntityManager em);
 }

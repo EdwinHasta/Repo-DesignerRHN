@@ -22,11 +22,11 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(InformacionesAdicionales informacionesAdicionales) {
+    public void crear(EntityManager em, InformacionesAdicionales informacionesAdicionales) {
         try {
             em.merge(informacionesAdicionales);
         } catch (Exception e) {
@@ -35,36 +35,38 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
     }
  
     @Override
-    public void editar(InformacionesAdicionales informacionesAdicionales) {
+    public void editar(EntityManager em, InformacionesAdicionales informacionesAdicionales) {
         em.merge(informacionesAdicionales);
     }
 
     @Override
-    public void borrar(InformacionesAdicionales informacionesAdicionales) {
+    public void borrar(EntityManager em, InformacionesAdicionales informacionesAdicionales) {
         em.remove(em.merge(informacionesAdicionales));
     }
 
     @Override
-    public InformacionesAdicionales buscarinformacionAdicional(BigInteger secuencia) {
+    public InformacionesAdicionales buscarinformacionAdicional(EntityManager em, BigInteger secuencia) {
         return em.find(InformacionesAdicionales.class, secuencia);
     }
 
     @Override
-    public List<InformacionesAdicionales> buscarinformacionesAdicionales() {
+    public List<InformacionesAdicionales> buscarinformacionesAdicionales(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(InformacionesAdicionales.class));
         return em.createQuery(cq).getResultList();
     }
 
     @Override
-    public List<InformacionesAdicionales> informacionAdicionalPersona(BigInteger secuenciaEmpleado) {
+    public List<InformacionesAdicionales> informacionAdicionalPersona(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT COUNT(ia) FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
                 Query queryFinal = em.createQuery("SELECT ia FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado and ia.fechainicial = (SELECT MAX(iad.fechainicial) FROM InformacionesAdicionales iad WHERE iad.empleado.secuencia = :secuenciaEmpleado)");
                 queryFinal.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+                queryFinal.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 List<InformacionesAdicionales> listaInformacionesAdicionales = queryFinal.getResultList();
                 return listaInformacionesAdicionales;
             }
@@ -76,10 +78,11 @@ public class PersistenciaInformacionesAdicionales implements PersistenciaInforma
     }
 
     @Override
-    public List<InformacionesAdicionales> informacionAdicionalEmpleadoSecuencia(BigInteger secuenciaEmpleado) {
+    public List<InformacionesAdicionales> informacionAdicionalEmpleadoSecuencia(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT ia FROM InformacionesAdicionales ia WHERE ia.empleado.secuencia = :secuenciaEmpleado");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<InformacionesAdicionales> resultado = (List<InformacionesAdicionales>) query.getResultList();
             return resultado;
         } catch (Exception e) {

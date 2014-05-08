@@ -22,31 +22,31 @@ public class PersistenciaModulos implements PersistenciaModulosInterface{
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(Modulos modulos) {
+    public void crear(EntityManager em, Modulos modulos) {
         em.persist(modulos);
     }
 
     @Override
-    public void editar(Modulos modulos) {
+    public void editar(EntityManager em, Modulos modulos) {
         em.merge(modulos);
     }
 
     @Override
-    public void borrar(Modulos modulos) {
+    public void borrar(EntityManager em, Modulos modulos) {
         em.remove(em.merge(modulos));
     }
 
     @Override
-    public Modulos buscarModulos(BigInteger secuencia) {
+    public Modulos buscarModulos(EntityManager em, BigInteger secuencia) {
         return em.find(Modulos.class, secuencia);
     }
 
     @Override
-    public List<Modulos> buscarModulos() {
+    public List<Modulos> buscarModulos(EntityManager em) {
         javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Modulos.class));
         return em.createQuery(cq).getResultList();

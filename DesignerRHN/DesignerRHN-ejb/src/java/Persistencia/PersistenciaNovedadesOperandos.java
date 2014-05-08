@@ -25,11 +25,11 @@ public class PersistenciaNovedadesOperandos implements PersistenciaNovedadesOper
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+//    private EntityManager em;
 
     @Override
-    public void crear(NovedadesOperandos novedadesOperandos) {
+    public void crear(EntityManager em, NovedadesOperandos novedadesOperandos) {
         try {
             em.merge(novedadesOperandos);
         } catch (Exception e) {
@@ -38,7 +38,7 @@ public class PersistenciaNovedadesOperandos implements PersistenciaNovedadesOper
     }
 
     @Override
-    public void editar(NovedadesOperandos novedadesOperandos) {
+    public void editar(EntityManager em, NovedadesOperandos novedadesOperandos) {
         try {
             em.merge(novedadesOperandos);
         } catch (Exception e) {
@@ -47,7 +47,7 @@ public class PersistenciaNovedadesOperandos implements PersistenciaNovedadesOper
     }
 
     @Override
-    public void borrar(NovedadesOperandos novedadesOperandos) {
+    public void borrar(EntityManager em, NovedadesOperandos novedadesOperandos) {
         try {
             em.remove(em.merge(novedadesOperandos));
         } catch (Exception e) {
@@ -56,10 +56,11 @@ public class PersistenciaNovedadesOperandos implements PersistenciaNovedadesOper
     }
 
     @Override
-    public List<NovedadesOperandos> novedadesOperandos(BigInteger secuenciaOperando) {
+    public List<NovedadesOperandos> novedadesOperandos(EntityManager em, BigInteger secuenciaOperando) {
         try {
             Query query = em.createQuery("SELECT no FROM NovedadesOperandos no WHERE no.operando.secuencia =:secuenciaOperando");
             query.setParameter("secuenciaOperando", secuenciaOperando);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<NovedadesOperandos> novedadesOperandos = query.getResultList();
             List<NovedadesOperandos> novedadesOperandosResult = new ArrayList<NovedadesOperandos>(novedadesOperandos);
             return novedadesOperandosResult;
