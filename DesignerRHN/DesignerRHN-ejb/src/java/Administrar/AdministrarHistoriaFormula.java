@@ -7,6 +7,7 @@ import Entidades.Nodos;
 import Entidades.Operadores;
 import Entidades.Operandos;
 import InterfaceAdministrar.AdministrarHistoriaFormulaInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaEstructurasFormulasInterface;
 import InterfacePersistencia.PersistenciaFormulasInterface;
 import InterfacePersistencia.PersistenciaHistoriasformulasInterface;
@@ -17,6 +18,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -37,11 +39,25 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     PersistenciaOperadoresInterface persistenciaOperadores;
     @EJB
     PersistenciaEstructurasFormulasInterface persistenciaEstructurasFormulas;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public List<Historiasformulas> listHistoriasFormulasParaFormula(BigInteger secuencia) {
         try {
-            List<Historiasformulas> lista = persistenciaHistoriasFormulas.historiasFormulasParaFormulaSecuencia(secuencia);
+            List<Historiasformulas> lista = persistenciaHistoriasFormulas.historiasFormulasParaFormulaSecuencia(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listHistoriasFormulasParaFormula Admi : " + e.toString());
@@ -55,7 +71,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
             for (int i = 0; i < lista.size(); i++) {
                 String aux = lista.get(i).getObservaciones().toUpperCase();
                 lista.get(i).setObservaciones(aux);
-                persistenciaHistoriasFormulas.crear(lista.get(i));
+                persistenciaHistoriasFormulas.crear(em, lista.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearHistoriasFormulas Admi : " + e.toString());
@@ -68,7 +84,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
             for (int i = 0; i < lista.size(); i++) {
                 String aux = lista.get(i).getObservaciones().toUpperCase();
                 lista.get(i).setObservaciones(aux);
-                persistenciaHistoriasFormulas.editar(lista.get(i));
+                persistenciaHistoriasFormulas.editar(em, lista.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarHistoriasFormulas Admi : " + e.toString());
@@ -80,7 +96,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
         try {
 
             for (int i = 0; i < lista.size(); i++) {
-                persistenciaHistoriasFormulas.borrar(lista.get(i));
+                persistenciaHistoriasFormulas.borrar(em, lista.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarHistoriasFormulas Admi : " + e.toString());
@@ -90,7 +106,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     @Override
     public List<Nodos> listNodosDeHistoriaFormula(BigInteger secuencia) {
         try {
-            List<Nodos> lista = persistenciaNodos.buscarNodosPorSecuenciaHistoriaFormula(secuencia);
+            List<Nodos> lista = persistenciaNodos.buscarNodosPorSecuenciaHistoriaFormula(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listNodosDeHistoriaFormula Admi : " + e.toString());
@@ -111,7 +127,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
                     lista.get(i).setOperando(null);
                 }
                 System.out.println("lista.get(i) Crear : " + lista.get(i).getSecuencia());
-                persistenciaNodos.crear(lista.get(i));
+                persistenciaNodos.crear(em, lista.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearNodos Admi : " + e.toString());
@@ -130,7 +146,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
                 if (lista.get(i).getOperando().getSecuencia() == null) {
                     lista.get(i).setOperando(null);
                 }
-                persistenciaNodos.borrar(lista.get(i));
+                persistenciaNodos.borrar(em, lista.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarNodos Admi : " + e.toString());
@@ -146,7 +162,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
                 if (lista.get(i).getOperando().getSecuencia() == null) {
                     lista.get(i).setOperando(null);
                 }
-                persistenciaNodos.editar(lista.get(i));
+                persistenciaNodos.editar(em, lista.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarNodos Admi : " + e.toString());
@@ -156,7 +172,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     @Override
     public Formulas actualFormula(BigInteger secuencia) {
         try {
-            Formulas form = persistenciaFormulas.buscarFormula(secuencia);
+            Formulas form = persistenciaFormulas.buscarFormula(em, secuencia);
             return form;
         } catch (Exception e) {
             System.out.println("Error actualFormula Admi : " + e.toString());
@@ -167,7 +183,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     @Override
     public List<Operadores> listOperadores() {
         try {
-            List<Operadores> lista = persistenciaOperadores.buscarOperadores();
+            List<Operadores> lista = persistenciaOperadores.buscarOperadores(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listOperadores  Admi : " + e.toString());
@@ -178,7 +194,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     @Override
     public List<Operandos> listOperandos() {
         try {
-            List<Operandos> lista = persistenciaOperandos.buscarOperandos();
+            List<Operandos> lista = persistenciaOperandos.buscarOperandos(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listOperandos  Admi : " + e.toString());
@@ -189,7 +205,7 @@ public class AdministrarHistoriaFormula implements AdministrarHistoriaFormulaInt
     @Override
     public List<EstructurasFormulas> listEstructurasFormulasParaHistoriaFormula(BigInteger secuencia) {
         try {
-            List<EstructurasFormulas> lista = persistenciaEstructurasFormulas.estructurasFormulasParaHistoriaFormula(secuencia);
+            List<EstructurasFormulas> lista = persistenciaEstructurasFormulas.estructurasFormulasParaHistoriaFormula(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listEstructurasFormulasParaHistoriaFormula Admi : " + e.toString());

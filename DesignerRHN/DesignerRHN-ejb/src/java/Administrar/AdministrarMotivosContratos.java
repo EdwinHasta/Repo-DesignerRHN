@@ -11,6 +11,8 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import InterfaceAdministrar.AdministrarSesionesInterface;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -21,12 +23,25 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
 
     @EJB
     PersistenciaMotivosContratosInterface persistenciaMotivosContratos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     @Override
     public void modificarMotivosContratos(List<MotivosContratos> listaMotivosContratos) {
         for (int i = 0; i < listaMotivosContratos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaMotivosContratos.editar(listaMotivosContratos.get(i));
+            persistenciaMotivosContratos.editar(em, listaMotivosContratos.get(i));
         }
     }
 
@@ -34,7 +49,7 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
     public void borrarMotivosContratos(List<MotivosContratos> listaMotivosContratos) {
         for (int i = 0; i < listaMotivosContratos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaMotivosContratos.borrar(listaMotivosContratos.get(i));
+            persistenciaMotivosContratos.borrar(em, listaMotivosContratos.get(i));
         }
     }
 
@@ -42,21 +57,21 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
     public void crearMotivosContratos(List<MotivosContratos> listaMotivosContratos) {
         for (int i = 0; i < listaMotivosContratos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaMotivosContratos.crear(listaMotivosContratos.get(i));
+            persistenciaMotivosContratos.crear(em, listaMotivosContratos.get(i));
         }
     }
 
     @Override
     public List<MotivosContratos> consultarMotivosContratos() {
         List<MotivosContratos> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaMotivosContratos.buscarMotivosContratos();
+        listMotivosCambiosCargos = persistenciaMotivosContratos.buscarMotivosContratos(em);
         return listMotivosCambiosCargos;
     }
 
     @Override
     public MotivosContratos consultarMotivoContrato(BigInteger secMotivosCambiosCargos) {
         MotivosContratos motivoCambioCargo;
-        motivoCambioCargo = persistenciaMotivosContratos.buscarMotivoContrato(secMotivosCambiosCargos);
+        motivoCambioCargo = persistenciaMotivosContratos.buscarMotivoContrato(em, secMotivosCambiosCargos);
         return motivoCambioCargo;
     }
 
@@ -65,7 +80,7 @@ public class AdministrarMotivosContratos implements AdministrarMotivosContratosI
         BigInteger verificadorVTC = null;
 
         try {
-            return verificadorVTC = persistenciaMotivosContratos.verificarBorradoVigenciasTiposContratos(secuenciaMovitoCambioCargo);
+            return verificadorVTC = persistenciaMotivosContratos.verificarBorradoVigenciasTiposContratos(em, secuenciaMovitoCambioCargo);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarMotivosContratos contarVigenciasTiposContratosMotivoContrato ERROR :" + e);
             return null;

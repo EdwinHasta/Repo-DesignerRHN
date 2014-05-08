@@ -8,6 +8,7 @@ import Entidades.Procesos;
 import Entidades.TiposTrabajadores;
 import Entidades.Usuarios;
 import InterfaceAdministrar.AdministrarParametrosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEstructurasInterface;
@@ -21,6 +22,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarParametros implements AdministrarParametrosInterface {
@@ -43,77 +45,91 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
     PersistenciaUsuariosInterface persistenciaUsuarios;
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleado;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     public Usuarios usuarioActual() {
-        String usuarioBD = persistenciaActualUsuario.actualAliasBD();
-        return persistenciaUsuarios.buscarUsuario(usuarioBD);
+        String usuarioBD = persistenciaActualUsuario.actualAliasBD(em);
+        return persistenciaUsuarios.buscarUsuario(em, usuarioBD);
     }
 
     @Override
     public ParametrosEstructuras parametrosLiquidacion() {
-        String usuarioBD = persistenciaActualUsuario.actualAliasBD();
-        return persistenciaParametrosEstructuras.buscarParametro(usuarioBD);
+        String usuarioBD = persistenciaActualUsuario.actualAliasBD(em);
+        return persistenciaParametrosEstructuras.buscarParametro(em, usuarioBD);
     }
 
     @Override
     public List<Estructuras> lovEstructuras() {
-        return persistenciaEstructuras.estructuras();
+        return persistenciaEstructuras.estructuras(em);
     }
 
     public List<TiposTrabajadores> lovTiposTrabajadores() {
-        return persistenciaTiposTrabajadores.buscarTiposTrabajadores();
+        return persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
     }
 
     @Override
     public List<Procesos> lovProcesos() {
-        return persistenciaProcesos.procesosParametros();
+        return persistenciaProcesos.procesosParametros(em);
     }
 
     @Override
     public List<Parametros> empleadosParametros() {
-        return persistenciaParametros.empleadosParametros();
+        return persistenciaParametros.empleadosParametros(em);
     }
 
     @Override
     public String estadoParametro(BigInteger secuenciaParametro) {
-        return persistenciaParametrosEstados.parametrosComprobantes(secuenciaParametro);
+        return persistenciaParametrosEstados.parametrosComprobantes(em, secuenciaParametro);
     }
 
     public void crearParametroEstructura(ParametrosEstructuras parametroEstructura) {
-        persistenciaParametrosEstructuras.editar(parametroEstructura);
+        persistenciaParametrosEstructuras.editar(em, parametroEstructura);
     }
 
     public void eliminarParametros(List<Parametros> listaParametros) {
         for (int i = 0; i < listaParametros.size(); i++) {
-            persistenciaParametros.borrar(listaParametros.get(i));
+            persistenciaParametros.borrar(em, listaParametros.get(i));
         }
     }
     
     public void crearParametros(List<Parametros> listaParametros) {
         for (int i = 0; i < listaParametros.size(); i++) {
-            persistenciaParametros.crear(listaParametros.get(i));
+            persistenciaParametros.crear(em, listaParametros.get(i));
         }
     }
 
     @Override
     public void adicionarEmpleados(BigInteger secParametroEstructura) {
-        persistenciaParametrosEstructuras.adicionarEmpleados(secParametroEstructura);
+        persistenciaParametrosEstructuras.adicionarEmpleados(em, secParametroEstructura);
     }
 
     public void borrarParametros(BigInteger secParametroEstructura) {
-        persistenciaParametros.borrarParametros(secParametroEstructura);
+        persistenciaParametros.borrarParametros(em, secParametroEstructura);
     }
 
     public Integer empleadosParametrizados(BigInteger secProceso) {
-        return persistenciaParametrosEstructuras.empleadosParametrizados(secProceso);
+        return persistenciaParametrosEstructuras.empleadosParametrizados(em, secProceso);
     }
 
     public Integer diferenciaDias(String fechaInicial, String fechaFinal) {
-        return persistenciaParametrosEstructuras.diasDiferenciaFechas(fechaInicial, fechaFinal);
+        return persistenciaParametrosEstructuras.diasDiferenciaFechas(em, fechaInicial, fechaFinal);
     }
     
     @Override
     public List<Empleados> empleadosLov() {
-        return persistenciaEmpleado.lovEmpleadosParametros();
+        return persistenciaEmpleado.lovEmpleadosParametros(em);
     }
 }

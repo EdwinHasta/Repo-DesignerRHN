@@ -14,7 +14,12 @@ import java.math.BigInteger;
 import java.util.List;
 
 public interface AdministrarNovedadesReemplazosInterface {
-
+	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     public List<Encargaturas> encargaturasEmpleado(BigInteger secEmpleado);
 
     public Empleados encontrarEmpleado(BigInteger secEmpleado);

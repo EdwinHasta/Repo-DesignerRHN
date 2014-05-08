@@ -16,6 +16,12 @@ import java.util.List;
  * @author AndresPineda
  */
 public interface AdministrarNReporteLaboralInterface {
+    	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     /**
      * Obtiene los parametros de reporte laboral
      * @return Objeto ParametrosInformes para los reportes

@@ -8,12 +8,14 @@ package Administrar;
 import Entidades.CentrosCostos;
 import Entidades.ProcesosProductivos;
 import InterfaceAdministrar.AdministrarProcesosProductivosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCentrosCostosInterface;
 import InterfacePersistencia.PersistenciaProcesosProductivosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -34,6 +36,20 @@ public class AdministrarProcesosProductivos implements AdministrarProcesosProduc
     PersistenciaProcesosProductivosInterface persistenciaProcesosProductivos;
     @EJB
     PersistenciaCentrosCostosInterface persistenciaCentrosCostos;
+        /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
@@ -41,51 +57,51 @@ public class AdministrarProcesosProductivos implements AdministrarProcesosProduc
     public void modificarProcesosProductivos(List<ProcesosProductivos> listaProcesosProductivos) {
         for (int i = 0; i < listaProcesosProductivos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaProcesosProductivos.editar(listaProcesosProductivos.get(i));
+            persistenciaProcesosProductivos.editar(em, listaProcesosProductivos.get(i));
         }
     }
 
     public void borrarProcesosProductivos(List<ProcesosProductivos> listaProcesosProductivos) {
         for (int i = 0; i < listaProcesosProductivos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaProcesosProductivos.borrar(listaProcesosProductivos.get(i));
+            persistenciaProcesosProductivos.borrar(em, listaProcesosProductivos.get(i));
         }
     }
 
     public void crearProcesosProductivos(List<ProcesosProductivos> listaProcesosProductivos) {
         for (int i = 0; i < listaProcesosProductivos.size(); i++) {
-            persistenciaProcesosProductivos.crear(listaProcesosProductivos.get(i));
+            persistenciaProcesosProductivos.crear(em, listaProcesosProductivos.get(i));
         }
     }
 
     @Override
     public List<ProcesosProductivos> consultarProcesosProductivos() {
         List<ProcesosProductivos> listaProcesosProductivos;
-        listaProcesosProductivos = persistenciaProcesosProductivos.consultarProcesosProductivos();
+        listaProcesosProductivos = persistenciaProcesosProductivos.consultarProcesosProductivos(em);
         return listaProcesosProductivos;
     }
 
     public List<CentrosCostos> consultarLOVCentrosCostos() {
         List<CentrosCostos> listLOVCentrosCostos;
-        listLOVCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostos();
+        listLOVCentrosCostos = persistenciaCentrosCostos.buscarCentrosCostos(em);
         return listLOVCentrosCostos;
     }
 
     public BigInteger contarCargosProcesoProductivo(BigInteger secuenciaSucursal) {
         BigInteger contarVigenciasFormasPagosSucursal;
-        contarVigenciasFormasPagosSucursal = persistenciaProcesosProductivos.contarCargosProcesoProductivo(secuenciaSucursal);
+        contarVigenciasFormasPagosSucursal = persistenciaProcesosProductivos.contarCargosProcesoProductivo(em, secuenciaSucursal);
         return contarVigenciasFormasPagosSucursal;
     }
 
     public BigInteger contarTarifasProductosProcesoProductivo(BigInteger secuenciaSucursal) {
         BigInteger contarVigenciasFormasPagosSucursal;
-        contarVigenciasFormasPagosSucursal = persistenciaProcesosProductivos.contarTarifasProductosProcesoProductivo(secuenciaSucursal);
+        contarVigenciasFormasPagosSucursal = persistenciaProcesosProductivos.contarTarifasProductosProcesoProductivo(em, secuenciaSucursal);
         return contarVigenciasFormasPagosSucursal;
     }
 
     public BigInteger contarUnidadesProducidasProcesoProductivo(BigInteger secuenciaSucursal) {
         BigInteger contarVigenciasFormasPagosSucursal;
-        contarVigenciasFormasPagosSucursal = persistenciaProcesosProductivos.contarUnidadesProducidasProcesoProductivo(secuenciaSucursal);
+        contarVigenciasFormasPagosSucursal = persistenciaProcesosProductivos.contarUnidadesProducidasProcesoProductivo(em, secuenciaSucursal);
         return contarVigenciasFormasPagosSucursal;
     }
 }

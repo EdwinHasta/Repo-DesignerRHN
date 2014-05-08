@@ -8,12 +8,14 @@ package Administrar;
 import Entidades.Retenciones;
 import Entidades.VigenciasRetenciones;
 import InterfaceAdministrar.AdministrarRetencionesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaRetencionesInterface;
 import InterfacePersistencia.PersistenciaVigenciasRetencionesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -26,16 +28,30 @@ public class AdministrarRetenciones implements AdministrarRetencionesInterface {
     PersistenciaRetencionesInterface persistenciaRetenciones;
     @EJB
     PersistenciaVigenciasRetencionesInterface persistenciaVigenciasRetenciones;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
 //VIGENCIAS RETENCIONES
     @Override
     public void borrarVigenciaRetencion(VigenciasRetenciones vretenciones) {
-        persistenciaVigenciasRetenciones.borrar(vretenciones);
+        persistenciaVigenciasRetenciones.borrar(em, vretenciones);
     }
 
     @Override
     public void crearVigenciaRetencion(VigenciasRetenciones vretenciones) {
-        persistenciaVigenciasRetenciones.crear(vretenciones);
+        persistenciaVigenciasRetenciones.crear(em, vretenciones);
     }
 
     @Override
@@ -45,14 +61,14 @@ public class AdministrarRetenciones implements AdministrarRetencionesInterface {
             if (listaVigenciasRetencionesModificar.get(i).getUvt() == null) {
                 listaVigenciasRetencionesModificar.get(i).setUvt(null);
             }
-            persistenciaVigenciasRetenciones.editar(listaVigenciasRetencionesModificar.get(i));
+            persistenciaVigenciasRetenciones.editar(em, listaVigenciasRetencionesModificar.get(i));
         }
     }
 
     @Override
     public List<VigenciasRetenciones> consultarVigenciasRetenciones() {
         try {
-            List<VigenciasRetenciones> actual = persistenciaVigenciasRetenciones.buscarVigenciasRetenciones();
+            List<VigenciasRetenciones> actual = persistenciaVigenciasRetenciones.buscarVigenciasRetenciones(em);
             return actual;
         } catch (Exception e) {
             System.out.println("Error consultarVigenciasRetenciones: " + e.toString());
@@ -63,12 +79,12 @@ public class AdministrarRetenciones implements AdministrarRetencionesInterface {
 //RETENCIONES
     @Override
     public void borrarRetencion(Retenciones retenciones) {
-        persistenciaRetenciones.borrar(retenciones);
+        persistenciaRetenciones.borrar(em, retenciones);
     }
 
     @Override
     public void crearRetencion(Retenciones retenciones) {
-        persistenciaRetenciones.crear(retenciones);
+        persistenciaRetenciones.crear(em, retenciones);
     }
 
     @Override
@@ -78,14 +94,14 @@ public class AdministrarRetenciones implements AdministrarRetencionesInterface {
             if (listaRetencionesModificar.get(i).getAdicionauvt()== null) {
                 listaRetencionesModificar.get(i).setAdicionauvt(null);
             }
-            persistenciaRetenciones.editar(listaRetencionesModificar.get(i));
+            persistenciaRetenciones.editar(em, listaRetencionesModificar.get(i));
         }
     }
 
     @Override
     public List<Retenciones> consultarRetenciones(BigInteger secRetencion) {
         try {
-            List<Retenciones> actual = persistenciaRetenciones.buscarRetencionesVig(secRetencion);
+            List<Retenciones> actual = persistenciaRetenciones.buscarRetencionesVig(em, secRetencion);
             return actual;
         } catch (Exception e) {
             System.out.println("Error conceptoActual Admi : " + e.toString());

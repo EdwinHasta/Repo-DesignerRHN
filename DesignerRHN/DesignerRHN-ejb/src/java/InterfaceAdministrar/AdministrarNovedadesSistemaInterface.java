@@ -17,7 +17,12 @@ import java.util.List;
  * @author user
  */
 public interface AdministrarNovedadesSistemaInterface {
-
+	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     public List<NovedadesSistema> novedadesEmpleado(BigInteger secuenciaEmpleado);
 
     public void borrarNovedades(NovedadesSistema novedades);

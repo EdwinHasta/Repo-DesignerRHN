@@ -19,6 +19,12 @@ import java.util.List;
  * @author Administrator
  */
 public interface AdministrarParametrosInterface {
+    	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     public Usuarios usuarioActual();
     public ParametrosEstructuras parametrosLiquidacion();
     public List<Estructuras> lovEstructuras();

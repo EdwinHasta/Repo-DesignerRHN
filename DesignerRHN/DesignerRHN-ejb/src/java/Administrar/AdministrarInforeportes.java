@@ -8,11 +8,13 @@ package Administrar;
 import Entidades.Inforeportes;
 import Entidades.Modulos;
 import InterfaceAdministrar.AdministrarInforeportesInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaInforeportesInterface;
 import InterfacePersistencia.PersistenciaModulosInterface;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 @Stateful
 public class AdministrarInforeportes implements AdministrarInforeportesInterface {
@@ -22,26 +24,41 @@ public class AdministrarInforeportes implements AdministrarInforeportesInterface
     @EJB
     PersistenciaModulosInterface persistenciaModulos;
 
+        /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     public List<Inforeportes> inforeportes() {
         List<Inforeportes> listaInforeportes;
-        listaInforeportes = persistenciaInforeportes.buscarInforeportes();
+        listaInforeportes = persistenciaInforeportes.buscarInforeportes(em);
         return listaInforeportes;
     }
 
     public List<Modulos> lovmodulos() {
         List<Modulos> listaModulos;
-        listaModulos = persistenciaModulos.buscarModulos();
+        listaModulos = persistenciaModulos.buscarModulos(em);
         return listaModulos;
     }
     
     @Override
     public void borrarInforeporte(Inforeportes inforeportes) {
-        persistenciaInforeportes.borrar(inforeportes);
+        persistenciaInforeportes.borrar(em, inforeportes);
     }
 
     @Override
     public void crearInforeporte(Inforeportes inforeportes) {
-        persistenciaInforeportes.crear(inforeportes);
+        persistenciaInforeportes.crear(em, inforeportes);
     }
     
     
@@ -128,7 +145,7 @@ public class AdministrarInforeportes implements AdministrarInforeportesInterface
                     if (listaInforeportesModificar.get(i).getTrabajador()== null) {
                         listaInforeportesModificar.get(i).setTrabajador(null);
                     }
-            persistenciaInforeportes.editar(listaInforeportesModificar.get(i));
+            persistenciaInforeportes.editar(em, listaInforeportesModificar.get(i));
         }
     }
 }

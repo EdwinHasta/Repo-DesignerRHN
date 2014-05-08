@@ -7,11 +7,13 @@ package Administrar;
 
 import InterfaceAdministrar.AdministrarMotivosEmbargosInterface;
 import Entidades.MotivosEmbargos;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosEmbargosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,44 +24,58 @@ public class AdministrarMotivosEmbargos implements AdministrarMotivosEmbargosInt
 
     @EJB
     PersistenciaMotivosEmbargosInterface persistenciaMotivosEmbargos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     public void modificarMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos) {
         for (int i = 0; i < listaMotivosEmbargos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaMotivosEmbargos.editar(listaMotivosEmbargos.get(i));
+            persistenciaMotivosEmbargos.editar(em, listaMotivosEmbargos.get(i));
         }
     }
 
     public void borrarMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos) {
         for (int i = 0; i < listaMotivosEmbargos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaMotivosEmbargos.borrar(listaMotivosEmbargos.get(i));
+            persistenciaMotivosEmbargos.borrar(em, listaMotivosEmbargos.get(i));
         }
     }
 
     public void crearMotivosEmbargos(List<MotivosEmbargos> listaMotivosEmbargos) {
         for (int i = 0; i < listaMotivosEmbargos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaMotivosEmbargos.crear(listaMotivosEmbargos.get(i));
+            persistenciaMotivosEmbargos.crear(em, listaMotivosEmbargos.get(i));
         }
     }
 
     public List<MotivosEmbargos> mostrarMotivosEmbargos() {
         List<MotivosEmbargos> listMotivosEmbargos;
-        listMotivosEmbargos = persistenciaMotivosEmbargos.buscarMotivosEmbargos();
+        listMotivosEmbargos = persistenciaMotivosEmbargos.buscarMotivosEmbargos(em);
         return listMotivosEmbargos;
     }
 
     public MotivosEmbargos mostrarMotivoEmbargo(BigInteger secMotivoPrestamo) {
         MotivosEmbargos motivosEmbargos;
-        motivosEmbargos = persistenciaMotivosEmbargos.buscarMotivoEmbargo(secMotivoPrestamo);
+        motivosEmbargos = persistenciaMotivosEmbargos.buscarMotivoEmbargo(em, secMotivoPrestamo);
         return motivosEmbargos;
     }
 
     public BigInteger contarEersPrestamosMotivoEmbargo(BigInteger secuenciaTiposDias) {
         BigInteger verificarEersPrestamos = null;
         try {
-            verificarEersPrestamos = persistenciaMotivosEmbargos.contadorEersPrestamos(secuenciaTiposDias);
+            verificarEersPrestamos = persistenciaMotivosEmbargos.contadorEersPrestamos(em, secuenciaTiposDias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARMOTIVOSEMBARGOS VERIFICAREERSPRESTAMOS ERROR :" + e);
         } finally {
@@ -70,7 +86,7 @@ public class AdministrarMotivosEmbargos implements AdministrarMotivosEmbargosInt
     public BigInteger contarEmbargosMotivoEmbargo(BigInteger secuenciaTiposDias) {
         BigInteger verificarEmbargos = null;
         try {
-            verificarEmbargos = persistenciaMotivosEmbargos.contadorEmbargos(secuenciaTiposDias);
+            verificarEmbargos = persistenciaMotivosEmbargos.contadorEmbargos(em, secuenciaTiposDias);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARMOTIVOSEMBARGOS VERIFICAREMBARGOS ERROR :" + e);
         } finally {

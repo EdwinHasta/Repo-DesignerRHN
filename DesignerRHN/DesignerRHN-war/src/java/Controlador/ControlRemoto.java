@@ -24,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.util.JRClassLoader;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.datagrid.DataGrid;
 import org.primefaces.component.datatable.DataTable;
@@ -171,7 +172,7 @@ public class ControlRemoto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCarpetaPersonal.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct controlremoto: " + e);
+            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }

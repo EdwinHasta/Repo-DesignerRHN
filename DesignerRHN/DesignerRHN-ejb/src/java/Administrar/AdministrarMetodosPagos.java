@@ -7,11 +7,13 @@ package Administrar;
 
 import Entidades.MetodosPagos;
 import InterfaceAdministrar.AdministrarMetodosPagosInterface;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMetodosPagosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,12 +24,26 @@ public class AdministrarMetodosPagos implements AdministrarMetodosPagosInterface
 
     @EJB
     PersistenciaMetodosPagosInterface persistenciaMetodosPagos;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
+    
     @Override
     public void modificarMetodosPagos(List<MetodosPagos> listaMetodosPagos) {
         for (int i = 0; i < listaMetodosPagos.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaMetodosPagos.editar(listaMetodosPagos.get(i));
+            persistenciaMetodosPagos.editar(em, listaMetodosPagos.get(i));
         }
     }
 
@@ -35,7 +51,7 @@ public class AdministrarMetodosPagos implements AdministrarMetodosPagosInterface
     public void borrarMetodosPagos(List<MetodosPagos> listaMetodosPagos) {
         for (int i = 0; i < listaMetodosPagos.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaMetodosPagos.borrar(listaMetodosPagos.get(i));
+            persistenciaMetodosPagos.borrar(em, listaMetodosPagos.get(i));
         }
     }
 
@@ -43,21 +59,21 @@ public class AdministrarMetodosPagos implements AdministrarMetodosPagosInterface
     public void crearMetodosPagos(List<MetodosPagos> listaMetodosPagos) {
         for (int i = 0; i < listaMetodosPagos.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaMetodosPagos.crear(listaMetodosPagos.get(i));
+            persistenciaMetodosPagos.crear(em, listaMetodosPagos.get(i));
         }
     }
 
     @Override
     public List<MetodosPagos> consultarMetodosPagos() {
         List<MetodosPagos> listMetodosPagos;
-        listMetodosPagos = persistenciaMetodosPagos.buscarMetodosPagos();
+        listMetodosPagos = persistenciaMetodosPagos.buscarMetodosPagos(em);
         return listMetodosPagos;
     }
 
     @Override
     public MetodosPagos consultarMetodoPago(BigInteger secMetodosPagos) {
         MetodosPagos metodosPago;
-        metodosPago = persistenciaMetodosPagos.buscarMetodosPagosEmpleado(secMetodosPagos);
+        metodosPago = persistenciaMetodosPagos.buscarMetodosPagosEmpleado(em, secMetodosPagos);
         return metodosPago;
     }
 
@@ -65,7 +81,7 @@ public class AdministrarMetodosPagos implements AdministrarMetodosPagosInterface
     public BigInteger verificarMetodosPagosVigenciasFormasPagos(BigInteger secuenciaMetodoPago) {
         BigInteger verificarVigenciasFormasPagos = null;
         try {
-            verificarVigenciasFormasPagos = persistenciaMetodosPagos.contadorvigenciasformaspagos(secuenciaMetodoPago);
+            verificarVigenciasFormasPagos = persistenciaMetodosPagos.contadorvigenciasformaspagos(em, secuenciaMetodoPago);
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARMETODOSPAGOS VERIFICARVIGENCIASFORMASPAGOS ERROR " + e);
         } finally {

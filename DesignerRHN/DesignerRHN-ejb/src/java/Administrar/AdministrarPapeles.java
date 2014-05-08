@@ -8,12 +8,14 @@ package Administrar;
 import InterfaceAdministrar.AdministrarPapelesInterface;
 import Entidades.Papeles;
 import Entidades.Empresas;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaPapelesInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -42,11 +44,25 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
     PersistenciaEmpresasInterface persistenciaEmpresas;
 
     //-------------------------------------------------------------------------------------
+        /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
+
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     
     @Override
     public List<Empresas> consultarEmpresas() {
         try {
-            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas();
+            List<Empresas> listaEmpresas = persistenciaEmpresas.consultarEmpresas(em);
             return listaEmpresas;
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPAPELES CONSULTAREMPRESAS ERROR : " + e);
@@ -58,7 +74,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
         try {
             for (int i = 0; i < listaPapeles.size(); i++) {
                 System.out.println("Modificando...");
-                persistenciaPapeles.editar(listaPapeles.get(i));
+                persistenciaPapeles.editar(em, listaPapeles.get(i));
             }
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPAPELES MODIFICARPAPELES ERROR : " + e);
@@ -69,7 +85,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
         try {
             for (int i = 0; i < listaPapeles.size(); i++) {
                 System.out.println("Borrando...");
-                persistenciaPapeles.borrar(listaPapeles.get(i));
+                persistenciaPapeles.borrar(em, listaPapeles.get(i));
             }
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPAPELES BORRARPAPELES ERROR : " + e);
@@ -81,7 +97,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
                System.out.println("Creando... tamaño "+listaPapeles.size());
             for (int i = 0; i < listaPapeles.size(); i++) {
                 System.out.println("Creando...");
-                persistenciaPapeles.crear(listaPapeles.get(i));
+                persistenciaPapeles.crear(em, listaPapeles.get(i));
             }
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPAPELES CREARPAPELES ERROR : " + e);
@@ -90,7 +106,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
     @Override
     public List<Papeles> consultarPapelesPorEmpresa(BigInteger secEmpresa) {
         try {
-            List<Papeles> listaPapeles = persistenciaPapeles.consultarPapelesEmpresa(secEmpresa);
+            List<Papeles> listaPapeles = persistenciaPapeles.consultarPapelesEmpresa(em, secEmpresa);
             return listaPapeles;
         } catch (Exception e) {
             System.err.println("ERROR ADMINISTRARPAPELES CONSULTARPAPELESPOREMPRESA ERROR : " + e);
@@ -101,7 +117,7 @@ public class AdministrarPapeles implements AdministrarPapelesInterface {
     public BigInteger contarVigenciasCargosPapel(BigInteger secPapeles) {
         BigInteger contadorComprobantesContables;
         try {
-            contadorComprobantesContables = persistenciaPapeles.contarVigenciasCargosPapel(secPapeles);
+            contadorComprobantesContables = persistenciaPapeles.contarVigenciasCargosPapel(em, secPapeles);
             return contadorComprobantesContables;
         } catch (Exception e) {
             System.out.println("ERROR ADMINISTRARPAPELES CONTARVIGENCIASCARGOSPAPEL ERRO : " + e);

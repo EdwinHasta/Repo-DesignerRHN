@@ -19,7 +19,12 @@ import java.util.List;
  * @author user
  */
 public interface AdministrarReportesBancosInterface {
-    
+    	/**
+     * Método encargado de obtener el Entity Manager el cual tiene
+     * asociado la sesion del usuario que utiliza el aplicativo.
+     * @param idSesion Identificador se la sesion.
+     */
+    public void obtenerConexion(String idSesion);
     public ParametrosInformes parametrosDeReporte();
     public List<Inforeportes> listInforeportesUsuario();
     public void modificarParametrosInformes(ParametrosInformes parametroInforme);

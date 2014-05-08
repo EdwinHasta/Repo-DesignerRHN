@@ -7,11 +7,13 @@ package Administrar;
 
 import InterfaceAdministrar.AdministrarNivelesInterface;
 import Entidades.Niveles;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaNivelesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -22,37 +24,50 @@ public class AdministrarNiveles implements AdministrarNivelesInterface {
 
     @EJB
     PersistenciaNivelesInterface persistenciaNiveles;
+    /**
+     * Enterprise JavaBean.<br>
+     * Atributo que representa todo lo referente a la conexión del usuario que
+     * está usando el aplicativo.
+     */
+    @EJB
+    AdministrarSesionesInterface administrarSesiones;
 
+    private EntityManager em;
+
+    @Override
+    public void obtenerConexion(String idSesion) {
+        em = administrarSesiones.obtenerConexionSesion(idSesion);
+    }
     public void modificarNiveles(List<Niveles> listaNiveles) {
         for (int i = 0; i < listaNiveles.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaNiveles.editar(listaNiveles.get(i));
+            persistenciaNiveles.editar(em, listaNiveles.get(i));
         }
     }
 
     public void borrarNiveles(List<Niveles> listaNiveles) {
         for (int i = 0; i < listaNiveles.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaNiveles.borrar(listaNiveles.get(i));
+            persistenciaNiveles.borrar(em, listaNiveles.get(i));
         }
     }
 
     public void crearNiveles(List<Niveles> listaNiveles) {
         for (int i = 0; i < listaNiveles.size(); i++) {
             System.out.println("Administrar Creando...");
-            persistenciaNiveles.crear(listaNiveles.get(i));
+            persistenciaNiveles.crear(em, listaNiveles.get(i));
         }
     }
 
     public List<Niveles> consultarNiveles() {
         List<Niveles> listMotivosCambiosCargos;
-        listMotivosCambiosCargos = persistenciaNiveles.consultarNiveles();
+        listMotivosCambiosCargos = persistenciaNiveles.consultarNiveles(em);
         return listMotivosCambiosCargos;
     }
 
     public Niveles consultarNivel(BigInteger secNiveles) {
         Niveles motivoCambioCargo;
-        motivoCambioCargo = persistenciaNiveles.consultarNivel(secNiveles);
+        motivoCambioCargo = persistenciaNiveles.consultarNivel(em, secNiveles);
         return motivoCambioCargo;
     }
 
@@ -60,7 +75,7 @@ public class AdministrarNiveles implements AdministrarNivelesInterface {
         BigInteger contarEvalConvocatoriasNivel = null;
 
         try {
-            return contarEvalConvocatoriasNivel = persistenciaNiveles.contarEvalConvocatoriasNivel(secNiveles);
+            return contarEvalConvocatoriasNivel = persistenciaNiveles.contarEvalConvocatoriasNivel(em, secNiveles);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarNiveles contarEvalConvocatoriasNivel ERROR :" + e);
             return null;
@@ -71,7 +86,7 @@ public class AdministrarNiveles implements AdministrarNivelesInterface {
         BigInteger contarPlantasNivel = null;
 
         try {
-            return contarPlantasNivel = persistenciaNiveles.contarPlantasNivel(secNiveles);
+            return contarPlantasNivel = persistenciaNiveles.contarPlantasNivel(em, secNiveles);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarNiveles contarPlantasNivel ERROR :" + e);
             return null;
@@ -82,7 +97,7 @@ public class AdministrarNiveles implements AdministrarNivelesInterface {
         BigInteger contarPlantasPersonalesNivel = null;
 
         try {
-            return contarPlantasPersonalesNivel = persistenciaNiveles.contarPlantasPersonalesNivel(secNiveles);
+            return contarPlantasPersonalesNivel = persistenciaNiveles.contarPlantasPersonalesNivel(em, secNiveles);
         } catch (Exception e) {
             System.err.println("ERROR AdministrarNiveles verificarBorradoVNE ERROR :" + e);
             return null;
