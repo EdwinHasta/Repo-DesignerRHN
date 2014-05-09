@@ -34,8 +34,11 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public void crear(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasCargos);
+            em.getTransaction().commit();
         } catch (Exception e) {
+            em.getTransaction().rollback();
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada");
         }
     }
@@ -43,8 +46,11 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public void editar(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasCargos);
+            em.getTransaction().commit();
         } catch (Exception e) {
+            em.getTransaction().rollback();
             System.out.println("ALERTA! Error xD");
         }
     }
@@ -52,8 +58,11 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public void borrar(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasCargos));
+            em.getTransaction().commit();
         } catch (Exception e) {
+            em.getTransaction().rollback();
             System.out.println("Error Persistencia Borrar VC: " + e);
         }
     }

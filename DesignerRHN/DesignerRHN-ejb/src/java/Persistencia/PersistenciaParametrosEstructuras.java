@@ -44,6 +44,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
         }
     }
 
+    @Override
     public ParametrosEstructuras buscarParametro(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT COUNT(pe) FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");

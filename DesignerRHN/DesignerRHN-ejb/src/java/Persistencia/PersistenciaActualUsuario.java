@@ -36,7 +36,6 @@ public class PersistenciaActualUsuario implements PersistenciaActualUsuarioInter
         }
     }
     
-    @Override
     public String actualAliasBD(EntityManager em) {
         try {
             String sqlQuery = "SELECT au.ALIAS FROM VWActualUsuario au";
