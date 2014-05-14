@@ -11,36 +11,58 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'TiposContratos'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposContratos' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaTiposContratos implements PersistenciaTiposContratosInterface{
+public class PersistenciaTiposContratos implements PersistenciaTiposContratosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
 
     @Override
     public void crear(EntityManager em, TiposContratos tiposContratos) {
-        em.persist(tiposContratos);
+        try {
+            em.getTransaction().begin();
+            em.merge(tiposContratos);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("(PersistenciaTiposContratos - crear)" + e);
+        }
     }
-    
+
     @Override
     public void editar(EntityManager em, TiposContratos tiposContratos) {
-        em.merge(tiposContratos);
+        try {
+            em.getTransaction().begin();
+            em.merge(tiposContratos);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("(PersistenciaTiposContratos - editar)" + e);
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposContratos tiposContratos) {
-        em.remove(em.merge(tiposContratos));
+        try {
+            em.getTransaction().begin();
+            em.remove(em.merge(tiposContratos));
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("(PersistenciaTiposContratos - borrar)" + e);
+        }
+
     }
-    
+
     @Override
     public TiposContratos buscarTipoContratoSecuencia(EntityManager em, BigInteger secuencia) {
 
@@ -55,9 +77,9 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
         TiposContratos tipoC = null;
         return tipoC;
     }
-    
+
     @Override
-     public List<TiposContratos> tiposContratos(EntityManager em) {
+    public List<TiposContratos> tiposContratos(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT tc FROM TiposContratos tc ORDER BY tc.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

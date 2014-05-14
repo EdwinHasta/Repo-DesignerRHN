@@ -41,8 +41,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     AdministrarVigenciaNormaLaboralInterface administrarVigenciaNormaLaboral;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     private List<VigenciasNormasEmpleados> listEmplVigenciaNormaLaboralPorEmpleado;
     private List<VigenciasNormasEmpleados> filtrarEmplVigenciaNormaLaboralPorEmplado;
     private List<VigenciasNormasEmpleados> crearEmplVigenciaNormaLaboralPorEmplado;
@@ -93,7 +92,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         guardado = true;
         altoTabla = "270";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -101,7 +100,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciaNormaLaboral.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -124,6 +123,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     public void mostrarInfo(int indice, int celda) {
         int contador = 0;
         int fechas = 0;
+        int pasa = 0;
         mensajeValidacion = " ";
         index = indice;
         cualCelda = celda;
@@ -145,10 +145,12 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     }
                 }
                 if (fechas > 0) {
-                    mensajeValidacion = "FECHAS REPETIDAS";
+                    context.update("form:validacionFechas");
+                    context.execute("validacionFechas.show()");
                     contador++;
+                    pasa++;
                 }
-                if (contador == 0) {
+                if (contador == 0 && pasa == 0) {
                     if (!crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
                         if (modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
@@ -191,10 +193,12 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     }
                 }
                 if (fechas > 0) {
-                    mensajeValidacion = "FECHAS REPETIDAS";
+                    context.update("form:validacionFechas");
+                    context.execute("validacionFechas.show()");
                     contador++;
+                    pasa++;
                 }
-                if (contador == 0) {
+                if (contador == 0 && pasa == 0) {
                     if (!crearEmplVigenciaNormaLaboralPorEmplado.contains(listEmplVigenciaNormaLaboralPorEmpleado.get(indice))) {
                         if (modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
                             modificarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(indice));
@@ -372,7 +376,6 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                             }
                         }
                         if (contador > 0) {
-                            mensajeValidacion = "FECHAS REPETIDAS";
                             banderita = false;
                         } else {
                             banderita = true;
@@ -877,6 +880,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         int contador = 0;
         //nuevoEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
         Short a = 0;
+        int pasa = 0;
         a = null;
         int fechas = 0;
         mensajeValidacion = " ";
@@ -884,7 +888,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("Nueva Fecha : " + nuevoEmplVigenciaNormaLaboral.getFechavigencia());
         if (nuevoEmplVigenciaNormaLaboral.getFechavigencia() == null || nuevoEmplVigenciaNormaLaboral.getFechavigencia().equals("")) {
-            mensajeValidacion = " *Debe tener una fecha \n";
+            mensajeValidacion = " *Debe tener una fecha "
+                    + "";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int i = 0; i < listEmplVigenciaNormaLaboralPorEmpleado.size(); i++) {
@@ -893,7 +898,9 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                 }
             }
             if (fechas > 0) {
-                mensajeValidacion = "Fechas repetidas ";
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
+                pasa++;
             } else {
                 contador++;
             }
@@ -916,7 +923,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
          }*/
         System.out.println("contador " + contador);
 
-        if (contador == 2) {
+        if (contador == 2 && pasa == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -955,10 +962,11 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             index = -1;
             secRegistro = null;
 
-        } else {
+        } else if(pasa == 0 && contador != 2) {
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
             contador = 0;
+            pasa = 0;
         }
     }
 
@@ -1023,7 +1031,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                 }
             }
             if (fechas > 0) {
-                mensajeValidacion = "FECHAS REPETIDAS";
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
             } else {
                 System.out.println("bandera");
                 contador++;
@@ -1267,5 +1276,5 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public String getAltoTabla() {
         return altoTabla;
-    }    
+    }
 }

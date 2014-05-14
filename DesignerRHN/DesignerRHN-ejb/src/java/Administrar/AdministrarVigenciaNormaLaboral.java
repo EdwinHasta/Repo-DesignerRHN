@@ -18,12 +18,12 @@ import javax.ejb.Stateful;
 import javax.ejb.LocalBean;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import javax.persistence.EntityManager;
+
 /**
  *
  * @author John Pineda
  */
 @Stateful
-@LocalBean
 public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNormaLaboralInterface {
 
     /**
@@ -42,18 +42,16 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-    
     private EntityManager em;
 
     /**
      * Creacion de metodos
      */
-    
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public List<VigenciasNormasEmpleados> consultarVigenciasNormasEmpleadosPorEmpleado(BigInteger secEmpleado) {
         List<VigenciasNormasEmpleados> vigenciasNormasEmpleados; //esta lista es la que se mostrara en la tabla de vigencias
@@ -66,6 +64,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
         }
         return vigenciasNormasEmpleados;
     }
+
     @Override
     public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
         for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
@@ -73,6 +72,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
             persistenciaVigenciasNormasEmpleados.editar(em, listaVigenciasNormasEmpleados.get(i));
         }
     }
+
     @Override
     public void borrarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
         for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
@@ -80,6 +80,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
             persistenciaVigenciasNormasEmpleados.borrar(em, listaVigenciasNormasEmpleados.get(i));
         }
     }
+
     @Override
     public void crearVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
         for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
@@ -87,6 +88,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
             persistenciaVigenciasNormasEmpleados.crear(em, listaVigenciasNormasEmpleados.get(i));
         }
     }
+
     @Override
     public Empleados consultarEmpleado(BigInteger secuencia) {
         Empleados empleado;
@@ -101,10 +103,11 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
 
     @Override
     public List<NormasLaborales> lovNormasLaborales() {
-            List<NormasLaborales> normasLaborales;
-
+        List<NormasLaborales> normasLaborales;
         try {
+            System.out.println("1");
             normasLaborales = persistenciaNormasLaborales.consultarNormasLaborales(em);
+            System.out.println("2");
             return normasLaborales;
         } catch (Exception e) {
             System.err.println("ERROR EN AdministrarVigencianormaLaboral en NormasLabolares ERROR " + e);

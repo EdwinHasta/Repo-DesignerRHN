@@ -189,6 +189,11 @@
                         <h:outputText value="Para agregar es necesario adicionar: #{controlVigenciasViajeros.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
+                    <p:dialog id="validacionFechas" header="ATENCIÓN...!" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="La fecha que desea ingresar ya está registrada en el sistema" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasViajeros.activarCtrlF11()}"/> 
                 </h:form>
 

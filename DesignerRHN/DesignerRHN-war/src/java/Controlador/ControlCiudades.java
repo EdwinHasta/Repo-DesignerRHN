@@ -81,6 +81,7 @@ public class ControlCiudades implements Serializable {
     private int resultado;
     public String altoTabla;
     public String nombreCiudad;
+    public String paginaAnterior;
 
     public ControlCiudades() {
         permitirIndex = true;
@@ -117,6 +118,14 @@ public class ControlCiudades implements Serializable {
             System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
     
     public void asignarIndex(Integer indice) {

@@ -147,7 +147,7 @@
 
                         <p:commandButton style="position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" disabled="#{controlCiudades.guardado}" update=":form:datosCiudades" process="@this" />
                         <p:commandButton style="position: absolute; left: 15px; top: 470px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlCiudades.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlCiudades.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 785px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlCiudades.salir()}" action="#{controlCiudades.redirigir()}" process="@this" />
 
                     </p:panel>
 
@@ -176,7 +176,6 @@
                                 <p:ajax event="dblclick" listener="#{controlCiudades.llamarLovDepartamento(1)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 160px;  " id="btnNuevoDepartamento" icon="ui-icon-search" process="@this"  actionListener="#{controlCiudades.llamarLovDepartamento(1)}"/>
-
 
                             <strong><h:outputText value="#{msg['codigoalternativoN']}" style=" position: absolute; top: 205px" /></strong>
                             <p:inputText id="nuevoCodigoAlternativo" value="#{controlCiudades.nuevaCiudad.codigoalternativo}" style=" width: 122px; position: absolute; left: 200px; top: 200px; text-transform: uppercase" onclick="select();">
@@ -337,8 +336,6 @@
                     <!--HotKey-->
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlCiudades.activarCtrlF11()}" process="@this"/> 
 
-
-
                     <!-- DIALOGOS EDITAR -->
 
                     <p:dialog id="editarCodigos" header="#{msg['codigo']}" widgetVar="editarCodigos" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
@@ -365,13 +362,12 @@
                         <p:column headerText="#{msg['codigo']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['codigo']}"/> </f:facet> 
                             <h:outputText value="#{ciudades.codigo}" />
-                        </p:column>  
-
+                        </p:column> 
 
                         <p:column headerText="#{msg['noombre']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['noombre']}"/> </f:facet> 
                             <h:outputText value="#{ciudades.nombre}" />
-                        </p:column>  
+                        </p:column>
 
                         <p:column headerText="#{msg['departamento']}">      
                             <f:facet name="header"><h:outputText value="#{msg['departamento']}"/></f:facet>

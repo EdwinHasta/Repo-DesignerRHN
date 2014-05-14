@@ -2294,7 +2294,7 @@
     <navigation-rule>
         <from-view-id>/normalaboral.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>atrasNormaLaboral</from-outcome>
+            <from-outcome>emplvigencianormalaboral</from-outcome>
             <to-view-id>/emplvigencianormalaboral.xhtml</to-view-id>
             <redirect />
         </navigation-case>
@@ -3007,5 +3007,79 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipocontrato</from-outcome>
+            <to-view-id>/tipocontrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tipocontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplvigenciatipocontrato</from-outcome>
+            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>ciudad</from-outcome>
+            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Ciudades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplvigenciatipocontrato</from-outcome>
+            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>legislacion</from-outcome>
+            <to-view-id>/Legislacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Legislacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>empllegislacionlaboral</from-outcome>
+            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplLegislacionLaboral.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipocontrato</from-outcome>
+            <to-view-id>/tipocontrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/tipocontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>empllegislacionlaboral</from-outcome>
+            <to-view-id>/EmplLegislacionLaboral.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
 </faces-config>
