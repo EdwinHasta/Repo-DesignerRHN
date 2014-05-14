@@ -76,22 +76,18 @@
                         <br/><br/><br/><br/><br/>
                         <p:dataTable id="datosConceptos" var="concepto" rowKey="#{concepto.secuencia}" rowIndexVar="indice" style="font-size: 11px; width: 1300px; position: relative"                           
                                      value="#{controlConcepto.listaConceptosEmpresa}" scrollable="true" scrollWidth="832" scrollHeight="200" liveScroll="true" scrollRows="20"
-                                     filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}"
-                                     editable="true" editMode="cell"  >
+                                     filteredValue="#{controlConcepto.filtradoConceptosEmpresa}" emptyMessage="#{msg['vacio']}" widgetVar="datos"
+                                     editable="true" editMode="cell" selection="#{controlConcepto.seleccionConceptoEmpresa}" selectionMode="single">
 
                             <p:ajax event="filter" listener="#{controlConcepto.eventoFiltrar()}"/>
 
                             <p:column headerText="#{msg['codigo']}" sortBy="#{concepto.codigo}" filterBy="#{concepto.codigo}" filterMatchMode="contains" id="columnaCodigo" width="25" filterStyle="display: none; visibility: hidden;" style="padding-left: 6px" >                                  
-                                <p:cellEditor>  
-                                    <f:facet name="output"><h:outputText value="#{concepto.codigo}" /></f:facet>  
-                                    <f:facet name="input">
+                                
                                         <p:inputText value="#{concepto.codigo}" id="editarCodigo" style="font-size: 10px; border-radius: 0px; width: 93.5%; text-transform: uppercase"> 
                                             <p:ajax event="change" listener="#{controlConcepto.modificarConcepto(indice, 'N', concepto.codigo)}"/>
                                             <p:ajax event="select" listener="#{controlConcepto.cambiarIndice(indice, 0)}" />
                                         </p:inputText> 
-                                    </f:facet>  
-                                </p:cellEditor>
-
+                                    
                                 <f:facet name="footer">
                                     <h:outputText value="#{msg['codigo']}"/>
                                 </f:facet>

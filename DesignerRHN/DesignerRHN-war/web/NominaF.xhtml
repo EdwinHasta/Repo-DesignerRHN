@@ -301,7 +301,7 @@
 
                                         <fieldset style="height: 35px; width: 74px; display: block; position: absolute; top: 423px; border-radius: 5px; left: 17px">
 
-                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" />
+                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(item.empleado.secuencia)}"/>
                                             <p:tooltip  for="AcumuladosNomina">
                                                 #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
                                             </p:tooltip>
