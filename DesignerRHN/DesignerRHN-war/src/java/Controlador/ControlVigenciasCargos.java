@@ -97,7 +97,8 @@ public class ControlVigenciasCargos implements Serializable {
     //duplicar
     private VigenciasCargos duplicarVC;
     //AUTOCOMPLETAR
-    String nombreEstructura, motivoCambioC, nombreCargo, nombreCompleto;
+    private String nombreEstructura, motivoCambioC, nombreCargo, nombreCompleto;
+    private Date fechaVigenciaBck;
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
@@ -927,9 +928,17 @@ public class ControlVigenciasCargos implements Serializable {
         vigenciasCargosEmpleado = null;
         guardado = true;
         permitirIndex = true;
+        getVigenciasCargosEmpleado();
+        if (vigenciasCargosEmpleado != null && !vigenciasCargosEmpleado.isEmpty()) {
+            vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+            infoRegistro = "Cantidad de registros: " + vigenciasCargosEmpleado.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVCEmpleado");
         context.update("form:ACEPTAR");
+        context.update("form:informacionRegistro");
     }
 
     public void salir() {
@@ -1028,34 +1037,66 @@ public class ControlVigenciasCargos implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
+            int control = 0;
             if (tipoLista == 0) {
-                if (!listVCCrear.contains(vigenciasCargosEmpleado.get(indice))) {
-
-                    if (listVCModificar.isEmpty()) {
-                        listVCModificar.add(vigenciasCargosEmpleado.get(indice));
-                    } else if (!listVCModificar.contains(vigenciasCargosEmpleado.get(indice))) {
-                        listVCModificar.add(vigenciasCargosEmpleado.get(indice));
+                for (int i = 0; i < vigenciasCargosEmpleado.size(); i++) {
+                    if (i == indice) {
+                        i++;
+                        if (i >= vigenciasCargosEmpleado.size()) {
+                            break;
+                        }
+                    }
+                    if (vigenciasCargosEmpleado.get(i).getFechavigencia().compareTo(vigenciasCargosEmpleado.get(indice).getFechavigencia()) == 0) {
+                        control++;
+                        vigenciasCargosEmpleado.get(indice).setFechavigencia(fechaVigenciaBck);
                     }
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listVCCrear.contains(filterVC.get(indice))) {
-
-                    if (listVCModificar.isEmpty()) {
-                        listVCModificar.add(filterVC.get(indice));
-                    } else if (!listVCModificar.contains(filterVC.get(indice))) {
-                        listVCModificar.add(filterVC.get(indice));
+                for (int i = 0; i < filterVC.size(); i++) {
+                    if (i == indice) {
+                        i++;
+                        if (i >= filterVC.size()) {
+                            break;
+                        }
+                    }
+                    if (filterVC.get(i).getFechavigencia().compareTo(filterVC.get(indice).getFechavigencia()) == 0) {
+                        control++;
+                        filterVC.get(indice).setFechavigencia(fechaVigenciaBck);
                     }
                 }
-                index = -1;
-                secRegistro = null;
             }
-            if (guardado == true) {
-                guardado = false;
-                context.update("form:ACEPTAR");
+            if (control == 0) {
+                if (tipoLista == 0) {
+                    if (!listVCCrear.contains(vigenciasCargosEmpleado.get(indice))) {
+
+                        if (listVCModificar.isEmpty()) {
+                            listVCModificar.add(vigenciasCargosEmpleado.get(indice));
+                        } else if (!listVCModificar.contains(vigenciasCargosEmpleado.get(indice))) {
+                            listVCModificar.add(vigenciasCargosEmpleado.get(indice));
+                        }
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (!listVCCrear.contains(filterVC.get(indice))) {
+
+                        if (listVCModificar.isEmpty()) {
+                            listVCModificar.add(filterVC.get(indice));
+                        } else if (!listVCModificar.contains(filterVC.get(indice))) {
+                            listVCModificar.add(filterVC.get(indice));
+                        }
+                    }
+                    index = -1;
+                    secRegistro = null;
+                }
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+            } else {
+                context.execute("validacionFechaDuplicada.show();");
+                context.execute("form:datosVCEmpleado");
             }
-            //context.update("form:datosVCEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("ESTRUCTURA")) {
             if (tipoLista == 0) {
                 vigenciasCargosEmpleado.get(indice).getEstructura().setNombre(nombreEstructura);
@@ -1411,7 +1452,7 @@ public class ControlVigenciasCargos implements Serializable {
                         administrarVigenciasCargos.crearVC(listVCCrear.get(i));
                     } else {
                         administrarVigenciasCargos.crearVC(listVCCrear.get(i));
-                   }
+                    }
                 }
                 listVCCrear.clear();
             }
@@ -1421,10 +1462,18 @@ public class ControlVigenciasCargos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             vigenciasCargosEmpleado = null;
+            getVigenciasCargosEmpleado();
+            if (vigenciasCargosEmpleado != null && !vigenciasCargosEmpleado.isEmpty()) {
+                vigenciaSeleccionada = vigenciasCargosEmpleado.get(0);
+                infoRegistro = "Cantidad de registros: " + vigenciasCargosEmpleado.size();
+            } else {
+                infoRegistro = "Cantidad de registros: 0";
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVCEmpleado");
             guardado = true;
             context.update("form:ACEPTAR");
+            context.update("form:informacionRegistro");
             k = 0;
             permitirIndex = true;
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
@@ -1441,8 +1490,15 @@ public class ControlVigenciasCargos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = vigenciasCargosEmpleado.get(index).getSecuencia();
+            vigenciaSeleccionada = vigenciasCargosEmpleado.get(index);
             //infoRegistro = "Registro " + (index + 1) + " de " + vigenciasCargosEmpleado.size();
-            if (cualCelda == 1) {
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    fechaVigenciaBck = vigenciasCargosEmpleado.get(index).getFechavigencia();
+                } else {
+                    fechaVigenciaBck = filterVC.get(index).getFechavigencia();
+                }
+            } else if (cualCelda == 1) {
                 if (tipoLista == 0) {
                     nombreEstructura = vigenciasCargosEmpleado.get(index).getEstructura().getNombre();
                 } else {
@@ -1548,80 +1604,83 @@ public class ControlVigenciasCargos implements Serializable {
      }*/
     //CREAR VC
     public void agregarNuevaVC() {
-        boolean pasa = false;
+        int pasa = 0;
         mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
+
         if (nuevaVigencia.getFechavigencia() == null) {
-            mensajeValidacion = " * Fecha \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            mensajeValidacion = mensajeValidacion + " * Fecha \n";
+            pasa++;
         }
         if (nuevaVigencia.getEstructura().getSecuencia() == null) {
-            mensajeValidacion = " * Estructura \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            mensajeValidacion = mensajeValidacion + " * Estructura \n";
+            pasa++;
         }
         if (nuevaVigencia.getMotivocambiocargo().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + "   * Motivo del cambio del cargo \n";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
         if (nuevaVigencia.getCargo().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + " *Cargo";
-            pasa = false;
-        } else {
-            pasa = true;
+            pasa++;
         }
-        if (pasa == true) {
-            if (bandera == 1) {
-                //CERRAR FILTRADO
-                FacesContext c = FacesContext.getCurrentInstance();
-                vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
-                vcFecha.setFilterStyle("display: none; visibility: hidden;");
-                vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
-                vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-                vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
-                vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-                vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
-                vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-                vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
-                vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-                vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
-                vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-                altoTabla = "270";
-                RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
-                bandera = 0;
-                filterVC = null;
-                tipoLista = 0;
+        if (pasa == 0) {
+            int control = 0;
+            for (VigenciasCargos curVigenciasCargosEmpleado : vigenciasCargosEmpleado) {
+                if (curVigenciasCargosEmpleado.getFechavigencia().compareTo(nuevaVigencia.getFechavigencia()) == 0) {
+                    control++;
+                }
             }
-            //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
-            k++;
-            l = BigInteger.valueOf(k);
-            nuevaVigencia.setSecuencia(l);
-            nuevaVigencia.setEmpleado(empleado);
-            if (nuevaVigencia.getEmpleadojefe().getSecuencia() == null) {
-                nuevaVigencia.setEmpleadojefe(null);
-            }
-            listVCCrear.add(nuevaVigencia);
+            if (control == 0) {
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+                    vcFecha.setFilterStyle("display: none; visibility: hidden;");
+                    vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+                    vcEstructura.setFilterStyle("display: none; visibility: hidden;");
+                    vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+                    vcMotivo.setFilterStyle("display: none; visibility: hidden;");
+                    vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+                    vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
+                    vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+                    vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
+                    vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+                    vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla = "270";
+                    RequestContext.getCurrentInstance().update("form:datosVCEmpleado");
+                    bandera = 0;
+                    filterVC = null;
+                    tipoLista = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigencia.setSecuencia(l);
+                nuevaVigencia.setEmpleado(empleado);
+                if (nuevaVigencia.getEmpleadojefe().getSecuencia() == null) {
+                    nuevaVigencia.setEmpleadojefe(null);
+                }
+                listVCCrear.add(nuevaVigencia);
 
-            vigenciasCargosEmpleado.add(nuevaVigencia);
-            nuevaVigencia = new VigenciasCargos();
-            nuevaVigencia.setEstructura(new Estructuras());
-            nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
-            nuevaVigencia.setCargo(new Cargos());
-            infoRegistro = "Cantidad de registros: " + vigenciasCargosEmpleado.size();
-            context.update("form:informacionRegistro");
-            context.update("form:datosVCEmpleado");
-            if (guardado == true) {
-                guardado = false;
-                context.update("form:ACEPTAR");
+                vigenciasCargosEmpleado.add(nuevaVigencia);
+                nuevaVigencia = new VigenciasCargos();
+                nuevaVigencia.setEstructura(new Estructuras());
+                nuevaVigencia.setMotivocambiocargo(new MotivosCambiosCargos());
+                nuevaVigencia.setCargo(new Cargos());
+                infoRegistro = "Cantidad de registros: " + vigenciasCargosEmpleado.size();
+                context.update("form:informacionRegistro");
+                context.update("form:datosVCEmpleado");
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                context.execute("NuevoRegistroVC.hide()");
+                index = -1;
+                secRegistro = null;
+            } else {
+                context.execute("validacionFechaDuplicada.show();");
             }
-            context.execute("NuevoRegistroVC.hide()");
-            index = -1;
-            secRegistro = null;
         } else {
             context.update("form:validacioNuevaVigencia");
             context.execute("validacioNuevaVigencia.show()");
@@ -1812,48 +1871,89 @@ public class ControlVigenciasCargos implements Serializable {
 
     public void confirmarDuplicar() {
 
-        vigenciasCargosEmpleado.add(duplicarVC);
-        infoRegistro = "Cantidad de registros: " + vigenciasCargosEmpleado.size();
-        listVCCrear.add(duplicarVC);
+        int pasa = 0;
+        mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+
+        if (duplicarVC.getFechavigencia() == null) {
+            mensajeValidacion = mensajeValidacion + " * Fecha \n";
+            pasa++;
         }
-        context.update("form:informacionRegistro");
-        context.update("form:datosVCEmpleado");
-        index = -1;
-        secRegistro = null;
-        if (guardado == true) {
-            guardado = false;
-            //RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        if (duplicarVC.getEstructura().getSecuencia() == null) {
+            mensajeValidacion = mensajeValidacion + " * Estructura \n";
+            pasa++;
         }
-        if (bandera == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
-            vcFecha.setFilterStyle("display: none; visibility: hidden;");
-            vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
-            vcEstructura.setFilterStyle("display: none; visibility: hidden;");
-            vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
-            vcMotivo.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
-            vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
-            vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
-            vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
-            vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
-            vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla = "270";
-            context.update("form:datosVCEmpleado");
-            bandera = 0;
-            filterVC = null;
-            tipoLista = 0;
+        if (duplicarVC.getMotivocambiocargo().getSecuencia() == null) {
+            mensajeValidacion = mensajeValidacion + "   * Motivo del cambio del cargo \n";
+            pasa++;
         }
-        duplicarVC = new VigenciasCargos();
+        if (duplicarVC.getCargo().getSecuencia() == null) {
+            mensajeValidacion = mensajeValidacion + " *Cargo";
+            pasa++;
+        }
+        if (pasa == 0) {
+            int control = 0;
+            for (VigenciasCargos curVigenciasCargosEmpleado : vigenciasCargosEmpleado) {
+                if (curVigenciasCargosEmpleado.getFechavigencia().compareTo(duplicarVC.getFechavigencia()) == 0) {
+                    control++;
+                }
+            }
+            if (control == 0) {
+                vigenciasCargosEmpleado.add(duplicarVC);
+                infoRegistro = "Cantidad de registros: " + vigenciasCargosEmpleado.size();
+                listVCCrear.add(duplicarVC);
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:datosVCEmpleado");
+                index = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    //RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+                if (bandera == 1) {
+                    //CERRAR FILTRADO
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vcFecha = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcFecha");
+                    vcFecha.setFilterStyle("display: none; visibility: hidden;");
+                    vcEstructura = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcEstructura");
+                    vcEstructura.setFilterStyle("display: none; visibility: hidden;");
+                    vcMotivo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcMotivo");
+                    vcMotivo.setFilterStyle("display: none; visibility: hidden;");
+                    vcNombreCargo = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreCargo");
+                    vcNombreCargo.setFilterStyle("display: none; visibility: hidden;");
+                    vcCentrosC = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcCentrosC");
+                    vcCentrosC.setFilterStyle("display: none; visibility: hidden;");
+                    vcNombreJefe = (Column) c.getViewRoot().findComponent("form:datosVCEmpleado:vcNombreJefe");
+                    vcNombreJefe.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla = "270";
+                    context.update("form:datosVCEmpleado");
+                    bandera = 0;
+                    filterVC = null;
+                    tipoLista = 0;
+                }
+                duplicarVC = new VigenciasCargos();
+                duplicarVC.setEstructura(new Estructuras());
+                duplicarVC.setMotivocambiocargo(new MotivosCambiosCargos());
+                duplicarVC.setCargo(new Cargos());
+                context.execute("duplicarRegistroVC.hide()");
+            } else {
+                context.execute("validacionFechaDuplicada.show();");
+            }
+        } else {
+            context.update("form:validacioNuevaVigencia");
+            context.execute("validacioNuevaVigencia.show()");
+        }
     }
 
     public void limpiarduplicarVC() {
         duplicarVC = new VigenciasCargos();
+        duplicarVC.setEstructura(new Estructuras());
+        duplicarVC.setMotivocambiocargo(new MotivosCambiosCargos());
+        duplicarVC.setCargo(new Cargos());
     }
 
     //LISTA DE VALORES DINAMICA
@@ -1983,7 +2083,6 @@ public class ControlVigenciasCargos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         infoRegistro = "Cantidad de registros: " + filterVC.size();
         context.update("form:informacionRegistro");
-
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
