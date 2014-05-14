@@ -106,7 +106,7 @@
 
                         <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlNormasLaborales.cancelarModificacion()}"  value="Refrescar" process="@this" />
                         <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlNormasLaborales.guardado}"  update="datosNormaLaboral"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrasNormaLaboral"   />
+                        <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="#{controlNormasLaborales.redirigir()}"   />
 
 
 

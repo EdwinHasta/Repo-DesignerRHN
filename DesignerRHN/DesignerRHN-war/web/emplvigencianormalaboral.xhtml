@@ -6,7 +6,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
-
     <h:head>
     </h:head>
     <h:body>
@@ -60,10 +59,9 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 728px; margin: -14px; height: 26px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" value="Nombre Norma Laboral"/>
+                                        <p:commandButton style="width: 728px; margin: -14px; height: 26px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" actionListener="#{controlNormasLaborales.recibirPaginaEntrante('emplvigencianormalaboral')}" value="Nombre Norma Laboral"/>
                                     </f:facet>
                                 </p:column>
-
                             </p:dataTable>
 
                         </fieldset>
@@ -100,13 +98,13 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroEvalEmpresas.show()" update=":formularioDialogos:nuevaaEvalEmpresa" process="@this"/> 
-                                <p:tooltip  for="insertar" value="Nueva Entrevista" />
+                                <p:tooltip  for="insertar" value="Nueva vigencia" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlBetaEmplVigenciaNormaLaboral.borrandoHvEntrevistas()}" process="@this"/>  
-                                <p:tooltip  for="eliminar" value="Eliminar Entrevista" />
+                                <p:tooltip  for="eliminar" value="Eliminar vigencia" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.duplicandoEmplVigenciaNormaLaboral()}" process="@this"/>  
-                                <p:tooltip  for="duplicar" value="Duplicar Entrevista" />
+                                <p:tooltip  for="duplicar" value="Duplicar vigencia" />
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.verificarRastro()}" process="@this"/>  
@@ -188,6 +186,12 @@
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="Para agregar es necesario adicionar: #{controlBetaEmplVigenciaNormaLaboral.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                         <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="validacionFechas" header="ATENCIÓN...!" widgetVar="validacionFechas"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="La fecha que desea ingresar ya está registrada en el sistema" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionFechas.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlBetaEmplVigenciaNormaLaboral.activarCtrlF11()}"/> 
                 </h:form>

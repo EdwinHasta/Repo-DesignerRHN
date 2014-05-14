@@ -104,6 +104,7 @@ public class ControlTipoContrato implements Serializable {
     //
     private String auxNombreClonar;
     private short auxCodigoClonar;
+    private String paginaAnterior;
 
     public ControlTipoContrato() {
         tipoContratoAClonar = new TiposContratos();
@@ -165,6 +166,14 @@ public class ControlTipoContrato implements Serializable {
             System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
     
     public void inicializarPagina() {

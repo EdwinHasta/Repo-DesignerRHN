@@ -132,7 +132,7 @@
 
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooMotivos" value="#{msg['tipo']}" />
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooMotivos" action="tipocontrato" actionListener="#{controlTipoContrato.recibirPaginaEntrante('emplvigenciatipocontrato')}" value="#{msg['tipo']}" />
                                     </f:facet>
                                 </p:column>
 
@@ -151,7 +151,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue;" id="fooCargos" value="#{msg['ciudad']}"/>
+                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue;" id="fooCargos" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplvigenciatipocontrato')}" value="#{msg['ciudad']}"/>
                                     </f:facet>
                                 </p:column>  
 
@@ -375,7 +375,7 @@
                                      selection="#{controlVigenciasTiposContratos.motivoContratoSelecionado}" selectionMode="single" widgetVar="lovMotivosContrato" scrollable="true" scrollWidth="300" scrollHeight="250"
                                      filteredValue="#{controlVigenciasTiposContratos.filtradoMotivoContrato}" emptyMessage="#{msg['lovvacio']}" >              
                             <p:ajax event="rowSelect" listener="#{controlVigenciasTiposContratos.activarAceptar()}" update=":formularioDialogos:aceptarMC"/>
-                            <p:ajax event="rowDblselect" listener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" onstart="lovMotivosContrato.clearFilters()"/>
+                            <p:ajax event="rowDblselect" immediate="true" listener="#{controlVigenciasTiposContratos.actualizarMotivoContrato()}" onstart="lovMotivosContrato.clearFilters()"/>
 
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  

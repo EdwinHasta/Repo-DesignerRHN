@@ -90,7 +90,7 @@ public class ControlVigenciasViajeros implements Serializable {
         guardado = true;
         altoTabla = "270";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -102,7 +102,7 @@ public class ControlVigenciasViajeros implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirEmpleado(BigInteger sec) {
         if (sec == null) {
             System.out.println("ERROR EN RECIVIR LA SECUENCIA DEL EMPLEADO EN CONTROLBETAEMPLVIGENCIANORMALABORAL");
@@ -142,7 +142,8 @@ public class ControlVigenciasViajeros implements Serializable {
                     }
                 }
                 if (fechas > 0) {
-                    mensajeValidacion = "FECHAS REPETIDAS";
+                    context.update("form:validacionFechas");
+                    context.execute("validacionFechas.show()");
                     contador++;
                 }
                 if (contador == 0) {
@@ -188,7 +189,8 @@ public class ControlVigenciasViajeros implements Serializable {
                     }
                 }
                 if (fechas > 0) {
-                    mensajeValidacion = "FECHAS REPETIDAS";
+                    context.update("form:validacionFechas");
+                    context.execute("validacionFechas.show()");
                     contador++;
                 }
                 if (contador == 0) {
@@ -570,16 +572,13 @@ public class ControlVigenciasViajeros implements Serializable {
         } else if (tipoNuevo == 2) {
             nuevoYduplicarCompletarNormaLaboral = duplicarVigenciasViajeros.getTipoViajero().getNombre();
         }
-
     }
 
     public void autocompletarNuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
-
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("VIGENCIASVIAJEROS")) {
-            System.out.println(" nueva Ciudad    Entro al if 'Centro costo'");
             System.out.println("NOMBRE CENTRO COSTO: " + nuevoVigenciasViajeros.getTipoViajero().getNombre());
 
             if (!nuevoVigenciasViajeros.getTipoViajero().getNombre().equals("")) {
@@ -614,7 +613,6 @@ public class ControlVigenciasViajeros implements Serializable {
             }
             context.update("formularioDialogos:nuevoNombreSucursal");
         }
-
     }
 
     public void asignarVariableTiposviajeros(int tipoNuevo) {
@@ -869,6 +867,8 @@ public class ControlVigenciasViajeros implements Serializable {
         Short a = 0;
         a = null;
         int fechas = 0;
+        int pasa = 0;
+
         mensajeValidacion = " ";
         nuevoVigenciasViajeros.setEmpleado(empleadoSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
@@ -877,13 +877,18 @@ public class ControlVigenciasViajeros implements Serializable {
             mensajeValidacion = " *Debe tener una fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            for (int i = 0; i < listVigenciasViajerosPorEmpleado.size(); i++) {
-                if (nuevoVigenciasViajeros.getFechavigencia().equals(listVigenciasViajerosPorEmpleado.get(i).getFechavigencia())) {
-                    fechas++;
+            if (listVigenciasViajerosPorEmpleado != null) {
+                for (int i = 0; i < listVigenciasViajerosPorEmpleado.size(); i++) {
+                    if (nuevoVigenciasViajeros.getFechavigencia().equals(listVigenciasViajerosPorEmpleado.get(i).getFechavigencia())) {
+                        fechas++;
+                    }
                 }
             }
             if (fechas > 0) {
-                mensajeValidacion = "Fechas repetidas ";
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
+                pasa++;
+
             } else {
                 contador++;
             }
@@ -906,7 +911,7 @@ public class ControlVigenciasViajeros implements Serializable {
          }*/
         System.out.println("contador " + contador);
 
-        if (contador == 2) {
+        if (contador == 2 && pasa == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -925,30 +930,41 @@ public class ControlVigenciasViajeros implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevoVigenciasViajeros.setSecuencia(l);
+            nuevoVigenciasViajeros.setEmpleado(empleadoSeleccionado);
             System.err.println("---------------AGREGAR REGISTRO----------------");
             System.err.println("fecha " + nuevoVigenciasViajeros.getFechavigencia());
             System.err.println("nombre " + nuevoVigenciasViajeros.getTipoViajero().getNombre());
             System.err.println("-----------------------------------------------");
 
             crearVigenciasViajerosPorEmplado.add(nuevoVigenciasViajeros);
-            listVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
+            System.out.println("Agrego a lista de Creados");
+            System.out.println("listaVigenciasViajerosporempleado: " + listVigenciasViajerosPorEmpleado);
+            if (listVigenciasViajerosPorEmpleado == null) {
+                listVigenciasViajerosPorEmpleado = new ArrayList<VigenciasViajeros>();
+                listVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
+            } else{
+                listVigenciasViajerosPorEmpleado.add(nuevoVigenciasViajeros);
+            }
             nuevoVigenciasViajeros = new VigenciasViajeros();
             nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
-            context.update("form:datosHvEntrevista");
+            
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
 
             context.execute("nuevoRegistroEvalEmpresas.hide()");
+            
             index = -1;
             secRegistro = null;
 
-        } else {
+        } else if(pasa == 0 && contador != 2) {
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
             contador = 0;
+            pasa = 0;
         }
+        context.update("form:datosHvEntrevista");
     }
 
     public void limpiarNuevoVigenciasViajeros() {
@@ -1012,7 +1028,8 @@ public class ControlVigenciasViajeros implements Serializable {
                 }
             }
             if (fechas > 0) {
-                mensajeValidacion = "FECHAS REPETIDAS";
+                context.update("form:validacionFechas");
+                context.execute("validacionFechas.show()");
             } else {
                 System.out.println("bandera");
                 contador++;
@@ -1020,7 +1037,7 @@ public class ControlVigenciasViajeros implements Serializable {
 
         }
         if (duplicarVigenciasViajeros.getTipoViajero().getNombre() == null || duplicarVigenciasViajeros.getTipoViajero().getNombre().isEmpty() || duplicarVigenciasViajeros.getTipoViajero().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Norma Laboral \n";
+            mensajeValidacion = mensajeValidacion + "   * Tipo Viajero \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
@@ -1212,9 +1229,7 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public List<Tiposviajeros> getListaTiposviajeros() {
-        if (listaTiposviajeros == null) {
-            listaTiposviajeros = administrarVigenciasViajeros.consultarLOVTiposViajeros();
-        }
+        listaTiposviajeros = administrarVigenciasViajeros.consultarLOVTiposViajeros();
         return listaTiposviajeros;
     }
 

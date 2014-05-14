@@ -23,7 +23,6 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author betelgeuse
  */
 @Stateless
-@LocalBean
 public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesInterface {
 
     /**

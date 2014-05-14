@@ -80,6 +80,7 @@ public class ControlLegislacion implements Serializable {
     private boolean activoDetalleFormula;
     ///
     private Contratos actualContrato;
+    private String paginaAnterior;
 
     public ControlLegislacion() {
         actualContrato = new Contratos();
@@ -121,6 +122,14 @@ public class ControlLegislacion implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
     
     public void valoresBackupAutocompletar(int tipoNuevo) {

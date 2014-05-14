@@ -15,32 +15,54 @@ import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasNormasEmpleados'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'VigenciasNormasEmpleados' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenciasNormasEmpleadosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
+
     @Override
     public void crear(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
-        em.persist(vigenciasNormasEmpleados);
+        try {
+            em.getTransaction().begin();
+            em.merge(vigenciasNormasEmpleados);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasNormasEmpleados)" + e);
+        }
+        
     }
 
     @Override
     public void editar(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
-        em.merge(vigenciasNormasEmpleados);
+        try {
+            em.getTransaction().begin();
+            em.merge(vigenciasNormasEmpleados);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasNormasEmpleados)" + e);
+        }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
-        em.remove(em.merge(vigenciasNormasEmpleados));
+        try {
+            em.getTransaction().begin();
+            em.remove(em.merge(vigenciasNormasEmpleados));
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error Persistencia Borrar VC: " + e);
+        }
+        
     }
 
     @Override
@@ -65,7 +87,7 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
             return null;
         }
     }
-       
+
     @Override
     public List<VigenciasNormasEmpleados> buscarVigenciasNormasEmpleados(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

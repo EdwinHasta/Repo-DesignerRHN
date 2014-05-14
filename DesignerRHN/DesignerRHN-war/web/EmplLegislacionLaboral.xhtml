@@ -83,7 +83,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 300px; margin: -14px; height: 26px;  border: none; color: blue" id="fooContratos" value="Legislación Laboral"/>
+                                        <p:commandButton style="width: 300px; margin: -14px; height: 26px;  border: none; color: blue" id="fooContratos" action="legislacion" actionListener="#{controlLegislacion.recibirPaginaEntrante('empllegislacionlaboral')}" value="Legislación Laboral"/>
                                     </f:facet>
                                 </p:column>
                                 <p:column  headerText="Tipo Contrato" sortBy="#{info.tipocontrato.nombre}" filterBy="#{info.tipocontrato.nombre}" filterMatchMode="contains" id="vcTipoContrato" filterStyle="display: none; visibility: hidden;" >                                  
@@ -99,7 +99,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 360px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTiposContratos" action="tiposContratos" actionListener="#{controlTipoContrato.inicializarPagina()}" value="Tipo Contrato"/>
+                                        <p:commandButton style="width: 360px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTiposContratos" action="tipocontrato" actionListener="#{controlTipoContrato.recibirPaginaEntrante('empllegislacionlaboral')}" value="Tipo Contrato"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
@@ -294,7 +294,7 @@
                         <center><strong><h:outputText value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVC" style="border: none;">
-                            <strong><h:outputText value="Fecha Inicial: " style=" position: absolute; top: 55px; left: 50px;" /></strong>
+                            <strong><h:outputText value="*Fecha Inicial: " style=" position: absolute; top: 55px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniNuevoReg" style=" position: absolute; top: 50px; left: 170px">
                                 <lnk:calendar id="nuevaFechaInicial" value="#{controlVigenciasContratos.nuevaVigencia.fechainicial}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicial" process="@this"/>
@@ -310,7 +310,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="Legislación Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
+                            <strong><h:outputText value="*Legislación Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
                             <p:inputText id="nuevaLegislacionLaboral" value="#{controlVigenciasContratos.nuevaVigencia.contrato.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 110px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(1, 'LEGISLACIONLABORAL')}" />
@@ -339,7 +339,7 @@
                         <center><strong><h:outputText value="Ingresar información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVC" style="border: none;">
-                            <strong><h:outputText value="Fecha Inicial: " style=" position: absolute; top: 55px; left: 50px;" /></strong>
+                            <strong><h:outputText value="*Fecha Inicial: " style=" position: absolute; top: 55px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniDupliReg" style=" position: absolute; top: 50px; left: 170px">
                                 <lnk:calendar id="duplicarFechaInicial" value="#{controlVigenciasContratos.duplicarVC.fechainicial}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaInicial" process="@this"/>
@@ -354,7 +354,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="Legislación Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
+                            <strong><h:outputText value="*Legislación Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
                             <p:inputText id="duplicarLegislacionLaboral" value="#{controlVigenciasContratos.duplicarVC.contrato.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 110px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,2)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(2, 'LEGISLACIONLABORAL')}" />
