@@ -112,10 +112,16 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasViajeros.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasViajeros.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasViajeros.cancelarModificacion()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
+                        <h:outputText id="informacionRegistro" value="#{controlVigenciasViajeros.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlVigenciasViajeros.cancelarModificacion()}"  value="Refrescar" process="@this" />
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlVigenciasViajeros.guardado}"  actionListener="#{controlVigenciasViajeros.revisarDialogoGuardar()}"     process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="nomina" value="Atras"     />
 
@@ -180,9 +186,9 @@
                         <p:commandButton value="Aceptar" onclick="validacionBorrar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:dialog id="mostrarBorrados" header="ATENCIÓN...!" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 40px; top: 10px;"  />
-                        <h:outputText value="Se han borrado #{controlVigenciasViajeros.registrosBorrados}  Registros" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 40px; top: 10px;"  />
+                        <h:outputText value="Eliminado(s) #{controlVigenciasViajeros.registrosBorrados}  Registro(s)" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 55px; left: 250px" process="@this" />
                     </p:dialog>
                     <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="450px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
@@ -262,7 +268,7 @@
 
                         <p:panel id="nuevaaEvalEmpresa" style="border: none;">
 
-                            <strong><h:outputText value="Fecha: "  style=" position: absolute; top: 55px;" /></strong>
+                            <strong><h:outputText value="*Fecha: "  style=" position: absolute; top: 55px;" /></strong>
                             <div  id="nuevaFechaa" style="width: 135px; position: absolute; top: 50px; left: 135px;">
                                 <lnk:calendar id="nuevaFecha" value="#{controlVigenciasViajeros.nuevoVigenciasViajeros.fechavigencia}" height="12" width="60" >
                                     <p:ajax event="dateSelect" update="nuevaFecha"/>
@@ -271,7 +277,7 @@
                             </div>
                             <p:watermark for="nuevaFecha" value="Fecha" />
 
-                            <strong><h:outputText value="Tipo viajero: " style=" position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="*Tipo viajero: " style=" position: absolute; top: 85px" /></strong>
                             <p:inputText id="nuevoNombreSucursal" value="#{controlVigenciasViajeros.nuevoVigenciasViajeros.tipoViajero.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasViajeros.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlVigenciasViajeros.autocompletarNuevo('VIGENCIASVIAJEROS',controlVigenciasViajeros.nuevoVigenciasViajeros.tipoViajero.nombre, 1)}" />
@@ -293,7 +299,7 @@
 
                         <p:panel id="duplicarEvC" style="border: none;">
 
-                            <strong><h:outputText value="Fecha: "  style=" position: absolute; top: 55px;" /></strong>
+                            <strong><h:outputText value="*Fecha: "  style=" position: absolute; top: 55px;" /></strong>
                             <div  id="duplicarFecha" style="width: 135px; position: absolute; top: 50px; left: 135px;">
                                 <lnk:calendar id="duplicarFechaa" value="#{controlVigenciasViajeros.duplicarVigenciasViajeros.fechavigencia}" height="12" width="60" >
                                     <p:ajax event="dateSelect" update="@this"/>
@@ -302,7 +308,7 @@
                             </div>
                             <p:watermark for="duplicarFechaa" value="Fecha" />
 
-                            <strong><h:outputText value="Tipo viajero: " style=" position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="*Tipo viajero: " style=" position: absolute; top: 85px" /></strong>
                             <p:inputText id="duplicarTipoCentroCostos" value="#{controlVigenciasViajeros.duplicarVigenciasViajeros.tipoViajero.nombre}" style=" width: 127px; position: absolute; left: 135px; top: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasViajeros.valoresBackupAutocompletar(2)}" />
                                 <p:ajax event="change" listener="#{controlVigenciasViajeros.autocompletarDuplicado('VIGENCIASVIAJEROS',controlVigenciasViajeros.duplicarVigenciasViajeros.tipoViajero.nombre, 2)}" />
@@ -317,7 +323,6 @@
                         </p:panel>
                     </p:dialog>
                 </h:form>
-
 
                 <h:form id="formExportar">
                     <p:dataTable id="datosHvEntrevistaExportar" var="info" style="visibility: hidden; display: none;"                           

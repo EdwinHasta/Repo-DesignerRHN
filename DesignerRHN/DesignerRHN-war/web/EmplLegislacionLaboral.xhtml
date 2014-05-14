@@ -147,6 +147,11 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="Rastro"/>
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -157,6 +162,8 @@
                                          selection="#{controlVigenciasContratos.contratoSelecionado}" selectionMode="single" widgetVar="lovContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasContratos.filtradoContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarC"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarContrato()}" process="@this" onstart="lovContratos.clearFilters()"/>
+
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Legislación Laboral: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovContratos.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -189,6 +196,8 @@
                                          selection="#{controlVigenciasContratos.tipoContratoSelecionado}" selectionMode="single" widgetVar="lovTiposContratos" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasContratos.filtradoTiposContratos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasContratos.activarAceptar()}" update=":form:aceptarTC"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasContratos.actualizarTipoContrato()}" process="@this" onstart="lovTiposContratos.clearFilters()"/>
+
                                 <f:facet name="header">  
                                     <h:outputText value="Buscar Tipo Contrato: "  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTiposContratos.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -206,19 +215,17 @@
                                     <h:outputText value="#{tiposContratos.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTC" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciasContratos.aceptar}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}" update="lovTiposContratos, aceptarTC, datosVCEmpleado" process="@this">
+                            <p:commandButton id="aceptarTC" style="position: relative; left: 130px" value="Aceptar" disabled="#{controlVigenciasContratos.aceptar}" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.actualizarTipoContrato()}" update="lovTiposContratos, aceptarTC" process="@this">
                                 <p:resetInput target=":form:lovTiposContratos:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasTC" style="position: relative; left: 150px" value="Atras" onclick="TiposContratoDialogo.hide(), lovTiposContratos.clearFilters();" actionListener="#{controlVigenciasContratos.cancelarCambioTipoContrato()}" update="lovTiposContratos" process="@this">
                                 <p:resetInput target=":form:lovTiposContratos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
-
-
-
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px;  " id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 15px; top: 470px;  " id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlVigenciasContratos.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px;  " id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
+                        
+                        <h:outputText id="informacionRegistro" value="#{controlVigenciasContratos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 470px;  " id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;  " id="ATRAS" value="Atras" icon="ui-icon-closethick"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
@@ -310,7 +317,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="*Legislación Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
+                            <strong><h:outputText value="*Leg. Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
                             <p:inputText id="nuevaLegislacionLaboral" value="#{controlVigenciasContratos.nuevaVigencia.contrato.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 110px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(1, 'LEGISLACIONLABORAL')}" />
@@ -354,7 +361,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="*Legislación Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
+                            <strong><h:outputText value="*Leg. Laboral: " style=" position: absolute; top: 115px; left: 50px" /></strong>
                             <p:inputText id="duplicarLegislacionLaboral" value="#{controlVigenciasContratos.duplicarVC.contrato.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 110px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasContratos.asignarIndex(indice,0,2)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciasContratos.valoresBackupAutocompletar(2, 'LEGISLACIONLABORAL')}" />

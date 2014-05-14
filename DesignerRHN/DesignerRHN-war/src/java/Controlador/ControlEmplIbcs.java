@@ -34,7 +34,7 @@ public class ControlEmplIbcs implements Serializable {
 
     @EJB
     AdministrarIBCSInterface administrarIBCS;
-    
+
     private List<Ibcs> listIbcsPorEmpleado;
     private List<Ibcs> filtrarIbcsPorEmpleado;
     private Ibcs editarIbcsPorEmpleado;
@@ -49,6 +49,7 @@ public class ControlEmplIbcs implements Serializable {
     private BigInteger secRegistro;
     private Column fechaFinal, fechaInicial, valor;
     private String altoTabla;
+    public String infoRegistro;
 //*****************************************************************
     //prueba
     private Ibcs selecionIbcs;
@@ -70,7 +71,7 @@ public class ControlEmplIbcs implements Serializable {
         selecionIbcs = new Ibcs();
         altoTabla = "270";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -84,13 +85,36 @@ public class ControlEmplIbcs implements Serializable {
     }
 
     public void recibirEmpleado(BigInteger sec) {
+        RequestContext context = RequestContext.getCurrentInstance();
+
         System.out.println("CONTROLEMPLIBCS RECIBIR EMPLEADO");
         if (sec == null) {
             System.out.println("ControlVigenciasFormasPagos.recibirEmpleado");
-            System.out.println("La secuencia pasada como parametro es null: " + sec.toString());
         }
         empleadoSeleccionado = null;
         secuenciaEmpleado = sec;
+        listIbcsPorEmpleado = null;
+        getListIbcsPorEmpleado();
+        //INICIALIZAR BOTONES NAVEGACION
+        if (listIbcsPorEmpleado != null && !listIbcsPorEmpleado.isEmpty()) {
+            System.out.println("Entra al primer IF");
+            if (listIbcsPorEmpleado.size() == 1) {
+                //INFORMACION REGISTRO
+                ibcSeleccionado = listIbcsPorEmpleado.get(0);
+                //infoRegistro = "Registro 1 de 1";
+                infoRegistro = "Cantidad de registros: 1";
+            } else if (listIbcsPorEmpleado.size() > 1) {
+                System.out.println("Else If");
+                //INFORMACION REGISTRO
+                ibcSeleccionado = listIbcsPorEmpleado.get(0);
+                //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
+                infoRegistro = "Cantidad de registros: " + listIbcsPorEmpleado.size();
+            }
+
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        context.update("form:informacionRegistro");
     }
 
     public void cancelarModificacion() {
@@ -138,7 +162,6 @@ public class ControlEmplIbcs implements Serializable {
     }
 
     public void cambiarIndice(int indice, int celda) {
-
         index = indice;
         cualCelda = celda;
 //        secRegistro = listIbcsPorEmpleado.get(index).getSecuencia();
@@ -324,4 +347,9 @@ public class ControlEmplIbcs implements Serializable {
     public String getAltoTabla() {
         return altoTabla;
     }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
 }

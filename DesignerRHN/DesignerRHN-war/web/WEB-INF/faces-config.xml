@@ -3081,5 +3081,23 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoContrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>motivocontrato</from-outcome>
+            <to-view-id>/motivocontrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/motivocontrato.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplvigenciatipocontrato</from-outcome>
+            <to-view-id>/EmplVigenciaTipoContrato.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
 </faces-config>

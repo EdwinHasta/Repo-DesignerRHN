@@ -74,6 +74,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     private String nuevoYduplicarCompletarNormaLaboral;
     //ALTO TABLA
     private String altoTabla;
+    public String infoRegistro;
 
     public ControlBetaEmplVigenciaNormaLaboral() {
         listEmplVigenciaNormaLaboralPorEmpleado = null;
@@ -106,6 +107,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     }
 
     public void recibirEmpleado(BigInteger sec) {
+        RequestContext context = RequestContext.getCurrentInstance();
+
         if (sec == null) {
             System.out.println("ERROR EN RECIVIR LA SECUENCIA DEL EMPLEADO EN CONTROLBETAEMPLVIGENCIANORMALABORAL");
         }
@@ -114,6 +117,27 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         listEmplVigenciaNormaLaboralPorEmpleado = null;
         getEmpleadoSeleccionado();
         getListEmplVigenciaNormaLaboralPorEmpleado();
+        //INICIALIZAR BOTONES NAVEGACION
+        if (listEmplVigenciaNormaLaboralPorEmpleado != null && !listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+            System.out.println("Entra al primer IF");
+            if (listEmplVigenciaNormaLaboralPorEmpleado.size() == 1) {
+                System.out.println("Segundo IF");
+                //INFORMACION REGISTRO
+                vigenciaSeleccionada = listEmplVigenciaNormaLaboralPorEmpleado.get(0);
+                //infoRegistro = "Registro 1 de 1";
+                infoRegistro = "Cantidad de registros: 1";
+            } else if (listEmplVigenciaNormaLaboralPorEmpleado.size() > 1) {
+                System.out.println("Else If");
+                //INFORMACION REGISTRO
+                vigenciaSeleccionada = listEmplVigenciaNormaLaboralPorEmpleado.get(0);
+                //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
+                infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            }
+
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        context.update("form:informacionRegistro");
     }
 
     public void mostrarNuevo() {
@@ -229,14 +253,12 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     }
 
     public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A CONTROLBETAEMPLVIGENCIANORMALABORAL.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-        } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETAEMPLVIGENCIANORMALABORAL eventoFiltrar ERROR===" + e.getMessage());
+        if (tipoLista == 0) {
+            tipoLista = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de Registros: " + filtrarEmplVigenciaNormaLaboralPorEmplado.size();
+        context.update("form:informacionRegistro");
     }
 
     public void cambiarIndice(int indice, int celda) {
@@ -317,11 +339,20 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         secRegistro = null;
         k = 0;
         listEmplVigenciaNormaLaboralPorEmpleado = null;
+        getListEmplVigenciaNormaLaboralPorEmpleado();
+        if (listEmplVigenciaNormaLaboralPorEmpleado != null && !listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+            vigenciaSeleccionada = listEmplVigenciaNormaLaboralPorEmpleado.get(0);
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosHvEntrevista");
         context.update("form:ACEPTAR");
+        context.update("form:informacionRegistro");
+
     }
 
     public void activarCtrlF11() {
@@ -736,6 +767,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     borrarEmplVigenciaNormaLaboralPorEmplado.add(listEmplVigenciaNormaLaboralPorEmpleado.get(index));
                 }
                 listEmplVigenciaNormaLaboralPorEmpleado.remove(index);
+                infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+
             }
             if (tipoLista == 1) {
                 System.out.println("borrandoEvalCompetencias ");
@@ -752,6 +785,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                 int VCIndex = listEmplVigenciaNormaLaboralPorEmpleado.indexOf(filtrarEmplVigenciaNormaLaboralPorEmplado.get(index));
                 listEmplVigenciaNormaLaboralPorEmpleado.remove(VCIndex);
                 filtrarEmplVigenciaNormaLaboralPorEmplado.remove(index);
+                infoRegistro = "Cantidad de registros: " + filtrarEmplVigenciaNormaLaboralPorEmplado.size();
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -759,6 +793,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                 guardado = false;
             }
             context.update("form:datosHvEntrevista");
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             index = -1;
             secRegistro = null;
@@ -837,6 +872,14 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEmplVigenciaNormaLaboralPorEmpleado = null;
+            getListEmplVigenciaNormaLaboralPorEmpleado();
+            if (listEmplVigenciaNormaLaboralPorEmpleado != null && !listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+                vigenciaSeleccionada = listEmplVigenciaNormaLaboralPorEmpleado.get(0);
+                infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            } else {
+                infoRegistro = "Cantidad de registros: 0";
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             k = 0;
             guardado = true;
@@ -952,6 +995,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             listEmplVigenciaNormaLaboralPorEmpleado.add(nuevoEmplVigenciaNormaLaboral);
             nuevoEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
             nuevoEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             if (guardado == true) {
                 guardado = false;
@@ -962,7 +1007,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             index = -1;
             secRegistro = null;
 
-        } else if(pasa == 0 && contador != 2) {
+        } else if (pasa == 0 && contador != 2) {
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
             contador = 0;
@@ -1058,6 +1103,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
             listEmplVigenciaNormaLaboralPorEmpleado.add(duplicarEmplVigenciaNormaLaboral);
             crearEmplVigenciaNormaLaboralPorEmplado.add(duplicarEmplVigenciaNormaLaboral);
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             index = -1;
             secRegistro = null;
@@ -1276,5 +1323,9 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
 
     public String getAltoTabla() {
         return altoTabla;
+    }
+    
+    public String getInfoRegistro() {
+        return infoRegistro;
     }
 }
