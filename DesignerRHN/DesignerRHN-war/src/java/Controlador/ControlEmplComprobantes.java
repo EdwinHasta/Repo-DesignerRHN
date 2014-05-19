@@ -38,7 +38,6 @@ public class ControlEmplComprobantes implements Serializable {
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
-    
     private Empleados empleado;
     private BigInteger secuenciaEmpleado;
     //TABLA 1
@@ -48,6 +47,7 @@ public class ControlEmplComprobantes implements Serializable {
     //TABLA 2
     private List<CortesProcesos> listaCortesProcesos;
     private List<CortesProcesos> filtradolistaCortesProcesos;
+    private CortesProcesos seleccionCortesProcesos;
     //TABLA 3
     private List<SolucionesNodos> listaSolucionesNodosEmpleado;
     private List<SolucionesNodos> filtradolistaSolucionesNodosEmpleado;
@@ -178,7 +178,7 @@ public class ControlEmplComprobantes implements Serializable {
         listaDetallesFormulas = null;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -263,9 +263,11 @@ public class ControlEmplComprobantes implements Serializable {
                         }
                     }
                     if (banderaCortesProcesos == 1) {
-                        fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                        FacesContext c = FacesContext.getCurrentInstance();
+
+                        fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
                         fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
-                        procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                        procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                         procesoCP.setFilterStyle("display: none; visibility: hidden;");
                         altoScrollCortesProcesos = "67";
                         RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
@@ -343,11 +345,13 @@ public class ControlEmplComprobantes implements Serializable {
                 }
             }
             if (banderaComprobantes == 1) {
-                numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-                fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+                fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
-                fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+                fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollComprobante = "67";
                 context.update("form:datosComprobantes");
@@ -411,11 +415,11 @@ public class ControlEmplComprobantes implements Serializable {
             }
         }
         /* if (banderaComprobantes == 1) {
-         numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+         numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
          numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-         fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+         fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
          fechaC.setFilterStyle("display: none; visibility: hidden;");
-         fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+         fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
          fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
          altoScrollComprobante = "67";
          RequestContext.getCurrentInstance().update("form:datosComprobantes");
@@ -447,11 +451,11 @@ public class ControlEmplComprobantes implements Serializable {
             }
         }
         /* if (banderaComprobantes == 1) {
-         numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+         numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
          numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-         fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+         fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
          fechaC.setFilterStyle("display: none; visibility: hidden;");
-         fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+         fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
          fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
          altoScrollComprobante = "67";
          RequestContext.getCurrentInstance().update("form:datosComprobantes");
@@ -486,6 +490,8 @@ public class ControlEmplComprobantes implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
         }
         indexComprobante = -1;
         secRegistro = null;
@@ -519,6 +525,8 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
             }
             indexCortesProcesos = -1;
             secRegistro = null;
@@ -573,6 +581,8 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
             }
             modificacionesCortesProcesos = true;
             indexCortesProcesos = -1;
@@ -667,6 +677,7 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             secRegistro = null;
         }
@@ -728,6 +739,7 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.update("form:datosCortesProcesos");
             modificacionesCortesProcesos = true;
@@ -784,6 +796,7 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.update("form:tablaInferiorDerecha");
             indexSolucionesEmpleado = -1;
@@ -807,6 +820,7 @@ public class ControlEmplComprobantes implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.update("form:tablaInferiorDerechaEM");
             indexSolucionesEmpleador = -1;
@@ -948,7 +962,7 @@ public class ControlEmplComprobantes implements Serializable {
         tipoTabla = -1;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
     }
 //CREAR COMPROBANTE Y CORTE PROCESO
@@ -992,16 +1006,18 @@ public class ControlEmplComprobantes implements Serializable {
             pasa++;
         }
         if (nuevoComprobante.getFechaentregado() == null) {
-            mensajeValidacion = mensajeValidacion + " * Fecha Entregado \n";
+            mensajeValidacion = mensajeValidacion + " * Fecha Entrega \n";
             pasa++;
         }
         if (pasa == 0) {
             if (banderaComprobantes == 1) {
-                numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-                fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+                fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
-                fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+                fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollComprobante = "67";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
@@ -1021,7 +1037,7 @@ public class ControlEmplComprobantes implements Serializable {
             context.update("form:datosComprobantes");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroComprobantes.hide()");
             modificacionesComprobantes = true;
@@ -1056,9 +1072,11 @@ public class ControlEmplComprobantes implements Serializable {
         }
         if (pasa == 0) {
             if (banderaCortesProcesos == 1) {
-                fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                FacesContext c = FacesContext.getCurrentInstance();
+
+                fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
                 fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
-                procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollCortesProcesos = "67";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
@@ -1079,7 +1097,7 @@ public class ControlEmplComprobantes implements Serializable {
             context.update("form:datosCortesProcesos");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevoRegistroCortesProcesos.hide()");
             modificacionesCortesProcesos = true;
@@ -1169,14 +1187,16 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (banderaComprobantes == 1) {
-            numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
             numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-            fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+            fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
             fechaC.setFilterStyle("display: none; visibility: hidden;");
-            fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+            fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
             fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
             altoScrollComprobante = "67";
             RequestContext.getCurrentInstance().update("form:datosComprobantes");
@@ -1206,12 +1226,14 @@ public class ControlEmplComprobantes implements Serializable {
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
-            //RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         if (banderaCortesProcesos == 1) {
-            fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
             fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
-            procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+            procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
             procesoCP.setFilterStyle("display: none; visibility: hidden;");
             altoScrollCortesProcesos = "67";
             RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
@@ -1231,24 +1253,25 @@ public class ControlEmplComprobantes implements Serializable {
 
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (tipoTabla == 0) {
             if (banderaComprobantes == 0) {
-                numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+                numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("width: 40px;");
-                fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+                fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
                 fechaC.setFilterStyle("width: 60px;");
-                fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+                fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("width: 60px;");
-                altoScrollComprobante = "45";
+                altoScrollComprobante = "43";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
                 banderaComprobantes = 1;
 
             } else if (banderaComprobantes == 1) {
-                numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+                numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
                 numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-                fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+                fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
                 fechaC.setFilterStyle("display: none; visibility: hidden;");
-                fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+                fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
                 fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollComprobante = "67";
                 RequestContext.getCurrentInstance().update("form:datosComprobantes");
@@ -1258,18 +1281,18 @@ public class ControlEmplComprobantes implements Serializable {
             }
         } else if (tipoTabla == 1) {
             if (banderaCortesProcesos == 0) {
-                fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
                 fechaCorteCP.setFilterStyle("width: 80px;");
-                procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("width: 150px;");
-                altoScrollCortesProcesos = "45";
+                altoScrollCortesProcesos = "43";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
                 banderaCortesProcesos = 1;
 
             } else if (banderaCortesProcesos == 1) {
-                fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+                fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
                 fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
-                procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+                procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
                 procesoCP.setFilterStyle("display: none; visibility: hidden;");
                 altoScrollCortesProcesos = "67";
                 RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
@@ -1435,9 +1458,11 @@ public class ControlEmplComprobantes implements Serializable {
     //SALIR Y REFRESCAR
     public void salir() {
         if (banderaCortesProcesos == 1) {
-            fechaCorteCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            fechaCorteCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:fechaCorteCP");
             fechaCorteCP.setFilterStyle("display: none; visibility: hidden;");
-            procesoCP = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
+            procesoCP = (Column) c.getViewRoot().findComponent("form:datosCortesProcesos:procesoCP");
             procesoCP.setFilterStyle("display: none; visibility: hidden;");
             altoScrollCortesProcesos = "67";
             RequestContext.getCurrentInstance().update("form:datosCortesProcesos");
@@ -1446,11 +1471,13 @@ public class ControlEmplComprobantes implements Serializable {
             tipoListaCortesProcesos = 0;
         }
         if (banderaComprobantes == 1) {
-            numeroComprobanteC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            numeroComprobanteC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:numeroComprobanteC");
             numeroComprobanteC.setFilterStyle("display: none; visibility: hidden;");
-            fechaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaC");
+            fechaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaC");
             fechaC.setFilterStyle("display: none; visibility: hidden;");
-            fechaEntregaC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
+            fechaEntregaC = (Column) c.getViewRoot().findComponent("form:datosComprobantes:fechaEntregaC");
             fechaEntregaC.setFilterStyle("display: none; visibility: hidden;");
             altoScrollComprobante = "67";
             RequestContext.getCurrentInstance().update("form:datosComprobantes");
@@ -1488,6 +1515,7 @@ public class ControlEmplComprobantes implements Serializable {
         permitirIndex = true;
         recibirEmpleado(secuenciaEmpleado);
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosComprobantes");
         context.update("form:datosCortesProcesos");
         context.update("form:tablaInferiorIzquierda");
@@ -1525,7 +1553,7 @@ public class ControlEmplComprobantes implements Serializable {
             context.update("form:datosComprobantes");
             guardado = true;
             modificacionesComprobantes = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             k = 0;
             indexComprobante = -1;
         }
@@ -1578,7 +1606,7 @@ public class ControlEmplComprobantes implements Serializable {
             context.update("form:tablaInferiorDerecha");
             guardado = true;
             modificacionesSolucionesNodosEmpleado = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             indexSolucionesEmpleado = -1;
         }
 
@@ -1592,7 +1620,7 @@ public class ControlEmplComprobantes implements Serializable {
             context.update("form:tablaInferiorDerechaEM");
             guardado = true;
             modificacionesSolucionesNodosEmpleador = false;
-            RequestContext.getCurrentInstance().update("form:aceptar");
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
             indexSolucionesEmpleador = -1;
         }
         //}
@@ -1939,4 +1967,21 @@ public class ControlEmplComprobantes implements Serializable {
     public String getParcialesSolucionNodos() {
         return parcialesSolucionNodos;
     }
+
+    public CortesProcesos getSeleccionCortesProcesos() {
+        return seleccionCortesProcesos;
+    }
+
+    public void setSeleccionCortesProcesos(CortesProcesos seleccionCortesProcesos) {
+        this.seleccionCortesProcesos = seleccionCortesProcesos;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
 }
