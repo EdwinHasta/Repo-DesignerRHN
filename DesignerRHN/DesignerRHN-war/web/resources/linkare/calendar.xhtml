@@ -25,6 +25,7 @@
         <cc:attribute name="height" default="12" shortDescription="Alto componente referenciado en porcentaje"/>
         <cc:attribute name="disabled" default="false" shortDescription="Activo/Inactivo componente fecha"/>
         <cc:attribute name="onclick" default="" shortDescription="Llamado a una funcion js al dar click en el componente."/>
+        <cc:attribute name="onchange" default="" shortDescription="Onchange event lnkcalendar"/>
         <cc:clientBehavior name="dateSelect" targets="calendar" event="dateSelect" />
         <cc:clientBehavior name="select" targets="calendar" event="select" />
         <cc:clientBehavior name="change" targets="calendar" event="change" />
@@ -36,7 +37,7 @@
     <cc:implementation>
         <!-- This component has been simplified but it could include any attribute of the inputMask 
          component that we wish our developer clients to be able to specify -->
-        <p:inputMask onclick="select(); #{cc.attrs.onclick}" disabled="#{cc.attrs.disabled}" style="height: #{cc.attrs.height}px; width: #{cc.attrs.width}%;color: #{cc.attrs.color};text-decoration: #{cc.attrs.decoration}" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
+        <p:inputMask onclick="select(); #{cc.attrs.onclick}" onchange="#{cc.attrs.onchange}" disabled="#{cc.attrs.disabled}" style="height: #{cc.attrs.height}px; width: #{cc.attrs.width}%;color: #{cc.attrs.color};text-decoration: #{cc.attrs.decoration}" id="calendar" styleClass="masked_calendar" mask="#{cc.attrs.mask}" 
                      value="#{cc.attrs.value}" >
             <f:convertDateTime pattern="#{cc.attrs.pattern}" timeZone="America/Bogota" locale="es" />
         </p:inputMask>

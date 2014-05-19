@@ -69,7 +69,7 @@
 
                             <p:dataTable id="datosVJEmpleado" var="infoVJ" rowKey="#{infoVJ.secuencia}" rowIndexVar="indice" style=" border: 1px;width: 820px"   
                                          value="#{controlVigenciaJornada.listVigenciasJornadas}" scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla1}" scrollWidth="820"
-                                         filteredValue="#{controlVigenciaJornada.filtrarVigenciasJornadas}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlVigenciaJornada.filtrarVigenciasJornadas}" emptyMessage="#{msg['vacio']}" liveScroll="true" scrollRows="6"
                                          editable="true" editMode="cell" selection="#{controlVigenciaJornada.vigenciaJornadaSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlVigenciaJornada.eventoFiltrar()}"/>
@@ -131,9 +131,10 @@
 
                         <fieldset style="position: absolute;top: 277px;left: 10px;height: 180px;width: 400px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['dtt']}</strong></legend>
-                            <p:dataTable id="datosVigenciaCT" var="info" rowKey="" rowIndexVar="indiceVCT" value="#{controlVigenciaJornada.listVigenciasCompensacionesTiempo}"
-                                         editable="true" editMode="cell" rows="3" filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesTiempo}"
-                                         scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla2}" emptyMessage="#{msg['vacio']}" style=" border: 1px;">
+                            <p:dataTable id="datosVigenciaCT" var="info" rowKey="#{info.secuencia}" rowIndexVar="indiceVCT" value="#{controlVigenciaJornada.listVigenciasCompensacionesTiempo}"
+                                         editable="true" editMode="cell"  filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesTiempo}"
+                                         scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla2}" emptyMessage="#{msg['vacio']}" style=" border: 1px;"
+                                         selection="#{controlVigenciaJornada.vigenciaTiempoSeleccionada}" selectionMode="single" liveScroll="true" scrollRows="6">
 
                                 <p:column headerText="#{msg['fechainicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains" id="vCTFechaInicial"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
@@ -196,10 +197,10 @@
 
                         <fieldset style="position: absolute;top: 277px;left: 440px;height: 180px;width: 400px; border-radius: 10px; text-align: left">
                             <legend style=" color: blue"><strong>#{msg['dtd']}</strong></legend>
-                            <p:dataTable id="datosVigenciaCD" var="info2" rowKey="" rowIndexVar="indiceVCD" value="#{controlVigenciaJornada.listVigenciasCompensacionesDinero}"
-                                         editable="true" editMode="cell" rows="3" filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesDinero}"
+                            <p:dataTable id="datosVigenciaCD" var="info2" rowKey="#{info2.secuencia}" rowIndexVar="indiceVCD" value="#{controlVigenciaJornada.listVigenciasCompensacionesDinero}"
+                                         editable="true" editMode="cell"  filteredValue="#{controlVigenciaJornada.filtrarVigenciasCompensacionesDinero}"
                                          scrollable="true" scrollHeight="#{controlVigenciaJornada.altoTabla1}"  emptyMessage="#{msg['vacio']}" style=" border: 1px;"
-                                         selection="#{controlVigenciaJornada.vigenciaTiempoSeleccionada}" selectionMode="single">
+                                         selection="#{controlVigenciaJornada.vigenciaDineroSeleccionada}" selectionMode="single" liveScroll="true" scrollRows="6">
 
                                 <p:column headerText="#{msg['fechainicial']}" sortBy="#{info2.fechainicial}" filterBy="#{info2.fechainicial}" filterMatchMode="contains" id="vCDFechaInicial"
                                           filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
@@ -268,6 +269,7 @@
                                          selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="308" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtrarJornadasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarJL"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarJornadaLaboral()}"  process="@this" onstart="lovJornadaLaboral.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarJ']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:100px; position: relative; left: 80px;" />  
@@ -300,6 +302,7 @@
                                          selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="308" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtradoTiposDescansos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarTD"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" onstart="lovTipoDescanso.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarD']}:"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:100px; position: relative; left: 70px;" />  
@@ -338,12 +341,12 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
                     
-                    <p:dialog id="confirmarGuardarVJ" header="#{msg['atencion']}" widgetVar="confirmarGuardarVJ"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                    <p:dialog id="confirmarGuardarSinSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarVJ.hide();" actionListener="#{controlVigenciaJornada.guardarCambiosVJ()}" action="nomina" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarVJ.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarVJ.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSinSalida.hide();" actionListener="#{controlVigenciaJornada.guardadoGeneral()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSinSalida.hide();" actionListener="#{controlVigenciaJornada.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSinSalida.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="Rastros Para Tablas Historicos Jornadas" resizable="false" draggable="false" modal="true" height="95" width="470px"  >
@@ -403,6 +406,16 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                    <p:dialog id="errorFechaDescanso" header="#{msg['atencion']}" widgetVar="errorFechaDescanso"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechaDescanso']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorNullDescanso" header="#{msg['atencion']}" widgetVar="errorNullDescanso"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorNullDescanso']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciaJornada.activarCtrlF11()}"/> 
                 </h:form>
@@ -429,7 +442,7 @@
 
                         <p:panel id="nuevaVJ" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['fechavigenciavj']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechavigenciavj']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaVigNuevoReg" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="nuevaFechaVigencia" value="#{controlVigenciaJornada.nuevaVigencia.fechavigencia}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaVigencia" process="@this"/>
@@ -437,7 +450,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['nombrejornadavj']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['nombrejornadavj']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
                             <p:inputText id="nuevaJornadaLaboral" value="#{controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion}" style=" width: 110px; position: absolute; left: 170px; top: 100px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,1,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar(1, 'NOMBREJORNADA')}" />
@@ -466,14 +479,14 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevovj']}" style=" color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVJ" style="border: none;">
-                            <strong><h:outputText value="#{msg['fechavigenciavj']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechavigenciavj']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaVigDupliReg" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="duplicarFechaVigencia" value="#{controlVigenciaJornada.duplicarVJ.fechavigencia}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaVigencia" process="@this"/>
                                     <p:ajax event="change" update="duplicarFechaVigencia" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            <strong><h:outputText value="#{msg['nombrejornadavj']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['nombrejornadavj']}" style=" position: absolute; top: 105px; left: 50px" /></strong>
                             <p:inputText id="duplicarJornadaLaboral" value="#{controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion}" style=" width: 110px; position: absolute; left: 170px; top: 100px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,2,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar(2, 'NOMBREJORNADA')}" />
@@ -522,13 +535,13 @@
 
 
                             <strong><h:outputText value="#{msg['comentariott']}" style=" position: absolute; top: 135px; left: 50px" /></strong>
-                            <p:inputTextarea id="nuevaComentarioVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.comentario}" style=" width: 140px; position: absolute; left: 170px; top: 130px;">
+                            <p:inputTextarea id="nuevaComentarioVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.comentario}" style=" width: 140px; position: absolute; left: 170px; top: 130px;;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevaComentarioVCT"  />
                             </p:inputTextarea>
                             <p:watermark for="nuevaComentarioVCT" value="#{msg['comentario']}" />
 
                             <p:commandButton id="limpiarVCT" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCT()}" update="nuevaVCT" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarVCT" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.agregarNuevaVCT()}" process="@this"  onclick="NuevoRegistroVCT.hide();"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="agregarVCT" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.agregarNuevaVCT()}" process="@this" icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarVCT" value="#{msg['cancelar']}" style=" position: absolute; left: 250px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCT()}" update="nuevaVCT" onclick="NuevoRegistroVCT.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
@@ -555,13 +568,13 @@
                             </div>
 
                             <strong><h:outputText value="#{msg['comentariott']}" style=" position: absolute; top: 135px; left: 170px" /></strong>
-                            <p:inputTextarea id="duplicadoComentarioVCT" value="#{controlVigenciaJornada.duplicarVCT.comentario}" style=" width: 140px; position: absolute; left: 200px; top: 130px;">
+                            <p:inputTextarea id="duplicadoComentarioVCT" value="#{controlVigenciaJornada.duplicarVCT.comentario}" style=" width: 140px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicadoComentarioVCT"/>
                             </p:inputTextarea>
                             <p:watermark for="duplicadoComentarioVCT" value="#{msg['comentario']}" />
 
                             <p:commandButton id="limpiarDuplicadoVCT" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCT()}" update="duplicadoVCT" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicadoVCT" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.confirmarDuplicarVCT()}" process="@this"  onclick="DuplicadoRegistroVCT.hide();"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="agregarDuplicadoVCT" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.confirmarDuplicarVCT()}" process="@this"  icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarDuplicadoVCT" value="#{msg['cancelar']}" style=" position: absolute; left: 250px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCT()}" update="duplicadoVCT" onclick="DuplicadoRegistroVCT.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
@@ -579,7 +592,7 @@
                             </div>
 
                             <strong><h:outputText value="#{msg['fechafinaltd']}" style=" position: absolute; top: 105px; left: 50px;" /></strong>
-                            <div id="posicionFormulaFechaFinNuevoRegVCD" style=" position: absolute; top: 120px; left: 100px">
+                            <div id="posicionFormulaFechaFinNuevoRegVCD" style=" position: absolute; top: 100px; left: 170px">
                                 <lnk:calendar id="nuevaFechaFinalVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechafinal}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaFinalVCD" process="@this"/>
                                     <p:ajax event="change" update="nuevaFechaFinalVCD" process="@this"/>
@@ -593,7 +606,7 @@
                             <p:watermark for="nuevaComentarioVCD" value="#{msg['comentario']}" /> 
 
                             <p:commandButton id="limpiarVCD" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCD()}" update="nuevaVCD" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarVCD" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.agregarNuevaVCD()}"  process="@this"  onclick="NuevoRegistroVCD.hide();"  icon="ui-icon-circle-check"/>
+                            <p:commandButton id="agregarVCD" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.agregarNuevaVCD()}"  process="@this"   icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarVCD" value="#{msg['cancelar']}" style=" position: absolute; left: 250px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarNuevaVCD()}" update="nuevaVCD" onclick="NuevoRegistroVCD.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>
@@ -624,7 +637,7 @@
                             <p:watermark for="duplicarComentarioVCD" value="#{msg['comentario']}" />
 
                             <p:commandButton id="limpiarDuplicarVCD" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCD()}" update="duplicarVCD" process="@this" icon="ui-icon-trash"/>
-                            <p:commandButton id="agregarDuplicarVCD" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.confirmarDuplicarVCD()}"  process="@this"  onclick="DuplicarRegistroVCD.hide();"   icon="ui-icon-circle-check"/>
+                            <p:commandButton id="agregarDuplicarVCD" value="#{msg['agregar']}" style=" position: absolute; left: 160px; top: 190px;" actionListener="#{controlVigenciaJornada.confirmarDuplicarVCD()}"  process="@this"    icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarDuplicarVCD" value="#{msg['cancelar']}" style=" position: absolute; left: 250px; top: 190px;" actionListener="#{controlVigenciaJornada.limpiarduplicarVCD()}" update="duplicarVCD" onclick="DuplicarRegistroVCD.hide();"  process="@this" icon="ui-icon-circle-close"/>
                         </p:panel>
                     </p:dialog>

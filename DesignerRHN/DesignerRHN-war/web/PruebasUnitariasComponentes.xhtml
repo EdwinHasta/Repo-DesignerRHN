@@ -16,20 +16,39 @@
 
 
 
-                        <p:selectOneRadio id="pruebaActivo" style="position: absolute; top: 50px; left: 20px" value="#{controlPruebasUnitarias.numeroBtnPrueba}">
-                            <f:selectItem itemLabel="Visible" itemValue="1" />
-                            <f:selectItem itemLabel="No Visible" itemValue="2" />
-                            <p:ajax event="change" listener="#{controlPruebasUnitarias.cambioBtnPrueba()}" process="@this"/>
-                        </p:selectOneRadio>  
 
-                        <p:scrollPanel id="panelPrueba" style="position: absolute; top: 100px; left: 20px">
-                            <h:inputText/>
-                            <h:inputText/>
-                            <h:inputText/>
-                            <h:inputText/>
-                            <h:inputText/>
 
-                        </p:scrollPanel>
+                        <p:tabView  styleClass="tabViewPrincipal" style="text-orientation: initial;list-style: circle; " >
+                            <p:tab title="----------------------------1----------------------------">
+                                <p:selectOneRadio id="pruebaActivo" style="position: absolute; top: 50px; left: 20px" value="#{controlPruebasUnitarias.numeroBtnPrueba}">
+                                    <f:selectItem itemLabel="Visible" itemValue="1" />
+                                    <f:selectItem itemLabel="No Visible" itemValue="2" />
+                                    <p:ajax event="change" listener="#{controlPruebasUnitarias.cambioBtnPrueba()}" process="@this"/>
+                                </p:selectOneRadio>  
+
+                                <p:scrollPanel id="panelPrueba" style="position: absolute; top: 100px; left: 20px">
+                                    <h:inputText/>
+                                    <h:inputText/>
+                                    <h:inputText/>
+                                    <h:inputText/>
+                                    <h:inputText/>
+
+                                </p:scrollPanel>
+                            </p:tab>
+                            <p:tab title="2">
+                                <p:selectOneRadio id="pruebaActivo2" style="position: absolute; top: 50px; left: 20px" value="#{controlPruebasUnitarias.numeroBtnPrueba}">
+                                    <f:selectItem itemLabel="Visible" itemValue="1" />
+                                    <f:selectItem itemLabel="No Visible" itemValue="2" />
+                                    <p:ajax event="change" listener="#{controlPruebasUnitarias.cambioBtnPrueba()}" process="@this"/>
+                                </p:selectOneRadio>  
+
+                                <p:scrollPanel id="panelPrueba2" style="position: absolute; top: 100px; left: 20px">
+                                    <h:inputText/>
+                                    <h:inputText/>
+                                    <h:inputText/>
+                                </p:scrollPanel>
+                            </p:tab>
+                        </p:tabView>
 
                     </p:panel>
                 </h:form>

@@ -106,8 +106,8 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="dateFechaFinal" value="#{info.fechafinal}" height="12" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaAfiliacion3.modificarFechas(indiceVA,1)}" update="dateFechaFinal" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.modificarFechas(indiceVA,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVigenciaAfiliacion3.modificarFechasFinales(indiceVA,1)}" update="dateFechaFinal" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.modificarFechasFinales(indiceVA,1)}" update="dateFechaFinal" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlEmplVigenciaAfiliacion3.cambiarIndiceVA(indiceVA,1)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>  
@@ -218,6 +218,8 @@
                                 </p:column>
                             </p:dataTable>
                         </fieldset>
+                        
+                        
 
                         <!-- DIALOGO L.O.V ESTATICO TIPO ENTIDAD -->
                         <p:dialog header="#{msg['tipoTE']}" widgetVar="TipoEntidadDialogo" draggable="false" resizable="false" closable="false" id="TipoEntidadDialogo"  
@@ -226,6 +228,7 @@
                                          selection="#{controlEmplVigenciaAfiliacion3.tipoEntidadSeleccionado}" selectionMode="single" widgetVar="lovTipoEntidad" scrollable="true" scrollWidth="397" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarTiposEntidades}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaAfiliacion3.activarAceptar()}" update=":form:aceptarTE"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarTipoEntidad()}"  process="@this" onstart="lovTipoEntidad.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTipoEntidad.filter();" style="width:150px; position: relative; left: 40px;" />  
@@ -259,6 +262,7 @@
                                          selection="#{controlEmplVigenciaAfiliacion3.terceroSeleccionado}" selectionMode="single" widgetVar="lovTercero" scrollable="true" scrollWidth="720" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarTerceros}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaAfiliacion3.activarAceptar()}" update=":form:aceptarT"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarTerceros()}"  process="@this" onstart="lovTercero.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarT']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovTercero.filter();" style="width:150px; position: relative; left: -150px;" />  
@@ -297,6 +301,7 @@
                                          selection="#{controlEmplVigenciaAfiliacion3.estadoSSeleccionado}" selectionMode="single" widgetVar="lovEstadoAfiliacion" scrollable="true" scrollWidth="380" scrollHeight="250"
                                          filteredValue="#{controlEmplVigenciaAfiliacion3.filtrarEstadosAfiliaciones}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlEmplVigenciaAfiliacion3.activarAceptar()}" update=":form:aceptarEA"/>
+                                <p:ajax event="rowDblselect" listener="#{controlEmplVigenciaAfiliacion3.actualizarEstadoAfiliacion()}"  process="@this" onstart="lovEstadoAfiliacion.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarEA']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovEstadoAfiliacion.filter();" style="width:150px; position: relative; left: 70px;" />  
@@ -403,7 +408,7 @@
 
                         <p:panel id="nuevaVA" style="border: none;">
 
-                              <strong><h:outputText value="#{msg['inicialN']}" style="position: absolute; top: 75px; left: 50px;" /></strong>
+                              <strong><h:outputText value="*#{msg['inicialN']}" style="position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniNuevoReg" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="nuevaFechaInicialVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.fechainicial}" height="12">
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialVA" process="@this"/>
@@ -419,7 +424,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['tipoentidadN']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['tipoentidadN']}" style="position: absolute; top: 135px; left: 50px" /></strong>
                             <p:inputText id="nuevaTipoEntidadVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tipoentidad.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 130px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,0,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(1, 'TIPOENTIDAD')}" />
@@ -429,16 +434,16 @@
                             <p:watermark for="nuevaTipoEntidadVA" value="#{msg['tipoentidad']}" />
 
 
-                            <strong><h:outputText value="#{msg['terceroN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['terceroN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="nuevaTerceroVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(1, 'TERCERO')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.autocompletarNuevoyDuplicadoVA('TERCERO', controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tercerosucursal.tercero.nombre, 1)}" process="@this" update="nuevaTerceroVA"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 300px; top: 170px;  " id="btnNuevoTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,1)}" update="nuevaTerceroVA"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 300px; top: 160px;  " id="btnNuevoTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,1)}" update="nuevaTerceroVA"/>   
                             <p:watermark for="nuevaTerceroVA" value="Tercero" />
 
-                            <strong><h:outputText value="#{msg['terceronitN']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['terceronitN']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
                             <p:inputText id="nuevaNITTerceroVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tercerosucursal.tercero.nit}" readonly="true" style=" width: 122px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();" >
                             </p:inputText>
                             <p:watermark for="nuevaNITTerceroVA" value="#{msg['terceronit']}" />
@@ -478,7 +483,7 @@
 
                         <p:panel id="duplicadoVA" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['inicialN']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="*#{msg['inicialN']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniDupliReg" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="duplicarFechaInicialVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.fechainicial}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaInicialVA" process="@this"/>
@@ -492,7 +497,7 @@
                                     <p:ajax event="change" update="duplicarFechaFinalVA" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            <strong><h:outputText value="#{msg['tipoentidadN']}" style=" position: absolute; top: 135px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['tipoentidadN']}" style=" position: absolute; top: 135px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoEntidadVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.tipoentidad.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 130px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,0,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(2, 'TIPOENTIDAD')}" />
@@ -501,7 +506,7 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 300px; top: 130px;  " id="btnDuplicarTipoEntidadVA" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,0,2)}" update="duplicarTipoEntidadVA"/>   
                             <p:watermark for="duplicarTipoEntidadVA" value="#{msg['tipoentidad']}" />
 
-                            <strong><h:outputText value="#{msg['terceroN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['terceroN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
                             <p:inputText id="duplicarTerceroVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(2,'TERCERO')}" />
@@ -510,7 +515,7 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 300px; top: 160px;  " id="btnDuplicarTerceroVA" icon="ui-icon-search" process="@this"  actionListener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,2)}" update="duplicarTerceroVA"/>   
                             <p:watermark for="duplicarTerceroVA" value="#{msg['tercero']}" />
 
-                             <strong><h:outputText value="#{msg['terceronitN']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
+                             <strong><h:outputText value="*#{msg['terceronitN']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
                             <p:inputText id="duplicarNITTerceroVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.tercerosucursal.tercero.nit}" readonly="true" style=" width: 122px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();" >
                             </p:inputText>
                             <p:watermark for="duplicarNITTerceroVA" value="#{msg['terceronit']}" />

@@ -2040,6 +2040,21 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/EmplVigenciaJornada.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>vigenciasJornadas</from-outcome>
+            <to-view-id>/EmplVigenciaJornada.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/atextrarecargo.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>

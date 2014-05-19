@@ -32,8 +32,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlEmplVacaPendiente implements Serializable {
 
-    
-    
     @EJB
     AdministrarVWVacaPendientesEmpleadosInterface administrarVWVacaPendientesEmpleados;
     private List<VWVacaPendientesEmpleados> listVacaPendientes;
@@ -75,7 +73,12 @@ public class ControlEmplVacaPendiente implements Serializable {
     private Date fechaIniD, fechaFinD;
     private String altoTabla1, altoTabla2;
 
+    private boolean guardado;
+
+    private Date fechaFinalContratacion;
+
     public ControlEmplVacaPendiente() {
+        guardado = true;
         listVacaDisfrutadas = null;
         listVacaPendientes = null;
         tipoTabla = 0;
@@ -103,7 +106,7 @@ public class ControlEmplVacaPendiente implements Serializable {
         altoTabla1 = "115";
         altoTabla2 = "115";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -119,6 +122,10 @@ public class ControlEmplVacaPendiente implements Serializable {
     public void recibirEmpleado(BigInteger sec) {
         this.secuencia = sec;
         empleado = administrarVWVacaPendientesEmpleados.obtenerEmpleado(secuencia);
+        if (empleado != null) {
+            fechaFinalContratacion = administrarVWVacaPendientesEmpleados.obtenerFechaFinalContratacionEmpleado(empleado.getSecuencia());
+            System.out.println("fechaFinalContratacion: " + fechaFinalContratacion);
+        }
     }
 
     public void modificacionesTablas() {
@@ -138,6 +145,10 @@ public class ControlEmplVacaPendiente implements Serializable {
             getTotalDiasPendientes();
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVacacionesPEmpleado:totalDiasP");
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
 
         }
         if (tipoTabla == 2) {
@@ -148,6 +159,11 @@ public class ControlEmplVacaPendiente implements Serializable {
                 int posicion = listVacaDisfrutadas.indexOf(filtrarListVacaDisfrutadas.get(indexVDisfrutadas));
                 VWVacaPendientesEmpleados vacaPendiente = listVacaDisfrutadas.get(posicion);
                 listModificacionesTablaDisfrutadas.add(vacaPendiente);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -220,23 +236,35 @@ public class ControlEmplVacaPendiente implements Serializable {
         if (filtrarListaDisfrutadas == 1) {
             auxiliar = filtrarListVacaDisfrutadas.get(i);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
         if (auxiliar.getInicialcausacion() != null && auxiliar.getFinalcausacion() != null) {
             boolean retorno = false;
             indexVDisfrutadas = i;
             retorno = validarFechasRegistroDisfrutadas();
             if (retorno == true) {
-                posicionTabla(t, i, c);
-                modificacionesTablas();
+                if (validarFechasConFechaContratacion(0) == true) {
+                    posicionTabla(t, i, c);
+                    modificacionesTablas();
+                } else {
+                    if (filtrarListaDisfrutadas == 0) {
+                        listVacaDisfrutadas.get(i).setInicialcausacion(fechaFinD);
+                        listVacaDisfrutadas.get(i).setFinalcausacion(fechaIniD);
+                    } else {
+                        filtrarListVacaDisfrutadas.get(i).setInicialcausacion(fechaFinD);
+                        filtrarListVacaDisfrutadas.get(i).setFinalcausacion(fechaIniD);
+                    }
+                    context.update("form:datosVacacionesDEmpleado");
+                    context.execute("errorFechaContratacion.show()");
+                }
             } else {
-                if (filtrarListaPendientes == 0) {
+                if (filtrarListaDisfrutadas == 0) {
                     listVacaDisfrutadas.get(i).setInicialcausacion(fechaFinD);
                     listVacaDisfrutadas.get(i).setFinalcausacion(fechaIniD);
-                }
-                if (filtrarListaPendientes == 1) {
+                } else {
                     filtrarListVacaDisfrutadas.get(i).setInicialcausacion(fechaFinD);
                     filtrarListVacaDisfrutadas.get(i).setFinalcausacion(fechaIniD);
                 }
-                RequestContext context = RequestContext.getCurrentInstance();
+
                 context.update("form:datosVacacionesDEmpleado");
                 context.execute("errorFechas.show()");
             }
@@ -244,12 +272,10 @@ public class ControlEmplVacaPendiente implements Serializable {
             if (filtrarListaDisfrutadas == 0) {
                 listVacaDisfrutadas.get(i).setInicialcausacion(fechaFinD);
                 listVacaDisfrutadas.get(i).setFinalcausacion(fechaIniD);
-            }
-            if (filtrarListaDisfrutadas == 1) {
+            } else {
                 filtrarListVacaDisfrutadas.get(i).setInicialcausacion(fechaFinD);
                 filtrarListVacaDisfrutadas.get(i).setFinalcausacion(fechaIniD);
             }
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVacacionesDEmpleado");
             context.execute("errorRegNew.show()");
         }
@@ -259,27 +285,38 @@ public class ControlEmplVacaPendiente implements Serializable {
         VWVacaPendientesEmpleados auxiliar = null;
         if (filtrarListaDisfrutadas == 0) {
             auxiliar = listVacaPendientes.get(i);
-        }
-        if (filtrarListaDisfrutadas == 1) {
+        } else {
             auxiliar = filtrarListVacaPendientes.get(i);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
         if (auxiliar.getInicialcausacion() != null && auxiliar.getFinalcausacion() != null) {
             boolean retorno = false;
             indexVPendientes = i;
             retorno = validarFechasRegistroPendientes(0);
             if (retorno == true) {
-                posicionTabla(t, i, c);
-                modificacionesTablas();
+                if (validarFechasConFechaContratacion(0) == true) {
+                    posicionTabla(t, i, c);
+                    modificacionesTablas();
+                } else {
+                    if (filtrarListaPendientes == 0) {
+                        listVacaPendientes.get(i).setInicialcausacion(fechaFinP);
+                        listVacaPendientes.get(i).setFinalcausacion(fechaIniP);
+                    } else {
+                        filtrarListVacaPendientes.get(i).setInicialcausacion(fechaFinP);
+                        filtrarListVacaPendientes.get(i).setFinalcausacion(fechaIniP);
+                    }
+                    context.update("form:datosVacacionesPEmpleado");
+                    context.execute("errorFechaContratacion.show()");
+                }
             } else {
                 if (filtrarListaPendientes == 0) {
                     listVacaPendientes.get(i).setInicialcausacion(fechaFinP);
                     listVacaPendientes.get(i).setFinalcausacion(fechaIniP);
-                }
-                if (filtrarListaPendientes == 1) {
+                } else {
                     filtrarListVacaPendientes.get(i).setInicialcausacion(fechaFinP);
                     filtrarListVacaPendientes.get(i).setFinalcausacion(fechaIniP);
                 }
-                RequestContext context = RequestContext.getCurrentInstance();
+
                 context.update("form:datosVacacionesPEmpleado");
                 context.execute("errorFechas.show()");
             }
@@ -287,12 +324,10 @@ public class ControlEmplVacaPendiente implements Serializable {
             if (filtrarListaPendientes == 0) {
                 listVacaPendientes.get(i).setInicialcausacion(fechaFinP);
                 listVacaPendientes.get(i).setFinalcausacion(fechaIniP);
-            }
-            if (filtrarListaPendientes == 1) {
+            } else {
                 filtrarListVacaPendientes.get(i).setInicialcausacion(fechaFinP);
                 filtrarListVacaPendientes.get(i).setFinalcausacion(fechaIniP);
             }
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVacacionesPEmpleado");
             context.execute("errorRegNew.show()");
         }
@@ -302,36 +337,84 @@ public class ControlEmplVacaPendiente implements Serializable {
         nuevaVacacion = new VWVacaPendientesEmpleados();
     }
 
+    public boolean validarFechasConFechaContratacion(int i) {
+        boolean retorno = false;
+        if (i == 0) {
+            VWVacaPendientesEmpleados auxiliar = null;
+            if (tipoTabla == 1) {
+                if (filtrarListaPendientes == 0) {
+                    auxiliar = listVacaPendientes.get(indexVPendientes);
+                } else {
+                    auxiliar = filtrarListVacaPendientes.get(indexVPendientes);
+                }
+            } else {
+                if (filtrarListaDisfrutadas == 0) {
+                    auxiliar = listVacaDisfrutadas.get(indexVDisfrutadas);
+                } else {
+                    auxiliar = filtrarListVacaDisfrutadas.get(indexVDisfrutadas);
+                }
+            }
+            if (auxiliar.getInicialcausacion().after(fechaFinalContratacion) && auxiliar.getFinalcausacion().after(fechaFinalContratacion)) {
+                retorno = true;
+            }
+        }
+        if (i == 1) {
+            if (nuevaVacacion.getInicialcausacion().after(fechaFinalContratacion) && nuevaVacacion.getFinalcausacion().after(fechaFinalContratacion)) {
+                retorno = true;
+            }
+        }
+        if (i == 2) {
+            if (duplicarVacacion.getInicialcausacion().after(fechaFinalContratacion) && duplicarVacacion.getFinalcausacion().after(fechaFinalContratacion)) {
+                retorno = true;
+            }
+        }
+        return retorno;
+    }
+
     public void validarNuevoRegistroPendientes() {
         if (nuevaVacacion.getInicialcausacion() != null && nuevaVacacion.getFinalcausacion() != null && nuevaVacacion.getEstado() != null && nuevaVacacion.getDiaspendientes() != null) {
             if (validarFechasRegistroPendientes(1) == true) {
-                if (filtrarListaPendientes == 1) {
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
-                    vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
-                    vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
-                    vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla1 = "115";
-                    RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
-                    banderaPendientes = 0;
-                    filtrarListVacaPendientes = null;
-                    filtrarListaPendientes = 0;
+                if (validarFechasConFechaContratacion(1) == true) {
+                    if (filtrarListaPendientes == 1) {
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+                        vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
+                        vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+                        vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                        vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+                        vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                        altoTabla1 = "115";
+                        RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
+                        banderaPendientes = 0;
+                        filtrarListVacaPendientes = null;
+                        filtrarListaPendientes = 0;
+                    }
+                    int h = 0;
+                    h = h + 1;
+                    BigInteger k;
+                    k = BigInteger.valueOf(h);
+                    nuevaVacacion.setSecuencia(k);
+                    nuevaVacacion.setEmpleado(empleado.getSecuencia());
+                    if (listVacaPendientes == null) {
+                        listVacaPendientes = new ArrayList<VWVacaPendientesEmpleados>();
+                    }
+                    listVacaPendientes.add(nuevaVacacion);
+                    listCrearTablaPendientes.add(nuevaVacacion);
+                    nuevaVacacion = new VWVacaPendientesEmpleados();
+                    indexVPendientes = -1;
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    getTotalDiasPendientes();
+                    context.update("form:totalDiasP");
+                    context.update("form:datosVacacionesPEmpleado");
+                    context.execute("NuevoRegistroVP.hide()");
+                    if (guardado == true) {
+                        guardado = false;
+                        context.update("form:ACEPTAR");
+                    }
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorFechaContratacion.show()");
                 }
-                int h = 0;
-                h = h + 1;
-                BigInteger k;
-                k = BigInteger.valueOf(h);
-                nuevaVacacion.setRfvacacion(k);
-                nuevaVacacion.setEmpleado(empleado.getSecuencia());
-                listVacaPendientes.add(nuevaVacacion);
-                listCrearTablaPendientes.add(nuevaVacacion);
-                nuevaVacacion = new VWVacaPendientesEmpleados();
-                indexVPendientes = -1;
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosVacacionesPEmpleado");
-                context.execute("NuevoRegistroVP.hide()");
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorFechas.show()");
@@ -371,26 +454,37 @@ public class ControlEmplVacaPendiente implements Serializable {
     public void validarDuplicadoVacaPendientes() {
         if (duplicarVacacion.getInicialcausacion() != null && duplicarVacacion.getFinalcausacion() != null && duplicarVacacion.getEstado() != null && duplicarVacacion.getDiaspendientes() != null) {
             if (validarFechasRegistroPendientes(2) == true) {
-                if (filtrarListaPendientes == 1) {
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
-                    vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
-                    vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
-                    vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    altoTabla1 = "115";
-                    RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
-                    banderaPendientes = 0;
-                    filtrarListVacaPendientes = null;
-                    filtrarListaPendientes = 0;
+                if (validarFechasConFechaContratacion(2) == true) {
+                    if (filtrarListaPendientes == 1) {
+                        FacesContext c = FacesContext.getCurrentInstance();
+                        vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");
+                        vacacionesDP.setFilterStyle("display: none; visibility: hidden;");
+                        vacacionesFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaFinal");
+                        vacacionesFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                        vacacionesFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesFechaInicial");
+                        vacacionesFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                        altoTabla1 = "115";
+                        RequestContext.getCurrentInstance().update("form:datosVacacionesPEmpleado");
+                        banderaPendientes = 0;
+                        filtrarListVacaPendientes = null;
+                        filtrarListaPendientes = 0;
+                    }
+                    listCrearTablaPendientes.add(duplicarVacacion);
+                    listVacaPendientes.add(duplicarVacacion);
+                    duplicarVacacion = new VWVacaPendientesEmpleados();
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    getTotalDiasPendientes();
+                    context.update("form:totalDiasP");
+                    context.update("form:datosVacacionesPEmpleado");
+                    context.execute("DuplicarRegistroVP.hide()");
+                    if (guardado == true) {
+                        guardado = false;
+                        context.update("form:ACEPTAR");
+                    }
+                } else {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.execute("errorFechaContratacion.show()");
                 }
-                listCrearTablaPendientes.add(duplicarVacacion);
-                listVacaPendientes.add(duplicarVacacion);
-                duplicarVacacion = new VWVacaPendientesEmpleados();
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:datosVacacionesPEmpleado");
-                context.execute("DuplicarRegistroVP.hide()");
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("errorFechas.show()");
@@ -438,6 +532,12 @@ public class ControlEmplVacaPendiente implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVacacionesPEmpleado");
+            getTotalDiasPendientes();
+            context.update("form:totalDiasP");
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
         }
 
     }
@@ -485,6 +585,10 @@ public class ControlEmplVacaPendiente implements Serializable {
         tipoTabla = -1;
         totalDiasPendientes = BigInteger.valueOf(0);
         RequestContext context = RequestContext.getCurrentInstance();
+        guardado = true;
+        context.update("form:ACEPTAR");
+        getTotalDiasPendientes();
+        context.update("form:totalDiasP");
         context.update("form:datosVacacionesPEmpleado");
         context.update("form:datosVacacionesDEmpleado");
         context.update("form:datosVacacionesPEmpleado:totalDiasP");
@@ -638,6 +742,8 @@ public class ControlEmplVacaPendiente implements Serializable {
         }
         guardarCambiosVPendientes();
         guardarCambiosVDisfrutadas();
+        guardado = true;
+        context.update("form:ACEPTAR");
         FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         context.update("form:growl");
@@ -938,6 +1044,9 @@ public class ControlEmplVacaPendiente implements Serializable {
                     listVacaPendientes = administrarVWVacaPendientesEmpleados.vacaPendientesPendientes(empleado);
                 }
             }
+            if (listVacaPendientes != null && !listVacaPendientes.isEmpty()) {
+                System.out.println("listVacaPendientes : " + listVacaPendientes.get(0).getSecuencia());
+            }
             return listVacaPendientes;
         } catch (Exception e) {
             System.out.println("Error getListVacaPendientes : " + e.toString());
@@ -1021,5 +1130,9 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public String getAltoTabla2() {
         return altoTabla2;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
     }
 }
