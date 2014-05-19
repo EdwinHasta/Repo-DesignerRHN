@@ -662,7 +662,7 @@ public class Personas implements Serializable {
     public void setVigenciasDomiciliariasCollection(Collection<VigenciasDomiciliarias> vigenciasDomiciliariasCollection) {
         this.vigenciasDomiciliariasCollection = vigenciasDomiciliariasCollection;
     }
-
+ 
     @XmlTransient
     public Collection<Direcciones> getDireccionesCollection() {
         return direccionesCollection;

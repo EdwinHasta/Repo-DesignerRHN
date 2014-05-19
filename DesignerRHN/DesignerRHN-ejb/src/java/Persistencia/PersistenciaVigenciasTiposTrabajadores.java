@@ -12,46 +12,56 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasTiposTrabajadores'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'VigenciasTiposTrabajadores' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigenciasTiposTrabajadoresInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
+            em.getTransaction().begin();
             em.persist(vigenciasTiposTrabajadores);
-            System.out.println("Creo la vigencia");
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser creada (VigenciasTiposTrabajadores)");
+            em.getTransaction().rollback();
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser creada (VigenciasTiposTrabajadores) : " + e.toString());
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasTiposTrabajadores);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la Vigencias TiposTrabajadores");
+            em.getTransaction().rollback();
+            System.out.println("No se pudo modificar la Vigencias TiposTrabajadores : " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasTiposTrabajadores));
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error borrarVigenciasTiposTrabajadores (PersistenciaVigenciasTiposTrabajadores)");
+            em.getTransaction().rollback();
+            System.out.println("Error borrarVigenciasTiposTrabajadores (PersistenciaVigenciasTiposTrabajadores) : " + e.toString());
         }
     }
 
@@ -87,7 +97,7 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
             return null;
         }
     }
-    
+
     @Override
     public List<VigenciasTiposTrabajadores> buscarEmpleados(EntityManager em) {
 

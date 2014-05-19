@@ -23,7 +23,6 @@ import javax.persistence.EntityManager;
  * @author John Pineda
  */
 @Stateful
-@LocalBean
 public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNormaLaboralInterface {
 
     /**

@@ -58,4 +58,7 @@ public interface PersistenciaVigenciasTiposContratosInterface {
      * coincide con la secuencia dada por parámetro.
      */
     public Date fechaMaxContratacion(EntityManager em, Empleados secuencia);
+    
+    
+    public Date fechaFinalContratacionVacaciones(EntityManager em, BigInteger secuencia);
 }

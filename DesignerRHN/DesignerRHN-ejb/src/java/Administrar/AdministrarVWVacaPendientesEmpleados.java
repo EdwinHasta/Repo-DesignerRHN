@@ -2,16 +2,18 @@ package Administrar;
 
 import Entidades.Empleados;
 import Entidades.VWVacaPendientesEmpleados;
+import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfaceAdministrar.AdministrarVWVacaPendientesEmpleadosInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaSolucionesNodosInterface;
 import InterfacePersistencia.PersistenciaVWVacaPendientesEmpleadosInterface;
+import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import InterfaceAdministrar.AdministrarSesionesInterface;
 import javax.persistence.EntityManager;
 
 /**
@@ -27,6 +29,8 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     PersistenciaEmpleadoInterface persistenciaEmpleado;
     @EJB
     PersistenciaSolucionesNodosInterface persistenciaSolucionesNodos;
+    @EJB
+    PersistenciaVigenciasTiposContratosInterface persistenciaVigenciasTiposContratos;
     /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
@@ -34,7 +38,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-    
+
     Empleados empleado;
     List<VWVacaPendientesEmpleados> vacaciones;
     BigDecimal unidades;
@@ -45,7 +49,7 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public void crearVacaPendiente(VWVacaPendientesEmpleados vaca) {
         try {
@@ -115,5 +119,16 @@ public class AdministrarVWVacaPendientesEmpleados implements AdministrarVWVacaPe
             System.out.println("Error en diasProvisionadosEmpleado Admi : " + e.toString());
             return null;
         }
+    }
+
+    public Date obtenerFechaFinalContratacionEmpleado(BigInteger secEmpleado) {
+        try {
+            Date ultimaFecha = persistenciaVigenciasTiposContratos.fechaFinalContratacionVacaciones(em, secEmpleado);
+            return ultimaFecha;
+        } catch (Exception e) {
+            System.out.println("Error obtenerFechaFinalContratacionEmpleado Admi : " + e.toString());
+            return null;
+        }
+
     }
 }

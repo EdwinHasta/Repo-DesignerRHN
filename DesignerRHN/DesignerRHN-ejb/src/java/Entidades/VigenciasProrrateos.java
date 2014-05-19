@@ -9,8 +9,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -60,7 +62,7 @@ public class VigenciasProrrateos implements Serializable {
     @ManyToOne(optional = false)
     private VigenciasLocalizaciones viglocalizacion;
     @JoinColumn(name = "PROYECTO", referencedColumnName = "SECUENCIA")
-    @ManyToOne
+    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
     private Proyectos proyecto;
     @JoinColumn(name = "CENTROCOSTO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
@@ -129,6 +131,7 @@ public class VigenciasProrrateos implements Serializable {
 
     public Proyectos getProyecto() {
         if(proyecto == null){
+            System.out.println("gonorrea");
             proyecto = new Proyectos();
             return proyecto;
         }else{

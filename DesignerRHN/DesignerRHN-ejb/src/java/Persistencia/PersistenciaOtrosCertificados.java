@@ -29,17 +29,35 @@ public class PersistenciaOtrosCertificados implements PersistenciaOtrosCertifica
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, OtrosCertificados certificados) {
-        em.persist(certificados);
+        try {
+            em.getTransaction().begin();
+            em.merge(certificados);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error crear PersistenciaOtrosCertificados : " + e.toString());
+        }
     }
 
     @Override
     public void editar(EntityManager em, OtrosCertificados certificados) {
-        em.merge(certificados);
+        try {
+            em.getTransaction().begin();
+            em.merge(certificados);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error editar PersistenciaOtrosCertificados : " + e.toString());
+        }
     }
 
     @Override
     public void borrar(EntityManager em, OtrosCertificados certificados) {
-        em.remove(em.merge(certificados));
+        try {
+            em.getTransaction().begin();
+            em.remove(em.merge(certificados));
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("Error borrar PersistenciaOtrosCertificados : " + e.toString());
+        }
     }
 
     @Override

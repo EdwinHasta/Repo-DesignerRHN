@@ -15,41 +15,52 @@ import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Retirados'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Retirados' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
+public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Retirados retirados) {
         try {
+            em.getTransaction().begin();
             em.persist(retirados);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("El registro Retiro no exite o esta reservada por lo cual no puede ser modificada (Retirados)");
+            em.getTransaction().rollback();
+            System.out.println("Error crear PersistenciaRetirados : " + e.toString());
         }
     }
 
     @Override
     public void editar(EntityManager em, Retirados retirados) {
         try {
+            em.getTransaction().begin();
             em.merge(retirados);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro Retirados");
+            em.getTransaction().rollback();
+            System.out.println("Error editar PersistenciaRetirados : " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, Retirados retirados) {
-        try{
+        try {
+            em.getTransaction().begin();
             em.remove(em.merge(retirados));
-        }catch(Exception e){
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.out.println("Error borrar PersistenciaRetirados : " + e.toString());
         }
     }
 
@@ -59,7 +70,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
         cq.select(cq.from(Retirados.class));
         return em.createQuery(cq).getResultList();
     }
-    
+
     @Override
     public List<Retirados> buscarRetirosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
@@ -85,7 +96,7 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface{
             return null;
         }
     }
-    
+
     @Override
     public Retirados buscarRetiroVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {

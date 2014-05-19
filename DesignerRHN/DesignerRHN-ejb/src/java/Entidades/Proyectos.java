@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
@@ -265,7 +264,7 @@ public class Proyectos implements Serializable {
     public void setVigenciasprorrateosproyectosCollection(Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection) {
         this.vigenciasprorrateosproyectosCollection = vigenciasprorrateosproyectosCollection;
     }
-
+    
     public Collection<VigenciasProyectos> getVigenciasProyectosCollection() {
         return vigenciasProyectosCollection;
     }
