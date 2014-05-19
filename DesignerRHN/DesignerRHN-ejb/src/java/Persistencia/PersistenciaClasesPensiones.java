@@ -58,10 +58,11 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
     @Override
     public List<ClasesPensiones> consultarClasesPensiones(EntityManager em) {
         try {
+            System.out.println("PersistenciaClasesPensiones consultarClasesPensiones ");
             List<ClasesPensiones> clasesPensionesLista = (List<ClasesPensiones>) em.createNamedQuery("ClasesPensiones.findAll").getResultList();
             return clasesPensionesLista;
         } catch (Exception e) {
-            System.out.println("Error buscarClasesPensiones PersistenciaClasesPensiones");
+            System.out.println("Error consultarClasesPensiones PersistenciaClasesPensiones");
             return null;
         }
     }

@@ -24,20 +24,25 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public void crear(EntityManager em, VigenciasViajeros vigenciaViajero) {
-        em.persist(vigenciaViajero);
+        em.getTransaction().begin();
+        em.merge(vigenciaViajero);
+        em.getTransaction().commit();
     }
 
     public void editar(EntityManager em, VigenciasViajeros vigenciaViajero) {
+        em.getTransaction().begin();
         em.merge(vigenciaViajero);
+        em.getTransaction().commit();
     }
 
     public void borrar(EntityManager em, VigenciasViajeros vigenciaViajero) {
+        em.getTransaction().begin();
         em.remove(em.merge(vigenciaViajero));
+        em.getTransaction().commit();
     }
 
     public VigenciasViajeros consultarTipoExamen(EntityManager em, BigInteger secuencia) {
@@ -54,10 +59,12 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
             query.setParameter("secuenciaEmpl", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasViajeros> vigenciasRefLab = query.getResultList();
-            System.out.println("TIPO VIAJERO: " + vigenciasRefLab.get(0).getTipoViajero().getNombre());
+            if (vigenciasRefLab != null) {
+                System.out.println("TIPO VIAJERO: " + vigenciasRefLab.get(0).getTipoViajero().getNombre());
+            }
             return vigenciasRefLab;
         } catch (Exception e) {
-            System.out.println("Error en Persistencia Vigencias Reforma Laboral " + e);
+            System.out.println("Error en Persistencia Vigencias Viajeros" + e);
             return null;
         }
     }
@@ -67,6 +74,5 @@ public class PersistenciaVigenciasViajeros implements PersistenciaVigenciasViaje
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<VigenciasViajeros> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
-
     }
 }

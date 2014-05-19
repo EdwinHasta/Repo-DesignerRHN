@@ -8,8 +8,10 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -33,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "VigenciasCargos.findAll", query = "SELECT v FROM VigenciasCargos v"),
     @NamedQuery(name = "VigenciasCargos.findByEmpleado", query = "SELECT v FROM VigenciasCargos v where v.empleado = :empleado order by v.fechavigencia desc")})
 public class VigenciasCargos implements Serializable {
+
     @JoinColumn(name = "PAPEL", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Papeles papel;
@@ -67,7 +70,7 @@ public class VigenciasCargos implements Serializable {
     @ManyToOne
     private Escalafones escalafon;
     @JoinColumn(name = "EMPLEADOJEFE", referencedColumnName = "SECUENCIA")
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Empleados empleadojefe;
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
@@ -154,15 +157,13 @@ public class VigenciasCargos implements Serializable {
 
     public Empleados getEmpleadojefe() {
         if (empleadojefe == null) {
+            System.out.println("Bumm");
             empleadojefe = new Empleados();
             empleadojefe.setPersona(new Personas());
-           // empleadojefe.getPersona().setNombreCompleto(empleadojefe.getPersona().getPrimerapellido() + " " + empleadojefe.getPersona().getSegundoapellido() + " " + empleadojefe.getPersona().getNombre());
             return empleadojefe;
         } else {
-            //empleadojefe.getPersona().setNombreCompleto(empleadojefe.getPersona().getPrimerapellido() + " " + empleadojefe.getPersona().getSegundoapellido() + " " + empleadojefe.getPersona().getNombre());
             return empleadojefe;
         }
-
     }
 
     public void setEmpleadojefe(Empleados empleadojefe) {

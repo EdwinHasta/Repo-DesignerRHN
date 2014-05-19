@@ -31,27 +31,33 @@ public class PersistenciaVigenciasContratos implements PersistenciaVigenciasCont
     @Override
     public void crear(EntityManager em, VigenciasContratos vigenciasContratos) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasContratos);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasReformaLaboral)");
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (PersistenciaVigenciasContratos - Crear)");
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasContratos vigenciasContratos) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasContratos);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la Vigencias Contratos");
+            System.out.println("No se pudo modificar la Vigencias Contratos (PersistenciaVigenciasContratos - editar)");
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasContratos vigenciasContratos) {
         try{
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasContratos));
+            em.getTransaction().commit();
         }catch(Exception e){
-            System.out.println("la vigencia contrato no se ha podido eliminar");
+            System.out.println("la vigencia contrato no se ha podido eliminar (PersistenciaVigenciasContratos - borrar)");
         }
     }
 

@@ -62,6 +62,7 @@ public class ClasesPensiones implements Serializable {
     }
 
     public BigInteger getSecuencia() {
+        System.out.println("fasasdsddhkasjkasdasdasd");
         return secuencia;
     }
 

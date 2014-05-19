@@ -102,43 +102,11 @@ public class Empleados implements Serializable {
     @Column(name = "TEMPBASERECALCULO")
     private BigInteger tempbaserecalculo;
     @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private Personas persona;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empresas empresa;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasSueldos> vigenciassueldosCollection;
-    @OneToMany(mappedBy = "empleadojefe")
-    private Collection<VigenciasCargos> vigenciascargosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasCargos> vigenciascargosCollection1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Soausentismos> soausentismosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<NovedadesSistema> novedadessistemaCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Comprobantes> comprobantesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Soaccidentes> soaccidentesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<CortesProcesos> cortesprocesosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<Novedades> novedadesCollection;
-    @OneToMany(mappedBy = "representantecir")
-    private Collection<DetallesEmpresas> detallesempresasCollection;
-    @OneToMany(mappedBy = "subgerente")
-    private Collection<DetallesEmpresas> detallesempresasCollection1;
-    @OneToMany(mappedBy = "arquitecto")
-    private Collection<DetallesEmpresas> detallesempresasCollection2;
-    @OneToMany(mappedBy = "gerentegeneral")
-    private Collection<DetallesEmpresas> detallesempresasCollection3;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "empleado")
-    private Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection;
     @Transient
     private String estado;
     @Transient
@@ -333,33 +301,6 @@ public class Empleados implements Serializable {
         this.empresa = empresa;
     }
 
-    @XmlTransient
-    public Collection<VigenciasSueldos> getVigenciassueldosCollection() {
-        return vigenciassueldosCollection;
-    }
-
-    public void setVigenciassueldosCollection(Collection<VigenciasSueldos> vigenciassueldosCollection) {
-        this.vigenciassueldosCollection = vigenciassueldosCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasCargos> getVigenciascargosCollection() {
-        return vigenciascargosCollection;
-    }
-
-    public void setVigenciascargosCollection(Collection<VigenciasCargos> vigenciascargosCollection) {
-        this.vigenciascargosCollection = vigenciascargosCollection;
-    }
-
-    @XmlTransient
-    public Collection<VigenciasCargos> getVigenciascargosCollection1() {
-        return vigenciascargosCollection1;
-    }
-
-    public void setVigenciascargosCollection1(Collection<VigenciasCargos> vigenciascargosCollection1) {
-        this.vigenciascargosCollection1 = vigenciascargosCollection1;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -383,122 +324,6 @@ public class Empleados implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Empleados[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<VigenciasTiposTrabajadores> getVigenciastipostrabajadoresCollection() {
-        return vigenciastipostrabajadoresCollection;
-    }
-
-    public void setVigenciastipostrabajadoresCollection(Collection<VigenciasTiposTrabajadores> vigenciastipostrabajadoresCollection) {
-        this.vigenciastipostrabajadoresCollection = vigenciastipostrabajadoresCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection() {
-        return detallesempresasCollection;
-    }
-
-    public void setDetallesempresasCollection(Collection<DetallesEmpresas> detallesempresasCollection) {
-        this.detallesempresasCollection = detallesempresasCollection;
-    }
-
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection1() {
-        return detallesempresasCollection1;
-    }
-
-    public void setDetallesempresasCollection1(Collection<DetallesEmpresas> detallesempresasCollection1) {
-        this.detallesempresasCollection1 = detallesempresasCollection1;
-    }
-
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection2() {
-        return detallesempresasCollection2;
-    }
-
-    public void setDetallesempresasCollection2(Collection<DetallesEmpresas> detallesempresasCollection2) {
-        this.detallesempresasCollection2 = detallesempresasCollection2;
-    }
-
-    @XmlTransient
-    public Collection<DetallesEmpresas> getDetallesempresasCollection3() {
-        return detallesempresasCollection3;
-    }
-
-    public void setDetallesempresasCollection3(Collection<DetallesEmpresas> detallesempresasCollection3) {
-        this.detallesempresasCollection3 = detallesempresasCollection3;
-    }
-
-    @XmlTransient
-    public Collection<Soausentismos> getSoausentismosCollection() {
-        return soausentismosCollection;
-    }
-
-    public void setSoausentismosCollection(Collection<Soausentismos> soausentismosCollection) {
-        this.soausentismosCollection = soausentismosCollection;
-    }
-
-    @XmlTransient
-    public Collection<NovedadesSistema> getNovedadessistemaCollection() {
-        return novedadessistemaCollection;
-    }
-
-    public void setNovedadessistemaCollection(Collection<NovedadesSistema> novedadessistemaCollection) {
-        this.novedadessistemaCollection = novedadessistemaCollection;
-    }
-
-    @XmlTransient
-    public Collection<Comprobantes> getComprobantesCollection() {
-        return comprobantesCollection;
-    }
-
-    public void setComprobantesCollection(Collection<Comprobantes> comprobantesCollection) {
-        this.comprobantesCollection = comprobantesCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Soaccidentes> getSoaccidentesCollection() {
-        return soaccidentesCollection;
-    }
-
-    public void setSoaccidentesCollection(Collection<Soaccidentes> soaccidentesCollection) {
-        this.soaccidentesCollection = soaccidentesCollection;
-    }
-
-    @XmlTransient
-    public Collection<CortesProcesos> getCortesprocesosCollection() {
-        return cortesprocesosCollection;
-    }
-
-    public void setCortesprocesosCollection(Collection<CortesProcesos> cortesprocesosCollection) {
-        this.cortesprocesosCollection = cortesprocesosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    public Collection<VigenciasTiposContratos> getVigenciastiposcontratosCollection() {
-        return vigenciastiposcontratosCollection;
-    }
-
-    public void setVigenciastiposcontratosCollection(Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection) {
-        this.vigenciastiposcontratosCollection = vigenciastiposcontratosCollection;
     }
 
     public Collection<VigenciasUbicaciones> getVigenciasubicacionesCollection() {
