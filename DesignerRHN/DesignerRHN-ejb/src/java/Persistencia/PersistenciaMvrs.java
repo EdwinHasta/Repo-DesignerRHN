@@ -14,31 +14,53 @@ import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'Mvrs'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Mvrs' de la base de
+ * datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMvrs implements PersistenciaMvrsInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Mvrs mvrs) {
-        em.persist(mvrs);
+        try {
+            em.getTransaction().begin();
+            em.persist(mvrs);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.out.println("Error crear PersistenciaMvrsInterface : " + e.toString());
+        }
     }
 
     @Override
     public void editar(EntityManager em, Mvrs mvrs) {
-        em.merge(mvrs);
+        try {
+            em.getTransaction().begin();
+            em.merge(mvrs);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.out.println("Error editar PersistenciaMvrsInterface : " + e.toString());
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Mvrs mvrs) {
-        em.remove(em.merge(mvrs));
+        try {
+            em.getTransaction().begin();
+            em.remove(em.merge(mvrs));
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            em.getTransaction().rollback();
+            System.out.println("Error borrar PersistenciaMvrsInterface : " + e.toString());
+        }
     }
 
     @Override

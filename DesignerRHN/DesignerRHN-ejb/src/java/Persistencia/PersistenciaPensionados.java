@@ -14,44 +14,53 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos' de
+ * la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaPensionados implements PersistenciaPensionadosInterface{
+public class PersistenciaPensionados implements PersistenciaPensionadosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Pensionados pensionados) {
         try {
-            System.out.println("Persistencia pensionados : "+pensionados.getSecuencia());
+            em.getTransaction().begin();
             em.persist(pensionados);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("El registro Pensionados no exite o esta reservada por lo cual no puede ser modificada (Pensionados)");
+            em.getTransaction().rollback();
+            System.out.println("El registro Pensionados no exite o esta reservada por lo cual no puede ser modificada (Pensionados) : " + e.toString());
         }
     }
-    
+
     @Override
     public void editar(EntityManager em, Pensionados pensionados) {
         try {
+            em.getTransaction().begin();
             em.merge(pensionados);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro Pensionados");
+            em.getTransaction().rollback();
+            System.out.println("No se pudo modificar el registro Pensionados : " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, Pensionados pensionados) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(pensionados));
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro Pensionados");
+            em.getTransaction().rollback();
+            System.out.println("No se pudo borrar el registro Pensionados : " + e.toString());
         }
     }
 
@@ -86,18 +95,18 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
             return null;
         }
     }
-    
+
     @Override
     public Pensionados buscarPensionVigenciaSecuencia(EntityManager em, BigInteger secVigencia) {
         try {
-            System.out.println("secVigencia : "+secVigencia);
+            System.out.println("secVigencia : " + secVigencia);
             Query query = em.createQuery("SELECT p FROM Pensionados p WHERE p.vigenciatipotrabajador.secuencia = :secVigencia");
             query.setParameter("secVigencia", secVigencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Pensionados pensionVigencia = (Pensionados) query.getSingleResult();
             return pensionVigencia;
         } catch (Exception e) {
-            System.out.println("buscarPensionVigenciaSecuencia Error (PersistenciaPensionados): "+e.toString());
+            System.out.println("buscarPensionVigenciaSecuencia Error (PersistenciaPensionados): " + e.toString());
             return new Pensionados();
         }
     }

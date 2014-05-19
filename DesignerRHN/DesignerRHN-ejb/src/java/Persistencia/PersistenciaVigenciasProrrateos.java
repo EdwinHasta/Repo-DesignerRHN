@@ -11,56 +11,58 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'VigenciasProrrateos'
  * de la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasProrrateosInterface {
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
 
+ 
     @Override
     public void crear(EntityManager em, VigenciasProrrateos vigenciasProrrateos) {
         try {
-            em.persist(vigenciasProrrateos);
+                     em.getTransaction().begin();
+            em.merge(vigenciasProrrateos);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("El registro VigenciasProrrateos no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateos)");
+            System.out.println("El registro VigenciasProrrateos no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateos) : " + e.toString());
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasProrrateos vigenciasProrrateos) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasProrrateos);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro VigenciasProrrateos");
+            System.out.println("No se pudo modificar el registro VigenciasProrrateos: " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasProrrateos vigenciasProrrateos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasProrrateos));
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro VigenciasProrrateos");
+            System.out.println("No se pudo borrar el registro VigenciasProrrateos: " + e.toString());
         }
     }
 
     @Override
     public List<VigenciasProrrateos> buscarVigenciasProrrateos(EntityManager em) {
-        try{
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(VigenciasProrrateos.class));
-        return em.createQuery(cq).getResultList();
-        }catch(Exception e){
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(VigenciasProrrateos.class));
+            return em.createQuery(cq).getResultList();
+        } catch (Exception e) {
             System.out.println("Error buscarVigenciasProrrateos PersistenciaVigenciasProrrateos");
-        return null;
+            return null;
         }
     }
 

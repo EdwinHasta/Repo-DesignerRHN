@@ -189,7 +189,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
-            codigo.setFilterStyle("width: 360px");
+            codigo.setFilterStyle("width: 90px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
             descripcion.setFilterStyle("width: 390px");
             estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");

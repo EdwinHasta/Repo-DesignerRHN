@@ -14,44 +14,54 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasAfiliaciones'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'VigenciasAfiliaciones' de la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasAfiliacionesInterface { 
+public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasAfiliacionesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
+            em.getTransaction().begin();
             em.persist(vigenciasAfiliaciones);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("El registro VigenciasAfiliaciones no exite o esta reservada por lo cual no puede ser modificada (VigenciasAfiliaciones)");
+            em.getTransaction().rollback();
+            System.out.println("El registro VigenciasAfiliaciones no exite o esta reservada por lo cual no puede ser modificada (VigenciasAfiliaciones) : " + e.toString());
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasAfiliaciones);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro VigenciasAfiliaciones");
+            em.getTransaction().rollback();
+            System.out.println("No se pudo modificar el registro VigenciasAfiliaciones : " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasAfiliaciones vigenciasAfiliaciones) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasAfiliaciones));
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro VigenciasAfiliaciones");
+            em.getTransaction().rollback();
+            System.out.println("No se pudo borrar el registro VigenciasAfiliaciones : " + e.toString());
         }
     }
 

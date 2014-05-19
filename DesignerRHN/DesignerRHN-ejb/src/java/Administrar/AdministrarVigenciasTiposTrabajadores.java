@@ -60,7 +60,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-    
+
     private EntityManager em;
     List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadores;
     VigenciasTiposTrabajadores vigenciaTipoTrabajador;
@@ -72,17 +72,17 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     MotivosRetiros motivoRetiroCodigo;
     List<Retirados> retiradosEmpleado;
     Retirados retiradoVigencia;
-  
+
     List<Pensionados> listaPensionados;
     List<Pensionados> listaPensionesEmpleado;
     Pensionados pensionVigencia;
-    
+
     List<Personas> listaPersonas;
     Personas persona;
-    
+
     List<TiposPensionados> tiposPensionados;
     TiposPensionados tipoPension;
-    
+
     List<ClasesPensiones> clasesPensiones;
     ClasesPensiones clasePension;
 
@@ -90,12 +90,12 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     public List<VigenciasTiposTrabajadores> vigenciasTiposTrabajadoresEmpleado(BigInteger secEmpleado) {
         try {
             vigenciasTiposTrabajadores = persistenciaVigenciasTiposTrabajadores.buscarVigenciasTiposTrabajadoresEmpleado(em, secEmpleado);
         } catch (Exception e) {
-            System.out.println("Error en Administrar Vigencias Tipos Trabajadores (vigenciasTiposTrabajadoresEmpleado)");
+            System.out.println("Error en Administrar Vigencias Tipos Trabajadores (vigenciasTiposTrabajadoresEmpleado) : " + e.toString());
             vigenciasTiposTrabajadores = null;
         }
         return vigenciasTiposTrabajadores;
@@ -119,9 +119,8 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
     public void crearVTT(VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
         try {
             persistenciaVigenciasTiposTrabajadores.crear(em, vigenciasTiposTrabajadores);
-            System.out.println("Llamo a persistencia tipo trab");
         } catch (Exception e) {
-            System.out.println("Error crearVTT AdministrarVIgenciasTipoTrabajador");
+            System.out.println("Error crearVTT AdministrarVIgenciasTipoTrabajador : " + e.toString());
         }
     }
 
@@ -132,6 +131,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             return empleado;
         } catch (Exception e) {
             empleado = null;
+            System.out.println("Error buscarEmpleado Admi : " + e.toString());
             return empleado;
         }
     }
@@ -142,6 +142,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             tiposTrabajadores = persistenciaTiposTrabajadores.buscarTiposTrabajadores(em);
             return tiposTrabajadores;
         } catch (Exception e) {
+            System.out.println("Error tiposTrabajadores Admi : " + e.toString());
             return null;
         }
     }
@@ -151,13 +152,18 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             tipoTrabajadorCodigo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigo(em, codTipoTrabajador);
             return tipoTrabajadorCodigo;
         } catch (Exception e) {
+            System.out.println("Error tipoTrabajadorCodigo Admi : " + e.toString());
             return null;
         }
     }
 
     @Override
     public void crearRetirado(Retirados retirado) {
-        persistenciaRetirados.crear(em, retirado);
+        try {
+            persistenciaRetirados.crear(em, retirado);
+        } catch (Exception e) {
+            System.out.println("Error crearRetirado Admi : " + e.toString());
+        }
     }
 
     @Override
@@ -171,7 +177,11 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
 
     @Override
     public void borrarRetirado(Retirados retirado) {
-        persistenciaRetirados.borrar(em, retirado);
+        try {
+            persistenciaRetirados.borrar(em, retirado);
+        } catch (Exception e) {
+            System.out.println("Error borrarRetirado Admi : " + e.toString());
+        }
     }
 
     @Override
@@ -180,6 +190,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             retiradosEmpleado = persistenciaRetirados.buscarRetirosEmpleado(em, secEmpleado);
             return retiradosEmpleado;
         } catch (Exception e) {
+            System.out.println("Error retiradosEmpleado Admi : " + e.toString());
             return null;
         }
     }
@@ -190,6 +201,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             retiradoVigencia = persistenciaRetirados.buscarRetiroVigenciaSecuencia(em, secVigencia);
             return retiradoVigencia;
         } catch (Exception e) {
+            System.out.println("Error retiroPorSecuenciaVigencia Admi : " + e.toString());
             return new Retirados();
         }
     }
@@ -200,6 +212,7 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             motivosRetiros = persistenciaMotivosRetiros.consultarMotivosRetiros(em);
             return motivosRetiros;
         } catch (Exception e) {
+            System.out.println("Error motivosRetiros Admi : " + e.toString());
             return null;
         }
     }
@@ -210,31 +223,30 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             motivoRetiroCodigo = persistenciaMotivosRetiros.consultarMotivoRetiro(em, codMotivoRetiro);
             return motivoRetiroCodigo;
         } catch (Exception e) {
+            System.out.println("Error motivoRetiroCodigo Admi : " + e.toString());
             return null;
         }
     }
-    
-    
+
 /////
-        
     @Override
     public List<TiposPensionados> tiposPensionados() {
         try {
             tiposPensionados = persistenciaTiposPensionados.consultarTiposPensionados(em);
             return tiposPensionados;
         } catch (Exception e) {
-            System.out.println("error tipospensionado administrarvigenciastipostrabajadores");
+            System.out.println("Error tiposPensionados Admi : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
     public List<ClasesPensiones> clasesPensiones() {
         try {
             clasesPensiones = persistenciaClasesPensiones.consultarClasesPensiones(em);
             return clasesPensiones;
         } catch (Exception e) {
-            System.out.println("error clasesPensiones administrarvigenciastipostrabajadores");
+            System.out.println("Error clasesPensiones Admi : " + e.toString());
             return null;
         }
     }
@@ -245,95 +257,89 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
             clasePension = persistenciaClasesPensiones.consultarClasePension(em, codClasePension);
             return clasePension;
         } catch (Exception e) {
-            System.out.println("Error AdministrarVigenciaTipoTrabajador clasePensionCodigo");
+            System.out.println("Error AdministrarVigenciaTipoTrabajador clasePensionCodigo : " + e.toString());
             return null;
-        }
-    }
-    
-    
-    @Override
-    public List<Personas> listaPersonas(){
-        try{
-            listaPersonas = persistenciaPersonas.consultarPersonas(em);
-            return listaPersonas;
-        }catch(Exception e){
-            System.out.println("Error listaPersonas AdministrarVigenciaTipoTrabajador");
-            return null;
-        }
-    }
-    
-    @Override
-    public Personas personaSecuencia(BigInteger secPersona){
-        try{
-            persona = persistenciaPersonas.buscarPersonaSecuencia(em, secPersona);
-            return persona;
-        }catch(Exception e){
-            System.out.println("Error personasSecuencia AdministrarVigenciaTipoTrabajador");
-            return null;
-        }
-    }
-    
-    
-        
-    @Override
-    public void crearPensionado(Pensionados pension) {
-        try{
-        persistenciaPensionados.crear(em, pension);
-        }catch(Exception e){
-            System.out.println("Error crearPensionado AdministrarVigenciaTiposTrabajadores");
         }
     }
 
-    
+    @Override
+    public List<Personas> listaPersonas() {
+        try {
+            listaPersonas = persistenciaPersonas.consultarPersonas(em);
+            return listaPersonas;
+        } catch (Exception e) {
+            System.out.println("Error listaPersonas Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Personas personaSecuencia(BigInteger secPersona) {
+        try {
+            persona = persistenciaPersonas.buscarPersonaSecuencia(em, secPersona);
+            return persona;
+        } catch (Exception e) {
+            System.out.println("Error personaSecuencia Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public void crearPensionado(Pensionados pension) {
+        try {
+            persistenciaPensionados.crear(em, pension);
+        } catch (Exception e) {
+            System.out.println("Error crearPensionado AdministrarVigenciaTiposTrabajadores : " + e.toString());
+        }
+    }
+
     @Override
     public void editarPensionado(Pensionados pension) {
         try {
             persistenciaPensionados.editar(em, pension);
         } catch (Exception e) {
-            System.out.println("Error editarPensionado AdministrarVigenciaTiposTrabajadores");
+            System.out.println("Error editarPensionado Admi : " + e.toString());
         }
     }
 
-    
     @Override
     public void borrarPensionado(Pensionados pension) {
-        try{
-        persistenciaPensionados.borrar(em, pension);
-        }catch(Exception e){
-            System.out.println("Error borrarPensionado AdministrarVigenciaTiposTrabajadores");
+        try {
+            persistenciaPensionados.borrar(em, pension);
+        } catch (Exception e) {
+            System.out.println("Error borrarPensionado Admi : " + e.toString());
         }
     }
 
-    
     @Override
     public List<Pensionados> pensionadoEmpleado(BigInteger secEmpleado) {
         try {
             listaPensionesEmpleado = persistenciaPensionados.buscarPensionadosEmpleado(em, secEmpleado);
             return listaPensionesEmpleado;
         } catch (Exception e) {
-            System.out.println("Error pensionadoEmpleado AdministrarVigenciaTiposTrabajadores");
+            System.out.println("Error pensionadoEmpleado Admi : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
     public List<Pensionados> listaPensionados() {
         try {
             listaPensionados = persistenciaPensionados.buscarPensionados(em);
             return listaPensionados;
         } catch (Exception e) {
-            System.out.println("Error listaPensionados AdministrarVigenciaTiposTrabajadores");
+            System.out.println("Error listaPensionados Admi : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
     public Pensionados pensionPorSecuenciaVigencia(BigInteger secVigencia) {
         try {
             pensionVigencia = persistenciaPensionados.buscarPensionVigenciaSecuencia(em, secVigencia);
             return pensionVigencia;
         } catch (Exception e) {
-            System.out.println("Error pensionPorSecuenciaVigencia AdministrarVigenciaTiposTrabajadores");
+            System.out.println("Error pensionPorSecuenciaVigencia Admi : " + e.toString());
             return new Pensionados();
         }
     }

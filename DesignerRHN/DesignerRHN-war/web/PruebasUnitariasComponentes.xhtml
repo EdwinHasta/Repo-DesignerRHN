@@ -11,6 +11,7 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+
                     <f:loadBundle basename="Recursos.concepto" var="msg"/>
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;" > 
@@ -126,6 +127,7 @@
                         <p:commandButton style="position: absolute; left: 800px; top: 500px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" action="#{controlConcepto.redirigir()}" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlConcepto.refrescar()}" process="@this" />
                     </p:panel>
                 </h:form>
+
                 <h:form>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlConcepto.activarCtrlF11()}"/>
                     <p:hotkey bind="alt+p" actionListener="#{controlConcepto.lovEmpresas()}"/> 

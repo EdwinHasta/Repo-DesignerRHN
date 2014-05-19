@@ -25,10 +25,10 @@
                             <legend style=" color: blue"><strong>#{msg['pendientes']}</strong></legend>
                             <!-- TABLA EMPLVACACIONESEMPLEADO -->
 
-                            <p:dataTable id="datosVacacionesPEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style=" border: 1px; text-align: left;width: 820px"                           
+                            <p:dataTable id="datosVacacionesPEmpleado"  rowIndexVar="indice" style=" border: 1px; text-align: left;width: 820px"                           
                                          value="#{controlEmplVacaPendiente.listVacaPendientes}" emptyMessage="#{msg['vacio']}"
                                          filteredValue="#{controlEmplVacaPendiente.filtrarListVacaPendientes}" scrollable="true" scrollHeight="#{controlEmplVacaPendiente.altoTabla1}" scrollWidth="820"
-                                         editable="true" editMode="cell" 
+                                         editable="true" editMode="cell" var="info" rowKey="#{info.secuencia}"
                                          selection="#{controlEmplVacaPendiente.vacaPendienteSeleccionada}" selectionMode="single">
 
                                 <p:column style="padding: 0" width="12">
@@ -36,24 +36,7 @@
 
                                     </p:commandButton>
                                 </p:column>
-                                <p:column headerText="#{msg['estado']}" style="padding: 0;"  filterMatchMode="contains" id="vacacionesEstado" width="70" filterStyle="display: none; visibility: hidden;" >                                  
-
-
-                                    <p:cellEditor>   
-                                        <f:facet name="output"><h:outputText value="#{info.estado}" style="text-transform: uppercase" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:selectOneMenu id="editarEstado" value="#{info.estado}" style="width: 99%; font-weight: bold;text-transform: uppercase; height: 18px; border-radius: 0px">  
-                                                <f:selectItem itemLabel="#{msg['cerrado']}" itemValue="CERRADO" />  
-                                                <f:selectItem itemLabel="#{msg['abierto']}" itemValue="ABIERTO" /> 
-                                                <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificacionesTablas()}" update="editarEstado"/>
-                                            </p:selectOneMenu>
-                                        </f:facet>
-                                        <f:facet name="footer">
-                                            <h:outputText value="#{msg['estado']}" />
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
-
+                               
                                 <p:column  headerText="#{msg['dp']}" sortBy="#{info.diaspendientes}" filterBy="#{info.diaspendientes}" filterMatchMode="contains" id="vacacionesDP" width="50" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.diaspendientes}"/></f:facet>  
@@ -122,7 +105,7 @@
                             <legend style=" color: blue"><strong>#{msg['disfrutadas']}</strong></legend>
                             <!-- TABLA EMPLVACACIONESEMPLEADO -->
 
-                            <p:dataTable id="datosVacacionesDEmpleado" var="info2" rowKey="#{info2.secuencia}"  rowIndexVar="indice" style=" border: 1px; text-align: left;width: 820px"                           
+                            <p:dataTable id="datosVacacionesDEmpleado" var="info2" rowKey="#{info2.secuencia}"  rowIndexVar="indice2" style=" border: 1px; text-align: left;width: 820px"                           
                                          value="#{controlEmplVacaPendiente.listVacaDisfrutadas}" filteredValue="#{controlEmplVacaPendiente.filtrarListVacaDisfrutadas}"
                                          scrollable="true"  scrollWidth="820" emptyMessage="#{msg['vacio']}" scrollHeight="#{controlEmplVacaPendiente.altoTabla2}"
                                          editable="true" editMode="cell" selection="#{controlEmplVacaPendiente.vacaDisfrutadaSeleccionada}" selectionMode="single">
@@ -152,7 +135,7 @@
                                         <f:facet name="output"><h:outputText value="#{info2.diaspendientes}"/></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{info2.diaspendientes}" id="editarDPD" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px"> 
-                                                <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2, indice, 1)}"/>
+                                                <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2, indice2, 1)}"/>
                                                 <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificacionesTablas()}" update="editarDPD"/>
                                             </p:inputText>
                                         </f:facet>  
@@ -172,9 +155,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaInicialD" value="#{info2.inicialcausacion}" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice,2)}" update="editFechaInicialD" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice,2)}" update="editFechaInicialD" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2,indice,2)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice2,2)}" update="editFechaInicialD" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice2,2)}" update="editFechaInicialD" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2,indice2,2)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -193,9 +176,9 @@
                                         </f:facet>  
                                         <f:facet name="input">
                                             <lnk:calendar id="editFechaFinalD" value="#{info2.inicialcausacion}" width="99"> 
-                                                <p:ajax event="dateSelect" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice,3)}" update="editFechaFinalD" process="@this"/>
-                                                <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice,3)}" update="editFechaFinalD" process="@this"/>
-                                                <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2,indice,3)}" process="@this"/> 
+                                                <p:ajax event="dateSelect" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice2,3)}" update="editFechaFinalD" process="@this"/>
+                                                <p:ajax event="change" listener="#{controlEmplVacaPendiente.modificarFechasDisfrutadas(2,indice2,3)}" update="editFechaFinalD" process="@this"/>
+                                                <p:ajax event="select" listener="#{controlEmplVacaPendiente.posicionTabla(2,indice2,3)}" process="@this"/> 
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
@@ -206,7 +189,7 @@
                             </p:dataTable>  
                         </fieldset> 
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show()" icon="ui-icon-check" process="@this" />
+                        <p:commandButton style="position: absolute; left: 688px; top: 478px;  " id="ACEPTAR" value="#{msg['aceptar']}" onclick="confirmarGuardar.show()" icon="ui-icon-check" process="@this" disabled="#{controlEmplVacaPendiente.guardado}"  />
                         <p:commandButton style="position: absolute; left: 15px; top: 478px;  " id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlEmplVacaPendiente.cancelarModificaciones()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 785px; top: 478px;  " id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplVacaPendiente.salir()}" action="nomina" process="@this" />
 
@@ -273,34 +256,41 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
                     </p:dialog>
+                    
+                    <p:dialog id="errorFechaContratacion" header="#{msg['atencion']}" widgetVar="errorFechaContratacion"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechaContratacion']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplVacaPendiente.activarCtrlF11()}"/> 
 
                 </h:form>
 
                 <h:form id="formExportarVP">
-                    <p:dataTable id="datosVPEmpleadoExportar" var="info" style="visibility: hidden; display: none;"
+                    <p:dataTable id="datosVPEmpleadoExportar" var="infoEXP" style="visibility: hidden; display: none;"
                                  value="#{controlEmplVacaPendiente.listVacaPendientes}"> 
                         <p:column>  
                             <f:facet name="header">
                                 <h:outputText value="#{msg['estadoVPX']}" />
                             </f:facet>
-                            <h:outputText  value="#{info.estado}">
+                            <h:outputText  value="#{infoEXP.estado}">
                             </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['diaspendientesVPXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['diaspendientesVPX']}"/> </f:facet> 
-                            <h:outputText value="#{info.diaspendientes}"/>
+                            <h:outputText value="#{infoEXP.diaspendientes}"/>
                         </p:column>  
                         <p:column headerText="#{msg['fechainicialVPXX']}">      
                             <f:facet name="header"><h:outputText value="#{msg['fechainicialVPX']}"/></f:facet>
-                            <h:outputText value="#{info.inicialcausacion}">
+                            <h:outputText value="#{infoEXP.inicialcausacion}">
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column headerText="#{msg['fechafinalVPXX']}">      
                             <f:facet name="header"><h:outputText value="#{msg['fechafinalVPX']}"/></f:facet>
-                            <h:outputText value="#{info.finalcausacion}" >
+                            <h:outputText value="#{infoEXP.finalcausacion}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
@@ -379,7 +369,7 @@
 
                         <p:panel id="nuevaVP" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['estadoVP']}" style="position: absolute; top: 60px;left: 55px;font-weight: bold;"/></strong>
+                            <strong><h:outputText value="*#{msg['estadoVP']}" style="position: absolute; top: 60px;left: 55px;font-weight: bold;"/></strong>
                             <p:selectOneMenu id="nuevaEstado" value="#{controlEmplVacaPendiente.nuevaVacacion.estado}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 55px;text-transform: uppercase" >
                                 <f:selectItem itemLabel=" " itemValue="null" />  
                                 <f:selectItem itemLabel="#{msg['cerrado']}" itemValue="CERRADO" />  
@@ -387,20 +377,20 @@
                                 <p:ajax event="change" update="nuevaEstado"/>
                             </p:selectOneMenu>
 
-                            <strong><h:outputText value="#{msg['diaspendientesVP']}" style=" position: absolute; top: 90px;left: 55px" /></strong>
+                            <strong><h:outputText value="*#{msg['diaspendientesVP']}" style=" position: absolute; top: 90px;left: 55px" /></strong>
                             <p:inputText value="#{controlEmplVacaPendiente.nuevaVacacion.diaspendientes}" id="nuevaDiasPendientes" style=" width: 93px; position: absolute; left: 200px; top: 85px;">
                                 <p:ajax event="change" update="nuevaDiasPendientes"/>
                             </p:inputText>
                             <p:watermark for="nuevaDiasPendientes" value="#{msg['diaspendientesVDX']}" />
 
-                            <strong><h:outputText value="#{msg['fechainicialVP']}" style=" position: absolute; top: 120px; left: 55px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechainicialVP']}" style=" position: absolute; top: 120px; left: 55px;" /></strong>
                             <div id="posicionFormulaFechaIniNuevoRegP" style=" position: absolute; top: 115px; left: 200px">
                                 <lnk:calendar id="nuevaFechaInicialP" value="#{controlEmplVacaPendiente.nuevaVacacion.inicialcausacion}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialP" process="@this"/>
                                     <p:ajax event="change" update="nuevaFechaInicialP" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            <strong><h:outputText value="#{msg['fechafinalVP']}" style=" position: absolute; top: 150px; left: 55px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechafinalVP']}" style=" position: absolute; top: 150px; left: 55px;" /></strong>
                             <div id="posicionFormulaFechaFinNuevoRegP" style=" position: absolute; top: 145px; left: 200px">
                                 <lnk:calendar id="nuevaFechaFinalP" value="#{controlEmplVacaPendiente.nuevaVacacion.finalcausacion}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaFinalP" process="@this"/>
@@ -419,7 +409,7 @@
 
                         <p:panel id="duplicarVP" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['estadoVP']}" style="position: absolute; top: 60px;left: 55px;font-weight: bold;"/></strong>
+                            <strong><h:outputText value="*#{msg['estadoVP']}" style="position: absolute; top: 60px;left: 55px;font-weight: bold;"/></strong>
                             <p:selectOneMenu id="duplicarEstado" value="#{controlEmplVacaPendiente.duplicarVacacion.estado}" style="position: absolute;width: 100px; font-weight: bold;left: 200px;top: 55px;text-transform: uppercase" >
                                 <f:selectItem itemLabel=" " itemValue="null" />  
                                 <f:selectItem itemLabel="#{msg['cerrado']}" itemValue="CERRADO" />  
@@ -427,20 +417,20 @@
                                 <p:ajax event="change" update="duplicarEstado"/>
                             </p:selectOneMenu>
 
-                            <strong><h:outputText value="#{msg['diaspendientesVP']}" style=" position: absolute; top: 90px;left: 55px" /></strong>
+                            <strong><h:outputText value="*#{msg['diaspendientesVP']}" style=" position: absolute; top: 90px;left: 55px" /></strong>
                             <p:inputText value="#{controlEmplVacaPendiente.duplicarVacacion.diaspendientes}" id="duplicarDiasPendientes" style="  width: 93px; position: absolute; left: 200px; top: 85px;">
                                 <p:ajax event="change" update="duplicarDiasPendientes"/>
                             </p:inputText>
                             <p:watermark for="duplicarDiasPendientes" value="#{msg['diaspendientesVDX']}" />
 
-                            <strong><h:outputText value="#{msg['fechainicialVP']}" style=" position: absolute; top: 120px; left: 55px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechainicialVP']}" style=" position: absolute; top: 120px; left: 55px;" /></strong>
                             <div id="posicionFormulaFechaIniDuplicarRegP" style=" position: absolute; top: 115px; left: 200px">
                                 <lnk:calendar id="duplicarFechaInicialP" value="#{controlEmplVacaPendiente.duplicarVacacion.inicialcausacion}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaInicialP" process="@this"/>
                                     <p:ajax event="change" update="duplicarFechaInicialP" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            <strong><h:outputText value="#{msg['fechafinalVP']}" style=" position: absolute; top: 150px; left: 55px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechafinalVP']}" style=" position: absolute; top: 150px; left: 55px;" /></strong>
                             <div id="posicionFormulaFechaFinDuplicarRegP" style=" position: absolute; top: 145px; left: 200px">
                                 <lnk:calendar id="duplicarFechaFinalP" value="#{controlEmplVacaPendiente.duplicarVacacion.finalcausacion}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaFinalP" process="@this"/>

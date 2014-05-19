@@ -13,21 +13,23 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposDescansos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposDescansos' de la
+ * base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface{
+public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInterface {
 
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, TiposDescansos tiposDescansos) {
         try {
+            em.getTransaction().begin();
             em.persist(tiposDescansos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaTiposDescansos");
         }
@@ -36,7 +38,9 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     @Override
     public void editar(EntityManager em, TiposDescansos tiposDescansos) {
         try {
+            em.getTransaction().begin();
             em.merge(tiposDescansos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaTiposDescansos");
         }
@@ -45,7 +49,9 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
     @Override
     public void borrar(EntityManager em, TiposDescansos tiposDescansos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(tiposDescansos));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaTiposDescansos");
         }
@@ -80,7 +86,7 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
             return tiposDescansos;
         }
     }
-    
+
     public BigInteger contarVigenciasJornadasTipoDescanso(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {

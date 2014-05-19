@@ -201,7 +201,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         altoTabla = "116";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -209,11 +209,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciasTiposTrabajadores.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //EMPLEADO DE LA VIGENCIA
     /**
      * Metodo que recibe la secuencia empleado desde la pagina anterior y
@@ -1205,6 +1205,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:TipoTrabajadorDialogo");
+        context.update("form:lovTipoTrabajador");
+        context.update("form:aceptarTT");
+        context.execute("TipoTrabajadorDialogo.hide()");
     }
 
     /**
@@ -1648,6 +1652,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         index = -1;
         secRegistro = null;
         motivoRetiroSeleccionado = null;
+        context.update("form:RetirosDialogo");
+        context.update("form:lovMotivosRetiros");
+        context.update("form:aceptarMR");
+        context.execute("RetirosDialogo.hide()");
     }
 
     /**
@@ -1685,6 +1693,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         clasesPensionesFiltrado = null;
         clasesPensionesSeleccionada = null;
+        context.update("form:clasePensionDialogo");
+        context.update("form:lovClasePension");
+        context.update("form:aceptarCP");
+        context.execute("clasePensionDialogo.hide()");
     }
 
     /**
@@ -1724,6 +1736,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         tiposPensionadosSeleccionada = null;
         tiposPensionadosFiltrado = null;
+        context.update("form:tipoPensionadoDialogo");
+        context.update("form:lovTipoPensionado");
+        context.update("form:aceptarTP");
+        context.execute("tipoPensionadoDialogo.hide()");
     }
 
     /**
@@ -1763,6 +1779,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         pensionadoSeleccionado = null;
         pensionadosFiltrado = null;
+        context.update("form:causaBientesDialogo");
+        context.update("form:lovCausaBientes");
+        context.update("form:aceptarCB");
+        context.execute("causaBientesDialogo.hide()");
     }
 
     /**
@@ -1802,6 +1822,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         personasFiltrado = null;
         personaSeleccionada = null;
+        context.update("form:tutorDialogo");
+        context.update("form:lovTutor");
+        context.update("form:aceptarT");
+        context.execute("tutorDialogo.hide()");
     }
 
     /**
@@ -2044,21 +2068,14 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         index = -1;
     }
 
-    //GETTERS AND SETTERS
-    /**
-     * Metodo que obtiene las VigenciasTiposTrabajadores, en caso de ser null
-     * hace el llamado a el administrar y obtiene los datos de las
-     * VigenenciasTiposTrabajadores
-     *
-     * @return listVTT Lista de VigenciasTiposTrabajadores
-     */
     public List<VigenciasTiposTrabajadores> getVigenciasTiposTrabajadoresEmpleado() {
         try {
             if (vigenciasTiposTrabajadores == null) {
-                return vigenciasTiposTrabajadores = administrarVigenciasTiposTrabajadores.vigenciasTiposTrabajadoresEmpleado(empleado.getSecuencia());
-            } else {
-                return vigenciasTiposTrabajadores;
+                if (empleado != null) {
+                    return vigenciasTiposTrabajadores = administrarVigenciasTiposTrabajadores.vigenciasTiposTrabajadoresEmpleado(empleado.getSecuencia());
+                }
             }
+            return vigenciasTiposTrabajadores;
         } catch (Exception e) {
             System.out.println("Error...!! getVigenciasTiposTrabajadoresEmpleado ");
             return null;
@@ -2069,12 +2086,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         this.vigenciasTiposTrabajadores = vigenciasTiposTrabajadores;
     }
 
-    /**
-     * Metodo que obtiene el empleado que se esta manejando en el momento, en
-     * caso de ser null lo obtiene por medio del administrar
-     *
-     * @return empl Empleado que esta en manejo en el momento
-     */
     public Empleados getEmpleado() {
         return empleado;
     }
@@ -2099,16 +2110,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         return aceptar;
     }
 
-    /**
-     * Metodo que obtiene los tipos trabajadores, en caso de ser null hace el
-     * llamado al administrar y los obtiene
-     *
-     * @return listTT Lista de TiposTrabajadores
-     */
     public List<TiposTrabajadores> getListaTiposTrabajadores() {
-        if (listaTiposTrabajadores.isEmpty()) {
-            listaTiposTrabajadores = administrarVigenciasTiposTrabajadores.tiposTrabajadores();
-        }
+        listaTiposTrabajadores = administrarVigenciasTiposTrabajadores.tiposTrabajadores();
         return listaTiposTrabajadores;
     }
 
@@ -2156,16 +2159,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         this.retiroVigencia = retiroVigencia;
     }
 
-    /**
-     * Metodo que obtiene los motivos retiros, en caso de ser null obtiene los
-     * datos por medio del administrar
-     *
-     * @return listMR Lista Motivos Retiros
-     */
     public List<MotivosRetiros> getMotivosRetiros() {
-        if (motivosRetiros.isEmpty()) {
-            motivosRetiros = administrarVigenciasTiposTrabajadores.motivosRetiros();
-        }
+        motivosRetiros = administrarVigenciasTiposTrabajadores.motivosRetiros();
         return motivosRetiros;
     }
 
@@ -2181,17 +2176,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         this.motivoRetiroSeleccionado = motivoRetiroSeleccionado;
     }
 
-    /////////////////////
-    /**
-     * Metodo que obtiene los pensionados, en caso de ser null obtiene los datos
-     * por medio del administrar
-     *
-     * @return listP Lista Pensionados
-     */
     public List<Pensionados> getListaPensionados() {
-        if (listaPensionados.isEmpty()) {
-            listaPensionados = administrarVigenciasTiposTrabajadores.listaPensionados();
-        }
+        listaPensionados = administrarVigenciasTiposTrabajadores.listaPensionados();
         return listaPensionados;
     }
 
@@ -2208,9 +2194,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<Personas> getListaPersonas() {
-        if (listaPersonas.isEmpty()) {
-            listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
-        }
+
+        listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
+
         return listaPersonas;
     }
 
@@ -2226,16 +2212,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         this.personaSeleccionada = personaSeleccionada;
     }
 
-    /**
-     * Metodo que obtiene las Clases Pensiones, en caso de ser null obtiene los
-     * datos por medio del administrar
-     *
-     * @return listCP Lista Clases Pensiones
-     */
     public List<ClasesPensiones> getClasesPensiones() {
-        if (clasesPensiones.isEmpty()) {
-            clasesPensiones = administrarVigenciasTiposTrabajadores.clasesPensiones();
-        }
+        clasesPensiones = administrarVigenciasTiposTrabajadores.clasesPensiones();
         return clasesPensiones;
     }
 
@@ -2251,16 +2229,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         this.clasesPensionesSeleccionada = clasesPensionesSeleccionada;
     }
 
-    /**
-     * Metodo que obtiene los Tipos Pensionados, en caso de ser null obtiene los
-     * datos por medio del administrar
-     *
-     * @return listTP Lista Tipos Pensionados
-     */
     public List<TiposPensionados> getTiposPensionados() {
-        if (tiposPensionados.isEmpty()) {
-            tiposPensionados = administrarVigenciasTiposTrabajadores.tiposPensionados();
-        }
+        tiposPensionados = administrarVigenciasTiposTrabajadores.tiposPensionados();
         return tiposPensionados;
     }
 
@@ -2333,6 +2303,13 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public VigenciasTiposTrabajadores getVigenciaSeleccionada() {
+        getVigenciasTiposTrabajadoresEmpleado();
+        if (vigenciasTiposTrabajadores != null) {
+            int tam = vigenciasTiposTrabajadores.size();
+            if (tam > 0) {
+                vigenciaSeleccionada = vigenciasTiposTrabajadores.get(0);
+            }
+        }
         return vigenciaSeleccionada;
     }
 

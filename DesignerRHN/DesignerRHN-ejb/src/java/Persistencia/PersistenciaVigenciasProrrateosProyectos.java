@@ -14,44 +14,51 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasProrrateosProyectos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'VigenciasProrrateosProyectos' de la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVigenciasProrrateosProyectosInterface{
+public class PersistenciaVigenciasProrrateosProyectos implements PersistenciaVigenciasProrrateosProyectosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
+            em.getTransaction().begin();
             em.persist(vigenciasProrrateosProyectos);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("El registro VigenciasProrrateosProyectos no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateosProyectos)");
+            System.out.println("El registro VigenciasProrrateosProyectos no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateosProyectos) : " + e.toString());
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasProrrateosProyectos);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro VigenciasProrrateosProyectos");
+            System.out.println("No se pudo modificar el registro VigenciasProrrateosProyectos : " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasProrrateosProyectos vigenciasProrrateosProyectos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasProrrateosProyectos));
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro VigenciasProrrateosProyectos");
+            System.out.println("No se pudo borrar el registro VigenciasProrrateosProyectos : " + e.toString());
         }
     }
 

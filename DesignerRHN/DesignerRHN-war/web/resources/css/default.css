@@ -223,3 +223,14 @@ a:link:hover, a:visited:hover  {
 textarea {
     resize: none;
 }
+
+/*TABVIEW BUSQUEDA AVANZADA*/
+
+.tabViewPrincipal{
+    tab-size: 300;
+    color: red;
+}
+
+.tabViewModulos{
+    direction: ltr;
+}

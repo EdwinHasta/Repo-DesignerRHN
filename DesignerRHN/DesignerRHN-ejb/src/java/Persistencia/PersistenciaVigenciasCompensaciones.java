@@ -31,7 +31,9 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public void crear(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
         try {
-            em.persist(vigenciasCompensaciones);
+            em.getTransaction().begin();
+            em.merge(vigenciasCompensaciones);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("El registro VigenciasCompensaciones no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateos)");
         }
@@ -40,7 +42,9 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public void editar(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasCompensaciones);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("No se pudo modificar el registro VigenciasCompensaciones");
         }
@@ -49,7 +53,9 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
     @Override
     public void borrar(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasCompensaciones));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("No se pudo borrar el registro VigenciasCompensaciones");
         }

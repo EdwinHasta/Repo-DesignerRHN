@@ -37,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "VigenciasLocalizaciones.findBySecuencia", query = "SELECT v FROM VigenciasLocalizaciones v WHERE v.secuencia = :secuencia"),
     @NamedQuery(name = "VigenciasLocalizaciones.findByFechavigencia", query = "SELECT v FROM VigenciasLocalizaciones v WHERE v.fechavigencia = :fechavigencia")})
 public class VigenciasLocalizaciones implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "vigencialocalizacion")
     private Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "viglocalizacion")
@@ -52,7 +53,7 @@ public class VigenciasLocalizaciones implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigencia;
     @JoinColumn(name = "PROYECTO", referencedColumnName = "SECUENCIA")
-    @ManyToOne
+    @ManyToOne(optional = true)
     private Proyectos proyecto;
     @JoinColumn(name = "MOTIVO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
@@ -93,12 +94,7 @@ public class VigenciasLocalizaciones implements Serializable {
     }
 
     public Proyectos getProyecto() {
-        if(proyecto == null){
-            proyecto = new Proyectos();
-            return proyecto;
-        }else{
-            return proyecto;
-        }
+        return proyecto;
     }
 
     public void setProyecto(Proyectos proyecto) {
@@ -171,5 +167,5 @@ public class VigenciasLocalizaciones implements Serializable {
     public void setVigenciasprorrateosproyectosCollection(Collection<VigenciasProrrateosProyectos> vigenciasprorrateosproyectosCollection) {
         this.vigenciasprorrateosproyectosCollection = vigenciasprorrateosproyectosCollection;
     }
-    
+
 }

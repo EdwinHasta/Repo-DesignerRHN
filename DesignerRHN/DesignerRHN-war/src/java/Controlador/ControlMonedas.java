@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlMonedas implements Serializable {
     private Monedas nuevoMoneda;
     private Monedas duplicarMoneda;
     private Monedas editarMoneda;
+    private Monedas monedaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +61,8 @@ public class ControlMonedas implements Serializable {
     private String mensajeValidacion;
     private BigInteger proyectos;
     private String a;
+    private String backUpCodigo;
+    private String backUpMoneda;
 
     public ControlMonedas() {
         listMonedas = null;
@@ -71,6 +75,7 @@ public class ControlMonedas implements Serializable {
         duplicarMoneda = new Monedas();
         a = null;
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -100,6 +105,20 @@ public class ControlMonedas implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listMonedas.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarMonedas.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listMonedas.get(index).getNombre();
+                } else {
+                    backUpCodigo = filtrarMonedas.get(index).getNombre();
+                }
+            }
             secRegistro = listMonedas.get(index).getSecuencia();
 
         }
@@ -133,10 +152,11 @@ public class ControlMonedas implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMoneda:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMoneda:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMoneda");
             bandera = 0;
@@ -159,20 +179,21 @@ public class ControlMonedas implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
 
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMoneda:codigo");
+            codigo.setFilterStyle("width: 200px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMoneda:descripcion");
+            descripcion.setFilterStyle("width: 200px");
             RequestContext.getCurrentInstance().update("form:datosMoneda");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMoneda:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMoneda:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMoneda");
             bandera = 0;
@@ -194,9 +215,10 @@ public class ControlMonedas implements Serializable {
             System.err.println("ENTRE A MODIFICAR IDIOMA, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearMonedas.contains(listMonedas.get(indice))) {
-                    if (listMonedas.get(indice).getCodigo().isEmpty()) {
+                    if (listMonedas.get(indice).getCodigo().isEmpty() || listMonedas.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMonedas.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMonedas.size(); j++) {
                             if (j != indice) {
@@ -208,6 +230,7 @@ public class ControlMonedas implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listMonedas.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
@@ -216,8 +239,11 @@ public class ControlMonedas implements Serializable {
                     if (listMonedas.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMonedas.get(indice).setNombre(backUpMoneda);
+
                     }
                     if (listMonedas.get(indice).getNombre().equals(" ")) {
+                        listMonedas.get(indice).setNombre(backUpMoneda);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -235,7 +261,52 @@ public class ControlMonedas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listMonedas.get(indice).getCodigo().isEmpty() || listMonedas.get(indice).getCodigo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMonedas.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMonedas.size(); j++) {
+                            if (j != indice) {
+                                if (listMonedas.get(indice).getCodigo().equals(listMonedas.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listMonedas.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listMonedas.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMonedas.get(indice).setNombre(backUpMoneda);
+
+                    }
+                    if (listMonedas.get(indice).getNombre().equals(" ")) {
+                        listMonedas.get(indice).setNombre(backUpMoneda);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -243,9 +314,10 @@ public class ControlMonedas implements Serializable {
             } else {
 
                 if (!crearMonedas.contains(filtrarMonedas.get(indice))) {
-                    if (filtrarMonedas.get(indice).getCodigo() == a) {
+                    if (filtrarMonedas.get(indice).getCodigo().isEmpty() || filtrarMonedas.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarMonedas.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMonedas.size(); j++) {
                             if (j != indice) {
@@ -254,14 +326,9 @@ public class ControlMonedas implements Serializable {
                                 }
                             }
                         }
-                        for (int j = 0; j < filtrarMonedas.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarMonedas.get(indice).getCodigo() == filtrarMonedas.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         if (contador > 0) {
+                            filtrarMonedas.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -271,10 +338,12 @@ public class ControlMonedas implements Serializable {
                     }
 
                     if (filtrarMonedas.get(indice).getNombre().isEmpty()) {
+                        filtrarMonedas.get(indice).setNombre(backUpMoneda);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (filtrarMonedas.get(indice).getNombre().equals(" ")) {
+                        filtrarMonedas.get(indice).setNombre(backUpMoneda);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -292,7 +361,53 @@ public class ControlMonedas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarMonedas.get(indice).getCodigo().isEmpty() || filtrarMonedas.get(indice).getCodigo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarMonedas.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMonedas.size(); j++) {
+                            if (j != indice) {
+                                if (listMonedas.get(indice).getCodigo() == listMonedas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            filtrarMonedas.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarMonedas.get(indice).getNombre().isEmpty()) {
+                        filtrarMonedas.get(indice).setNombre(backUpMoneda);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (filtrarMonedas.get(indice).getNombre().equals(" ")) {
+                        filtrarMonedas.get(indice).setNombre(backUpMoneda);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -423,6 +538,9 @@ public class ControlMonedas implements Serializable {
             listMonedas = null;
             context.update("form:datosMoneda");
             k = 0;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             guardado = true;
         }
         index = -1;
@@ -463,8 +581,8 @@ public class ControlMonedas implements Serializable {
 
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoMoneda.getCodigo() == (null)) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+        if (nuevoMoneda.getCodigo().equals(null) || nuevoMoneda.getCodigo().equals(" ") || nuevoMoneda.getCodigo().isEmpty()) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMoneda.getCodigo());
@@ -484,8 +602,8 @@ public class ControlMonedas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoMoneda.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Moneda \n";
+        if (nuevoMoneda.getNombre() == (null) || nuevoMoneda.getNombre().equals(" ") || nuevoMoneda.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Moneda \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -498,11 +616,12 @@ public class ControlMonedas implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMoneda:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMoneda:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMoneda");
                 bandera = 0;
@@ -581,12 +700,12 @@ public class ControlMonedas implements Serializable {
         System.err.println("ConfirmarDuplicar codigo " + duplicarMoneda.getCodigo());
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarMoneda.getNombre());
 
-        if (duplicarMoneda.getCodigo() == a) {
+        if (duplicarMoneda.getCodigo() == null || duplicarMoneda.getCodigo().equals(" ") || duplicarMoneda.getCodigo().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMonedas.size(); x++) {
-                if (listMonedas.get(x).getCodigo() == duplicarMoneda.getCodigo()) {
+                if (listMonedas.get(x).getCodigo().equals(duplicarMoneda.getCodigo())) {
                     duplicados++;
                 }
             }
@@ -599,7 +718,7 @@ public class ControlMonedas implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMoneda.getNombre().isEmpty()) {
+        if (duplicarMoneda.getNombre().isEmpty() || duplicarMoneda.getNombre().equals(" ") || duplicarMoneda.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un Moneda \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -624,10 +743,11 @@ public class ControlMonedas implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMoneda:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMoneda:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMoneda:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMoneda");
                 bandera = 0;
@@ -783,6 +903,14 @@ public class ControlMonedas implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public Monedas getMonedaSeleccionada() {
+        return monedaSeleccionada;
+    }
+
+    public void setMonedaSeleccionada(Monedas monedaSeleccionada) {
+        this.monedaSeleccionada = monedaSeleccionada;
     }
 
 }

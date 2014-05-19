@@ -30,20 +30,25 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, NormasLaborales normasLaborales) {
+        em.getTransaction().begin();
         em.persist(normasLaborales);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, NormasLaborales normasLaborales) {
+        em.getTransaction().begin();
         em.merge(normasLaborales);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, NormasLaborales normasLaborales) {
+        em.getTransaction().begin();
         em.remove(em.merge(normasLaborales));
+        em.getTransaction().commit();
     }
 
     @Override

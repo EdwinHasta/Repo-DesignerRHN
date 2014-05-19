@@ -28,20 +28,25 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, MetodosPagos metodosPagos) {
+        em.getTransaction().begin();
         em.persist(metodosPagos);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, MetodosPagos metodosPagos) {
+        em.getTransaction().begin();
         em.merge(metodosPagos);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, MetodosPagos metodosPagos) {
+        em.getTransaction().begin();
         em.remove(em.merge(metodosPagos));
+        em.getTransaction().commit();
     }
 
     @Override

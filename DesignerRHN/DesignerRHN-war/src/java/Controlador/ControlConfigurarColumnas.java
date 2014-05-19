@@ -30,11 +30,12 @@ public class ControlConfigurarColumnas implements Serializable {
 
     @EJB
     AdministrarConfigurarColumnasInterface administrarConfigurarColumnas;
-    
+
     //Columnas Escenarios
     private List<ColumnasEscenarios> listaColumnasEscenarios;
     private List<ColumnasEscenarios> filtrarListaColumnasEscenarios;
     private List<ColumnasEscenarios> listaRespaldoColumnasEscenarios;
+    private ColumnasEscenarios columnaSeleccionada;
     //LOV
     private List<ColumnasEscenarios> lovColumnasEscenarios;
     private ColumnasEscenarios columnaEscenarioSeleccionada;
@@ -75,7 +76,7 @@ public class ControlConfigurarColumnas implements Serializable {
         guardado = true;
         permitirIndex = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -83,7 +84,7 @@ public class ControlConfigurarColumnas implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarConfigurarColumnas.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -195,13 +196,14 @@ public class ControlConfigurarColumnas implements Serializable {
         }
         tipoActualizacion = -1;
         index = -1;
-        if(listaRespaldoColumnasEscenarios == null){
+        if (listaRespaldoColumnasEscenarios == null) {
             listaRespaldoColumnasEscenarios = new ArrayList<ColumnasEscenarios>();
         }
         listaColumnasEscenarios = listaRespaldoColumnasEscenarios;
         guardado = true;
         lovColumnasEscenarios.clear();
         getLovColumnasEscenarios();
+        getColumnaSeleccionada();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosConfigurarColumna");
     }
@@ -339,7 +341,13 @@ public class ControlConfigurarColumnas implements Serializable {
         aceptar = true;
         index = -1;
         tipoActualizacion = -1;
-        eliminarColumnasCargadas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosConfigurarColumna");
+        context.update("form:ColumnaEscenarioDialogo");
+        context.update("form:lovColumnaEscenario");
+        context.update("form:aceptarCE");
+        context.execute("ColumnaEscenarioDialogo.hide()");
+        //eliminarColumnasCargadas();
     }
 
     /**
@@ -436,9 +444,7 @@ public class ControlConfigurarColumnas implements Serializable {
     }
 
     public List<ColumnasEscenarios> getLovColumnasEscenarios() {
-        if (lovColumnasEscenarios.isEmpty()) {
-            lovColumnasEscenarios = administrarConfigurarColumnas.listaColumnasEscenarios();
-        }
+        lovColumnasEscenarios = administrarConfigurarColumnas.listaColumnasEscenarios();
         return lovColumnasEscenarios;
     }
 
@@ -476,6 +482,21 @@ public class ControlConfigurarColumnas implements Serializable {
 
     public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
+    }
+
+    public ColumnasEscenarios getColumnaSeleccionada() {
+        getListaColumnasEscenarios();
+        if (listaColumnasEscenarios != null) {
+            int tam = listaColumnasEscenarios.size();
+            if (tam > 0) {
+                columnaSeleccionada = listaColumnasEscenarios.get(0);
+            }
+        }
+        return columnaSeleccionada;
+    }
+
+    public void setColumnaSeleccionada(ColumnasEscenarios columnaSeleccionada) {
+        this.columnaSeleccionada = columnaSeleccionada;
     }
 
 }
