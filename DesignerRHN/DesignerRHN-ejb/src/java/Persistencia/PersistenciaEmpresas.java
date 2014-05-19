@@ -25,11 +25,10 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Empresas empresas) {
+    public void crear(EntityManager em, Empresas empresas) {
         try {
             em.persist(empresas);
         } catch (Exception e) {
@@ -38,7 +37,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public void editar(EntityManager em,Empresas empresas) {
+    public void editar(EntityManager em, Empresas empresas) {
         try {
             em.merge(empresas);
         } catch (Exception e) {
@@ -47,7 +46,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public void borrar(EntityManager em,Empresas empresas) {
+    public void borrar(EntityManager em, Empresas empresas) {
         em.remove(em.merge(empresas));
     }
 
@@ -65,7 +64,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public Empresas buscarEmpresasSecuencia(EntityManager em,BigInteger secuencia) {
+    public Empresas buscarEmpresasSecuencia(EntityManager em, BigInteger secuencia) {
         Empresas empresas;
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia = :secuencia");
@@ -81,7 +80,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     }
 
     @Override
-    public String estadoConsultaDatos(EntityManager em,BigInteger secuenciaEmpresa) {
+    public String estadoConsultaDatos(EntityManager em, BigInteger secuenciaEmpresa) {
         try {
             Query query = em.createQuery("SELECT e.barraconsultadatos FROM Empresas e WHERE e.secuencia = :secuenciaEmpresa");
             query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
@@ -143,7 +142,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     public List<Empresas> consultarEmpresas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT e FROM Empresas e");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");            
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Empresas> empresas = query.getResultList();
             return empresas;
         } catch (Exception e) {
@@ -156,8 +155,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     public String consultarPrimeraEmpresa(EntityManager em) {
         try {
             String retorno = "";
-            Query query = em.createQuery("SELECT e FROM Empresas e WHERE ROWNUM=1");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Query query = em.createNativeQuery("SELECT * FROM Empresas e WHERE ROWNUM=1", Empresas.class);
             Empresas empresa = (Empresas) query.getSingleResult();
             if (empresa != null) {
                 String sqlQuery = "call EMPRESAS_PKG.RETENCIONYSEGSOCXPERSONA(?)";
@@ -176,6 +174,18 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         } catch (Exception e) {
             System.out.println("Error consultarPrimeraEmpresa PersistenciaEmpresas : " + e.toString());
             return "N";
+        }
+    }
+
+    @Override
+    public Empresas consultarPrimeraEmpresaSinPaquete(EntityManager em) {
+        try {
+            Query query = em.createNativeQuery("SELECT * FROM Empresas e WHERE ROWNUM=1", Empresas.class);
+            Empresas empresa = (Empresas) query.getSingleResult();
+            return empresa;
+        } catch (Exception e) {
+            System.out.println("Error consultarPrimeraEmpresaSinPaquete PersistenciaEmpresas : " + e.toString());
+            return null;
         }
     }
 }

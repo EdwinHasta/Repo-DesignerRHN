@@ -8,6 +8,9 @@ package Controlador;
 import Entidades.ActualUsuario;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.annotation.PostConstruct;
@@ -17,6 +20,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -33,6 +38,8 @@ public class ControlTemplate implements Serializable {
 
     private ActualUsuario actualUsuario;
     private String nombreUsuario, fotoUsuario;
+    private StreamedContent logoEmpresa;
+    private FileInputStream fis;
 
     public ControlTemplate() {
     }
@@ -44,19 +51,6 @@ public class ControlTemplate implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTemplate.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
-            /*if (resultado == false) {
-             try {
-             System.out.println("Paso 0 ");
-             ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-             System.out.println("Paso 1 ");
-             ec.invalidateSession();
-             System.out.println("Paso 2 ");
-             ec.redirect(ec.getRequestContextPath() + "/iniciored.xhtml");
-             System.out.println("Paso 3 ");
-             } catch (IOException e) {
-             System.out.println("Error: (AdministrarTemplate.obtenerConexion): " + e);
-             }
-             }*/
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlTemplate: " + e);
             System.out.println("Causa: " + e.getCause());
@@ -64,20 +58,18 @@ public class ControlTemplate implements Serializable {
     }
 
     public void informacionUsuario() {
-        /*try {
-            validarSession();
-        } catch (IOException e) {
-            System.out.println("mierdaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa!");
-        }*/
         actualUsuario = administrarTemplate.consultarActualUsuario();
         if (actualUsuario != null) {
             nombreUsuario = actualUsuario.getPersona().getNombreCompleto();
-            fotoUsuario = "Imagenes\\Fotos_Usuarios\\" + actualUsuario.getAlias() + ".jpg";
+            fotoUsuario = "Imagenes//Fotos_Usuarios//" + actualUsuario.getAlias() + ".png";
             System.out.println("fotoUsuario : " + fotoUsuario);
         }
     }
 
     public void cerrarSession() throws IOException {
+        FacesContext x = FacesContext.getCurrentInstance();
+        HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+        administrarTemplate.cerrarSession(ses.getId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.invalidateSession();
         ec.redirect(ec.getRequestContextPath() + "/iniciored.xhtml");
@@ -107,6 +99,24 @@ public class ControlTemplate implements Serializable {
             informacionUsuario();
         }
         return fotoUsuario;
+    }
+
+    public StreamedContent getLogoEmpresa() {
+        obtenerEmpresaLogo();
+        return logoEmpresa;
+    }
+
+    public void obtenerEmpresaLogo() {
+        String rutaFoto = administrarTemplate.logoEmpresa();
+        if (rutaFoto != null) {
+            try {
+                fis = new FileInputStream(new File(rutaFoto));
+                logoEmpresa = new DefaultStreamedContent(fis, "image/png");
+            } catch (IOException e) {
+                logoEmpresa = null;
+                System.out.println("Logo de la empresa no encontrado para el template. \n" + e);
+            }
+        }
     }
 
 }
