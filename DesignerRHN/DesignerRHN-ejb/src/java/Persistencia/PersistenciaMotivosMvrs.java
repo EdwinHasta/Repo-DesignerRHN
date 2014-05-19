@@ -14,13 +14,15 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosMvrs'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosMvrs' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -29,17 +31,23 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
 
     @Override
     public void crear(EntityManager em, Motivosmvrs motivosMvrs) {
+        em.getTransaction().begin();
         em.persist(motivosMvrs);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, Motivosmvrs motivosMvrs) {
+        em.getTransaction().begin();
         em.merge(motivosMvrs);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, Motivosmvrs motivosMvrs) {
+        em.getTransaction().begin();
         em.remove(em.merge(motivosMvrs));
+        em.getTransaction().commit();
     }
 
     @Override

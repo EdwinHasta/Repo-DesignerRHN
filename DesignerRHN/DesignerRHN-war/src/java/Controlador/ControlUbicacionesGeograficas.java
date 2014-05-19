@@ -61,7 +61,6 @@ public class ControlUbicacionesGeograficas implements Serializable {
     private int indiceEmpresaMostrada;
 //LISTA CENTRO COSTO
     private List<UbicacionesGeograficas> listUbicacionesGeograficasPorEmpresa;
-    private List<UbicacionesGeograficas> listUbicacionesGeograficasPorEmpresaBoton;
     private List<UbicacionesGeograficas> filtrarUbicacionesGeograficas;
     private List<UbicacionesGeograficas> crearUbicacionesGeograficas;
     private List<UbicacionesGeograficas> modificarUbicacionesGeograficas;
@@ -124,6 +123,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
         tamano = 270;
     }
 
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -148,8 +148,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
         }
     }
 
-
-     public void cambiarIndice(int indice, int celda) {
+    public void cambiarIndice(int indice, int celda) {
         System.err.println("BETA CENTRO COSTO TIPO LISTA = " + tipoLista);
         System.err.println("PERMITIR INDEX = " + permitirIndex);
 

@@ -25,10 +25,9 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposPensionados tiposPensionados) {
         try {
@@ -36,14 +35,17 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             em.persist(tiposPensionados);
             em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposPensionados e : "+e);
+            System.out.println("Error crear PersistenciaTiposPensionados e : " + e);
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposPensionados tiposPensionados) {
         try {
+            em.getTransaction().begin();
             em.merge(tiposPensionados);
+            em.getTransaction().commit();
+
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaTiposPensionados");
         }
@@ -52,7 +54,10 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     @Override
     public void borrar(EntityManager em, TiposPensionados tiposPensionados) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(tiposPensionados));
+            em.getTransaction().commit();
+
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaTiposPensionados");
         }
@@ -68,7 +73,7 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
             List<TiposPensionados> listaTiposPensionados = query.getResultList();
             return listaTiposPensionados;
         } catch (Exception e) {
-            System.out.println("Error buscarTiposPensionados PersistenciaTiposPensionados e = "+e);
+            System.out.println("Error buscarTiposPensionados PersistenciaTiposPensionados e = " + e);
             return null;
         }
     }

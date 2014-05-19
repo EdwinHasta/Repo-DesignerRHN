@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +47,7 @@ public class ControlMotivosMvrs implements Serializable {
     private Motivosmvrs nuevoMotivoMvr;
     private Motivosmvrs duplicarMotivosMvrs;
     private Motivosmvrs editarMotivosMvrs;
+    private Motivosmvrs motivoMvrSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +61,9 @@ public class ControlMotivosMvrs implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
     private Long borradoVC;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+    private int tamano;
 
     public ControlMotivosMvrs() {
         listMotivosMvrs = null;
@@ -69,7 +74,9 @@ public class ControlMotivosMvrs implements Serializable {
         editarMotivosMvrs = new Motivosmvrs();
         nuevoMotivoMvr = new Motivosmvrs();
         duplicarMotivosMvrs = new Motivosmvrs();
+        tamano = 270;
     }
+
 
     @PostConstruct
     public void inicializarAdministrador() {
@@ -100,8 +107,23 @@ public class ControlMotivosMvrs implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listMotivosMvrs.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarMotivosMvrs.get(index).getCodigo();
+                }
+                System.out.println("BACKUPCODIGO " + backUpCodigo);
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listMotivosMvrs.get(index).getNombre();
+                } else {
+                    backUpDescripcion = filtrarMotivosMvrs.get(index).getNombre();
+                }
+                System.out.println("BACKUPDESCRIPCION " + backUpDescripcion);
+            }
             secRegistro = listMotivosMvrs.get(index).getSecuencia();
-
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -133,10 +155,11 @@ public class ControlMotivosMvrs implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivoMvr");
             bandera = 0;
@@ -155,23 +178,26 @@ public class ControlMotivosMvrs implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMotivoMvr");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:codigo");
             codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosMotivoMvr");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivoMvr");
             bandera = 0;
@@ -186,10 +212,10 @@ public class ControlMotivosMvrs implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Short a;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        System.err.println("TIPO LISTA = " + tipoLista);
+        System.err.println("TIPO LISTA = " + tipoLista + " INDICE : " + indice);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR Motivos Mvrs, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
@@ -197,6 +223,7 @@ public class ControlMotivosMvrs implements Serializable {
                     if (listMotivosMvrs.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosMvrs.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMotivosMvrs.size(); j++) {
                             if (j != indice) {
@@ -206,6 +233,7 @@ public class ControlMotivosMvrs implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            listMotivosMvrs.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -215,9 +243,11 @@ public class ControlMotivosMvrs implements Serializable {
                     }
                     if (listMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
                     if (listMotivosMvrs.get(indice).getNombre().equals(" ")) {
+                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -230,12 +260,57 @@ public class ControlMotivosMvrs implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            context.update("form:ACEPTAR");
                         }
 
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listMotivosMvrs.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosMvrs.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMotivosMvrs.size(); j++) {
+                            if (j != indice) {
+                                if (listMotivosMvrs.get(indice).getCodigo() == listMotivosMvrs.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            listMotivosMvrs.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listMotivosMvrs.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (listMotivosMvrs.get(indice).getNombre().equals(" ")) {
+                        listMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                            context.update("form:ACEPTAR");
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -245,6 +320,7 @@ public class ControlMotivosMvrs implements Serializable {
                 if (!crearMotivoMvrs.contains(filtrarMotivosMvrs.get(indice))) {
                     if (filtrarMotivosMvrs.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosMvrs.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listMotivosMvrs.size(); j++) {
@@ -255,6 +331,7 @@ public class ControlMotivosMvrs implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            filtrarMotivosMvrs.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -265,9 +342,11 @@ public class ControlMotivosMvrs implements Serializable {
 
                     if (filtrarMotivosMvrs.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
                     if (filtrarMotivosMvrs.get(indice).getNombre().equals(" ")) {
+                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -280,12 +359,59 @@ public class ControlMotivosMvrs implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            context.update("form:ACEPTAR");
                         }
 
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarMotivosMvrs.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosMvrs.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listMotivosMvrs.size(); j++) {
+                            if (j != indice) {
+                                if (listMotivosMvrs.get(indice).getCodigo() == listMotivosMvrs.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            filtrarMotivosMvrs.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarMotivosMvrs.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (filtrarMotivosMvrs.get(indice).getNombre().equals(" ")) {
+                        filtrarMotivosMvrs.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                            context.update("form:ACEPTAR");
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -339,6 +465,7 @@ public class ControlMotivosMvrs implements Serializable {
 
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
         }
 
@@ -392,9 +519,13 @@ public class ControlMotivosMvrs implements Serializable {
             listMotivosMvrs = null;
             context.update("form:datosMotivoMvr");
             k = 0;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -429,12 +560,12 @@ public class ControlMotivosMvrs implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivoMvr.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoMvr.getCodigo());
@@ -454,8 +585,8 @@ public class ControlMotivosMvrs implements Serializable {
                 contador++;
             }
         }
-        if (nuevoMotivoMvr.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+        if (nuevoMotivoMvr.getNombre() == (null) || nuevoMotivoMvr.getNombre().equals(" ") || nuevoMotivoMvr.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -467,12 +598,13 @@ public class ControlMotivosMvrs implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivoMvr");
                 bandera = 0;
@@ -493,7 +625,7 @@ public class ControlMotivosMvrs implements Serializable {
             context.update("form:datosMotivoMvr");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             context.execute("nuevoRegistroMotivoMvrs.hide()");
@@ -548,13 +680,13 @@ public class ControlMotivosMvrs implements Serializable {
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarMotivosMvrs.getCodigo());
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarMotivosMvrs.getNombre());
 
         if (duplicarMotivosMvrs.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosMvrs.size(); x++) {
@@ -571,7 +703,7 @@ public class ControlMotivosMvrs implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMotivosMvrs.getNombre() == null) {
+        if (duplicarMotivosMvrs.getNombre() == (null) || duplicarMotivosMvrs.getNombre().equals(" ") || duplicarMotivosMvrs.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -593,12 +725,14 @@ public class ControlMotivosMvrs implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
+                context.update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivoMvr");
                 bandera = 0;
@@ -738,6 +872,30 @@ public class ControlMotivosMvrs implements Serializable {
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public Motivosmvrs getMotivoMvrSeleccionada() {
+        return motivoMvrSeleccionada;
+    }
+
+    public void setMotivoMvrSeleccionada(Motivosmvrs motivoMvrSeleccionada) {
+        this.motivoMvrSeleccionada = motivoMvrSeleccionada;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
 }

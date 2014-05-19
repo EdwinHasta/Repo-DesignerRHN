@@ -43,7 +43,7 @@ public class NormasLaborales implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Integer codigo;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 40)
@@ -57,7 +57,7 @@ public class NormasLaborales implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public NormasLaborales(BigInteger secuencia, short codigo, String nombre) {
+    public NormasLaborales(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -71,11 +71,11 @@ public class NormasLaborales implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

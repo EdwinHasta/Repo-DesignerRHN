@@ -25,10 +25,9 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
         try {
@@ -38,7 +37,9 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
                     ubicacionGeografica.setZona(null);
                 }
             }
+            em.getTransaction().begin();
             em.persist(ubicacionGeografica);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.err.println("Error crear PersistenciaUbicacionesGeograficas ERROR " + e);
         }
@@ -47,7 +48,9 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     @Override
     public void editar(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
         try {
+            em.getTransaction().begin();
             em.merge(ubicacionGeografica);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaUbicacionesGeograficas");
         }
@@ -56,13 +59,15 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
     @Override
     public void borrar(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(ubicacionGeografica));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaUbicacionesGeograficas");
         }
     }
 
-     @Override
+    @Override
     public List<UbicacionesGeograficas> consultarUbicacionesGeograficas(EntityManager em) {
         try {
             Query query = em.createQuery("SELECT u FROM UbicacionesGeograficas u ORDER BY u.codigo ASC");

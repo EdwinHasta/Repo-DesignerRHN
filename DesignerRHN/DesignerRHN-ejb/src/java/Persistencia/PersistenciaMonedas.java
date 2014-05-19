@@ -28,20 +28,25 @@ public class PersistenciaMonedas implements PersistenciaMonedasInterface {
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Monedas monedas) {
+        em.getTransaction().begin();
         em.persist(monedas);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, Monedas monedas) {
+        em.getTransaction().begin();
         em.merge(monedas);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, Monedas monedas) {
+        em.getTransaction().begin();
         em.remove(em.merge(monedas));
+        em.getTransaction().commit();
     }
 
     @Override

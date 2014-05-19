@@ -50,7 +50,7 @@ public class Motivosmvrs implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
+    private Integer codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivo")
     private Collection<MVRSPersona> mvrspersonaCollection;
 
@@ -61,7 +61,7 @@ public class Motivosmvrs implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Motivosmvrs(BigInteger secuencia, String nombre, short codigo) {
+    public Motivosmvrs(BigInteger secuencia, String nombre, Integer codigo) {
         this.secuencia = secuencia;
         this.nombre = nombre;
         this.codigo = codigo;
@@ -86,11 +86,11 @@ public class Motivosmvrs implements Serializable {
         this.nombre = nombre;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

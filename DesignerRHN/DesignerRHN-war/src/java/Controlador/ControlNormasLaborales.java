@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,7 +47,8 @@ public class ControlNormasLaborales implements Serializable {
     private NormasLaborales nuevoNormaLaboral;
     private NormasLaborales duplicarNormaLaboral;
     private NormasLaborales editarNormaLaboral;
-    //otros
+    private NormasLaborales normaLaboralSeleccionada;
+//otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
@@ -59,8 +61,10 @@ public class ControlNormasLaborales implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
     private BigInteger borradoVC;
-    private String paginaAnterior;
-
+    private String backUpDescripcion;
+    private Integer backUpCodigo;
+private int tamano;
+private String paginaAnterior;
     public ControlNormasLaborales() {
         listNormasLaborales = null;
         crearNormaLaboral = new ArrayList<NormasLaborales>();
@@ -71,6 +75,7 @@ public class ControlNormasLaborales implements Serializable {
         nuevoNormaLaboral = new NormasLaborales();
         duplicarNormaLaboral = new NormasLaborales();
         guardado = true;
+        tamano=270;
     }
     @PostConstruct
     public void inicializarAdministrador() {
@@ -84,7 +89,15 @@ public class ControlNormasLaborales implements Serializable {
         }
     }
 
-    public void eventoFiltrar() {
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
+    }
+   public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlNormasLaborales.eventoFiltrar \n");
             if (tipoLista == 0) {
@@ -94,15 +107,6 @@ public class ControlNormasLaborales implements Serializable {
             System.out.println("ERROR ControlNormasLaborales eventoFiltrar ERROR===" + e.getMessage());
         }
     }
-    
-    public void recibirPaginaEntrante(String pagina){
-        paginaAnterior = pagina;
-        }
-    
-    public String redirigir(){
-        return paginaAnterior;
-    }
-    
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -110,8 +114,27 @@ public class ControlNormasLaborales implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listNormasLaborales.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listNormasLaborales.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listNormasLaborales.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listNormasLaborales.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarNormasLaborales.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
 
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarNormasLaborales.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarNormasLaborales.get(index).getSecuencia();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -145,9 +168,11 @@ public class ControlNormasLaborales implements Serializable {
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+                    FacesContext c = FacesContext.getCurrentInstance();
+
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
             bandera = 0;
@@ -170,20 +195,22 @@ public class ControlNormasLaborales implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            tamano= 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+            codigo.setFilterStyle("width: 200px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+            descripcion.setFilterStyle("width: 200px");
             RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano= 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
             bandera = 0;
@@ -198,7 +225,7 @@ public class ControlNormasLaborales implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Short a;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -209,6 +236,7 @@ public class ControlNormasLaborales implements Serializable {
                     if (listNormasLaborales.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listNormasLaborales.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listNormasLaborales.size(); j++) {
                             if (j != indice) {
@@ -220,6 +248,7 @@ public class ControlNormasLaborales implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listNormasLaborales.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
@@ -228,9 +257,12 @@ public class ControlNormasLaborales implements Serializable {
                     if (listNormasLaborales.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
+
                     }
                     if (listNormasLaborales.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -247,17 +279,14 @@ public class ControlNormasLaborales implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
-                }
-            } else {
-
-                if (!crearNormaLaboral.contains(filtrarNormasLaborales.get(indice))) {
-                    if (filtrarNormasLaborales.get(indice).getCodigo() == a) {
+                } else {
+                    if (listNormasLaborales.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listNormasLaborales.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listNormasLaborales.size(); j++) {
                             if (j != indice) {
@@ -269,6 +298,56 @@ public class ControlNormasLaborales implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listNormasLaborales.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listNormasLaborales.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
+
+                    }
+                    if (listNormasLaborales.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listNormasLaborales.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+                }
+            } else {
+
+                if (!crearNormaLaboral.contains(filtrarNormasLaborales.get(indice))) {
+                    if (filtrarNormasLaborales.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listNormasLaborales.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarNormasLaborales.get(indice).getCodigo() == listNormasLaborales.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
                         } else {
                             banderita = true;
                         }
@@ -278,10 +357,12 @@ public class ControlNormasLaborales implements Serializable {
                     if (filtrarNormasLaborales.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarNormasLaborales.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -297,7 +378,51 @@ public class ControlNormasLaborales implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarNormasLaborales.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listNormasLaborales.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarNormasLaborales.get(indice).getCodigo() == listNormasLaborales.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarNormasLaborales.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarNormasLaborales.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarNormasLaborales.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarNormasLaborales.get(indice).setNombre(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -390,7 +515,7 @@ public class ControlNormasLaborales implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando Normas Labolares");
             if (!borrarNormaLaboral.isEmpty()) {
-        administrarNormasLaborales.borrarNormasLaborales(borrarNormaLaboral);      
+                administrarNormasLaborales.borrarNormasLaborales(borrarNormaLaboral);
                 //mostrarBorrados
                 registrosBorrados = borrarNormaLaboral.size();
                 context.update("form:mostrarBorrados");
@@ -398,7 +523,7 @@ public class ControlNormasLaborales implements Serializable {
                 borrarNormaLaboral.clear();
             }
             if (!crearNormaLaboral.isEmpty()) {
-                 administrarNormasLaborales.crearNormasLaborales(crearNormaLaboral);         
+                administrarNormasLaborales.crearNormasLaborales(crearNormaLaboral);
                 crearNormaLaboral.clear();
             }
             if (!modificarNormaLaboral.isEmpty()) {
@@ -408,6 +533,9 @@ public class ControlNormasLaborales implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listNormasLaborales = null;
             context.update("form:datosNormaLaboral");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             k = 0;
             guardado = true;
         }
@@ -447,12 +575,12 @@ public class ControlNormasLaborales implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoNormaLaboral.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoNormaLaboral.getCodigo());
@@ -472,8 +600,16 @@ public class ControlNormasLaborales implements Serializable {
                 contador++;
             }
         }
-        if (nuevoNormaLaboral.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+        if (nuevoNormaLaboral.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoNormaLaboral.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoNormaLaboral.getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -487,10 +623,12 @@ public class ControlNormasLaborales implements Serializable {
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
                 bandera = 0;
@@ -566,7 +704,7 @@ public class ControlNormasLaborales implements Serializable {
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarNormaLaboral.getCodigo());
         System.err.println("ConfirmarDuplicar nombre " + duplicarNormaLaboral.getNombre());
@@ -590,12 +728,21 @@ public class ControlNormasLaborales implements Serializable {
             }
         }
         if (duplicarNormaLaboral.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarNormaLaboral.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarNormaLaboral.getNombre().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
@@ -615,9 +762,11 @@ public class ControlNormasLaborales implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+                        FacesContext c = FacesContext.getCurrentInstance();
+
+                codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
                 bandera = 0;
@@ -765,6 +914,22 @@ public class ControlNormasLaborales implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public NormasLaborales getNormaLaboralSeleccionada() {
+        return normaLaboralSeleccionada;
+    }
+
+    public void setNormaLaboralSeleccionada(NormasLaborales normaLaboralSeleccionada) {
+        this.normaLaboralSeleccionada = normaLaboralSeleccionada;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }
