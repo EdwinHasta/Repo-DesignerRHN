@@ -105,6 +105,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
     private Date fechaIni, fechaFin;
     //ALTO TABLA
     private String altoTabla;
+    private String infoRegistro;
 
     public ControlEmplVigenciaAfiliacion3() {
         backUpSecRegistro = null;
@@ -174,6 +175,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         int tam = 0;
         if (listVigenciasAfiliaciones != null) {
             vigenciaSeleccionada = listVigenciasAfiliaciones.get(0);
+            infoRegistro = "Cantidad de registros: " + listVigenciasAfiliaciones.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
         }
     }
 
@@ -1431,11 +1435,23 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                 listVAModificar.clear();
             }
             listVigenciasAfiliaciones = null;
+            listVigenciasAfiliaciones = null;
+            getListVigenciasAfiliaciones();
+            int tam = 0;
+            if (listVigenciasAfiliaciones != null) {
+                tam = listVigenciasAfiliaciones.size();
+            }
+            if (tam > 0) {
+                infoRegistro = "Cantidad de registros: " + listVigenciasAfiliaciones.size();
+            } else {
+                infoRegistro = "Cantidad de registros: 0";
+            }
             guardado = true;
             permitirIndexVA = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
             context.update("form:datosVAVigencia");
+            context.update("form:informacionRegistro");
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
@@ -1490,10 +1506,21 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         fechaFin = null;
         fechaIni = null;
         listVigenciasAfiliaciones = null;
+        getListVigenciasAfiliaciones();
+        int tam = 0;
+        if (listVigenciasAfiliaciones != null) {
+            tam = listVigenciasAfiliaciones.size();
+        }
+        if (tam > 0) {
+            infoRegistro = "Cantidad de registros: " + listVigenciasAfiliaciones.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosVAVigencia");
+        context.update("form:informacionRegistro");
         cambioVigenciaA = false;
         nuevaVigenciaA = new VigenciasAfiliaciones();
         nuevaVigenciaA.setTipoentidad(new TiposEntidades());
@@ -1615,8 +1642,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                 }
                 indexVA = -1;
                 secRegistro = null;
-
+                infoRegistro = "Cantidad de registros: " + listVigenciasAfiliaciones.size();
                 context.update("form:datosVAVigencia");
+                context.update("form:informacionRegistro");
                 context.execute("NuevoRegistroVA.hide()");
             } else {
                 context.execute("errorFechas.show()");
@@ -1760,7 +1788,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                 }
                 duplicarVA = new VigenciasAfiliaciones();
                 limpiarduplicarVA();
+                infoRegistro = "Cantidad de registros: " + listVigenciasAfiliaciones.size();
                 context.update("form:datosVAVigencia");
+                context.update("form:informacionRegistro");
                 context.execute("DuplicadoRegistroVA.hide()");
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1819,6 +1849,7 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
                 listVABorrar.add(listVigenciasAfiliaciones.get(indexVA));
             }
             listVigenciasAfiliaciones.remove(indexVA);
+            infoRegistro = "Cantidad de registros: " + listVigenciasAfiliaciones.size();
         } else {
             if (!listVAModificar.isEmpty() && listVAModificar.contains(filtrarVigenciasAfiliaciones.get(indexVA))) {
                 int modIndex = listVAModificar.indexOf(filtrarVigenciasAfiliaciones.get(indexVA));
@@ -1833,9 +1864,11 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
             int VPIndex = listVigenciasAfiliaciones.indexOf(filtrarVigenciasAfiliaciones.get(indexVA));
             listVigenciasAfiliaciones.remove(VPIndex);
             filtrarVigenciasAfiliaciones.remove(indexVA);
+            infoRegistro = "Cantidad de registros: " + filtrarVigenciasAfiliaciones.size();
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVAVigencia");
+        context.update("form:informacionRegistro");
         indexVA = -1;
         secRegistro = null;
         if (guardado == true) {
@@ -2368,7 +2401,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
         if (tipoListaVA == 0) {
             tipoListaVA = 1;
         }
-        System.out.println("eventoFiltrar tipoListaVA : " + tipoListaVA);
+        infoRegistro = "Cantidad de registros: " + filtrarVigenciasAfiliaciones.size();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -2633,5 +2668,9 @@ public class ControlEmplVigenciaAfiliacion3 implements Serializable {
 
     public boolean isGuardado() {
         return guardado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
     }
 }
