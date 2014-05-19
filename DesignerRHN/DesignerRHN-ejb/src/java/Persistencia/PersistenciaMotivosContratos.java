@@ -12,25 +12,30 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos'
- * de la base de datos.
- * (Para verificar que esta asociado a una VigenciaTipoContrato, se realiza la operacion sobre la tabla VigenciasTiposContratos)
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosContratos' de
+ * la base de datos. (Para verificar que esta asociado a una
+ * VigenciaTipoContrato, se realiza la operacion sobre la tabla
+ * VigenciasTiposContratos)
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaMotivosContratos implements PersistenciaMotivosContratosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, MotivosContratos motivosContratos) {
         try {
+            em.getTransaction().begin();
             em.persist(motivosContratos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaMotivosContratos crear ERROR " + e);
         }
@@ -39,7 +44,9 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     @Override
     public void editar(EntityManager em, MotivosContratos motivosContratos) {
         try {
+            em.getTransaction().begin();
             em.merge(motivosContratos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaMotivosContratos editar ERROR " + e);
         }
@@ -48,7 +55,9 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     @Override
     public void borrar(EntityManager em, MotivosContratos motivosContratos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(motivosContratos));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaMotivosContratos borrar ERROR " + e);
         }
@@ -95,7 +104,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
             Query query = em.createQuery("SELECT count(v) FROM VigenciasTiposContratos v WHERE v.motivocontrato.secuencia =:secTipoCentroCosto ");
             query.setParameter("secTipoCentroCosto", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            retorno = new BigInteger (query.getSingleResult().toString());
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.err.println("PersistenciaMotivosContratos retorno ==" + retorno.intValue());
 
         } catch (Exception e) {

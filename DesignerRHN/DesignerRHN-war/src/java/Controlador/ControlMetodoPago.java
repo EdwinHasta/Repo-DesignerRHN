@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +47,7 @@ public class ControlMetodoPago implements Serializable {
     MetodosPagos editarMetodoPago;
     MetodosPagos nuevoMetodoPago;
     MetodosPagos duplicarMetodoPago;
+    MetodosPagos metodoPagoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +61,7 @@ public class ControlMetodoPago implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
     private Integer a;
+    private int tamano;
 
     public ControlMetodoPago() {
         listMetodosPagos = null;
@@ -70,8 +73,9 @@ public class ControlMetodoPago implements Serializable {
         editarMetodoPago = new MetodosPagos();
         nuevoMetodoPago = new MetodosPagos();
         a = null;
+        tamano = 270;
     }
-
+   
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -84,7 +88,7 @@ public class ControlMetodoPago implements Serializable {
         }
     }
     
-    public void eventoFiltrar() {
+      public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlMotiviosCambiosCargos.eventoFiltrar \n");
             if (tipoLista == 0) {
@@ -94,6 +98,8 @@ public class ControlMetodoPago implements Serializable {
             System.out.println("ERROR ControlMotiviosCambiosCargos eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -101,10 +107,23 @@ public class ControlMetodoPago implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listMetodosPagos.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarMetodosPagos.get(index).getCodigo();
+                }
+            } else if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listMetodosPagos.get(index).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarMetodosPagos.get(index).getDescripcion();
+                }
+            }
             secRegistro = listMetodosPagos.get(index).getSecuencia();
-
+            System.out.println("Indice: " + index + " Celda: " + cualCelda);
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
+
     }
 
     public void asignarIndex(Integer indice, int LND, int dig) {
@@ -133,18 +152,15 @@ public class ControlMetodoPago implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void prueba(String campo) {
-        System.err.println("PROBANDO EL SELECT ONE MENU CAMPO SELECCIONADO = " + campo);
-    }
-
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:pago");
+            pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
             pago.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMetodoPago");
             bandera = 0;
@@ -167,24 +183,27 @@ public class ControlMetodoPago implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
 
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
             codigo.setFilterStyle("width: 280px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
             descripcion.setFilterStyle("width: 290px");
-            pago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:pago");
+            pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
             pago.setFilterStyle("width: 150px");
             RequestContext.getCurrentInstance().update("form:datosMetodoPago");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:pago");
+            pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
             pago.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMetodoPago");
             bandera = 0;
@@ -208,6 +227,7 @@ public class ControlMetodoPago implements Serializable {
                 if (!crearMetodosPagos.contains(listMetodosPagos.get(indice))) {
                     if (listMetodosPagos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMetodosPagos.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listMetodosPagos.size(); j++) {
@@ -219,6 +239,7 @@ public class ControlMetodoPago implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listMetodosPagos.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -226,10 +247,12 @@ public class ControlMetodoPago implements Serializable {
 
                     }
                     if (listMetodosPagos.get(indice).getDescripcion().isEmpty()) {
+                        listMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (listMetodosPagos.get(indice).getDescripcion().equals(" ")) {
+                        listMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -247,7 +270,49 @@ public class ControlMetodoPago implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listMetodosPagos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMetodosPagos.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listMetodosPagos.size(); j++) {
+                            if (j != indice) {
+                                if (listMetodosPagos.get(indice).getCodigo() == listMetodosPagos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listMetodosPagos.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listMetodosPagos.get(indice).getDescripcion().isEmpty()) {
+                        listMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (listMetodosPagos.get(indice).getDescripcion().equals(" ")) {
+                        listMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -258,22 +323,17 @@ public class ControlMetodoPago implements Serializable {
                     if (filtrarMetodosPagos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarMetodosPagos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMetodosPagos.size(); j++) {
                             if (j != indice) {
-                                if (listMetodosPagos.get(indice).getCodigo() == listMetodosPagos.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        for (int j = 0; j < filtrarMetodosPagos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarMetodosPagos.get(indice).getCodigo() == filtrarMetodosPagos.get(j).getCodigo()) {
+                                if (filtrarMetodosPagos.get(indice).getCodigo() == listMetodosPagos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
                         if (contador > 0) {
+                            filtrarMetodosPagos.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -284,9 +344,11 @@ public class ControlMetodoPago implements Serializable {
 
                     if (filtrarMetodosPagos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
                     if (filtrarMetodosPagos.get(indice).getDescripcion().equals(" ")) {
+                        filtrarMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -304,7 +366,51 @@ public class ControlMetodoPago implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarMetodosPagos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarMetodosPagos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMetodosPagos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarMetodosPagos.get(indice).getCodigo() == listMetodosPagos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            filtrarMetodosPagos.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarMetodosPagos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (filtrarMetodosPagos.get(indice).getDescripcion().equals(" ")) {
+                        filtrarMetodosPagos.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -419,6 +525,9 @@ public class ControlMetodoPago implements Serializable {
             listMetodosPagos = null;
             context.update("form:datosMetodoPago");
             k = 0;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         guardado = true;
@@ -461,7 +570,7 @@ public class ControlMetodoPago implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("1");
         if (nuevoMetodoPago.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo Metodo: " + nuevoMetodoPago.getCodigo());
@@ -482,8 +591,8 @@ public class ControlMetodoPago implements Serializable {
                 contador++;
             }
         }
-        if (nuevoMetodoPago.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+        if (nuevoMetodoPago.getDescripcion() == null || nuevoMetodoPago.getDescripcion().isEmpty() || nuevoMetodoPago.getDescripcion().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -496,13 +605,15 @@ public class ControlMetodoPago implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                pago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:pago");
+                pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
                 pago.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMetodoPago");
                 bandera = 0;
@@ -514,7 +625,7 @@ public class ControlMetodoPago implements Serializable {
             //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
             k++;
             l = BigInteger.valueOf(k);
-            ///nuevoMetodoPago.setSecuencia(l);
+            nuevoMetodoPago.setSecuencia(l);
             System.err.println("nuevometodopago secuencia " + nuevoMetodoPago.getSecuencia());
 
             crearMetodosPagos.add(nuevoMetodoPago);
@@ -588,7 +699,7 @@ public class ControlMetodoPago implements Serializable {
         System.err.println("ConfirmarDuplicar pago " + duplicarMetodoPago.getPago());
 
         if (duplicarMetodoPago.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMetodosPagos.size(); x++) {
@@ -605,8 +716,8 @@ public class ControlMetodoPago implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMetodoPago.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
+        if (duplicarMetodoPago.getDescripcion() == null || duplicarMetodoPago.getDescripcion().isEmpty() || duplicarMetodoPago.getDescripcion().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + "   *Una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -630,10 +741,12 @@ public class ControlMetodoPago implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMetodoPago:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMetodoPago");
                 bandera = 0;
@@ -784,6 +897,22 @@ public class ControlMetodoPago implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public MetodosPagos getMetodoPagoSeleccionado() {
+        return metodoPagoSeleccionado;
+    }
+
+    public void setMetodoPagoSeleccionado(MetodosPagos metodoPagoSeleccionado) {
+        this.metodoPagoSeleccionado = metodoPagoSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

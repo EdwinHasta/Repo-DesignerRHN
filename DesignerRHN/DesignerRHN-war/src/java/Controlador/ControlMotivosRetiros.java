@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlMotivosRetiros implements Serializable {
     private MotivosRetiros nuevoMotivosRetiros;
     private MotivosRetiros duplicarMotivosRetiros;
     private MotivosRetiros editarMotivosRetiros;
+    private MotivosRetiros motivoRetiroSelecciodo;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -60,6 +62,9 @@ public class ControlMotivosRetiros implements Serializable {
     //filtrado table
     private int tamano;
 
+    private String backUpDescripcion;
+    private Integer backUpCodigo;
+
     public ControlMotivosRetiros() {
         listMotivosRetiros = null;
         crearMotivosRetiros = new ArrayList<MotivosRetiros>();
@@ -70,9 +75,9 @@ public class ControlMotivosRetiros implements Serializable {
         nuevoMotivosRetiros = new MotivosRetiros();
         duplicarMotivosRetiros = new MotivosRetiros();
         guardado = true;
-        tamano = 300;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -102,8 +107,27 @@ public class ControlMotivosRetiros implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listMotivosRetiros.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listMotivosRetiros.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listMotivosRetiros.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listMotivosRetiros.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarMotivosRetiros.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
 
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarMotivosRetiros.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarMotivosRetiros.get(index).getSecuencia();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -135,10 +159,11 @@ public class ControlMotivosRetiros implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivosRetiros");
             bandera = 0;
@@ -161,21 +186,23 @@ public class ControlMotivosRetiros implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosMotivosRetiros");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 300;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosMotivosRetiros");
             bandera = 0;
@@ -201,6 +228,7 @@ public class ControlMotivosRetiros implements Serializable {
                     if (listMotivosRetiros.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosRetiros.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMotivosRetiros.size(); j++) {
                             if (j != indice) {
@@ -211,6 +239,7 @@ public class ControlMotivosRetiros implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listMotivosRetiros.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -220,9 +249,11 @@ public class ControlMotivosRetiros implements Serializable {
                     if (listMotivosRetiros.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosRetiros.get(indice).setNombre(backUpDescripcion);
                     }
                     if (listMotivosRetiros.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosRetiros.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -239,7 +270,55 @@ public class ControlMotivosRetiros implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listMotivosRetiros.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosRetiros.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listMotivosRetiros.size(); j++) {
+                            if (j != indice) {
+                                if (listMotivosRetiros.get(indice).getCodigo() == listMotivosRetiros.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listMotivosRetiros.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listMotivosRetiros.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listMotivosRetiros.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listMotivosRetiros.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listMotivosRetiros.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (modificarMotivosRetiros.isEmpty()) {
+                            modificarMotivosRetiros.add(listMotivosRetiros.get(indice));
+                        } else if (!modificarMotivosRetiros.contains(listMotivosRetiros.get(indice))) {
+                            modificarMotivosRetiros.add(listMotivosRetiros.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -249,6 +328,7 @@ public class ControlMotivosRetiros implements Serializable {
                 if (!crearMotivosRetiros.contains(filtrarMotivosRetiros.get(indice))) {
                     if (filtrarMotivosRetiros.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosRetiros.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < filtrarMotivosRetiros.size(); j++) {
@@ -267,6 +347,7 @@ public class ControlMotivosRetiros implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarMotivosRetiros.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -277,10 +358,12 @@ public class ControlMotivosRetiros implements Serializable {
                     if (filtrarMotivosRetiros.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarMotivosRetiros.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarMotivosRetiros.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarMotivosRetiros.get(indice).setNombre(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -296,10 +379,63 @@ public class ControlMotivosRetiros implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
+                } else {
+                    if (filtrarMotivosRetiros.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarMotivosRetiros.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < filtrarMotivosRetiros.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarMotivosRetiros.get(indice).getCodigo() == listMotivosRetiros.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listMotivosRetiros.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarMotivosRetiros.get(indice).getCodigo() == listMotivosRetiros.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarMotivosRetiros.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarMotivosRetiros.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarMotivosRetiros.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarMotivosRetiros.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarMotivosRetiros.get(indice).setNombre(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+
                 }
 
             }
@@ -433,6 +569,9 @@ public class ControlMotivosRetiros implements Serializable {
             context.update("form:datosMotivosRetiros");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -510,10 +649,11 @@ public class ControlMotivosRetiros implements Serializable {
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivosRetiros");
                 bandera = 0;
@@ -637,9 +777,10 @@ public class ControlMotivosRetiros implements Serializable {
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMotivosRetiros");
                 bandera = 0;
@@ -795,6 +936,14 @@ public class ControlMotivosRetiros implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public MotivosRetiros getMotivoRetiroSelecciodo() {
+        return motivoRetiroSelecciodo;
+    }
+
+    public void setMotivoRetiroSelecciodo(MotivosRetiros motivoRetiroSelecciodo) {
+        this.motivoRetiroSelecciodo = motivoRetiroSelecciodo;
     }
 
 }

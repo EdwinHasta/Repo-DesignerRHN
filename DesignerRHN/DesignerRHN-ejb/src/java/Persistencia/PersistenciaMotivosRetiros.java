@@ -27,20 +27,27 @@ public class PersistenciaMotivosRetiros implements PersistenciaMotivosRetirosInt
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, MotivosRetiros motivosRetiros) {
+        em.getTransaction().begin();
         em.persist(motivosRetiros);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, MotivosRetiros motivosRetiros) {
+        em.getTransaction().begin();
         em.merge(motivosRetiros);
+        em.getTransaction().commit();
+
     }
 
     @Override
     public void borrar(EntityManager em, MotivosRetiros motivosRetiros) {
+        em.getTransaction().begin();
         em.remove(em.merge(motivosRetiros));
+        em.getTransaction().commit();
+
     }
 
     @Override
