@@ -25,10 +25,7 @@
 
                                 <h:outputText id="fechas" style="position: absolute; font-size: 11px;  font-weight: bold; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 26px; height: 22px; position: absolute; left: 697px; top: 57px; z-index: 1;" process="@this"/>
-                                <p:tooltip  for="editar" value="#{msg['editar']}" /> 
-
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  actionListener="#{controlVigenciasUbicaciones.listaValoresBoton()}" process="@this" update=":form:lvBuscarEmpleado" oncomplete="lvBE.show()"/>
+                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 727px; top: 57px; z-index: 1;"  process="@this" update=":form:lvBuscarEmpleado" oncomplete="lvBE.show()"/>
                                 <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
 
@@ -37,12 +34,12 @@
                                 </p:commandButton>
                                 <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 782px; top: 57px; z-index: 1;"   actionListener="#{controlVigenciasUbicaciones.limpiarNuevaVU()}" ajax="false">
+                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 782px; top: 57px; z-index: 1;"   ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:empleadosExportar" fileName="PersonalXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
                                 <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;"   actionListener="#{controlVigenciasUbicaciones.exportPDF()}" ajax="false">
+                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 23px; height: 22px; position: absolute; left: 809px; top: 57px; z-index: 1;"   ajax="false">
                                     <p:dataExporter type="pdf"  target=":formExportar:empleadosExportar" fileName="PersonalPDF" encoding="UTF-8"/>
                                 </p:commandButton>
                                 <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
@@ -77,12 +74,12 @@
                                 <p:dataGrid   id="data" var="item" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" paginator="true"  
                                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
                                               {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-felipe" first="#{controlRemoto.estadoEmpleado}" >
-                                    
+
                                     <fieldset id="set" style="height: 80px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 80px;">
                                         <legend style="color: #00F;  ; font-weight: bold">#{msg['informacionpersonal']}</legend>
 
                                         <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe" >
-                                            
+
                                             <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; color: #14388B; 
                                                            ; width: 63px; height: 20px; top: 15px; font-weight: bold"/>
                                             <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)}"
@@ -269,7 +266,7 @@
                                         </p:tooltip>
 
                                         <!-- Cajas de Texto -->
-                                        
+
                                         <p:inputText id="VCargoDesempeñado" style="position: absolute; left: 45px; top: 30px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesCargos.cargo.nombre}"  /> 
                                         <p:inputText id="VFechaContratacion" style="position: absolute; left: 45px; top: 66px; width: 210px; height: 12px; " readonly="true" value="Fecha: #{controlRemoto.fechaActualesTiposContratos} - #{controlRemoto.vwActualesTiposContratos.tipoContrato.nombre}"/>
                                         <p:inputText id="VNormaLaboral" style="position: absolute; left: 45px; top: 101px; width: 210px; height: 12px;" readonly="true" value="#{controlRemoto.vwActualesNormasEmpleados.normaLaboral.nombre}" />
@@ -301,7 +298,7 @@
 
                                         <fieldset style="height: 35px; width: 74px; display: block; position: absolute; top: 423px; border-radius: 5px; left: 17px">
 
-                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" />
+                                            <p:commandButton id="AcumuladosNomina" value="" disabled="#{controlRemoto.acumulado}" style="position: absolute; background-image: url(Imagenes/Iconos/acumulados.png); width: 40px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 3px; border: outset; border-width: 2px;" action="acumuladosEmpleado" actionListener="#{controlEmplAcumulados.recibirEmpleado(item.empleado.secuencia)}"/>
                                             <p:tooltip  for="AcumuladosNomina">
                                                 #{msg['AcumuladosNomina1']}<br/>#{msg['AcumuladosNomina2']}
                                             </p:tooltip>
@@ -526,14 +523,14 @@
                                     <p:commandButton value="#{msg['si']}" onclick="confirmarLiquidacion.hide();" action="liquidacion" style="position: absolute; top: 80px; left: 275px " process="@this" icon="ui-icon-check" />
                                     <p:commandButton value="#{msg['no']}" onclick="confirmarLiquidacion.hide();" style="position: absolute; top: 80px; left: 330px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
-                                
+
                                 <p:dialog id="confirmarBorrarLiquidacion" header="#{msg['atencion']}" widgetVar="confirmarBorrarLiquidacion"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['msgborrarLiquidacion']}" style="position: absolute; left: 100px; top: 20px; width: 320px; font-weight:bold; " />
                                     <p:commandButton value="#{msg['si']}" onclick="confirmarBorrarLiquidacion.hide();" actionListener="#{controlRemoto.borrarLiquidacion()}" style="position: absolute; top: 60px; left: 290px " process="@this" icon="ui-icon-check" />
                                     <p:commandButton value="#{msg['no']}" onclick="confirmarBorrarLiquidacion.hide();" style="position: absolute; top: 60px; left: 345px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                                 </p:dialog>
-                                
+
                                 <p:dialog id="confirmarBorrarLiquidacionPorFuera" header="#{msg['atencion']}" widgetVar="confirmarBorrarLiquidacionPorFuera"  resizable="false" draggable="false" modal="true" height="100" width="420px"  closable="false">  
                                     <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 10px; top: 15px;"  />
                                     <h:outputText value="#{msg['msgborrarLiquidacionPorFuera']}" style="position: absolute; left: 100px; top: 20px; width: 320px; font-weight:bold;" />
@@ -745,6 +742,7 @@
                                       rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarRap"/>
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.busquedaRapida()}" update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:data:panelInf, :form:buscarRap, :form:tabMenu:data:MostrarTodos" process="@this" onstart="lvBr.hide(); busquedaR.clearFilters()"/>
 
 
                             <f:facet name="header" >  
@@ -774,7 +772,7 @@
                             </p:column>
                         </p:dataTable> 
 
-                        <p:commandButton id="buscarRap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"   update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:data:panelInf, buscarRap, form:tabMenu:data:MostrarTodos" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 565px"  disabled="#{controlRemoto.buscar}">
+                        <p:commandButton id="buscarRap" value="#{msg['aceptar']}" actionListener="#{controlRemoto.busquedaRapida}" icon="ui-icon-check"   update=":form:tabMenu:data, lvBusquedaRapida, :form:tabMenu:TipoPersonal, :form:tabMenu:data:panelInf, buscarRap, :form:tabMenu:data:MostrarTodos" onclick="lvBr.hide(), busquedaR.clearFilters();"  style="position: absolute; top: 260px; left: 565px"  disabled="#{controlRemoto.buscar}">
                             <p:resetInput target=":form:lvBusquedaRapida:globalFilter" />
                         </p:commandButton>
                         <p:commandButton value="#{msg['atras']}" onclick="lvBr.hide(), busquedaR.clearFilters();" icon="ui-icon-arrowreturnthick-1-w"  style="position: absolute; top: 260px; left: 653px" actionListener="#{controlRemoto.busquedaRapidaAtras()}" update="buscarRap, lvBusquedaRapida">
@@ -789,7 +787,7 @@
                                       rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionadoBE}" selectionMode="single" >
 
                             <p:ajax event="rowSelect" listener="#{controlRemoto.activarBuscar()}"  update=":form:buscarEmpl"/>
-
+                            <p:ajax event="rowDblselect" listener="#{controlRemoto.buscarEmpleado()}" update=":form:tabMenu:data, lvBuscarEmpleado, :form:buscarEmpl, :form:tabMenu:data:MostrarTodos" process="@this" onstart="lvBE.hide(); buscarE.clearFilters()"/>
                             <f:facet name="header" >  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 22px; top: 18px;"/>  
                                 <p:inputText id="globalFilter" onkeyup="buscarE.filter();" style="width:150px; position: relative; left: -150px;"/>

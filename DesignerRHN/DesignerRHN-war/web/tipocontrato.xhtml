@@ -19,7 +19,7 @@
                         <p:commandButton style="position: absolute; left: 20px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="Refrescar" icon="ui-icon-refresh" actionListener="#{controlTipoContrato.cancelarModificacionGeneral()}"  process="@this" />
 
                         <p:commandButton style="position: absolute; left: 710px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlTipoContrato.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlTipoContrato.salir()}" action="emplVigContrato" process="@this" />
+                        <p:commandButton style="position: absolute; left: 796px; top: 515px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" action="#{controlTipoContrato.redirigir()}" actionListener="#{controlTipoContrato.salir()}" process="@this" />
 
 
                         <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 10px; width: 830px; height: 235px; border-radius: 10px; ">

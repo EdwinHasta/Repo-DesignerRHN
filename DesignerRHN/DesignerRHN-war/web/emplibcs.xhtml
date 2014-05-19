@@ -129,11 +129,19 @@
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " onclick="botones.show();"  process="@this" disabled="true"/>  
                                 <p:tooltip  for="duplicar" value="Duplicar" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " disabled="true"  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " action="atrasEmplIbcs" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh"  actionListener="#{controlEmplIbcs.cancelarModificacion()}" id="REFRESCAR" value="Refrescar" process="@this" disabled="true" />
-                        <p:commandButton style=" position: absolute; left: 115px; top: 470px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(controlEmplIbcs.empleadoSeleccionado.secuencia)}" id="detallesIbcs" value="Detalles IBCS" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEmplIbcs.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
+
+                        <p:commandButton style=" position: absolute; left: 15px; top: 450px;  " icon="ui-icon-triangle-1-e" action="ibcAuto" actionListener="#{controlIbcAutoliquid.obtenerTipoEntidad(controlEmplIbcs.empleadoSeleccionado.secuencia)}" id="detallesIbcs" value="Detalles IBCS" process="@this" />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrasEmplIbcs"   />
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplIbcs.activarCtrlF11()}"  /> 

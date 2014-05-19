@@ -59,6 +59,7 @@ public class ControlNormasLaborales implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
     private BigInteger borradoVC;
+    private String paginaAnterior;
 
     public ControlNormasLaborales() {
         listNormasLaborales = null;
@@ -93,6 +94,15 @@ public class ControlNormasLaborales implements Serializable {
             System.out.println("ERROR ControlNormasLaborales eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
+    }
+    
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);

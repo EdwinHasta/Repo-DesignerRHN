@@ -35,10 +35,10 @@ public class ControlConcepto implements Serializable {
     AdministrarConceptosInterface administrarConceptos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     private List<Conceptos> listaConceptosEmpresa;
     private List<Conceptos> filtradoConceptosEmpresa;
+    private Conceptos seleccionConceptoEmpresa;
     private List<Conceptos> listaConceptosEmpresa_Estado;
     private List<Conceptos> filtradoConceptosEmpresa_Estado;
     private Conceptos conceptoSeleccionado;
@@ -144,7 +144,7 @@ public class ControlConcepto implements Serializable {
             conjuntoC.put("" + i + "", "" + i + "");
         }
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -152,7 +152,7 @@ public class ControlConcepto implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarConceptos.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -205,12 +205,12 @@ public class ControlConcepto implements Serializable {
         secRegistro = null;
         cualCelda = -1;
     }
-    
-    public void recibirPaginaEntrante(String pagina){
-        paginaAnterior = pagina;  
-        }
-    
-    public String redirigir(){
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
     //SELECCIONAR NATURALEZA
@@ -1756,4 +1756,16 @@ public class ControlConcepto implements Serializable {
         this.conceptoRegistro = conceptoRegistro;
     }
 
+    public Conceptos getSeleccionConceptoEmpresa() {
+        return seleccionConceptoEmpresa;
+    }
+
+    public void setSeleccionConceptoEmpresa(Conceptos seleccionConceptoEmpresa) {
+        this.seleccionConceptoEmpresa = seleccionConceptoEmpresa;
+    }
+    
+   /* public void experimento(){
+        seleccionConceptoEmpresa = listaConceptosEmpresa.get(6);
+        RequestContext.getCurrentInstance().update("form:datosConceptos");
+    }*/
 }
