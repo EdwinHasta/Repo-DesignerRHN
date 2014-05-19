@@ -40,6 +40,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Personas.findAll", query = "SELECT p FROM Personas p")})
 public class Personas implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona", fetch = FetchType.LAZY)
     private List<IbcsPersona> ibcsPersonaList;
     @Basic(optional = false)
@@ -48,7 +49,7 @@ public class Personas implements Serializable {
     private BigInteger numerodocumento;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "persona")
     private Collection<Declarantes> declarantesCollection;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "responsable")
     private Collection<EnfermeadadesProfesionales> enfermeadadesProfesionalesCollection;
 
@@ -179,6 +180,8 @@ public class Personas implements Serializable {
     private String nombreCompleto;
     @Transient
     private int edad;
+    @Transient
+    private String strNumeroDocumento;
 
     public Personas() {
     }
@@ -446,6 +449,17 @@ public class Personas implements Serializable {
         this.ciudadnacimiento = ciudadnacimiento;
     }
 
+    public String getStrNumeroDocumento() {
+        if (strNumeroDocumento == null) {
+            strNumeroDocumento = "";
+        }
+        return strNumeroDocumento;
+    }
+
+    public void setStrNumeroDocumento(String strNumeroDocumento) {
+        this.strNumeroDocumento = strNumeroDocumento;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -662,7 +676,7 @@ public class Personas implements Serializable {
     public void setVigenciasDomiciliariasCollection(Collection<VigenciasDomiciliarias> vigenciasDomiciliariasCollection) {
         this.vigenciasDomiciliariasCollection = vigenciasDomiciliariasCollection;
     }
- 
+
     @XmlTransient
     public Collection<Direcciones> getDireccionesCollection() {
         return direccionesCollection;
