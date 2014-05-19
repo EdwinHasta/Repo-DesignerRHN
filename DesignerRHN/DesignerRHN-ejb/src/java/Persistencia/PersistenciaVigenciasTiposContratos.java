@@ -109,6 +109,24 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
             return fechaContratacion;
         } catch (Exception e) {
             System.out.println("Error fechaMaxContratacion PersistenciaTiposContratos : " + e.toString());
+
+            return null;
+        }
+    }
+    
+    @Override 
+    public Date fechaFinalContratacionVacaciones(EntityManager em, BigInteger secuencia) {
+        try{
+            Date fecha;
+            Query query2 = em.createQuery("SELECT vtc.fechavigencia FROM VigenciasTiposContratos vtc WHERE vtc.empleado.secuencia =:secuencia AND vtc.fechavigencia = (SELECT MIN(vtci.fechavigencia) FROM VigenciasTiposContratos vtci WHERE vtci.empleado.secuencia = vtc.empleado.secuencia AND vtci.fechavigencia <= (SELECT vaf.fechaHastaCausado FROM VWActualesFechas vaf))");
+            query2.setParameter("secuencia", secuencia);
+            query2.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            fecha = (Date) query2.getSingleResult();
+            System.out.println("Persistencia fecha : "+fecha);
+            return fecha;
+        }catch(Exception e){
+            System.out.println("Error fechaFinalContratacionVacaciones PersistenciaTiposContratos : "+e.toString());
+
             return null;
         }
     }

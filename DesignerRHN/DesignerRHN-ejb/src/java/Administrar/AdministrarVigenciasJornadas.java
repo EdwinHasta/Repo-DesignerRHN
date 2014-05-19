@@ -43,7 +43,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-    
+
     // VigenciasJornadas
     List<VigenciasJornadas> listVigenciasJornadas;
     VigenciasJornadas vigenciaJornada;
@@ -57,7 +57,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
     //Empleados
     Empleados empleado;
     private EntityManager em;
-    
+
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
@@ -68,7 +68,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             listVigenciasJornadas = persistenciaVigenciasJornadas.buscarVigenciasJornadasEmpleado(em, secEmpleado);
         } catch (Exception e) {
-            System.out.println("Error en Administrar Vigencias Jornadas (VigenciasJornadasEmpleado)");
+            System.out.println("Error en Administrar Vigencias Jornadas (VigenciasJornadasEmpleado) : " + e.toString());
             listVigenciasJornadas = null;
         }
         return listVigenciasJornadas;
@@ -78,7 +78,6 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
     public void modificarVJ(List<VigenciasJornadas> listVJModificadas) {
         try {
             for (int i = 0; i < listVJModificadas.size(); i++) {
-                System.out.println("Modificando ...");
                 if (listVJModificadas.get(i).getJornadatrabajo().getSecuencia() == null) {
                     listVJModificadas.get(i).setJornadatrabajo(null);
                 }
@@ -89,7 +88,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
                 persistenciaVigenciasJornadas.editar(em, vigenciaJornada);
             }
         } catch (Exception e) {
-            System.out.println("Error modificarVJ AdmiVigJor");
+            System.out.println("Error modificarVJ AdmiVigJor : " + e.toString());
         }
     }
 
@@ -98,7 +97,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             persistenciaVigenciasJornadas.borrar(em, vigenciasJornadas);
         } catch (Exception e) {
-            System.out.println("Error borrarVJ AdmiVigJor");
+            System.out.println("Error borrarVJ AdmiVigJor : " + e.toString());
         }
     }
 
@@ -107,7 +106,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             persistenciaVigenciasJornadas.crear(em, vigenciasJornadas);
         } catch (Exception e) {
-            System.out.println("Error crearVJ AdmiVigJor");
+            System.out.println("Error crearVJ AdmiVigJor : " + e.toString());
         }
     }
 
@@ -116,7 +115,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             listVigenciasCompensaciones = persistenciaVigenciasCompensaciones.buscarVigenciasCompensacionesVigenciayCompensacion(em, tipoC, secVigencia);
         } catch (Exception e) {
-            System.out.println("Error en Administrar Vigencias Jornadas (VigenciasCompensacionesSecVigenciaTipoComp)");
+            System.out.println("Error en Administrar Vigencias Jornadas (VigenciasCompensacionesSecVigenciaTipoComp) : " + e.toString());
             listVigenciasCompensaciones = null;
         }
         return listVigenciasCompensaciones;
@@ -127,7 +126,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             listVigenciasCompensaciones = persistenciaVigenciasCompensaciones.buscarVigenciasCompensacionesVigenciaSecuencia(em, secVigencia);
         } catch (Exception e) {
-            System.out.println("Error en Administrar Vigencias Jornadas (VigenciasCompensacionesSecVigenciaTipoComp)");
+            System.out.println("Error en Administrar Vigencias Jornadas (VigenciasCompensacionesSecVigenciaTipoComp) : " + e.toString());
             listVigenciasCompensaciones = null;
         }
         return listVigenciasCompensaciones;
@@ -137,12 +136,11 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
     public void modificarVC(List<VigenciasCompensaciones> listVCModificadas) {
         try {
             for (int i = 0; i < listVCModificadas.size(); i++) {
-                System.out.println("Modificando Vigencias Prorrateo...");
                 vigenciaCompensacion = listVCModificadas.get(i);
                 persistenciaVigenciasCompensaciones.editar(em, vigenciaCompensacion);
             }
         } catch (Exception e) {
-            System.out.println("Error modificarVC AdmiVigJor");
+            System.out.println("Error modificarVC AdmiVigJor : " + e.toString());
         }
     }
 
@@ -151,7 +149,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             persistenciaVigenciasCompensaciones.borrar(em, vigenciasCompensaciones);
         } catch (Exception e) {
-            System.out.println("Error borrarVC AdmiVigJor");
+            System.out.println("Error borrarVC AdmiVigJor : " + e.toString());
         }
     }
 
@@ -160,7 +158,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
         try {
             persistenciaVigenciasCompensaciones.crear(em, vigenciasCompensaciones);
         } catch (Exception e) {
-            System.out.println("Error crearVC AdmiVigJor");
+            System.out.println("Error crearVC AdmiVigJor : " + e.toString());
         }
     }
 
@@ -170,7 +168,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
             listTiposDescansos = persistenciaTiposDescansos.consultarTiposDescansos(em);
             return listTiposDescansos;
         } catch (Exception e) {
-            System.out.println("Error tiposDescansos Admi");
+            System.out.println("Error tiposDescansos Admi : " + e.toString());
             return null;
         }
     }
@@ -181,7 +179,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
             listJornadasLaborales = persistenciaJornadasLaborales.buscarJornadasLaborales(em);
             return listJornadasLaborales;
         } catch (Exception e) {
-            System.out.println("Error jornadasLaborales Admi");
+            System.out.println("Error jornadasLaborales Admi : " + e.toString());
             return null;
         }
     }
@@ -200,7 +198,7 @@ public class AdministrarVigenciasJornadas implements AdministrarVigenciasJornada
             System.out.println("Empleado : " + empleado.getPersona().getNombre());
             return empleado;
         } catch (Exception e) {
-            System.out.println("Error buscarEmpleado Adm");
+            System.out.println("Error buscarEmpleado Adm : " + e.toString());
             empleado = null;
             return empleado;
         }

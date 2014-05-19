@@ -14,54 +14,62 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasJornadas'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasJornadas' de
+ * la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaVigenciasJornadas implements PersistenciaVigenciasJornadasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
 
     @Override
     public void crear(EntityManager em, VigenciasJornadas vigenciasJornadas) {
         try {
+            em.getTransaction().begin();
             em.persist(vigenciasJornadas);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser creada (PersistenciaVigenciasJornadas)");
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser creada (PersistenciaVigenciasJornadas) : " + e.toString());
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasJornadas vigenciasJornadas) {
         try {
+            em.getTransaction().begin();
             em.merge(vigenciasJornadas);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la PersistenciaVigenciasJornadas");
+            System.out.println("No se pudo modificar la PersistenciaVigenciasJornadas : " + e.toString());
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasJornadas vigenciasJornadas) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(vigenciasJornadas));
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error borrar (PersistenciaVigenciasJornadas)");
+            System.out.println("Error borrar (PersistenciaVigenciasJornadas) : " + e.toString());
         }
     }
 
     @Override
     public List<VigenciasJornadas> buscarVigenciasJornadas(EntityManager em) {
-        try{
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(VigenciasJornadas.class));
-        return em.createQuery(cq).getResultList();
-        }catch(Exception e){
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(VigenciasJornadas.class));
+            return em.createQuery(cq).getResultList();
+        } catch (Exception e) {
             System.out.println("Error buscarVigenciasJornadas");
             return null;
         }

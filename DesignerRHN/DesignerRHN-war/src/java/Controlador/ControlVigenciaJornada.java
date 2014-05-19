@@ -1,7 +1,6 @@
 package Controlador;
 
 import Entidades.Empleados;
-import Entidades.IbcsAutoliquidaciones;
 import Entidades.JornadasLaborales;
 import Entidades.TiposDescansos;
 import Entidades.VigenciasCompensaciones;
@@ -126,9 +125,6 @@ public class ControlVigenciaJornada implements Serializable {
     private String nombreXML;
     private String nombreTabla;
     //Banderas Boolean de operaciones sobre vigencias prorrateos y vigencias prorrateos proyectos
-    private boolean cambioVigenciaCT, cambioVigenciaCD;
-    //Bandera de validacion de existencia de datos en las tablas de compensaciones
-    private boolean existeVCT, existeVCD;
     private BigInteger secRegistroVJ;
     private BigInteger backUpSecRegistroVJ;
     private BigInteger secRegistroVCT;
@@ -145,8 +141,12 @@ public class ControlVigenciaJornada implements Serializable {
     private String altoTabla2;
     private String altoTabla3;
 
-    public ControlVigenciaJornada() {
+    private boolean cambiosJornada, cambiosDinero, cambiosTiempo;
 
+    public ControlVigenciaJornada() {
+        cambiosJornada = false;
+        cambiosDinero = false;
+        cambiosTiempo = false;
         secRegistroVJ = null;
         backUpSecRegistroVJ = null;
         secRegistroVCT = null;
@@ -213,17 +213,11 @@ public class ControlVigenciaJornada implements Serializable {
         nombreTabla = ":formExportarVJ:datosVJEmpleadoExportar";
         nombreXML = "VigenciasJornadasXML";
 
-        cambioVigenciaCT = false;
-        cambioVigenciaCD = false;
-
-        existeVCT = false;
-        existeVCD = false;
-
         altoTabla1 = "115";
         altoTabla2 = "115";
         altoTabla3 = "115";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -231,11 +225,11 @@ public class ControlVigenciaJornada implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciasJornadas.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //EMPLEADO DE LA VIGENCIA
     /**
      * Metodo que recibe la secuencia empleado desde la pagina anterior y
@@ -263,6 +257,8 @@ public class ControlVigenciaJornada implements Serializable {
                 } else if (!listVJModificar.contains(listVigenciasJornadas.get(indice))) {
                     listVJModificar.add(listVigenciasJornadas.get(indice));
                 }
+                cambiosJornada = true;
+
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -278,6 +274,8 @@ public class ControlVigenciaJornada implements Serializable {
                 } else if (!listVJModificar.contains(filtrarVigenciasJornadas.get(indice))) {
                     listVJModificar.add(filtrarVigenciasJornadas.get(indice));
                 }
+                cambiosJornada = true;
+
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -439,6 +437,8 @@ public class ControlVigenciaJornada implements Serializable {
                     } else if (!listVJModificar.contains(listVigenciasJornadas.get(indice))) {
                         listVJModificar.add(listVigenciasJornadas.get(indice));
                     }
+                    cambiosJornada = true;
+
                     if (guardado == true) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -454,6 +454,7 @@ public class ControlVigenciaJornada implements Serializable {
                     } else if (!listVJModificar.contains(filtrarVigenciasJornadas.get(indice))) {
                         listVJModificar.add(filtrarVigenciasJornadas.get(indice));
                     }
+                    cambiosJornada = true;
                     if (guardado == true) {
                         guardado = false;
                         context.update("form:ACEPTAR");
@@ -483,6 +484,7 @@ public class ControlVigenciaJornada implements Serializable {
                 } else if (!listVCTModificar.contains(listVigenciasCompensacionesTiempo.get(indice))) {
                     listVCTModificar.add(listVigenciasCompensacionesTiempo.get(indice));
                 }
+                cambiosTiempo = true;
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -490,7 +492,6 @@ public class ControlVigenciaJornada implements Serializable {
             }
             String auxiliar = listVigenciasCompensacionesTiempo.get(indice).getComentario();
             listVigenciasCompensacionesTiempo.get(indice).setComentario(auxiliar.toUpperCase());
-            cambioVigenciaCT = true;
             indexVCT = -1;
             secRegistroVCT = null;
         } else {
@@ -501,6 +502,7 @@ public class ControlVigenciaJornada implements Serializable {
                 } else if (!listVCTModificar.contains(filtrarVigenciasCompensacionesTiempo.get(indice))) {
                     listVCTModificar.add(filtrarVigenciasCompensacionesTiempo.get(indice));
                 }
+                cambiosTiempo = true;
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -508,7 +510,6 @@ public class ControlVigenciaJornada implements Serializable {
             }
             String auxiliar = filtrarVigenciasCompensacionesTiempo.get(indice).getComentario();
             filtrarVigenciasCompensacionesTiempo.get(indice).setComentario(auxiliar.toUpperCase());
-            cambioVigenciaCT = true;
             indexVCT = -1;
             secRegistroVCT = null;
         }
@@ -536,6 +537,7 @@ public class ControlVigenciaJornada implements Serializable {
                 } else if (!listVCDModificar.contains(listVigenciasCompensacionesDinero.get(indice))) {
                     listVCDModificar.add(listVigenciasCompensacionesDinero.get(indice));
                 }
+                cambiosDinero = true;
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -543,7 +545,6 @@ public class ControlVigenciaJornada implements Serializable {
             }
             String auxiliar = listVigenciasCompensacionesDinero.get(indice).getComentario();
             listVigenciasCompensacionesDinero.get(indice).setComentario(auxiliar.toUpperCase());
-            cambioVigenciaCD = true;
             indexVCD = -1;
             secRegistroVCD = null;
         } else {
@@ -554,6 +555,7 @@ public class ControlVigenciaJornada implements Serializable {
                 } else if (!listVCDModificar.contains(filtrarVigenciasCompensacionesDinero.get(indice))) {
                     listVCDModificar.add(filtrarVigenciasCompensacionesDinero.get(indice));
                 }
+                cambiosDinero = true;
                 if (guardado == true) {
                     guardado = false;
                     context.update("form:ACEPTAR");
@@ -561,7 +563,6 @@ public class ControlVigenciaJornada implements Serializable {
             }
             String auxiliar = filtrarVigenciasCompensacionesDinero.get(indice).getComentario();
             filtrarVigenciasCompensacionesDinero.get(indice).setComentario(auxiliar.toUpperCase());
-            cambioVigenciaCD = true;
             indexVCD = -1;
             secRegistroVCD = null;
         }
@@ -684,7 +685,7 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
-            if ((cambioVigenciaCT == false) && (cambioVigenciaCD == false)) {
+            if ((cambiosDinero == false) && (cambiosTiempo == false)) {
                 cualCelda = celda;
                 index = indice;
                 indexAuxVJ = indice;
@@ -710,19 +711,12 @@ public class ControlVigenciaJornada implements Serializable {
                 listVigenciasCompensacionesTiempo = getListVigenciasCompensacionesTiempo();
                 listVigenciasCompensacionesDinero = null;
                 listVigenciasCompensacionesDinero = getListVigenciasCompensacionesDinero();
-            }
-            if (cambioVigenciaCT == true) {
+            } else {
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:guardarCambiosVigenciaCompensacionTiempo");
-                context.execute("guardarCambiosVigenciaCompensacionTiempo.show()");
-
+                context.execute("confirmarGuardarSinSalida.show()");
             }
-            if (cambioVigenciaCD == true) {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:guardarCambiosVigenciaCompensacionDinero");
-                context.execute("guardarCambiosVigenciaCompensacionDinero.show()");
 
-            }
+            System.out.println("index : " + index);
         }
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVCT == 1) {
@@ -767,19 +761,13 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void cambiarIndiceVCT(int indice, int celda) {
         if (permitirIndexVCT == true) {
-            if (cambioVigenciaCD == false) {
-                indexVCT = indice;
-                cualCeldaVCT = celda;
-                if (tipoListaVCT == 0) {
-                    secRegistroVCT = listVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
-                }
-                if (tipoListaVCT == 1) {
-                    secRegistroVCT = filtrarVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
-                }
-            } else {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:guardarCambiosVigenciaCompensacionDinero");
-                context.execute("guardarCambiosVigenciaCompensacionDinero.show()");
+            indexVCT = indice;
+            cualCeldaVCT = celda;
+            if (tipoListaVCT == 0) {
+                secRegistroVCT = listVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
+            }
+            if (tipoListaVCT == 1) {
+                secRegistroVCT = filtrarVigenciasCompensacionesTiempo.get(indexVCT).getSecuencia();
             }
         }
         FacesContext c = FacesContext.getCurrentInstance();
@@ -825,15 +813,9 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void cambiarIndiceVCD(int indice, int celda) {
         if (permitirIndexVCD == true) {
-            if (cambioVigenciaCT == false) {
-                indexVCD = indice;
-                cualCeldaVCD = celda;
-                secRegistroVCD = listVigenciasCompensacionesDinero.get(indexVCD).getSecuencia();
-            } else {
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("formularioDialogos:guardarCambiosVigenciaCompensacionTiempo");
-                context.execute("guardarCambiosVigenciaCompensacionTiempo.show()");
-            }
+            indexVCD = indice;
+            cualCeldaVCD = celda;
+            secRegistroVCD = listVigenciasCompensacionesDinero.get(indexVCD).getSecuencia();
         }
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
@@ -873,19 +855,18 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo de guardado general para la pagina
      */
     public void guardadoGeneral() {
-        guardarCambiosVJ();
-        if (listVigenciasCompensacionesTiempo != null) {
+        if (cambiosJornada == true) {
+            guardarCambiosVJ();
+        }
+        if (cambiosTiempo == true) {
             guardarCambiosVCT();
         }
-        if (listVigenciasCompensacionesDinero != null) {
+        if (cambiosDinero == true) {
             guardarCambiosVCD();
         }
         guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        context.update("form:growl");
     }
 
     /**
@@ -893,7 +874,7 @@ public class ControlVigenciaJornada implements Serializable {
      * VigenciasLocalizaciones
      */
     public void guardarCambiosVJ() {
-        if (guardado == false) {
+        if (cambiosJornada == true) {
             if (!listVJBorrar.isEmpty()) {
                 for (int i = 0; i < listVJBorrar.size(); i++) {
                     if (listVJBorrar.get(i).getJornadatrabajo().getSecuencia() == null) {
@@ -928,6 +909,10 @@ public class ControlVigenciaJornada implements Serializable {
             k = 0;
             guardado = true;
             context.update("form:ACEPTAR");
+            cambiosJornada = false;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Jornadas con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         secRegistroVJ = null;
@@ -937,7 +922,7 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que guarda los cambios efectuados en la pagina VigenciasProrrateos
      */
     public void guardarCambiosVCT() {
-        if (guardado == false) {
+        if (cambiosTiempo == true) {
             if (!listVCTBorrar.isEmpty()) {
                 for (int i = 0; i < listVCTBorrar.size(); i++) {
                     administrarVigenciasJornadas.borrarVC(listVCTBorrar.get(i));
@@ -960,8 +945,11 @@ public class ControlVigenciaJornada implements Serializable {
             k = 0;
             guardado = true;
             context.update("form:ACEPTAR");
+            cambiosTiempo = false;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Descanso Tiempo con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        cambioVigenciaCT = false;
         indexVCT = -1;
         secRegistroVCT = null;
     }
@@ -971,7 +959,7 @@ public class ControlVigenciaJornada implements Serializable {
      * VigenciasProrrateosProyectos
      */
     public void guardarCambiosVCD() {
-        if (guardado == false) {
+        if (cambiosDinero == true) {
             if (!listVCDBorrar.isEmpty()) {
                 for (int i = 0; i < listVCDBorrar.size(); i++) {
                     administrarVigenciasJornadas.borrarVC(listVCDBorrar.get(i));
@@ -994,8 +982,11 @@ public class ControlVigenciaJornada implements Serializable {
             k = 0;
             guardado = true;
             context.update("form:ACEPTAR");
+            cambiosDinero = false;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Descanso Dinero con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        cambioVigenciaCD = false;
         indexVCD = -1;
         secRegistroVCD = null;
     }
@@ -1071,10 +1062,9 @@ public class ControlVigenciaJornada implements Serializable {
         context.update("form:datosVigenciaCT");
         context.update("form:datosVigenciaCD");
         context.update("form:ACEPTAR");
-        cambioVigenciaCT = false;
-        cambioVigenciaCD = false;
-        existeVCD = false;
-        existeVCT = false;
+        cambiosDinero = false;
+        cambiosJornada = false;
+        cambiosTiempo = false;
     }
 
     /**
@@ -1103,11 +1093,10 @@ public class ControlVigenciaJornada implements Serializable {
         k = 0;
         listVigenciasCompensacionesTiempo = null;
         guardado = true;
+        cambiosTiempo = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciaCT");
         context.update("form:ACEPTAR");
-        cambioVigenciaCT = false;
-        existeVCT = false;
     }
 
     /**
@@ -1136,11 +1125,10 @@ public class ControlVigenciaJornada implements Serializable {
         k = 0;
         listVigenciasCompensacionesDinero = null;
         guardado = true;
+        cambiosDinero = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosVigenciaCD");
         context.update("form:ACEPTAR");
-        cambioVigenciaCD = false;
-        existeVCD = false;
     }
 
     //MOSTRAR DATOS CELDA
@@ -1230,6 +1218,7 @@ public class ControlVigenciaJornada implements Serializable {
     public void agregarNuevaVJ() {
         if (nuevaVigencia.getFechavigencia() != null && nuevaVigencia.getJornadatrabajo().getSecuencia() != null) {
             if (validarFechasRegistroVJ(1) == true) {
+                cambiosJornada = true;
                 if (bandera == 1) {
                     //CERRAR FILTRADO
                     FacesContext c = FacesContext.getCurrentInstance();
@@ -1291,44 +1280,57 @@ public class ControlVigenciaJornada implements Serializable {
      * Agrega una nueva Vigencia Prorrateo
      */
     public void agregarNuevaVCT() {
-        cambioVigenciaCT = true;
-        //CERRAR FILTRADO
-        if (banderaVCT == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
-            vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
-            vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
-            vCTComentario.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
-            RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
-            banderaVCT = 0;
-            filtrarVigenciasCompensacionesTiempo = null;
-            tipoListaVCT = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigenciaCT.setSecuencia(l);
-        nuevaVigenciaCT.setVigenciajornada(listVigenciasJornadas.get(indexAuxVJ));
-        nuevaVigenciaCT.setTipocompensacion("DESCANSO");
-        nuevaVigenciaCT.setNovedadturnorotativo(null);
-        String auxiliar = nuevaVigenciaCT.getComentario();
-        nuevaVigenciaCT.setComentario(auxiliar.toUpperCase());
-        listVCTCrear.add(nuevaVigenciaCT);
-        nuevaVigenciaCT = new VigenciasCompensaciones();
-        index = indexAuxVJ;
-        listVigenciasCompensacionesTiempo = null;
-        listVigenciasCompensacionesTiempo = getFiltrarVigenciasCompensacionesTiempo();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaCT");
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+        if (nuevaVigenciaCT.getFechafinal() != null && nuevaVigenciaCT.getFechainicial() != null) {
+            if (nuevaVigenciaCT.getFechafinal().after(nuevaVigenciaCT.getFechainicial())) {
+                //CERRAR FILTRADO
+                cambiosTiempo = true;
+                if (banderaVCT == 1) {
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+                    vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+                    vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+                    vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla2 = "115";
+                    RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
+                    banderaVCT = 0;
+                    filtrarVigenciasCompensacionesTiempo = null;
+                    tipoListaVCT = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigenciaCT.setSecuencia(l);
+                nuevaVigenciaCT.setVigenciajornada(listVigenciasJornadas.get(indexAuxVJ));
+                nuevaVigenciaCT.setTipocompensacion("DESCANSO");
+                nuevaVigenciaCT.setNovedadturnorotativo(null);
+                if (nuevaVigenciaCT.getComentario() != null) {
+                    String auxiliar = nuevaVigenciaCT.getComentario();
+                    nuevaVigenciaCT.setComentario(auxiliar.toUpperCase());
+                }
+                listVCTCrear.add(nuevaVigenciaCT);
+                if (listVigenciasCompensacionesTiempo == null) {
+                    listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
+                }
+                listVigenciasCompensacionesTiempo.add(nuevaVigenciaCT);
+                nuevaVigenciaCT = new VigenciasCompensaciones();
+                index = indexAuxVJ;
+                context.execute("NuevoRegistroVCT.hide();");
+                context.update("form:datosVigenciaCT");
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                indexVCT = -1;
+                secRegistroVCT = null;
+            } else {
+                context.execute("errorFechaDescanso.show()");
+            }
+        } else {
+            context.execute("errorNullDescanso.show()");
         }
-        indexVCT = -1;
-        secRegistroVCT = null;
     }
 
     /**
@@ -1345,44 +1347,56 @@ public class ControlVigenciaJornada implements Serializable {
      * Agrega una nueva vigencia prorrateo proyecto
      */
     public void agregarNuevaVCD() {
-        cambioVigenciaCD = true;
-        //CERRAR FILTRADO
-        if (banderaVCT == 1) {
-            FacesContext c = FacesContext.getCurrentInstance();
-            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
-            vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
-            vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
-            vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla3 = "115";
-            RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
-            banderaVCD = 0;
-            filtrarVigenciasCompensacionesDinero = null;
-            tipoListaVCD = 0;
-        }
-        //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
-        k++;
-        l = BigInteger.valueOf(k);
-        nuevaVigenciaCD.setSecuencia(l);
-        nuevaVigenciaCD.setVigenciajornada(listVigenciasJornadas.get(indexAuxVJ));
-        nuevaVigenciaCD.setTipocompensacion("DINERO");
-        nuevaVigenciaCD.setNovedadturnorotativo(null);
-        String auxiliar = nuevaVigenciaCD.getComentario();
-        nuevaVigenciaCD.setComentario(auxiliar.toUpperCase());
-        listVCDCrear.add(nuevaVigenciaCD);
-        nuevaVigenciaCT = new VigenciasCompensaciones();
-        index = indexAuxVJ;
-        listVigenciasCompensacionesDinero = null;
-        listVigenciasCompensacionesDinero = getFiltrarVigenciasCompensacionesDinero();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaCD");
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+        if (nuevaVigenciaCD.getFechafinal() != null && nuevaVigenciaCD.getFechainicial() != null) {
+            if (nuevaVigenciaCD.getFechafinal().after(nuevaVigenciaCD.getFechainicial())) {
+                cambiosDinero = true;
+                if (banderaVCT == 1) {
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+                    vCDComentario.setFilterStyle("display: none; visibility: hidden;");
+                    vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+                    vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+                    vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla3 = "115";
+                    RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
+                    banderaVCD = 0;
+                    filtrarVigenciasCompensacionesDinero = null;
+                    tipoListaVCD = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS 
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaVigenciaCD.setSecuencia(l);
+                nuevaVigenciaCD.setVigenciajornada(listVigenciasJornadas.get(indexAuxVJ));
+                nuevaVigenciaCD.setTipocompensacion("DINERO");
+                nuevaVigenciaCD.setNovedadturnorotativo(null);
+                if (nuevaVigenciaCD.getComentario() != null) {
+                    String auxiliar = nuevaVigenciaCD.getComentario();
+                    nuevaVigenciaCD.setComentario(auxiliar.toUpperCase());
+                }
+                listVCDCrear.add(nuevaVigenciaCD);
+                if (listVigenciasCompensacionesDinero == null) {
+                    listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
+                }
+                listVigenciasCompensacionesDinero.add(nuevaVigenciaCD);
+                nuevaVigenciaCT = new VigenciasCompensaciones();
+                index = indexAuxVJ;
+                context.update("form:datosVigenciaCD");
+                context.execute("NuevoRegistroVCD.hide();");
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                indexVCD = -1;
+                secRegistroVCD = null;
+            } else {
+                context.execute("errorFechaDescanso.show()");
+            }
+        } else {
+            context.execute("errorNullDescanso.show()");
         }
-        indexVCD = -1;
-        secRegistroVCD = null;
     }
 
     /**
@@ -1400,14 +1414,20 @@ public class ControlVigenciaJornada implements Serializable {
      * posicion en la pagina que se tiene
      */
     public void verificarDuplicarVigencia() {
-        if (index >= 0) {
-            duplicarVigenciaJ();
-        }
-        if (indexVCT >= 0) {
-            duplicarVigenciaCT();
-        }
-        if (indexVCD >= 0) {
-            duplicarVigenciaCD();
+        if (index >= 0 || indexVCT >= 0 || indexVCD >= 0) {
+            if (index >= 0) {
+                duplicarVigenciaJ();
+            }
+            if (indexVCT >= 0) {
+                duplicarVigenciaCT();
+            }
+            if (indexVCD >= 0) {
+                duplicarVigenciaCD();
+            }
+        } else {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.execute("seleccionarRegistro.show()");
+
         }
     }
 
@@ -1455,6 +1475,7 @@ public class ControlVigenciaJornada implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVJ.getFechavigencia() != null && duplicarVJ.getJornadatrabajo().getSecuencia() != null) {
             if (validarFechasRegistroVJ(2) == true) {
+                cambiosJornada = true;
                 listVigenciasJornadas.add(duplicarVJ);
                 listVJCrear.add(duplicarVJ);
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1538,33 +1559,46 @@ public class ControlVigenciaJornada implements Serializable {
      * VigenciaProrrateo
      */
     public void confirmarDuplicarVCT() {
-        cambioVigenciaCT = true;
-        listVigenciasCompensacionesTiempo.add(duplicarVCT);
-        listVCTCrear.add(duplicarVCT);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaCT");
-        indexVCT = -1;
-        secRegistroVCT = null;
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+        if (duplicarVCT.getFechafinal() != null && duplicarVCT.getFechainicial() != null) {
+            if (duplicarVCT.getFechafinal().after(duplicarVCT.getFechainicial())) {
+                cambiosTiempo = true;
+                if (duplicarVCT.getComentario() != null) {
+                    String auxiliar = duplicarVCT.getComentario();
+                    duplicarVCT.setComentario(auxiliar.toUpperCase());
+                }
+                listVigenciasCompensacionesTiempo.add(duplicarVCT);
+                listVCTCrear.add(duplicarVCT);
+                context.update("form:datosVigenciaCT");
+                indexVCT = -1;
+                secRegistroVCT = null;
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                if (banderaVCT == 1) {
+                    //CERRAR FILTRADO
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
+                    vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
+                    vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
+                    vCTComentario.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla2 = "115";
+                    RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
+                    banderaVCT = 0;
+                    filtrarVigenciasCompensacionesTiempo = null;
+                    tipoListaVCT = 0;
+                }
+                context.execute("DuplicadoRegistroVCT.hide()");
+                duplicarVCT = new VigenciasCompensaciones();
+            } else {
+                context.execute("errorFechaDescanso.show()");
+            }
+        } else {
+            context.execute("errorNullDescanso.show()");
         }
-        if (banderaVCT == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            vCTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaInicial");
-            vCTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTFechaFinal");
-            vCTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vCTComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCT:vCTComentario");
-            vCTComentario.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla2 = "115";
-            RequestContext.getCurrentInstance().update("form:datosVigenciaCT");
-            banderaVCT = 0;
-            filtrarVigenciasCompensacionesTiempo = null;
-            tipoListaVCT = 0;
-        }
-        duplicarVCT = new VigenciasCompensaciones();
     }
 
     /**
@@ -1579,7 +1613,6 @@ public class ControlVigenciaJornada implements Serializable {
      * Duplica un registo Vigencia Prorrateo Proyecto
      */
     public void duplicarVigenciaCD() {
-        cambioVigenciaCD = true;
         if (indexVCD >= 0) {
             duplicarVCD = new VigenciasCompensaciones();
             k++;
@@ -1611,32 +1644,46 @@ public class ControlVigenciaJornada implements Serializable {
      * Vigencia Prorrateo Proyecto
      */
     public void confirmarDuplicarVCD() {
-        listVigenciasCompensacionesDinero.add(duplicarVCD);
-        listVCDCrear.add(duplicarVCD);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaCD");
-        indexVCD = -1;
-        secRegistroVCD = null;
-        if (guardado == true) {
-            guardado = false;
-            context.update("form:ACEPTAR");
+        if (duplicarVCD.getFechafinal() != null && duplicarVCD.getFechainicial() != null) {
+            if (duplicarVCD.getFechafinal().after(duplicarVCD.getFechainicial())) {
+                cambiosDinero = true;
+                if (duplicarVCD.getComentario() != null) {
+                    String auxiliar = duplicarVCD.getComentario();
+                    duplicarVCD.setComentario(auxiliar.toUpperCase());
+                }
+                listVigenciasCompensacionesDinero.add(duplicarVCD);
+                listVCDCrear.add(duplicarVCD);
+                context.update("form:datosVigenciaCD");
+                indexVCD = -1;
+                secRegistroVCD = null;
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                if (banderaVCD == 1) {
+                    //CERRAR FILTRADO
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
+                    vCDComentario.setFilterStyle("display: none; visibility: hidden;");
+                    vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
+                    vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
+                    vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    altoTabla3 = "115";
+                    RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
+                    banderaVCD = 0;
+                    filtrarVigenciasCompensacionesDinero = null;
+                    tipoListaVCD = 0;
+                }
+                context.execute("NuevoRegistroVCD.hide()");
+                duplicarVCD = new VigenciasCompensaciones();
+            } else {
+                context.execute("errorFechaDescanso.show()");
+            }
+        } else {
+            context.execute("errorNullDescanso.show()");
         }
-        if (banderaVCD == 1) {
-            //CERRAR FILTRADO
-            FacesContext c = FacesContext.getCurrentInstance();
-            vCDComentario = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDComentario");
-            vCDComentario.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaInicial");
-            vCDFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vCDFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCD:vCDFechaFinal");
-            vCDFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            altoTabla3 = "115";
-            RequestContext.getCurrentInstance().update("form:datosVigenciaCD");
-            banderaVCD = 0;
-            filtrarVigenciasCompensacionesDinero = null;
-            tipoListaVCD = 0;
-        }
-        duplicarVCD = new VigenciasCompensaciones();
     }
 
     /**
@@ -1652,17 +1699,15 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void validarBorradoVigencia() {
         if (index >= 0) {
+            int tam1 = 0;
             if (listVigenciasCompensacionesDinero != null) {
-                if (listVigenciasCompensacionesDinero.isEmpty()) {
-                    listVigenciasCompensacionesDinero = null;
-                }
+                tam1 = listVigenciasCompensacionesDinero.size();
             }
+            int tam2 = 0;
             if (listVigenciasCompensacionesTiempo != null) {
-                if (listVigenciasCompensacionesTiempo.isEmpty()) {
-                    listVigenciasCompensacionesTiempo = null;
-                }
+                tam2 = listVigenciasCompensacionesTiempo.size();
             }
-            if ((listVigenciasCompensacionesTiempo == null) && (listVigenciasCompensacionesDinero == null)) {
+            if (tam1 == 0 && tam2 == 0) {
                 borrarVJ();
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1684,6 +1729,7 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void borrarVJ() {
         if (index >= 0) {
+            cambiosJornada = true;
             if (tipoLista == 0) {
                 if (!listVJModificar.isEmpty() && listVJModificar.contains(listVigenciasJornadas.get(index))) {
                     int modIndex = listVJModificar.indexOf(listVigenciasJornadas.get(index));
@@ -1729,8 +1775,8 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que borra una vigencia prorrateo
      */
     public void borrarVCT() {
-        cambioVigenciaCT = true;
         if (indexVCT >= 0) {
+            cambiosTiempo = true;
             if (tipoListaVCT == 0) {
                 if (!listVCTModificar.isEmpty() && listVCTModificar.contains(listVigenciasCompensacionesTiempo.get(indexVCT))) {
                     int modIndex = listVCTModificar.indexOf(listVigenciasCompensacionesTiempo.get(indexVCT));
@@ -1775,8 +1821,8 @@ public class ControlVigenciaJornada implements Serializable {
      * Metodo que borra una vigencia prorrateo proyecto
      */
     public void borrarVCD() {
-        cambioVigenciaCD = true;
         if (indexVCD >= 0) {
+            cambiosDinero = true;
             if (tipoListaVCD == 0) {
                 if (!listVCDModificar.isEmpty() && listVCDModificar.contains(listVigenciasCompensacionesDinero.get(indexVCD))) {
                     int modIndex = listVCDModificar.indexOf(listVigenciasCompensacionesDinero.get(indexVCD));
@@ -2030,6 +2076,7 @@ public class ControlVigenciaJornada implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
+            cambiosJornada = true;
             permitirIndex = true;
             context.update(":form:editarCentroCosto");
         } else if (tipoActualizacion == 1) {
@@ -2045,6 +2092,10 @@ public class ControlVigenciaJornada implements Serializable {
         index = -1;
         secRegistroVJ = null;
         tipoActualizacion = -1;
+        context.update("form:JornadaLaboralDialogo");
+        context.update("form:lovJornadaLaboral");
+        context.update("form:aceptarJL");
+        context.execute("JornadaLaboralDialogo.hide()");
     }
 
     /**
@@ -2068,6 +2119,7 @@ public class ControlVigenciaJornada implements Serializable {
     public void actualizarTipoDescanso() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
+            cambiosJornada = true;
             if (tipoLista == 0) {
                 listVigenciasJornadas.get(index).setTipodescanso(tipoDescansoSeleccionado);
                 if (!listVJCrear.contains(listVigenciasJornadas.get(index))) {
@@ -2106,6 +2158,10 @@ public class ControlVigenciaJornada implements Serializable {
         index = -1;
         secRegistroVJ = null;
         tipoActualizacion = -1;
+        context.update("form:TiposDescansosDialogo");
+        context.update("form:lovTipoDescanso");
+        context.update("form:aceptarTD");
+        context.execute("TiposDescansosDialogo.hide()");
     }
 
     /**
@@ -2149,57 +2205,53 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void validarNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        int tam = 0;
-        if (listVigenciasJornadas != null) {
-            tam = listVigenciasJornadas.size();
-        }
-        int tam1 = 0;
-        if (listVigenciasCompensacionesDinero != null) {
-            tam1 = listVigenciasCompensacionesDinero.size();
-        }
-        int tam2 = 0;
-        if (listVigenciasCompensacionesTiempo != null) {
-            tam2 = listVigenciasCompensacionesTiempo.size();
-        }
-        if (tam == 0 && tam1 == 0 && tam2 == 0) {
-            context.update("form:NuevoRegistroPagina");
-            context.execute("NuevoRegistroPagina.show()");
-        } else {
-            if (index >= 0) {
-                boolean existeVJ = false;
-                VigenciasJornadas vigJornada = listVigenciasJornadas.get(index);
-                List<VigenciasJornadas> listaVJ = administrarVigenciasJornadas.VigenciasJornadasEmpleado(empleado.getSecuencia());
-                for (int i = 0; i < listaVJ.size(); i++) {
-                    if (listaVJ.get(i).getSecuencia().equals(vigJornada.getSecuencia())) {
-                        existeVJ = true;
-                    }
+        System.out.println("cambiosJornada : " + cambiosJornada);
+        System.out.println("cambiosTiempo : " + cambiosTiempo);
+        System.out.println("cambiosDinero : " + cambiosDinero);
+        if (cambiosJornada == false && cambiosTiempo == false && cambiosDinero == false) {
+            System.out.println("index : " + index);
+            System.out.println("indexVCT : " + indexVCT);
+            System.out.println("indexVCD : " + indexVCD);
+            if (index < 0 && indexVCT < 0 && indexVCD < 0) {
+                context.execute("seleccionarRegistro.show()");
+            } else {
+                int tam = 0;
+                if (listVigenciasJornadas != null) {
+                    tam = listVigenciasJornadas.size();
                 }
-                if (existeVJ == true) {
-                    if ((existeVCD == false) || (existeVCT == false)) {
-                        context.update("form:NuevoRegistroPagina");
-                        context.execute("NuevoRegistroPagina.show()");
-                    } else {
-                        nuevaVigencia = new VigenciasJornadas();
-                        nuevaVigencia.setJornadatrabajo(new JornadasLaborales());
-                        nuevaVigencia.setTipodescanso(new TiposDescansos());
+                int tam1 = 0;
+                if (listVigenciasCompensacionesDinero != null) {
+                    tam1 = listVigenciasCompensacionesDinero.size();
+                }
+                int tam2 = 0;
+                if (listVigenciasCompensacionesTiempo != null) {
+                    tam2 = listVigenciasCompensacionesTiempo.size();
+                }
+                System.out.println("tam : " + tam);
+                System.out.println("tam1 : " + tam1);
+                System.out.println("tam2 : " + tam2);
+                if ((tam == 0) || (tam1 == 0) || (tam2 == 0)) {
+                    context.update("form:NuevoRegistroPagina");
+                    context.execute("NuevoRegistroPagina.show()");
+                } else {
+                    if (index >= 0) {
                         context.update("form:NuevoRegistroVJ");
                         context.execute("NuevoRegistroVJ.show()");
                     }
-                } else {
-                    context.update("form:confirmarGuardarVJ");
-                    context.execute("confirmarGuardarVJ.show()");
+                    if (indexVCT >= 0) {
+                        nuevaVigenciaCT = new VigenciasCompensaciones();
+                        context.update("form:NuevoRegistroVCT");
+                        context.execute("NuevoRegistroVCT.show()");
+                    }
+                    if (indexVCD >= 0) {
+                        nuevaVigenciaCD = new VigenciasCompensaciones();
+                        context.update("form:NuevoRegistroVCD");
+                        context.execute("NuevoRegistroVCD.show()");
+                    }
                 }
             }
-            if (indexVCT >= 0) {
-                nuevaVigenciaCT = new VigenciasCompensaciones();
-                context.update("form:NuevoRegistroVCT");
-                context.execute("NuevoRegistroVCT.show()");
-            }
-            if (indexVCD >= 0) {
-                nuevaVigenciaCD = new VigenciasCompensaciones();
-                context.update("form:NuevoRegistroVCD");
-                context.execute("NuevoRegistroVCD.show()");
-            }
+        } else {
+            context.execute("confirmarGuardarSinSalida.show()");
         }
     }
 
@@ -2526,8 +2578,10 @@ public class ControlVigenciaJornada implements Serializable {
     public List<VigenciasJornadas> getListVigenciasJornadas() {
         try {
             if (listVigenciasJornadas == null) {
-                listVigenciasJornadas = new ArrayList<VigenciasJornadas>();
-                listVigenciasJornadas = administrarVigenciasJornadas.VigenciasJornadasEmpleado(empleado.getSecuencia());
+                if (empleado != null) {
+                    listVigenciasJornadas = new ArrayList<VigenciasJornadas>();
+                    listVigenciasJornadas = administrarVigenciasJornadas.VigenciasJornadasEmpleado(empleado.getSecuencia());
+                }
                 return listVigenciasJornadas;
             } else {
                 return listVigenciasJornadas;
@@ -2543,27 +2597,15 @@ public class ControlVigenciaJornada implements Serializable {
     }
 
     public List<VigenciasJornadas> getFiltrarVigenciasJornadas() {
-        try {
-            return filtrarVigenciasJornadas;
-        } catch (Exception e) {
-            System.out.println("Error getFiltrarVL");
-            return null;
-        }
+        return filtrarVigenciasJornadas;
     }
 
     public void setFiltrarVigenciasJornadas(List<VigenciasJornadas> filtrarVJ) {
-        try {
-            this.filtrarVigenciasJornadas = filtrarVJ;
-        } catch (Exception e) {
-            System.out.println("Se estallo: " + e);
-        }
-
+        this.filtrarVigenciasJornadas = filtrarVJ;
     }
 
     public List<JornadasLaborales> getListJornadasLaborales() {
-        if (listJornadasLaborales.isEmpty()) {
-            listJornadasLaborales = administrarVigenciasJornadas.jornadasLaborales();
-        }
+        listJornadasLaborales = administrarVigenciasJornadas.jornadasLaborales();
         return listJornadasLaborales;
     }
 
@@ -2653,69 +2695,70 @@ public class ControlVigenciaJornada implements Serializable {
 
     public List<VigenciasCompensaciones> getListVigenciasCompensacionesTiempo() {
         if (index >= 0 && (listVigenciasJornadas.get(index).getSecuencia() != null)) {
-            if (listVigenciasCompensacionesTiempo != null) {
-                if (listVigenciasCompensacionesTiempo.isEmpty()) {
-                    listVigenciasCompensacionesTiempo = null;
-                }
-            }
             if (listVigenciasCompensacionesTiempo == null) {
+                listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
                 String variable = "DESCANSO";
                 List<VigenciasCompensaciones> listVigencia;
                 listVigencia = administrarVigenciasJornadas.VigenciasCompensacionesSecVigencia(listVigenciasJornadas.get(index).getSecuencia());
                 if (listVigencia != null) {
-                    if (listVigencia.isEmpty()) {
-                        listVigencia = null;
-                    }
-                }
-                if (listVigencia == null) {
-                    listVigenciasCompensacionesTiempo = null;
-                } else {
-                    listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
                     for (int i = 0; i < listVigencia.size(); i++) {
                         if (listVigencia.get(i).getTipocompensacion().equalsIgnoreCase(variable)) {
+                            String aux = listVigencia.get(i).getComentario().toUpperCase();
+                            listVigencia.get(i).setComentario(aux);
                             listVigenciasCompensacionesTiempo.add(listVigencia.get(i));
-                        }
-                    }
-                }
-                if (listVigenciasCompensacionesTiempo != null) {
-                    if (!listVCTModificar.isEmpty() || !listVCTBorrar.isEmpty()) {
-                        for (int i = 0; i < listVigenciasCompensacionesTiempo.size(); i++) {
-                            if (!listVCTModificar.isEmpty() && listVCTModificar.contains(listVigenciasCompensacionesTiempo.get(i))) {
-                                int modIndex = listVCTModificar.indexOf(listVigenciasCompensacionesTiempo.get(i));
 
-                                listVigenciasCompensacionesTiempo.get(i).setFechafinal(listVCTModificar.get(modIndex).getFechafinal());
-                                listVigenciasCompensacionesTiempo.get(i).setFechainicial(listVCTModificar.get(modIndex).getFechainicial());
-                                listVigenciasCompensacionesTiempo.get(i).setComentario(listVCTModificar.get(modIndex).getComentario());
+                        }
+                    }
+                }/*
+                 if (listVigencia == null) {
+                 listVigenciasCompensacionesTiempo = null;
+                 } else {
+                 listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
 
-                            } else if (!listVCTBorrar.isEmpty() && listVCTBorrar.contains(listVigenciasCompensacionesTiempo.get(i))) {
-                                listVigenciasCompensacionesTiempo.remove(i);
-                            }
-                        }
-                    }
-                }
-                if (!listVCTCrear.isEmpty()) {
-                    if (listVigenciasCompensacionesTiempo == null) {
-                        listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
-                    }
-                    for (int i = 0; i < listVCTCrear.size(); i++) {
-                        try {
-                            listVigenciasCompensacionesTiempo.add(listVCTCrear.get(i));
-                        } catch (Exception e) {
-                            System.out.println("Error en cargueVigenciasCompensacionesTiempo " + e.toString());
-                        }
-                    }
-                }
+                 }
+                 if (listVigenciasCompensacionesTiempo != null) {
+                 if (!listVCTModificar.isEmpty() || !listVCTBorrar.isEmpty()) {
+                 for (int i = 0; i < listVigenciasCompensacionesTiempo.size(); i++) {
+                 if (!listVCTModificar.isEmpty() && listVCTModificar.contains(listVigenciasCompensacionesTiempo.get(i))) {
+                 int modIndex = listVCTModificar.indexOf(listVigenciasCompensacionesTiempo.get(i));
+
+                 listVigenciasCompensacionesTiempo.get(i).setFechafinal(listVCTModificar.get(modIndex).getFechafinal());
+                 listVigenciasCompensacionesTiempo.get(i).setFechainicial(listVCTModificar.get(modIndex).getFechainicial());
+                 listVigenciasCompensacionesTiempo.get(i).setComentario(listVCTModificar.get(modIndex).getComentario());
+
+                 } else if (!listVCTBorrar.isEmpty() && listVCTBorrar.contains(listVigenciasCompensacionesTiempo.get(i))) {
+                 listVigenciasCompensacionesTiempo.remove(i);
+                 }
+                 }
+                 }
+                 }
+                 if (!listVCTCrear.isEmpty()) {
+                 if (listVigenciasCompensacionesTiempo == null) {
+                 listVigenciasCompensacionesTiempo = new ArrayList<VigenciasCompensaciones>();
+                 }
+                 for (int i = 0; i < listVCTCrear.size(); i++) {
+                 try {
+                 listVigenciasCompensacionesTiempo.add(listVCTCrear.get(i));
+                 } catch (Exception e) {
+                 System.out.println("Error en cargueVigenciasCompensacionesTiempo " + e.toString());
+                 }
+                 }
+                 }
+                 }
+                 }
+                 if (listVigenciasCompensacionesTiempo != null) {
+                 if (listVigenciasCompensacionesTiempo.isEmpty()) {
+                 listVigenciasCompensacionesTiempo = null;
+                 existeVCT = false;
+                 } else {
+                 existeVCT = true;
+                 }
+                 } else {
+                 existeVCT = false;
+                 }
+                 */
+
             }
-        }
-        if (listVigenciasCompensacionesTiempo != null) {
-            if (listVigenciasCompensacionesTiempo.isEmpty()) {
-                listVigenciasCompensacionesTiempo = null;
-                existeVCT = false;
-            } else {
-                existeVCT = true;
-            }
-        } else {
-            existeVCT = false;
         }
         return listVigenciasCompensacionesTiempo;
     }
@@ -2734,64 +2777,82 @@ public class ControlVigenciaJornada implements Serializable {
 
     public List<VigenciasCompensaciones> getListVigenciasCompensacionesDinero() {
         if (index >= 0 && (listVigenciasJornadas.get(index).getSecuencia() != null)) {
-            if (listVigenciasCompensacionesDinero != null) {
-                if (listVigenciasCompensacionesDinero.isEmpty()) {
-                    listVigenciasCompensacionesDinero = null;
-                }
-            }
             if (listVigenciasCompensacionesDinero == null) {
+                listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
                 String variable = "DINERO";
-                List<VigenciasCompensaciones> listVigencias;
-                listVigencias = administrarVigenciasJornadas.VigenciasCompensacionesSecVigencia(listVigenciasJornadas.get(index).getSecuencia());
-                if (listVigencias != null) {
-                    if (listVigencias.isEmpty()) {
-                        listVigencias = null;
-                    }
-                }
-                if (listVigencias == null) {
-                    listVigenciasCompensacionesDinero = null;
-                } else {
-                    listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
-                    for (int i = 0; i < listVigencias.size(); i++) {
-                        if (listVigencias.get(i).getTipocompensacion().equalsIgnoreCase(variable)) {
-                            listVigenciasCompensacionesDinero.add(listVigencias.get(i));
+                List<VigenciasCompensaciones> listVigencia;
+                listVigencia = administrarVigenciasJornadas.VigenciasCompensacionesSecVigencia(listVigenciasJornadas.get(index).getSecuencia());
+                if (listVigencia != null) {
+                    for (int i = 0; i < listVigencia.size(); i++) {
+                        if (listVigencia.get(i).getTipocompensacion().equalsIgnoreCase(variable)) {
+                            String aux = listVigencia.get(i).getComentario().toUpperCase();
+                            listVigencia.get(i).setComentario(aux);
+                            listVigenciasCompensacionesDinero.add(listVigencia.get(i));
+
                         }
                     }
                 }
-                if (listVigenciasCompensacionesDinero != null) {
-                    for (int i = 0; i < listVigenciasCompensacionesDinero.size(); i++) {
-                        //////////////
-                        if (!listVCDModificar.isEmpty() && listVCDModificar.contains(listVigenciasCompensacionesDinero.get(i))) {
-                            int modIndex = listVCDModificar.indexOf(listVigenciasCompensacionesDinero.get(i));
 
-                            listVigenciasCompensacionesDinero.get(i).setFechafinal(listVCDModificar.get(modIndex).getFechafinal());
-                            listVigenciasCompensacionesDinero.get(i).setFechainicial(listVCDModificar.get(modIndex).getFechainicial());
-                            listVigenciasCompensacionesDinero.get(i).setComentario(listVCDModificar.get(modIndex).getComentario());
+                /*
+                 if (listVigenciasCompensacionesDinero != null) {
+                 if (listVigenciasCompensacionesDinero.isEmpty()) {
+                 listVigenciasCompensacionesDinero = null;
+                 }
+                 }
+                 if (listVigenciasCompensacionesDinero == null) {
+                 String variable = "DINERO";
+                 List<VigenciasCompensaciones> listVigencias;
+                 listVigencias = administrarVigenciasJornadas.VigenciasCompensacionesSecVigencia(listVigenciasJornadas.get(index).getSecuencia());
+                 if (listVigencias != null) {
+                 if (listVigencias.isEmpty()) {
+                 listVigencias = null;
+                 }
+                 }
+                 if (listVigencias == null) {
+                 listVigenciasCompensacionesDinero = null;
+                 } else {
+                 listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
+                 for (int i = 0; i < listVigencias.size(); i++) {
+                 if (listVigencias.get(i).getTipocompensacion().equalsIgnoreCase(variable)) {
+                 listVigenciasCompensacionesDinero.add(listVigencias.get(i));
+                 }
+                 }
+                 }
+                 if (listVigenciasCompensacionesDinero != null) {
+                 for (int i = 0; i < listVigenciasCompensacionesDinero.size(); i++) {
+                 //////////////
+                 if (!listVCDModificar.isEmpty() && listVCDModificar.contains(listVigenciasCompensacionesDinero.get(i))) {
+                 int modIndex = listVCDModificar.indexOf(listVigenciasCompensacionesDinero.get(i));
 
-                        } else if (!listVCDBorrar.isEmpty() && listVCDBorrar.contains(listVigenciasCompensacionesDinero.get(i))) {
-                            listVigenciasCompensacionesDinero.remove(i);
-                        }
-                    }
-                }
-                if (!listVCDCrear.isEmpty()) {
-                    if (listVigenciasCompensacionesDinero == null) {
-                        listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
-                    }
-                    for (int i = 0; i < listVCDCrear.size(); i++) {
-                        listVigenciasCompensacionesDinero.add(listVCDCrear.get(i));
-                    }
-                }
+                 listVigenciasCompensacionesDinero.get(i).setFechafinal(listVCDModificar.get(modIndex).getFechafinal());
+                 listVigenciasCompensacionesDinero.get(i).setFechainicial(listVCDModificar.get(modIndex).getFechainicial());
+                 listVigenciasCompensacionesDinero.get(i).setComentario(listVCDModificar.get(modIndex).getComentario());
+
+                 } else if (!listVCDBorrar.isEmpty() && listVCDBorrar.contains(listVigenciasCompensacionesDinero.get(i))) {
+                 listVigenciasCompensacionesDinero.remove(i);
+                 }
+                 }
+                 }
+                 if (!listVCDCrear.isEmpty()) {
+                 if (listVigenciasCompensacionesDinero == null) {
+                 listVigenciasCompensacionesDinero = new ArrayList<VigenciasCompensaciones>();
+                 }
+                 for (int i = 0; i < listVCDCrear.size(); i++) {
+                 listVigenciasCompensacionesDinero.add(listVCDCrear.get(i));
+                 }
+                 }
+                 }
+                 }
+                 if (listVigenciasCompensacionesDinero != null) {
+                 if (listVigenciasCompensacionesDinero.isEmpty()) {
+                 listVigenciasCompensacionesDinero = null;
+                 existeVCD = false;
+                 } else {
+                 existeVCD = true;
+                 }
+                 } else {
+                 existeVCD = false;*/
             }
-        }
-        if (listVigenciasCompensacionesDinero != null) {
-            if (listVigenciasCompensacionesDinero.isEmpty()) {
-                listVigenciasCompensacionesDinero = null;
-                existeVCD = false;
-            } else {
-                existeVCD = true;
-            }
-        } else {
-            existeVCD = false;
         }
         return listVigenciasCompensacionesDinero;
     }
@@ -2826,9 +2887,7 @@ public class ControlVigenciaJornada implements Serializable {
 
     public List<TiposDescansos> getListTiposDescansos() {
         try {
-            if (listTiposDescansos == null) {
-                listTiposDescansos = administrarVigenciasJornadas.tiposDescansos();
-            }
+            listTiposDescansos = administrarVigenciasJornadas.tiposDescansos();
             return listTiposDescansos;
         } catch (Exception e) {
             System.out.println("Error getListTiposDescansos " + e.toString());
@@ -3033,6 +3092,13 @@ public class ControlVigenciaJornada implements Serializable {
     }
 
     public VigenciasJornadas getVigenciaJornadaSeleccionada() {
+        getListVigenciasJornadas();
+        if (listVigenciasJornadas != null) {
+            int tam = listVigenciasJornadas.size();
+            if (tam > 0) {
+                vigenciaJornadaSeleccionada = listVigenciasJornadas.get(0);
+            }
+        }
         return vigenciaJornadaSeleccionada;
     }
 
@@ -3041,6 +3107,13 @@ public class ControlVigenciaJornada implements Serializable {
     }
 
     public VigenciasCompensaciones getVigenciaTiempoSeleccionada() {
+        getListVigenciasCompensacionesTiempo();
+        if (listVigenciasCompensacionesTiempo != null) {
+            int tam = listVigenciasCompensacionesTiempo.size();
+            if (tam > 0) {
+                vigenciaTiempoSeleccionada = listVigenciasCompensacionesTiempo.get(0);
+            }
+        }
         return vigenciaTiempoSeleccionada;
     }
 
@@ -3049,6 +3122,13 @@ public class ControlVigenciaJornada implements Serializable {
     }
 
     public VigenciasCompensaciones getVigenciaDineroSeleccionada() {
+        getListVigenciasCompensacionesDinero();
+        if (listVigenciasCompensacionesDinero != null) {
+            int tam = listVigenciasCompensacionesDinero.size();
+            if (tam > 0) {
+                vigenciaDineroSeleccionada = listVigenciasCompensacionesDinero.get(0);
+            }
+        }
         return vigenciaDineroSeleccionada;
     }
 
