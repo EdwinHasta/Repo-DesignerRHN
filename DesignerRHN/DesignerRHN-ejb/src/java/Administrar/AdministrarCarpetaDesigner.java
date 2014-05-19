@@ -94,6 +94,7 @@ public class AdministrarCarpetaDesigner implements AdministrarCarpetaDesignerInt
     //MÉTODOS
     //--------------------------------------------------------------------------
    
+    @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }

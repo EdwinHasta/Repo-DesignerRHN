@@ -32,9 +32,11 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
     @Override
     public void crear(EntityManager em, TiposPensionados tiposPensionados) {
         try {
+            em.getTransaction().begin();
             em.persist(tiposPensionados);
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposPensionados");
+            System.out.println("Error crear PersistenciaTiposPensionados e : "+e);
         }
     }
 
@@ -61,12 +63,12 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
         try {
             //List<TiposPensionados> tiposPensionadosLista = (List<TiposPensionados>) em.createNamedQuery("TiposPensionados.findAll").getResultList();
             //return tiposPensionadosLista;
-            Query query = em.createQuery("SELECT t FROM TiposPensionados t");
+            Query query = em.createQuery("SELECT t FROM  TiposPensionados t");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposPensionados> listaTiposPensionados = query.getResultList();
             return listaTiposPensionados;
         } catch (Exception e) {
-            System.out.println("Error buscarTiposPensionados PersistenciaTiposPensionados");
+            System.out.println("Error buscarTiposPensionados PersistenciaTiposPensionados e = "+e);
             return null;
         }
     }
