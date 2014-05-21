@@ -37,8 +37,9 @@ public class ControlTemplate implements Serializable {
     AdministrarRastrosInterface administrarRastros;
 
     private ActualUsuario actualUsuario;
-    private String nombreUsuario, fotoUsuario;
+    private String nombreUsuario;
     private StreamedContent logoEmpresa;
+    private StreamedContent fotoUsuario;
     private FileInputStream fis;
 
     public ControlTemplate() {
@@ -51,6 +52,7 @@ public class ControlTemplate implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTemplate.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            actualUsuario = administrarTemplate.consultarActualUsuario();
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlTemplate: " + e);
             System.out.println("Causa: " + e.getCause());
@@ -58,11 +60,25 @@ public class ControlTemplate implements Serializable {
     }
 
     public void informacionUsuario() {
-        actualUsuario = administrarTemplate.consultarActualUsuario();
         if (actualUsuario != null) {
-            nombreUsuario = actualUsuario.getPersona().getNombreCompleto();
-            fotoUsuario = "Imagenes//Fotos_Usuarios//" + actualUsuario.getAlias() + ".png";
-            System.out.println("fotoUsuario : " + fotoUsuario);
+            String rutaFoto = administrarTemplate.rutaFotoUsuario();
+            if (rutaFoto != null) {
+                String bckRuta = rutaFoto;
+                try {
+                    rutaFoto = rutaFoto + actualUsuario.getAlias() + ".jpg";
+                    fis = new FileInputStream(new File(rutaFoto));
+                    fotoUsuario = new DefaultStreamedContent(fis, "image/jpg");
+                } catch (FileNotFoundException e) {
+                    try {
+                        System.out.println("El usuario no tiene una foto asignada: " + rutaFoto);
+                        rutaFoto = bckRuta + "sinFoto.jpg";
+                        fis = new FileInputStream(new File(rutaFoto));
+                        fotoUsuario = new DefaultStreamedContent(fis, "image/jpg");
+                    } catch (FileNotFoundException ex) {
+                        System.out.println("No se encontro el siguiente archivo, verificar. \n" + rutaFoto);
+                    }
+                }
+            }
         }
     }
 
@@ -76,7 +92,6 @@ public class ControlTemplate implements Serializable {
     }
 
     public void validarSession() throws IOException {
-        System.out.println("Hola bebo");
         FacesContext x = FacesContext.getCurrentInstance();
         HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
         boolean resultado = administrarTemplate.obtenerConexion(ses.getId());
@@ -88,16 +103,14 @@ public class ControlTemplate implements Serializable {
     }
 
     public String getNombreUsuario() {
-        if (nombreUsuario == null) {
-            informacionUsuario();
+        if (nombreUsuario == null && actualUsuario != null) {
+            nombreUsuario = actualUsuario.getPersona().getNombreCompleto();
         }
         return nombreUsuario;
     }
 
-    public String getFotoUsuario() {
-        if (fotoUsuario == null) {
-            informacionUsuario();
-        }
+    public StreamedContent getFotoUsuario() {
+        informacionUsuario();
         return fotoUsuario;
     }
 

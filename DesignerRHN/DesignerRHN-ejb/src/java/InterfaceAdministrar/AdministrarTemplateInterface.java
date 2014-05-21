@@ -20,5 +20,7 @@ public interface AdministrarTemplateInterface {
     public void cerrarSession(String idSesion);
     
     public String logoEmpresa();
+    
+    public String rutaFotoUsuario();
 
 }

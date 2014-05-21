@@ -46,12 +46,12 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
     @Override
     public String ejecutarReporte(String nombreReporte, String rutaReporte, String rutaGenerado, String nombreArchivo, String tipoReporte, Connection cxn) {
         try {
-            inicarC();
+            //inicarC();
             File archivo = new File(rutaReporte + nombreReporte + ".jasper");
             JasperReport masterReport;
             masterReport = (JasperReport) JRLoader.loadObject(archivo);
-            //JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, cxn);
-            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, conexion);
+            JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, cxn);
+            //JasperPrint imprimir = JasperFillManager.fillReport(masterReport, null, conexion);
             String outFileName = rutaGenerado + nombreArchivo;
             JRExporter exporter = null;
             if (tipoReporte.equals("PDF")) {
@@ -85,7 +85,6 @@ public class IniciarReporte implements IniciarReporteInterface, Serializable {
             System.out.println("Error IniciarReporte.ejecutarReporte: " + e);
             //System.out.println(e.getStackTrace());
             System.out.println("************************************");
-            System.out.println(e.getCause().toString());
             //e.printStackTrace();
             if (e.getCause() != null) {
                 return "Error: " + e.toString() + "\n" + e.getCause().toString();

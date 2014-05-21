@@ -76,6 +76,17 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
         return rutaLogo;
     }
 
+    public String rutaFotoUsuario() {
+        String rutaFoto;
+        general = persistenciaGenerales.obtenerRutas(em);
+        if (general != null) {
+            rutaFoto = general.getPathfoto();
+        } else {
+            return null;
+        }
+        return rutaFoto;
+    }
+
     public void cerrarSession(String idSesion) {
         if (em.isOpen()) {
             em.getEntityManagerFactory().close();

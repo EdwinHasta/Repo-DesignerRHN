@@ -89,7 +89,7 @@ public class AdministarReportes implements AdministarReportesInterface {
         //em.close();
     }
 
-        public String generarReporte(String nombreReporte, String tipoReporte, AsynchronousFilllListener asistenteReporte) {
+    public String generarReporte(String nombreReporte, String tipoReporte, AsynchronousFilllListener asistenteReporte) {
         //try {
         general = persistenciaGenerales.obtenerRutas(em);
         String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
@@ -129,47 +129,47 @@ public class AdministarReportes implements AdministarReportesInterface {
          return null;
          }*/
     }
-        
+
     @Override
     public String generarReporte(String nombreReporte, String tipoReporte) {
-        //try {
-        general = persistenciaGenerales.obtenerRutas(em);
-        String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
-        String pathReporteGenerado = null;
-        if (general != null && nombreUsuario != null) {
-            SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
-            String fechaActual = formato.format(new Date());
-            String nombreArchivo = "JR" + nombreUsuario + fechaActual;
-            String rutaReporte = general.getPathreportes();
-            String rutaGenerado = general.getUbicareportes();
-            if (tipoReporte.equals("PDF")) {
-                nombreArchivo = nombreArchivo + ".pdf";
-            } else if (tipoReporte.equals("XLSX")) {
-                nombreArchivo = nombreArchivo + ".xlsx";
-            } else if (tipoReporte.equals("XLS")) {
-                nombreArchivo = nombreArchivo + ".xls";
-            } else if (tipoReporte.equals("CSV")) {
-                nombreArchivo = nombreArchivo + ".csv";
-            } else if (tipoReporte.equals("HTML")) {
-                nombreArchivo = nombreArchivo + ".html";
-            } else if (tipoReporte.equals("DOCX")) {
-                nombreArchivo = nombreArchivo + ".rtf";
+        try {
+            general = persistenciaGenerales.obtenerRutas(em);
+            String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
+            String pathReporteGenerado = null;
+            if (general != null && nombreUsuario != null) {
+                SimpleDateFormat formato = new SimpleDateFormat("ddMMyyyyhhmmss");
+                String fechaActual = formato.format(new Date());
+                String nombreArchivo = "JR" + nombreUsuario + fechaActual;
+                String rutaReporte = general.getPathreportes();
+                String rutaGenerado = general.getUbicareportes();
+                if (tipoReporte.equals("PDF")) {
+                    nombreArchivo = nombreArchivo + ".pdf";
+                } else if (tipoReporte.equals("XLSX")) {
+                    nombreArchivo = nombreArchivo + ".xlsx";
+                } else if (tipoReporte.equals("XLS")) {
+                    nombreArchivo = nombreArchivo + ".xls";
+                } else if (tipoReporte.equals("CSV")) {
+                    nombreArchivo = nombreArchivo + ".csv";
+                } else if (tipoReporte.equals("HTML")) {
+                    nombreArchivo = nombreArchivo + ".html";
+                } else if (tipoReporte.equals("DOCX")) {
+                    nombreArchivo = nombreArchivo + ".rtf";
+                }
+                consultarDatosConexion();
+                if (conexion != null && !conexion.isClosed()) {
+                    pathReporteGenerado = reporte.ejecutarReporte(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte, conexion);
+                    conexion.close();
+                    return pathReporteGenerado;
+                }
+                return pathReporteGenerado;
             }
-                //datosConexion();
-            // if (conexion != null && !conexion.isClosed()) {
-            pathReporteGenerado = reporte.ejecutarReporte(nombreReporte, rutaReporte, rutaGenerado, nombreArchivo, tipoReporte, null);
-                    //conexion.close();
-            // return pathReporteGenerado;
-            // }
             return pathReporteGenerado;
+        } catch (SQLException ex) {
+            System.out.println("Error AdministrarReporte.generarReporte: " + ex);
+            return null;
         }
-        return pathReporteGenerado;
-        /* } catch (SQLException ex) {
-         System.out.println("PUM PUM xD");
-         return null;
-         }*/
     }
-    
+
     public void iniciarLlenadoReporte(String nombreReporte, AsynchronousFilllListener asistenteReporte) {
         if (general == null) {
             general = persistenciaGenerales.obtenerRutas(em);
@@ -177,7 +177,7 @@ public class AdministarReportes implements AdministarReportesInterface {
         String rutaReporte = general.getPathreportes();
         reporte.llenarReporte(nombreReporte, rutaReporte, asistenteReporte);
     }
-    
+
     public String crearArchivoReporte(JasperPrint print, String tipoReporte) {
         String nombreUsuario = persistenciaActualUsuario.actualAliasBD(em);
         String pathReporteGenerado = null;
