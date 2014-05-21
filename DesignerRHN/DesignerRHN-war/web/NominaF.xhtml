@@ -16,9 +16,7 @@
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel id="PanelTotal" header="#{msg['titulo']}" style=" ; position: absolute; width: 874px; height: 530px;">  
 
-
-                        <p:tabView  id="tabMenu"  dynamic="true" style=" height: 485px; " widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}" >  
-
+                        <p:tabView  id="tabMenu"  dynamic="true" style=" height: 485px;" widgetVar="tabMenu" activeIndex="#{controlRemoto.numPestaña}">  
                             <p:ajax event="tabChange" listener="#{controlRemoto.pestañaActual}"/> 
 
                             <p:tab title="#{msg['personal']}" id="Personal">  
@@ -53,25 +51,23 @@
                                     <p:tooltip  for="TipoPersonal">
                                         #{msg['cargosdesempeñados1']} <br/> #{msg['cargosdesempeñados2']}
                                     </p:tooltip>
-
-                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px;left: 87px; top: 16px; font-size: 11px;" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, data:panelInf " />
+                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px;left: 87px; top: 16px; font-size: 11px;" styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, data:panelInf " />
                                     <p:tooltip  for="Activos" value="#{msg['informacionactivos']}"  />
 
-                                    <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 87px; top: 43px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, data:panelInf"/>
+                                    <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 87px; top: 43px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.stylePensionados}" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, data:panelInf "/>
                                     <p:tooltip  for="Pensionados" value="#{msg['informacionpensionados']}"  />
 
-                                    <p:commandButton id="Retirados" value="#{msg['retirados']}" style="position: absolute; left: 87px; top: 70px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, data:panelInf"/>
+                                    <p:commandButton id="Retirados" value="#{msg['retirados']}" style="position: absolute; left: 87px; top: 70px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleRetirados}" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip  for="Retirados" value="#{msg['informacionretirados']}"  />
 
-                                    <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 87px; top: 98px; width: 110px; font-size: 11px;" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, data:panelInf"/>
+                                    <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 87px; top: 98px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleAspirantes}" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip  for="Aspirantes" value="#{msg['informacionaspirantes']}"  />
-
                                 </fieldset>
 
 
                                 <!-- Panel Derecho - Superior -->
 
-                                <p:dataGrid   id="data" var="item" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" paginator="true"  
+                                <p:dataGrid   id="data" currentPageReportTemplate="{currentPage} de {totalPages}" var="item" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" paginator="true"  
                                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
                                               {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-felipe" first="#{controlRemoto.estadoEmpleado}" >
 
@@ -403,8 +399,8 @@
                                 <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
 
-                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 120px; top: 49px">
-                                    <legend style="; font-weight: bold; color: #00F;">#{msg['propiedadesdenomina']}</legend>
+                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 120px; top: 49px;">
+                                    <legend style="font-weight: bold; color: #00F;">#{msg['propiedadesdenomina']}</legend>
                                     <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 22px; top: 112px;  font-weight: bold; text-align: center; width: 150px;" value="#{msg['novedadesdenomina']}"/>
                                     <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 228px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['conceptosdenomina']}"/>
                                     <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 439px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['formulasdeliquidacion']}"/>

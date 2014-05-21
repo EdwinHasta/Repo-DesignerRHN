@@ -18,5 +18,9 @@ public interface AdministrarTemplateInterface {
     public ActualUsuario consultarActualUsuario();
     
     public void cerrarSession(String idSesion);
+    
+    public String logoEmpresa();
+    
+    public String rutaFotoUsuario();
 
 }

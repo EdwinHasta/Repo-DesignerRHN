@@ -72,7 +72,6 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
             Query query = em.createQuery("SELECT ui.inforeporte FROM UsuariosInforeportes ui WHERE ui.inforeporte.modulo.nombrecorto = 'NOM' AND ui.usuario.alias = (SELECT a.alias FROM ActualUsuario a) ORDER BY ui.inforeporte.codigo DESC");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Inforeportes> inforeportes = (List<Inforeportes>) query.getResultList();
-            System.out.println("Size : " + inforeportes.size());
             return inforeportes;
         } catch (Exception e) {
             System.out.println("Error en buscarInforeportesUsuario " + e);

@@ -1,9 +1,13 @@
 package Administrar;
 
 import Entidades.ActualUsuario;
+import Entidades.Empresas;
+import Entidades.Generales;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfaceAdministrar.AdministrarTemplateInterface;
 import InterfacePersistencia.PersistenciaActualUsuarioInterface;
+import InterfacePersistencia.PersistenciaEmpresasInterface;
+import InterfacePersistencia.PersistenciaGeneralesInterface;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -32,8 +36,17 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
+    /**
+     * Enterprise JavaBean.<br>
+     * Representa la interfaz para acceder a las rutas de generales.
+     */
+    @EJB
+    PersistenciaGeneralesInterface persistenciaGenerales;
+    @EJB
+    PersistenciaEmpresasInterface persistenciaEmpresas;
 
     private EntityManager em;
+    private Generales general;
 
     @Override
     public boolean obtenerConexion(String idSesion) {
@@ -45,7 +58,35 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
     public ActualUsuario consultarActualUsuario() {
         return persistenciaActualUsuario.actualUsuarioBD(em);
     }
-    
+
+    @Override
+    public String logoEmpresa() {
+        String rutaLogo;
+        general = persistenciaGenerales.obtenerRutas(em);
+        if (general != null) {
+            Empresas empresa = persistenciaEmpresas.consultarPrimeraEmpresaSinPaquete(em);
+            if (empresa != null) {
+                rutaLogo = general.getPathfoto() + empresa.getNit() + ".png";
+            } else {
+                rutaLogo = general.getPathfoto() + "sinlogo.jpg";
+            }
+        } else {
+            return null;
+        }
+        return rutaLogo;
+    }
+
+    public String rutaFotoUsuario() {
+        String rutaFoto;
+        general = persistenciaGenerales.obtenerRutas(em);
+        if (general != null) {
+            rutaFoto = general.getPathfoto();
+        } else {
+            return null;
+        }
+        return rutaFoto;
+    }
+
     public void cerrarSession(String idSesion) {
         if (em.isOpen()) {
             em.getEntityManagerFactory().close();

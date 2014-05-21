@@ -60,15 +60,15 @@
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/> 
-                                
+
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
-                                
+
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                                
+
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
@@ -82,12 +82,13 @@
                                          filteredValue="#{controlVigenciasCargos.filterVC}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" scrollable="true" scrollWidth="830" 
                                          scrollHeight="#{controlVigenciasCargos.altoTabla}" style=" border: 1px;width: 830px"
-                                         selection="#{controlVigenciasCargos.vigenciaSeleccionada}" selectionMode="single">
+                                         selection="#{controlVigenciasCargos.vigenciaSeleccionada}" selectionMode="single"
+                                         styleClass="ui-datatable">
 
                                 <p:ajax event="filter" listener="#{controlVigenciasCargos.eventoFiltrar()}"/>
 
                                 <!--COLUMNAS TABLA DATOS VIGENCIAS CARGOS DE UN EMPLEADO -->
-                                <p:column headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="68" id="vcFecha" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['fecha']}" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains"  width="68" id="vcFecha" filterStyle="display: none; visibility: hidden;"  >  
                                     <f:facet name="header">
                                         <h:outputText value="#{msg['fecha']}" />
                                     </f:facet>
@@ -105,9 +106,6 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['fecha']}" />
-                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="Estructura" sortBy="#{info.estructura.nombre}" filterBy="#{info.estructura.nombre}" filterMatchMode="contains" id="vcEstructura" width="150" filterStyle="display: none; visibility: hidden;" >                                  
@@ -125,8 +123,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooEstructuras" onclick="estructurasDialog.show();"
-                                                         value="#{msg['estructura']}"/>
+                                        <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue;" id="fooEstructuras" onclick="estructurasDialog.show();"/>
                                     </f:facet>
                                 </p:column>  
 
@@ -145,9 +142,8 @@
                                     </p:cellEditor>
 
 
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooMotivos" onclick="motivosDialog.show();"
-                                                         value="#{msg['motivo']}" />
+                                    <f:facet name="footer" >
+                                        <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue" id="fooMotivos" onclick="motivosDialog.show();"/>
                                     </f:facet>
                                 </p:column>
 
@@ -165,9 +161,8 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooCargos" onclick="cargosDialog.show();"
-                                                         value="#{msg['nombrecargo']}"/>
+                                    <f:facet name="footer" >
+                                        <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue" id="fooCargos" onclick="cargosDialog.show();"/>
                                     </f:facet>
                                 </p:column>  
 
@@ -183,8 +178,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
-                                    <f:facet name="footer"><h:outputText value="#{msg['centrocosto']}" /></f:facet>
                                 </p:column>  
 
                                 <p:column headerText="Nombre_Jefe" sortBy="#{info.empleadojefe.persona.nombreCompleto}" filterBy="#{info.empleadojefe.persona.nombreCompleto}" filterMatchMode="contains" id="vcNombreJefe" width="150" filterStyle="display: none; visibility: hidden;" >                                                              
@@ -200,14 +193,11 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
-                                    <f:facet name="footer"><h:outputText value="#{msg['nombrejefe']}" /></f:facet>
                                 </p:column>
 
                                 <p:column headerText="R" width="25" style="height: 16px; padding: 0px;" exportable="false">  
                                     <f:facet name="header"><h:outputText value="#{msg['r']}" /></f:facet>
                                     <p:commandButton style="background-image: url(Imagenes/revertir.gif); width:23px; height: 21px; background-repeat: no-repeat; background-size: 100% 100%;"/>                                
-                                    <f:facet name="footer"><h:outputText value="#{msg['r']}" /></f:facet>
                                 </p:column>
 
                                 <p:column headerText="..." width="25" style="height: 16px;padding: 0px;" exportable="false">  
@@ -215,7 +205,6 @@
                                     <p:commandButton  style="width: 23px; height: 21px;padding: 0px; padding: 0px; padding-bottom: 0px; padding-top: 0px" id="selectButton" update=":form:display, datosVCEmpleado" oncomplete="datosDialog.show()" icon="ui-icon-search" title="View" >  
                                         <f:setPropertyActionListener value="#{info}" target="#{controlVigenciasCargos.vigenciaSeleccionada}" />  
                                     </p:commandButton>  
-                                    <f:facet name="footer"><h:outputText value="..." /></f:facet>
                                 </p:column>     
 
                             </p:dataTable> 
@@ -405,7 +394,7 @@
                         <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasCargos.mensajeValidacion}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />

@@ -42,6 +42,12 @@ a:link:hover, a:visited:hover  {
     text-align: left;
 }
 
+
+.ui-datatable tfoot td {
+    padding: 0px 10px !important;
+    height: 10px !important;
+}
+
 .ui-datagrid .ui-paginator .ui-paginator-next,
 .ui-datagrid .ui-paginator .ui-paginator-last,
 .ui-datagrid .ui-paginator .ui-paginator-first,
@@ -216,7 +222,7 @@ a:link:hover, a:visited:hover  {
 /*INPUT TEXT AREA*/
 textarea {
     resize: none;
-    }
+}
 
 /*TABVIEW BUSQUEDA AVANZADA*/
 

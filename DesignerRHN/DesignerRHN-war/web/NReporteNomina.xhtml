@@ -51,23 +51,23 @@
                         <fieldset style="position: absolute; left: 150px; top: 235px;  width: 690px; height: 250px; border-radius: 10px; ">
                             <legend style=" color: blue;text-align:left"><strong>#{msg['titulo']}</strong></legend>
 
-                            <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px;"                           
+                            <p:dataTable id="reportesNomina" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; width: 680px"                           
                                          value="#{controlNReporteNomina.listaIR}" scrollable="true" scrollHeight="#{controlNReporteNomina.altoTabla}" scrollWidth="690"
                                          filteredValue="#{controlNReporteNomina.filtrarListInforeportesUsuario}" selectionMode="single" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" selection="#{controlNReporteNomina.actualInfoReporteTabla}"  liveScroll="true" scrollRows="8">
                                 <p:ajax event="rowSelect" listener="#{controlNReporteNomina.seleccionRegistro()}" process="@this" />
                                 <p:ajax event="rowDblselect" listener="#{controlNReporteNomina.requisitosParaReporte()}" process="@this" />
 
-                                <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column style="padding: 0px; text-align: center; width: 50px" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.codigo}"/>
                                 </p:column>
 
-                                <p:column id="reporteIR" headerText="#{msg['reporte']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column id="reporteIR" headerText="#{msg['reporte']}" width="490" style="width: 490px" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.nombre}"/>
                                 </p:column>
 
-                                <p:column id="tipoIR" headerText="#{msg['tipo']}" width="110" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px; width: 110px" >                                  
-                                    <p:selectOneMenu value="#{info.tipo}"  style="width: 99%; font-weight: bold; "  panelStyle="width: 105px">  
+                                <p:column id="tipoIR" headerText="#{msg['tipo']}" sortBy="#{info.tipo}" filterBy="#{info.tipo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding: 0px;" >                                  
+                                    <p:selectOneMenu value="#{info.tipo}"  style="width: 98%; font-weight: bold; "  panelStyle="width: 50px">  
                                         <f:selectItem itemLabel="#{msg['pdf']}" itemValue="PDF" />  
                                         <f:selectItem itemLabel="#{msg['xhtml']}" itemValue="HTML" />  
                                         <f:selectItem itemLabel="#{msg['xls']}" itemValue="XLS" />  
@@ -82,7 +82,7 @@
                             <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
                             <p:commandButton style="position: absolute; left: 460px; top: 231px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteNomina.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteNomina.activoBuscarReporte}"/>
                             <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
-                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" onclick="generandoReporte.show();" oncomplete="validarDescargaReporte();"/>
+                            <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteNomina.generarReporte()}" onclick="generandoReporte.show();" />
                             <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
                             <p:remoteCommand name="validarDescargaReporte" actionListener="#{controlNReporteNomina.validarDescargaReporte()}"/>
                         </fieldset>
@@ -812,14 +812,15 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="descargarReporte.hide();" style="position: absolute; top: 50px; left: 212px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorGenerandoReporte" header="#{msg['errorReporte']}" widgetVar="errorGenerandoReporte"  resizable="false" draggable="false" modal="true" height="85" width="350px" style="font-size: 12px">  
+                    <p:dialog id="errorGenerandoReporte" header="#{msg['errorReporte']}" widgetVar="errorGenerandoReporte"  resizable="false" draggable="false" modal="true" height="90" width="350px" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlNReporteNomina.pathReporteGenerado}" style="position: absolute; left: 10px; top: 20px; width: 300px; height: 70px; overflow: auto;" readonly="true" />
                     </p:dialog>
 
-                    <p:dialog header="#{controlNReporteNomina.cabezeraVisor}" id="verReportePDF" widgetVar="verReportePDF" width="1024px" height="530px" resizable="false" draggable="false" modal="true">
-                        <p:media value="#{controlNReporteNomina.reporte}" width="100%" height="500px" player="pdf"/>
+                    <p:dialog header="#{controlNReporteNomina.cabezeraVisor}" id="verReportePDF" widgetVar="verReportePDF" width="1024px" height="530px" resizable="false" draggable="false" modal="true" onHide="reiniciarStreamedContent();">
+                        <p:media value="#{controlNReporteNomina.reporte}" width="100%" height="500px" player="pdf" rendered="#{controlNReporteNomina.reporte != null}"/>
                     </p:dialog>
 
+                    <p:remoteCommand name="reiniciarStreamedContent" actionListener="#{controlNReporteNomina.reiniciarStreamedContent()}"/>
                 </h:form>
             </ui:define>
         </ui:composition>
