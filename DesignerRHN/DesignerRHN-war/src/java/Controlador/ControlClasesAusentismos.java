@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,7 @@ public class ControlClasesAusentismos implements Serializable {
     AdministrarClasesAusentismosInterface administrarClasesAusentismos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<Clasesausentismos> listClasesAusentismos;
     private List<Clasesausentismos> filtrarClasesAusentismos;
     private List<Clasesausentismos> crearClasesAusentismos;
@@ -47,6 +48,7 @@ public class ControlClasesAusentismos implements Serializable {
     private Clasesausentismos nuevoClasesAusentismos;
     private Clasesausentismos duplicarClasesAusentismos;
     private Clasesausentismos editarClasesAusentismos;
+    private Clasesausentismos clasesAusentismoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -87,9 +89,9 @@ public class ControlClasesAusentismos implements Serializable {
         listaTiposausentismos = null;
         filtradoTiposausentismos = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -97,7 +99,7 @@ public class ControlClasesAusentismos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarClasesAusentismos.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -193,12 +195,13 @@ public class ControlClasesAusentismos implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosClasesAusentismos");
             bandera = 0;
@@ -221,25 +224,26 @@ public class ControlClasesAusentismos implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
             codigo.setFilterStyle("width: 20px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
             descripcion.setFilterStyle("width: 130px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
             personafir.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosClasesAusentismos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosClasesAusentismos");
             bandera = 0;
@@ -302,7 +306,6 @@ public class ControlClasesAusentismos implements Serializable {
         context.execute("personasDialogo.hide()");
         context.reset("form:lovTiposausentismos:globalFilter");
         context.update("form:lovTiposausentismos");
-        //context.update("form:datosHvEntrevista");
     }
 
     public void cancelarCambioTiposausentismos() {
@@ -938,7 +941,9 @@ public class ControlClasesAusentismos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listClasesAusentismos = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosClasesAusentismos");
             k = 0;
             guardado = true;
@@ -1036,13 +1041,14 @@ public class ControlClasesAusentismos implements Serializable {
 
         if (contador == 3) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarClasesAusentismos = null;
@@ -1194,12 +1200,13 @@ public class ControlClasesAusentismos implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosClasesAusentismos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosClasesAusentismos");
                 bandera = 0;
@@ -1385,6 +1392,14 @@ public class ControlClasesAusentismos implements Serializable {
 
     public void setTipoSeleccionado(Tiposausentismos centrocostoSeleccionado) {
         this.centrocostoSeleccionado = centrocostoSeleccionado;
+    }
+
+    public Clasesausentismos getClasesAusentismoSeleccionado() {
+        return clasesAusentismoSeleccionado;
+    }
+
+    public void setClasesAusentismoSeleccionado(Clasesausentismos clasesAusentismoSeleccionado) {
+        this.clasesAusentismoSeleccionado = clasesAusentismoSeleccionado;
     }
 
 }

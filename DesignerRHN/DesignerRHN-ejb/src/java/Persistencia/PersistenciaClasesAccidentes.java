@@ -11,7 +11,6 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -25,21 +24,26 @@ public class PersistenciaClasesAccidentes implements PersistenciaClasesAccidente
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,ClasesAccidentes clasesAccidentes) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, ClasesAccidentes clasesAccidentes) {
+        em.getTransaction().begin();
         em.persist(clasesAccidentes);
+        em.getTransaction().commit();
     }
 
-    public void editar(EntityManager em,ClasesAccidentes clasesAccidentes) {
+    public void editar(EntityManager em, ClasesAccidentes clasesAccidentes) {
+        em.getTransaction().begin();
         em.merge(clasesAccidentes);
+        em.getTransaction().commit();
     }
 
-    public void borrar(EntityManager em,ClasesAccidentes clasesAccidentes) {
+    public void borrar(EntityManager em, ClasesAccidentes clasesAccidentes) {
+        em.getTransaction().begin();
         em.remove(em.merge(clasesAccidentes));
+        em.getTransaction().commit();
     }
 
-    public ClasesAccidentes buscarClaseAccidente(EntityManager em,BigInteger secuenciaCA) {
+    public ClasesAccidentes buscarClaseAccidente(EntityManager em, BigInteger secuenciaCA) {
         try {
             return em.find(ClasesAccidentes.class, secuenciaCA);
         } catch (Exception e) {
@@ -60,7 +64,7 @@ public class PersistenciaClasesAccidentes implements PersistenciaClasesAccidente
 
     }
 
-    public BigInteger contadorSoAccidentesMedicos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos WHERE claseaccidente =?";
