@@ -9,13 +9,13 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'SoCondicionesAmbientalesP'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'SoCondicionesAmbientalesP' de la base de datos.
+ *
  * @author John Pineda.
  */
 @Stateless
@@ -26,20 +26,25 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
+        em.getTransaction().begin();
         em.persist(soCondicionesAmbientalesP);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
+        em.getTransaction().begin();
         em.merge(soCondicionesAmbientalesP);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
+        em.getTransaction().begin();
         em.remove(em.merge(soCondicionesAmbientalesP));
+        em.getTransaction().commit();
     }
 
     @Override

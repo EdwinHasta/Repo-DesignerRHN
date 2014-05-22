@@ -25,21 +25,26 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,ElementosCausasAccidentes elementosCausasAccidentes) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, ElementosCausasAccidentes elementosCausasAccidentes) {
+        em.getTransaction().begin();
         em.persist(elementosCausasAccidentes);
+        em.getTransaction().commit();
     }
 
-    public void editar(EntityManager em,ElementosCausasAccidentes elementosCausasAccidentes) {
+    public void editar(EntityManager em, ElementosCausasAccidentes elementosCausasAccidentes) {
+        em.getTransaction().begin();
         em.merge(elementosCausasAccidentes);
+        em.getTransaction().commit();
     }
 
-    public void borrar(EntityManager em,ElementosCausasAccidentes elementosCausasAccidentes) {
+    public void borrar(EntityManager em, ElementosCausasAccidentes elementosCausasAccidentes) {
+        em.getTransaction().begin();
         em.remove(em.merge(elementosCausasAccidentes));
+        em.getTransaction().commit();
     }
 
-    public ElementosCausasAccidentes buscarElementoCausaAccidente(EntityManager em,BigInteger secuenciaECA) {
+    public ElementosCausasAccidentes buscarElementoCausaAccidente(EntityManager em, BigInteger secuenciaECA) {
         try {
             return em.find(ElementosCausasAccidentes.class, secuenciaECA);
         } catch (Exception e) {
@@ -60,7 +65,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
 
     }
 
-    public BigInteger contadorSoAccidentesMedicos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSoAccidentesMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos WHERE agentelesion = ? ";
@@ -76,7 +81,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
         }
     }
 
-    public BigInteger contadorSoAccidentes(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSoAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentes   WHERE causa = ?";
@@ -92,7 +97,7 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
         }
     }
 
-    public BigInteger contadorSoIndicadoresFr(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSoIndicadoresFr(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soindicadoresfr   WHERE fuente =  ?";

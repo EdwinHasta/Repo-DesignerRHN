@@ -35,7 +35,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor><f:facet name="footer">
-                                        <h:outputText value="#{msg['codigo']}"/>
+                                        <h:outputText value="#{msg['codigo']}" />
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['descripcion']}" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="155" filterStyle="display: none; visibility: hidden;" >                                  
@@ -49,7 +49,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['descripcion']}"/>
+                                        <h:outputText value="#{msg['descripcion']}" />
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['tipo']}" sortBy="#{info.tipo.descripcion}" filterBy="#{info.tipo.descripcion}" filterMatchMode="contains" id="personafir" width="140" filterStyle="display: none; visibility: hidden;" >                                  
@@ -64,7 +64,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 280px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoCentroCosto" value="#{msg['tipo']}"/>
+                                        <p:commandButton style="width: 280px; margin: -14px; height: 50px; border: none; color: blue" id="fooTipoCentroCosto" value="#{msg['tipo']}"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
