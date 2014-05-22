@@ -9,7 +9,6 @@ import ClasesAyuda.ColumnasBusquedaAvanzada;
 import ClasesAyuda.ParametrosQueryBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
-import Entidades.QVWEmpleadosCorte;
 import Entidades.ResultadoBusquedaAvanzada;
 import InterfaceAdministrar.AdministrarBusquedaAvanzadaInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
@@ -36,22 +35,19 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     PersistenciaEmpresasInterface persistenciaEmpresas;
     @EJB
     PersistenciaColumnasEscenariosInterface persistenciaColumnasEscenarios;
-	/**
-     * Enterprise JavaBean.<br>
-     * Atributo que representa todo lo referente a la conexión del usuario que
-     * está usando el aplicativo.
-     */
+
     @EJB
     AdministrarSesionesInterface administrarSesiones;
 
     private EntityManager em;
+
     private boolean usoWhere = false;
 
-        @Override
+    @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public List<ColumnasEscenarios> buscarColumnasEscenarios() {
         try {
@@ -66,7 +62,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     @Override
     public List<Empleados> ejecutarQueryBusquedaAvanzadaPorModulos(String query) {
         try {
-            List<Empleados> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzada(em,query);
+            List<Empleados> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzada(em, query);
             return lista;
         } catch (Exception e) {
             System.out.println("Error ejecutarQueryBusquedaAvanzadaPorModulos Admi : " + e.toString());
@@ -77,7 +73,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     @Override
     public List<BigInteger> ejecutarQueryBusquedaAvanzadaPorModulosCodigo(String query) {
         try {
-            List<BigInteger> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzadaCodigo(em,query);
+            List<BigInteger> lista = persistenciaEmpleado.buscarEmpleadosBusquedaAvanzadaCodigo(em, query);
             return lista;
         } catch (Exception e) {
             System.out.println("Error ejecutarQueryBusquedaAvanzadaPorModulos Admi : " + e.toString());
@@ -91,7 +87,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
         usoWhere = false;
         String query = "";
         int tam = listaParametro.size();
-        System.out.println("Tamaño Lista Administrar : " + tam);
         if (tam > 0) {
             int i = 0;
             List<String> listaPorModulo = listaParametrosPorModulos(listaParametro);
@@ -99,10 +94,8 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                 String modulo = listaParametro.get(i).getModulo();
                 List<ParametrosQueryBusquedaAvanzada> listaAuxiliar = new ArrayList<ParametrosQueryBusquedaAvanzada>();
                 int indiceInicial = i;
-                System.out.println("indiceInicial : " + indiceInicial);
                 int indiceFinal = listaPorModulo.lastIndexOf(modulo);
                 int indiceFinalAux = indiceFinal + 1;
-                System.out.println("indiceFinal : " + indiceFinal);
                 for (int j = indiceInicial; j < indiceFinalAux; j++) {
                     listaAuxiliar.add(listaParametro.get(j));
                 }
@@ -125,9 +118,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     private String crearQueryPorModulo(List<ParametrosQueryBusquedaAvanzada> listaAuxiliar) {
         String queryAux = "";
         String modulo = listaAuxiliar.get(0).getModulo();
-        System.out.println("Modulo Actual Consulta : " + modulo);
         if (modulo.equalsIgnoreCase("CARGO")) {
-            System.out.println("Entro a CARGO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -145,10 +136,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CARGODESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CARGOHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
 
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CARGO")) {
@@ -174,7 +165,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("CENTROCOSTO")) {
-            System.out.println("Entro a CENTROCOSTO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -192,10 +182,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CENTROCOSTODESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CENTROCOSTOHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
 
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LOCALIZACION")) {
@@ -208,7 +198,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("SUELDO")) {
-            System.out.println("Entro a SUELDO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -226,10 +215,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SUELDODESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SUELDOHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
 
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOSUELDO")) {
@@ -248,7 +237,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("FECHACONTRATO")) {
-            System.out.println("Entro a FECHACONTRATO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -266,10 +254,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHACONTRATODESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHACONTRATOHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
 
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOCONTRATO")) {
@@ -282,7 +270,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("TIPOTRABAJADOR")) {
-            System.out.println("Entro a TIPOTRABAJADOR");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -300,20 +287,21 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOTRABAJADORDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOTRABAJADORHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
-
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOTRABAJADOR")) {
                     queryAux = queryAux + " AND  V.TIPOTRABAJADOR = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOTRABAJADORACTIVO")) {
+                    queryAux = queryAux + " AND  V.TIPOTRABAJADOR IN (SELECT tt.secuencia FROM TiposTrabajadores tt WHERE tt.tipo='ACTIVO')";
                 }
             }
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("TIPOSALARIO")) {
-            System.out.println("Entro a TIPOSALARIO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -331,10 +319,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOSALARIODESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOSALARIOHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
 
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("REFORMA")) {
@@ -344,7 +332,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("NORMALABORAL")) {
-            System.out.println("Entro a NORMALABORAL");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -362,10 +349,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("NORMALABORALDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("NORMALABORALHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
 
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("NORMA")) {
@@ -375,7 +362,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("LEGISLACIONLABORAL")) {
-            System.out.println("Entro a LEGISLACIONLABORAL");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -393,16 +379,16 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LEGISLACIONLABORALDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LEGISLACIONLABORALHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LEGISLACIONLABORALDESDEF")) {
-                    queryAux = queryAux + " AND  V.FECHAFINAL >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAFINAL >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LEGISLACIONLABORALHASTAF")) {
-                    queryAux = queryAux + " AND  V.FECHAFINAL <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAFINAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CONTRATO")) {
                     queryAux = queryAux + " AND  V.CONTRATO = " + listaAuxiliar.get(i).getValorParametro();
@@ -411,7 +397,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("UBICACION")) {
-            System.out.println("Entro a UBICACION");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -429,10 +414,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("UBICACIONDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("UBICACIONHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("UBICACION")) {
                     queryAux = queryAux + " AND  V.UBICACION = " + listaAuxiliar.get(i).getValorParametro();
@@ -441,7 +426,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("AFILIACIONES")) {
-            System.out.println("Entro a AFILIACIONES");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -470,10 +454,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("AFILIACIONESDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("AFILIACIONESHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TERCERO")) {
                     queryAux = queryAux + " AND  V.TERCERO = " + listaAuxiliar.get(i).getValorParametro();
@@ -488,7 +472,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("FORMAPAGO")) {
-            System.out.println("Entro a FORMAPAGO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -506,10 +489,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FORMAPAGODESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FORMAPAGOHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FORMAPAGO")) {
                     queryAux = queryAux + " AND  V.FORMAPAGO = " + listaAuxiliar.get(i).getValorParametro();
@@ -521,7 +504,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("MVRS")) {
-            System.out.println("Entro a MVRS");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -550,10 +532,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("MVRSDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("MVRSHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("MOTIVO")) {
                     queryAux = queryAux + " AND  V.MOTIVO = " + listaAuxiliar.get(i).getValorParametro();
@@ -568,7 +550,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("SETS")) {
-            System.out.println("Entro a SETS");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -597,19 +578,19 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
                     }
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SETSDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SETSHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SETSDESDEF")) {
-                    queryAux = queryAux + " AND  V.FECHAFINAL >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAFINAL >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SETSHASTAF")) {
-                    queryAux = queryAux + " AND  V.FECHAFINAL <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAFINAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("METODO")) {
-                    queryAux = queryAux + " AND  V.TIPOSET = " + listaAuxiliar.get(i).getValorParametro();
+                    queryAux = queryAux + " AND  V.TIPOSET = '" + listaAuxiliar.get(i).getValorParametro()+"'";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("PROMEDIOMINIMO")) {
                     queryAux = queryAux + " AND  V.PROMEDIO >= " + listaAuxiliar.get(i).getValorParametro();
@@ -621,7 +602,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("VACACIONES")) {
-            System.out.println("Entro a VACACIONES");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -632,22 +612,21 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + "WHERE N.EMPLEADO = EM.SECUENCIA  AND N.TIPO = 'VACACION' ";
             for (int i = 0; i < listaAuxiliar.size(); i++) {
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHASALIDADESDE")) {
-                    queryAux = queryAux + " AND  N.FECHAINICIALDISFRUTE >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  N.FECHAINICIALDISFRUTE >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHASALIDAHASTA")) {
-                    queryAux = queryAux + " AND  N.FECHAINICIALDISFRUTE <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  N.FECHAINICIALDISFRUTE <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHAREGRESODESDE")) {
-                    queryAux = queryAux + " AND  N.FECHASIGUIENTEFINVACA >= " + listaAuxiliar.get(i).getValorParametro();
+                    queryAux = queryAux + " AND  N.FECHASIGUIENTEFINVACA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHAREGRESOHASTA")) {
-                    queryAux = queryAux + " AND  N.FECHASIGUIENTEFINVACA <= " + listaAuxiliar.get(i).getValorParametro();
+                    queryAux = queryAux + " AND  N.FECHASIGUIENTEFINVACA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
             }
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("FECHARETIRO")) {
-            System.out.println("Entro a FECHARETIRO");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -656,13 +635,12 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             }
             queryAux = queryAux + "EXISTS (SELECT 1 FROM RETIRADOS R,vIGENCIASTIPOSTRABAJADORES VI ";
             queryAux = queryAux + "WHERE R.vigenciatipotrabajador = VI.secuencia AND VI.EMPLEADO = EM.SECUENCIA ";
-            System.out.println("listaAuxiliar : " + listaAuxiliar.size());
             for (int i = 0; i < listaAuxiliar.size(); i++) {
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHARETIRODESDE")) {
-                    queryAux = queryAux + " AND  R.FECHARETIRO >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  R.FECHARETIRO >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHARETIROHASTA")) {
-                    queryAux = queryAux + " AND  R.FECHARETIRO <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  R.FECHARETIRO <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("MOTIVO")) {
                     queryAux = queryAux + " AND  R.MOTIVORETIRO = " + listaAuxiliar.get(i).getValorParametro();
@@ -671,7 +649,6 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + ")";
         }
         if (modulo.equalsIgnoreCase("JORNADALABORAL")) {
-            System.out.println("Entro a JORNADALABORAL");
             if (usoWhere == false) {
                 queryAux = " WHERE ";
                 usoWhere = true;
@@ -682,10 +659,10 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             queryAux = queryAux + "WHERE V.EMPLEADO = EM.SECUENCIA ";
             for (int i = 0; i < listaAuxiliar.size(); i++) {
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("JORNADALABORALDESDE")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("JORNADALABORALHASTA")) {
-                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(" + listaAuxiliar.get(i).getValorParametro() + ",'DD/MM/YYYY')";
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
                 }
                 if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("JORNADA")) {
                     queryAux = queryAux + " AND  V.JORNADATRABAJO = " + listaAuxiliar.get(i).getValorParametro();
@@ -693,6 +670,314 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
             }
             queryAux = queryAux + ")";
         }
+
+        if (modulo.equalsIgnoreCase("DATOSPERSONALES")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            queryAux = queryAux + "EXISTS (SELECT 1 FROM PERSONAS P ";
+            queryAux = queryAux + "WHERE P.SECUENCIA = EM.PERSONA ";
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("NUMERODOCUMENTO")) {
+                    queryAux = queryAux + " AND P.NUMERODOCUMENTO =  " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CIUDADDOCUMENTO")) {
+                    queryAux = queryAux + " AND   P.CIUDADDOCUMENTO = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SEXO")) {
+                    queryAux = queryAux + " AND   P.SEXO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CIUDADNACIMIENTO")) {
+                    queryAux = queryAux + " AND  P.CIUDADNACIMIENTO " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHANACIMIENTODESDE")) {
+                    queryAux = queryAux + " AND   P.FECHANACIMIENTO  >=  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FECHANACIMIENTOHASTA")) {
+                    queryAux = queryAux + " AND   P.FECHANACIMIENTO  <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("FACTORRH")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            queryAux = queryAux + "EXISTS (SELECT 1 FROM PERSONAS P ";
+            queryAux = queryAux + "WHERE P.SECUENCIA = EM.PERSONA ";
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("FACTORRH")) {
+                    queryAux = queryAux + " AND  P.FACTORRH  = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("GRUPOSANGUINEO")) {
+                    queryAux = queryAux + " AND  P.GRUPOSANGUINEO  = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("ESTADOCIVIL")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("BESTADOCIVIL")) {
+                    if (listaAuxiliar.get(i).getValorParametro().equalsIgnoreCase("A")) {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM PERSONAS P, VWACTUALESESTADOSCIVILES V ";
+                        queryAux = queryAux + "WHERE P.SECUENCIA = EM.PERSONA ";
+                        queryAux = queryAux + "AND  P.SECUENCIA = V.PERSONA ";
+                    } else {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM PERSONAS P, VIGENCIASESTADOSCIVILES V ";
+                        queryAux = queryAux + "WHERE P.SECUENCIA = EM.PERSONA ";
+                        queryAux = queryAux + "AND  P.SECUENCIA = V.PERSONA ";
+                    }
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESTADOCIVILDESDE")) {
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESTADOCIVILHASTA")) {
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESTADOCIVIL")) {
+                    queryAux = queryAux + " AND  V.ESTADOCIVIL = " + listaAuxiliar.get(i).getValorParametro();
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("IDIOMA")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            queryAux = queryAux + "EXISTS (SELECT 1 FROM IDIOMASPERSONAS I, PERSONAS P ";
+            queryAux = queryAux + "WHERE EM.PERSONA = P.SECUENCIA ";
+            queryAux = queryAux + "AND  I.PERSONA = P.SECUENCIA ";
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("IDIOMA")) {
+                    queryAux = queryAux + " AND  I.IDIOMA = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CONVERSACIONDESDE")) {
+                    queryAux = queryAux + " AND  I.HABLA >= " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CONVERSACIONHASTA")) {
+                    queryAux = queryAux + " AND  I.HABLA <= " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LECTURADESDE")) {
+                    queryAux = queryAux + " AND  I.LECTURA >= " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("LECTURAHASTA")) {
+                    queryAux = queryAux + " AND  I.LECTURA <= " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESCRITURADESDE")) {
+                    queryAux = queryAux + " AND  I.ESCRITURA >= " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ESCRITURAHASTA")) {
+                    queryAux = queryAux + " AND  I.ESCRITURA <= " + listaAuxiliar.get(i).getValorParametro();
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("CENSOS")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("BCENSOS")) {
+                    if (listaAuxiliar.get(i).getValorParametro().equalsIgnoreCase("A")) {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM VWACTUALESVIGENCIASINDICADORES V ";
+                        queryAux = queryAux + "WHERE EM.SECUENCIA = V.EMPLEADO ";
+                    } else {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM VIGENCIASINDICADORES V ";
+                        queryAux = queryAux + "WHERE EM.SECUENCIA = V.EMPLEADO ";
+                    }
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CENSOSDESDE")) {
+                    queryAux = queryAux + " AND  V.FECHAINICIAL >=  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CENSOSHASTA")) {
+                    queryAux = queryAux + " AND  V.FECHAINICIAL <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("TIPOINDICADOR")) {
+                    queryAux = queryAux + " AND  V.TIPOINDICADOR = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("INDICADOR")) {
+                    queryAux = queryAux + " AND  V.INDICADOR = " + listaAuxiliar.get(i).getValorParametro();
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("EDUCACIONFORMAL")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("BEDUCACIONNOFORMAL")) {
+                    if (listaAuxiliar.get(i).getValorParametro().equalsIgnoreCase("A")) {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM vwactualesvigenciasnoformales V, PERSONAS P ";
+                        queryAux = queryAux + "WHERE EM.PERSONA = P.SECUENCIA ";
+                        queryAux = queryAux + "AND  V.PERSONA = P.SECUENCIA ";
+                    } else {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM VIGENCIASNOFORMALES V, PERSONAS P ";
+                        queryAux = queryAux + "WHERE EM.PERSONA = P.SECUENCIA ";
+                        queryAux = queryAux + "AND  V.PERSONA = P.SECUENCIA ";
+                    }
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EDUCACIONNOFORMALDESDE")) {
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA  >=  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EDUCACIONNOFORMALHASTA")) {
+                    queryAux = queryAux + " V.FECHAVIGENCIA  <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("INSTITUCION")) {
+                    queryAux = queryAux + " AND  V.INSTITUCION = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CURSO")) {
+                    queryAux = queryAux + " AND  V.CURSO = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("REALIZADO")) {
+                    queryAux = queryAux + " AND  V.ACARGO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("EDUCACIONNOFORMAL")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("BEDUCACIONFORMAL")) {
+                    if (listaAuxiliar.get(i).getValorParametro().equalsIgnoreCase("A")) {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM vwactualesvigenciasformales V, PERSONAS P ";
+                        queryAux = queryAux + "WHERE EM.PERSONA = P.SECUENCIA ";
+                        queryAux = queryAux + "AND  V.PERSONA = P.SECUENCIA ";
+                    } else {
+                        queryAux = queryAux + "EXISTS (SELECT 1 FROM VIGENCIASFORMALES V, PERSONAS P ";
+                        queryAux = queryAux + "WHERE EM.PERSONA = P.SECUENCIA ";
+                        queryAux = queryAux + "AND  V.PERSONA = P.SECUENCIA ";
+                    }
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EDUCACIONFORMALDESDE")) {
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA >=  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EDUCACIONFORMALHASTA")) {
+                    queryAux = queryAux + " AND  V.FECHAVIGENCIA <= TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("INSTITUCION")) {
+                    queryAux = queryAux + " AND  V.INSTITUCION = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("PROFESION")) {
+                    queryAux = queryAux + " AND  V.PROFESION = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("REALIZADO")) {
+                    queryAux = queryAux + " AND  V.ACARGO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("CARGOPOSTULARSE")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            queryAux = queryAux + "EXISTS (SELECT 1 FROM hvhojasdevida H, PERSONAS P ";
+            queryAux = queryAux + "WHERE H.PERSONA = P.SECUENCIA ";
+            queryAux = queryAux + "AND  H.PERSONA = EM.PERSONA ";
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CARGO")) {
+                    queryAux = queryAux + " AND H.CARGO = " + listaAuxiliar.get(i).getValorParametro();
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("PROYECTO")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            queryAux = queryAux + "EXISTS (SELECT 1 FROM VIGENCIASPROYECTOS V, PERSONAS P ";
+            queryAux = queryAux + "WHERE V.EMPLEADO = EM.SECUENCIA ";
+            queryAux = queryAux + "AND  EM.PERSONA = P.SECUENCIA ";
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("PROYECTODESDE")) {
+                    queryAux = queryAux + " AND  V.FECHAINICIAL =  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("PROYECTOHASTA")) {
+                    queryAux = queryAux + " AND  V.FECHAFINAL = TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("PROYECTO")) {
+                    queryAux = queryAux + " AND V.PROYECTO = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("ROL")) {
+                    queryAux = queryAux + " AND V.PRY_ROL = " + listaAuxiliar.get(i).getValorParametro();
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
+        if (modulo.equalsIgnoreCase("EXPERIENCIALABORAL")) {
+            if (usoWhere == false) {
+                queryAux = " WHERE ";
+                usoWhere = true;
+            } else {
+                queryAux = " AND ";
+            }
+            queryAux = queryAux + "EXISTS (SELECT 1 FROM HVEXPERIENCIASLABORALES V, HVHOJASDEVIDA H, PERSONAS P ";
+            queryAux = queryAux + "WHERE V.HOJADEVIDA = H.SECUENCIA ";
+            queryAux = queryAux + "AND  H.PERSONA = P.SECUENCIA ";
+            for (int i = 0; i < listaAuxiliar.size(); i++) {
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EXPERIENCIALABORALDESDE")) {
+                    queryAux = queryAux + " AND  V.FECHADESDE =  TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EXPERIENCIALABORALHASTA")) {
+                    queryAux = queryAux + " AND  V.FECHAHASTA = TO_CHAR(TO_DATE('" + listaAuxiliar.get(i).getValorParametro() + "','DD/MM/YYYY'),'DD/MM/YYYY')";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("CARGO")) {
+                    queryAux = queryAux + " AND V.CARGO = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("EMPRESA")) {
+                    queryAux = queryAux + " AND V.EMPRESA = '" + listaAuxiliar.get(i).getValorParametro()+"'";
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("SECTORECONOMICO")) {
+                    queryAux = queryAux + " AND V.SECTORECONOMICO = " + listaAuxiliar.get(i).getValorParametro();
+                }
+                if (listaAuxiliar.get(i).getNombreParametro().equalsIgnoreCase("MOTIVORETIRO")) {
+                    queryAux = queryAux + " AND V.MOTIVORETIRO = " + listaAuxiliar.get(i).getValorParametro();
+                }
+            }
+            queryAux = queryAux + ")";
+        }
+
         return queryAux;
     }
 
@@ -707,8 +992,7 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
     @Override
     public List<ColumnasBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleado(List<Empleados> listaEmpleadosResultados, List<String> campos) {
         try {
-            System.out.println("entro administrar");
-            List<ColumnasBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleado(em,listaEmpleadosResultados, campos);
+            List<ColumnasBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleado(em, listaEmpleadosResultados, campos);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());
@@ -716,12 +1000,11 @@ public class AdministrarBusquedaAvanzada implements AdministrarBusquedaAvanzadaI
         }
 
     }
-    
+
     //@Override 
     public List<ResultadoBusquedaAvanzada> obtenerQVWEmpleadosCorteParaEmpleadoCodigo(List<BigInteger> listaCodigosEmpleados, String campos) {
         try {
-            System.out.println("entro administrar");
-            List<ResultadoBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(em,listaCodigosEmpleados, campos);
+            List<ResultadoBusquedaAvanzada> retorno = persistenciaColumnasEscenarios.buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(em, listaCodigosEmpleados, campos);
             return retorno;
         } catch (Exception e) {
             System.out.println("Error obtenerQVWEmpleadosCorteParaEmpleado Admi : " + e.toString());

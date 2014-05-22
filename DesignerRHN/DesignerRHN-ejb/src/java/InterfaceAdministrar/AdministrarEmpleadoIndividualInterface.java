@@ -8,6 +8,7 @@ import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
+import Entidades.Generales;
 import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
 import Entidades.HvExperienciasLaborales;
@@ -86,7 +87,7 @@ public interface AdministrarEmpleadoIndividualInterface {
 
     public void modificarPersona(Personas personas);
 
-    public void actualizarFotoPersona(BigInteger identificacion);
+    public void actualizarFotoPersona(Personas persona);
 
     /**
      * Método encargado de obtener el Entity Manager el cual tiene asociado la
@@ -95,4 +96,8 @@ public interface AdministrarEmpleadoIndividualInterface {
      * @param idSesion Identificador se la sesion.
      */
     public void obtenerConexion(String idSesion);
+
+    public Generales obtenerRutaFoto();
+
+    public String fotoEmpleado(Empleados empleado);
 }

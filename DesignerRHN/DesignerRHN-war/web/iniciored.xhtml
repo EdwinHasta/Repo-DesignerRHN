@@ -6,6 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets">
     <h:head>
         <link href="./resources/css/GrowlInicioRed.css" rel="stylesheet" type="text/css"/>
+        <link href="./resources/css/Tema.css" rel="stylesheet" type="text/css" />
         <style type="text/css">
             .triangulo_top_left {
                 width: 0;
@@ -24,16 +25,16 @@
         <h:form id="form">
             <p:growl id="growl"  showDetail="true" sticky="true"/> 
             <p:growl id="informacionAcceso"  showDetail="true"/> 
-            <fieldset style="position: absolute; left: 250px; top: 10px; font-size: 12px; width: 835px; height: 100px; border-radius: 10px;  background-image: url(Imagenes/fondoencabezado.png); background-repeat: no-repeat; background-size: 150% 100%; box-shadow: 5px 5px 12px #000000">
+            <fieldset style="position: absolute; left: 250px; top: 10px; font-size: 12px; width: 835px; height: 80px; border-radius: 10px;  background-image: url(Imagenes/fondoencabezado.png); background-repeat: no-repeat; background-size: 150% 100%; box-shadow: 5px 5px 12px #000000">
                 <strong>
                     <h:outputText value="Designer.RHN Versión 2014" style="position: absolute; font-size: 14px; left: 670px"/>
                     <h:outputText value="Gerencia Integral en RHN y Nómina" style="position: absolute; font-size: 14px; left: 615px; top: 25px"/>
-                    <h:outputText value="Licencia de uso a:" style="position: absolute; font-size: 14px; left: 450px; top: 85px"/>
-                    <h:outputText id="nombreEmpresa" value="#{controlInicioRed.nombreEmpresa}" style="position: absolute; font-size: 14px; left: 540px; top: 85px; width: 300px; text-align: right"/>
+                    <h:outputText value="Licencia de uso a:" style="position: absolute; font-size: 14px; left: 450px; top: 68px"/>
+                    <h:outputText id="nombreEmpresa" value="#{controlInicioRed.nombreEmpresa}" style="position: absolute; font-size: 14px; left: 540px; top: 68px; width: 300px; text-align: right"/>
                 </strong>
             </fieldset>
 
-            <p:panel header="Iniciar Sesión" style="font-size: 12px; position: absolute; top: 135px; width: 400px; height: 155px; left: 703px; background-color: #2D7AD7; box-shadow: 5px 5px 12px #000000">
+            <p:panel header="Iniciar Sesión" style="font-size: 12px; position: absolute; top: 118px; width: 400px; height: 155px; left: 703px; background-color: #2D7AD7; box-shadow: 5px 5px 12px #000000">
                 <strong style="color: white; font-size: 13px;">
                     <h:outputLabel for="usuario" value="Usuario: " style="position: absolute; top: 39px; left: 80px"/>
                     <h:outputLabel for="contrasenha" value="Contraseña: " style="position: absolute; top: 69px; left: 80px"/>
@@ -50,7 +51,7 @@
                 <p:remoteCommand name="validarMensaje" actionListener="#{controlInicioRed.validarDialogoSesion()}"/>
             </p:panel>
 
-            <p:imageSwitch id="bannerConsultas" effect="fade" widgetVar="informacion" style="position: absolute; top: 135px; left: 255px; box-shadow: 5px 5px 12px #000000" slideshowSpeed="5000">  
+            <p:imageSwitch id="bannerConsultas" effect="fade" widgetVar="informacion" style="position: absolute; top: 118px; left: 255px; box-shadow: 5px 5px 12px #000000" slideshowSpeed="5000">  
                 <ui:repeat value="#{controlInicioRed.banner}" var="banner">  
                     <a href="#{banner.urlImagen}" target="_blank">
                         <p:graphicImage value="Imagenes/#{banner.imagen}" style="width: 440px; height: 162px"/>
@@ -58,15 +59,15 @@
                 </ui:repeat>  
             </p:imageSwitch> 
 
-            <p:commandButton type="button" onclick="informacion.previous();" style="width: 25px; height: 25px; position: absolute; top: 265px; left: 265px; z-index: 20"  
+            <p:commandButton type="button" onclick="informacion.previous();" style="width: 25px; height: 25px; position: absolute; top: 248px; left: 265px; z-index: 20"  
                              icon="ui-icon-circle-triangle-w"/>  
-            <p:commandButton type="button" onclick="informacion.next();" style="width: 25px; height: 25px; position: absolute; top: 265px; left: 295px; z-index: 20"
+            <p:commandButton type="button" onclick="informacion.next();" style="width: 25px; height: 25px; position: absolute; top: 248px; left: 295px; z-index: 20"
                              icon="ui-icon-circle-triangle-e"/>
 
-            <fieldset style="position: absolute; left: 250px; top: 305px; font-size: 12px; width: 835px; height: 235px; border-radius: 10px;  background-color: #2D7AD7; box-shadow: 5px 5px 12px #000000">
+            <fieldset style="position: absolute; left: 250px; top: 290px; font-size: 12px; width: 835px; height: 235px; border-radius: 10px;  background-color: #2D7AD7; box-shadow: 5px 5px 12px #000000">
                 <strong style="font-size: 20px; color: white; font-family: Calibri">
-                    <h:outputText value="Bienvenido al Sistema de Gerencia Integral en Recursos Humanos y Nómina" style="position: absolute; left: 140px"/>
-                    <h:outputText value="Seleccione el modulo al cual desea ingresar" style="position: absolute; top: 30px; left: 270px"/>
+                    <h:outputText value="Bienvenido al Sistema Integral de Nómina y Talento Humano" style="position: absolute; left: 185px"/>
+                    <h:outputText value="Seleccione el módulo al cual desea ingresar" style="position: absolute; top: 30px; left: 270px"/>
                 </strong>
 
                 <p:commandButton id="btnPersonal" value=" " disabled="#{controlInicioRed.modulosDesigner}" style="width: 150px; height: 150px; position: relative; left: 20px; top: 60px; background-image: url(Imagenes/b_personal.gif); background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlRemoto.datosIniciales(0)}" action="nomina"/>
@@ -85,7 +86,7 @@
                 </strong>
             </fieldset>
 
-            <fieldset style="position: absolute; left: 250px; top: 563px; font-size: 12px; width: 835px; height: 90px; border-radius: 10px;  background-color: #2D7AD7; box-shadow: 5px 5px 12px #000000">
+            <fieldset style="position: absolute; left: 250px; top: 550px; font-size: 12px; width: 835px; height: 90px; border-radius: 10px;  background-color: #2D7AD7; box-shadow: 5px 5px 12px #000000">
                 <fieldset style=" padding: 0px; position: absolute; left: 160px; top: 10px; font-size: 12px; width: 640px; height: 60px; border-radius: 10px;  background-color: #EFDB78; box-shadow: 3px 3px 8px #000000; z-index: 1">
                     <p:inputTextarea id="recordatorio" value="#{controlInicioRed.recordatorio.mensaje}" style="background-color: #EFDB78; width: 640px; height: 50px; overflow: auto; border: none; font-weight: bold; text-align: justify; " readonly="true"/>
                 </fieldset>

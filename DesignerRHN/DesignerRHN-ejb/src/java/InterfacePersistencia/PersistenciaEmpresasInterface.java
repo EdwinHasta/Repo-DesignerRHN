@@ -68,5 +68,6 @@ public interface PersistenciaEmpresasInterface {
      public List<Empresas> buscarEmpresas(EntityManager em);
      
      public String consultarPrimeraEmpresa(EntityManager em);
+     public Empresas consultarPrimeraEmpresaSinPaquete(EntityManager em);
     
 }

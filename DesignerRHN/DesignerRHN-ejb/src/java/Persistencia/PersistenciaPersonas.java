@@ -11,14 +11,17 @@ import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Personas'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Personas' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaPersonas implements PersistenciaPersonasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -32,7 +35,9 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
 
     @Override
     public void editar(EntityManager em, Personas personas) {
+        em.getTransaction().begin();
         em.merge(personas);
+        em.getTransaction().commit();
     }
 
     @Override
@@ -55,12 +60,13 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
     @Override
     public void actualizarFotoPersona(EntityManager em, BigInteger identificacion) {
         try {
-            Query query = em.createQuery("update Personas p set pathfoto='S' where p.numerodocumento =:identificacion");
-            query.setParameter("identificacion", identificacion);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            em.getTransaction().begin();
+            Query query = em.createNativeQuery("update Personas p set p.pathfoto='S' where p.numerodocumento = ?");
+            query.setParameter(1, identificacion);
             query.executeUpdate();
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("No se pudo agregar estado de fotografia");
+            System.out.println("No se pudo agregar estado de fotografia: " + e);
         }
     }
 

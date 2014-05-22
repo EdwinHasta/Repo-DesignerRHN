@@ -9,6 +9,7 @@ import Entidades.Empleados;
 import Entidades.Encargaturas;
 import Entidades.EvalResultadosConv;
 import Entidades.Familiares;
+import Entidades.Generales;
 import Entidades.HVHojasDeVida;
 import Entidades.HvEntrevistas;
 import Entidades.HvExperienciasLaborales;
@@ -30,6 +31,7 @@ import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,6 +53,8 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 @ManagedBean
 @SessionScoped
@@ -60,8 +64,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     AdministrarEmpleadoIndividualInterface administrarEmpleadoIndividual;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-   
-    
+
     private Empleados empleado;
     private BigInteger secuencia;
     private HVHojasDeVida hojaDeVidaPersona;
@@ -121,16 +124,18 @@ public class ControlEmpleadoIndividual implements Serializable {
     //GUARDAR
     private boolean guardado;
     //FOTO EMPLEADO
-    private String fotoEmpleado;
+    //private String fotoEmpleado;
     //private String destino = "C:\\glassfish3\\glassfish\\domains\\domain1\\applications\\DesignerRHN\\DesignerRHN-war_war\\resources\\ArchivosCargados\\";
-    private String destino = "C:\\ProyectoDesignerSoftware\\Repo-DesignerRHN\\DesignerRHN\\DesignerRHN-war\\web\\resources\\ArchivosCargados\\";
+    private String destino;
     //private String directorioDespliegue = "C:\\\\glassfish3\\\\glassfish\\\\domains\\\\domain1\\\\applications\\\\DesignerRHN\\\\DesignerRHN-war_war";
     //private String destino = directorioDespliegue + "\\resources\\ArchivosCargados\\";
     private BigInteger identificacionEmpleado;
-    private String nombreArchivoFoto;
+//    private String nombreArchivoFoto;
     //VEHICULO PROPIO
     private boolean estadoVP;
     private String vehiculoPropio;
+    private StreamedContent fotoEmpleado;
+    private FileInputStream fis;
 
     public ControlEmpleadoIndividual() {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -141,8 +146,8 @@ public class ControlEmpleadoIndividual implements Serializable {
         modificacionHV = false;
         guardado = true;
     }
-    
-     @PostConstruct
+
+    @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
@@ -679,31 +684,37 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void subirFotoEmpleado(FileUploadEvent event) throws IOException {
         RequestContext context = RequestContext.getCurrentInstance();
         //context.execute("espera.show()");
-        File fichero = new File(destino + "52784280.jpg");
-        if (fichero.delete()) {
-            System.out.println("El fichero ha sido borrado satisfactoriamente");
+        Generales general = administrarEmpleadoIndividual.obtenerRutaFoto();
+        if (general != null && empleado != null) {
+            destino = general.getPathfoto();
+            identificacionEmpleado = empleado.getPersona().getNumerodocumento();
+            //File fichero = new File(destino + identificacionEmpleado + ".jpg");
+            /*if (fichero.delete()) {
+             System.out.println("El fichero ha sido borrado satisfactoriamente");
+             } else {
+             System.out.println("El fichero no puede ser borrado");
+             }*/
+            transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
+//          nombreArchivoFoto = event.getFile().getFileName();
+            context.execute("subirFoto.hide()");
+            context.update("form:btnFoto");
+            //context.execute("Exito.show()");
+            FacesMessage msg = new FacesMessage("Información", "Archivo cargado con éxito.");
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, msg);
+            context.update("form:growl");
         } else {
-            System.out.println("El fichero no puede ser borrado");
+            FacesMessage msg = new FacesMessage("Información", "Ruta generales ó empleado, nulo.");
+            FacesContext fc = FacesContext.getCurrentInstance();
+            fc.addMessage(null, msg);
+            context.update("form:growl");
         }
-        System.out.println(event.getFile().getFileName());
-        transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
-        nombreArchivoFoto = event.getFile().getFileName();
-        //context.update("form:");
-        context.execute("subirFoto.hide()");
-        context.reset("form:btnFoto");
-        context.update("form:btnFoto");
-        //context.execute("Exito.show()");
-        FacesMessage msg = new FacesMessage("Información", "Archivo cargado");
-        FacesContext fc = FacesContext.getCurrentInstance();
-        fc.addMessage(null, msg);
-        context.update("form:growl");
 
-        HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
+        /*HttpServletResponse response = (HttpServletResponse) fc.getExternalContext().getResponse();
 
-        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
-        response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-        response.setDateHeader("Expires", 0); // Proxies. 
-
+         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
+         response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+         response.setDateHeader("Expires", 0); // Proxies. */
         //context.execute("espera.hide()");
     }
 
@@ -711,25 +722,18 @@ public class ControlEmpleadoIndividual implements Serializable {
         try {
             //extencion = fileName.split("[.]")[1];
             //System.out.println(extencion); 
-            if (empleado != null) {
-                identificacionEmpleado = empleado.getPersona().getNumerodocumento();
-                System.out.println("1");
-                OutputStream out = new FileOutputStream(new File(destino + identificacionEmpleado + ".jpg"));
-                int reader = 0;
-                byte[] bytes = new byte[(int) size];
-                while ((reader = in.read(bytes)) != -1) {
-                    out.write(bytes, 0, reader);
-                }
-                in.close();
-                out.flush();
-                out.close();
-                administrarEmpleadoIndividual.actualizarFotoPersona(identificacionEmpleado);
-            } else {
-                System.out.println("EMPLEADO NULO");
+            OutputStream out = new FileOutputStream(new File(destino + identificacionEmpleado + ".jpg"));
+            int reader = 0;
+            byte[] bytes = new byte[(int) size];
+            while ((reader = in.read(bytes)) != -1) {
+                out.write(bytes, 0, reader);
             }
-            RequestContext.getCurrentInstance().update("form:btnFoto");
-        } catch (Exception e) {
-            System.out.println("Pailander" + e);
+            in.close();
+            out.flush();
+            out.close();
+            administrarEmpleadoIndividual.actualizarFotoPersona(empleado.getPersona());
+        } catch (IOException e) {
+            System.out.println("Error: ControlEmpleadoIndividual.transformarArchivo: " + e);
         }
     }
 
@@ -1057,13 +1061,22 @@ public class ControlEmpleadoIndividual implements Serializable {
         this.vehiculoPropio = vehiculoPropio;
     }
 
-    public String getFotoEmpleado() {
-        if (empleado.getPersona().getPathfoto() == null || empleado.getPersona().getPathfoto().equalsIgnoreCase("N")) {
-            fotoEmpleado = "default.jpg";
-            return fotoEmpleado;
-        } else {
-            fotoEmpleado = empleado.getPersona().getNumerodocumento().toString() + ".jpg";
-            return fotoEmpleado;
+    public StreamedContent getFotoEmpleado() {
+        obtenerFotoEmpleado();
+        return fotoEmpleado;
+    }
+
+    public void obtenerFotoEmpleado() {
+        empleado = administrarEmpleadoIndividual.buscarEmpleado(secuencia);
+        String rutaFoto = administrarEmpleadoIndividual.fotoEmpleado(empleado);
+        if (rutaFoto != null) {
+            try {
+                fis = new FileInputStream(new File(rutaFoto));
+                fotoEmpleado = new DefaultStreamedContent(fis, "image/jpg");
+            } catch (IOException e) {
+                fotoEmpleado = null;
+                System.out.println("Foto del empleado no encontrada. \n" + e);
+            }
         }
     }
 }

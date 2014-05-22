@@ -586,6 +586,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     //
     private List<ColumnasBusquedaAvanzada> listaColumnasBusquedaAvanzada;
     private List<ColumnasBusquedaAvanzada> filtrarListaColumnasBusquedaAvanzada;
+    private ColumnasBusquedaAvanzada columnaSeleccionada;
     //PRUEBA
     List<BigInteger> listaCodigosEmpleado;
     List<QVWEmpleadosCorte> registros;
@@ -598,7 +599,7 @@ public class ControlBusquedaAvanzada implements Serializable {
     private int numeroTipoBusqueda;
 
     private ScrollPanel scrollPanelNomina, scrollPanelPersonal;
-    
+
     private int tipoLista;
     private int bandera;
     private Columns columnasDinamicas;
@@ -607,13 +608,13 @@ public class ControlBusquedaAvanzada implements Serializable {
     private String displayNomina, displayPersonal;
 
     public ControlBusquedaAvanzada() {
-        displayNomina="";
-        displayPersonal="";
-        visibilidadPersonal="";
-        visibilidadNomina="";
-        altoTabla="80";
+        displayNomina = "";
+        displayPersonal = "";
+        visibilidadPersonal = "";
+        visibilidadNomina = "";
+        altoTabla = "80";
         bandera = 0;
-        tipoLista=0;
+        tipoLista = 0;
         numeroTipoBusqueda = 0;
         cabeceraEditarCelda = "";
         infoVariableEditarCelda = "";
@@ -968,7 +969,7 @@ public class ControlBusquedaAvanzada implements Serializable {
         createStaticColumns();
         //cambioBtnPrueba();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -997,11 +998,12 @@ public class ControlBusquedaAvanzada implements Serializable {
             administrarPerExperienciaLaboral.obtenerConexion(ses.getId());
             administrarVigenciasProyectos.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno) {
+
+    public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno) {
         if (listaRetorno != null) {
             listaColumnasEscenarios = new ArrayList<ColumnasEscenarios>();
             listaColumnasEscenarios = listaRetorno;
@@ -1011,16 +1013,16 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
     public void recibirTipoBusqueda(int tipoBusqueda) {
         numeroTipoBusqueda = tipoBusqueda;
         if (numeroTipoBusqueda == 0) {
-            displayNomina="inline";
-            displayPersonal="none";
-            visibilidadPersonal="hidden";
-            visibilidadNomina="visible";
+            displayNomina = "inline";
+            displayPersonal = "none";
+            visibilidadPersonal = "hidden";
+            visibilidadNomina = "visible";
         }
         if (numeroTipoBusqueda == 1) {
-            displayNomina="none";
-            displayPersonal="inline";
-            visibilidadPersonal="visible";
-            visibilidadNomina="hidden";
+            displayNomina = "none";
+            displayPersonal = "inline";
+            visibilidadPersonal = "visible";
+            visibilidadNomina = "hidden";
         }
     }
 
@@ -1058,6 +1060,12 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
     }
 
     public void cargueQueryModuloPersonal() {
+        if (tabActivaTipoTrabajador == 0) {
+            ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "BTIPOTRABAJADOR", "A");
+            listaParametrosQueryModulos.add(parametro);
+            ParametrosQueryBusquedaAvanzada parametro2 = new ParametrosQueryBusquedaAvanzada("TIPOTRABAJADOR", "TIPOTRABAJADORACTIVO", "ACTIVO");
+            listaParametrosQueryModulos.add(parametro2);
+        }
         cargueParametrosModuloDatosPersonales();
         cargueParametrosModuloFactorRH();
         cargueParametrosModuloEstadoCivil();
@@ -1078,7 +1086,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             }
             if (tipoFechaCargo == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("CARGO", "BCARGO", "H");
-                
+
                 DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
                 ParametrosQueryBusquedaAvanzada parametro2 = null;
@@ -1199,7 +1207,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
                 listaParametrosQueryModulos.add(parametro);
             }
             if (tipoFechaFechaContrato == 2) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "BFECHACONTRATO", "H");               
+                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("FECHACONTRATO", "BFECHACONTRATO", "H");
                 DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
                 ParametrosQueryBusquedaAvanzada parametro2 = null;
@@ -1288,7 +1296,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             }
             if (tipoFechaNormaLaboral == 2) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("NORMALABORAL", "BNORMALABORAL", "H");
-                
+
                 DateFormat df = DateFormat.getDateInstance();
                 listaParametrosQueryModulos.add(parametro);
                 ParametrosQueryBusquedaAvanzada parametro2 = null;
@@ -1603,9 +1611,11 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             ParametrosQueryBusquedaAvanzada parametroInicial = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NN", "NN");
             listaParametrosQueryModulos.add(parametroInicial);
 
-            if (empleadoBA.getPersona().getNumerodocumento() != null) {
-                ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NUMERODOCUMENTO", empleadoBA.getPersona().getNumerodocumento().toString());
-                listaParametrosQueryModulos.add(parametro);
+            if (empleadoBA.getPersona().getStrNumeroDocumento() != null) {
+                if (!empleadoBA.getPersona().getStrNumeroDocumento().isEmpty()) {
+                    ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "NUMERODOCUMENTO", empleadoBA.getPersona().getStrNumeroDocumento());
+                    listaParametrosQueryModulos.add(parametro);
+                }
             }
             if (empleadoBA.getPersona().getCiudaddocumento().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "CIUDADDOCUMENTO", empleadoBA.getPersona().getCiudaddocumento().getSecuencia().toString());
@@ -1614,6 +1624,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             if (!empleadoBA.getPersona().getSexo().isEmpty()) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "SEXO", empleadoBA.getPersona().getSexo().toString());
                 listaParametrosQueryModulos.add(parametro);
+                System.out.println("sexo : " + empleadoBA.getPersona().getSexo());
             }
             if (empleadoBA.getPersona().getCiudadnacimiento().getSecuencia() != null) {
                 ParametrosQueryBusquedaAvanzada parametro = new ParametrosQueryBusquedaAvanzada("DATOSPERSONALES", "CIUDADNACIMIENTO", empleadoBA.getPersona().getCiudadnacimiento().getSecuencia().toString());
@@ -2316,10 +2327,10 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         if (indice >= 0) {
             String[] columnas = columnTemplate.split(" ");
             cabeceraEditarCelda = columnas[cualCelda];
-            ColumnasBusquedaAvanzada columna=null;
-            if(tipoLista == 0){
+            ColumnasBusquedaAvanzada columna = null;
+            if (tipoLista == 0) {
                 columna = listaColumnasBusquedaAvanzada.get(indice);
-            }else{
+            } else {
                 columna = filtrarListaColumnasBusquedaAvanzada.get(indice);
             }
             if (cualCelda == 0) {
@@ -3789,7 +3800,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
                 fechaFinalSueldo = null;
                 fechaInicialSueldo = null;
                 RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:pruebaActivotabViewSueldo");
+                context.update("formtabViewSueldo");
                 context.execute("errorFechasIngresadas.show()");
             }
         } catch (Exception e) {
@@ -4087,7 +4098,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
                     fechaMFInicialSets = null;
                     fechaMFFinalSets = null;
                     RequestContext context = RequestContext.getCurrentInstance();
-                    context.update("form:pruebaActivotabViewSets");
+                    context.update("formtabViewSets");
                     context.execute("errorFechasIngresadas.show()");
                 }
             } else {
@@ -4130,7 +4141,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             fechaMIInicialVacacion = null;
             fechaMIFinalVacacion = null;
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:pruebaActivotabViewVacacion");
+            context.update("formtabViewVacacion");
             context.execute("errorExceptionFechas.show()");
             System.out.println("Error modificarFechaMIFinalModuloVacacion Fechas Vacacion : " + e.toString());
         }
@@ -4794,99 +4805,127 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("ESTRUCTURA")) {
-            vigenciaCargoBA.getEstructura().setNombre(auxEstructuraVigenciaCargo);
-            for (int i = 0; i < lovEstructuras.size(); i++) {
-                if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaCargoBA.setEstructura(lovEstructuras.get(indiceUnicoElemento));
-                lovEstructuras = null;
-                getLovEstructuras();
-                context.update("form:pruebaActivotabViewCosto:parametroEstructuraModCargo");
+            if (valorConfirmar.isEmpty()) {
+                vigenciaCargoBA.setEstructura(new Estructuras());
+                vigenciaCargoBA.getEstructura().setCentrocosto(new CentrosCostos());
+                context.update("form:tabViewCosto:parametroEstructuraModCargo");
                 context.update("form:tabViewCosto:parametroCentroCostoModCargo");
             } else {
-                permitirIndexVigenciaCargo = false;
-                context.update("form:EstructuraCargoDialogo");
-                context.execute("EstructuraCargoDialogo.show()");
+                vigenciaCargoBA.getEstructura().setNombre(auxEstructuraVigenciaCargo);
+                for (int i = 0; i < lovEstructuras.size(); i++) {
+                    if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaCargoBA.setEstructura(lovEstructuras.get(indiceUnicoElemento));
+                    lovEstructuras = null;
+                    getLovEstructuras();
+                    context.update("form:tabViewCosto:parametroEstructuraModCargo");
+                    context.update("form:tabViewCosto:parametroCentroCostoModCargo");
+                } else {
+                    permitirIndexVigenciaCargo = false;
+                    context.update("form:EstructuraCargoDialogo");
+                    context.execute("EstructuraCargoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("CARGO")) {
-            vigenciaCargoBA.getCargo().setNombre(auxCargoVigenciaCargo);
-            for (int i = 0; i < lovCargos.size(); i++) {
-                if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaCargoBA.setCargo(lovCargos.get(indiceUnicoElemento));
-                lovCargos = null;
-                getLovCargos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaCargoBA.setCargo(new Cargos());
                 context.update("form:tabViewCosto:parametroCargoModCargo");
             } else {
-                permitirIndexVigenciaCargo = false;
-                context.update("form:CargoCargoDialogo");
-                context.execute("CargoCargoDialogo.show()");
+                vigenciaCargoBA.getCargo().setNombre(auxCargoVigenciaCargo);
+                for (int i = 0; i < lovCargos.size(); i++) {
+                    if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaCargoBA.setCargo(lovCargos.get(indiceUnicoElemento));
+                    lovCargos = null;
+                    getLovCargos();
+                    context.update("form:tabViewCosto:parametroCargoModCargo");
+                } else {
+                    permitirIndexVigenciaCargo = false;
+                    context.update("form:CargoCargoDialogo");
+                    context.execute("CargoCargoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("PAPEL")) {
-            vigenciaCargoBA.getPapel().setDescripcion(auxPapelVigenciaCargo);
-            for (int i = 0; i < lovPapeles.size(); i++) {
-                if (lovPapeles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaCargoBA.setPapel(lovPapeles.get(indiceUnicoElemento));
-                lovPapeles = null;
-                getLovPapeles();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaCargoBA.setPapel(new Papeles());
                 context.update("form:tabViewCosto:parametroPapelModCargo");
             } else {
-                permitirIndexVigenciaCargo = false;
-                context.update("form:PapelCargoDialogo");
-                context.execute("PapelCargoDialogo.show()");
+                vigenciaCargoBA.getPapel().setDescripcion(auxPapelVigenciaCargo);
+                for (int i = 0; i < lovPapeles.size(); i++) {
+                    if (lovPapeles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaCargoBA.setPapel(lovPapeles.get(indiceUnicoElemento));
+                    lovPapeles = null;
+                    getLovPapeles();
+                    context.update("form:tabViewCosto:parametroPapelModCargo");
+                } else {
+                    permitirIndexVigenciaCargo = false;
+                    context.update("form:PapelCargoDialogo");
+                    context.execute("PapelCargoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("MOTIVO")) {
-            vigenciaCargoBA.getMotivocambiocargo().setNombre(auxMotivoCambioCargoVigenciaCargo);
-            for (int i = 0; i < lovMotivosCambiosCargos.size(); i++) {
-                if (lovMotivosCambiosCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaCargoBA.setMotivocambiocargo(lovMotivosCambiosCargos.get(indiceUnicoElemento));
-                lovMotivosCambiosCargos = null;
-                getLovMotivosCambiosCargos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaCargoBA.setMotivocambiocargo(new MotivosCambiosCargos());
                 context.update("form:tabViewCosto:parametroMotivoModCargo");
             } else {
-                permitirIndexVigenciaCargo = false;
-                context.update("form:MotivoCargoDialogo");
-                context.execute("MotivoCargoDialogo.show()");
+                vigenciaCargoBA.getMotivocambiocargo().setNombre(auxMotivoCambioCargoVigenciaCargo);
+                for (int i = 0; i < lovMotivosCambiosCargos.size(); i++) {
+                    if (lovMotivosCambiosCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaCargoBA.setMotivocambiocargo(lovMotivosCambiosCargos.get(indiceUnicoElemento));
+                    lovMotivosCambiosCargos = null;
+                    getLovMotivosCambiosCargos();
+                    context.update("form:tabViewCosto:parametroMotivoModCargo");
+                } else {
+                    permitirIndexVigenciaCargo = false;
+                    context.update("form:MotivoCargoDialogo");
+                    context.execute("MotivoCargoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("JEFE")) {
-            vigenciaCargoBA.getEmpleadojefe().getPersona().setNombreCompleto(auxJefeVigenciaCargo);
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaCargoBA.setEmpleadojefe(lovEmpleados.get(indiceUnicoElemento));
-                lovEmpleados = null;
-                getLovEmpleados();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaCargoBA.setEmpleadojefe(new Empleados());
+                vigenciaCargoBA.getEmpleadojefe().setPersona(new Personas());
                 context.update("form:tabViewCosto:parametroJefeModCargo");
             } else {
-                permitirIndexVigenciaCargo = false;
-                context.update("form:JefeCargoDialogo");
-                context.execute("JefeCargoDialogo.show()");
+                vigenciaCargoBA.getEmpleadojefe().getPersona().setNombreCompleto(auxJefeVigenciaCargo);
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaCargoBA.setEmpleadojefe(lovEmpleados.get(indiceUnicoElemento));
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                    context.update("form:tabViewCosto:parametroJefeModCargo");
+                } else {
+                    permitirIndexVigenciaCargo = false;
+                    context.update("form:JefeCargoDialogo");
+                    context.execute("JefeCargoDialogo.show()");
+                }
             }
         }
     }
@@ -4896,41 +4935,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("LOCALIZACION")) {
-            vigenciaLocalizacionBA.getLocalizacion().setNombre(auxLocalizacionVigenciaLocalizacion);
-            for (int i = 0; i < lovEstructuras.size(); i++) {
-                if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaLocalizacionBA.setLocalizacion(lovEstructuras.get(indiceUnicoElemento));
-                lovEstructuras = null;
-                getLovEstructuras();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaLocalizacionBA.setLocalizacion(new Estructuras());
                 context.update("form:tabViewCentroCosto:parametroLocalizacionModCentroCosto");
             } else {
-                permitirIndexVigenciaLocalizacion = false;
-                context.update("form:LocalizacionCentroCostoDialogo");
-                context.execute("LocalizacionCentroCostoDialogo.show()");
+                vigenciaLocalizacionBA.getLocalizacion().setNombre(auxLocalizacionVigenciaLocalizacion);
+                for (int i = 0; i < lovEstructuras.size(); i++) {
+                    if (lovEstructuras.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaLocalizacionBA.setLocalizacion(lovEstructuras.get(indiceUnicoElemento));
+                    lovEstructuras = null;
+                    getLovEstructuras();
+                    context.update("form:tabViewCentroCosto:parametroLocalizacionModCentroCosto");
+                } else {
+                    permitirIndexVigenciaLocalizacion = false;
+                    context.update("form:LocalizacionCentroCostoDialogo");
+                    context.execute("LocalizacionCentroCostoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("MOTIVO")) {
-            vigenciaLocalizacionBA.getMotivo().setDescripcion(auxMotivoLocalizacionVigenciaLocalizacion);
-            for (int i = 0; i < lovMotivosLocalizaciones.size(); i++) {
-                if (lovMotivosLocalizaciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaLocalizacionBA.setMotivo(lovMotivosLocalizaciones.get(indiceUnicoElemento));
-                lovMotivosLocalizaciones = null;
-                getLovMotivosLocalizaciones();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaLocalizacionBA.setMotivo(new MotivosLocalizaciones());
                 context.update("form:tabViewCentroCosto:parametroMotivoModCentroCosto");
             } else {
-                permitirIndexVigenciaLocalizacion = false;
-                context.update("form:MotivoCentroCostoDialogo");
-                context.execute("MotivoCentroCostoDialogo.show()");
+                vigenciaLocalizacionBA.getMotivo().setDescripcion(auxMotivoLocalizacionVigenciaLocalizacion);
+                for (int i = 0; i < lovMotivosLocalizaciones.size(); i++) {
+                    if (lovMotivosLocalizaciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaLocalizacionBA.setMotivo(lovMotivosLocalizaciones.get(indiceUnicoElemento));
+                    lovMotivosLocalizaciones = null;
+                    getLovMotivosLocalizaciones();
+                    context.update("form:tabViewCentroCosto:parametroMotivoModCentroCosto");
+                } else {
+                    permitirIndexVigenciaLocalizacion = false;
+                    context.update("form:MotivoCentroCostoDialogo");
+                    context.execute("MotivoCentroCostoDialogo.show()");
+                }
             }
         }
     }
@@ -4940,41 +4989,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("TIPOSUELDO")) {
-            vigenciaSueldoBA.getTiposueldo().setDescripcion(auxTipoSueldoVigenciaSueldo);
-            for (int i = 0; i < lovTiposSueldos.size(); i++) {
-                if (lovTiposSueldos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaSueldoBA.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
-                lovTiposSueldos = null;
-                getLovTiposSueldos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaSueldoBA.setTiposueldo(new TiposSueldos());
                 context.update("form:tabViewSueldo:parametroTipoSueldoModSueldo");
             } else {
-                permitirIndexVigenciaSueldo = false;
-                context.update("form:TipoSueldoSueldoDialogo");
-                context.execute("TipoSueldoSueldoDialogo.show()");
+                vigenciaSueldoBA.getTiposueldo().setDescripcion(auxTipoSueldoVigenciaSueldo);
+                for (int i = 0; i < lovTiposSueldos.size(); i++) {
+                    if (lovTiposSueldos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaSueldoBA.setTiposueldo(lovTiposSueldos.get(indiceUnicoElemento));
+                    lovTiposSueldos = null;
+                    getLovTiposSueldos();
+                    context.update("form:tabViewSueldo:parametroTipoSueldoModSueldo");
+                } else {
+                    permitirIndexVigenciaSueldo = false;
+                    context.update("form:TipoSueldoSueldoDialogo");
+                    context.execute("TipoSueldoSueldoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("MOTIVO")) {
-            vigenciaSueldoBA.getMotivocambiosueldo().setNombre(auxMotivoCambioSueldoVigenciaSueldo);
-            for (int i = 0; i < lovMotivosCambiosSueldos.size(); i++) {
-                if (lovMotivosCambiosSueldos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaSueldoBA.setMotivocambiosueldo(lovMotivosCambiosSueldos.get(indiceUnicoElemento));
-                lovMotivosCambiosSueldos = null;
-                getLovMotivosCambiosSueldos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaSueldoBA.setMotivocambiosueldo(new MotivosCambiosSueldos());
                 context.update("form:tabViewSueldo:parametroMotivoModSueldo");
             } else {
-                permitirIndexVigenciaSueldo = false;
-                context.update("form:MotivoSueldoDialogo");
-                context.execute("MotivoSueldoDialogo.show()");
+                vigenciaSueldoBA.getMotivocambiosueldo().setNombre(auxMotivoCambioSueldoVigenciaSueldo);
+                for (int i = 0; i < lovMotivosCambiosSueldos.size(); i++) {
+                    if (lovMotivosCambiosSueldos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaSueldoBA.setMotivocambiosueldo(lovMotivosCambiosSueldos.get(indiceUnicoElemento));
+                    lovMotivosCambiosSueldos = null;
+                    getLovMotivosCambiosSueldos();
+                    context.update("form:tabViewSueldo:parametroMotivoModSueldo");
+                } else {
+                    permitirIndexVigenciaSueldo = false;
+                    context.update("form:MotivoSueldoDialogo");
+                    context.execute("MotivoSueldoDialogo.show()");
+                }
             }
         }
     }
@@ -4984,41 +5043,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("TIPOCONTRATO")) {
-            vigenciaTipoContratoBA.getTipocontrato().setNombre(auxTipoContratoVigenciaTipoContrato);
-            for (int i = 0; i < lovTiposContratos.size(); i++) {
-                if (lovTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaTipoContratoBA.setTipocontrato(lovTiposContratos.get(indiceUnicoElemento));
-                lovTiposContratos = null;
-                getLovTiposContratos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaTipoContratoBA.setTipocontrato(new TiposContratos());
                 context.update("form:tabViewFechaContrato:parametroTipoContratoModFechaContrato");
             } else {
-                permitirIndexVigenciaTipoContrato = false;
-                context.update("form:TipoContratoFechaContratoDialogo");
-                context.execute("TipoContratoFechaContratoDialogo.show()");
+                vigenciaTipoContratoBA.getTipocontrato().setNombre(auxTipoContratoVigenciaTipoContrato);
+                for (int i = 0; i < lovTiposContratos.size(); i++) {
+                    if (lovTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaTipoContratoBA.setTipocontrato(lovTiposContratos.get(indiceUnicoElemento));
+                    lovTiposContratos = null;
+                    getLovTiposContratos();
+                    context.update("form:tabViewFechaContrato:parametroTipoContratoModFechaContrato");
+                } else {
+                    permitirIndexVigenciaTipoContrato = false;
+                    context.update("form:TipoContratoFechaContratoDialogo");
+                    context.execute("TipoContratoFechaContratoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("MOTIVO")) {
-            vigenciaTipoContratoBA.getMotivocontrato().setNombre(auxMotivoContratoVigenciaTipoContrato);
-            for (int i = 0; i < lovMotivosContratos.size(); i++) {
-                if (lovMotivosContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaTipoContratoBA.setMotivocontrato(lovMotivosContratos.get(indiceUnicoElemento));
-                lovMotivosContratos = null;
-                getLovMotivosContratos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaTipoContratoBA.setMotivocontrato(new MotivosContratos());
                 context.update("form:tabViewFechaContrato:parametroMotivoModFechaContrato");
             } else {
-                permitirIndexVigenciaTipoContrato = false;
-                context.update("form:MotivoFechaContratoDialogo");
-                context.execute("MotivoFechaContratoDialogo.show()");
+                vigenciaTipoContratoBA.getMotivocontrato().setNombre(auxMotivoContratoVigenciaTipoContrato);
+                for (int i = 0; i < lovMotivosContratos.size(); i++) {
+                    if (lovMotivosContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaTipoContratoBA.setMotivocontrato(lovMotivosContratos.get(indiceUnicoElemento));
+                    lovMotivosContratos = null;
+                    getLovMotivosContratos();
+                    context.update("form:tabViewFechaContrato:parametroMotivoModFechaContrato");
+                } else {
+                    permitirIndexVigenciaTipoContrato = false;
+                    context.update("form:MotivoFechaContratoDialogo");
+                    context.execute("MotivoFechaContratoDialogo.show()");
+                }
             }
         }
     }
@@ -5028,22 +5097,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("TIPOTRABAJADOR")) {
-            vigenciaTipoTrabajadorBA.getTipotrabajador().setNombre(auxTipoTrabajadorVigenciaTipoTrabajador);
-            for (int i = 0; i < lovTiposTrabajadores.size(); i++) {
-                if (lovTiposTrabajadores.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaTipoTrabajadorBA.setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
-                lovTiposTrabajadores = null;
-                getLovTiposTrabajadores();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaTipoTrabajadorBA.setTipotrabajador(new TiposTrabajadores());
                 context.update("form:tabViewTipoTrabajador:parametroTipoTrabajadorModTipoContrato");
             } else {
-                permitirIndexVigenciaTipoTrabajador = false;
-                context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
-                context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
+                vigenciaTipoTrabajadorBA.getTipotrabajador().setNombre(auxTipoTrabajadorVigenciaTipoTrabajador);
+                for (int i = 0; i < lovTiposTrabajadores.size(); i++) {
+                    if (lovTiposTrabajadores.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaTipoTrabajadorBA.setTipotrabajador(lovTiposTrabajadores.get(indiceUnicoElemento));
+                    lovTiposTrabajadores = null;
+                    getLovTiposTrabajadores();
+                    context.update("form:tabViewTipoTrabajador:parametroTipoTrabajadorModTipoContrato");
+                } else {
+                    permitirIndexVigenciaTipoTrabajador = false;
+                    context.update("form:TipoTrabajadorTipoTrabajadorDialogo");
+                    context.execute("TipoTrabajadorTipoTrabajadorDialogo.show()");
+                }
             }
         }
     }
@@ -5053,22 +5127,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("REFORMA")) {
-            vigenciaReformaLaboralBA.getReformalaboral().setNombre(auxReformaLaboralVigenciaReformaLaboral);
-            for (int i = 0; i < lovReformasLaborales.size(); i++) {
-                if (lovReformasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaReformaLaboralBA.setReformalaboral(lovReformasLaborales.get(indiceUnicoElemento));
-                lovReformasLaborales = null;
-                getLovReformasLaborales();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaReformaLaboralBA.setReformalaboral(new ReformasLaborales());
                 context.update("form:tabViewTipoSalario:parametroReformaLaboralModTipoSalario");
             } else {
-                permitirIndexVigenciaTipoTrabajador = false;
-                context.update("form:ReformaLaboralTipoSalarioDialogo");
-                context.execute("ReformaLaboralTipoSalarioDialogo.show()");
+                vigenciaReformaLaboralBA.getReformalaboral().setNombre(auxReformaLaboralVigenciaReformaLaboral);
+                for (int i = 0; i < lovReformasLaborales.size(); i++) {
+                    if (lovReformasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaReformaLaboralBA.setReformalaboral(lovReformasLaborales.get(indiceUnicoElemento));
+                    lovReformasLaborales = null;
+                    getLovReformasLaborales();
+                    context.update("form:tabViewTipoSalario:parametroReformaLaboralModTipoSalario");
+                } else {
+                    permitirIndexVigenciaTipoTrabajador = false;
+                    context.update("form:ReformaLaboralTipoSalarioDialogo");
+                    context.execute("ReformaLaboralTipoSalarioDialogo.show()");
+                }
             }
         }
     }
@@ -5078,22 +5157,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("NORMA")) {
-            vigenciaNormaEmpleadoBA.getNormalaboral().setNombre(auxNormaLaboralVigenciaNormaEmpleado);
-            for (int i = 0; i < lovNormasLaborales.size(); i++) {
-                if (lovNormasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaNormaEmpleadoBA.setNormalaboral(lovNormasLaborales.get(indiceUnicoElemento));
-                lovNormasLaborales = null;
-                getLovNormasLaborales();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaNormaEmpleadoBA.setNormalaboral(new NormasLaborales());
                 context.update("form:tabViewNormaLaboral:parametroNormaLaboralModNormaLaboral");
             } else {
-                permitirIndexVigenciaNormaEmpleado = false;
-                context.update("form:NormaLaboralNormaLaboralDialogo");
-                context.execute("NormaLaboralNormaLaboralDialogo.show()");
+                vigenciaNormaEmpleadoBA.getNormalaboral().setNombre(auxNormaLaboralVigenciaNormaEmpleado);
+                for (int i = 0; i < lovNormasLaborales.size(); i++) {
+                    if (lovNormasLaborales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaNormaEmpleadoBA.setNormalaboral(lovNormasLaborales.get(indiceUnicoElemento));
+                    lovNormasLaborales = null;
+                    getLovNormasLaborales();
+                    context.update("form:tabViewNormaLaboral:parametroNormaLaboralModNormaLaboral");
+                } else {
+                    permitirIndexVigenciaNormaEmpleado = false;
+                    context.update("form:NormaLaboralNormaLaboralDialogo");
+                    context.execute("NormaLaboralNormaLaboralDialogo.show()");
+                }
             }
         }
     }
@@ -5103,22 +5187,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("CONTRATO")) {
-            vigenciaContratoBA.getContrato().setDescripcion(auxContratoVigenciaContrato);
-            for (int i = 0; i < lovContratos.size(); i++) {
-                if (lovContratos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaContratoBA.setContrato(lovContratos.get(indiceUnicoElemento));
-                lovContratos = null;
-                getLovContratos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaContratoBA.setContrato(new Contratos());
                 context.update("form:tabViewLegislacionLaboral:parametroLegislacionModLegislacionLaboral");
             } else {
-                permitirIndexVigenciaContrato = false;
-                context.update("form:LegislacionLegislacionLaboralDialogo");
-                context.execute("LegislacionLegislacionLaboralDialogo.show()");
+                vigenciaContratoBA.getContrato().setDescripcion(auxContratoVigenciaContrato);
+                for (int i = 0; i < lovContratos.size(); i++) {
+                    if (lovContratos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaContratoBA.setContrato(lovContratos.get(indiceUnicoElemento));
+                    lovContratos = null;
+                    getLovContratos();
+                    context.update("form:tabViewLegislacionLaboral:parametroLegislacionModLegislacionLaboral");
+                } else {
+                    permitirIndexVigenciaContrato = false;
+                    context.update("form:LegislacionLegislacionLaboralDialogo");
+                    context.execute("LegislacionLegislacionLaboralDialogo.show()");
+                }
             }
         }
     }
@@ -5128,23 +5217,30 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("UBICACION")) {
-            vigenciaUbicacionBA.getUbicacion().setDescripcion(auxUbicacionVigenciaUbicacion);
-            for (int i = 0; i < lovUbicacionesGeograficas.size(); i++) {
-                if (lovUbicacionesGeograficas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaUbicacionBA.setUbicacion(lovUbicacionesGeograficas.get(indiceUnicoElemento));
-                lovUbicacionesGeograficas = null;
-                getLovUbicacionesGeograficas();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaUbicacionBA.setUbicacion(new UbicacionesGeograficas());
+                vigenciaUbicacionBA.getUbicacion().setCiudad(new Ciudades());
                 context.update("form:tabViewUbicacion:parametroUbicacionModUbicacion");
                 context.update("form:tabViewUbicacion:parametroCiudadModUbicacion");
             } else {
-                permitirIndexVigenciaUbicacion = false;
-                context.update("form:UbicacionUbicacionDialogo");
-                context.execute("UbicacionUbicacionDialogo.show()");
+                vigenciaUbicacionBA.getUbicacion().setDescripcion(auxUbicacionVigenciaUbicacion);
+                for (int i = 0; i < lovUbicacionesGeograficas.size(); i++) {
+                    if (lovUbicacionesGeograficas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaUbicacionBA.setUbicacion(lovUbicacionesGeograficas.get(indiceUnicoElemento));
+                    lovUbicacionesGeograficas = null;
+                    getLovUbicacionesGeograficas();
+                    context.update("form:tabViewUbicacion:parametroUbicacionModUbicacion");
+                    context.update("form:tabViewUbicacion:parametroCiudadModUbicacion");
+                } else {
+                    permitirIndexVigenciaUbicacion = false;
+                    context.update("form:UbicacionUbicacionDialogo");
+                    context.execute("UbicacionUbicacionDialogo.show()");
+                }
             }
         }
     }
@@ -5154,60 +5250,75 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("TERCERO")) {
-            vigenciaAfiliacionBA.getTercerosucursal().setDescripcion(auxTerceroVigenciaAfiliacion3);
-            for (int i = 0; i < lovTercerosSucursales.size(); i++) {
-                if (lovTercerosSucursales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaAfiliacionBA.setTercerosucursal(lovTercerosSucursales.get(indiceUnicoElemento));
-                lovTercerosSucursales = null;
-                getLovTercerosSucursales();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaAfiliacionBA.setTercerosucursal(new TercerosSucursales());
                 context.update("form:tabViewAfiliacion:parametroTerceroModAfiliacion");
             } else {
-                permitirIndexVigenciaAfiliacion = false;
-                context.update("form:TerceroAfiliacionDialogo");
-                context.execute("TerceroAfiliacionDialogo.show()");
+                vigenciaAfiliacionBA.getTercerosucursal().setDescripcion(auxTerceroVigenciaAfiliacion3);
+                for (int i = 0; i < lovTercerosSucursales.size(); i++) {
+                    if (lovTercerosSucursales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaAfiliacionBA.setTercerosucursal(lovTercerosSucursales.get(indiceUnicoElemento));
+                    lovTercerosSucursales = null;
+                    getLovTercerosSucursales();
+                    context.update("form:tabViewAfiliacion:parametroTerceroModAfiliacion");
+                } else {
+                    permitirIndexVigenciaAfiliacion = false;
+                    context.update("form:TerceroAfiliacionDialogo");
+                    context.execute("TerceroAfiliacionDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("TIPOENTIDAD")) {
-            vigenciaAfiliacionBA.getTipoentidad().setNombre(auxTipoEntidadVigenciaAfiliacion3);
-            for (int i = 0; i < lovTiposEntidades.size(); i++) {
-                if (lovTiposEntidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaAfiliacionBA.setTipoentidad(lovTiposEntidades.get(indiceUnicoElemento));
-                lovTiposEntidades = null;
-                getLovTiposEntidades();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaAfiliacionBA.setTipoentidad(new TiposEntidades());
                 context.update("form:tabViewAfiliacion:parametroTipoEntidadModAfiliacion");
             } else {
-                permitirIndexVigenciaAfiliacion = false;
-                context.update("form:TipoEntidadAfiliacionDialogo");
-                context.execute("TipoEntidadAfiliacionDialogo.show()");
+                vigenciaAfiliacionBA.getTipoentidad().setNombre(auxTipoEntidadVigenciaAfiliacion3);
+                for (int i = 0; i < lovTiposEntidades.size(); i++) {
+                    if (lovTiposEntidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaAfiliacionBA.setTipoentidad(lovTiposEntidades.get(indiceUnicoElemento));
+                    lovTiposEntidades = null;
+                    getLovTiposEntidades();
+                    context.update("form:tabViewAfiliacion:parametroTipoEntidadModAfiliacion");
+                } else {
+                    permitirIndexVigenciaAfiliacion = false;
+                    context.update("form:TipoEntidadAfiliacionDialogo");
+                    context.execute("TipoEntidadAfiliacionDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("ESTADO")) {
-            vigenciaAfiliacionBA.getEstadoafiliacion().setNombre(auxEstadoVigenciaAfiliacion3);
-            for (int i = 0; i < lovEstadosAfiliaciones.size(); i++) {
-                if (lovEstadosAfiliaciones.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaAfiliacionBA.setEstadoafiliacion(lovEstadosAfiliaciones.get(indiceUnicoElemento));
-                lovEstadosAfiliaciones = null;
-                getLovEstadosAfiliaciones();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaAfiliacionBA.setEstadoafiliacion(new EstadosAfiliaciones());
                 context.update("form:tabViewAfiliacion:parametroEstadoModAfiliacion");
             } else {
-                permitirIndexVigenciaAfiliacion = false;
-                context.update("form:EstadoAfiliacionDialogo");
-                context.execute("EstadoAfiliacionDialogo.show()");
+                vigenciaAfiliacionBA.getEstadoafiliacion().setNombre(auxEstadoVigenciaAfiliacion3);
+                for (int i = 0; i < lovEstadosAfiliaciones.size(); i++) {
+                    if (lovEstadosAfiliaciones.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaAfiliacionBA.setEstadoafiliacion(lovEstadosAfiliaciones.get(indiceUnicoElemento));
+                    lovEstadosAfiliaciones = null;
+                    getLovEstadosAfiliaciones();
+                    context.update("form:tabViewAfiliacion:parametroEstadoModAfiliacion");
+                } else {
+                    permitirIndexVigenciaAfiliacion = false;
+                    context.update("form:EstadoAfiliacionDialogo");
+                    context.execute("EstadoAfiliacionDialogo.show()");
+                }
             }
         }
     }
@@ -5217,41 +5328,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("PERIODICIDAD")) {
-            vigenciaFormaPagoBA.getFormapago().setNombre(auxPeriodicidadVigenciaFormaPago);
-            for (int i = 0; i < lovPeriodicidades.size(); i++) {
-                if (lovPeriodicidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaFormaPagoBA.setFormapago(lovPeriodicidades.get(indiceUnicoElemento));
-                lovPeriodicidades = null;
-                getLovPeriodicidades();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaFormaPagoBA.setFormapago(new Periodicidades());
                 context.update("form:tabViewFormaPago:parametroFormaPagoModFormaPago");
             } else {
-                permitirIndexVigenciaFormaPago = false;
-                context.update("form:PeriodicidadFormaPagoDialogo");
-                context.execute("PeriodicidadFormaPagoDialogo.show()");
+                vigenciaFormaPagoBA.getFormapago().setNombre(auxPeriodicidadVigenciaFormaPago);
+                for (int i = 0; i < lovPeriodicidades.size(); i++) {
+                    if (lovPeriodicidades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaFormaPagoBA.setFormapago(lovPeriodicidades.get(indiceUnicoElemento));
+                    lovPeriodicidades = null;
+                    getLovPeriodicidades();
+                    context.update("form:tabViewFormaPago:parametroFormaPagoModFormaPago");
+                } else {
+                    permitirIndexVigenciaFormaPago = false;
+                    context.update("form:PeriodicidadFormaPagoDialogo");
+                    context.execute("PeriodicidadFormaPagoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("SUCURSAL")) {
-            vigenciaFormaPagoBA.getSucursal().setNombre(auxSucursalVigenciaFormaPago);
-            for (int i = 0; i < lovSucursales.size(); i++) {
-                if (lovSucursales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaFormaPagoBA.setSucursal(lovSucursales.get(indiceUnicoElemento));
-                lovSucursales = null;
-                getLovSucursales();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaFormaPagoBA.setSucursal(new Sucursales());
                 context.update("form:tabViewFormaPago:parametroSucursalModFormaPago");
             } else {
-                permitirIndexVigenciaFormaPago = false;
-                context.update("form:SucursalFormaPagoDialogo");
-                context.execute("SucursalFormaPagoDialogo.show()");
+                vigenciaFormaPagoBA.getSucursal().setNombre(auxSucursalVigenciaFormaPago);
+                for (int i = 0; i < lovSucursales.size(); i++) {
+                    if (lovSucursales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaFormaPagoBA.setSucursal(lovSucursales.get(indiceUnicoElemento));
+                    lovSucursales = null;
+                    getLovSucursales();
+                    context.update("form:tabViewFormaPago:parametroSucursalModFormaPago");
+                } else {
+                    permitirIndexVigenciaFormaPago = false;
+                    context.update("form:SucursalFormaPagoDialogo");
+                    context.execute("SucursalFormaPagoDialogo.show()");
+                }
             }
         }
     }
@@ -5261,22 +5382,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("MOTIVO")) {
-            mvrsBA.getMotivo().setNombre(auxMotivoMvrs);
-            for (int i = 0; i < lovMotivosMvrs.size(); i++) {
-                if (lovMotivosMvrs.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                mvrsBA.setMotivo(lovMotivosMvrs.get(indiceUnicoElemento));
-                lovMotivosMvrs = null;
-                getLovMotivosMvrs();
+            if (valorConfirmar.isEmpty()) {
+                mvrsBA.setMotivo(new Motivosmvrs());
                 context.update("form:tabViewMvrs:parametroMotivoModMvrs");
             } else {
-                permitirIndexMvrs = false;
-                context.update("form:MotivoMvrsDialogo");
-                context.execute("MotivoMvrsDialogo.show()");
+                mvrsBA.getMotivo().setNombre(auxMotivoMvrs);
+                for (int i = 0; i < lovMotivosMvrs.size(); i++) {
+                    if (lovMotivosMvrs.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    mvrsBA.setMotivo(lovMotivosMvrs.get(indiceUnicoElemento));
+                    lovMotivosMvrs = null;
+                    getLovMotivosMvrs();
+                    context.update("form:tabViewMvrs:parametroMotivoModMvrs");
+                } else {
+                    permitirIndexMvrs = false;
+                    context.update("form:MotivoMvrsDialogo");
+                    context.execute("MotivoMvrsDialogo.show()");
+                }
             }
         }
     }
@@ -5286,22 +5412,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("JORNADA")) {
-            vigenciaJornadaBA.getJornadatrabajo().setDescripcion(auxJornadaJornadaLaboral);
-            for (int i = 0; i < lovJornadasLaborales.size(); i++) {
-                if (lovJornadasLaborales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaJornadaBA.setJornadatrabajo(lovJornadasLaborales.get(indiceUnicoElemento));
-                lovJornadasLaborales = null;
-                getLovJornadasLaborales();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaJornadaBA.setJornadatrabajo(new JornadasLaborales());
                 context.update("form:tabViewJornadaLaboral:parametroJornadaModJornadaLaboral");
             } else {
-                permitirIndexVigenciaJornada = false;
-                context.update("form:JornadaJornadaLaboralDialogo");
-                context.execute("JornadaJornadaLaboralDialogo.show()");
+                vigenciaJornadaBA.getJornadatrabajo().setDescripcion(auxJornadaJornadaLaboral);
+                for (int i = 0; i < lovJornadasLaborales.size(); i++) {
+                    if (lovJornadasLaborales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaJornadaBA.setJornadatrabajo(lovJornadasLaborales.get(indiceUnicoElemento));
+                    lovJornadasLaborales = null;
+                    getLovJornadasLaborales();
+                    context.update("form:tabViewJornadaLaboral:parametroJornadaModJornadaLaboral");
+                } else {
+                    permitirIndexVigenciaJornada = false;
+                    context.update("form:JornadaJornadaLaboralDialogo");
+                    context.execute("JornadaJornadaLaboralDialogo.show()");
+                }
             }
         }
     }
@@ -5311,22 +5442,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("MOTIVO")) {
-            motivoRetiroBA.setNombre(auxMotivoMotivoRetiro);
-            for (int i = 0; i < lovMotivosRetiros.size(); i++) {
-                if (lovMotivosRetiros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                motivoRetiroBA = lovMotivosRetiros.get(indiceUnicoElemento);
-                lovMotivosRetiros = null;
-                getLovMotivosRetiros();
+            if (valorConfirmar.isEmpty()) {
+                motivoRetiroBA = new MotivosRetiros();
                 context.update("form:tabViewFechaRetiro:parametroMotivoModFechaRetiro");
             } else {
-                permitirIndexMotivoRetiro = false;
-                context.update("form:MotivoFechaRetiroDialogo");
-                context.execute("MotivoFechaRetiroDialogo.show()");
+                motivoRetiroBA.setNombre(auxMotivoMotivoRetiro);
+                for (int i = 0; i < lovMotivosRetiros.size(); i++) {
+                    if (lovMotivosRetiros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    motivoRetiroBA = lovMotivosRetiros.get(indiceUnicoElemento);
+                    lovMotivosRetiros = null;
+                    getLovMotivosRetiros();
+                    context.update("form:tabViewFechaRetiro:parametroMotivoModFechaRetiro");
+                } else {
+                    permitirIndexMotivoRetiro = false;
+                    context.update("form:MotivoFechaRetiroDialogo");
+                    context.execute("MotivoFechaRetiroDialogo.show()");
+                }
             }
         }
     }
@@ -5336,41 +5472,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("DOCUMENTO")) {
-            empleadoBA.getPersona().getCiudaddocumento().setNombre(auxCiudadDocumentoEmpleado);
-            for (int i = 0; i < lovCiudades.size(); i++) {
-                if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                empleadoBA.getPersona().setCiudaddocumento(lovCiudades.get(indiceUnicoElemento));
-                lovCiudades = null;
-                getLovCiudades();
+            if (valorConfirmar.isEmpty()) {
+                empleadoBA.getPersona().setCiudaddocumento(new Ciudades());
                 context.update("form:tabViewDatosPersonales:parametroCiudadDocumentoModDatosPersonales");
             } else {
-                permitirIndexEmpleado = false;
-                context.update("form:CiudadDocumentoDatosPersonalesDialogo");
-                context.execute("CiudadDocumentoDatosPersonalesDialogo.show()");
+                empleadoBA.getPersona().getCiudaddocumento().setNombre(auxCiudadDocumentoEmpleado);
+                for (int i = 0; i < lovCiudades.size(); i++) {
+                    if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    empleadoBA.getPersona().setCiudaddocumento(lovCiudades.get(indiceUnicoElemento));
+                    lovCiudades = null;
+                    getLovCiudades();
+                    context.update("form:tabViewDatosPersonales:parametroCiudadDocumentoModDatosPersonales");
+                } else {
+                    permitirIndexEmpleado = false;
+                    context.update("form:CiudadDocumentoDatosPersonalesDialogo");
+                    context.execute("CiudadDocumentoDatosPersonalesDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("NACIMIENTO")) {
-            empleadoBA.getPersona().getCiudadnacimiento().setNombre(auxCiudadNacimientoEmpleado);
-            for (int i = 0; i < lovCiudades.size(); i++) {
-                if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                empleadoBA.getPersona().setCiudadnacimiento(lovCiudades.get(indiceUnicoElemento));
-                lovCiudades = null;
-                getLovCiudades();
+            if (valorConfirmar.isEmpty()) {
+                empleadoBA.getPersona().setCiudadnacimiento(new Ciudades());
                 context.update("form:tabViewDatosPersonales:parametroCiudadNacimientoModDatosPersonales");
             } else {
-                permitirIndexEmpleado = false;
-                context.update("form:CiudadNacimientoDatosPersonalesDialogo");
-                context.execute("CiudadNacimientoDatosPersonalesDialogo.show()");
+                empleadoBA.getPersona().getCiudadnacimiento().setNombre(auxCiudadNacimientoEmpleado);
+                for (int i = 0; i < lovCiudades.size(); i++) {
+                    if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    empleadoBA.getPersona().setCiudadnacimiento(lovCiudades.get(indiceUnicoElemento));
+                    lovCiudades = null;
+                    getLovCiudades();
+                    context.update("form:tabViewDatosPersonales:parametroCiudadNacimientoModDatosPersonales");
+                } else {
+                    permitirIndexEmpleado = false;
+                    context.update("form:CiudadNacimientoDatosPersonalesDialogo");
+                    context.execute("CiudadNacimientoDatosPersonalesDialogo.show()");
+                }
             }
         }
     }
@@ -5380,22 +5526,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("ESTADO")) {
-            estadoCivilBA.setDescripcion(auxEstadoCivilEstadoCivil);
-            for (int i = 0; i < lovEstadosCiviles.size(); i++) {
-                if (lovEstadosCiviles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                estadoCivilBA = lovEstadosCiviles.get(indiceUnicoElemento);
-                lovEstadosCiviles = null;
-                getLovEstadosCiviles();
+            if (valorConfirmar.isEmpty()) {
+                estadoCivilBA = new EstadosCiviles();
                 context.update("form:tabViewEstadoCivil:parametroEstadoCivilModEstadoCivil");
             } else {
-                permitirIndexEstadoCivil = false;
-                context.update("form:EstadoCivilEstadoCivilDialogo");
-                context.execute("EstadoCivilEstadoCivilDialogo.show()");
+                estadoCivilBA.setDescripcion(auxEstadoCivilEstadoCivil);
+                for (int i = 0; i < lovEstadosCiviles.size(); i++) {
+                    if (lovEstadosCiviles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    estadoCivilBA = lovEstadosCiviles.get(indiceUnicoElemento);
+                    lovEstadosCiviles = null;
+                    getLovEstadosCiviles();
+                    context.update("form:tabViewEstadoCivil:parametroEstadoCivilModEstadoCivil");
+                } else {
+                    permitirIndexEstadoCivil = false;
+                    context.update("form:EstadoCivilEstadoCivilDialogo");
+                    context.execute("EstadoCivilEstadoCivilDialogo.show()");
+                }
             }
         }
     }
@@ -5405,22 +5556,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("IDIOMA")) {
-            idiomaPersonaBA.getIdioma().setNombre(auxIdiomaIdiomaPersona);
-            for (int i = 0; i < lovIdiomas.size(); i++) {
-                if (lovIdiomas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                idiomaPersonaBA.setIdioma(lovIdiomas.get(indiceUnicoElemento));
-                lovIdiomas = null;
-                getLovIdiomas();
+            if (valorConfirmar.isEmpty()) {
+                idiomaPersonaBA.setIdioma(new Idiomas());
                 context.update("form:tabViewIdioma:parametroIdiomaModIdioma");
             } else {
-                permitirIndexIdiomaPersona = false;
-                context.update("form:IdiomaIdiomaDialogo");
-                context.execute("IdiomaIdiomaDialogo.show()");
+                idiomaPersonaBA.getIdioma().setNombre(auxIdiomaIdiomaPersona);
+                for (int i = 0; i < lovIdiomas.size(); i++) {
+                    if (lovIdiomas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    idiomaPersonaBA.setIdioma(lovIdiomas.get(indiceUnicoElemento));
+                    lovIdiomas = null;
+                    getLovIdiomas();
+                    context.update("form:tabViewIdioma:parametroIdiomaModIdioma");
+                } else {
+                    permitirIndexIdiomaPersona = false;
+                    context.update("form:IdiomaIdiomaDialogo");
+                    context.execute("IdiomaIdiomaDialogo.show()");
+                }
             }
         }
     }
@@ -5430,41 +5586,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("TIPOINDICADOR")) {
-            vigenciaIndicadorBA.getTipoindicador().setDescripcion(auxTipoIndicadorCenso);
-            for (int i = 0; i < lovTiposIndicadores.size(); i++) {
-                if (lovTiposIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaIndicadorBA.setTipoindicador(lovTiposIndicadores.get(indiceUnicoElemento));
-                lovTiposIndicadores = null;
-                getLovTiposIndicadores();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaIndicadorBA.setTipoindicador(new TiposIndicadores());
                 context.update("form:tabViewCenso:parametroTipoIndicadorModCenso");
             } else {
-                permitirIndexVigenciaIndicador = false;
-                context.update("form:TipoIndicadorCensoDialogo");
-                context.execute("TipoIndicadorCensoDialogo.show()");
+                vigenciaIndicadorBA.getTipoindicador().setDescripcion(auxTipoIndicadorCenso);
+                for (int i = 0; i < lovTiposIndicadores.size(); i++) {
+                    if (lovTiposIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaIndicadorBA.setTipoindicador(lovTiposIndicadores.get(indiceUnicoElemento));
+                    lovTiposIndicadores = null;
+                    getLovTiposIndicadores();
+                    context.update("form:tabViewCenso:parametroTipoIndicadorModCenso");
+                } else {
+                    permitirIndexVigenciaIndicador = false;
+                    context.update("form:TipoIndicadorCensoDialogo");
+                    context.execute("TipoIndicadorCensoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("INDICADOR")) {
-            vigenciaIndicadorBA.getIndicador().setDescripcion(auxIndicadorCenso);
-            for (int i = 0; i < lovIndicadores.size(); i++) {
-                if (lovIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaIndicadorBA.setIndicador(lovIndicadores.get(indiceUnicoElemento));
-                lovIndicadores = null;
-                getLovIndicadores();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaIndicadorBA.setIndicador(new Indicadores());
                 context.update("form:tabViewCenso:parametroIndicadorModCenso");
             } else {
-                permitirIndexVigenciaIndicador = false;
-                context.update("form:IndicadorCensoDialogo");
-                context.execute("IndicadorCensoDialogo.show()");
+                vigenciaIndicadorBA.getIndicador().setDescripcion(auxIndicadorCenso);
+                for (int i = 0; i < lovIndicadores.size(); i++) {
+                    if (lovIndicadores.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaIndicadorBA.setIndicador(lovIndicadores.get(indiceUnicoElemento));
+                    lovIndicadores = null;
+                    getLovIndicadores();
+                    context.update("form:tabViewCenso:parametroIndicadorModCenso");
+                } else {
+                    permitirIndexVigenciaIndicador = false;
+                    context.update("form:IndicadorCensoDialogo");
+                    context.execute("IndicadorCensoDialogo.show()");
+                }
             }
         }
     }
@@ -5474,41 +5640,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("PROFESION")) {
-            vigenciaFormalBA.getProfesion().setDescripcion(auxProfesionEducacionFormal);
-            for (int i = 0; i < lovProfesiones.size(); i++) {
-                if (lovProfesiones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaFormalBA.setProfesion(lovProfesiones.get(indiceUnicoElemento));
-                lovProfesiones = null;
-                getLovProfesiones();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaFormalBA.setProfesion(new Profesiones());
                 context.update("form:tabViewEducacionFormal:parametroProfesionModEducacionFormal");
             } else {
-                permitirIndexVigenciaFormal = false;
-                context.update("form:ProfesionEducacionFormalDialogo");
-                context.execute("ProfesionEducacionFormalDialogo.show()");
+                vigenciaFormalBA.getProfesion().setDescripcion(auxProfesionEducacionFormal);
+                for (int i = 0; i < lovProfesiones.size(); i++) {
+                    if (lovProfesiones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaFormalBA.setProfesion(lovProfesiones.get(indiceUnicoElemento));
+                    lovProfesiones = null;
+                    getLovProfesiones();
+                    context.update("form:tabViewEducacionFormal:parametroProfesionModEducacionFormal");
+                } else {
+                    permitirIndexVigenciaFormal = false;
+                    context.update("form:ProfesionEducacionFormalDialogo");
+                    context.execute("ProfesionEducacionFormalDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("INSTITUCION")) {
-            vigenciaFormalBA.getInstitucion().setDescripcion(auxInstitucionEducacionFormal);
-            for (int i = 0; i < lovInstituciones.size(); i++) {
-                if (lovInstituciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaFormalBA.setInstitucion(lovInstituciones.get(indiceUnicoElemento));
-                lovInstituciones = null;
-                getLovInstituciones();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaFormalBA.setInstitucion(new Instituciones());
                 context.update("form:tabViewEducacionFormal:parametroInstitucionModEducacionFormal");
             } else {
-                permitirIndexVigenciaFormal = false;
-                context.update("form:InstitucionEducacionFormalDialogo");
-                context.execute("InstitucionEducacionFormalDialogo.show()");
+                vigenciaFormalBA.getInstitucion().setDescripcion(auxInstitucionEducacionFormal);
+                for (int i = 0; i < lovInstituciones.size(); i++) {
+                    if (lovInstituciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaFormalBA.setInstitucion(lovInstituciones.get(indiceUnicoElemento));
+                    lovInstituciones = null;
+                    getLovInstituciones();
+                    context.update("form:tabViewEducacionFormal:parametroInstitucionModEducacionFormal");
+                } else {
+                    permitirIndexVigenciaFormal = false;
+                    context.update("form:InstitucionEducacionFormalDialogo");
+                    context.execute("InstitucionEducacionFormalDialogo.show()");
+                }
             }
         }
     }
@@ -5518,41 +5694,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("CURSO")) {
-            vigenciaNoFormalBA.getCurso().setNombre(auxCursoEducacionNoFormal);
-            for (int i = 0; i < lovCursos.size(); i++) {
-                if (lovCursos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaNoFormalBA.setCurso(lovCursos.get(indiceUnicoElemento));
-                lovCursos = null;
-                getLovCursos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaNoFormalBA.setCurso(new Cursos());
                 context.update("form:tabViewEducacionNoFormal:parametroCursoModEducacionNoFormal");
             } else {
-                permitirIndexVigenciaNoFormal = false;
-                context.update("form:CursoEducacionNoFormalDialogo");
-                context.execute("CursoEducacionNoFormalDialogo.show()");
+                vigenciaNoFormalBA.getCurso().setNombre(auxCursoEducacionNoFormal);
+                for (int i = 0; i < lovCursos.size(); i++) {
+                    if (lovCursos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaNoFormalBA.setCurso(lovCursos.get(indiceUnicoElemento));
+                    lovCursos = null;
+                    getLovCursos();
+                    context.update("form:tabViewEducacionNoFormal:parametroCursoModEducacionNoFormal");
+                } else {
+                    permitirIndexVigenciaNoFormal = false;
+                    context.update("form:CursoEducacionNoFormalDialogo");
+                    context.execute("CursoEducacionNoFormalDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("INSTITUCION")) {
-            vigenciaNoFormalBA.getInstitucion().setDescripcion(auxInstitucionEducacionNoFormal);
-            for (int i = 0; i < lovInstituciones.size(); i++) {
-                if (lovInstituciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaNoFormalBA.setInstitucion(lovInstituciones.get(indiceUnicoElemento));
-                lovInstituciones = null;
-                getLovInstituciones();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaNoFormalBA.setInstitucion(new Instituciones());
                 context.update("form:tabViewEducacionNoFormal:parametroInstitucionModEducacionNoFormal");
             } else {
-                permitirIndexVigenciaNoFormal = false;
-                context.update("form:InstitucionEducacionNoFormalDialogo");
-                context.execute("InstitucionEducacionNoFormalDialogo.show()");
+                vigenciaNoFormalBA.getInstitucion().setDescripcion(auxInstitucionEducacionNoFormal);
+                for (int i = 0; i < lovInstituciones.size(); i++) {
+                    if (lovInstituciones.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaNoFormalBA.setInstitucion(lovInstituciones.get(indiceUnicoElemento));
+                    lovInstituciones = null;
+                    getLovInstituciones();
+                    context.update("form:tabViewEducacionNoFormal:parametroInstitucionModEducacionNoFormal");
+                } else {
+                    permitirIndexVigenciaNoFormal = false;
+                    context.update("form:InstitucionEducacionNoFormalDialogo");
+                    context.execute("InstitucionEducacionNoFormalDialogo.show()");
+                }
             }
         }
     }
@@ -5562,41 +5748,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("MOTIVO")) {
-            hvExperienciaLaboralBA.getMotivoretiro().setNombre(auxMotivoRetiroExperienciaLaboral);
-            for (int i = 0; i < lovMotivosRetiros.size(); i++) {
-                if (lovMotivosRetiros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                hvExperienciaLaboralBA.setMotivoretiro(lovMotivosRetiros.get(indiceUnicoElemento));
-                lovMotivosRetiros = null;
-                getLovMotivosRetiros();
+            if (valorConfirmar.isEmpty()) {
+                hvExperienciaLaboralBA.setMotivoretiro(new MotivosRetiros());
                 context.update("form:tabViewExperienciaLaboral:parametroMotivoRetiroModExperienciaLaboral");
             } else {
-                permitirIndexHvExperienciaLaboral = false;
-                context.update("form:MotivoRetiroExperienciaLaboralDialogo");
-                context.execute("MotivoRetiroExperienciaLaboralDialogo.show()");
+                hvExperienciaLaboralBA.getMotivoretiro().setNombre(auxMotivoRetiroExperienciaLaboral);
+                for (int i = 0; i < lovMotivosRetiros.size(); i++) {
+                    if (lovMotivosRetiros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    hvExperienciaLaboralBA.setMotivoretiro(lovMotivosRetiros.get(indiceUnicoElemento));
+                    lovMotivosRetiros = null;
+                    getLovMotivosRetiros();
+                    context.update("form:tabViewExperienciaLaboral:parametroMotivoRetiroModExperienciaLaboral");
+                } else {
+                    permitirIndexHvExperienciaLaboral = false;
+                    context.update("form:MotivoRetiroExperienciaLaboralDialogo");
+                    context.execute("MotivoRetiroExperienciaLaboralDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("SECTOR")) {
-            hvExperienciaLaboralBA.getSectoreconomico().setDescripcion(auxSectorEconomicoExperienciaLaboral);
-            for (int i = 0; i < lovSectoresEconomicos.size(); i++) {
-                if (lovSectoresEconomicos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                hvExperienciaLaboralBA.setSectoreconomico(lovSectoresEconomicos.get(indiceUnicoElemento));
-                lovSectoresEconomicos = null;
-                getLovSectoresEconomicos();
+            if (valorConfirmar.isEmpty()) {
+                hvExperienciaLaboralBA.setSectoreconomico(new SectoresEconomicos());
                 context.update("form:tabViewExperienciaLaboral:parametroSectorEconomicoModExperienciaLaboral");
             } else {
-                permitirIndexHvExperienciaLaboral = false;
-                context.update("form:SectorEconomicoExperienciaLaboralDialogo");
-                context.execute("SectorEconomicoExperienciaLaboralDialogo.show()");
+                hvExperienciaLaboralBA.getSectoreconomico().setDescripcion(auxSectorEconomicoExperienciaLaboral);
+                for (int i = 0; i < lovSectoresEconomicos.size(); i++) {
+                    if (lovSectoresEconomicos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    hvExperienciaLaboralBA.setSectoreconomico(lovSectoresEconomicos.get(indiceUnicoElemento));
+                    lovSectoresEconomicos = null;
+                    getLovSectoresEconomicos();
+                    context.update("form:tabViewExperienciaLaboral:parametroSectorEconomicoModExperienciaLaboral");
+                } else {
+                    permitirIndexHvExperienciaLaboral = false;
+                    context.update("form:SectorEconomicoExperienciaLaboralDialogo");
+                    context.execute("SectorEconomicoExperienciaLaboralDialogo.show()");
+                }
             }
         }
     }
@@ -5606,41 +5802,51 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("PROYECTO")) {
-            vigenciaProyectoBA.getProyecto().setNombreproyecto(auxProyectoProyecto);
-            for (int i = 0; i < lovProyectos.size(); i++) {
-                if (lovProyectos.get(i).getNombreproyecto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaProyectoBA.setProyecto(lovProyectos.get(indiceUnicoElemento));
-                lovProyectos = null;
-                getLovProyectos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaProyectoBA.setProyecto(new Proyectos());
                 context.update("form:tabViewProyecto:parametroProyectoModProyecto");
             } else {
-                permitirIndexVigenciaProyecto = false;
-                context.update("form:ProyectoProyectoDialogo");
-                context.execute("ProyectoProyectoDialogo.show()");
+                vigenciaProyectoBA.getProyecto().setNombreproyecto(auxProyectoProyecto);
+                for (int i = 0; i < lovProyectos.size(); i++) {
+                    if (lovProyectos.get(i).getNombreproyecto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaProyectoBA.setProyecto(lovProyectos.get(indiceUnicoElemento));
+                    lovProyectos = null;
+                    getLovProyectos();
+                    context.update("form:tabViewProyecto:parametroProyectoModProyecto");
+                } else {
+                    permitirIndexVigenciaProyecto = false;
+                    context.update("form:ProyectoProyectoDialogo");
+                    context.execute("ProyectoProyectoDialogo.show()");
+                }
             }
         }
         if (cualParametro.equals("ROL")) {
-            vigenciaProyectoBA.getPryRol().setDescripcion(auxRolProyecto);
-            for (int i = 0; i < lovPryRoles.size(); i++) {
-                if (lovPryRoles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaProyectoBA.setPryRol(lovPryRoles.get(indiceUnicoElemento));
-                lovPryRoles = null;
-                getLovPryRoles();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaProyectoBA.setPryRol(new PryRoles());
                 context.update("form:tabViewProyecto:parametroRolModProyecto");
             } else {
-                permitirIndexVigenciaProyecto = false;
-                context.update("form:PryRolProyectoDialogo");
-                context.execute("PryRolProyectoDialogo.show()");
+                vigenciaProyectoBA.getPryRol().setDescripcion(auxRolProyecto);
+                for (int i = 0; i < lovPryRoles.size(); i++) {
+                    if (lovPryRoles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaProyectoBA.setPryRol(lovPryRoles.get(indiceUnicoElemento));
+                    lovPryRoles = null;
+                    getLovPryRoles();
+                    context.update("form:tabViewProyecto:parametroRolModProyecto");
+                } else {
+                    permitirIndexVigenciaProyecto = false;
+                    context.update("form:PryRolProyectoDialogo");
+                    context.execute("PryRolProyectoDialogo.show()");
+                }
             }
         }
     }
@@ -5650,22 +5856,27 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (cualParametro.equals("CARGO")) {
-            vigenciaCargoPersonalBA.getCargo().setNombre(auxCargoCargoPostularse);
-            for (int i = 0; i < lovCargos.size(); i++) {
-                if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                vigenciaCargoPersonalBA.setCargo(lovCargos.get(indiceUnicoElemento));
-                lovCargos = null;
-                getLovCargos();
+            if (valorConfirmar.isEmpty()) {
+                vigenciaCargoPersonalBA.setCargo(new Cargos());
                 context.update("form:tabViewCargoPostularse:parametroCargoModCargoPostularse");
             } else {
-                permitirIndexVigenciaCargoPersonal = false;
-                context.update("form:CargoCargoPostularseDialogo");
-                context.execute("CargoCargoPostularseDialogo.show()");
+                vigenciaCargoPersonalBA.getCargo().setNombre(auxCargoCargoPostularse);
+                for (int i = 0; i < lovCargos.size(); i++) {
+                    if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    vigenciaCargoPersonalBA.setCargo(lovCargos.get(indiceUnicoElemento));
+                    lovCargos = null;
+                    getLovCargos();
+                    context.update("form:tabViewCargoPostularse:parametroCargoModCargoPostularse");
+                } else {
+                    permitirIndexVigenciaCargoPersonal = false;
+                    context.update("form:CargoCargoPostularseDialogo");
+                    context.execute("CargoCargoPostularseDialogo.show()");
+                }
             }
         }
     }
@@ -6754,7 +6965,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
     public void changeTapCargoPostularse() {
         System.out.println("tabActivaCargoPostularse : " + tabActivaCargoPostularse);
     }
-    
+
     public void changeTapTipoBusqueda() {
         System.out.println("numeroTipoBusqueda : " + numeroTipoBusqueda);
     }
@@ -6923,8 +7134,8 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             activoFechasAfiliacion = false;
         }
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:pruebaActivo:tabViewAfiliacion");
-        context.update("form:pruebaActivo:tabViewAfiliacion:tipoFechaAfiliacion");
+        context.update("form:tabViewAfiliacion");
+        context.update("form:tabViewAfiliacion:tipoFechaAfiliacion");
     }
 
     public void activarCasillasFechasFormaPago() {
@@ -7125,11 +7336,20 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             createStaticColumns();
         }
         FacesContext c = FacesContext.getCurrentInstance();
-        altoTabla="58";
+        altoTabla = "80";
         columnasDinamicas = (Columns) c.getViewRoot().findComponent("form:resultadoBusquedaAvanzada:columnasDinamicas");
-        columnasDinamicas.setFilterStyle("width: 100px");
+        columnasDinamicas.setFilterStyle("display: none; visibility: hidden;");
         RequestContext.getCurrentInstance().update("form:resultadoBusquedaAvanzada");
-        bandera = 1;
+        bandera = 0;
+        filtrarListaColumnasBusquedaAvanzada = null;
+        tipoLista = 0;
+        int tamLL = 0;
+        if(listaColumnasBusquedaAvanzada!=null){
+            tamLL = listaColumnasBusquedaAvanzada.size();
+            if(tamLL>0){
+                columnaSeleccionada = listaColumnasBusquedaAvanzada.get(0);
+            }
+        }
         /*int tamEmpleado = listaEmpleadosResultados.size();
          for (int i = 0; i < tamEmpleado; i++) {
          listaColumnasBusquedaAvanzada.add(new ColumnasBusquedaAvanzada("", "", "", "", "", "", "", "", "", "", "", "", "", ""));
@@ -7333,7 +7553,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
     public void restaurar() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            altoTabla="80";
+            altoTabla = "80";
             columnasDinamicas = (Columns) c.getViewRoot().findComponent("form:resultadoBusquedaAvanzada:columnasDinamicas");
             columnasDinamicas.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:resultadoBusquedaAvanzada");
@@ -7351,7 +7571,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:resultadoBusquedaAvanzada");
     }
-    
+
     public void eventoFiltrar() {
         if (indice >= 0) {
             if (tipoLista == 0) {
@@ -7359,18 +7579,18 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
             }
         }
     }
-    
+
     public void filtradoBusquedaAvanzada() {
         if (indice >= 0) {
             FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
-                altoTabla="58";
+                altoTabla = "58";
                 columnasDinamicas = (Columns) c.getViewRoot().findComponent("form:resultadoBusquedaAvanzada:columnasDinamicas");
                 columnasDinamicas.setFilterStyle("width: 60px");
                 RequestContext.getCurrentInstance().update("form:resultadoBusquedaAvanzada");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTabla="80";
+                altoTabla = "80";
                 columnasDinamicas = (Columns) c.getViewRoot().findComponent("form:resultadoBusquedaAvanzada:columnasDinamicas");
                 columnasDinamicas.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:resultadoBusquedaAvanzada");
@@ -7412,7 +7632,7 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
         cambiarIndice(indice, columna);
-    } 
+    }
 
     public void cambiarIndice(int i, int c) {
         indice = i;
@@ -7422,20 +7642,42 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
 
     public void cambioBtnPrueba() {
         if (numeroTipoBusqueda == 0) {
-            displayNomina="inline";
-            displayPersonal="none";
-            visibilidadPersonal="hidden";
-            visibilidadNomina="visible";
+            displayNomina = "inline";
+            displayPersonal = "none";
+            visibilidadPersonal = "hidden";
+            visibilidadNomina = "visible";
         }
         if (numeroTipoBusqueda == 1) {
-            displayNomina="none";
-            displayPersonal="inline";
-            visibilidadPersonal="visible";
-            visibilidadNomina="hidden";
+            displayNomina = "none";
+            displayPersonal = "inline";
+            visibilidadPersonal = "visible";
+            visibilidadNomina = "hidden";
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:scrollPanelNomina");
         context.update("form:scrollPanelPersonal");
+    }
+
+    public void modificarParametroNumeroDocumentoModDatosPersonales(String numeroDocumento) {
+        System.out.println("numeroDocumento: " + numeroDocumento);
+        boolean esNumero = isNumber(numeroDocumento);
+        if (esNumero == false) {
+            empleadoBA.getPersona().setStrNumeroDocumento("");
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:tabViewDatosPersonales:parametroNDocModDatosPersonales");
+            context.execute("errorFormatoNumDocumento.show()");
+        }
+    }
+
+    public boolean isNumber(String numeroDocumento) {
+        try {
+            boolean retorno = true;
+            int numero = Integer.parseInt(numeroDocumento);
+            return retorno;
+        } catch (NumberFormatException e) {
+            System.out.println("El documento no es numero : " + e.toString());
+            return false;
+        }
     }
 
     public int getNumeroTipoBusqueda() {
@@ -9682,12 +9924,12 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
     public void setTabActivaCargoPostularse(int tabActivaCargoPostularse) {
         this.tabActivaCargoPostularse = tabActivaCargoPostularse;
     }
-    
-    public String getAltoTabla(){
+
+    public String getAltoTabla() {
         return this.altoTabla;
     }
-    
-    public void setAltoTabla(String altoTabla){
+
+    public void setAltoTabla(String altoTabla) {
         this.altoTabla = altoTabla;
     }
 
@@ -9723,6 +9965,12 @@ public void obtenerListaColumnasEscenarios(List<ColumnasEscenarios> listaRetorno
         this.displayPersonal = displayPersonal;
     }
     
+    public ColumnasBusquedaAvanzada getColumnaSeleccionada(){
+        return this.columnaSeleccionada;
+    }
     
+    public void setColumnaSeleccionada(ColumnasBusquedaAvanzada columnaSeleccionada){
+        this.columnaSeleccionada = columnaSeleccionada;
+    }
 
 }

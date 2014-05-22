@@ -4,15 +4,16 @@ root {
 
 .ui-growl{
     position: absolute;
+    left: 1040px;
     top: 10px;
-    left: 1117px;
-    width: 240px;
 }
 .ui-growl-image-info{
     visibility: hidden;
     display: none;
 }
 .ui-growl-item-container{
+    left: 80px;
+    width: 220px;
     border-radius: 4px;
     background-color: #EFDB78;
 }
@@ -21,6 +22,9 @@ root {
     background-color: #EFDB78;
 }
 .ui-growl-message{
+    position: relative;
+    left: -5px;
+    width: 200px;
     background-color: #EFDB78;
 }
 .ui-growl-message p{

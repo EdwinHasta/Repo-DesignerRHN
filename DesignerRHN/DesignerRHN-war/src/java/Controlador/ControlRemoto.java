@@ -117,6 +117,8 @@ public class ControlRemoto implements Serializable {
     private List<Tablas> filtradoListTablasLOV;
     private Tablas seleccionTablaLOV;
     private boolean buscarTablasLOV, mostrarTodasTablas;
+    //Visualizar seleccion de tipos trabajadores (StyleClass)
+    private String styleActivos, stylePensionados, styleRetirados, styleAspirantes;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -136,6 +138,7 @@ public class ControlRemoto implements Serializable {
         administrarCarpetaPersonal = new AdministrarCarpetaPersonal();
         busquedaRapida = null;
         Imagen = "personal1.gif";
+        styleActivos = "ui-state-highlight";
         acumulado = false;
         novedad = false;
         evaluacion = false;
@@ -173,7 +176,7 @@ public class ControlRemoto implements Serializable {
             administrarCarpetaPersonal.obtenerConexion(ses.getId());
             administrarCarpetaDesigner.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -325,12 +328,15 @@ public class ControlRemoto implements Serializable {
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
             Mensaje = "Activo";
-
             context.execute("alerta.show()");
             tipo = tipoBk;
         } else {
             backup = null;
             Imagen = "personal1.gif";
+            styleActivos = "ui-state-highlight";
+            stylePensionados = "";
+            styleRetirados = "";
+            styleAspirantes = "";
             buscarEmp = false;
             tipoBk = null;
             acumulado = false;
@@ -345,6 +351,10 @@ public class ControlRemoto implements Serializable {
             dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
             dg.setFirst(0);
             context.update("form:tabMenu:data");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
@@ -363,6 +373,10 @@ public class ControlRemoto implements Serializable {
         } else {
             backup = null;
             Imagen = "personal2.gif";
+            stylePensionados = "ui-state-highlight";
+            styleActivos = "";
+            styleRetirados = "";
+            styleAspirantes = "";
             buscarEmp = false;
             tipoBk = null;
             acumulado = false;
@@ -377,6 +391,10 @@ public class ControlRemoto implements Serializable {
             dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
             dg.setFirst(0);
             context.update("form:tabMenu:data");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
@@ -389,12 +407,15 @@ public class ControlRemoto implements Serializable {
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
             Mensaje = "Retirado";
-
             context.execute("alerta.show()");
             tipo = tipoBk;
         } else {
             backup = null;
             Imagen = "personal3.gif";
+            styleRetirados = "ui-state-highlight";
+            stylePensionados = "";
+            styleActivos = "";
+            styleAspirantes = "";
             buscarEmp = false;
             tipoBk = null;
             acumulado = false;
@@ -409,6 +430,10 @@ public class ControlRemoto implements Serializable {
             dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
             dg.setFirst(0);
             context.update("form:tabMenu:data");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
@@ -421,12 +446,15 @@ public class ControlRemoto implements Serializable {
         if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
             vwActualesTiposTrabajadoresesLista = backup;
             Mensaje = "Aspirante";
-
             context.execute("alerta.show()");
             tipo = tipoBk;
         } else {
             backup = null;
             Imagen = "personal4.gif";
+            styleAspirantes = "ui-state-highlight";
+            stylePensionados = "";
+            styleActivos = "";
+            styleRetirados = "";
             buscarEmp = false;
             tipoBk = null;
             acumulado = true;
@@ -441,6 +469,10 @@ public class ControlRemoto implements Serializable {
             dg = (DataGrid) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:tabMenu:data");
             dg.setFirst(0);
             context.update("form:tabMenu:data");
+            context.update("form:tabMenu:Activos");
+            context.update("form:tabMenu:Pensionados");
+            context.update("form:tabMenu:Retirados");
+            context.update("form:tabMenu:Aspirantes");
         }
     }
 
@@ -457,9 +489,13 @@ public class ControlRemoto implements Serializable {
      }*/
     public void busquedaRapida() {
         filterBusquedaRapida = null;
-        System.out.println(emplSeleccionado.getEmpleado().getPersona().getNombre());
+        RequestContext context = RequestContext.getCurrentInstance();
         if (emplSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Activo")) {
             Imagen = "personal1.gif";
+            styleActivos = "ui-state-highlight";
+            stylePensionados = "";
+            styleRetirados = "";
+            styleAspirantes = "";
             acumulado = false;
             novedad = false;
             evaluacion = false;
@@ -472,6 +508,10 @@ public class ControlRemoto implements Serializable {
         }
         if (emplSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Pensionado")) {
             Imagen = "personal2.gif";
+            stylePensionados = "ui-state-highlight";
+            styleActivos = "";
+            styleRetirados = "";
+            styleAspirantes = "";
             acumulado = false;
             novedad = false;
             evaluacion = false;
@@ -484,6 +524,10 @@ public class ControlRemoto implements Serializable {
         }
         if (emplSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Retirado")) {
             Imagen = "personal3.gif";
+            styleRetirados = "ui-state-highlight";
+            stylePensionados = "";
+            styleActivos = "";
+            styleAspirantes = "";
             acumulado = false;
             novedad = false;
             evaluacion = true;
@@ -496,6 +540,10 @@ public class ControlRemoto implements Serializable {
         }
         if (emplSeleccionado.getTipoTrabajador().getTipo().equalsIgnoreCase("Disponible")) {
             Imagen = "personal4.gif";
+            styleAspirantes = "ui-state-highlight";
+            styleRetirados = "";
+            stylePensionados = "";
+            styleActivos = "";
             acumulado = true;
             novedad = true;
             evaluacion = false;
@@ -506,6 +554,10 @@ public class ControlRemoto implements Serializable {
             hv2 = true;
             tipo = "DISPONIBLE";
         }
+        context.update("form:tabMenu:Activos");
+        context.update("form:tabMenu:Pensionados");
+        context.update("form:tabMenu:Retirados");
+        context.update("form:tabMenu:Aspirantes");
         vwActualesTiposTrabajadoresesLista.clear();
         vwActualesTiposTrabajadoresesLista.add(emplSeleccionado);
         emplSeleccionado = null;
@@ -1129,6 +1181,22 @@ public class ControlRemoto implements Serializable {
 
     public void setActualComprobante(String actualComprobante) {
         this.actualComprobante = actualComprobante;
+    }
+
+    public String getStyleActivos() {
+        return styleActivos;
+    }
+
+    public String getStylePensionados() {
+        return stylePensionados;
+    }
+
+    public String getStyleRetirados() {
+        return styleRetirados;
+    }
+
+    public String getStyleAspirantes() {
+        return styleAspirantes;
     }
 
     public String getFotoEmpleado() {

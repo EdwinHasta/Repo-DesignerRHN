@@ -8,7 +8,6 @@ package Persistencia;
 import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.ColumnasEscenarios;
 import Entidades.Empleados;
-import Entidades.QVWEmpleadosCorte;
 import Entidades.ResultadoBusquedaAvanzada;
 import InterfacePersistencia.PersistenciaColumnasEscenariosInterface;
 import java.math.BigInteger;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -25,10 +23,11 @@ import javax.persistence.Query;
  */
 @Stateless
 public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscenariosInterface {
-
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*
+    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+    private EntityManager em;
+    */
+    
     @Override
     public List<ColumnasEscenarios> buscarColumnasEscenarios(EntityManager em) {
         try {
@@ -44,10 +43,8 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     @Override
     public List<ColumnasBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleado(EntityManager em,List<Empleados> listaEmpleadosResultados, List<String> campos) {
         try {
-            System.out.println("Entrto persistencia");
             List<ColumnasBusquedaAvanzada> registro = new ArrayList<ColumnasBusquedaAvanzada>();
             for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
-                System.out.println("listaEmpleadosResultados : " + listaEmpleadosResultados.size());
                 ColumnasBusquedaAvanzada obj = new ColumnasBusquedaAvanzada();
                 registro.add(obj);
                 for (int i = 0; i < campos.size(); i++) {
@@ -62,7 +59,6 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
                     String q = "SELECT " + campo + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado=" + listaEmpleadosResultados.get(j).getCodigoempleado();
                     Query query = em.createNativeQuery(q);
                     String valor = (String) query.getSingleResult();
-                    System.out.println("Valor : " + valor);
                     if (i == 0) {
                         registro.get(j).setColumna0(valor);
                     }
@@ -106,7 +102,6 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
     @Override
     public List<ResultadoBusquedaAvanzada> buscarQVWEmpleadosCorteCodigoEmpleadoCodigo(EntityManager em,List<BigInteger> listaEmpleadosResultados, String campos) {
         try {
-            System.out.println("Entro persistencia");
             String[] nnn = campos.split(",");
             String camposAux = "";
             int numColumna = 0;
@@ -123,23 +118,12 @@ public class PersistenciaColumnasEscenarios implements PersistenciaColumnasEscen
                 numColumna++;
             }
             String queryMap = "SELECT " + camposAux + " FROM QVWEmpleadosCorte q WHERE q.codigoempleado= ?";
-            System.out.println("Query MAP : " + queryMap);
             List<ResultadoBusquedaAvanzada> registroPrueba = new ArrayList<ResultadoBusquedaAvanzada>();
             for (int j = 0; j < listaEmpleadosResultados.size(); j++) {
-                System.out.println("listaEmpleadosResultados : " + listaEmpleadosResultados.size());
                 ResultadoBusquedaAvanzada resultado = new ResultadoBusquedaAvanzada();
                 Query query = em.createNativeQuery(queryMap, "ConsultaBusquedaAvanzada");
                 query.setParameter(1, listaEmpleadosResultados.get(j));
                 resultado = (ResultadoBusquedaAvanzada) query.getSingleResult();
-                System.out.println("Paso esta gonorrea");
-
-                System.out.println("-----------");
-                System.out.println("ResultadoBusquedaAvanzada sec: " + resultado.getSecuencia());
-                System.out.println("ResultadoBusquedaAvanzada cod: " + resultado.getCodigoEmpleado());
-                System.out.println("ResultadoBusquedaAvanzada primer ap: " + resultado.getPrimerApellido());
-                System.out.println("ResultadoBusquedaAvanzada segundo ap: " + resultado.getSegundoApellido());
-                System.out.println("ResultadoBusquedaAvanzada name: " + resultado.getNombre());
-                System.out.println("ResultadoBusquedaAvanzada columna0: " + resultado.getColumna0());
                 registroPrueba.add(resultado);
             }
             return registroPrueba;

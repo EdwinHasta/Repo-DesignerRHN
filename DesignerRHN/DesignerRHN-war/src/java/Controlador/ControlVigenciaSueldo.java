@@ -206,7 +206,7 @@ public class ControlVigenciaSueldo implements Serializable {
         altoTabla2 = "115";
 
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -214,11 +214,11 @@ public class ControlVigenciaSueldo implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciasSueldos.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     //EMPLEADO DE LA VIGENCIA
     /**
      * Metodo que recibe la secuencia empleado desde la pagina anterior y
@@ -2350,6 +2350,10 @@ public class ControlVigenciaSueldo implements Serializable {
      */
     public void validarNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
+        if (index < 0 && indexVA < 0) {
+            context.update("form:NuevoRegistroPagina");
+            context.execute("NuevoRegistroPagina.show()");
+        }
         if (index >= 0) {
             if (listVigenciasAfiliaciones != null) {
                 if (listVigenciasAfiliaciones.isEmpty()) {
@@ -2745,14 +2749,8 @@ public class ControlVigenciaSueldo implements Serializable {
     }
 
     public List<TiposSueldos> getListTiposSueldos() {
-        try {
-
-            listTiposSueldos = administrarVigenciasSueldos.tiposSueldos();
-            return listTiposSueldos;
-        } catch (Exception e) {
-            System.out.println("Error getListTiposSueldos " + e.toString());
-            return null;
-        }
+        listTiposSueldos = administrarVigenciasSueldos.tiposSueldos();
+        return listTiposSueldos;
     }
 
     public void setListTiposSueldos(List<TiposSueldos> listTiposSueldos) {
@@ -2776,13 +2774,8 @@ public class ControlVigenciaSueldo implements Serializable {
     }
 
     public List<MotivosCambiosSueldos> getListMotivosCambiosSueldos() {
-        try {
-            listMotivosCambiosSueldos = administrarVigenciasSueldos.motivosCambiosSueldos();
-            return listMotivosCambiosSueldos;
-        } catch (Exception e) {
-            System.out.println("Error getListMotivosCambiosSueldos " + e.toString());
-            return null;
-        }
+        listMotivosCambiosSueldos = administrarVigenciasSueldos.motivosCambiosSueldos();
+        return listMotivosCambiosSueldos;
     }
 
     public void setListMotivosCambiosSueldos(List<MotivosCambiosSueldos> listMotivosCambiosSueldos) {
@@ -2806,15 +2799,8 @@ public class ControlVigenciaSueldo implements Serializable {
     }
 
     public List<TiposEntidades> getListTiposEntidades() {
-        try {
-            if (listTiposEntidades.isEmpty()) {
-                listTiposEntidades = administrarVigenciasSueldos.tiposEntidades();
-            }
-            return listTiposEntidades;
-        } catch (Exception e) {
-            System.out.println("Error getListTiposEntidades " + e.toString());
-            return null;
-        }
+        listTiposEntidades = administrarVigenciasSueldos.tiposEntidades();
+        return listTiposEntidades;
     }
 
     public void setListTiposEntidades(List<TiposEntidades> listTiposEntidades) {
@@ -2838,15 +2824,10 @@ public class ControlVigenciaSueldo implements Serializable {
     }
 
     public List<Terceros> getListTerceros() {
-        try {
-            if (listTerceros.isEmpty()) {
-                listTerceros = administrarVigenciasSueldos.terceros();
-            }
-            return listTerceros;
-        } catch (Exception e) {
-            System.out.println("Error getListTerceros " + e.toString());
-            return null;
+        if (listTerceros.isEmpty()) {
+            listTerceros = administrarVigenciasSueldos.terceros();
         }
+        return listTerceros;
     }
 
     public void setListTerceros(List<Terceros> listTerceros) {

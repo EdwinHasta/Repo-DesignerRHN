@@ -60,6 +60,12 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -108,10 +114,10 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 800px; margin: -14px; height: 26px; border: none; color: blue" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value="#{msg['reformalaboral']}"/>
+                                        <p:commandButton style="width: 800px; left:-50px;margin: -14px; height: 26px; border: none; color: blue" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value="#{msg['reformalaboral']}"/>
                                     </f:facet>
-                                </p:column>  
-                            </p:dataTable>  
+                                </p:column>
+                            </p:dataTable>
                         </fieldset> 
 
                         <!-- DIALOGO L.O.V ESTATICO REFORMAS LABORALES -->
@@ -121,6 +127,8 @@
                                          selection="#{controlVigenciasReformasLaborales.reformaLaboralSelecionada}" selectionMode="single" widgetVar="lovReformasLaborales" scrollable="true" scrollWidth="445" scrollHeight="250"
                                          filteredValue="#{controlVigenciasReformasLaborales.filtradoReformasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasReformasLaborales.activarAceptar()}" update=":form:aceptarRL"/>
+                                <p:ajax event="rowDblselect" listener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" process="@this" onstart="lovReformasLaborales.clearFilters()"/>
+
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarRL']}" style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovReformasLaborales.filter();" style="width:150px; position: relative; left: 30px;" />  
@@ -145,10 +153,10 @@
                                 <p:resetInput target=":form:lovReformasLaborales:globalFilter"/>
                             </p:commandButton>
                         </p:dialog> 
-
-                        <p:commandButton style="position: absolute; left: 688px; top: 470px;  " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosVRLEmpleado" process="@this" disabled="#{controlVigenciasReformasLaborales.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 15px; top: 470px;  " id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciasReformasLaborales.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 470px;  " id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this" />
+                        
+                        <h:outputText id="informacionRegistro" value="#{controlVigenciasReformasLaborales.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 470px;  " id="ACEPTAR" icon="ui-icon-check" value="#{msg['aceptar']}" onclick="confirmarGuardar.show();" update=":form:datosVRLEmpleado" process="@this" disabled="#{controlVigenciasReformasLaborales.guardado}"/>
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;  " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlVigenciasReformasLaborales.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
@@ -220,7 +228,7 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasReformasLaborales.activarCtrlF11()}"/> 
                 </h:form>
                 <h:form id="formularioDialogos" >
-                    <p:dialog id="NuevoRegistroVRL" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVRL" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="400" style=" padding: 0px">  
+                    <p:dialog id="NuevoRegistroVRL" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVRL" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="400" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -243,13 +251,13 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnNuevaReformaLaboral" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasReformasLaborales.asignarIndex(indice,1)}"/>   
                             <p:watermark for="nuevaReformaLaboral" value="#{msg['reeformalaboralN']}" />
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 220px;" actionListener="#{controlVigenciasReformasLaborales.limpiarNuevaVRL()}" update="nuevaVRL" process="@this"/>
-                            <p:commandButton id="agregarVRL" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 220px;"  process="@this" actionListener="#{controlVigenciasReformasLaborales.agregarNuevaVRL()}"   />
-                            <p:commandButton id="cancelarVRL" value="#{msg['cancelar']}" style=" position: absolute; left: 280px; top: 220px;" actionListener="#{controlVigenciasReformasLaborales.limpiarNuevaVRL()}" update="nuevaVRL" onclick="NuevoRegistroVRL.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 150px;" icon="ui-icon-trash" actionListener="#{controlVigenciasReformasLaborales.limpiarNuevaVRL()}" update="nuevaVRL" process="@this"/>
+                            <p:commandButton id="agregarVRL" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 150px;" icon="ui-icon-circle-check" process="@this" actionListener="#{controlVigenciasReformasLaborales.agregarNuevaVRL()}"   />
+                            <p:commandButton id="cancelarVRL" value="#{msg['cancelar']}" style=" position: absolute; left: 280px; top: 150px;" icon="ui-icon-circle-close" actionListener="#{controlVigenciasReformasLaborales.limpiarNuevaVRL()}" update="nuevaVRL" onclick="NuevoRegistroVRL.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroVRL" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroVRL" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="400" style=" padding: 0px">  
+                    <p:dialog id="DuplicarRegistroVRL" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistroVRL" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="400" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
@@ -263,7 +271,6 @@
                                 </lnk:calendar>
                             </div>
 
-
                             <strong><h:outputText value="#{msg['reformalaboralN']}" style=" position: absolute; top: 118px; left: 50px" /></strong>
                             <p:inputText id="duplicarReformaLaboral" value="#{controlVigenciasReformasLaborales.duplicarVRL.reformalaboral.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 115px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciasReformasLaborales.asignarIndex(indice,2)}"/>
@@ -273,9 +280,9 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 115px;  " id="btnDuplicarReformaLaboral" icon="ui-icon-search" process="@this"  actionListener="#{controlVigenciasReformasLaborales.asignarIndex(indice, 2)}"/>   
                             <p:watermark for="duplicarReformaLaboral" value="#{msg['reeformalaboralN']}" />
 
-                            <p:commandButton id="limpiarDuplicadoVRl" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 220px;" actionListener="#{controlVigenciasReformasLaborales.limpiarduplicarVRL()}" update="duplicarVRL" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoVRL" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 220px;"  process="@this" actionListener="#{controlVigenciasReformasLaborales.confirmarDuplicar()}"   />
-                            <p:commandButton id="cancelarDuplicadoVRL" value="#{msg['cancelar']}" style=" position: absolute; left: 280px; top: 220px;" actionListener="#{controlVigenciasReformasLaborales.limpiarduplicarVRL()}" update="duplicarVRL" onclick="DuplicarRegistroVRL.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoVRl" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 150px;" icon="ui-icon-trash" actionListener="#{controlVigenciasReformasLaborales.limpiarduplicarVRL()}" update="duplicarVRL" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoVRL" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 150px;" icon="ui-icon-circle-check" process="@this" actionListener="#{controlVigenciasReformasLaborales.confirmarDuplicar()}"   />
+                            <p:commandButton id="cancelarDuplicadoVRL" value="#{msg['cancelar']}" style=" position: absolute; left: 280px; top: 150px;" icon="ui-icon-circle-close" actionListener="#{controlVigenciasReformasLaborales.limpiarduplicarVRL()}" update="duplicarVRL" onclick="DuplicarRegistroVRL.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
