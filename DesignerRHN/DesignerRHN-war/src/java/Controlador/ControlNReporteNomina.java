@@ -145,7 +145,7 @@ public class ControlNReporteNomina implements Serializable {
     //BANDERAS
     private boolean estadoReporte;
     private String resultadoReporte;
-    FileInputStream prueba;
+    //FileInputStream prueba;
 
     public ControlNReporteNomina() throws FileNotFoundException {
         activoMostrarTodos = true;
@@ -193,22 +193,11 @@ public class ControlNReporteNomina implements Serializable {
         permitirIndex = true;
         altoTabla = "185";
         indice = -1;
-        prueba = new FileInputStream(new File("C:\\Users\\Administrador\\Documents\\Guia JasperReport.pdf"));
-        reporte = new DefaultStreamedContent(prueba, "application/pdf");
+        //prueba = new FileInputStream(new File("C:\\Users\\Administrador\\Documents\\Guia JasperReport.pdf"));
+        //reporte = new DefaultStreamedContent(prueba, "application/pdf");
         //reporte = new DefaultStreamedContent();
         cabezeraVisor = null;
         estadoReporte = false;
-    }
-
-    
-    public void iniciarPagina() {
-        activoMostrarTodos = true;
-        activoBuscarReporte = false;
-        listaIR = null;
-        getListaIR();
-        if (listaIR.size() > 0) {
-            actualInfoReporteTabla = listaIR.get(0);
-        }
     }
 
     @PostConstruct
@@ -217,9 +206,20 @@ public class ControlNReporteNomina implements Serializable {
             FacesContext contexto = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) contexto.getExternalContext().getSession(false);
             administarReportes.obtenerConexion(ses.getId());
+            administrarNReportesNomina.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct controlNReporteNomina" + e);
             System.out.println("Causa: " + e.getCause());
+        }
+    }
+
+    public void iniciarPagina() {
+        activoMostrarTodos = true;
+        activoBuscarReporte = false;
+        listaIR = null;
+        getListaIR();
+        if (listaIR != null && listaIR.size() > 0) {
+            actualInfoReporteTabla = listaIR.get(0);
         }
     }
 
@@ -1450,8 +1450,9 @@ public class ControlNReporteNomina implements Serializable {
     public void generarReporte() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("cambiosReporte = " + cambiosReporte);
-        if (cambiosReporte == true) {
-            System.out.println("0");
+        // if (cambiosReporte == true) {
+        System.out.println("0");
+        if (indice > 0) {
             if (tipoLista == 0) {
                 nombreReporte = listaIR.get(indice).getNombrereporte();
                 tipoReporte = listaIR.get(indice).getTipo();
@@ -1459,21 +1460,26 @@ public class ControlNReporteNomina implements Serializable {
                 nombreReporte = filtrarListInforeportesUsuario.get(indice).getNombrereporte();
                 tipoReporte = filtrarListInforeportesUsuario.get(indice).getTipo();
             }
-            if (nombreReporte != null && tipoReporte != null) {
-                System.out.println("1");
-                pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
-            }
-            if (pathReporteGenerado != null) {
-                //context.execute("exportarReporte();");
-                System.out.println("2");
-                context.execute("validarDescargaReporte();");
-            }
         } else {
-            System.out.println("Syso antes ");
-
-            context.update("form:confirmarGuardarSinSalida");
-            context.execute("confirmarGuardarSinSalida.show()");
+            nombreReporte = actualInfoReporteTabla.getNombrereporte();
+            tipoReporte = actualInfoReporteTabla.getTipo();
+            System.out.println("actualInfoReporteTabla: " + actualInfoReporteTabla);
+            System.out.println("tipoReporte: " + tipoReporte);
         }
+
+        if (nombreReporte != null && tipoReporte != null) {
+            System.out.println("1");
+            pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
+        }
+        if (pathReporteGenerado != null) {
+            //context.execute("exportarReporte();");
+            System.out.println("2");
+            context.execute("validarDescargaReporte();");
+        }
+        /* } else {
+         context.update("form:confirmarGuardarSinSalida");
+         context.execute("confirmarGuardarSinSalida.show()");
+         }*/
         //context.execute("dlg.hide()");
     }
     /*public void generarReporte() {
@@ -1623,7 +1629,11 @@ public class ControlNReporteNomina implements Serializable {
                     reporte = null;
                 }
                 if (reporte != null) {
-                    cabezeraVisor = "Reporte - " + listaIR.get(indice).getNombre();
+                    if (indice > 0) {
+                        cabezeraVisor = "Reporte - " + listaIR.get(indice).getNombre();
+                    } else {
+                        cabezeraVisor = "Reporte - " + actualInfoReporteTabla.getNombre();
+                    }
                     context.update("formDialogos:verReportePDF");
                     System.out.println("9");
                     context.execute("verReportePDF.show();");
@@ -1644,8 +1654,8 @@ public class ControlNReporteNomina implements Serializable {
      System.out.println("Resultado: " + resultadoReporte);
      System.out.println("Fin de la historia");
      }*/
-    public void prueba() {
-        System.out.println("TERMINOOOOOOOOOO HPTA VIDA");
+    public void reiniciarStreamedContent() {
+        reporte = null;
     }
 
     public void cancelarReporte() {
@@ -2153,31 +2163,30 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     /*
-    public static FacesContext getFacesContext(HttpServletRequest request, HttpServletResponse response) {
-        // Get current FacesContext.
-        FacesContext facesContext;
+     public static FacesContext getFacesContext(HttpServletRequest request, HttpServletResponse response) {
+     // Get current FacesContext.
+     FacesContext facesContext;
 
-        System.out.println("Entro a crear un FacesContext");
-        // Create new Lifecycle.
-        LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
-        Lifecycle lifecycle = lifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
+     System.out.println("Entro a crear un FacesContext");
+     // Create new Lifecycle.
+     LifecycleFactory lifecycleFactory = (LifecycleFactory) FactoryFinder.getFactory(FactoryFinder.LIFECYCLE_FACTORY);
+     Lifecycle lifecycle = lifecycleFactory.getLifecycle(LifecycleFactory.DEFAULT_LIFECYCLE);
 
-        // Create new FacesContext.
-        FacesContextFactory contextFactory = (FacesContextFactory) FactoryFinder.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
-        facesContext = contextFactory.getFacesContext(
-                request.getSession().getServletContext(), request, response, lifecycle);
+     // Create new FacesContext.
+     FacesContextFactory contextFactory = (FacesContextFactory) FactoryFinder.getFactory(FactoryFinder.FACES_CONTEXT_FACTORY);
+     facesContext = contextFactory.getFacesContext(
+     request.getSession().getServletContext(), request, response, lifecycle);
 
-        // Create new View.
-        UIViewRoot view = facesContext.getApplication().getViewHandler().createView(
-                facesContext, "");
-        facesContext.setViewRoot(view);
+     // Create new View.
+     UIViewRoot view = facesContext.getApplication().getViewHandler().createView(
+     facesContext, "");
+     facesContext.setViewRoot(view);
 
-        // Set current FacesContext.
-        FacesContextWrapper.setCurrentInstance(facesContext);
+     // Set current FacesContext.
+     FacesContextWrapper.setCurrentInstance(facesContext);
 
-        return facesContext;
-    }*/
-
+     return facesContext;
+     }*/
     private static abstract class FacesContextWrapper extends FacesContext {
 
         protected static void setCurrentInstance(FacesContext facesContext) {

@@ -363,3 +363,9 @@ and open the template in the editor.
 .ui-tooltip {
     background: white !important;
 }
+
+.ui-clock {
+    padding: 4px 10px;
+    background: white !important;
+    color: black;
+}

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,8 +38,7 @@ public class ControlClasesCategorias implements Serializable {
     AdministrarClasesCategoriasInterface administrarClasesCategorias;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     private List<ClasesCategorias> listClasesCategorias;
     private List<ClasesCategorias> filtrarClasesCategorias;
     private List<ClasesCategorias> crearClasesCategorias;
@@ -47,6 +47,7 @@ public class ControlClasesCategorias implements Serializable {
     private ClasesCategorias nuevoClasesCategorias;
     private ClasesCategorias duplicarClasesCategorias;
     private ClasesCategorias editarClasesCategorias;
+    private ClasesCategorias claseCategoriaSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -72,9 +73,9 @@ public class ControlClasesCategorias implements Serializable {
         nuevoClasesCategorias = new ClasesCategorias();
         duplicarClasesCategorias = new ClasesCategorias();
         guardado = true;
-        tamano = 300;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -82,7 +83,7 @@ public class ControlClasesCategorias implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarClasesCategorias.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -98,6 +99,9 @@ public class ControlClasesCategorias implements Serializable {
         }
     }
 
+    private String backDescripcion;
+    private Integer backCodigo;
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
@@ -105,7 +109,20 @@ public class ControlClasesCategorias implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listClasesCategorias.get(index).getSecuencia();
-
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backCodigo = listClasesCategorias.get(index).getCodigo();
+                } else {
+                    backCodigo = filtrarClasesCategorias.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backDescripcion = listClasesCategorias.get(index).getDescripcion();
+                } else {
+                    backDescripcion = filtrarClasesCategorias.get(index).getDescripcion();
+                }
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -137,10 +154,11 @@ public class ControlClasesCategorias implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
             bandera = 0;
@@ -164,20 +182,22 @@ public class ControlClasesCategorias implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 300;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
+            tamano = 270;
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
             bandera = 0;
@@ -203,6 +223,7 @@ public class ControlClasesCategorias implements Serializable {
                     if (listClasesCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listClasesCategorias.get(indice).setCodigo(backCodigo);
                     } else {
                         for (int j = 0; j < listClasesCategorias.size(); j++) {
                             if (j != indice) {
@@ -213,6 +234,7 @@ public class ControlClasesCategorias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listClasesCategorias.get(indice).setCodigo(backCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -222,10 +244,12 @@ public class ControlClasesCategorias implements Serializable {
                     if (listClasesCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listClasesCategorias.get(indice).setDescripcion(backDescripcion);
                     }
                     if (listClasesCategorias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listClasesCategorias.get(indice).setDescripcion(backDescripcion);
                     }
 
                     if (banderita == true) {
@@ -241,7 +265,51 @@ public class ControlClasesCategorias implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listClasesCategorias.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listClasesCategorias.get(indice).setCodigo(backCodigo);
+                    } else {
+                        for (int j = 0; j < listClasesCategorias.size(); j++) {
+                            if (j != indice) {
+                                if (listClasesCategorias.get(indice).getCodigo() == listClasesCategorias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listClasesCategorias.get(indice).setCodigo(backCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listClasesCategorias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listClasesCategorias.get(indice).setDescripcion(backDescripcion);
+                    }
+                    if (listClasesCategorias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listClasesCategorias.get(indice).setDescripcion(backDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -252,6 +320,7 @@ public class ControlClasesCategorias implements Serializable {
                     if (filtrarClasesCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarClasesCategorias.get(indice).setCodigo(backCodigo);
                     } else {
                         for (int j = 0; j < filtrarClasesCategorias.size(); j++) {
                             if (j != indice) {
@@ -269,6 +338,7 @@ public class ControlClasesCategorias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarClasesCategorias.get(indice).setCodigo(backCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -279,10 +349,12 @@ public class ControlClasesCategorias implements Serializable {
                     if (filtrarClasesCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarClasesCategorias.get(indice).setDescripcion(backDescripcion);
                     }
                     if (filtrarClasesCategorias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarClasesCategorias.get(indice).setDescripcion(backDescripcion);
                     }
 
                     if (banderita == true) {
@@ -298,7 +370,59 @@ public class ControlClasesCategorias implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarClasesCategorias.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarClasesCategorias.get(indice).setCodigo(backCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarClasesCategorias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarClasesCategorias.get(indice).getCodigo() == listClasesCategorias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listClasesCategorias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarClasesCategorias.get(indice).getCodigo() == listClasesCategorias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarClasesCategorias.get(indice).setCodigo(backCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarClasesCategorias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarClasesCategorias.get(indice).setDescripcion(backDescripcion);
+                    }
+                    if (filtrarClasesCategorias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarClasesCategorias.get(indice).setDescripcion(backDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -420,7 +544,9 @@ public class ControlClasesCategorias implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listClasesCategorias = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosClasesCategorias");
             k = 0;
             guardado = true;
@@ -499,12 +625,13 @@ public class ControlClasesCategorias implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
                 bandera = 0;
@@ -627,10 +754,11 @@ public class ControlClasesCategorias implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
                 bandera = 0;
@@ -786,6 +914,14 @@ public class ControlClasesCategorias implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public ClasesCategorias getClaseCategoriaSeleccionado() {
+        return claseCategoriaSeleccionado;
+    }
+
+    public void setClaseCategoriaSeleccionado(ClasesCategorias claseCategoriaSeleccionado) {
+        this.claseCategoriaSeleccionado = claseCategoriaSeleccionado;
     }
 
 }

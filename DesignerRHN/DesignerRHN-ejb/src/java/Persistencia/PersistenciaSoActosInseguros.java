@@ -13,9 +13,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'SoActosInseguros'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'SoActosInseguros' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
@@ -26,20 +27,25 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-    
     @Override
-     public void crear(EntityManager em, SoActosInseguros SoActosInseguros) {
+    public void crear(EntityManager em, SoActosInseguros SoActosInseguros) {
+        em.getTransaction().begin();
         em.persist(SoActosInseguros);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, SoActosInseguros SoActosInseguros) {
+        em.getTransaction().begin();
         em.merge(SoActosInseguros);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, SoActosInseguros SoActosInseguros) {
+        em.getTransaction().begin();
         em.remove(em.merge(SoActosInseguros));
+        em.getTransaction().commit();
     }
 
     @Override

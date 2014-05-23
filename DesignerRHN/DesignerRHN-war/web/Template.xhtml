@@ -18,6 +18,11 @@
             iniciarScrollEmpleador();">
         <div id="top"  class="top" style="background-image: url(Imagenes/fondoencabezado.png); height: 80px; background-repeat: no-repeat; background-size: 100% 100%;">
             <ui:insert name="banner">
+                <h:form>
+                    <div style="position: absolute; top: 100px; left: -3px;">
+                        <p:clock pattern=" dd/MM/yyyy - HH:mm:ss"/>
+                    </div>
+                </h:form>
             </ui:insert>
         </div>
         <div>
@@ -36,15 +41,15 @@
                             </tr>
                             <tr>
                                 <td width="96" >
-                                    <p:graphicImage value="#{controlTemplate.fotoUsuario}"  height="130" width="110" alt="Logo Empresa" style="position: relative; top: 30px; left: 55px"/>
+                                    <p:graphicImage value="#{controlTemplate.fotoUsuario}"  height="130" width="110" alt="Foto Usuario" style="position: relative; top: 30px; left: 55px"/>
                                 </td>
                             </tr>
                             <tr>
                                 <td width="118">
-                                        <div style="font-weight: bold; position: relative; top: 35px; width: 224px; text-align: center; border: 2px; border-color: red;">
-                                            <h:outputText value="#{controlTemplate.nombreUsuario}"/>
-                                        </div>
-                                        <p:commandButton value="Cerrar Sesión" actionListener="#{controlTemplate.cerrarSession()}" style="position: relative; top: 35px; left: 50px"/>
+                                    <div style="font-weight: bold; position: relative; top: 35px; width: 224px; text-align: center; border: 2px; border-color: red;">
+                                        <h:outputText value="#{controlTemplate.nombreUsuario}"/>
+                                    </div>
+                                    <p:commandButton value="Cerrar Sesión" actionListener="#{controlTemplate.cerrarSession()}" style="position: relative; top: 35px; left: 50px"/>
                                 </td>
                             </tr>
                         </table>

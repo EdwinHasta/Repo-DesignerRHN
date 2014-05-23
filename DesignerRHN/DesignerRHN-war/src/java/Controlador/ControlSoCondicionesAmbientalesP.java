@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,8 +47,9 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
     private SoCondicionesAmbientalesP nuevaSoCondicionAmbientalP;
     private SoCondicionesAmbientalesP duplicarSoCondicionAmbientalP;
     private SoCondicionesAmbientalesP editarSoCondicionAmbientalP;
+    private SoCondicionesAmbientalesP soCondicionAmbientalPSeleccionado;
     private BigInteger verificarBorradoAccidentes;
-
+    private int tamano;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -61,6 +63,9 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
 
+    private String backUpCodigo;
+    private String backUpDescripcion;
+
     public ControlSoCondicionesAmbientalesP() {
         listSoCondicionesAmbientalesP = null;
         crearSoCondicionesAmbientalesP = new ArrayList<SoCondicionesAmbientalesP>();
@@ -71,6 +76,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         nuevaSoCondicionAmbientalP = new SoCondicionesAmbientalesP();
         duplicarSoCondicionAmbientalP = new SoCondicionesAmbientalesP();
         guardado = true;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -80,11 +86,11 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarSoCondicionesAmbientalesP.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n EVENTO FILTRAR \n");
@@ -102,6 +108,21 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listSoCondicionesAmbientalesP.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarSoCondicionesAmbientalesP.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listSoCondicionesAmbientalesP.get(index).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarSoCondicionesAmbientalesP.get(index).getDescripcion();
+                }
+            }
+
             secRegistro = listSoCondicionesAmbientalesP.get(index).getSecuencia();
 
         }
@@ -135,10 +156,11 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
             bandera = 0;
@@ -161,20 +183,22 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
             codigo.setFilterStyle("width: 120px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
-            descripcion.setFilterStyle("width: 600px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
+            descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
             bandera = 0;
@@ -200,11 +224,14 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                     if (listSoCondicionesAmbientalesP.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                     } else if (listSoCondicionesAmbientalesP.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else if (listSoCondicionesAmbientalesP.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listSoCondicionesAmbientalesP.size(); j++) {
@@ -215,6 +242,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -223,10 +251,12 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
 
                     }
                     if (listSoCondicionesAmbientalesP.get(indice).getDescripcion().isEmpty()) {
+                        listSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (listSoCondicionesAmbientalesP.get(indice).getDescripcion().equals(" ")) {
+                        listSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -244,7 +274,58 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listSoCondicionesAmbientalesP.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                    } else if (listSoCondicionesAmbientalesP.get(indice).getCodigo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else if (listSoCondicionesAmbientalesP.get(indice).getCodigo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listSoCondicionesAmbientalesP.size(); j++) {
+                            if (j != indice) {
+                                if (listSoCondicionesAmbientalesP.get(indice).getCodigo().equals(listSoCondicionesAmbientalesP.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            listSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listSoCondicionesAmbientalesP.get(indice).getDescripcion().isEmpty()) {
+                        listSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (listSoCondicionesAmbientalesP.get(indice).getDescripcion().equals(" ")) {
+                        listSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -255,9 +336,11 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                     if (filtrarSoCondicionesAmbientalesP.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                     }
                     if (filtrarSoCondicionesAmbientalesP.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listSoCondicionesAmbientalesP.size(); j++) {
@@ -276,6 +359,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            filtrarSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -286,9 +370,11 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
 
                     if (filtrarSoCondicionesAmbientalesP.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
                     if (filtrarSoCondicionesAmbientalesP.get(indice).getDescripcion().equals(" ")) {
+                        filtrarSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -306,7 +392,64 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarSoCondicionesAmbientalesP.get(indice).getCodigo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                    }
+                    if (filtrarSoCondicionesAmbientalesP.get(indice).getCodigo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listSoCondicionesAmbientalesP.size(); j++) {
+                            System.err.println("indice lista  indice : " + listSoCondicionesAmbientalesP.get(j).getCodigo());
+                            if (filtrarSoCondicionesAmbientalesP.get(indice).getCodigo().equals(listSoCondicionesAmbientalesP.get(j).getCodigo())) {
+                                contador++;
+                            }
+                        }
+
+                        for (int j = 0; j < filtrarSoCondicionesAmbientalesP.size(); j++) {
+                            System.err.println("indice filtrar indice : " + filtrarSoCondicionesAmbientalesP.get(j).getCodigo());
+                            if (j == indice) {
+                                if (filtrarSoCondicionesAmbientalesP.get(indice).getCodigo().equals(filtrarSoCondicionesAmbientalesP.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            filtrarSoCondicionesAmbientalesP.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarSoCondicionesAmbientalesP.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (filtrarSoCondicionesAmbientalesP.get(indice).getDescripcion().equals(" ")) {
+                        filtrarSoCondicionesAmbientalesP.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -376,7 +519,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             } else {
                 verificarBorradoAccidentes = administrarSoCondicionesAmbientalesP.verificarSoAccidentesMedicos(filtrarSoCondicionesAmbientalesP.get(index).getSecuencia());
             }
-            if (verificarBorradoAccidentes.equals(0)) {
+            if (verificarBorradoAccidentes.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoSoCondicionesAmbientalesP();
             } else {
@@ -426,6 +569,10 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listSoCondicionesAmbientalesP = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            context.update("form:datosClasesAusentismos");
             context.update("form:datosSoCondicionesAmbientalesP");
             k = 0;
             if (guardado == false) {
@@ -506,12 +653,13 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
                 bandera = 0;
@@ -635,10 +783,11 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
                 bandera = 0;
@@ -786,6 +935,22 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
 
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public SoCondicionesAmbientalesP getSoCondicionAmbientalPSeleccionado() {
+        return soCondicionAmbientalPSeleccionado;
+    }
+
+    public void setSoCondicionAmbientalPSeleccionado(SoCondicionesAmbientalesP soCondicionAmbientalPSeleccionado) {
+        this.soCondicionAmbientalPSeleccionado = soCondicionAmbientalPSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

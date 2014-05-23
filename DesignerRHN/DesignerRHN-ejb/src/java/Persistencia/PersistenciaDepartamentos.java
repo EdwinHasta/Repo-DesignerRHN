@@ -26,33 +26,38 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,Departamentos departamentos) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, Departamentos departamentos) {
         try {
+            em.getTransaction().begin();
             em.persist(departamentos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error creando Departamentos PersistenciaDepartamentos " + e);
         }
     }
 
-    public void editar(EntityManager em,Departamentos departamentos) {
+    public void editar(EntityManager em, Departamentos departamentos) {
         try {
+            em.getTransaction().begin();
             em.merge(departamentos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editando Departamentos PersistenciaDepartamentos " + e);
         }
     }
 
-    public void borrar(EntityManager em,Departamentos departamentos) {
+    public void borrar(EntityManager em, Departamentos departamentos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(departamentos));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrando Departamentos PersistenciaDepartamentos " + e);
         }
     }
 
-    public Departamentos consultarDepartamento(EntityManager em,BigInteger secuencia) {
+    public Departamentos consultarDepartamento(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Departamentos.class, secuencia);
         } catch (Exception e) {
@@ -73,7 +78,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public BigInteger contarSoAccidentesMedicosDepartamento(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarSoAccidentesMedicosDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "select COUNT(*)from soaccidentesmedicos WHERE departamento = ?";
@@ -89,7 +94,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public BigInteger contarCiudadesDepartamento(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarCiudadesDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM ciudades WHERE departamento = ?";
@@ -105,7 +110,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
         }
     }
 
-    public BigInteger contarCapModulosDepartamento(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarCapModulosDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM capmodulos WHERE departamento = ?";
@@ -122,7 +127,7 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
 
     }
 
-    public BigInteger contarBienProgramacionesDepartamento(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarBienProgramacionesDepartamento(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM bienprogramaciones WHERE departamento = ?";
