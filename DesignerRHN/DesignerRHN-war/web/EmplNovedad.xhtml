@@ -13,73 +13,80 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplnovedad" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 530px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute; color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplNovedad.empleado.persona.primerapellido} #{controlEmplNovedad.empleado.persona.segundoapellido} #{controlEmplNovedad.empleado.persona.nombre}"/>  
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 37px; left: 12px; height: 23px">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:commandButton id="guardarRapido" value="" disabled="true" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " process="@this" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplNovedad.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/> 
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}"/>
+                                <p:commandButton id="listaValores" value="" disabled="true" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}"/>
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplNovedad.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlEmplNovedad.exportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosNovedadesEmpleadoExportar" fileName="NovedadesXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplNovedad.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
-                                <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
+                                <p:separator style="position: relative; top: -9px"/> 
+                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " process="@this"/> 
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
+                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
+                                <p:commandButton id="duplicar" value="" disabled="true" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplNovedad.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplNovedad.salir()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEmplNovedad.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 830px; height: 355px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue"><strong>#{msg['novedades']}</strong></legend>
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style=" color: blue"><strong>#{msg['novedades']}</strong></legend>
                             <!-- TABLA EMPLVIGENCIAREFORMALABORAL -->
 
-                            <p:dataTable id="datosNovedadesEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 830px"                           
-                                         value="#{controlEmplNovedad.listNovedadesEmpleado}" scrollable="true" scrollHeight="217"  scrollWidth="830"
+                            <p:dataTable id="datosNovedadesEmpleado" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style=" border: 1px; text-align: left;width: 830px"                           
+                                         value="#{controlEmplNovedad.listNovedadesEmpleado}" scrollable="true" scrollHeight="#{controlEmplNovedad.altoTabla}"  scrollWidth="830"
                                          filteredValue="#{controlEmplNovedad.filtrarListNovedadesEmpleado}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell" paginator="true" rows="9"
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                         editable="true" editMode="cell"
+                                         selectionMode="single" selection="#{controlEmplNovedad.novedadSeleccionada}">
 
                                 <p:ajax event="filter" listener="#{controlEmplNovedad.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['codigoconcepto']}" sortBy="#{info.concepto.codigo}" filterBy="#{info.concepto.codigo}" filterMatchMode="contains" id="novedadCodigoConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['codigoconcepto']}" sortBy="#{info.concepto.codigo}" filterBy="#{info.concepto.codigo}" filterMatchMode="contains" id="novedadCodigoConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.concepto.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '0'}, {name: 't', value: '#{indice}'}])" value="#{info.concepto.codigo}" readonly="true" id="editarCodigoConcepto" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '0'}, {name: 't', value: '#{indice}'}])" value="#{info.concepto.codigo}" readonly="true" id="editarCodigoConcepto" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}"/>
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 0)}" />
                                             </p:inputText>
@@ -91,11 +98,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['descripcionconcepto']}" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="novedadDescripcionConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['descripcionconcepto']}" sortBy="#{info.concepto.descripcion}" filterBy="#{info.concepto.descripcion}" filterMatchMode="contains" id="novedadDescripcionConcepto" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.concepto.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}])" value="#{info.concepto.descripcion}" readonly="true" id="editarDescripcionConcepto" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}])" value="#{info.concepto.descripcion}" readonly="true" id="editarDescripcionConcepto" style="; border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}"/>
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 1)}" />
                                             </p:inputText>
@@ -108,13 +115,13 @@
                                 </p:column>
 
 
-                                <p:column style="font-size: 11px" headerText="#{msg['fechainicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="novedadFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['fechainicial']}" sortBy="#{info.fechainicial}" filterBy="#{info.fechainicial}" filterMatchMode="contains"  width="72" id="novedadFechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fechainicial}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText style="font-size: 10px;" readonly="true" value="#{info.fechainicial}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
+                                            <p:inputText style="height:12px" readonly="true" value="#{info.fechainicial}" id="editFechaInicial"   styleClass="ui-datepicker, myClass"  
                                                          autocomplete="true" onselect="prueba([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}])"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" />
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice,2)}" /> 
@@ -128,13 +135,13 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['fechafinal']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="novedadFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['fechafinal']}" sortBy="#{info.fechafinal}" filterBy="#{info.fechafinal}" filterMatchMode="contains"  width="72" id="novedadFechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fechafinal}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText style="font-size: 10px;" readonly="true" value="#{info.fechafinal}" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
+                                            <p:inputText style="height:12px" readonly="true" value="#{info.fechafinal}" id="editFechaFinal"   styleClass="ui-datepicker, myClass"  
                                                          autocomplete="true" onselect="prueba([{name: 'n', value: '3'}, {name: 't', value: '#{indice}'}])"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" />
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice,3)}" /> 
@@ -149,13 +156,13 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['valortotal']}" sortBy="#{info.valortotal}" filterBy="#{info.valortotal}" filterMatchMode="contains" id="novedadValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['valortotal']}" sortBy="#{info.valortotal}" filterBy="#{info.valortotal}" filterMatchMode="contains" id="novedadValor" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.valortotal}" >
-                                            <f:convertNumber currencySymbol="$" type="currency" />
+                                                <f:convertNumber currencySymbol="$" type="currency" />
                                             </h:outputText></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '4'}, {name: 't', value: '#{indice}'}])" value="#{info.valortotal}" readonly="true" id="editarValor" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '4'}, {name: 't', value: '#{indice}'}])" value="#{info.valortotal}" readonly="true" id="editarValor" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" update="editarValor"/>
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 4)}" />
                                                 <f:convertNumber currencySymbol="$" type="currency" />
@@ -168,13 +175,13 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['saldo']}" sortBy="#{info.saldo}" filterBy="#{info.saldo}" filterMatchMode="contains" id="novedadSaldo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['saldo']}" sortBy="#{info.saldo}" filterBy="#{info.saldo}" filterMatchMode="contains" id="novedadSaldo" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.saldo}" >
-                                            <f:convertNumber currencySymbol="$" type="currency" />
+                                                <f:convertNumber currencySymbol="$" type="currency" />
                                             </h:outputText></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '5'}, {name: 't', value: '#{indice}'}])" value="#{info.saldo}" readonly="true" id="editarSaldo" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '5'}, {name: 't', value: '#{indice}'}])" value="#{info.saldo}" readonly="true" id="editarSaldo" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" update="editarSaldo"/>
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 5)}" />
                                                 <f:convertNumber currencySymbol="$" type="currency" />
@@ -187,11 +194,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['codigoperiodicidad']}" sortBy="#{info.periodicidad.codigo}" filterBy="#{info.periodicidad.codigo}" filterMatchMode="contains" id="novedadCodigoPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['codigoperiodicidad']}" sortBy="#{info.periodicidad.codigo}" filterBy="#{info.periodicidad.codigo}" filterMatchMode="contains" id="novedadCodigoPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.periodicidad.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '6'}, {name: 't', value: '#{indice}'}])" value="#{info.periodicidad.codigo}" readonly="true" id="editarCodigoPeriodicidad" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '6'}, {name: 't', value: '#{indice}'}])" value="#{info.periodicidad.codigo}" readonly="true" id="editarCodigoPeriodicidad" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" update="editarCodigoPeriodicidad"/>
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 6)}" />
                                             </p:inputText>
@@ -203,11 +210,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['nombreperiodicidad']}" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="novedadDescripcionPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['nombreperiodicidad']}" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="novedadDescripcionPeriodicidad" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.periodicidad.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '7'}, {name: 't', value: '#{indice}'}])" value="#{info.periodicidad.nombre}" readonly="true" id="editarDescripcionPeriodicidad" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '7'}, {name: 't', value: '#{indice}'}])" value="#{info.periodicidad.nombre}" readonly="true" id="editarDescripcionPeriodicidad" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" update="editarDescripcionPeriodicidad"/>
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 7)}" />
                                             </p:inputText>
@@ -219,11 +226,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['nombretercero']}" sortBy="#{info.tercero.nombre}" filterBy="#{info.tercero.nombre}" filterMatchMode="contains" id="novedadTercero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['nombretercero']}" sortBy="#{info.tercero.nombre}" filterBy="#{info.tercero.nombre}" filterMatchMode="contains" id="novedadTercero" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tercero.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '8'}, {name: 't', value: '#{indice}'}])" value="#{info.tercero.nombre}" readonly="true" id="editarTercero" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '8'}, {name: 't', value: '#{indice}'}])" value="#{info.tercero.nombre}" readonly="true" id="editarTercero" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" update="editarTercero" />
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 8)}" />
                                             </p:inputText>
@@ -235,11 +242,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['observaciones']}" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="novedadObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['observaciones']}" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="novedadObservacion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.observaciones}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText onselect="prueba([{name: 'n', value: '9'}, {name: 't', value: '#{indice}'}])" value="#{info.observaciones}" readonly="true" id="editarObservacion" style="font-size: 10px; border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText onselect="prueba([{name: 'n', value: '9'}, {name: 't', value: '#{indice}'}])" value="#{info.observaciones}" readonly="true" id="editarObservacion" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height:12px"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" update="editarObservacion" />
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice, 9)}" />
                                             </p:inputText>
@@ -251,14 +258,14 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['fechaingresada']}" sortBy="#{info.fechareporte}" filterBy="#{info.fechareporte}" filterMatchMode="contains"  width="72" id="novedadFechaReporte" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['fechaingresada']}" sortBy="#{info.fechareporte}" filterBy="#{info.fechareporte}" filterMatchMode="contains"  width="72" id="novedadFechaReporte" filterStyle="display: none; visibility: hidden;"  >  
 
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.fechareporte}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText style="font-size: 10px;" readonly="true" value="#{info.fechareporte}" id="editFechaReporte"   styleClass="ui-datepicker, myClass"  
+                                            <p:inputText style="height:12px" readonly="true" value="#{info.fechareporte}" id="editFechaReporte"   styleClass="ui-datepicker, myClass"  
                                                          autocomplete="true" onselect="prueba([{name: 'n', value: '10'}, {name: 't', value: '#{indice}'}])"> 
                                                 <p:ajax event="change" listener="#{controlEmplNovedad.modificarNovedades(indice)}" />
                                                 <p:ajax event="select" listener="#{controlEmplNovedad.cambiarIndice(indice,10)}" /> 
@@ -274,57 +281,55 @@
 
                             </p:dataTable>  
                         </fieldset>  
-
                         <p:remoteCommand name="prueba" actionListener="#{controlEmplNovedad.sencillo()}"/>
+                        <h:outputText id="informacionRegistro" value="#{controlEmplNovedad.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
 
-                        <p:commandButton style="position: absolute; left: 710px; top: 485px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 485px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 485px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlEmplNovedad.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmplNovedad.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 
-                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplNovedad.backUpSecRegistro, 'Novedades', 'novedadRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Novedades', 'novedadRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlEmplNovedad.backUpSecRegistro, 'Novedades', 'novedadRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
@@ -332,65 +337,54 @@
                 </h:form>
                 <h:form id="formularioDialogos" >
 
-                    <p:dialog id="editarCodigoConceptoD" header="#{msg['codigoconceptoE']}" widgetVar="editarCodigoConceptoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCodigoConceptoD" header="#{msg['codigoconceptoE']}" widgetVar="editarCodigoConceptoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.concepto.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigoConceptoD" value="#{msg['atras']}" onclick="editarCodigoConceptoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarDescripcionConceptoD" header="#{msg['descripcionconceptoE']}" widgetVar="editarDescripcionConceptoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarDescripcionConceptoD" header="#{msg['descripcionconceptoE']}" widgetVar="editarDescripcionConceptoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.concepto.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarDescripcionConceptoD" value="#{msg['atras']}" onclick="editarDescripcionConceptoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicial" header="#{msg['fechainicialE']}" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplNovedad.editarNovedad.fechainicial}" id="editFechaInicialCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" >
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaInicial" value="#{msg['atras']}" onclick="editarFechaInicial.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaInicial" header="#{msg['fechainicialE']}" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="30" width="240" style=" padding: 0px">  
+                        <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.fechainicial}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinal" header="#{msg['fechafinalE']}" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplNovedad.editarNovedad.fechafinal}" id="editFechaFinalCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaFinal" value="#{msg['atras']}" onclick="editarFechaFinal.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaFinal" header="#{msg['fechafinalE']}" widgetVar="editarFechaFinal" resizable="false" draggable="false" modal="true" height="30" width="240" style=" padding: 0px">  
+                        <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.fechafinal}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="editarValorD" header="#{msg['valortotalE']}" widgetVar="editarValorD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarValorD" header="#{msg['valortotalE']}" widgetVar="editarValorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.valortotal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarValor" value="#{msg['atras']}" onclick="editarValorD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSaldoD" header="#{msg['saldoE']}" widgetVar="editarSaldoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSaldoD" header="#{msg['saldoE']}" widgetVar="editarSaldoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.valortotal}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarSaldo" value="#{msg['atras']}" onclick="editarSaldoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigoPeriodicidadD" header="#{msg['codigoperiodicidadE']}" widgetVar="editarCodigoPeriodicidadD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCodigoPeriodicidadD" header="#{msg['codigoperiodicidadE']}" widgetVar="editarCodigoPeriodicidadD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.periodicidad.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigoPeriodicidadD" value="#{msg['atras']}" onclick="editarCodigoPeriodicidadD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNombrePeriodicidadD" header="#{msg['nombreperiodicidadE']}" widgetVar="editarNombrePeriodicidadD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNombrePeriodicidadD" header="#{msg['nombreperiodicidadE']}" widgetVar="editarNombrePeriodicidadD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.periodicidad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarNombrePeriodicidadD" value="#{msg['atras']}" onclick="editarNombrePeriodicidadD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTerceroD" header="#{msg['nombreterceroE']}" widgetVar="editarTerceroD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTerceroD" header="#{msg['nombreterceroE']}" widgetVar="editarTerceroD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.tercero.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTerceroD" value="#{msg['atras']}" onclick="editarTerceroD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarObservacionD" header="#{msg['observacionesE']}" widgetVar="editarObservacionD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarObservacionD" header="#{msg['observacionesE']}" widgetVar="editarObservacionD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.observaciones}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarObservacionD" value="#{msg['atras']}" onclick="editarObservacionD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaIngreso" header="#{msg['fechaingresadaE']}" widgetVar="editarFechaIngreso" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlEmplNovedad.editarNovedad.fechareporte}" id="editFechaIngresoCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy" >
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaIngreso" value="#{msg['atras']}" onclick="editarFechaIngreso.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaIngreso" header="#{msg['fechaingresadaE']}" widgetVar="editarFechaIngreso" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
+                        <p:inputTextarea value="#{controlEmplNovedad.editarNovedad.fechareporte}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
                     </p:dialog>
 
                 </h:form>

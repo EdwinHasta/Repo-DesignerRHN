@@ -63,7 +63,7 @@ public class ControlVigenciasViajeros implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
     private BigInteger secuenciaEmpleado;
-//Empleado
+    //Empleado
     private Empleados empleadoSeleccionado;
     //autocompletar
     private String normaLaboral;
@@ -238,9 +238,7 @@ public class ControlVigenciasViajeros implements Serializable {
                 secRegistro = null;
             }
             System.out.println("Indice: " + index + " Celda: " + cualCelda);
-
         }
-
     }
 
     public void eventoFiltrar() {

@@ -112,6 +112,7 @@ public class ControlVigenciasCargos implements Serializable {
     //INFORMACION DEL REGISTRO QUE TIENE EL FOCO
     private String infoRegistro;
     private String altoTabla;
+    private String cantidadRegistrosLOV;
     //------------------------------------------------------------------------------------------
     //CONSTRUCTOR(ES)
     //------------------------------------------------------------------------------------------
@@ -848,14 +849,20 @@ public class ControlVigenciasCargos implements Serializable {
         if (dlg == 0) {
             tipoActualizacion = 0;
             context.update("form:motivosDialog");
+            cantidadRegistrosLOV = "Cantidad de registros: " + motivosCambiosCargos.size();
+            context.update("form:informacionLOVM");
             context.execute("motivosDialog.show()");
         } else if (dlg == 1) {
             tipoActualizacion = 0;
             context.update("form:cargosDialog");
+            cantidadRegistrosLOV = "Cantidad de registros: " + cargos.size();
+            context.update("form:informacionLOVC");
             context.execute("cargosDialog.show()");
         } else if (dlg == 2) {
             tipoActualizacion = 0;
             context.update("form:dialogoEmpleadoJefe");
+            cantidadRegistrosLOV = "Cantidad de registros: " + vwActualesTiposTrabajadoresesLista.size();
+            context.update("form:informacionLOVEJ");
             context.execute("dialogoEmpleadoJefe.show()");
         }
     }
@@ -2115,4 +2122,13 @@ public class ControlVigenciasCargos implements Serializable {
         }
         index = -1;
     }
+
+    public String getCantidadRegistrosLOV() {
+        return cantidadRegistrosLOV;
+    }
+
+    public void setCantidadRegistrosLOV(String cantidadRegistrosLOV) {
+        this.cantidadRegistrosLOV = cantidadRegistrosLOV;
+    }
+
 }
