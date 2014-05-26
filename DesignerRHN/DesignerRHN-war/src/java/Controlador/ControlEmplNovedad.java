@@ -45,6 +45,7 @@ public class ControlEmplNovedad implements Serializable {
     //Vigencias Cargos
     private List<Novedades> listNovedadesEmpleado;
     private List<Novedades> filtrarListNovedadesEmpleado;
+    private Novedades novedadSeleccionada;
     private Empleados empleado;
     //Activo/Desactivo Crtl + F11
     private int bandera;
@@ -61,6 +62,8 @@ public class ControlEmplNovedad implements Serializable {
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
     private Novedades actualNovedad;
+    public String altoTabla;
+    public String infoRegistro;
 
     public ControlEmplNovedad() {
         actualNovedad = new Novedades();
@@ -75,6 +78,7 @@ public class ControlEmplNovedad implements Serializable {
         //guardar
         guardado = true;
         secRegistro = null;
+        altoTabla ="270";
     }
     
     @PostConstruct
@@ -99,6 +103,27 @@ public class ControlEmplNovedad implements Serializable {
     public void recibirEmpleado(BigInteger empl) {
         listNovedadesEmpleado = null;
         empleado = administrarEmplNovedad.actualEmpleado(empl);
+        getListNovedadesEmpleado();
+        //INICIALIZAR BOTONES NAVEGACION
+        if (listNovedadesEmpleado != null && !listNovedadesEmpleado.isEmpty()) {
+            if (listNovedadesEmpleado.size() == 1) {
+                //INFORMACION REGISTRO
+                novedadSeleccionada = listNovedadesEmpleado.get(0);
+                //infoRegistro = "Registro 1 de 1";
+                infoRegistro = "Cantidad de registros: 1";
+            } else if (listNovedadesEmpleado.size() > 1) {
+                //INFORMACION REGISTRO
+                novedadSeleccionada = listNovedadesEmpleado.get(0);
+                //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
+                infoRegistro = "Cantidad de registros: " + listNovedadesEmpleado.size();
+            }
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
+
+    
     }
 
     public void sencillo() {
@@ -215,6 +240,7 @@ public class ControlEmplNovedad implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
+            altoTabla="246";
             novedadCodigoConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadCodigoConcepto");
             novedadCodigoConcepto.setFilterStyle("width: 60px");
             novedadDescripcionConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadDescripcionConcepto");
@@ -240,6 +266,7 @@ public class ControlEmplNovedad implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosNovedadesEmpleado");
             bandera = 1;
         } else if (bandera == 1) {
+            altoTabla ="270";
             novedadCodigoConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadCodigoConcepto");
             novedadCodigoConcepto.setFilterStyle("display: none; visibility: hidden;");
             novedadDescripcionConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadDescripcionConcepto");
@@ -275,6 +302,7 @@ public class ControlEmplNovedad implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
+            altoTabla ="270";
             novedadCodigoConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadCodigoConcepto");
             novedadCodigoConcepto.setFilterStyle("display: none; visibility: hidden;");
             novedadDescripcionConcepto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNovedadesEmpleado:novedadDescripcionConcepto");
@@ -356,6 +384,9 @@ public class ControlEmplNovedad implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de Registros: " + filtrarListNovedadesEmpleado.size();
+        context.update("form:informacionRegistro");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -474,4 +505,29 @@ public class ControlEmplNovedad implements Serializable {
     public void setBackUpSecRegistro(BigInteger BackUpSecRegistro) {
         this.backUpSecRegistro = BackUpSecRegistro;
     }
+
+    public Novedades getNovedadSeleccionada() {
+        return novedadSeleccionada;
+    }
+
+    public void setNovedadSeleccionada(Novedades novedadSeleccionada) {
+        this.novedadSeleccionada = novedadSeleccionada;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+    
 }

@@ -139,14 +139,16 @@ public class ControlNReporteLaboral implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void iniciarPagina() {
         activoMostrarTodos = true;
         activoBuscarReporte = false;
         listaIR = null;
         getListaIR();
-        if (listaIR.size() > 0) {
-            actualInfoReporteTabla = listaIR.get(0);
+        if (listaIR != null) {
+            if (listaIR.size() > 0) {
+                actualInfoReporteTabla = listaIR.get(0);
+            }
         }
     }
 
@@ -374,12 +376,14 @@ public class ControlNReporteLaboral implements Serializable {
         reporteGenerar = "";
         posicionReporte = -1;
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             altoTabla = "185";
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:codigoIR");
+            codigoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:reporteIR");
+            reporteIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:tipoIR");
+            tipoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:tipoIR");
             tipoIR.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:reportesLaboral");
             bandera = 0;
@@ -406,12 +410,14 @@ public class ControlNReporteLaboral implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             altoTabla = "185";
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:codigoIR");
+            codigoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:reporteIR");
+            reporteIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:tipoIR");
+            tipoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:tipoIR");
             tipoIR.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:reportesLaboral");
             bandera = 0;
@@ -440,12 +446,14 @@ public class ControlNReporteLaboral implements Serializable {
 
     public void cancelarModificaciones() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             defaultPropiedadesParametrosReporte();
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:codigoIR");
+            codigoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:reporteIR");
+            reporteIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:tipoIR");
+            tipoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:tipoIR");
             tipoIR.setFilterStyle("display: none; visibility: hidden;");
             altoTabla = "185";
             RequestContext.getCurrentInstance().update("form:reportesLaboral");
@@ -511,12 +519,14 @@ public class ControlNReporteLaboral implements Serializable {
     public void actualizarSeleccionInforeporte() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             altoTabla = "185";
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:codigoIR");
+            codigoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:reporteIR");
+            reporteIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesPersonal:tipoIR");
+            tipoIR = (Column) c.getViewRoot().findComponent("form:reportesPersonal:tipoIR");
             tipoIR.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:reportesPersonal");
             bandera = 0;
@@ -765,13 +775,14 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "163";
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:codigoIR");
+            altoTabla = "161";
+            codigoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:codigoIR");
             codigoIR.setFilterStyle("width: 25px");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:reporteIR");
+            reporteIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:reporteIR");
             reporteIR.setFilterStyle("width: 200px");
-            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:tipoIR");
+            tipoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:tipoIR");
             tipoIR.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:reportesLaboral");
             tipoLista = 1;
@@ -779,11 +790,11 @@ public class ControlNReporteLaboral implements Serializable {
         } else if (bandera == 1) {
             altoTabla = "185";
             defaultPropiedadesParametrosReporte();
-            codigoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:codigoIR");
+            codigoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:codigoIR");
             codigoIR.setFilterStyle("display: none; visibility: hidden;");
-            reporteIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:reporteIR");
+            reporteIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:reporteIR");
             reporteIR.setFilterStyle("display: none; visibility: hidden;");
-            tipoIR = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:reportesLaboral:tipoIR");
+            tipoIR = (Column) c.getViewRoot().findComponent("form:reportesLaboral:tipoIR");
             tipoIR.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:reportesLaboral");
             bandera = 0;
@@ -804,12 +815,13 @@ public class ControlNReporteLaboral implements Serializable {
         color2 = "black";
         decoracion2 = "none";
         RequestContext.getCurrentInstance().update("formParametros");
+        FacesContext c = FacesContext.getCurrentInstance();
 
-        empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametroL");
+        empleadoDesdeParametroL = (InputText) c.getViewRoot().findComponent("formParametros:empleadoDesdeParametroL");
         empleadoDesdeParametroL.setStyle("position: absolute; top: 50px; left: 100px;height: 15px;width: 90px;");
         RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametroL");
 
-        empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametroL");
+        empleadoHastaParametroL = (InputText) c.getViewRoot().findComponent("formParametros:empleadoHastaParametroL");
         empleadoHastaParametroL.setStyle("position: absolute; top: 50px; left: 270px;height: 15px;width: 90px;");
         RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametroL");
 
@@ -861,12 +873,16 @@ public class ControlNReporteLaboral implements Serializable {
             RequestContext.getCurrentInstance().update("formParametros");
         }
         if (reporteS.getEmdesde().equals("SI")) {
-            empleadoDesdeParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoDesdeParametroL");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            empleadoDesdeParametroL = (InputText) c.getViewRoot().findComponent("formParametros:empleadoDesdeParametroL");
             empleadoDesdeParametroL.setStyle("position: absolute; top: 50px; left: 100px;height: 15px;width: 90px;text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("formParametros:empleadoDesdeParametroL");
         }
         if (reporteS.getEmhasta().equals("SI")) {
-            empleadoHastaParametroL = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:empleadoHastaParametroL");
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            empleadoHastaParametroL = (InputText) c.getViewRoot().findComponent("formParametros:empleadoHastaParametroL");
             empleadoHastaParametroL.setStyle("position: absolute; top: 50px; left: 270px;height: 15px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametroL");
         }
@@ -972,17 +988,14 @@ public class ControlNReporteLaboral implements Serializable {
     }
 
     public List<Inforeportes> getListaIR() {
-        try {
-            if (listaIR == null) {
-                listaIR = new ArrayList<Inforeportes>();
-                listaIR = administrarNReporteLaboral.listInforeportesUsuario();
-            }
-            listaIRRespaldo = listaIR;
-            return listaIR;
-        } catch (Exception e) {
-            System.out.println("Error getListInforeportesUsuario : " + e);
-            return null;
+        if (listaIR == null) {
+            listaIR = administrarNReporteLaboral.listInforeportesUsuario();
         }
+        if (listaIR != null) {
+            listaIRRespaldo = listaIR;
+        }
+        return listaIR;
+
     }
 
     public void setListaIR(List<Inforeportes> listaIR) {

@@ -225,7 +225,7 @@
                         
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasContratos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;  " id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasContratos.guardado}"/>
-                        <p:commandButton style="position: absolute; left: 775px; top: 470px;  " id="ATRAS" value="Atras" icon="ui-icon-closethick"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;  " id="ATRAS" value="Cancelar" icon="ui-icon-closethick"  actionListener="#{controlVigenciasContratos.salir()}" action="nomina" process="@this" />
 
                     </p:panel>
 

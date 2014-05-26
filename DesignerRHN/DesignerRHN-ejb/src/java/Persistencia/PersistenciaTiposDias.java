@@ -9,7 +9,6 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -25,23 +24,28 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposDias tiposDias) {
+        em.getTransaction().begin();
         em.persist(tiposDias);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, TiposDias tiposDias) {
+        em.getTransaction().begin();
         em.merge(tiposDias);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, TiposDias tiposDias) {
+        em.getTransaction().begin();
         em.remove(em.merge(tiposDias));
+        em.getTransaction().commit();
     }
 
     @Override

@@ -277,6 +277,9 @@
                             <p:commandButton id="atrasM" style="position: relative; left: 210px" value="#{msg['atras']}" onclick="motivosDialog.hide(), datosMotivos.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlVigenciasCargos.cancelarCambioMotivo()}" update="motivosCambCargo" process="@this">
                                 <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
                             </p:commandButton>
+
+                            <h:outputText id="informacionLOVM" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
+
                         </p:dialog>                 
                         <!-- DIALOGO L.O.V DINAMICO PARA CARGOS-->
                         <p:dialog header="#{msg['cargosC']}" widgetVar="cargosDialog" draggable="false" resizable="false" id="dlgCargos" closable="false"  
@@ -314,6 +317,9 @@
                             <p:commandButton id="atrasC" value="#{msg['atras']}" style="position: absolute; top: 390px; left: 400px; " onclick="cargosDialog.hide(), cargosLOV.clearFilters();" icon="ui-icon-arrowreturnthick-1-w" update="lOVCargos, aceptarC" actionListener="#{controlVigenciasCargos.cancelarCambioCargo()}" process="@this">
                                 <p:resetInput target=":form:lOVCargos:globalFilter"/>
                             </p:commandButton>
+
+                            <h:outputText id="informacionLOVC" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 395px; left: 20px; font-weight: bold"/>
+
                         </p:dialog>
 
 
@@ -377,6 +383,9 @@
                             <p:commandButton value="#{msg['atras']}" onclick="dialogoEmpleadoJefe.hide(), lvEmpleadoJefe.clearFilters();" actionListener="#{controlVigenciasCargos.cancelarEmpleadoJefe()}" icon="ui-icon-arrowreturnthick-1-w" update="lvEmpleadoJefe, AceptarEmplJ"  style="position: absolute; top: 260px; left: 653px">
                                 <p:resetInput target=":form:lvEmpleadoJefe:globalFilter" />
                             </p:commandButton>
+
+                            <h:outputText id="informacionLOVEJ" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 265px; left: 20px; font-weight: bold"/>
+
                         </p:dialog>
                         <h:outputText id="informacionRegistro" value="#{controlVigenciasCargos.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style="position: absolute; left: 683px; top: 470px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVCEmpleado" process="@this" disabled="#{controlVigenciasCargos.guardado}"/>

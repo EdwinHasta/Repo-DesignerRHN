@@ -143,14 +143,12 @@ public class ControlEmplIbcs implements Serializable {
     }
 
     public void eventoFiltrar() {
-        try {
-            System.out.println("\n ENTRE A ControlVigenciasAfiliaciones.eventoFiltrar \n");
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
-        } catch (Exception e) {
-            System.out.println("ERROR ControlVigenciasAfiliaciones eventoFiltrar ERROR===" + e.getMessage());
+        if (tipoLista == 0) {
+            tipoLista = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de Registros: " + filtrarIbcsPorEmpleado.size();
+        context.update("form:informacionRegistro");
     }
 
     public void revisarCambios() {
