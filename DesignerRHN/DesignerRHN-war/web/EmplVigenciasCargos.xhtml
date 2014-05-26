@@ -5,13 +5,15 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare"
+      xmlns:pe="http://primefaces.org/ui/extensions">
     <h:head>
     </h:head> 
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
+                    <pe:ajaxErrorHandler/>
                     <f:loadBundle basename="Recursos.emplvigenciascargos" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
@@ -186,10 +188,10 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.empleadojefe.persona.nombreCompleto}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.empleadojefe.persona.nombreCompleto}" id="editNombreJefe" style=" border-radius: 0px; text-transform: uppercase; height: 12px;  width: 94%;">
+                                            <p:inputText value="#{info.empleadojefe.persona.nombreCompleto}" id="editNombreJefe" style=" border-radius: 0px; text-transform: uppercase; height: 12px;  width: 94%;" >
                                                 <p:ajax event="change" listener="#{controlVigenciasCargos.modificarVC(indice, 'EMPLEADOJ', info.empleadojefe.persona.nombreCompleto)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasCargos.cambiarIndice(indice, 5)}"  />
-                                                <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarIndex(indice, 2)}" />
+                                                <p:ajax event="dblclick" listener="#{controlVigenciasCargos.asignarIndex(indice, 2)}"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -215,7 +217,7 @@
                                   showEffect="fade" hideEffect="fade" modal="true" width="750" height="420"  closable="false">
 
                             <p:dataTable  id="lOVEstructuras" style="width: 690px" var="estr" value="#{controlVigenciasCargos.estructurasLOV}"
-                                          scrollable="true" scrollHeight="300" scrollWidth="705" widgetVar="estructurasLOV" 
+                                          scrollable="true" scrollHeight="300" scrollWidth="707" widgetVar="estructurasLOV" 
                                           filteredValue="#{controlVigenciasCargos.estructurasfilter}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{estr.secuencia}" selection="#{controlVigenciasCargos.estructuraSeleccionada}" selectionMode="single">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarE"/> 
@@ -226,13 +228,13 @@
                                     <p:watermark for="globalFilter" value="#{msg['ingreseEJ']}" />
                                 </f:facet>                       
                                 <p:column headerText="#{msg['nombreE']}" width="200"  filterBy="#{estr.nombre}" filterMatchMode="contains" >  
-                                    <h:outputText value="#{estr.nombre}" />  
+                                    <h:outputText value="#{estr.nombre}" style="height: 12px;" />  
                                 </p:column>  
                                 <p:column headerText="#{msg['centroE']}" width="300" filterBy="#{estr.centrocosto.nombre}" filterMatchMode="contains">  
-                                    <h:outputText value="#{estr.centrocosto.codigo} - #{estr.centrocosto.nombre}" />  
+                                    <h:outputText value="#{estr.centrocosto.codigo} - #{estr.centrocosto.nombre}" style="height: 12px;"/>  
                                 </p:column>                             
                                 <p:column headerText="#{msg['empresaE']}" filterBy="#{estr.organigrama.empresa.nombre}" filterMatchMode="contains" >  
-                                    <h:outputText value="#{estr.organigrama.empresa.nombre}" />  
+                                    <h:outputText value="#{estr.organigrama.empresa.nombre}" style="height: 12px;" />  
                                 </p:column>
                             </p:dataTable>                         
                             <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" onclick="estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" update="aceptarE" process="@this">
@@ -247,7 +249,7 @@
                         <p:dialog header="#{msg['motivosM']}" widgetVar="motivosDialog" draggable="false" resizable="false" closable="false" id="dlgMotivos"  
                                   showEffect="fade" hideEffect="fade" width="405" modal="true" >
                             <p:dataTable id="motivosCambCargo" style="width: 350px" var="mot" value="#{controlVigenciasCargos.motivosCambiosCargos}" rowKey="#{mot.secuencia}"
-                                         selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="datosMotivos" scrollable="true" scrollWidth="365" scrollHeight="250"
+                                         selection="#{controlVigenciasCargos.motivoSeleccionado}" selectionMode="single" widgetVar="datosMotivos" scrollable="true" scrollWidth="367" scrollHeight="250"
                                          filteredValue="#{controlVigenciasCargos.filterMotivos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarM"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasCargos.actualizarMotivo()}" process="@this" onstart="datosMotivos.clearFilters()"/>
@@ -284,7 +286,7 @@
                                   showEffect="fade" hideEffect="fade" modal="true" width="490" height="420" >
 
                             <p:dataTable  id="lOVCargos" style="width: 450px" var="carg" value="#{controlVigenciasCargos.cargos}"
-                                          scrollable="true" scrollHeight="300" scrollWidth="465" widgetVar="cargosLOV" 
+                                          scrollable="true" scrollHeight="300" scrollWidth="467" widgetVar="cargosLOV" 
                                           filteredValue="#{controlVigenciasCargos.cargosFilter}" emptyMessage="#{msg['lovvacio']}"
                                           rowKey="#{carg.secuencia}" selection="#{controlVigenciasCargos.cargoSeleccionado}" selectionMode="single">
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasCargos.activarAceptar()}" update=":form:aceptarC"/>
