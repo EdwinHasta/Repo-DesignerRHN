@@ -15,20 +15,20 @@ import javax.persistence.Persistence;
 
 /**
  * Clase de tipo singleton. <br>
- * Esta clase tiene la responsabilidad de crear y controlar las conexiones a la 
- * base de datos que se están usando. Al ser ‘singleton’ solo permite crear
- * una instancia a la base de datos.
+ * Esta clase tiene la responsabilidad de crear y controlar las conexiones a la
+ * base de datos que se están usando. Al ser ‘singleton’ solo permite crear una
+ * instancia a la base de datos.
+ *
  * @author Felipe Triviño
  */
 @Singleton
-public class SesionEntityManagerFactory implements SesionEntityManagerFactoryInterface, Serializable{
-    
+public class SesionEntityManagerFactory implements SesionEntityManagerFactoryInterface, Serializable {
+
     /**
      * Atributo EntityManagerFactory.
      */
     private EntityManagerFactory emf;
-    
-    
+
     @Override
     public boolean crearFactoryInicial(String baseDatos) {
         try {
@@ -41,34 +41,37 @@ public class SesionEntityManagerFactory implements SesionEntityManagerFactoryInt
             return false;
         }
     }
-    
+
     @Override
     public boolean crearFactoryUsuario(String usuario, String contraseña, String baseDatos) {
         try {
+            System.out.println("entro a crearFactoryUsuario");
             Map<String, String> properties = new HashMap<String, String>();
             properties.put("javax.persistence.jdbc.user", usuario);
+            //properties.put("hibernate.connection.username", usuario);
             properties.put("javax.persistence.jdbc.password", contraseña);
+            //properties.put("hibernate.connection.password", contraseña);
             emf = Persistence.createEntityManagerFactory(baseDatos, properties);
-            return true; 
+            return true;
         } catch (Exception e) {
             System.out.println("Error crearFactoryUsuario: " + e);
             return false;
         }
     }
-   
+
     @Override
     public EntityManagerFactory getEmf() {
         return emf;
     }
-    
+
     @Override
     public void setEmf(EntityManagerFactory emf) {
         this.emf = emf;
     }
-    
+
     @Remove
     @Override
-    public void adios(){
+    public void adios() {
         System.out.println("Cerrando xD");
     }
 }

@@ -157,9 +157,7 @@ public class VigenciasCargos implements Serializable {
 
     public Empleados getEmpleadojefe() {
         if (empleadojefe == null) {
-            System.out.println("Bumm");
             empleadojefe = new Empleados();
-            empleadojefe.setPersona(new Personas());
             return empleadojefe;
         } else {
             return empleadojefe;

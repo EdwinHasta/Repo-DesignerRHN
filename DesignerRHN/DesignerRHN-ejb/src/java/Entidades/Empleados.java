@@ -44,10 +44,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Empleados implements Serializable {
     @Size(max = 30)
     @Column(name = "USUARIOBD")
-    private String usuariobd;
-    
-    private Collection<VigenciasUbicaciones> vigenciasubicacionesCollection;
-    private static final long serialVersionUID = 1L;
+    private String usuariobd;    private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
     @Basic(optional = false)
@@ -102,7 +99,7 @@ public class Empleados implements Serializable {
     @Column(name = "TEMPBASERECALCULO")
     private BigInteger tempbaserecalculo;
     @JoinColumn(name = "PERSONA", referencedColumnName = "SECUENCIA")
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     private Personas persona;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
@@ -113,7 +110,7 @@ public class Empleados implements Serializable {
     private String codigoempleadoSTR;
 
     public Empleados() {
-        persona = new Personas();
+       persona = new Personas();
     }
 
     public Empleados(BigInteger secuencia) {
@@ -324,14 +321,6 @@ public class Empleados implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Empleados[ secuencia=" + secuencia + " ]";
-    }
-
-    public Collection<VigenciasUbicaciones> getVigenciasubicacionesCollection() {
-        return vigenciasubicacionesCollection;
-    }
-
-    public void setVigenciasubicacionesCollection(Collection<VigenciasUbicaciones> vigenciasubicacionesCollection) {
-        this.vigenciasubicacionesCollection = vigenciasubicacionesCollection;
     }
 
     public String getEstado() {

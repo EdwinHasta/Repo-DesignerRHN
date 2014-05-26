@@ -369,3 +369,21 @@ and open the template in the editor.
     background: white !important;
     color: black;
 }
+
+.outputTextFielset{
+    font-weight: bold;
+    color: #00F;
+    position: absolute;
+    top: -9px;
+    left: 10px;
+    background: #CBCFDA;
+    padding: 0px 3px;
+}
+
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
+    padding: 3px 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    border-width: 1px;
+    border-style: solid;
+}

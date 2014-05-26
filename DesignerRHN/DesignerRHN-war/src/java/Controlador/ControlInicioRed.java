@@ -109,7 +109,7 @@ public class ControlInicioRed implements Serializable {
                                         context.update("form:growl");
                                     }
                                     listaConsultas = administrarInicioRed.consultasInicio();
-                                    if (listaConsultas != null || !listaConsultas.isEmpty()) {
+                                    if (listaConsultas != null && !listaConsultas.isEmpty()) {
                                         banner.clear();
                                         for (int j = 0; j < listaConsultas.size(); j++) {
                                             if (listaConsultas.get(j).getNombreimagen() != null) {

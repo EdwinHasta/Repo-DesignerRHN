@@ -78,9 +78,8 @@ public class MotivosCambiosCargos implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-            return nombre;
+        if (nombre != null) {
+            return nombre.toUpperCase();
         } else {
             return nombre;
         }

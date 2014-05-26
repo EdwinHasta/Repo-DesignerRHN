@@ -101,8 +101,10 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
     @Override
     public BigInteger usuarioLogin(EntityManager eManager, String usuarioBD) {
         em = eManager;
+        em.getTransaction().begin();
         Query query = em.createQuery("SELECT u.perfil.secuencia FROM Usuarios u WHERE u.alias = :usuarioBD");
         query.setParameter("usuarioBD", usuarioBD);
+        em.getTransaction().commit();
         BigInteger secPerfil = (BigInteger) query.getSingleResult();
         return secPerfil;
     }
@@ -112,9 +114,6 @@ public class PersistenciaConexionInicial implements PersistenciaConexionInicialI
         String texto = "SET ROLE " + rol + " IDENTIFIED BY " + pwd;
         em = eManager;
         em.getTransaction().begin();
-        System.out.println("Rol: " + rol);
-        System.out.println("Password: " + pwd);
-        System.out.println("Texto: " + texto);
         String sqlQuery = texto;
         Query query = em.createNativeQuery(sqlQuery);
         query.setParameter(1, rol);

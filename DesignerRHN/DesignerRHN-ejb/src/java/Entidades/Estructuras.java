@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 
 public class Estructuras implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
     private Collection<PlantasPersonales> plantasPersonalesCollection;
 
@@ -122,12 +123,7 @@ public class Estructuras implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-            return nombre;
-        } else {
-            return nombre;
-        }
+        return nombre;
     }
 
     public void setNombre(String nombre) {
