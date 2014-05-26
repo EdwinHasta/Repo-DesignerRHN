@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,8 +39,7 @@ public class ControlEnfoques implements Serializable {
     AdministrarEnfoquesInterface administrarEnfoques;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     private List<Enfoques> listEnfoques;
     private List<Enfoques> filtrarEnfoques;
     private List<Enfoques> crearEnfoques;
@@ -48,6 +48,7 @@ public class ControlEnfoques implements Serializable {
     private Enfoques nuevoEnfoque;
     private Enfoques duplicarEnfoque;
     private Enfoques editarEnfoque;
+    private Enfoques enfoqueSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -60,6 +61,10 @@ public class ControlEnfoques implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    private int tamano;
+
+    private String backUpDescripcion;
+    private Integer backUpCodigo;
 
     public ControlEnfoques() {
         listEnfoques = null;
@@ -70,8 +75,10 @@ public class ControlEnfoques implements Serializable {
         editarEnfoque = new Enfoques();
         nuevoEnfoque = new Enfoques();
         duplicarEnfoque = new Enfoques();
+        tamano = 270;
+        guardado = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -102,7 +109,20 @@ public class ControlEnfoques implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listEnfoques.get(index).getSecuencia();
-
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listEnfoques.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarEnfoques.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listEnfoques.get(index).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarEnfoques.get(index).getDescripcion();
+                }
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -134,11 +154,12 @@ public class ControlEnfoques implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEnfoque");
             bandera = 0;
@@ -161,25 +182,27 @@ public class ControlEnfoques implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
             codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosEnfoque");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEnfoque");
             bandera = 0;
             filtrarEnfoques = null;
             tipoLista = 0;
+            tamano = 270;
         }
     }
 
@@ -189,7 +212,7 @@ public class ControlEnfoques implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        Short a;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -200,6 +223,7 @@ public class ControlEnfoques implements Serializable {
                     if (listEnfoques.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEnfoques.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEnfoques.size(); j++) {
                             if (j != indice) {
@@ -209,6 +233,7 @@ public class ControlEnfoques implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            listEnfoques.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -219,10 +244,12 @@ public class ControlEnfoques implements Serializable {
                     if (listEnfoques.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEnfoques.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (listEnfoques.get(indice).getDescripcion().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEnfoques.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     }
                     if (banderita == true) {
                         if (modificarEnfoques.isEmpty()) {
@@ -233,11 +260,53 @@ public class ControlEnfoques implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-
+                        context.update("form:ACEPTAR");
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listEnfoques.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEnfoques.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listEnfoques.size(); j++) {
+                            if (j != indice) {
+                                if (listEnfoques.get(indice).getCodigo() == listEnfoques.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            listEnfoques.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listEnfoques.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEnfoques.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (listEnfoques.get(indice).getDescripcion().equals(" ")) {
+                        banderita = false;
+                        listEnfoques.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    }
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                        context.update("form:ACEPTAR");
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -248,6 +317,7 @@ public class ControlEnfoques implements Serializable {
                     if (filtrarEnfoques.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEnfoques.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEnfoques.size(); j++) {
                             if (j != indice) {
@@ -265,6 +335,7 @@ public class ControlEnfoques implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarEnfoques.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -274,9 +345,12 @@ public class ControlEnfoques implements Serializable {
                     if (filtrarEnfoques.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEnfoques.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarEnfoques.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEnfoques.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -289,11 +363,64 @@ public class ControlEnfoques implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
+                        context.update("form:ACEPTAR");
 
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarEnfoques.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEnfoques.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listEnfoques.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEnfoques.get(indice).getCodigo() == listEnfoques.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarEnfoques.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEnfoques.get(indice).getCodigo() == filtrarEnfoques.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarEnfoques.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (filtrarEnfoques.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEnfoques.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarEnfoques.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEnfoques.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                        context.update("form:ACEPTAR");
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -408,6 +535,9 @@ public class ControlEnfoques implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEnfoques = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEnfoque");
             k = 0;
             guardado = true;
@@ -448,7 +578,7 @@ public class ControlEnfoques implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
@@ -486,12 +616,13 @@ public class ControlEnfoques implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEnfoque");
                 bandera = 0;
@@ -520,7 +651,7 @@ public class ControlEnfoques implements Serializable {
             index = -1;
             secRegistro = null;
             System.out.println("Despues de nuevoRegistroEnfoque");
-
+            nuevoEnfoque = new Enfoques();
         } else {
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
@@ -569,7 +700,7 @@ public class ControlEnfoques implements Serializable {
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarEnfoque.getCodigo());
         System.err.println("ConfirmarDuplicar descripcion " + duplicarEnfoque.getDescripcion());
@@ -617,10 +748,11 @@ public class ControlEnfoques implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEnfoque:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEnfoque");
                 bandera = 0;
@@ -768,6 +900,22 @@ public class ControlEnfoques implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public Enfoques getEnfoqueSeleccionado() {
+        return enfoqueSeleccionado;
+    }
+
+    public void setEnfoqueSeleccionado(Enfoques enfoqueSeleccionado) {
+        this.enfoqueSeleccionado = enfoqueSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

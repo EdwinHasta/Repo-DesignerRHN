@@ -11,27 +11,31 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Ciudades'
- * de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'Ciudades' de la base
+ * de datos
+ *
  * @author Betelgeuse
  */
 @Stateless
 public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
+     private EntityManager em;*/
 
     @Override
-     public void crear(EntityManager em,Ciudades ciudades) {
+    public void crear(EntityManager em, Ciudades ciudades) {
         try {
+            em.getTransaction().begin();
             em.merge(ciudades);
+            em.getTransaction().commit();
         } catch (PersistenceException ex) {
             Logger.getLogger(Ciudades.class.getName()).log(Level.SEVERE, null, ex);
             throw new EntityExistsException(ex);
@@ -39,13 +43,17 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
     }
 
     @Override
-    public void editar(EntityManager em,Ciudades ciudades) {
+    public void editar(EntityManager em, Ciudades ciudades) {
+        em.getTransaction().begin();
         em.merge(ciudades);
+        em.getTransaction().commit();
     }
 
     @Override
-    public void borrar(EntityManager em,Ciudades ciudades) {
+    public void borrar(EntityManager em, Ciudades ciudades) {
+        em.getTransaction().begin();
         em.remove(em.merge(ciudades));
+        em.getTransaction().commit();
     }
 
     @Override
@@ -59,5 +67,5 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
             return null;
         }
     }
-    
+
 }

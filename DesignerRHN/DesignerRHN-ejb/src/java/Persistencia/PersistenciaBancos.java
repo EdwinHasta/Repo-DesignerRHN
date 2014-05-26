@@ -8,9 +8,7 @@ import InterfacePersistencia.PersistenciaBancosInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless. <br>
@@ -26,12 +24,13 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Bancos bancos) {
         try {
+            em.getTransaction().begin();
             em.persist(bancos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error creando bancos persistencia bancos");
         }
@@ -40,7 +39,9 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
     @Override
     public void editar(EntityManager em, Bancos bancos) {
         try {
+            em.getTransaction().begin();
             em.merge(bancos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editando bancos persistencia bancos");
         }
@@ -49,7 +50,9 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
     @Override
     public void borrar(EntityManager em, Bancos bancos) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(bancos));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrando bancos persistencia bancos");
         }

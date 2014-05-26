@@ -36,7 +36,7 @@ public class EvalDimensiones implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
@@ -47,7 +47,7 @@ public class EvalDimensiones implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public EvalDimensiones(BigInteger secuencia, Short codigo, String descripcion) {
+    public EvalDimensiones(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -61,11 +61,11 @@ public class EvalDimensiones implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

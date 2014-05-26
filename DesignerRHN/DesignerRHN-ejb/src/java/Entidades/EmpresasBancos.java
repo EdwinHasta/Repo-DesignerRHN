@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -46,6 +47,8 @@ public class EmpresasBancos implements Serializable {
     private Bancos banco;
     @JoinColumn(name = "CIUDAD", referencedColumnName = "SECUENCIA")
     private Ciudades ciudad;
+    @Transient
+    private String trTipoCuenta;
 
     public EmpresasBancos() {
     }
@@ -80,6 +83,30 @@ public class EmpresasBancos implements Serializable {
     public void setTipocuenta(String tipocuenta) {
         //System.out.println("ENTIDAD EMPRESASBANCOS SET TIPOCUENTA " + tipocuenta);
         this.tipocuenta = tipocuenta;
+    }
+
+    public String getTrTipoCuenta() {
+        getTipocuenta();
+        if (tipocuenta.equalsIgnoreCase("c")) {
+            trTipoCuenta = "Corriente";
+        }
+        if (tipocuenta.equalsIgnoreCase("a")) {
+            trTipoCuenta = "Ahorros";
+        }
+        System.out.println("trTipoCuenta : " + trTipoCuenta);
+        return trTipoCuenta;
+    }
+
+    public void setTrTipoCuenta(String trTipoCuenta) {
+        this.trTipoCuenta = trTipoCuenta;
+        if (this.trTipoCuenta.equalsIgnoreCase("ahorro")) {
+            System.out.println("EmpresasBancos setTrTipoCuenta a ");
+            setTipocuenta("a");
+        }
+        if (this.trTipoCuenta.equalsIgnoreCase("corriente")) {
+            System.out.println("EmpresasBancos setTrTipoCuenta c ");
+            setTipocuenta("c");
+        }
     }
 
     public Empresas getEmpresa() {

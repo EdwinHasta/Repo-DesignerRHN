@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,7 @@ public class ControlEvalActividades implements Serializable {
     AdministrarEvalActividadesInterface administrarEvalActividades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<EvalActividades> listEvalActividades;
     private List<EvalActividades> filtrarEvalActividades;
     private List<EvalActividades> crearEvalActividades;
@@ -46,6 +47,7 @@ public class ControlEvalActividades implements Serializable {
     private EvalActividades nuevoEvalActividades;
     private EvalActividades duplicarEvalActividades;
     private EvalActividades editarEvalActividades;
+    private EvalActividades evalActividadSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -73,9 +75,9 @@ public class ControlEvalActividades implements Serializable {
         nuevoEvalActividades = new EvalActividades();
         duplicarEvalActividades = new EvalActividades();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -143,11 +145,12 @@ public class ControlEvalActividades implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvalActividades");
             bandera = 0;
@@ -170,21 +173,22 @@ public class ControlEvalActividades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosEvalActividades");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvalActividades");
             bandera = 0;
@@ -214,6 +218,7 @@ public class ControlEvalActividades implements Serializable {
                     if (listEvalActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEvalActividades.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listEvalActividades.size(); j++) {
                             if (j != indice) {
@@ -224,6 +229,7 @@ public class ControlEvalActividades implements Serializable {
                         }
 
                         if (contador > 0) {
+                            banderita = false;
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                             listEvalActividades.get(indice).setCodigo(backupCodigo);
@@ -379,7 +385,8 @@ public class ControlEvalActividades implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
-                } else {if (filtrarEvalActividades.get(indice).getCodigo() == null) {
+                } else {
+                    if (filtrarEvalActividades.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarEvalActividades.get(indice).setCodigo(backupCodigo);
@@ -504,7 +511,7 @@ public class ControlEvalActividades implements Serializable {
                 contarCapNecesidadesEvalActividad = administrarEvalActividades.contarCapNecesidadesEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
                 contarEvalPlanesDesarrollosEvalActividad = administrarEvalActividades.contarEvalPlanesDesarrollosEvalActividad(filtrarEvalActividades.get(index).getSecuencia());
             }
-            if (contarCapBuzonesEvalActividad.equals(new BigInteger("0")) && contarCapNecesidadesEvalActividad.equals(new BigInteger("0"))&& contarEvalPlanesDesarrollosEvalActividad.equals(new BigInteger("0"))) {
+            if (contarCapBuzonesEvalActividad.equals(new BigInteger("0")) && contarCapNecesidadesEvalActividad.equals(new BigInteger("0")) && contarEvalPlanesDesarrollosEvalActividad.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoEvalActividades();
             } else {
@@ -557,7 +564,9 @@ public class ControlEvalActividades implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEvalActividades = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEvalActividades");
             k = 0;
             guardado = true;
@@ -637,11 +646,12 @@ public class ControlEvalActividades implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvalActividades");
                 bandera = 0;
@@ -764,10 +774,11 @@ public class ControlEvalActividades implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvalActividades");
                 bandera = 0;
@@ -923,6 +934,14 @@ public class ControlEvalActividades implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public EvalActividades getEvalActividadSeleccionada() {
+        return evalActividadSeleccionada;
+    }
+
+    public void setEvalActividadSeleccionada(EvalActividades evalActividadSeleccionada) {
+        this.evalActividadSeleccionada = evalActividadSeleccionada;
     }
 
 }
