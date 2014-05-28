@@ -28,11 +28,10 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Estructuras estructuras) {
+    public void crear(EntityManager em, Estructuras estructuras) {
         try {
             em.persist(estructuras);
         } catch (Exception e) {
@@ -41,7 +40,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public void editar(EntityManager em,Estructuras estructuras) {
+    public void editar(EntityManager em, Estructuras estructuras) {
         try {
             em.merge(estructuras);
         } catch (Exception e) {
@@ -50,12 +49,12 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public void borrar(EntityManager em,Estructuras estructuras) {
+    public void borrar(EntityManager em, Estructuras estructuras) {
         em.remove(em.merge(estructuras));
     }
 
     @Override
-    public Estructuras buscarEstructura(EntityManager em,BigInteger secuencia) {
+    public Estructuras buscarEstructura(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Estructuras.class, secuencia);
         } catch (Exception e) {
@@ -76,7 +75,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em,BigInteger secOrganigrama) {
+    public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em, BigInteger secOrganigrama) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.nombre");
             query.setParameter("secOrganigrama", secOrganigrama);
@@ -90,7 +89,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPorOrganigrama(EntityManager em,BigInteger secOrganigrama) {
+    public List<Estructuras> buscarEstructurasPorOrganigrama(EntityManager em, BigInteger secOrganigrama) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia=:secOrganigrama ORDER BY e.codigo ASC");
             query.setParameter("secOrganigrama", secOrganigrama);
@@ -104,7 +103,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarlistaValores(EntityManager em,String fechaVigencia) {
+    public List<Estructuras> buscarlistaValores(EntityManager em, String fechaVigencia) {
         List<Estructuras> estructuras;
         System.out.println("Fecha: " + fechaVigencia);
         try {
@@ -128,7 +127,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> estructuraPadre(EntityManager em,BigInteger secOrg) {
+    public List<Estructuras> estructuraPadre(EntityManager em, BigInteger secOrg) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.secuencia = :secOrg AND e.estructurapadre IS NULL");
             query.setParameter("secOrg", secOrg);
@@ -142,7 +141,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> estructurasHijas(EntityManager em,BigInteger secEstructuraPadre, Short codigoEmpresa) {
+    public List<Estructuras> estructurasHijas(EntityManager em, BigInteger secEstructuraPadre, Short codigoEmpresa) {
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.organigrama.empresa.codigo = :codigoEmpresa AND e.estructurapadre.secuencia = :secEstructuraPadre");
             query.setParameter("secEstructuraPadre", secEstructuraPadre);
@@ -162,7 +161,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
             Query query = em.createNamedQuery("Estructuras.findAll");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Estructuras> estructuras = (List<Estructuras>) query.getResultList();
-            
+
             return estructuras;
         } catch (Exception e) {
             System.out.println("Error buscarEstructuras PersistenciaEstructuras");
@@ -171,7 +170,7 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public Estructuras buscarEstructuraSecuencia(EntityManager em,BigInteger secuencia) {
+    public Estructuras buscarEstructuraSecuencia(EntityManager em, BigInteger secuencia) {
         Estructuras estructura;
         try {
             Query query = em.createQuery("SELECT e FROM Estructuras e WHERE e.secuencia = :secuencia");
@@ -187,9 +186,9 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
     }
 
     @Override
-    public List<Estructuras> buscarEstructurasPadres(EntityManager em,BigInteger secOrganigrama, BigInteger secEstructura) {
+    public List<Estructuras> buscarEstructurasPadres(EntityManager em, BigInteger secOrganigrama, BigInteger secEstructura) {
         try {
-            String strQuery = "SELECT * FROM Estructuras WHERE organigrama =? AND secuencia != NVL(?,0) ORDER BY nombre ASC"; 
+            String strQuery = "SELECT * FROM Estructuras WHERE organigrama =? AND secuencia != NVL(?,0) ORDER BY nombre ASC";
             Query query = em.createNativeQuery(strQuery, Estructuras.class);
             query.setParameter(1, secOrganigrama);
             query.setParameter(2, secEstructura);
@@ -199,6 +198,39 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
             System.out.println("Error buscarEstructurasPadres PersistenciaEstructuras : " + e.toString());
             return null;
         }
+    }
+
+    @Override
+    public List<Estructuras> buscarEstructurasPorEmpresaFechaIngreso(EntityManager em, BigInteger secEmpresa, Date fechaIngreso) {
+        List<Estructuras> estructura;
+        try {
+            String queryStr = "SELECT  est.* FROM ESTRUCTURAS est, organigramas org, centroscostos cc WHERE org.secuencia = est.organigrama and est.centrocosto=cc.secuencia and nvl(cc.obsoleto,'N')='N' and org.empresa = ? and exists (select secuencia from organigramas o where fecha = (select max(fecha) from organigramas , empresas e where e.secuencia = organigramas.empresa and fecha <= ? and organigramas.secuencia = est.organigrama)) ORDER BY est.codigo";
+            Query query = em.createNativeQuery(queryStr, Estructuras.class);
+            query.setParameter(1, secEmpresa);
+            query.setParameter(2, fechaIngreso);
+            estructura = query.getResultList();
+            return estructura;
+        } catch (Exception e) {
+            System.out.println("Error buscarEstructurasPorEmpresaFechaIngreso PersistenciaEstructuras : " + e.toString());
+            estructura = null;
+        }
+        return estructura;
+    }
+
+    @Override
+    public List<Estructuras> buscarEstructurasPorEmpresa(EntityManager em, BigInteger secEmpresa) {
+        List<Estructuras> estructura;
+        try {
+            String queryStr = "SELECT V.* FROM ESTRUCTURAS V, CENTROSCOSTOS CC,empresas e WHERE V.CENTROCOSTO = CC.SECUENCIA and cc.empresa = e.secuencia and e.secuencia = ? and nvl(cc.obsoleto,'N')='N' ORDER BY V.codigo";
+            Query query = em.createNativeQuery(queryStr, Estructuras.class);
+            query.setParameter(1, secEmpresa);
+            estructura = query.getResultList();
+            return estructura;
+        } catch (Exception e) {
+            System.out.println("Error buscarEstructurasPorEmpresa PersistenciaEstructuras : " + e.toString());
+            estructura = null;
+        }
+        return estructura;
     }
 
 }

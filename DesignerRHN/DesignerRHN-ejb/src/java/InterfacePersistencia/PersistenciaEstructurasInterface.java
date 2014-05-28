@@ -5,6 +5,7 @@ package InterfacePersistencia;
 
 import Entidades.Estructuras;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -138,4 +139,9 @@ public interface PersistenciaEstructurasInterface {
      * @return Retorna una lista de Estructuras.
      */
     public List<Estructuras> buscarEstructurasPorSecuenciaOrganigrama(EntityManager em,BigInteger secOrganigrama);
+    
+    
+    public List<Estructuras> buscarEstructurasPorEmpresaFechaIngreso(EntityManager em, BigInteger secEmpresa, Date fechaIngreso);
+    
+    public List<Estructuras> buscarEstructurasPorEmpresa(EntityManager em, BigInteger secEmpresa);
 }

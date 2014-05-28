@@ -61,6 +61,8 @@ import InterfacePersistencia.PersistenciaTiposTelefonosInterface;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
 import InterfacePersistencia.PersistenciaUbicacionesGeograficasInterface;
 import InterfacePersistencia.PersistenciaUnidadesInterface;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
@@ -195,12 +197,22 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<Estructuras> lovEstructuras() {
+    public List<Estructuras> lovEstructurasModCargos(BigInteger secEmpresa, Date fechaIngreso) {
         try {
-            List<Estructuras> lista = persistenciaEstructuras.buscarEstructuras(em);
+            List<Estructuras> lista = persistenciaEstructuras.buscarEstructurasPorEmpresaFechaIngreso(em,secEmpresa,fechaIngreso);
             return lista;
         } catch (Exception e) {
-            System.out.println("Error lovEstructuras Admi : " + e.toString());
+            System.out.println("Error lovEstructurasModCargos Admi : " + e.toString());
+            return null;
+        }
+    }
+    @Override
+    public List<Estructuras> lovEstructurasModCentroCosto(BigInteger secEmpresa) {
+        try {
+            List<Estructuras> lista = persistenciaEstructuras.buscarEstructurasPorEmpresa(em,secEmpresa);
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error lovEstructurasModCentroCosto Admi : " + e.toString());
             return null;
         }
     }
