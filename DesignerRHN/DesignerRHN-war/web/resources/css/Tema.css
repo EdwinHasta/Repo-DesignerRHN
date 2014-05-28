@@ -379,11 +379,3 @@ and open the template in the editor.
     background: #CBCFDA;
     padding: 0px 3px;
 }
-
-.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td {
-    padding: 3px 10px;
-    overflow: hidden;
-    white-space: nowrap;
-    border-width: 1px;
-    border-style: solid;
-}
