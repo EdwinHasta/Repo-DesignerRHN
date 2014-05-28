@@ -18,95 +18,787 @@
 
                         <h:outputText value="#{msg['infoBasica']}" style="position: absolute;left: 10px; top: 70px;color: #14388B;font-weight: bold"/>
 
-                        <fieldset  style="position: absolute; left: 3px; top: 120px; font-size: 10px; width: 850px; height: 375px; border-radius: 10px; text-align: left;">
+                        <fieldset  style="position: absolute; left: 3px; top: 120px; font-size: 10px; width: 850px; height: 370px; border-radius: 10px; text-align: left;">
                             <legend style="font-size: 12px; color: blue"><strong>#{msg['informacionPersona']}</strong></legend>
 
-                            <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:856px; height:365px; border: none" mode="native">  
+                            <p:scrollPanel id="scrollPrincipal" style="position: absolute; left: 3px; top: 15px; width:856px; height:360px; border: none" mode="native">  
 
-                                <fieldset style="position: absolute; top: 10px; width: 815px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute;font-size: 12px; top: 10px; width: 810px; height: 180px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modPersonal']}</strong></legend>
 
-                                    <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 20px; left: 20px;font-weight: bold"/>
-                                    <h:inputText style="position: absolute; top: 45px; left: 20px"/>
-                                 
+                                    <h:outputText  value="#{msg['empresa']}*" style="position: absolute; top: 25px; left: 15px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevoEmpleado.empresa.nombre}" id="empresaModPersonal" style="position: absolute; top: 20px; left: 140px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarInformacionPersonal(0,'EMPRESA', controlPersonaIndividual.nuevoEmpleado.empresa.nombre)}" process="@this" update="empresaModPersonal"/>
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(0)}" process="@this"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['primerApellido']}*" style="position: absolute; top: 55px; left: 15px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.primerapellido}" id="primerApellidoModPersonal" style="position: absolute; top: 50px; left: 140px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(1)}" process="@this"/>
+                                        <p:ajax event="change" process="@this" update="primerApellidoModPersonal"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['segundoApellido']}" style="position: absolute; top: 85px; left: 15px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.segundoapellido}" id="segundoApellidoModPersonal" style="position: absolute; top: 80px; left: 140px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(2)}" process="@this"/>
+                                        <p:ajax event="change" process="@this" update="segundoApellidoModPersonal"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['nombres']}*" style="position: absolute; top: 115px; left: 15px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.nombre}" id="nombreModPersonal" style="position: absolute; top: 110px; left: 140px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(3)}" process="@this"/>
+                                        <p:ajax event="change" process="@this" update="nombreModPersonal"/>
+                                    </p:inputText>
+
+                                    <h:outputText  value="#{msg['sexo']}*" style="position: absolute; top: 145px; left: 15px;font-weight: bold"/>
+                                    <p:selectOneMenu value="#{controlPersonaIndividual.nuevaPersona.sexo}" id="sexoModPersonal" style="position: absolute; top: 140px; left: 140px; font-weight: bold;width: 130px;" >  
+                                        <f:selectItem itemLabel="" itemValue="null" />  
+                                        <f:selectItem itemLabel="#{msg['masculino']}" itemValue="M" />  
+                                        <f:selectItem itemLabel="#{msg['femenino']}" itemValue="F" />
+                                        <p:ajax event="change" update="@this" />
+                                    </p:selectOneMenu>
+
+                                    <!-- -->
+                                    
+                                    <h:outputText  value="#{msg['tipoDocumento']}*" style="position: absolute; top: 25px; left: 290px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.tipodocumento.nombrelargo}" id="tipoDocumentoModPersonal" style="position: absolute; top: 20px; left: 430px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarInformacionPersonal(5,'TIPODOCUMENTO', controlPersonaIndividual.nuevaPersona.tipodocumento.nombrelargo)}" process="@this" update="tipoDocumentoModPersonal"/>
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(5)}" process="@this"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                        <p:ajax event="change" process="@this" update="tipoDocumentoModPersonal"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['numeroIdentificacion']}*" style="position: absolute; top: 55px; left: 290px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.numerodocumento}" id="numeroDocumentoModPersonal" style="position: absolute; top: 50px; left: 430px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(6)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarNumeroDocumentoPersona()}" process="@this" update="numeroDocumentoModPersonal"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['ciudadDocumento']}*" style="position: absolute; top: 85px; left: 290px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.ciudaddocumento.nombre}" id="ciudadDocumentoModPersonal" style="position: absolute; top: 80px; left: 430px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarInformacionPersonal(7,'DOCUMENTO', controlPersonaIndividual.nuevaPersona.ciudaddocumento.nombre)}" process="@this" update="ciudadDocumentoModPersonal"/>
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(7)}" process="@this"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['fechaNacimiento']}*" style="position: absolute; top: 115px; left: 290px;font-weight: bold"/>
+                                    <div  style="position: absolute; top: 110px; left: 430px;">
+                                        <lnk:calendar value="#{controlPersonaIndividual.nuevaPersona.fechanacimiento}" id="fechaNacimientoModPersonal" >
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="fechaNacimientoModPersonal" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaNacimientoInformacionPersonal(8)}" update="fechaNacimientoModPersonal" process="@this"/>
+                                            <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(8)}" process="@this"/>
+                                        </lnk:calendar>
+                                    </div>
+
+                                    <h:outputText  value="#{msg['ciudadNacimiento']}*" style="position: absolute; top: 145px; left: 290px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.ciudadnacimiento.nombre}" id="ciudadNacimientoModPersonal" style="position: absolute; top: 140px; left: 430px;width: 130px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(9)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarInformacionPersonal(9,'NACIMIENTO', controlPersonaIndividual.nuevaPersona.ciudadnacimiento.nombre)}" process="@this" update="ciudadNacimientoModPersonal"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+                                    <!-- -->
+                                    
+                                    <h:outputText  value="#{msg['fechaIngreso']}*" style="position: absolute; top: 25px; left: 580px;font-weight: bold"/>
+                                    <div  style="position: absolute; top:20px; left: 705px;">
+                                        <lnk:calendar value="#{controlPersonaIndividual.fechaIngreso}" id="fechaIngresoModPersonal" >
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaIngresoInformacionPersonal(10)}" update="fechaIngresoModPersonal" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaIngresoInformacionPersonal(10)}" update="fechaIngresoModPersonal" process="@this"/>
+                                            <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(10)}" process="fechaIngresoModPersonal"/>
+                                        </lnk:calendar>
+                                    </div>
+
+
+                                    <h:outputText  value="#{msg['codigoEmpleado']}*" style="position: absolute; top: 55px; left: 580px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevoEmpleado.codigoempleado}" id="codigoEmpleadoModPersonal" style="position: absolute; top: 50px; left: 705px;width: 105px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(11)}" process="@this"/>
+                                        <p:ajax event="change" process="@this" update="codigoEmpleadoModPersonal"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['correoElectronico']}" style="position: absolute; top: 85px; left: 580px;font-weight: bold"/>
+                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.email}" id="correoModPersonal" style="position: absolute; top: 80px; left: 705px;width: 105px;">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(12)}" process="@this"/>
+                                        <p:ajax event="change" process="@this" update="correoModPersonal"/>
+                                    </p:inputText>
+
+
+                                    <h:outputText  value="#{msg['fechaUltimoPago']}" style="position: absolute; top: 115px; left: 580px;font-weight: bold"/>
+                                    <div  style="position: absolute; top: 110px; left: 705px;">
+                                        <lnk:calendar value="#{controlPersonaIndividual.fechaCorte}" id="fechaUltimoPagoModPersonal" >
+                                            <p:ajax event="dateSelect" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="fechaUltimoPagoModPersonal" process="@this"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarFechaUltimoPagoInformacionPersonal(13)}" update="fechaUltimoPagoModPersonal" process="@this"/>
+                                            <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(13)}" process="fechaUltimoPagoModPersonal"/>
+                                        </lnk:calendar>
+                                    </div>
+
+
+
                                 </fieldset>
 
 
-                                <fieldset style="position: absolute; top: 245px; width: 810px; height: 220px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute; font-size: 12px;top: 210px; width: 380px; height: 170px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modCargo']}</strong></legend>
 
-                                   
+                                    <h:outputText  value="#{msg['nombreCargo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="cargoModCargoDesempeñado" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaCargo.cargo.nombre}" style="position: absolute; top: 20px; left: 230px;width: 150px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCargoDesempeñado(0)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCargoDesempeñado(0,'CARGO', controlPersonaIndividual.nuevaVigenciaCargo.cargo.nombre)}" process="@this" update="cargoModCargoDesempeñado"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+                                    <h:outputText  value="#{msg['motivoCargo']}*" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="motivoModCargoDesempeñado" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaCargo.motivocambiocargo.nombre}" style="position: absolute; top: 50px; left: 230px;width: 150px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCargoDesempeñado(1)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCargoDesempeñado(1,'MOTIVO', controlPersonaIndividual.nuevaVigenciaCargo.motivocambiocargo.nombre)}" process="@this" update="motivoModCargoDesempeñado"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+                                    <h:outputText  value="#{msg['nombreEstructuraCargo']}*" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="estructuraModCargoDesempeñado" disabled="#{controlPersonaIndividual.disableNombreEstructuraCargo}" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaCargo.estructura.nombre}" style="position: absolute; top: 80px; left: 230px;width: 150px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCargoDesempeñado(2)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCargoDesempeñado(2,'ESTRUCTURA', controlPersonaIndividual.nuevaVigenciaCargo.estructura.nombre)}" process="@this" update="estructuraModCargoDesempeñado"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+                                    <h:outputText  value="#{msg['papelDesempeñado']}" style="position: absolute; top: 115px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="papelModCargoDesempeñado" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaCargo.papel.descripcion}" style="position: absolute; top: 110px; left: 230px;width: 150px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCargoDesempeñado(3)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCargoDesempeñado(3,'PAPEL', controlPersonaIndividual.nuevaVigenciaCargo.papel.descripcion)}" process="@this" update="papelModCargoDesempeñado"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+                                    <h:outputText  value="#{msg['empleadoJefe']}" style="position: absolute; top: 145px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="empleadoJefeModCargoDesempeñado" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaCargo.empleadojefe.persona.nombreCompleto}" style="position: absolute; top: 140px; left: 230px;width: 150px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCargoDesempeñado(4)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCargoDesempeñado(4,'JEFE', controlPersonaIndividual.nuevaVigenciaCargo.empleadojefe.persona.nombreCompleto)}" process="@this" update="empleadoJefeModCargoDesempeñado"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
+
                                 </fieldset>
 
 
-
-                                <fieldset style="position: absolute; top: 480px; width: 810px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute;font-size: 12px; top: 210px; left: 410px; width: 400px; height: 170px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modCentroCosto']}</strong></legend>
 
+                                    <h:outputText  value="#{msg['descripcionMotivo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="motivoModCentroCosto" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaLocalizacion.motivo.descripcion}"  style="position: absolute; top: 20px; left: 245px;width: 155px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCentroCosto(0)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCentroCosto(0,'MOTIVO', controlPersonaIndividual.nuevaVigenciaLocalizacion.motivo.descripcion)}" process="@this" update="motivoModCentroCosto"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
                                     
+                                    <h:outputText  value="#{msg['descripcionEstructura']}*" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="estructuraModCentroCosto" disabled="#{controlPersonaIndividual.disableDescripcionEstructura}" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaLocalizacion.localizacion.nombre}"  style="position: absolute; top: 50px; left: 245px;width: 155px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceCentroCosto(1)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarCentroCosto(1,'ESTRUCTURA', controlPersonaIndividual.nuevaVigenciaLocalizacion.localizacion.centrocosto.nombre)}" process="@this" update="estructuraModCentroCosto"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+
                                 </fieldset>
 
-                                <fieldset style="position: absolute; top: 675px; width: 810px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute;font-size: 12px; top:400px; width: 380px; height: 70px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modTipoTrabajador']}</strong></legend>
 
-                                   
+                                    <h:outputText  value="#{msg['tipoTrabajador']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="tipoTrabajadorModTipoTrabajador" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaTipoTrabajador.tipotrabajador.nombre}" style="position: absolute; top: 30px; left: 230px;width: 150px;text-transform: uppercase">
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceTipoTrabajador(0)}" process="@this"/>
+                                        <p:ajax event="change" listener="#{controlPersonaIndividual.modificarTipoTrabajador(0,'TIPOTRABAJADOR', controlPersonaIndividual.nuevaVigenciaTipoTrabajador.tipotrabajador.nombre)}" process="@this" update="tipoTrabajadorModTipoTrabajador"/>
+                                        <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
+                                    </p:inputText>
+                                    
+
                                 </fieldset>
 
-
-                                <fieldset style="position: absolute; top: 870px; width: 810px; height: 180px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute;font-size: 12px; top:400px; width: 400px; height: 70px;left: 410px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modTipoSalario']}</strong></legend>
 
-                                   
+                                    <h:outputText  value="#{msg['tipoSalario']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="tipoSalarioModTipoSalario" style="position: absolute; top: 30px; left: 245px;width: 155px;text-transform: uppercase"/>
+
                                 </fieldset>
 
-
-                                <fieldset style="position: absolute; top: 1065px; width: 810px; height: 195px; border-radius: 10px; text-align: left">
+                                <fieldset style="position: absolute;font-size: 12px; top: 490px; width: 380px; height: 140px; border-radius: 10px; text-align: left">
                                     <legend style="font-size: 12px; color: blue"><strong>#{msg['modSueldo']}</strong></legend>
 
-                                   
+                                    <h:outputText  value="#{msg['valorSueldo']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="valorSueldoModSueldo" style="position: absolute; top: 20px; left: 230px;width: 150px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['motivoSueldo']}*" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="motivoSueldoModSueldo" style="position: absolute; top: 50px; left: 230px;width: 150px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['tipoCompensacion']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="tipoCompensacionModSueldo" style="position: absolute; top: 80px; left: 230px;width: 150px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['unidadPago']}" style="position: absolute; top: 115px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="unidadPagoModSueldo" style="position: absolute; top: 110px; left: 230px;width: 150px;text-transform: uppercase"/>
+
                                 </fieldset>
-                                
+
+                                <fieldset style="position: absolute;font-size: 12px; left: 410px; top: 490px; width: 400px; height: 140px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modTipoContrato']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['motivoContrato']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="motivoContratoModTipoContrato" style="position: absolute; top: 20px; left: 245px;width: 155px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['tipoContrato']}*" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="tipoContratoModTipoContrato" style="position: absolute; top: 50px; left: 245px;width: 155px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['fechaFinalContrato']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                    <div  style="position: absolute; top: 80px; left: 245px;">
+                                        <lnk:calendar id="fechaFinalContratoModTipoContrato" >
+                                            <p:ajax event="dateSelect" update="@this" process="@this"/>
+                                            <p:ajax event="change" update="@this" process="@this"/>
+                                        </lnk:calendar>
+                                    </div>
+
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; top:650px; width: 380px; height: 70px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modNormaLaboral']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['normaLaboral']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="normaLaboralModNormaLaboral" style="position: absolute; top: 30px; left: 230px;width: 150px;text-transform: uppercase"/>
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; left: 410px; top: 650px; width: 400px; height: 70px;border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modLegislacionLaboral']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['legislacionLaboral']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="legislacionLaboralModLegislacionLaboral" style="position: absolute; top: 30px; left: 245px;width: 155px;text-transform: uppercase"/>
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; top:740px; width: 380px; height: 70px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modUbicacionGeografica']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['ubicacionGeografica']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="ubicacionGeograficaModUbicacionGeografica" style="position: absolute; top: 30px; left: 230px;width: 150px;text-transform: uppercase"/>
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; top:740px;left: 410px; width: 400px; height: 70px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modJornadaLaboral']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['jornadaLaboral']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="jornadaLaboralModJornadaLaboral" style="position: absolute; top: 30px; left: 245px;width: 155px;text-transform: uppercase"/>
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; top: 830px; width: 810px; height: 105px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modFormaPago']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['formaPago']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="formaPagoModFormaPago" style="position: absolute; top: 20px; left: 230px;width: 170px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['cuentaPago']}" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="cuentaPagoModFormaPago" style="position: absolute; top: 50px; left: 230px;width: 170px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['tipoCuenta']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                    <p:selectOneMenu id="tipoCuentaModFormaPago" style="position: absolute; top: 80px; left: 230px; font-weight: bold;width: 100px;" >  
+                                        <f:selectItem itemLabel="" itemValue="null" />  
+                                        <f:selectItem itemLabel="#{msg['ahorros']}" itemValue="A" />  
+                                        <f:selectItem itemLabel="#{msg['corriente']}" itemValue="C" />
+                                        <p:ajax event="change" update="@this" />
+                                    </p:selectOneMenu>
+
+                                    <h:outputText  value="#{msg['sucursalPago']}" style="position: absolute; top: 25px; left: 450px;font-weight: bold"/>
+                                    <p:inputText id="sucursalPagoModFormaPago" style="position: absolute; top: 20px; left: 590px;width: 170px;text-transform: uppercase"/>
+
+                                    <h:outputText  value="#{msg['metodoPago']}*" style="position: absolute; top: 55px; left: 450px;font-weight: bold"/>
+                                    <p:inputText id="metodoPagoModFormaPago" style="position: absolute; top: 50px; left: 590px;width: 170px;text-transform: uppercase"/>
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; top: 960px; width: 810px; height: 160px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['modAfiliaciones']}</strong></legend>
+
+                                    <h:outputText  value="#{msg['eps']}*" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="epsModAfiliaciones" style="position: absolute; top: 20px; left: 400px;width: 350px;text-transform: uppercase"/>
+
+                                    <h:outputText  value="#{msg['arp']}*" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="arpModAfiliaciones" style="position: absolute; top: 50px; left: 400px;width: 350px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['fondoCensantias']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="afpModAfiliaciones" style="position: absolute; top: 80px; left: 400px;width: 350px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['afp']}" style="position: absolute; top:115px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="fondoCensantiasModAfiliaciones" style="position: absolute; top: 110px; left: 400px;width: 350px;text-transform: uppercase"/>
+
+
+                                    <h:outputText  value="#{msg['cajaCompensacion']}" style="position: absolute; top: 145px; left: 65px;font-weight: bold"/>
+                                    <p:inputText id="cajaCompensacionModAfiliaciones" style="position: absolute; top: 140px; left: 400px;width: 350px;text-transform: uppercase"/>
+
+                                </fieldset>
+
+                                <fieldset style="position: absolute;font-size: 12px; top: 1145px; width: 810px; height: 230px; border-radius: 10px; text-align: left">
+                                    <legend style="font-size: 12px; color: blue"><strong>#{msg['camposOpcionales']}</strong></legend>
+
+                                    <fieldset style="position: absolute;font-size: 12px; top: 20px; width: 370px; height: 70px; border-radius: 10px; text-align: left">
+                                        <legend style="font-size: 12px; color: blue"><strong>#{msg['modFactorRH']}</strong></legend>
+
+                                        <h:outputText  value="#{msg['grupoSanguineo']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                        <p:selectOneMenu id="grupoSanguineoModFactorRH" style="position: absolute; top: 20px; left: 230px; font-weight: bold;width: 100px;" >  
+                                            <f:selectItem itemLabel="" itemValue="null" />  
+                                            <f:selectItem itemLabel="A" itemValue="A" />  
+                                            <f:selectItem itemLabel="AB" itemValue="AB" />
+                                            <f:selectItem itemLabel="B" itemValue="B" />  
+                                            <f:selectItem itemLabel="O" itemValue="O" />
+                                            <p:ajax event="change" update="@this" />
+                                        </p:selectOneMenu>
+
+                                        <h:outputText  value="#{msg['factorRH']}" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                        <p:selectOneMenu id="factorRHModFactorRH" style="position: absolute; top: 50px; left: 230px; font-weight: bold;width: 100px;" >  
+                                            <f:selectItem itemLabel="" itemValue="null" />  
+                                            <f:selectItem itemLabel="+" itemValue="+" />  
+                                            <f:selectItem itemLabel="-" itemValue="-" />
+                                            <p:ajax event="change" update="@this" />
+                                        </p:selectOneMenu>
+
+                                    </fieldset>
+
+                                    <fieldset style="position: absolute;font-size: 12px;top: 20px;left: 410px; width: 380px;height: 70px; border-radius: 10px; text-align: left">
+                                        <legend style="font-size: 12px; color: blue"><strong>#{msg['modEstadoCivil']}</strong></legend>
+
+                                        <h:outputText  value="#{msg['descripcion']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                        <p:inputText id="estadoCivilModEstadoCivil" style="position: absolute; top: 20px;left: 205px;width: 155px;text-transform: uppercase"/>
+
+
+                                    </fieldset>
+
+
+                                    <fieldset style="position: absolute;font-size: 12px; top: 110px; width: 370px; height: 100px; border-radius: 10px; text-align: left">
+                                        <legend style="font-size: 12px; color: blue"><strong>#{msg['modDireccion']}</strong></legend>
+
+
+                                        <h:outputText  value="#{msg['direccion']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                        <p:inputText id="direccionModDireccion" style="position: absolute; top: 20px; left: 230px;width: 130px;text-transform: uppercase"/>
+
+                                        <h:outputText  value="#{msg['ciudad']}" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                        <p:inputText id="ciudadModDireccion" style="position: absolute; top: 50px; left: 230px;width: 130px;text-transform: uppercase"/>
+
+
+                                    </fieldset>
+
+                                    <fieldset style="position: absolute;font-size: 12px;left: 410px; width: 380px; top: 110px; height: 100px; border-radius: 10px; text-align: left">
+                                        <legend style="font-size: 12px; color: blue"><strong>#{msg['modTelefono']}</strong></legend>
+
+
+                                        <h:outputText  value="#{msg['tipoTelefono']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
+                                        <p:inputText id="tipoTelefonoModTelefono" style="position: absolute; top: 20px; left: 205px;width: 155px;text-transform: uppercase"/>
+
+                                        <h:outputText  value="#{msg['ciudad']}" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
+                                        <p:inputText id="ciudadModTelefono" style="position: absolute; top: 50px; left: 205px;width: 155px;text-transform: uppercase"/>
+
+                                        <h:outputText  value="#{msg['numeroTelefono']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                        <p:inputText id="numeroTelefonoModTelefono" style="position: absolute; top: 80px; left: 205px;width: 155px;text-transform: uppercase"/>
+
+                                    </fieldset>
+                                </fieldset>
+
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 700px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 20px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 790px; top: 510px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-closethick"  action="retornoConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 505px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 505px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick"  action="retornoConcepto" process="@this" />
                     </p:panel>
+                    
+                    <p:dialog header="#{msg['tipoTrabajadorM']}" widgetVar="TipoTrabajadorTipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorTipoTrabajadorDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovTipoTrabajadorTipoTrabajador" style=" width: 370px" var="tipoTTT" value="#{controlPersonaIndividual.lovTiposTrabajadores}" rowKey="#{tipoTTT.secuencia}"
+                                     selection="#{controlPersonaIndividual.tipoTrabajadorSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoTrabajadorTipoTrabajador" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposTrabajadores}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}"  process="@this" onstart="lovTipoTrabajadorTipoTrabajador.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarTTTT"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarTTTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajadorTipoTrabajador.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tipoTTT.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreTipoTrabajador']}" />
+                                </f:facet>
+                                <h:outputText  value="#{tipoTTT.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador, aceptarTTTT" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTTTT" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoTrabajadorTipoTrabajadorDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroTipoTrabajadorTipoTrabajador()}" update="lovTipoTrabajadorTipoTrabajador" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovTipoTrabajadorTipoTrabajador:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
 
-
+                    <p:dialog header="#{msg['estructuraM2']}" widgetVar="EstructuraCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCentroCostoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovEstructuraCentroCosto" style=" width: 370px" var="estructuraCC" value="#{controlPersonaIndividual.lovEstructurasCentroCosto}" rowKey="#{estructuraCC.secuencia}"
+                                     selection="#{controlPersonaIndividual.estructuraCentroCostoSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEstructuraCentroCosto" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEstructurasCentroCosto}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}"  process="@this" onstart="lovEstructuraCentroCosto.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarECC"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarECC']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEstructuraCentroCosto.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{estructuraCC.centrocosto.codigo}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['codigoCentroCosto']}" />
+                                </f:facet>
+                                <h:outputText  value="#{estructuraCC.centrocosto.codigo}" />
+                            </p:column>
+                            <p:column filterBy="#{estructuraCC.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreEstructura']}" />
+                                </f:facet>
+                                <h:outputText  value="#{estructuraCC.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{estructuraCC.centrocosto.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreCentroCosto']}" />
+                                </f:facet>
+                                <h:outputText  value="#{estructuraCC.centrocosto.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarECC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto, aceptarECC" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovEstructuraCentroCosto:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasECC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EstructuraCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovEstructuraCentroCosto:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="#{msg['motivoLocalizacionM']}" widgetVar="MotivoLocalizacionCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="MotivoLocalizacionCentroCostoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovMotivoLocalizacionCentroCosto" style=" width: 370px" var="motivoLCC" value="#{controlPersonaIndividual.lovMotivosLocalizaciones}" rowKey="#{motivoLCC.secuencia}"
+                                     selection="#{controlPersonaIndividual.motivoLocalizacionSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoLocalizacionCentroCosto" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMotivosLocalizaciones}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}"  process="@this" onstart="lovMotivoLocalizacionCentroCosto.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMLCC"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarMLCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovMotivoLocalizacionCentroCosto.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{motivoLCC.descripcion}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['descripcionMotivo']}" />
+                                </f:facet>
+                                <h:outputText  value="#{motivoLCC.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoLocalizacionCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCentroCosto()}" update="lovMotivoLocalizacionCentroCosto, aceptarMLCC" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovMotivoLocalizacionCentroCosto:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasMLCC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MotivoLocalizacionCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCentroCosto()}" update="lovMotivoLocalizacionCentroCosto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovMotivoLocalizacionCentroCosto:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="#{msg['cargoM']}" widgetVar="CargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="CargoCargoDesempeñadoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovCargoCargoDesempeñado" style=" width: 370px" var="cargoCD" value="#{controlPersonaIndividual.lovCargos}" rowKey="#{cargoCD.secuencia}"
+                                     selection="#{controlPersonaIndividual.cargoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovCargoCargoDesempeñado" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCargos}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}"  process="@this" onstart="lovCargoCargoDesempeñado.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCCD"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCargoCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{cargoCD.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreCargo']}" />
+                                </f:facet>
+                                <h:outputText  value="#{cargoCD.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CargoCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroCargoCargoDesempeñado()}" update="lovCargoCargoDesempeñado, aceptarCCD" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovCargoCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CargoCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroCargoCargoDesempeñado()}" update="lovCargoCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovCargoCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="#{msg['motivoCambioCargoM']}" widgetVar="MotivoCambioCargoCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="MotivoCambioCargoCargoDesempeñadoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovMotivoCambioCargoCargoDesempeñado" style=" width: 370px" var="motivoCambioCD" value="#{controlPersonaIndividual.lovMotivosCambiosCargos}" rowKey="#{motivoCambioCD.secuencia}"
+                                     selection="#{controlPersonaIndividual.motivoCambioCargoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivoCambioCargoCargoDesempeñado" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovMotivosCambiosCargos}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}"  process="@this" onstart="lovMotivoCambioCargoCargoDesempeñado.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMCCCD"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarMCCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovMotivoCambioCargoCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{motivoCambioCD.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreMotivoCargo']}" />
+                                </f:facet>
+                                <h:outputText  value="#{motivoCambioCD.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="MotivoCambioCargoCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroMotivoCambioCargoCargoDesempeñado()}" update="lovMotivoCambioCargoCargoDesempeñado, aceptarMCCCD" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovMotivoCambioCargoCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasMCCCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="MotivoCambioCargoCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroMotivoCambioCargoCargoDesempeñado()}" update="lovMotivoCambioCargoCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovMotivoCambioCargoCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="#{msg['estructuraM']}" widgetVar="EstructuraCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCargoDesempeñadoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovEstructuraCargoDesempeñado" style=" width: 370px" var="estructuraCD" value="#{controlPersonaIndividual.lovEstructuras}" rowKey="#{estructuraCD.secuencia}"
+                                     selection="#{controlPersonaIndividual.estructuraSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEstructuraCargoDesempeñado" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEstructuras}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}"  process="@this" onstart="lovEstructuraCargoDesempeñado.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarECD"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarECD']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEstructuraCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{estructuraCD.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreEstructura']}" />
+                                </f:facet>
+                                <h:outputText  value="#{estructuraCD.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarECD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCargoDesempeñado()}" update="lovEstructuraCargoDesempeñado, aceptarECD" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovEstructuraCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasECD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EstructuraCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCargoDesempeñado()}" update="lovEstructuraCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovEstructuraCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="#{msg['papelM']}" widgetVar="PapelCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="PapelCargoDesempeñadoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovPapelCargoDesempeñado" style=" width: 370px" var="papelCD" value="#{controlPersonaIndividual.lovPapeles}" rowKey="#{papelCD.secuencia}"
+                                     selection="#{controlPersonaIndividual.papelSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovPapelCargoDesempeñado" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovPapeles}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado()}"  process="@this" onstart="lovPapelCargoDesempeñado.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarPCD"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarPCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovPapelCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{papelCD.descripcion}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombrePapel']}" />
+                                </f:facet>
+                                <h:outputText  value="#{papelCD.descripcion}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="PapelCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroPapelCargoDesempeñado}" update="lovPapelCargoDesempeñado, aceptarPCD" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovPapelCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasPCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="PapelCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroPapelCargoDesempeñado()}" update="lovPapelCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovPapelCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    <p:dialog header="#{msg['jefeM']}" widgetVar="EmpleadoJefeCargoDesempeñadoDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoJefeCargoDesempeñadoDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovEmpleadoJefeCargoDesempeñado" style=" width: 370px" var="jefeCD" value="#{controlPersonaIndividual.lovEmpleados}" rowKey="#{jefeCD.secuencia}"
+                                     selection="#{controlPersonaIndividual.empleadoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpleadoJefeCargoDesempeñado" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEmpleados}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado()}"  process="@this" onstart="lovEmpleadoJefeCargoDesempeñado.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarEJCD"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarEJCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpleadoJefeCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{jefeCD.persona.nombreCompleto}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['empleado']}" />
+                                </f:facet>
+                                <h:outputText  value="#{jefeCD.persona.nombreCompleto}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpleadoJefeCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroJefeCargoDesempeñado}" update="lovEmpleadoJefeCargoDesempeñado, aceptarEJCD" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovEmpleadoJefeCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasEJCD" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EmpleadoJefeCargoDesempeñadoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroJefeCargoDesempeñado()}" update="lovEmpleadoJefeCargoDesempeñado" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovEmpleadoJefeCargoDesempeñado:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovEmpresaInformacionPersonal" style=" width: 370px" var="empresaIP" value="#{controlPersonaIndividual.lovEmpresas}" rowKey="#{empresaIP.secuencia}"
+                                     selection="#{controlPersonaIndividual.empresaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpresaInformacionPersonal" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEmpresas}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonal()}"  process="@this" onstart="lovEmpresaInformacionPersonal.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarEIP"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarEIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresaInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{empresaIP.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
+                                </f:facet>
+                                <h:outputText  value="#{empresaIP.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{empresaIP.nit}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['nitEmpresa']}" />
+                                </f:facet>
+                                <h:outputText value="#{empresaIP.nit}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarEIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpresaInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonal()}" update="lovEmpresaInformacionPersonal, aceptarEIP" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovEmpresaInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasEIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EmpresaInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonal()}" update="lovEmpresaInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovEmpresaInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                    
+                    <p:dialog header="#{msg['tipoDocumentoM']}" widgetVar="TipoDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="TipoDocumentoInformacionPersonalDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                        <p:dataTable id="lovTipoDocumentoInformacionPersonal" style=" width: 370px" var="tipoDIP" value="#{controlPersonaIndividual.lovTiposDocumentos}" rowKey="#{tipoDIP.secuencia}"
+                                     selection="#{controlPersonaIndividual.tipoDocumentoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoDocumentoInformacionPersonal" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposDocumentos}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}"  process="@this" onstart="lovTipoDocumentoInformacionPersonal.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarTDIP"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarTDIP']}: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoDocumentoInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{tipoDIP.nombrecorto}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombreCorto']}" />
+                                </f:facet>
+                                <h:outputText  value="#{tipoDIP.nombrecorto}" />
+                            </p:column>
+                            <p:column filterBy="#{tipoDIP.nombrelargo}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['tipoDocumento']}" />
+                                </f:facet>
+                                <h:outputText value="#{tipoDIP.nombrelargo}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TipoDocumentoInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroTipoDocumentoInformacionPersonal()}" update="lovTipoDocumentoInformacionPersonal, aceptarTDIP" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovTipoDocumentoInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasTDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TipoDocumentoInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroTipoDocumentoInformacionPersonal()}" update="lovTipoDocumentoInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovTipoDocumentoInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
                    
+                     <p:dialog header="#{msg['ciudadDocumentoM']}" widgetVar="CiudadDocumentoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadDocumentoInformacionPersonalDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                         <p:dataTable id="lovCiudadDocumentoInformacionPersonal" style=" width: 370px" var="ciudadDIP" value="#{controlPersonaIndividual.lovCiudades}" rowKey="#{ciudadDIP.secuencia}"
+                                      selection="#{controlPersonaIndividual.ciudadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovCiudadDocumentoInformacionPersonal" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCiudades}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}"  process="@this" onstart="lovCiudadDocumentoInformacionPersonal.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCDIP"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarCDIP']}: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadDocumentoInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{ciudadDIP.nombre}"  filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombre']}" />
+                                </f:facet>
+                                <h:outputText  value="#{ciudadDIP.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{ciudadDIP.departamento.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['departamento']}" />
+                                </f:facet>
+                                <h:outputText value="#{ciudadDIP.departamento.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadDocumentoInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadDocumentoInformacionPersonal()}" update="lovCiudadDocumentoInformacionPersonal, aceptarCDIP" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovCiudadDocumentoInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCDIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CiudadDocumentoInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadDocumentoInformacionPersonal()}" update="lovCiudadDocumentoInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovCiudadDocumentoInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+                    
+                     <p:dialog header="#{msg['ciudadNacimientoM']}" widgetVar="CiudadNacimientoInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="CiudadNacimientoInformacionPersonalDialogo"  
+                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                         <p:dataTable id="lovCiudadNacimientoInformacionPersonal" style=" width: 370px" var="ciudadDIP" value="#{controlPersonaIndividual.lovCiudades}" rowKey="#{ciudadDIP.secuencia}"
+                                      selection="#{controlPersonaIndividual.ciudadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovCiudadNacimientoInformacionPersonal" scrollable="true" scrollHeight="250"
+                                     emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovCiudades}">
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}"  process="@this" onstart="lovCiudadNacimientoInformacionPersonal.clearFilters()" />
+                            <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCNIP"/>
+                            <f:facet name="header">  
+                                <h:outputText value="#{msg['buscarCNIP']}: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadNacimientoInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                            </f:facet>
+                            <p:column filterBy="#{ciudadDIP.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText style="text-align: center" value="#{msg['nombre']}" />
+                                </f:facet>
+                                <h:outputText  value="#{ciudadDIP.nombre}" />
+                            </p:column>
+                            <p:column filterBy="#{ciudadDIP.departamento.nombre}" filterMatchMode="contains" >
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['departamento']}" />
+                                </f:facet>
+                                <h:outputText value="#{ciudadDIP.departamento.nombre}" />
+                            </p:column>
+                        </p:dataTable>
+                        <p:commandButton id="aceptarCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="CiudadNacimientoInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroCiudadNacimientoInformacionPersonal()}" update="lovCiudadNacimientoInformacionPersonal, aceptarCNIP" process="@this" icon="ui-icon-check">
+                            <p:resetInput target=":form:lovCiudadNacimientoInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                        <p:commandButton id="atrasCNIP" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="CiudadNacimientoInformacionPersonalDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroCiudadNacimientoInformacionPersonal()}" update="lovCiudadNacimientoInformacionPersonal" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:resetInput target=":form:lovCiudadNacimientoInformacionPersonal:globalFilter"/>
+                        </p:commandButton>
+                    </p:dialog>
+
 
                 </h:form>
-                
+
                 <h:form style="position: relative">
                     <p:toolbar style="position: absolute; top: 37px; left: 12px; height: 24px">
                         <p:toolbarGroup align="left"> 
                             <p:commandButton id="guardarRapido" disabled="true" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;"  process="@this"/>
                             <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
 
-                            <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                            <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaIndividual.editarCelda()}" process="@this"/>
                             <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
 
                             <p:separator style="position: relative; top: -9px"/>
 
-                            <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                            <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
                             <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
 
-                            <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
+                            <p:commandButton id="filtrar" disabled="true" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>
                             <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
 
                             <p:separator style="position: relative; top: -9px"/>
 
-                            <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"  />
+                            <p:commandButton id="exportarXLS" disabled="true" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"  />
                             <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
-                            <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false">
-                                <p:dataExporter type="xml"  target=":formExportar:datosBusquedaAvanzadaExportar" fileName="ResultadosBusquedaAvanzada_XML" encoding="UTF-8"/> 
-                            </p:commandButton>
+                            <p:commandButton id="exportarXML" disabled="true" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"/>
                             <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
 
-                            <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"/>
+                            <p:commandButton id="exportarPDF" disabled="true" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  ajax="false"/>
                             <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                             <p:separator style="position: relative; top: -9px"/>
@@ -122,18 +814,131 @@
                             <p:separator style="position: relative; top: -9px"/>
                             <p:commandButton id="rastro" value="" disabled="true" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
                             <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
-                            
+
                             <p:separator style="position: relative; top: -9px"/> 
-                                
+
                             <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
                             <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
-                            
+
                             <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  action="nominaf" process="@this"/>  
                             <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                                
+
                         </p:toolbarGroup>  
                     </p:toolbar> 
-
+                    
+                </h:form>
+                
+                <h:form>
+                    
+                    <p:dialog id="advertenciaFechaIngreso" header="#{msg['atencion']}" widgetVar="advertenciaFechaIngreso"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['advertenciaFechaIngreso']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <!-- EDITAR CELDA INFORMACION PERSONAL -->
+                    
+                    <p:dialog id="editarEmpresaInformacionPersonal" header="#{msg['editarEmpresaInformacionPersonal']}" widgetVar="editarEmpresaInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevoEmpleado.empresa.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarPrimerApellidoInformacionPersonal" header="#{msg['editarPrimerApellidoInformacionPersonal']}" widgetVar="editarPrimerApellidoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.primerapellido}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarSegundoApellidoInformacionPersonal" header="#{msg['editarSegundoApellidoInformacionPersonal']}" widgetVar="editarSegundoApellidoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.segundoapellido}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarNombresInformacionPersonal" header="#{msg['editarNombresInformacionPersonal']}" widgetVar="editarNombresInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarTipoDocumentoInformacionPersonal" header="#{msg['editarTipoDocumentoInformacionPersonal']}" widgetVar="editarTipoDocumentoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.tipodocumento.nombrelargo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarNumeroDocumentoInformacionPersonal" header="#{msg['editarNumeroDocumentoInformacionPersonal']}" widgetVar="editarNumeroDocumentoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.numerodocumento}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarCiudadDocumentoInformacionPersonal" header="#{msg['editarCiudadDocumentoInformacionPersonal']}" widgetVar="editarCiudadDocumentoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.ciudaddocumento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarFechaNacimientoInformacionPersonal" header="#{msg['editarFechaNacimientoInformacionPersonal']}" widgetVar="editarFechaNacimientoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.fechanacimiento}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarCiudadNacimientoInformacionPersonal" header="#{msg['editarCiudadNacimientoInformacionPersonal']}" widgetVar="editarCiudadNacimientoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.ciudadnacimiento.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarFechaIngresoInformacionPersonal" header="#{msg['editarFechaIngresoInformacionPersonal']}" widgetVar="editarFechaIngresoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.fechaIngreso}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarCodigoEmpleadoInformacionPersonal" header="#{msg['editarCodigoEmpleadoInformacionPersonal']}" widgetVar="editarCodigoEmpleadoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevoEmpleado.codigoempleado}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarEmailInformacionPersonal" header="#{msg['editarEmailInformacionPersonal']}" widgetVar="editarEmailInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaPersona.email}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarFechaUltimoPagoInformacionPersonal" header="#{msg['editarFechaUltimoPagoInformacionPersonal']}" widgetVar="editarFechaUltimoPagoInformacionPersonal" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.fechaCorte}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
+                    </p:dialog>
+                    
+                    <!-- CARGOS DESEMPEÑADOS -->
+                    
+                    <p:dialog id="editarCargoCargoDesempeñado" header="#{msg['editarCargoCargoDesempeñado']}" widgetVar="editarCargoCargoDesempeñado" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaCargo.cargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarMotivoCargoDesempeñado" header="#{msg['editarMotivoCargoDesempeñado']}" widgetVar="editarMotivoCargoDesempeñado" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaCargo.motivocambiocargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarEstructuraCargoDesempeñado" header="#{msg['editarEstructuraCargoDesempeñado']}" widgetVar="editarEstructuraCargoDesempeñado" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaCargo.estructura.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarPapelCargoDesempeñado" header="#{msg['editarPapelCargoDesempeñado']}" widgetVar="editarPapelCargoDesempeñado" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaCargo.papel.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarEmpleadoJefeCargoDesempeñado" header="#{msg['editarEmpleadoJefeCargoDesempeñado']}" widgetVar="editarEmpleadoJefeCargoDesempeñado" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaCargo.empleadojefe.persona.nombreCompleto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <!-- CENTRO COSTO -->
+                    
+                    <p:dialog id="editarEstructuraCentroCosto" header="#{msg['editarEstructuraCentroCosto']}" widgetVar="editarEstructuraCentroCosto" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaLocalizacion.localizacion.centrocosto.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <p:dialog id="editarMotivoCentroCosto" header="#{msg['editarMotivoCentroCosto']}" widgetVar="editarMotivoCentroCosto" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaLocalizacion.motivo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    <!-- TIPO TRABAJADOR -->
+                    
+                    <p:dialog id="editarTrabajadorTipoTrabajador" header="#{msg['editarTrabajadorTipoTrabajador']}" widgetVar="editarTrabajadorTipoTrabajador" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevaVigenciaTipoTrabajador.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    
+                    
                 </h:form>
 
 

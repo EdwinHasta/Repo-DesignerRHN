@@ -289,7 +289,7 @@
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" >
                             <p:dataTable id="lovMotivosRetiros" style=" width: 370px" var="motivosRetiros" value="#{controlVigenciaTipoTrabajador.motivosRetiros}" rowKey="#{motivosRetiros.secuencia}"
                                          selection="#{controlVigenciaTipoTrabajador.motivoRetiroSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovMotivosRetiros" scrollable="true" scrollHeight="250"
-                                         emptyMessage="#{msg['lovvacio']}">
+                                         emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlVigenciaTipoTrabajador.filtradoMotivosRetiros}">
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaTipoTrabajador.actualizarMotivoRetiro()}"  process="@this" onstart="lovMotivosRetiros.clearFilters()" />
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaTipoTrabajador.activarAceptar()}" update=":form:aceptarMR"/>
                                 <f:facet name="header">  
