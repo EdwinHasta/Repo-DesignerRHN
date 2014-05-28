@@ -15,69 +15,75 @@ import javax.persistence.criteria.CriteriaQuery;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Deportes'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Deportes' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaDeportes implements PersistenciaDeportesInterface{
+public class PersistenciaDeportes implements PersistenciaDeportesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
 
     @Override
-    public void crear(EntityManager em,Deportes deportes) {
-        try{
-        em.persist(deportes);
-        } catch(Exception e){
+    public void crear(EntityManager em, Deportes deportes) {
+        try {
+            em.getTransaction().begin();
+            em.persist(deportes);
+            em.getTransaction().commit();
+        } catch (Exception e) {
             System.out.println("Error creando Deportes PersistenciaDeportes");
         }
     }
-  
+
     @Override
-    public void editar(EntityManager em,Deportes deportes) {
+    public void editar(EntityManager em, Deportes deportes) {
         try {
-        em.merge(deportes);
-        } catch(Exception e){
+            em.getTransaction().begin();
+            em.merge(deportes);
+            em.getTransaction().commit();
+        } catch (Exception e) {
             System.out.println("Error editando Deportes PersistenciaDeportes");
         }
     }
- 
+
     @Override
-    public void borrar(EntityManager em,Deportes deportes) {
-        try{
-        em.remove(em.merge(deportes));
-        } catch(Exception e){
+    public void borrar(EntityManager em, Deportes deportes) {
+        try {
+            em.getTransaction().begin();
+            em.remove(em.merge(deportes));
+            em.getTransaction().commit();
+        } catch (Exception e) {
             System.out.println("Error borrando Deportes PersistenciaDeportes");
         }
     }
 
     @Override
-    public Deportes buscarDeporte(EntityManager em,BigInteger secuencia) {
+    public Deportes buscarDeporte(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Deportes.class, secuencia);
         } catch (Exception e) {
-            System.out.println("Error buscarDeporte PersistenciaDeportes : "+e.toString());
+            System.out.println("Error buscarDeporte PersistenciaDeportes : " + e.toString());
             return null;
         }
     }
 
     @Override
     public List<Deportes> buscarDeportes(EntityManager em) {
-        try{
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Deportes.class));
-        return em.createQuery(cq).getResultList();
-        } catch(Exception e){
+        try {
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Deportes.class));
+            return em.createQuery(cq).getResultList();
+        } catch (Exception e) {
             System.out.println("Error buscarDeportes PersistenciaDeportes");
             return null;
         }
     }
-    
+
     @Override
-    public BigInteger contadorParametrosInformes(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorParametrosInformes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT (*) FROM parametrosinformes WHERE deporte =  ?";
@@ -95,7 +101,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public BigInteger contadorDeportesPersonas(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorDeportesPersonas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM deportespersonas WHERE deporte = ?";
@@ -112,7 +118,7 @@ public class PersistenciaDeportes implements PersistenciaDeportesInterface{
     }
 
     @Override
-    public BigInteger verificarBorradoVigenciasDeportes(EntityManager em,BigInteger secuencia) {
+    public BigInteger verificarBorradoVigenciasDeportes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT count(*) FROM VigenciasDeportes  WHERE  deporte   =?";

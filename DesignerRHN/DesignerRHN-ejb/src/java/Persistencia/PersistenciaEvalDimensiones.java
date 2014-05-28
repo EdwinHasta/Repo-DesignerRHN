@@ -7,7 +7,6 @@ package Persistencia;
 
 import InterfacePersistencia.PersistenciaEvalDimensionesInterface;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import Entidades.EvalDimensiones;
 import java.math.BigInteger;
 import java.util.List;
@@ -25,21 +24,26 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,EvalDimensiones evalDimensiones) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, EvalDimensiones evalDimensiones) {
+        em.getTransaction().begin();
         em.persist(evalDimensiones);
+        em.getTransaction().commit();
     }
 
-    public void editar(EntityManager em,EvalDimensiones evalDimensiones) {
+    public void editar(EntityManager em, EvalDimensiones evalDimensiones) {
+        em.getTransaction().begin();
         em.merge(evalDimensiones);
+        em.getTransaction().commit();
     }
 
-    public void borrar(EntityManager em,EvalDimensiones evalDimensiones) {
+    public void borrar(EntityManager em, EvalDimensiones evalDimensiones) {
+        em.getTransaction().begin();
         em.remove(em.merge(evalDimensiones));
+        em.getTransaction().commit();
     }
 
-    public EvalDimensiones buscarEvalDimension(EntityManager em,BigInteger secuencia) {
+    public EvalDimensiones buscarEvalDimension(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(EvalDimensiones.class, secuencia);
         } catch (Exception e) {
@@ -58,8 +62,8 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
             return null;
         }
     }
-    
-    public BigInteger contradorEvalPlanillas(EntityManager em,BigInteger secuencia) {
+
+    public BigInteger contradorEvalPlanillas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM evaldimensiones ev, evalplanillas ep  WHERE ep.dimension=ev.secuencia AND ev.secuencia = ? ";

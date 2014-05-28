@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -40,8 +41,7 @@ public class ControlEmpresasBancos implements Serializable {
     AdministrarEmpresasBancosInterface administrarEmpresasBancos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     private List<EmpresasBancos> listEmpresasBancos;
     private List<EmpresasBancos> filtrarEmpresasBancos;
     private List<EmpresasBancos> crearEmpresasBancos;
@@ -50,6 +50,7 @@ public class ControlEmpresasBancos implements Serializable {
     private EmpresasBancos nuevoEmpresasBancos;
     private EmpresasBancos duplicarEmpresasBancos;
     private EmpresasBancos editarEmpresasBancos;
+    private EmpresasBancos empresasBancoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -109,10 +110,11 @@ public class ControlEmpresasBancos implements Serializable {
         listaCiudades = null;
         filtradoCiudades = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
+        aceptar = true;
     }
-    
-     @PostConstruct
+
+    @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
@@ -243,17 +245,18 @@ public class ControlEmpresasBancos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
+            obsoleto = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
             obsoleto.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:pais");
             pais.setFilterStyle("display: none; visibility: hidden;");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
             subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEmpresasBancos");
             bandera = 0;
@@ -276,33 +279,34 @@ public class ControlEmpresasBancos implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
+            tamano = 246;
+            obsoleto = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
             obsoleto.setFilterStyle("width: 20px");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:pais");
             pais.setFilterStyle("width: 130px");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
             subTituloFirma.setFilterStyle("width: 130px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
             personafir.setFilterStyle("width: 130px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
             cargo.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosEmpresasBancos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
+            tamano = 270;
+            obsoleto = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
             obsoleto.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:pais");
             pais.setFilterStyle("display: none; visibility: hidden;");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
             subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosEmpresasBancos");
@@ -1446,7 +1450,9 @@ public class ControlEmpresasBancos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEmpresasBancos = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEmpresasBancos");
             k = 0;
             guardado = true;
@@ -1553,17 +1559,18 @@ public class ControlEmpresasBancos implements Serializable {
 
         if (contador == 4) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
                 obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:pais");
+                pais = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:pais");
                 pais.setFilterStyle("display: none; visibility: hidden;");
-                subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
+                subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
                 subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarEmpresasBancos = null;
@@ -1613,17 +1620,15 @@ public class ControlEmpresasBancos implements Serializable {
     //------------------------------------------------------------------------------
     public void cargarNuevoEmpresasBancos() {
         System.out.println("cargarNuevoEmpresasBancos");
-        if (index >= 0) {
+        
             duplicarEmpresasBancos = new EmpresasBancos();
             duplicarEmpresasBancos.setEmpresa(new Empresas());
             duplicarEmpresasBancos.setBanco(new Bancos());
             duplicarEmpresasBancos.setCiudad(new Ciudades());
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("nuevaTipoempresa:duplicarTE");
             context.execute("nuevoRegistroEmpresasBancos.show()");
-
-        }
-    }
+         
+   }
 
     public void duplicandoEmpresasBancos() {
         System.out.println("duplicandoEmpresasBancos");
@@ -1737,16 +1742,17 @@ public class ControlEmpresasBancos implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                obsoleto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
                 obsoleto.setFilterStyle("display: none; visibility: hidden;");
-                pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:pais");
+                pais = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:pais");
                 pais.setFilterStyle("display: none; visibility: hidden;");
-                subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
+                subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
                 subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEmpresasBancos");
                 bandera = 0;
@@ -1991,6 +1997,14 @@ public class ControlEmpresasBancos implements Serializable {
 
     public void setCiudadSeleccionado(Ciudades cargoSeleccionado) {
         this.cargoSeleccionado = cargoSeleccionado;
+    }
+
+    public EmpresasBancos getEmpresasBancoSeleccionado() {
+        return empresasBancoSeleccionado;
+    }
+
+    public void setEmpresasBancoSeleccionado(EmpresasBancos empresasBancoSeleccionado) {
+        this.empresasBancoSeleccionado = empresasBancoSeleccionado;
     }
 
 }

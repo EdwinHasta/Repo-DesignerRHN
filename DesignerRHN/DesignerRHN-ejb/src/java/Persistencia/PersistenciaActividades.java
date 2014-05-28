@@ -27,12 +27,13 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Actividades actividades) {
         try {
+            em.getTransaction().begin();
             em.persist(actividades);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error creando bancos PersistenciaActividades");
         }
@@ -41,7 +42,9 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     @Override
     public void editar(EntityManager em, Actividades actividades) {
         try {
+            em.getTransaction().begin();
             em.merge(actividades);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editando bancos PersistenciaActividades");
         }
@@ -50,7 +53,9 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
     @Override
     public void borrar(EntityManager em, Actividades actividades) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(actividades));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrando bancos PersistenciaActividades");
         }
@@ -74,7 +79,6 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
             String sqlQuery = "SELECT COUNT(*)FROM biennecesidades WHERE actividad = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador PersistenciaActividades contarTiposLegalizaciones persistencia " + retorno);
             return retorno;
@@ -90,7 +94,6 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
             String sqlQuery = "SELECT COUNT(*)FROM parametrosinformes WHERE actividadbienestar = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador PersistenciaActividades contarTiposLegalizaciones persistencia " + retorno);
             return retorno;

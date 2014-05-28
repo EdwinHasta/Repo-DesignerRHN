@@ -27,25 +27,30 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Clasesausentismos clasesAusentismos) {
+    public void crear(EntityManager em, Clasesausentismos clasesAusentismos) {
         try {
+            em.getTransaction().begin();
             em.merge(clasesAusentismos);
+            em.getTransaction().commit();
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaClasesAusentismos.crear");
         }
     }
 
     @Override
-    public void editar(EntityManager em,Clasesausentismos clasesAusentismos) {
+    public void editar(EntityManager em, Clasesausentismos clasesAusentismos) {
+        em.getTransaction().begin();
         em.merge(clasesAusentismos);
+        em.getTransaction().commit();
     }
 
     @Override
-    public void borrar(EntityManager em,Clasesausentismos clasesAusentismos) {
+    public void borrar(EntityManager em, Clasesausentismos clasesAusentismos) {
+        em.getTransaction().begin();
         em.remove(em.merge(clasesAusentismos));
+        em.getTransaction().commit();
     }
 
     @Override
@@ -61,7 +66,7 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
         }
     }
 
-    public BigInteger contadorSoAusentismosClaseAusentismo(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSoAusentismosClaseAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createNativeQuery("SELECT COUNT(*)FROM soausentismos WHERE clase = ?");
@@ -75,7 +80,7 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
         }
     }
 
-    public BigInteger contadorCausasAusentismosClaseAusentismo(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorCausasAusentismosClaseAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createNativeQuery("SELECT COUNT(*)FROM causasausentismos WHERE clase = ?");

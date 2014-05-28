@@ -128,14 +128,14 @@ public class CentrosCostos implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
+        if (nombre != null) {
+            return nombre.toUpperCase();
         }
-        return nombre.toUpperCase();
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        if (nombre != null && !nombre.isEmpty()) {
+        if (nombre != null) {
             this.nombre = nombre.toUpperCase();
         } else {
             this.nombre = nombre;
@@ -185,9 +185,9 @@ public class CentrosCostos implements Serializable {
     public String getCodigoNombre() {
         if (codigoNombre == null) {
             if (this.codigo == null && this.nombre == null) {
-                this.codigoNombre = " ";
+                this.codigoNombre = null;
             } else {
-                this.codigoNombre = this.codigo.toString() + "-" + this.nombre;
+                this.codigoNombre = this.codigo + "-" + this.nombre;
             }
         }
         return codigoNombre;

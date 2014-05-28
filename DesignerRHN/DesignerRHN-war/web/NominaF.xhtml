@@ -44,23 +44,23 @@
 
                                 <!-- Panel Izquierdo - Superior -->
 
-                                <fieldset style="height: 119px; width: 185px; display: block; position: absolute; border-radius: 10px; top: 41px; left: 15px;">
-                                    <legend style="color: #00F;  ; font-weight: bold">#{msg['tipopersonal']}</legend>
+                                <fieldset style="height: 107px; width: 185px; display: block; position: absolute; border-radius: 10px; top: 46px; left: 15px;">
+                                    <h:outputText value="#{msg['tipopersonal']}" styleClass="outputTextFielset" />
 
-                                    <p:commandButton  style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 80px; height: 110px; position: absolute; top: 16px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" id="TipoPersonal" value="" />
+                                    <p:commandButton  style="background-image: url(Imagenes/#{controlRemoto.imagen}); width: 80px; height: 110px; position: absolute; top: 7px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%;" id="TipoPersonal" value="" />
                                     <p:tooltip  for="TipoPersonal">
                                         #{msg['cargosdesempeñados1']} <br/> #{msg['cargosdesempeñados2']}
                                     </p:tooltip>
-                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px;left: 87px; top: 16px; font-size: 11px;" styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, data:panelInf " />
+                                    <p:commandButton id="Activos" value="#{msg['activos']}" style="position: absolute; width: 110px;left: 87px; top: 7px; font-size: 11px;" styleClass="#{controlRemoto.styleActivos}" actionListener="#{controlRemoto.activos()}" update="data, :form:alerta, TipoPersonal, data:panelInf " />
                                     <p:tooltip  for="Activos" value="#{msg['informacionactivos']}"  />
 
-                                    <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 87px; top: 43px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.stylePensionados}" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, data:panelInf "/>
+                                    <p:commandButton id="Pensionados" value="#{msg['pensionados']}" style="position: absolute; left: 87px; top: 34px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.stylePensionados}" actionListener="#{controlRemoto.pensionados()}" update="data, :form:alerta, TipoPersonal, data:panelInf "/>
                                     <p:tooltip  for="Pensionados" value="#{msg['informacionpensionados']}"  />
 
-                                    <p:commandButton id="Retirados" value="#{msg['retirados']}" style="position: absolute; left: 87px; top: 70px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleRetirados}" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, data:panelInf"/>
+                                    <p:commandButton id="Retirados" value="#{msg['retirados']}" style="position: absolute; left: 87px; top: 61px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleRetirados}" actionListener="#{controlRemoto.retirados()}" update="data, data:info, :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip  for="Retirados" value="#{msg['informacionretirados']}"  />
 
-                                    <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 87px; top: 98px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleAspirantes}" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, data:panelInf"/>
+                                    <p:commandButton id="Aspirantes" value="#{msg['aspirantes']}"  style="position: absolute; left: 87px; top: 88px; width: 110px; font-size: 11px;" styleClass="#{controlRemoto.styleAspirantes}" actionListener="#{controlRemoto.aspirantes()}" update="data , :form:alerta, TipoPersonal, data:panelInf"/>
                                     <p:tooltip  for="Aspirantes" value="#{msg['informacionaspirantes']}"  />
                                 </fieldset>
 
@@ -71,29 +71,29 @@
                                               paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} 
                                               {NextPageLink} {LastPageLink}"  paginatorPosition="top"  rowIndexVar="indice" styleClass="ui-felipe" first="#{controlRemoto.estadoEmpleado}" >
 
-                                    <fieldset id="set" style="height: 80px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 80px;">
-                                        <legend style="color: #00F;  ; font-weight: bold">#{msg['informacionpersonal']}</legend>
+                                    <fieldset id="set" style="height: 72px; width: 595px; display: block; position: absolute; border-radius: 10px; left: 225px; top: 82px;">
+                                        <h:outputText value="#{msg['informacionpersonal']}" styleClass="outputTextFielset" />
 
                                         <p:dataGrid   id="info" var="tsimpson" value="#{controlRemoto.vwActualesTiposTrabajadoresesLista}" rows="1" styleClass="ui-felipe" >
 
                                             <p:outputLabel value="#{msg['codigo']}" id="cod" style="position: absolute; left: 12px; color: #14388B; 
-                                                           ; width: 63px; height: 20px; top: 15px; font-weight: bold"/>
+                                                           ; width: 63px; height: 20px; top: 7px; font-weight: bold"/>
                                             <p:inputText id="codigo" readonly="true"  value="#{item.empleado.codigoempleado}" onchange="#{controlRemoto.valorImputText(indice)}"
-                                                         style="position: absolute; left: 12px; top: 30px; width: 76px; height: 15px;" onclick="select();"/>
+                                                         style="position: absolute; left: 12px; top: 22px; width: 76px; height: 15px;" onclick="select();"/>
                                             <!-- <p:ajax event="change" update=":formulario:info:VCargoDesempeñado"/> -->
 
                                             <p:outputLabel value="#{msg['primerapellido']}" id="pa" style="position: absolute; left: 105px; 
-                                                           color: #14388B; ; top: 15px; font-weight: bold"  />
+                                                           color: #14388B; ; top: 7px; font-weight: bold"  />
                                             <p:inputText id="primerApellido" readonly="true" value="#{item.empleado.persona.primerapellido}" style="position: absolute;left: 105px;
-                                                         top: 30px; width: 128px; height: 15px;" onclick="select();"/>
+                                                         top: 22px; width: 128px; height: 15px;" onclick="select();"/>
 
                                             <p:outputLabel value="#{msg['segundoapellido']}" id="sa" style="position: absolute; left: 250px; 
-                                                           color: #14388B; ; top: 15px; font-weight: bold" />
+                                                           color: #14388B; ; top: 7px; font-weight: bold" />
                                             <p:inputText id="segundoApellido" readonly="true" value="#{item.empleado.persona.segundoapellido}" style="position: absolute;
-                                                         left: 250px; top: 30px; height: 15px; width: 128px;" onclick="select();"/>
+                                                         left: 250px; top: 22px; height: 15px; width: 128px;" onclick="select();"/>
 
-                                            <p:outputLabel value="#{msg['nombre']}" id="n" style="position: absolute; left: 394px;  color: #14388B; top: 15px; font-weight: bold"  />
-                                            <p:inputText id="nombre" readonly="true" value="#{item.empleado.persona.nombre}" style="position: absolute; left: 394px; top: 30px; 
+                                            <p:outputLabel value="#{msg['nombre']}" style="position: absolute; left: 394px;  color: #14388B; top: 7px; font-weight: bold"  />
+                                            <p:inputText id="nombre" readonly="true" value="#{item.empleado.persona.nombre}" style="position: absolute; left: 394px; top: 22px; 
                                                          height: 15px; width: 128px;" onclick="select();"/>
                                         </p:dataGrid>
 
@@ -102,49 +102,45 @@
 
                                         <!-- Botones Con Imagen (3) -->
 
-                                        <p:commandButton style="background-image: url(Imagenes/buscarlaboral1.gif); position: absolute; top: 60px; width: 28px; height: 28px; background-size: 100% 100%; left: 12px; background-repeat: no-repeat; " value="" id="buscarLaboral" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada.recibirTipoBusqueda(0)}"  />
+                                        <p:commandButton style="background-image: url(Imagenes/buscarlaboral1.gif); position: absolute; top: 52px; width: 28px; height: 28px; background-size: 100% 100%; left: 12px; background-repeat: no-repeat; " value="" id="buscarLaboral" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada.recibirTipoBusqueda(0)}"  />
                                         <p:tooltip  for="buscarLaboral" value="#{msg['badl']}"  />
 
-                                        <p:commandButton style="background-image: url(Imagenes/buscarpersonal1.gif); position: absolute; left: 43px; top: 60px; width: 28px; height: 28px; background-size: 100% 100%; background-repeat: no-repeat; " id="buscarPersonal" value="" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada.recibirTipoBusqueda(1)}"  />
+                                        <p:commandButton style="background-image: url(Imagenes/buscarpersonal1.gif); position: absolute; left: 43px; top: 52px; width: 28px; height: 28px; background-size: 100% 100%; background-repeat: no-repeat; " id="buscarPersonal" value="" action="busquedaAvanzada"  actionListener="#{controlBusquedaAvanzada.recibirTipoBusqueda(1)}"  />
                                         <p:tooltip  for="buscarPersonal" value="#{msg['badp']}"  />
 
-                                        <p:commandButton style="background-image: url(Imagenes/buscarrapida1.gif); position: absolute; left: 74px; top: 60px; width: 28px; height: 28px; background-size: 100% 100%; background-repeat: no-repeat; " id="busquedaRapida" value=""
+                                        <p:commandButton style="background-image: url(Imagenes/buscarrapida1.gif); position: absolute; left: 74px; top: 52px; width: 28px; height: 28px; background-size: 100% 100%; background-repeat: no-repeat; " id="busquedaRapida" value=""
                                                          onclick="lvBr.show();"/>
                                         <p:tooltip  for="busquedaRapida" value="#{msg['br']}"  />
 
                                         <!-- Botones Buscar Empleado y Mostrar Todos --> 
-                                        <p:commandButton style="position: absolute; left: 248px; top: 60px; width: 150px;"  id="BuscarEmpleado" value="#{msg['Buscar']}"
+                                        <p:commandButton style="position: absolute; left: 248px; top: 52px; width: 150px;"  id="BuscarEmpleado" value="#{msg['Buscar']}"
                                                          update=":form:lvBuscarEmpleado" oncomplete="lvBE.show()" disabled="#{controlRemoto.buscarEmp}" />
                                         <p:tooltip  for="BuscarEmpleado">
                                             #{msg['buscarunempleadoporcedula']}<br/>#{msg['nombreoapellidos']}
                                         </p:tooltip>
 
-                                        <p:commandButton style="position: absolute; left: 400px; top: 60px;    width: 124px;" id="MostrarTodos" value="#{msg['mostrar']}"
+                                        <p:commandButton style="position: absolute; left: 400px; top: 52px;    width: 124px;" id="MostrarTodos" value="#{msg['mostrar']}"
                                                          actionListener="#{controlRemoto.mostrarTodos()}" update=":form:tabMenu:data" disabled="#{controlRemoto.mostrarT}"/>
                                         <p:tooltip  for="MostrarTodos" value="#{msg['mostrartodos']}" />
 
                                         <!-- Boton Hoja de Vida -->
 
-                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/Iconos/informacionPersonal.png); left: 539px; top: 10px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(item.empleado.secuencia)}" action="hojaVida" />
+                                        <p:commandButton id="HojaDeVida" value=""  style="background-size: 100% 100%; position: absolute; background-image: url(Imagenes/Iconos/informacionPersonal.png); left: 539px; top: 2px; width: 60px; height: 60px; background-repeat: no-repeat;" disabled="#{controlRemoto.acumulado}" actionListener="#{controlEmpleadoIndividual.recibirEmpleado(item.empleado.secuencia)}" action="hojaVida" />
                                         <p:tooltip for="HojaDeVida">
                                             #{msg['vaom']}<br/>#{msg['dpe']}
                                         </p:tooltip>
 
-                                        <h:outputText style="position: absolute; left: 528px; top: 73px; color: #006; width: 80px; font-weight: bold; text-align: center;" value="#{msg['hojadevida']}"/>
+                                        <h:outputText style="position: absolute; left: 528px; top: 65px; color: #006; width: 80px; font-weight: bold; text-align: center;" value="#{msg['hojadevida']}"/>
                                     </fieldset>
 
 
                                     <!-- Panel Central -->
 
 
-                                    <fieldset id="field" style="height: 230px; width: 805px; display: block; position: absolute; border-radius: 10px; top: 175px; left: 15px">
-                                        <legend style="color: #00F;  ; font-weight: bold; ">#{msg['informacionlaboral']}</legend>
+                                    <fieldset id="field" style="height: 225px; width: 805px; display: block; position: absolute; border-radius: 10px; top: 180px; left: 15px">
+                                        <h:outputText value="#{msg['informacionlaboral']}" styleClass="outputTextFielset" />
 
                                         <!-- Etiquetas Panel Central -->
-
-
-
-
                                         <p style=" color: #006"> 
 
                                             <h:outputText style="position: absolute; left: 45px; top: 15px; ; font-weight: bold; color: #14388B; " value="#{msg['cargodesempeñado']}"/>
@@ -399,44 +395,45 @@
                                 <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
 
-                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 120px; top: 49px;">
-                                    <legend style="font-weight: bold; color: #00F;">#{msg['propiedadesdenomina']}</legend>
-                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 22px; top: 112px;  font-weight: bold; text-align: center; width: 150px;" value="#{msg['novedadesdenomina']}"/>
-                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 228px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['conceptosdenomina']}"/>
-                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 439px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['formulasdeliquidacion']}"/>
-                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 642px; top: 112px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['legislacionlaboral']}"/>
+                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 110px; top: 54px;">
+                                    <h:outputText value="#{msg['propiedadesdenomina']}" styleClass="outputTextFielset" />
 
-                                    <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 50px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedad"/>
+                                    <h:outputText  id="lblNovedadesNomina" style="position: absolute; left: 22px; top: 104px;  font-weight: bold; text-align: center; width: 150px;" value="#{msg['novedadesdenomina']}"/>
+                                    <h:outputText  id="lblConceptosNomina" style="position: absolute; left: 228px; top: 104px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['conceptosdenomina']}"/>
+                                    <h:outputText id="lblFormulasLiquidacion" style="position: absolute; left: 439px; top: 104px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['formulasdeliquidacion']}"/>
+                                    <h:outputText id="lblLegislacionLaboral" style="position: absolute; left: 642px; top: 104px;  font-weight: bold; text-align: center; width: 150px;"  value="#{msg['legislacionlaboral']}"/>
+
+                                    <p:commandButton id="NovedadesNomina" value="" style="position: absolute; left: 50px; top: 7px; width: 95px; height: 95px; background-image: url(Imagenes/nom_novedad.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="novedad"/>
                                     <p:tooltip  for="NovedadesNomina">
                                         #{msg['toolTipNovedades1']}<br/>#{msg['toolTipNovedades2']}
                                     </p:tooltip>
 
-                                    <hr style="float: left; height: 120px; position: absolute; left: 200px; top: 2px;"/>
+                                    <hr style="float: left; height: 120px; position: absolute; left: 200px; top: -3px;"/>
 
-                                    <p:commandButton id="ConceptosNomina" value="" style="position: absolute; left: 255px; top: 15px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="concepto"/>
+                                    <p:commandButton id="ConceptosNomina" value="" style="position: absolute; left: 255px; top: 7px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="concepto"/>
                                     <p:tooltip  for="ConceptosNomina">
                                         #{msg['toolTipConcepto1']}<br/>#{msg['toolTipConcepto2']}
                                     </p:tooltip>
 
-                                    <hr style="float: left; height: 120px; position: absolute; left: 405px; top: 2px;"/>
+                                    <hr style="float: left; height: 120px; position: absolute; left: 405px; top: -3px;"/>
 
-                                    <p:commandButton id="FormulasLiquidacion" value="" style="position: absolute; left: 465px; top: 15px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="formula"/>
+                                    <p:commandButton id="FormulasLiquidacion" value="" style="position: absolute; left: 465px; top: 7px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="formula"/>
                                     <p:tooltip  for="FormulasLiquidacion">
                                         #{msg['toolTipFormulas']}
                                     </p:tooltip>
 
-                                    <hr style="float: left; height: 120px; position: absolute; left: 615px; top: 2px;"/>
+                                    <hr style="float: left; height: 120px; position: absolute; left: 615px; top: -3px;"/>
 
-                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 15px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; " action="contrato"/>
+                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 7px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; " action="contrato"/>
                                     <p:tooltip  for="LegislacionLaboral">
                                         #{msg['toolTipLegislacion1']}<br/>#{msg['toolTipLegislacion2']}
                                     </p:tooltip>
                                 </fieldset>
 
-                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 273px; top: 185px;">
-                                    <legend style="; font-weight: bold; color: #00F;">#{msg['opcionesdeliquidacion']}</legend>
+                                <fieldset style="position: absolute; border-radius: 10px; width: 800px; height: 265px; top: 191px;">
+                                    <h:outputText value="#{msg['opcionesdeliquidacion']}" styleClass="outputTextFielset" />
 
-                                    <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 130px; top: 13px;">
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 130px; top: 7px;">
 
                                         <p:selectOneRadio id="options" value="#{controlRemoto.pago}" style=" font-weight: bold; position: absolute; top: -2px" layout="pageDirection" >  
                                             <f:selectItem itemLabel="#{msg['pagosautomaticos']}" itemValue="AUTOMATICO"/>  
@@ -452,7 +449,7 @@
 
                                     </fieldset>
 
-                                    <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 100px; top: 163px;">
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 250px; height: 100px; top: 157px;">
 
                                         <strong><h:outputText  value="#{msg['estadisticas']}" style=" color: #00F; position: absolute; left: 100px; top: 9px;"/></strong>
 
@@ -462,7 +459,7 @@
 
                                     </fieldset>
 
-                                    <fieldset style="position: absolute; border-radius: 10px; width: 500px; height: 250px; top: 13px; left: 284px;">
+                                    <fieldset style="position: absolute; border-radius: 10px; width: 500px; height: 250px; top: 7px; left: 284px;">
 
                                         <strong><h:outputText style=" color: #00F; position: absolute; left: 100px; top: 5px;" value="#{msg['parametrosdeliquidacion']}"/></strong>
 
@@ -540,8 +537,8 @@
                                 <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
 
-                                <fieldset style="width: 390px; height: 408px; position: absolute; top: 50px; border-radius: 10px; left: 5px;">
-                                    <legend style=" font-weight: bold; color: #00F;">#{msg['herramientascontables']}</legend>
+                                <fieldset style="width: 390px; height: 397px; position: absolute; top: 60px; border-radius: 10px; left: 5px;">
+                                    <h:outputText value="#{msg['herramientascontables']}" styleClass="outputTextFielset" />
 
                                     <p:commandButton id="btnPUC" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPUC.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="cuenta" actionListener="#{controlCuenta.obtenerEmpresa()}"/>
                                     <p:commandButton id="btnCC"  value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntCentrocosto.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="centrocosto" />
@@ -557,8 +554,8 @@
                                     <h:outputText value="#{msg['textoreportescontables']}" style="width: 280px; height: 12px; position: absolute; left: 110px; top: 330px;  text-align: justify"/>
                                 </fieldset>
 
-                                <fieldset style="width: 390px; height: 408px; position: absolute; left: 420px; top: 50px; border-radius: 10px;" >
-                                    <legend style=" font-weight: bold; color: #00F;">#{msg['herramientasdeintegracion']}</legend>
+                                <fieldset style="width: 390px; height: 397px; position: absolute; left: 420px; top: 60px; border-radius: 10px;" >
+                                    <h:outputText value="#{msg['herramientasdeintegracion']}" styleClass="outputTextFielset" />
 
                                     <p:commandButton id="btnPILA" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 20px; background-image: url(Imagenes/IntPILA.gif); background-repeat: no-repeat; background-size: 100% 100%; " />
                                     <p:commandButton id="btnPresup" value=" " style="width: 90px; height: 90px; position: absolute; left: 10px; top: 115px; background-image: url(Imagenes/IntPresupuesto.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
@@ -583,8 +580,8 @@
 
                                 <h:outputText style="position: absolute;  font-weight: bold; font-size: 11px; left: 343px; top: 39px; width: 500px; text-align: right; color: #BF1A1A" value="#{msg['periodoeneltiempodesde']} #{controlRemoto.fechaDesde} #{msg['hasta']} #{controlRemoto.fechaHasta} #{msg['corteal']} #{controlRemoto.fechaSistema}"/>
 
-                                <fieldset style="position:absolute; width: 790px; height: 408px; border-radius: 10px; top: 50px;">
-                                    <legend style=" font-weight: bold; color: #00F;">#{msg['herramientasgerenciales']}</legend>
+                                <fieldset style="position:absolute; width: 790px; height: 393px; border-radius: 10px; top: 60px;">
+                                    <h:outputText value="#{msg['herramientasgerenciales']}" styleClass="outputTextFielset" />
 
                                     <p:commandButton id="btnGRepor" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 15px; background-image: url(Imagenes/GereGeneradorRepor.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnEstrucOrgan" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 15px; background-image: url(Imagenes/GereEstructuraOrgan.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="estructura"/>
@@ -593,7 +590,7 @@
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 55px; top:117px; text-align:center" value="#{msg['generadordereportes']}"/>
                                     <h:outputText style="width:160px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 235px; top:117px; text-align:center" value="#{msg['estructuraorganizacional']}"/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 424px; top:117px; text-align:center" value="#{msg['saludocupacional']}"/>
-                                    <h:outputText style="width:198px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 580px; top:117px; text-align:center" value="#{msg['conceptosjuridicos']}"/>
+                                    <h:outputText style="width:250px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 560px; top:117px; text-align:center" value="#{msg['conceptosjuridicos']}"/>
                                     <hr style="width:785px; top:133.3px; position:absolute; height:0px" />
 
                                     <p:commandButton id="btnAnalisisCargos" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 150px; background-image: url(Imagenes/GereAnalisisCargos.gif); background-repeat: no-repeat; background-size: 100% 100%; " action="analisisCargos" actionListener="#{controlCargo.inicializarPagina('nominaf')}"/>
@@ -602,7 +599,7 @@
                                     <p:commandButton id="btnEvaluacionDesemp" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 150px; background-image: url(Imagenes/GereEvalDesempenho.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 55px; top:252px; text-align:center" value="#{msg['analisisdecargos']}"/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 240px; top:252px; text-align:center" value="#{msg['plandegestion']}"/>
-                                    <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 425px; top:252px; text-align:center" value="#{msg['evaluacioncompetencias']}"/>
+                                    <h:outputText style="width:200px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 400px; top:252px; text-align:center" value="#{msg['evaluacioncompetencias']}"/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 606px; top:252px; text-align:center" value="#{msg['evaluaciondesempeño']}"/>
                                     <hr style="width:785px; top:266.6px; position:absolute; height:0px" />
 
@@ -641,77 +638,79 @@
                                 </h:commandLink>
                                 <p:commandButton id="AcercaDe" value=" " style="position: absolute; width: 130px; height: 130px; background-image: url(Imagenes/b_designer.gif); background-repeat: no-repeat; background-size: 100% 100%;"/>
 
-                                <fieldset id="contModulos"  style="position:absolute; width:610px; border-radius: 10px; left: 160px; top: 46px; height: 130px">
-                                    <legend style="color: blue; ;"><strong>#{msg['modulos']}</strong></legend>
+                                <fieldset id="contModulos"  style="position:absolute; width:617px; border-radius: 10px; left: 160px; top: 52px; height: 122px">
+                                    <h:outputText value="#{msg['modulos']}" styleClass="outputTextFielset" />
+                                    <div style="position: absolute; top: 10px;" >
+                                        <p:dataTable id="data1" var="modulo"  value="#{controlRemoto.listModulos}" style="width: 600px"
+                                                     rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
+                                                     scrollable="true" scrollHeight="#{controlRemoto.altoModulos}" widgetVar="data1" scrollWidth="618"
+                                                     filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="#{msg['noseencontraroncoincidencias']}">   
 
-                                    <p:dataTable id="data1" var="modulo"  value="#{controlRemoto.listModulos}"
-                                                 rowKey="#{modulo.secuencia}" selection="#{controlRemoto.selectModulo}" selectionMode="single"
-                                                 scrollable="true" scrollHeight="#{controlRemoto.altoModulos}" widgetVar="data1"
-                                                 filteredValue="#{controlRemoto.filtradolistModulos}" emptyMessage="#{msg['noseencontraroncoincidencias']}">   
+                                            <p:ajax event="rowSelect" update=":form:tabMenu:Tablas"  listener="#{controlRemoto.cambiarTablas}" />  
 
-                                        <p:ajax event="rowSelect" update=":form:tabMenu:Tablas"  listener="#{controlRemoto.cambiarTablas}" />  
+                                            <p:column id="moduloCodigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{msg['codigoM']}" />  
+                                                </f:facet> 
+                                                <h:outputText value="#{modulo.nombrecorto}" />  
+                                            </p:column>  
 
-                                        <p:column id="moduloCodigo" width="50" sortBy="#{modulo.nombrecorto}"  filterBy="#{modulo.nombrecorto}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
-                                            <f:facet name="header">  
-                                                <h:outputText value="#{msg['codigoM']}" />  
-                                            </f:facet> 
-                                            <h:outputText value="#{modulo.nombrecorto}" />  
-                                        </p:column>  
+                                            <p:column id="moduloNombre" headerText="Nombre_Modulo" sortBy="#{modulo.nombre}" width="160" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{msg['nombreM']}" />  
+                                                </f:facet> 
+                                                <h:outputText value="#{modulo.nombre}" />  
+                                            </p:column>  
 
-                                        <p:column id="moduloNombre" headerText="Nombre_Modulo" sortBy="#{modulo.nombre}" width="160" filterBy="#{modulo.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                            <f:facet name="header">  
-                                                <h:outputText value="#{msg['nombreM']}" />  
-                                            </f:facet> 
-                                            <h:outputText value="#{modulo.nombre}" />  
-                                        </p:column>  
+                                            <p:column id="moduloObs" sortBy="#{modulo.observacion}" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{msg['observacionM']}" />  
+                                                </f:facet> 
+                                                <h:outputText value="#{modulo.observacion}" />  
+                                            </p:column>
 
-                                        <p:column id="moduloObs" sortBy="#{modulo.observacion}" filterBy="#{modulo.observacion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                            <f:facet name="header">  
-                                                <h:outputText value="#{msg['observacionM']}" />  
-                                            </f:facet> 
-                                            <h:outputText value="#{modulo.observacion}" />  
-                                        </p:column>
-
-                                    </p:dataTable> 
+                                        </p:dataTable> 
+                                    </div>
                                 </fieldset>
 
 
-                                <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 190px; width: 795px; height: 238px">
-                                    <legend style="color: blue; ;"><strong>#{msg['tablasdelsistema']}</strong></legend>
+                                <fieldset id="contTablas"  style="position:absolute; border-radius: 10px; top: 195px; width: 795px; height: 233px">
+                                    <h:outputText value="#{msg['tablasdelsistema']}" styleClass="outputTextFielset" />
+                                    <div style="position: absolute; top: 10px;" >
+                                        <p:dataTable id="Tablas"  var="tablas"  value="#{controlRemoto.listTablas}"
+                                                     rowKey="#{tablas.secuencia}" selection="#{controlRemoto.selectTabla}" selectionMode="single"
+                                                     scrollable="true" scrollHeight="#{controlRemoto.altoTablas}" emptyMessage="#{msg['noseencontraronregistros']}"
+                                                     filteredValue="#{controlRemoto.filterListTablas}" widgetVar="tabl" scrollWidth="795" style="width: 780px">   
 
-                                    <p:dataTable id="Tablas"  var="tablas"  value="#{controlRemoto.listTablas}"
-                                                 rowKey="#{tablas.secuencia}" selection="#{controlRemoto.selectTabla}" selectionMode="single"
-                                                 scrollable="true" scrollHeight="#{controlRemoto.altoTablas}" emptyMessage="#{msg['noseencontraronregistros']}"
-                                                 filteredValue="#{controlRemoto.filterListTablas}" widgetVar="tabl" >   
+                                            <p:ajax event="rowSelect" listener="#{controlRemoto.exportarTabla}" />
 
-                                        <p:ajax event="rowSelect" listener="#{controlRemoto.exportarTabla}" />
+                                            <p:column exportable="false"  width="16">
+                                                <p:commandButton id="desplegar"  value=""  actionListener="#{controlRemoto.infoTablas(tablas)}" update="Tablas, :form:VentanaTab"
+                                                                 style=" width: 16px; height:16px ;background-image: url(Imagenes/revertir.gif); background-repeat: no-repeat; background-size: 100% 100%;" />
+                                                <p:tooltip for="desplegar" value="#{msg['despliegaesteregistro']}"/>
 
-                                        <p:column exportable="false"  width="16">
-                                            <p:commandButton id="desplegar"  value=""  actionListener="#{controlRemoto.infoTablas(tablas)}" update="Tablas, :form:VentanaTab"
-                                                             style=" width: 16px; height:16px ;background-image: url(Imagenes/revertir.gif); background-repeat: no-repeat; background-size: 100% 100%;" />
-                                            <p:tooltip for="desplegar" value="#{msg['despliegaesteregistro']}"/>
+                                            </p:column>
 
-                                        </p:column>
+                                            <p:column id="tablasNombre" sortBy="#{tablas.nombre}" filterBy="#{tablas.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{msg['nombre']}" />  
+                                                </f:facet> 
+                                                <h:outputText value="#{tablas.nombre}"/>  
+                                            </p:column>  
 
-                                        <p:column id="tablasNombre" sortBy="#{tablas.nombre}" filterBy="#{tablas.nombre}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                            <f:facet name="header">  
-                                                <h:outputText value="#{msg['nombre']}" />  
-                                            </f:facet> 
-                                            <h:outputText value="#{tablas.nombre}"/>  
-                                        </p:column>  
+                                            <p:column id="tablasDescripcion" sortBy="#{tablas.descripcion}" filterBy="#{tablas.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
+                                                <f:facet name="header">  
+                                                    <h:outputText value="#{msg['descripcion']}" />  
+                                                </f:facet>
+                                                <h:outputText value="#{tablas.descripcion}" />  
+                                            </p:column>  
 
-                                        <p:column id="tablasDescripcion" sortBy="#{tablas.descripcion}" filterBy="#{tablas.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;"> 
-                                            <f:facet name="header">  
-                                                <h:outputText value="#{msg['descripcion']}" />  
-                                            </f:facet>
-                                            <h:outputText value="#{tablas.descripcion}" />  
-                                        </p:column>  
-
-                                    </p:dataTable>
+                                        </p:dataTable>
+                                    </div>
                                 </fieldset>
 
-                                <p:commandButton id="buscarTablas" value="#{msg['buscarTabla']}" icon="ui-icon-search" style="position: absolute; top: 443px; left: 600px; width: 120px" actionListener="#{controlRemoto.buscarTablas()}" disabled="#{controlRemoto.buscarTablasLOV}"/>
-                                <p:commandButton id="mostrarTodasTablas" value="#{msg['mostrarTodos']}" style="position: absolute; top: 443px; left: 720px; width: 120px" disabled="#{controlRemoto.mostrarTodasTablas}" actionListener="#{controlRemoto.mostrarTodo_Tablas()}"/>
+                                <p:commandButton id="buscarTablas" value="#{msg['buscarTabla']}" icon="ui-icon-search" style="position: absolute; top: 445px; left: 600px; width: 120px" actionListener="#{controlRemoto.buscarTablas()}" disabled="#{controlRemoto.buscarTablasLOV}"/>
+                                <p:commandButton id="mostrarTodasTablas" value="#{msg['mostrarTodos']}" style="position: absolute; top: 445px; left: 720px; width: 120px" disabled="#{controlRemoto.mostrarTodasTablas}" actionListener="#{controlRemoto.mostrarTodo_Tablas()}"/>
 
                                 <em><h:outputText style="position: absolute; top: 472px; ; left: 17px" value="#{msg['bienvenido']}"/></em>
                                 <h:outputText style="position: absolute; top: 473px; left: 100px; font-weight: bold; width: 380px;" value="#{controlRemoto.usuarios.persona.nombre} #{controlRemoto.usuarios.persona.primerapellido} #{controlRemoto.usuarios.persona.segundoapellido}"/>
@@ -731,9 +730,9 @@
                         <p:commandButton value="#{msg['atras']}" onclick="VentanaTab.hide();" style="position: absolute; top: 60px; left: 200px" />
                     </p:dialog>
 
-                    <p:dialog id="lvBr" header="#{msg['busquedarapida']}" widgetVar="lvBr"  resizable="false" draggable="false" modal="true" height="300"  width="732"  closable="false">  
+                    <p:dialog id="lvBr" header="#{msg['busquedarapida']}" widgetVar="lvBr"  resizable="false" draggable="false" modal="true" height="300"  width="735"  closable="false">  
                         <p:dataTable  id="lvBusquedaRapida" style=" width: 700px" var="item" value="#{controlRemoto.busquedaRapida}"
-                                      scrollable="true" scrollHeight="162" scrollWidth="715" widgetVar="busquedaR" 
+                                      scrollable="true" scrollHeight="162" scrollWidth="717" widgetVar="busquedaR" 
                                       filteredValue="#{controlRemoto.filterBusquedaRapida}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionado}" selectionMode="single" >
 
@@ -776,9 +775,9 @@
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog id="lvBE" header="#{msg['empleadosE']}" widgetVar="lvBE"  resizable="false" draggable="false" modal="true" height="300"  width="732"  closable="false">  
+                    <p:dialog id="lvBE" header="#{msg['empleadosE']}" widgetVar="lvBE"  resizable="false" draggable="false" modal="true" height="300"  width="735"  closable="false">  
                         <p:dataTable  id="lvBuscarEmpleado" style=" width: 700px" var="item" value="#{controlRemoto.buscarEmplTipo}"
-                                      scrollable="true" scrollHeight="162" scrollWidth="715" widgetVar="buscarE" 
+                                      scrollable="true" scrollHeight="162" scrollWidth="717" widgetVar="buscarE" 
                                       filteredValue="#{controlRemoto.filterBuscarEmpleado}" emptyMessage="#{msg['lovvacio']}"
                                       rowKey="#{item.empleado.secuencia}" selection="#{controlRemoto.emplSeleccionadoBE}" selectionMode="single" >
 
@@ -816,8 +815,8 @@
                     </p:dialog>
 
                     <!-- LOV TABLAS-->
-                    <p:dialog header="#{msg['buscarTabla']}" widgetVar="buscarTablasDialogo" draggable="false" resizable="false" closable="false" id="buscarTablasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="541" modal="true">
+                    <p:dialog header="Tablas" widgetVar="buscarTablasDialogo" draggable="false" resizable="false" closable="false" id="buscarTablasDialogo"  
+                              showEffect="fade" hideEffect="fade" width="548" modal="true">
                         <p:dataTable id="lovTablas" style="width: 510px" var="tabla" value="#{controlRemoto.listTablasLOV}" rowKey="#{tabla.secuencia}"
                                      selection="#{controlRemoto.seleccionTablaLOV}" selectionMode="single" widgetVar="lovTablas" scrollable="true" scrollWidth="527" scrollHeight="250"
                                      filteredValue="#{controlRemoto.filtradoListTablasLOV}" emptyMessage="#{msg['lovvacio']}">              
@@ -840,10 +839,10 @@
                                 <h:outputText  value="#{tabla.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarT" style="position: relative; left: 370px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}" update="aceptarT" process="@this">
+                        <p:commandButton id="aceptarT" style="position: relative; left: 365px" value="#{msg['aceptar']}" icon="ui-icon-check" disabled="#{controlRemoto.buscar}" actionListener="#{controlRemoto.seleccionTabla()}" update="aceptarT" process="@this">
                             <p:resetInput target=":form:lovTablas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasF" style="position: relative; left: 385px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="buscarTablasDialogo.hide(), lovTablas.clearFilters();" actionListener="#{controlRemoto.cancelarSeleccionTabla()}" update="lovTablas, aceptarT" process="@this">
+                        <p:commandButton id="atrasF" style="position: relative; left: 365px" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" onclick="buscarTablasDialogo.hide(), lovTablas.clearFilters();" actionListener="#{controlRemoto.cancelarSeleccionTabla()}" update="lovTablas, aceptarT" process="@this">
                             <p:resetInput target=":form:lovTablas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>

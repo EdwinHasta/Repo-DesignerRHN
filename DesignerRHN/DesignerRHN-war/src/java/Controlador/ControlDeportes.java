@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,7 @@ public class ControlDeportes implements Serializable {
     AdministrarDeportesInterface administrarDeportes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<Deportes> listDeportes;
     private List<Deportes> filtrarDeportes;
     private List<Deportes> crearDeportes;
@@ -46,6 +47,8 @@ public class ControlDeportes implements Serializable {
     private Deportes nuevoDeporte;
     private Deportes duplicarDeporte;
     private Deportes editarDeportes;
+    private Deportes deporteSeleccionado;
+    private int tamano;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +62,8 @@ public class ControlDeportes implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
     private Integer a;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlDeportes() {
         listDeportes = null;
@@ -71,8 +76,9 @@ public class ControlDeportes implements Serializable {
         duplicarDeporte = new Deportes();
         a = null;
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -80,7 +86,7 @@ public class ControlDeportes implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarDeportes.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -102,8 +108,24 @@ public class ControlDeportes implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listDeportes.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listDeportes.get(index).getCodigo();
+                }
+                if (cualCelda == 1) {
+                    backUpDescripcion = listDeportes.get(index).getNombre();
+                }
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarDeportes.get(index).getCodigo();
+                }
+                if (cualCelda == 1) {
+                    backUpDescripcion = filtrarDeportes.get(index).getNombre();
+                }
 
+                secRegistro = listDeportes.get(index).getSecuencia();
+
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -135,10 +157,11 @@ public class ControlDeportes implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDeporte:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDeporte:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDeporte");
             bandera = 0;
@@ -161,20 +184,22 @@ public class ControlDeportes implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDeporte:codigo");
+            codigo.setFilterStyle("width: 350px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDeporte:descripcion");
+            descripcion.setFilterStyle("width: 350px");
             RequestContext.getCurrentInstance().update("form:datosDeporte");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDeporte:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDeporte:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDeporte");
             bandera = 0;
@@ -199,6 +224,7 @@ public class ControlDeportes implements Serializable {
                     if (listDeportes.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listDeportes.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listDeportes.size(); j++) {
                             if (j != indice) {
@@ -208,6 +234,7 @@ public class ControlDeportes implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            listDeportes.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -218,9 +245,11 @@ public class ControlDeportes implements Serializable {
                     if (listDeportes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listDeportes.get(indice).setNombre(backUpDescripcion);
                     }
                     if (listDeportes.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listDeportes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -237,7 +266,51 @@ public class ControlDeportes implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listDeportes.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listDeportes.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listDeportes.size(); j++) {
+                            if (j != indice) {
+                                if (listDeportes.get(indice).getCodigo() == listDeportes.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            listDeportes.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listDeportes.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listDeportes.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listDeportes.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listDeportes.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -248,6 +321,7 @@ public class ControlDeportes implements Serializable {
                     if (filtrarDeportes.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarDeportes.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listDeportes.size(); j++) {
                             if (j != indice) {
@@ -265,6 +339,7 @@ public class ControlDeportes implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarDeportes.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -275,9 +350,12 @@ public class ControlDeportes implements Serializable {
                     if (filtrarDeportes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarDeportes.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarDeportes.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarDeportes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -294,7 +372,59 @@ public class ControlDeportes implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarDeportes.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarDeportes.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listDeportes.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarDeportes.get(indice).getCodigo() == listDeportes.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarDeportes.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarDeportes.get(indice).getCodigo() == filtrarDeportes.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarDeportes.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarDeportes.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarDeportes.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarDeportes.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarDeportes.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -418,6 +548,9 @@ public class ControlDeportes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listDeportes = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosDeporte");
             k = 0;
         }
@@ -494,12 +627,13 @@ public class ControlDeportes implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosDeporte:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosDeporte:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDeporte");
                 bandera = 0;
@@ -623,10 +757,11 @@ public class ControlDeportes implements Serializable {
 
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosDeporte:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDeporte:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosDeporte:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDeporte");
                 bandera = 0;
@@ -774,6 +909,22 @@ public class ControlDeportes implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public Deportes getDeporteSeleccionado() {
+        return deporteSeleccionado;
+    }
+
+    public void setDeporteSeleccionado(Deportes deporteSeleccionado) {
+        this.deporteSeleccionado = deporteSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

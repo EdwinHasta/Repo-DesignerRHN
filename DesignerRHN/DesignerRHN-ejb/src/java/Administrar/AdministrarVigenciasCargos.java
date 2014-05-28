@@ -16,7 +16,6 @@ import javax.ejb.Remove;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
-
 /**
  *
  * @author Hugo Sin y -Felipphe-
@@ -37,14 +36,14 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
      */
     @EJB
     AdministrarSesionesInterface administrarSesiones;
-    
+
     private List<VigenciasCargos> vigenciasCargos;
     public List<VWActualesTiposTrabajadores> tipoEmpleadoLista;
     private VigenciasCargos vc;
     private Empleados empleado;
     private SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     private EntityManager em;
-    
+
     @Override
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
@@ -81,6 +80,17 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
             //System.out.println("Método AdministrarVigenciasCargos.vigenciasEmpleado.");
             //SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
             vigenciasCargos = persistenciaVigenciasCargos.buscarVigenciasCargosEmpleado(em, secEmpleado);
+            /*if (vigenciasCargos != null) {
+                //for (VigenciasCargos vigenciasCargosEmpleadoRow : vigenciasCargos) {
+                for (int i = 0; i < vigenciasCargos.size(); i++) {
+                    //if (vigenciasCargosEmpleadoRow.getEmpleadojefe() == null) {
+                    if (vigenciasCargos.get(i).getEmpleadojefe() == null) {
+                        System.out.println("ENTROOOOOOOOOOOOOO");
+                        //vigenciasCargosEmpleadoRow.setEmpleadojefe(new Empleados());
+                        vigenciasCargos.get(i).setEmpleadojefe(new Empleados());
+                    }
+                }
+            }*/
         } catch (Exception e) {
             vigenciasCargos = null;
         }
@@ -100,7 +110,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
     public void modificarVC(List<VigenciasCargos> listVCModificadas) {
         for (int i = 0; i < listVCModificadas.size(); i++) {
             System.out.println("Modificando...");
-            if (listVCModificadas.get(i).getEmpleadojefe().getSecuencia() == null) {
+            if (listVCModificadas.get(i).getEmpleadojefe() != null && listVCModificadas.get(i).getEmpleadojefe().getSecuencia() == null) {
                 listVCModificadas.get(i).setEmpleadojefe(null);
                 vc = listVCModificadas.get(i);
                 persistenciaVigenciasCargos.editar(em, vc);
@@ -118,7 +128,7 @@ public class AdministrarVigenciasCargos implements AdministrarVigenciasCargosInt
         } catch (Exception e) {
             System.out.println("Error" + e);
         }
-        
+
     }
 
     public void crearVC(VigenciasCargos vigenciasCargos) {

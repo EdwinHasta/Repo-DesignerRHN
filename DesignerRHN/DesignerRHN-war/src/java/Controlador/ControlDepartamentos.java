@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -33,8 +34,6 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 @SessionScoped
 public class ControlDepartamentos implements Serializable {
-    
-    
 
     @EJB
     AdministrarDepartamentosInterface administrarDepartamentos;
@@ -45,6 +44,7 @@ public class ControlDepartamentos implements Serializable {
     private List<Departamentos> crearDepartamentos;
     private List<Departamentos> modificarDepartamentos;
     private List<Departamentos> borrarDepartamentos;
+    private List<Departamentos> departamentoSeleccionado;
     private Departamentos nuevoDepartamentos;
     private Departamentos duplicarDepartamentos;
     private Departamentos editarDepartamentos;
@@ -86,9 +86,9 @@ public class ControlDepartamentos implements Serializable {
         listaPaises = null;
         filtradoPaises = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -96,7 +96,7 @@ public class ControlDepartamentos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarDepartamentos.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -120,7 +120,7 @@ public class ControlDepartamentos implements Serializable {
             cualCelda = celda;
             secRegistro = listDepartamentos.get(index).getSecuencia();
             if (tipoLista == 0) {
-                backupCodigo = listDepartamentos.get(index).getCodigo(); 
+                backupCodigo = listDepartamentos.get(index).getCodigo();
                 backupDescripcion = listDepartamentos.get(index).getNombre();
             } else if (tipoLista == 1) {
                 backupCodigo = filtrarDepartamentos.get(index).getCodigo();
@@ -177,12 +177,14 @@ public class ControlDepartamentos implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:pais");
             pais.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDepartamentos");
             bandera = 0;
@@ -205,25 +207,26 @@ public class ControlDepartamentos implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:codigo");
             codigo.setFilterStyle("width: 70px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:descripcion");
             descripcion.setFilterStyle("width: 280px");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:pais");
             pais.setFilterStyle("width: 230px");
             RequestContext.getCurrentInstance().update("form:datosDepartamentos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:pais");
             pais.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDepartamentos");
             bandera = 0;
@@ -286,7 +289,6 @@ public class ControlDepartamentos implements Serializable {
         context.execute("sucursalesDialogo.hide()");
         context.reset("form:lovTiposFamiliares:globalFilter");
         context.update("form:lovTiposFamiliares");
-        //context.update("form:datosHvEntrevista");
     }
 
     public void cancelarCambioPais() {
@@ -879,7 +881,9 @@ public class ControlDepartamentos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listDepartamentos = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosDepartamentos");
             k = 0;
             guardado = true;
@@ -973,13 +977,15 @@ public class ControlDepartamentos implements Serializable {
 
         if (contador == 3) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:pais");
+                pais = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:pais");
                 pais.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDepartamentos");
                 bandera = 0;
@@ -1115,12 +1121,14 @@ public class ControlDepartamentos implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDepartamentos:pais");
+                pais = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:pais");
                 pais.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosDepartamentos");
                 bandera = 0;
@@ -1306,6 +1314,14 @@ public class ControlDepartamentos implements Serializable {
 
     public void setPaisSeleccionado(Paises paisSeleccionado) {
         this.paisSeleccionado = paisSeleccionado;
+    }
+
+    public List<Departamentos> getDepartamentoSeleccionado() {
+        return departamentoSeleccionado;
+    }
+
+    public void setDepartamentoSeleccionado(List<Departamentos> departamentoSeleccionado) {
+        this.departamentoSeleccionado = departamentoSeleccionado;
     }
 
 }

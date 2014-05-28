@@ -27,11 +27,12 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Paises tiposAusentismos) {
         try {
+            em.getTransaction().begin();
             em.merge(tiposAusentismos);
+            em.getTransaction().commit();
         } catch (PersistenceException ex) {
             System.err.println("Error PersistenciaPaises.crear " + ex);
         }
@@ -39,12 +40,16 @@ public class PersistenciaPaises implements PersistenciaPaisesInterface {
 
     @Override
     public void editar(EntityManager em, Paises tiposAusentismos) {
+        em.getTransaction().begin();
         em.merge(tiposAusentismos);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, Paises tiposAusentismos) {
+        em.getTransaction().begin();
         em.remove(em.merge(tiposAusentismos));
+        em.getTransaction().commit();
     }
 
     @Override

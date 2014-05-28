@@ -253,7 +253,7 @@ public class Personas implements Serializable {
 
     public String getNombre() {
         if (nombre == null) {
-            return " ";
+            return "";
         } else {
             return nombre;
         }
@@ -505,6 +505,9 @@ public class Personas implements Serializable {
     public String getNombreCompleto() {
         if (nombreCompleto == null) {
             nombreCompleto = getPrimerapellido() + " " + getSegundoapellido() + " " + getNombre();
+            if (nombreCompleto.equals("  ")) {
+                nombreCompleto = null;
+            }
             return nombreCompleto;
         } else {
             return nombreCompleto;

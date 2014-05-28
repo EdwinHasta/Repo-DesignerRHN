@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -34,12 +35,11 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlClasesAccidentes implements Serializable {
 
-    
     @EJB
     AdministrarClasesAccidentesInterface administrarClasesAccidentes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-   
+
     private List<ClasesAccidentes> listClasesAccidentes;
     private List<ClasesAccidentes> filtrarClasesAccidentes;
     private List<ClasesAccidentes> crearClasesAccidentes;
@@ -48,6 +48,7 @@ public class ControlClasesAccidentes implements Serializable {
     private ClasesAccidentes nuevaClaseAccidente;
     private ClasesAccidentes duplicarClaseAccidente;
     private ClasesAccidentes editarClaseAccidente;
+    private ClasesAccidentes claseAccidenteSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,8 +60,11 @@ public class ControlClasesAccidentes implements Serializable {
     private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
+    private int tamano;
     private String mensajeValidacion;
     private BigInteger verificarBorradoAccidentes;
+    private String backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlClasesAccidentes() {
         listClasesAccidentes = null;
@@ -72,8 +76,9 @@ public class ControlClasesAccidentes implements Serializable {
         nuevaClaseAccidente = new ClasesAccidentes();
         duplicarClaseAccidente = new ClasesAccidentes();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -81,7 +86,7 @@ public class ControlClasesAccidentes implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarClasesAccidentes.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -103,6 +108,19 @@ public class ControlClasesAccidentes implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listClasesAccidentes.get(indice).getCodigo();
+                } else {
+                    backUpCodigo = filtrarClasesAccidentes.get(indice).getCodigo();
+                }
+            } else if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listClasesAccidentes.get(indice).getNombre();
+                } else {
+                    backUpDescripcion = filtrarClasesAccidentes.get(indice).getNombre();
+                }
+            }
             secRegistro = listClasesAccidentes.get(index).getSecuencia();
 
         }
@@ -136,10 +154,11 @@ public class ControlClasesAccidentes implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
             bandera = 0;
@@ -163,19 +182,22 @@ public class ControlClasesAccidentes implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
             codigo.setFilterStyle("width: 360px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
+            FacesContext c = FacesContext.getCurrentInstance();
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
             bandera = 0;
@@ -200,12 +222,15 @@ public class ControlClasesAccidentes implements Serializable {
                 if (!crearClasesAccidentes.contains(listClasesAccidentes.get(indice))) {
                     if (listClasesAccidentes.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else if (listClasesAccidentes.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else if (listClasesAccidentes.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listClasesAccidentes.size(); j++) {
@@ -217,6 +242,7 @@ public class ControlClasesAccidentes implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -225,10 +251,12 @@ public class ControlClasesAccidentes implements Serializable {
                     }
                     if (listClasesAccidentes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
                     if (listClasesAccidentes.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
 
@@ -246,7 +274,60 @@ public class ControlClasesAccidentes implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+
+                    if (listClasesAccidentes.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else if (listClasesAccidentes.get(indice).getCodigo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else if (listClasesAccidentes.get(indice).getCodigo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listClasesAccidentes.size(); j++) {
+                            if (j != indice) {
+                                if (listClasesAccidentes.get(indice).getCodigo().equals(listClasesAccidentes.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listClasesAccidentes.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (listClasesAccidentes.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listClasesAccidentes.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -257,9 +338,11 @@ public class ControlClasesAccidentes implements Serializable {
                     if (filtrarClasesAccidentes.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                     }
                     if (filtrarClasesAccidentes.get(indice).getCodigo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
                         for (int j = 0; j < listClasesAccidentes.size(); j++) {
@@ -280,6 +363,7 @@ public class ControlClasesAccidentes implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            filtrarClasesAccidentes.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -290,9 +374,11 @@ public class ControlClasesAccidentes implements Serializable {
 
                     if (filtrarClasesAccidentes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarClasesAccidentes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
                     }
                     if (filtrarClasesAccidentes.get(indice).getNombre().equals(" ")) {
+                        filtrarClasesAccidentes.get(indice).setNombre(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -311,7 +397,68 @@ public class ControlClasesAccidentes implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarClasesAccidentes.get(indice).getCodigo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                    }
+                    if (filtrarClasesAccidentes.get(indice).getCodigo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < listClasesAccidentes.size(); j++) {
+                            System.err.println("indice lista  indice : " + listClasesAccidentes.get(j).getCodigo());
+                            if (indice != j) {
+                                if (filtrarClasesAccidentes.get(indice).getCodigo().equals(listClasesAccidentes.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        for (int j = 0; j < filtrarClasesAccidentes.size(); j++) {
+                            System.err.println("indice filtrar indice : " + filtrarClasesAccidentes.get(j).getCodigo());
+                            if (j != indice) {
+                                if (filtrarClasesAccidentes.get(indice).getCodigo().equals(filtrarClasesAccidentes.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            filtrarClasesAccidentes.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarClasesAccidentes.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarClasesAccidentes.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (filtrarClasesAccidentes.get(indice).getNombre().equals(" ")) {
+                        filtrarClasesAccidentes.get(indice).setNombre(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -426,10 +573,11 @@ public class ControlClasesAccidentes implements Serializable {
                 crearClasesAccidentes.clear();
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
                 bandera = 0;
@@ -442,6 +590,9 @@ public class ControlClasesAccidentes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listClasesAccidentes = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosClasesAccidentes");
             k = 0;
             if (guardado == false) {
@@ -523,11 +674,12 @@ public class ControlClasesAccidentes implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
                 bandera = 0;
@@ -651,10 +803,11 @@ public class ControlClasesAccidentes implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
                 bandera = 0;
@@ -803,6 +956,22 @@ public class ControlClasesAccidentes implements Serializable {
 
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public ClasesAccidentes getClaseAccidenteSeleccionado() {
+        return claseAccidenteSeleccionado;
+    }
+
+    public void setClaseAccidenteSeleccionado(ClasesAccidentes claseAccidenteSeleccionado) {
+        this.claseAccidenteSeleccionado = claseAccidenteSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

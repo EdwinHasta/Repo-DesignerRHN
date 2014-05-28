@@ -14,24 +14,28 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposAusentismos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposAusentismos' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismosInterface{
+public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
 
     @Override
     public void crear(EntityManager em, Tiposausentismos tiposAusentismos) {
         try {
+            em.getTransaction().begin();
             em.merge(tiposAusentismos);
+            em.getTransaction().commit();
         } catch (PersistenceException ex) {
             System.out.println("Error PersistenciaTiposAusentismos.crear");
         }
@@ -39,12 +43,16 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
 
     @Override
     public void editar(EntityManager em, Tiposausentismos tiposAusentismos) {
+        em.getTransaction().begin();
         em.merge(tiposAusentismos);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, Tiposausentismos tiposAusentismos) {
+        em.getTransaction().begin();
         em.remove(em.merge(tiposAusentismos));
+        em.getTransaction().commit();
     }
 
     @Override
@@ -59,8 +67,8 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
             return null;
         }
     }
-    
-     public Tiposausentismos consultarTipoAusentismo(EntityManager em, BigInteger secClaseCategoria) {
+
+    public Tiposausentismos consultarTipoAusentismo(EntityManager em, BigInteger secClaseCategoria) {
         try {
             Query query = em.createNamedQuery("SELECT cc FROM Tiposausentismos cc WHERE cc.secuencia=:secuencia");
             query.setParameter("secuencia", secClaseCategoria);
@@ -71,8 +79,8 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
             return null;
         }
     }
-     
-     public BigInteger contarClasesAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
+
+    public BigInteger contarClasesAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM clasesausentismos WHERE tipo = ?";
@@ -86,7 +94,8 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
             return retorno;
         }
     }
-     public BigInteger contarSOAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
+
+    public BigInteger contarSOAusentimosTipoAusentismo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soausentismos WHERE tipo = ?";
@@ -101,5 +110,4 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
         }
     }
 
-  
 }

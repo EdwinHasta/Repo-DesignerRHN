@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +47,7 @@ public class ControlTiposDias implements Serializable {
     private TiposDias nuevoTipoDia;
     private TiposDias duplicarTipoDia;
     private TiposDias editarTipoDia;
+    private TiposDias tipoDiaSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -60,6 +62,9 @@ public class ControlTiposDias implements Serializable {
     private String mensajeValidacion;
     private BigInteger verificarDiasLaborales;
     private BigInteger verificarExtrasRecargos;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+    private int tamano;
 
     public ControlTiposDias() {
         listTiposDias = null;
@@ -71,8 +76,9 @@ public class ControlTiposDias implements Serializable {
         nuevoTipoDia = new TiposDias();
         duplicarTipoDia = new TiposDias();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -80,11 +86,11 @@ public class ControlTiposDias implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposDias.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLTIPOSDIAS EVENTOFILTRAR \n");
@@ -102,6 +108,21 @@ public class ControlTiposDias implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listTiposDias.get(indice).getCodigo();
+                } else {
+                    backUpCodigo = filtrarTiposDias.get(indice).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listTiposDias.get(indice).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarTiposDias.get(indice).getDescripcion();
+                }
+            }
+
             secRegistro = listTiposDias.get(index).getSecuencia();
 
         }
@@ -135,13 +156,14 @@ public class ControlTiposDias implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
-            tipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
+            tipo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
             tipo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             bandera = 0;
@@ -165,23 +187,26 @@ public class ControlTiposDias implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("width: 285px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("width: 365px");
-            tipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
+            tipo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
             tipo.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            tipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
+            tipo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
             tipo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             bandera = 0;
@@ -198,17 +223,38 @@ public class ControlTiposDias implements Serializable {
             cualCelda = celda;
             secRegistro = listTiposDias.get(index).getSecuencia();
             System.out.println("Tipo = " + listTiposDias.get(index).getTipo());
-            if (!crearTiposDias.contains(listTiposDias.get(indice))) {
+            if (tipoLista == 0) {
+                if (!crearTiposDias.contains(listTiposDias.get(indice))) {
+                    if (modificarTiposDias.isEmpty()) {
+                        modificarTiposDias.add(listTiposDias.get(indice));
+                    } else if (!modificarTiposDias.contains(listTiposDias.get(indice))) {
+                        modificarTiposDias.add(listTiposDias.get(indice));
+                    }
 
-                if (modificarTiposDias.isEmpty()) {
-                    modificarTiposDias.add(listTiposDias.get(indice));
-                } else if (!modificarTiposDias.contains(listTiposDias.get(indice))) {
-                    modificarTiposDias.add(listTiposDias.get(indice));
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                } else {
+                    if (guardado == true) {
+                        guardado = false;
+                    }
                 }
+            } else {
+                if (!crearTiposDias.contains(filtrarTiposDias.get(indice))) {
+                    if (modificarTiposDias.isEmpty()) {
+                        modificarTiposDias.add(filtrarTiposDias.get(indice));
+                    } else if (!modificarTiposDias.contains(filtrarTiposDias.get(indice))) {
+                        modificarTiposDias.add(filtrarTiposDias.get(indice));
+                    }
 
-            }
-            if (guardado == true) {
-                guardado = false;
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                } else {
+                    if (guardado == true) {
+                        guardado = false;
+                    }
+                }
             }
             context.update("form:datosTipoReemplazo");
             context.update("form:ACEPTAR");
@@ -232,9 +278,10 @@ public class ControlTiposDias implements Serializable {
             System.err.println("ENTRE A MODIFICARTIPODIA, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposDias.contains(listTiposDias.get(indice))) {
-                    if (listTiposDias.get(indice).getCodigo() == a || listTiposDias.get(indice).getCodigo().equals(null)) {
+                    if (listTiposDias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposDias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposDias.size(); j++) {
                             if (j != indice) {
@@ -245,6 +292,7 @@ public class ControlTiposDias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposDias.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             contadorGuardar++;
@@ -254,22 +302,15 @@ public class ControlTiposDias implements Serializable {
                     if (listTiposDias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposDias.get(indice).setDescripcion(backUpDescripcion);
                     } else if (listTiposDias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listTiposDias.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     } else {
                         contadorGuardar++;
                     }
-
-                    if (listTiposDias.get(indice).getTipo().length() <= 3 || listTiposDias.get(indice).getTipo().equals(null) || listTiposDias.get(indice).getTipo().isEmpty()) {
-
-                        contadorGuardar++;
-                    } else {
-                        banderaTamano = true;
-                        context.execute("validacionTamano.show()");
-                    }
-
-                    if (contadorGuardar == 3) {
+                    if (contadorGuardar == 2) {
                         if (modificarTiposDias.isEmpty()) {
                             modificarTiposDias.add(listTiposDias.get(indice));
                         } else if (!modificarTiposDias.contains(listTiposDias.get(indice))) {
@@ -284,7 +325,51 @@ public class ControlTiposDias implements Serializable {
                             context.update("form:validacionModificar");
                             context.execute("validacionModificar.show()");
                         }
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposDias.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposDias.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposDias.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposDias.get(indice).getCodigo().equals(listTiposDias.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposDias.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            contadorGuardar++;
+                        }
+
+                    }
+                    if (listTiposDias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposDias.get(indice).setDescripcion(backUpDescripcion);
+                    } else if (listTiposDias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listTiposDias.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    } else {
+                        contadorGuardar++;
+                    }
+                    if (contadorGuardar == 2) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        if (banderaTamano == false) {
+                            context.update("form:validacionModificar");
+                            context.execute("validacionModificar.show()");
+                        }
                     }
                     index = -1;
                     secRegistro = null;
@@ -295,6 +380,7 @@ public class ControlTiposDias implements Serializable {
                     if (filtrarTiposDias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposDias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposDias.size(); j++) {
                             if (j != indice) {
@@ -312,18 +398,19 @@ public class ControlTiposDias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposDias.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             contadorGuardar++;
                         }
 
                     }
-
                     if (filtrarTiposDias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarTiposDias.get(indice).setDescripcion(backUpDescripcion);
                     } else if (filtrarTiposDias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposDias.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     } else {
                         contadorGuardar++;
@@ -342,7 +429,58 @@ public class ControlTiposDias implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposDias.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposDias.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposDias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposDias.get(indice).getCodigo() == listTiposDias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarTiposDias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposDias.get(indice).getCodigo() == filtrarTiposDias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposDias.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            contadorGuardar++;
+                        }
+
+                    }
+                    if (filtrarTiposDias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposDias.get(indice).setDescripcion(backUpDescripcion);
+                    } else if (filtrarTiposDias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposDias.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    } else {
+                        contadorGuardar++;
+                    }
+
+                    if (contadorGuardar == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -467,6 +605,9 @@ public class ControlTiposDias implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listTiposDias = null;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosTipoReemplazo");
             k = 0;
         }
@@ -551,11 +692,12 @@ public class ControlTiposDias implements Serializable {
         }
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
                 bandera = 0;
@@ -691,9 +833,10 @@ public class ControlTiposDias implements Serializable {
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
                 bandera = 0;
@@ -841,6 +984,22 @@ public class ControlTiposDias implements Serializable {
 
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public TiposDias getTipoDiaSeleccionado() {
+        return tipoDiaSeleccionado;
+    }
+
+    public void setTipoDiaSeleccionado(TiposDias tipoDiaSeleccionado) {
+        this.tipoDiaSeleccionado = tipoDiaSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

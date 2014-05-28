@@ -37,24 +37,9 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public void crear(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
-            //UserTransaction ut = (UserTransaction) new InitialContext().lookup("java:comp/UserTransaction");
-            System.out.println("0");
-            //ut.setTransactionTimeout(300);
-            System.out.println("1");
-            em.setFlushMode(FlushModeType.COMMIT);
-            em.getTransaction().begin();
-            System.out.println("2");
-            //em.joinTransaction();
-            System.out.println("3");
-            System.out.println("Empleado: " + vigenciasCargos.getEmpleado().getSecuencia());
-            //System.out.println("Empleado pro: " + vigenciasCargos.getEmpleadojefe().getSecuencia());
-            // vigenciasCargos.setEmpleadojefe(null);
-            System.out.println("4");
-            em.merge(vigenciasCargos);
-            em.flush();
             em.clear();
-            System.out.println("5");
-            //em.getTransaction().commit();
+            em.getTransaction().begin();
+            em.merge(vigenciasCargos);
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
@@ -73,6 +58,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public void editar(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
+            em.clear();
             em.getTransaction().begin();
             em.merge(vigenciasCargos);
             em.getTransaction().commit();
@@ -85,11 +71,12 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     @Override
     public void borrar(EntityManager em, VigenciasCargos vigenciasCargos) {
         try {
+            em.clear();
             em.getTransaction().begin();
             em.remove(em.merge(vigenciasCargos));
             em.getTransaction().commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
+            //em.getTransaction().rollback();
             System.out.println("Error Persistencia Borrar VC: " + e);
         }
     }
@@ -112,6 +99,8 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
 
     public List<VigenciasCargos> buscarVigenciasCargosEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
+            //em.flush();
+            //em.getTransaction().begin();
             Query query = em.createNamedQuery("Empleados.findBySecuencia");
             query.setParameter("secuencia", secEmpleado);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -120,6 +109,7 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             query2.setParameter("empleado", empleado);
             query2.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<VigenciasCargos> vigenciasCargos = (List<VigenciasCargos>) query2.getResultList();
+            //em.getTransaction().commit();
             return vigenciasCargos;
         } catch (Exception e) {
             List<VigenciasCargos> vigenciasCargos = null;

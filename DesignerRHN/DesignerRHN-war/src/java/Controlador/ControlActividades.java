@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,7 @@ public class ControlActividades implements Serializable {
     AdministrarActividadesInterface administrarActividades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<Actividades> listActividades;
     private List<Actividades> filtrarActividades;
     private List<Actividades> crearActividades;
@@ -46,6 +47,7 @@ public class ControlActividades implements Serializable {
     private Actividades nuevoActividades;
     private Actividades duplicarActividades;
     private Actividades editarActividades;
+    private Actividades actividadSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -73,9 +75,9 @@ public class ControlActividades implements Serializable {
         nuevoActividades = new Actividades();
         duplicarActividades = new Actividades();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -83,7 +85,7 @@ public class ControlActividades implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarActividades.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -145,12 +147,14 @@ public class ControlActividades implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosActividades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosActividades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones = (Column) c.getViewRoot().findComponent("form:datosActividades:dimensiones");
             dimensiones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosActividades");
             bandera = 0;
@@ -173,25 +177,26 @@ public class ControlActividades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosActividades:codigo");
             codigo.setFilterStyle("width: 110px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosActividades:descripcion");
             descripcion.setFilterStyle("width: 110px");
-            dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones = (Column) c.getViewRoot().findComponent("form:datosActividades:dimensiones");
             dimensiones.setFilterStyle("width: 110px");
             RequestContext.getCurrentInstance().update("form:datosActividades");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosActividades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosActividades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones = (Column) c.getViewRoot().findComponent("form:datosActividades:dimensiones");
             dimensiones.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosActividades");
             bandera = 0;
@@ -596,7 +601,9 @@ public class ControlActividades implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listActividades = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosActividades");
             k = 0;
             guardado = true;
@@ -681,13 +688,15 @@ public class ControlActividades implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosActividades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosActividades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosActividades:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosActividades");
                 bandera = 0;
@@ -817,12 +826,14 @@ public class ControlActividades implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosActividades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosActividades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                dimensiones = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosActividades:dimensiones");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosActividades:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosActividades");
                 bandera = 0;
@@ -978,6 +989,14 @@ public class ControlActividades implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public Actividades getActividadSeleccionada() {
+        return actividadSeleccionada;
+    }
+
+    public void setActividadSeleccionada(Actividades actividadSeleccionada) {
+        this.actividadSeleccionada = actividadSeleccionada;
     }
 
 }

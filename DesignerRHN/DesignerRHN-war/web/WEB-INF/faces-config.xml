@@ -9,6 +9,11 @@
             <supported-locale>en</supported-locale>
         </locale-config>
     </application>
+    <factory>
+        <exception-handler-factory>
+            <org.primefaces.extensions.component.ajaxerrorhandler.AjaxExceptionHandlerFactory/>
+        </exception-handler-factory>
+    </factory>
     <navigation-rule>
         <from-view-id>/EmplVigenciasCargos.xhtml</from-view-id>
         <navigation-case>
@@ -2473,7 +2478,7 @@
         </navigation-case>
     </navigation-rule> 
     <navigation-rule>
-         <from-view-id>/tipoformula.xhtml</from-view-id>
+        <from-view-id>/tipoformula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>operando</from-outcome>
             <to-view-id>/operando.xhtml</to-view-id>
