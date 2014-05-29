@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,7 @@ public class ControlEstadosCiviles implements Serializable {
     AdministrarEstadosCivilesInterface administrarEstadosCiviles;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<EstadosCiviles> listEstadosCiviles;
     private List<EstadosCiviles> filtrarEstadosCiviles;
     private List<EstadosCiviles> crearEstadosCiviles;
@@ -46,6 +47,7 @@ public class ControlEstadosCiviles implements Serializable {
     private EstadosCiviles nuevoEstadoCivil;
     private EstadosCiviles duplicarEstadoCivil;
     private EstadosCiviles editarEstadoCivil;
+    private EstadosCiviles estadoCivilSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -60,6 +62,9 @@ public class ControlEstadosCiviles implements Serializable {
     private String mensajeValidacion;
     private BigInteger vigenciasEstadosAficilaciones;
     private Integer a;
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlEstadosCiviles() {
         listEstadosCiviles = null;
@@ -72,8 +77,9 @@ public class ControlEstadosCiviles implements Serializable {
         duplicarEstadoCivil = new EstadosCiviles();
         a = null;
         guardado = true;
+        tamano =270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -103,6 +109,20 @@ public class ControlEstadosCiviles implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listEstadosCiviles.get(indice).getCodigo();
+                } else {
+                    backUpCodigo = filtrarEstadosCiviles.get(indice).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listEstadosCiviles.get(indice).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarEstadosCiviles.get(indice).getDescripcion();
+                }
+            }
             secRegistro = listEstadosCiviles.get(index).getSecuencia();
 
         }
@@ -135,11 +155,12 @@ public class ControlEstadosCiviles implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEstadosCiviles");
             bandera = 0;
@@ -162,20 +183,22 @@ public class ControlEstadosCiviles implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
             codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosEstadosCiviles");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEstadosCiviles");
             bandera = 0;
@@ -200,6 +223,7 @@ public class ControlEstadosCiviles implements Serializable {
                     if (listEstadosCiviles.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEstadosCiviles.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEstadosCiviles.size(); j++) {
                             if (j != indice) {
@@ -209,6 +233,8 @@ public class ControlEstadosCiviles implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            banderita = false;
+                            listEstadosCiviles.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -219,8 +245,11 @@ public class ControlEstadosCiviles implements Serializable {
                     if (listEstadosCiviles.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (listEstadosCiviles.get(indice).getDescripcion().equals(" ")) {
+                        banderita = false;
+                        listEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -238,7 +267,52 @@ public class ControlEstadosCiviles implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listEstadosCiviles.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEstadosCiviles.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listEstadosCiviles.size(); j++) {
+                            if (j != indice) {
+                                if (listEstadosCiviles.get(indice).getCodigo() == listEstadosCiviles.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            banderita = false;
+                            listEstadosCiviles.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listEstadosCiviles.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (listEstadosCiviles.get(indice).getDescripcion().equals(" ")) {
+                        banderita = false;
+                        listEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -249,6 +323,7 @@ public class ControlEstadosCiviles implements Serializable {
                     if (filtrarEstadosCiviles.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEstadosCiviles.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEstadosCiviles.size(); j++) {
                             if (j != indice) {
@@ -259,6 +334,7 @@ public class ControlEstadosCiviles implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarEstadosCiviles.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -269,8 +345,10 @@ public class ControlEstadosCiviles implements Serializable {
                     if (filtrarEstadosCiviles.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarEstadosCiviles.get(indice).getDescripcion().equals(" ")) {
+                        filtrarEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -288,7 +366,51 @@ public class ControlEstadosCiviles implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarEstadosCiviles.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEstadosCiviles.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listEstadosCiviles.size(); j++) {
+                            if (j != indice) {
+                                if (listEstadosCiviles.get(indice).getCodigo() == listEstadosCiviles.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarEstadosCiviles.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarEstadosCiviles.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarEstadosCiviles.get(indice).getDescripcion().equals(" ")) {
+                        filtrarEstadosCiviles.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -406,6 +528,9 @@ public class ControlEstadosCiviles implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEstadosCiviles = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEstadosCiviles");
             k = 0;
             guardado = true;
@@ -483,11 +608,12 @@ public class ControlEstadosCiviles implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEstadosCiviles");
                 bandera = 0;
@@ -610,10 +736,11 @@ public class ControlEstadosCiviles implements Serializable {
                 context.update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEstadosCiviles");
                 bandera = 0;
@@ -768,6 +895,22 @@ public class ControlEstadosCiviles implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public EstadosCiviles getEstadoCivilSeleccionado() {
+        return estadoCivilSeleccionado;
+    }
+
+    public void setEstadoCivilSeleccionado(EstadosCiviles estadoCivilSeleccionado) {
+        this.estadoCivilSeleccionado = estadoCivilSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

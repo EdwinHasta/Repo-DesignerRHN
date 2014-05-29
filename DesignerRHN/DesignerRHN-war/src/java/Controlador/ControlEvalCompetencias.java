@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,7 @@ public class ControlEvalCompetencias implements Serializable {
     AdministrarEvalCompetenciasInterface administrarEvalCompetencias;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<EvalCompetencias> listEvalCompetencias;
     private List<EvalCompetencias> filtrarEvalCompetencias;
     private List<EvalCompetencias> crearEvalCompetencias;
@@ -46,7 +47,9 @@ public class ControlEvalCompetencias implements Serializable {
     private EvalCompetencias nuevoEvalCompetencia;
     private EvalCompetencias duplicarEvalCompetencia;
     private EvalCompetencias editarEvalCompetencia;
+    private EvalCompetencias evalCompetenciaSeleccionada;
     //otros
+    private int tamano;
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
@@ -72,8 +75,9 @@ public class ControlEvalCompetencias implements Serializable {
         nuevoEvalCompetencia = new EvalCompetencias();
         duplicarEvalCompetencia = new EvalCompetencias();
         a = null;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -96,6 +100,8 @@ public class ControlEvalCompetencias implements Serializable {
             System.out.println("ERROR ControlEvalCompetencias eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    private String backupDescripcion;
+    private Integer backupCodigo;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -104,7 +110,13 @@ public class ControlEvalCompetencias implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listEvalCompetencias.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listEvalCompetencias.get(index).getCodigo();
+                backupDescripcion = listEvalCompetencias.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarEvalCompetencias.get(index).getCodigo();
+                backupDescripcion = filtrarEvalCompetencias.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -136,12 +148,13 @@ public class ControlEvalCompetencias implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            descripcionCompetencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
+            descripcionCompetencia = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
             descripcionCompetencia.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvalCompetencia");
             bandera = 0;
@@ -164,24 +177,26 @@ public class ControlEvalCompetencias implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
-            codigo.setFilterStyle("width: 200px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
-            descripcion.setFilterStyle("width: 270px");
-            descripcionCompetencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
-            descripcionCompetencia.setFilterStyle("width: 270px");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
+            codigo.setFilterStyle("width: 120px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
+            descripcion.setFilterStyle("width: 120px");
+            descripcionCompetencia = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
+            descripcionCompetencia.setFilterStyle("width: 120px");
             RequestContext.getCurrentInstance().update("form:datosEvalCompetencia");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            descripcionCompetencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
+            descripcionCompetencia = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
             descripcionCompetencia.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvalCompetencia");
             bandera = 0;
@@ -191,21 +206,27 @@ public class ControlEvalCompetencias implements Serializable {
     }
 
     public void modificarEvalCompetencia(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR EVAL COMPETENCIAS");
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
         boolean banderita = false;
+        boolean banderita1 = false;
 
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR EVALCOMPETENCIAS, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearEvalCompetencias.contains(listEvalCompetencias.get(indice))) {
-                    if (listEvalCompetencias.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listEvalCompetencias.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEvalCompetencias.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listEvalCompetencias.size(); j++) {
                             if (j != indice) {
@@ -214,9 +235,12 @@ public class ControlEvalCompetencias implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
+                            banderita = false;
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listEvalCompetencias.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -224,14 +248,18 @@ public class ControlEvalCompetencias implements Serializable {
                     }
                     if (listEvalCompetencias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listEvalCompetencias.get(indice).getDescripcion().equals(" ")) {
+                        banderita1 = false;
+                        listEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listEvalCompetencias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarEvalCompetencias.isEmpty()) {
                             modificarEvalCompetencias.add(listEvalCompetencias.get(indice));
                         } else if (!modificarEvalCompetencias.contains(listEvalCompetencias.get(indice))) {
@@ -240,21 +268,25 @@ public class ControlEvalCompetencias implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-                        context.update("form:ACEPTAR");
+
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
-                }
-            } else {
+                    context.update("form:datosEvalCompetencia");
+                    context.update("form:ACEPTAR");
+                } else {
 
-                if (!crearEvalCompetencias.contains(filtrarEvalCompetencias.get(indice))) {
-                    if (filtrarEvalCompetencias.get(indice).getCodigo() == a) {
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listEvalCompetencias.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEvalCompetencias.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listEvalCompetencias.size(); j++) {
                             if (j != indice) {
@@ -263,9 +295,62 @@ public class ControlEvalCompetencias implements Serializable {
                                 }
                             }
                         }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listEvalCompetencias.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listEvalCompetencias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listEvalCompetencias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosEvalCompetencia");
+                    context.update("form:ACEPTAR");
+
+                }
+            } else {
+
+                if (!crearEvalCompetencias.contains(filtrarEvalCompetencias.get(indice))) {
+                    if (filtrarEvalCompetencias.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEvalCompetencias.get(indice).setCodigo(backupCodigo);
+                    } else {
                         for (int j = 0; j < filtrarEvalCompetencias.size(); j++) {
                             if (j != indice) {
-                                if (filtrarEvalCompetencias.get(indice).getCodigo() == filtrarEvalCompetencias.get(j).getCodigo()) {
+                                if (filtrarEvalCompetencias.get(indice).getCodigo() == listEvalCompetencias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listEvalCompetencias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalCompetencias.get(indice).getCodigo() == listEvalCompetencias.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -273,22 +358,26 @@ public class ControlEvalCompetencias implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarEvalCompetencias.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
-                        context.update("form:ACEPTAR");
+
                     }
 
                     if (filtrarEvalCompetencias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
                     }
                     if (filtrarEvalCompetencias.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarEvalCompetencias.isEmpty()) {
                             modificarEvalCompetencias.add(filtrarEvalCompetencias.get(indice));
                         } else if (!modificarEvalCompetencias.contains(filtrarEvalCompetencias.get(indice))) {
@@ -301,7 +390,59 @@ public class ControlEvalCompetencias implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarEvalCompetencias.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEvalCompetencias.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarEvalCompetencias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalCompetencias.get(indice).getCodigo() == listEvalCompetencias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listEvalCompetencias.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalCompetencias.get(indice).getCodigo() == listEvalCompetencias.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarEvalCompetencias.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarEvalCompetencias.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarEvalCompetencias.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarEvalCompetencias.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -309,6 +450,7 @@ public class ControlEvalCompetencias implements Serializable {
 
             }
             context.update("form:datosEvalCompetencia");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -422,6 +564,9 @@ public class ControlEvalCompetencias implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEvalCompetencias = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEvalCompetencia");
             k = 0;
             guardado = true;
@@ -504,13 +649,14 @@ public class ControlEvalCompetencias implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                descripcionCompetencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
+                descripcionCompetencia = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
                 descripcionCompetencia.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvalCompetencia");
                 bandera = 0;
@@ -633,12 +779,13 @@ public class ControlEvalCompetencias implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                descripcionCompetencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
+                descripcionCompetencia = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
                 descripcionCompetencia.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvalCompetencia");
                 bandera = 0;
@@ -786,6 +933,22 @@ public class ControlEvalCompetencias implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public EvalCompetencias getEvalCompetenciaSeleccionada() {
+        return evalCompetenciaSeleccionada;
+    }
+
+    public void setEvalCompetenciaSeleccionada(EvalCompetencias evalCompetenciaSeleccionada) {
+        this.evalCompetenciaSeleccionada = evalCompetenciaSeleccionada;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

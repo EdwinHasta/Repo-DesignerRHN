@@ -8,7 +8,6 @@ package Persistencia;
 import InterfacePersistencia.PersistenciaEnfoquesInterface;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import Entidades.Enfoques;
 import java.math.BigInteger;
 import java.util.List;
@@ -26,33 +25,38 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,Enfoques enfoques) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, Enfoques enfoques) {
         try {
+            em.getTransaction().begin();
             em.persist(enfoques);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaEnfoques crear ERROR " + e);
         }
     }
 
-    public void editar(EntityManager em,Enfoques enfoques) {
+    public void editar(EntityManager em, Enfoques enfoques) {
         try {
+            em.getTransaction().begin();
             em.merge(enfoques);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaEnfoques editar ERROR " + e);
         }
     }
 
-    public void borrar(EntityManager em,Enfoques enfoques) {
+    public void borrar(EntityManager em, Enfoques enfoques) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(enfoques));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciEnfoques borrar ERROR " + e);
         }
     }
 
-    public Enfoques buscarEnfoque(EntityManager em,BigInteger secuenciaEnfoques) {
+    public Enfoques buscarEnfoque(EntityManager em, BigInteger secuenciaEnfoques) {
         try {
             return em.find(Enfoques.class, secuenciaEnfoques);
         } catch (Exception e) {
@@ -71,8 +75,8 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
             return null;
         }
     }
-    
-    public BigInteger contadorTiposDetalles(EntityManager em,BigInteger secuencia) {
+
+    public BigInteger contadorTiposDetalles(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*)FROM tiposdetalles td , enfoques eee WHERE eee.secuencia=td.enfoque AND eee.secuencia  = ? ";

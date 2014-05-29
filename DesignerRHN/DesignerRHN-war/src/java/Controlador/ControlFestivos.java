@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -39,7 +41,7 @@ public class ControlFestivos implements Serializable {
     AdministrarFestivosInterface administrarFestivos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<Festivos> listFestivosPorPais;
     private List<Festivos> filtrarFestivosPorPais;
     private List<Festivos> crearFestivosPorPais;
@@ -48,6 +50,7 @@ public class ControlFestivos implements Serializable {
     private Festivos nuevoFestivos;
     private Festivos duplicarFestivos;
     private Festivos editarFestivos;
+    private Festivos festivoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -56,7 +59,7 @@ public class ControlFestivos implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column fecha, parentesco;
+    private Column fecha;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
@@ -65,6 +68,8 @@ public class ControlFestivos implements Serializable {
     private List<Paises> listPaises;
     private Paises paisSeleccionado;
     private List<Paises> listPaisesFiltrar;
+    private int tamano;
+    private String infoRegistro;
 
     public ControlFestivos() {
         listFestivosPorPais = null;
@@ -77,8 +82,9 @@ public class ControlFestivos implements Serializable {
         nuevoFestivos.setPais(new Paises());
         duplicarFestivos = new Festivos();
         guardado = true;
+        tamano = 180;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -226,14 +232,19 @@ public class ControlFestivos implements Serializable {
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A CONTROLBETAEMPLVIGENCIANORMALABORAL.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlFestivos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de Registros: " + filtrarFestivosPorPais.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETAEMPLVIGENCIANORMALABORAL eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlFestivos eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+
+    private Date backUpFecha;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -242,7 +253,13 @@ public class ControlFestivos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listFestivosPorPais.get(index).getSecuencia();
-
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpFecha = listFestivosPorPais.get(index).getDia();
+                } else {
+                    backUpFecha = filtrarFestivosPorPais.get(index).getDia();
+                }
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -250,7 +267,7 @@ public class ControlFestivos implements Serializable {
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("\n ENTRE A CONTROLBETAEMPLVIGENCIANORMALABORAL.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlFestivos.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -266,7 +283,7 @@ public class ControlFestivos implements Serializable {
                 dig = -1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETAEMPLVIGENCIANORMALABORAL.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlFestivos.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -286,11 +303,10 @@ public class ControlFestivos implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
-            parentesco.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
             filtrarFestivosPorPais = null;
@@ -306,26 +322,33 @@ public class ControlFestivos implements Serializable {
         listFestivosPorPais = null;
         guardado = true;
         permitirIndex = true;
+        getListFestivosPorPais();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listFestivosPorPais != null && !listFestivosPorPais.isEmpty()) {
+            festivoSeleccionado = listFestivosPorPais.get(0);
+            infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosHvEntrevista");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            tamano = 156;
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 60px");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
-            parentesco.setFilterStyle("width: 600px");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 180;
             System.out.println("Desactivar");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
-            parentesco.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
             filtrarFestivosPorPais = null;
@@ -351,6 +374,7 @@ public class ControlFestivos implements Serializable {
                     if (listFestivosPorPais.get(indice).getDia() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listFestivosPorPais.get(indice).setDia(backUpFecha);
                     } else {
                         for (int j = 0; j < listFestivosPorPais.size(); j++) {
                             if (j != indice) {
@@ -361,6 +385,7 @@ public class ControlFestivos implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "FECHAS REPETIDAS";
+                            listFestivosPorPais.get(indice).setDia(backUpFecha);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -380,7 +405,40 @@ public class ControlFestivos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listFestivosPorPais.get(indice).getDia() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listFestivosPorPais.get(indice).setDia(backUpFecha);
+                    } else {
+                        for (int j = 0; j < listFestivosPorPais.size(); j++) {
+                            if (j != indice) {
+                                if (listFestivosPorPais.get(indice).getDia().equals(listFestivosPorPais.get(j).getDia())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "FECHAS REPETIDAS";
+                            listFestivosPorPais.get(indice).setDia(backUpFecha);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -391,8 +449,22 @@ public class ControlFestivos implements Serializable {
                     if (filtrarFestivosPorPais.get(indice).getDia() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarFestivosPorPais.get(indice).setDia(backUpFecha);
                     } else {
-                        banderita = true;
+                        for (int j = 0; j < filtrarFestivosPorPais.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarFestivosPorPais.get(indice).getDia().equals(listFestivosPorPais.get(j).getDia())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "FECHAS REPETIDAS";
+                            filtrarFestivosPorPais.get(indice).setDia(backUpFecha);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
                     }
 
                     if (banderita == true) {
@@ -408,7 +480,40 @@ public class ControlFestivos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarFestivosPorPais.get(indice).getDia() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarFestivosPorPais.get(indice).setDia(backUpFecha);
+                    } else {
+                        for (int j = 0; j < filtrarFestivosPorPais.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarFestivosPorPais.get(indice).getDia().equals(listFestivosPorPais.get(j).getDia())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "FECHAS REPETIDAS";
+                            filtrarFestivosPorPais.get(indice).setDia(backUpFecha);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -428,7 +533,7 @@ public class ControlFestivos implements Serializable {
             nuevoFestivos.setPais(new Paises());
             index = -1;
         } catch (Exception e) {
-            System.out.println("Error CONTROLBETAEMPLVIGENCIANORMALABORAL LIMPIAR NUEVO NORMA LABORAL ERROR :" + e.getMessage());
+            System.out.println("Error ControlFestivos LIMPIAR NUEVO NORMA LABORAL ERROR :" + e.getMessage());
         }
     }
 
@@ -448,6 +553,8 @@ public class ControlFestivos implements Serializable {
                     borrarFestivosPorPais.add(listFestivosPorPais.get(index));
                 }
                 listFestivosPorPais.remove(index);
+                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+
             }
             if (tipoLista == 1) {
                 System.out.println("borrandoEvalCompetencias ");
@@ -464,12 +571,15 @@ public class ControlFestivos implements Serializable {
                 int VCIndex = listFestivosPorPais.indexOf(filtrarFestivosPorPais.get(index));
                 listFestivosPorPais.remove(VCIndex);
                 filtrarFestivosPorPais.remove(index);
+                infoRegistro = "Cantidad de registros: " + filtrarFestivosPorPais.size();
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
             if (guardado == true) {
                 guardado = false;
             }
+
+            context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             context.update("form:ACEPTAR");
             index = -1;
@@ -548,10 +658,20 @@ public class ControlFestivos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listFestivosPorPais = null;
-             context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosHvEntrevista");
             k = 0;
             guardado = true;
+            getListFestivosPorPais();
+            if (listFestivosPorPais != null && !listFestivosPorPais.isEmpty()) {
+                festivoSeleccionado = listFestivosPorPais.get(0);
+                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+            } else {
+                infoRegistro = "Cantidad de registros: 0";
+            }
+            context.update("form:informacionRegistro");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -622,12 +742,11 @@ public class ControlFestivos implements Serializable {
 
         if (contador == 1) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
-                parentesco.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
@@ -648,6 +767,8 @@ public class ControlFestivos implements Serializable {
             listFestivosPorPais.add(nuevoFestivos);
             nuevoFestivos = new Festivos();
             nuevoFestivos.setPais(new Paises());
+            infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             if (guardado == true) {
                 guardado = false;
@@ -751,12 +872,12 @@ public class ControlFestivos implements Serializable {
                 guardado = false;
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
-                parentesco.setFilterStyle("display: none; visibility: hidden;");
-
+                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+                context.update("form:informacionRegistro");
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
                 filtrarFestivosPorPais = null;
@@ -782,7 +903,7 @@ public class ControlFestivos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosHvEntrevistaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "VIGENCIASNORMASLABORALES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "FESTIVOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -792,7 +913,7 @@ public class ControlFestivos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosHvEntrevistaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "VIGENCIASNORMASLABORALES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "FESTIVOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -911,6 +1032,13 @@ public class ControlFestivos implements Serializable {
         if (listPaises == null) {
             listPaises = administrarFestivos.consultarLOVPaises();
             paisSeleccionado = listPaises.get(0);
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (!listFestivosPorPais.isEmpty() || listFestivosPorPais != null) {
+                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+            } else {
+                infoRegistro = "Cantidad de registros: 0 ";
+            }
+            context.update("form:informacionRegistro");
         }
         return listPaises;
     }
@@ -933,6 +1061,30 @@ public class ControlFestivos implements Serializable {
 
     public void setListPaisesFiltrar(List<Paises> listPaisesFiltrar) {
         this.listPaisesFiltrar = listPaisesFiltrar;
+    }
+
+    public Festivos getFestivoSeleccionado() {
+        return festivoSeleccionado;
+    }
+
+    public void setFestivoSeleccionado(Festivos festivoSeleccionado) {
+        this.festivoSeleccionado = festivoSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

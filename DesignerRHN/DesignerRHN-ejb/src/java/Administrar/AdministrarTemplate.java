@@ -59,7 +59,7 @@ public class AdministrarTemplate implements AdministrarTemplateInterface {
         return persistenciaActualUsuario.actualUsuarioBD(em);
     }
 
-    @Override
+    //@Override
     public String logoEmpresa() {
         String rutaLogo;
         general = persistenciaGenerales.obtenerRutas(em);

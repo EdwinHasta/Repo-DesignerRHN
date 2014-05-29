@@ -26,21 +26,26 @@ public class PersistenciaEvalCompetencias implements PersistenciaEvalCompetencia
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,EvalCompetencias evalCompetencias) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, EvalCompetencias evalCompetencias) {
+        em.getTransaction().begin();
         em.persist(evalCompetencias);
+        em.getTransaction().commit();
     }
 
-    public void editar(EntityManager em,EvalCompetencias evalCompetencias) {
+    public void editar(EntityManager em, EvalCompetencias evalCompetencias) {
+        em.getTransaction().begin();
         em.merge(evalCompetencias);
+        em.getTransaction().commit();
     }
 
-    public void borrar(EntityManager em,EvalCompetencias evalCompetencias) {
+    public void borrar(EntityManager em, EvalCompetencias evalCompetencias) {
+        em.getTransaction().begin();
         em.remove(em.merge(evalCompetencias));
+        em.getTransaction().commit();
     }
 
-    public EvalCompetencias buscarEvalCompetencia(EntityManager em,BigInteger secuenciaTE) {
+    public EvalCompetencias buscarEvalCompetencia(EntityManager em, BigInteger secuenciaTE) {
         try {
             return em.find(EvalCompetencias.class, secuenciaTE);
         } catch (Exception e) {
@@ -56,13 +61,13 @@ public class PersistenciaEvalCompetencias implements PersistenciaEvalCompetencia
 
     }
 
-    public BigInteger contadorCompetenciasCargos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorCompetenciasCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = null;
         try {
             String sqlQuery = " SELECT COUNT(*)FROM competenciascargos ca, evalcompetencias ec WHERE ca.evalcompetencia= ec.secuencia AND ec.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = new BigInteger (query.getSingleResult().toString());
+            retorno = new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador PERSISTENCIAEVALCOMPETENCIAS ContadorCompetenciasCargos Retorno : " + retorno);
             return retorno;
         } catch (Exception e) {

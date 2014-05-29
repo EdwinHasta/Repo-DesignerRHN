@@ -26,37 +26,42 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,EvalEvaluadores evalEvaluadores) {
+    public void crear(EntityManager em, EvalEvaluadores evalEvaluadores) {
         try {
+            em.getTransaction().begin();
             em.persist(evalEvaluadores);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaMotivosContratos crear ERROR " + e);
         }
     }
 
     @Override
-    public void editar(EntityManager em,EvalEvaluadores evalEvaluadores) {
+    public void editar(EntityManager em, EvalEvaluadores evalEvaluadores) {
         try {
+            em.getTransaction().begin();
             em.merge(evalEvaluadores);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaEvalEvaluadores editar ERROR " + e);
         }
     }
 
     @Override
-    public void borrar(EntityManager em,EvalEvaluadores evalEvaluadores) {
+    public void borrar(EntityManager em, EvalEvaluadores evalEvaluadores) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(evalEvaluadores));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaEvalEvaluadores borrar ERROR " + e);
         }
     }
 
     @Override
-    public EvalEvaluadores buscarEvalEvaluador(EntityManager em,BigInteger secuenciaEvalEvaluadores) {
+    public EvalEvaluadores buscarEvalEvaluador(EntityManager em, BigInteger secuenciaEvalEvaluadores) {
         try {
             return em.find(EvalEvaluadores.class, secuenciaEvalEvaluadores);
         } catch (Exception e) {
@@ -79,7 +84,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public BigInteger verificarBorradoEvalPruebas(EntityManager em,BigInteger secuencia) {
+    public BigInteger verificarBorradoEvalPruebas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vp) FROM EvalPruebas vp WHERE vp.evalevaluador.secuencia =:secEvalEvalualores ");

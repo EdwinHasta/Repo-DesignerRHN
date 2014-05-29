@@ -32,6 +32,8 @@ import Entidades.TiposTelefonos;
 import Entidades.TiposTrabajadores;
 import Entidades.UbicacionesGeograficas;
 import Entidades.Unidades;
+import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -84,7 +86,9 @@ public interface AdministrarPersonaIndividualInterface {
 
     public List<MotivosLocalizaciones> lovMotivosLocalizaciones();
 
-    public List<Estructuras> lovEstructuras();
+    public List<Estructuras> lovEstructurasModCargos(BigInteger secEmpresa, Date fechaIngreso);
+    
+    public List<Estructuras> lovEstructurasModCentroCosto(BigInteger secEmpresa);
 
     public List<MotivosCambiosCargos> lovMotivosCambiosCargos();
 

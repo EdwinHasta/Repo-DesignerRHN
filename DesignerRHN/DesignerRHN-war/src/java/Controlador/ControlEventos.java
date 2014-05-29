@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -33,7 +34,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlEventos implements Serializable {
 
-    
     @EJB
     AdministrarEventosInterface administrarEventos;
     @EJB
@@ -46,6 +46,7 @@ public class ControlEventos implements Serializable {
     private Eventos nuevoEvento;
     private Eventos duplicarEvento;
     private Eventos editarEvento;
+    private Eventos eventoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -60,6 +61,7 @@ public class ControlEventos implements Serializable {
     private String mensajeValidacion;
     private BigInteger vigenciasEventos;
     private Integer a;
+    private int tamano;
 
     public ControlEventos() {
         listEventos = null;
@@ -72,8 +74,9 @@ public class ControlEventos implements Serializable {
         duplicarEvento = new Eventos();
         a = null;
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -96,6 +99,10 @@ public class ControlEventos implements Serializable {
             System.out.println("ERROR ControlEventos eventoFiltrar ERROR===" + e.getMessage());
         }
     }
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+    private String backUpOrganizador;
+    private String backUpObjetivo;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -103,6 +110,34 @@ public class ControlEventos implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listEventos.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarEventos.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listEventos.get(index).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarEventos.get(index).getDescripcion();
+                }
+            }
+            if (cualCelda == 2) {
+                if (tipoLista == 0) {
+                    backUpOrganizador = listEventos.get(index).getOrganizador();
+                } else {
+                    backUpOrganizador = filtrarEventos.get(index).getOrganizador();
+                }
+            }
+            if (cualCelda == 3) {
+                if (tipoLista == 0) {
+                    backUpObjetivo = listEventos.get(index).getObjetivo();
+                } else {
+                    backUpObjetivo = filtrarEventos.get(index).getObjetivo();
+                }
+            }
             secRegistro = listEventos.get(index).getSecuencia();
 
         }
@@ -135,15 +170,17 @@ public class ControlEventos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            organizador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:organizador");
+            organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
             organizador.setFilterStyle("display: none; visibility: hidden;");
-            objetivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:objetivo");
+            objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
             objetivo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvento");
             bandera = 0;
@@ -166,29 +203,32 @@ public class ControlEventos implements Serializable {
     }
 
     public void activarCtrlF11() {
-        if (bandera == 0) {
+        FacesContext c = FacesContext.getCurrentInstance();
 
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:codigo");
+        if (bandera == 0) {
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
             codigo.setFilterStyle("width: 50px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
             descripcion.setFilterStyle("width: 290px");
-            organizador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:organizador");
+            organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
             organizador.setFilterStyle("width: 95px");
-            objetivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:objetivo");
+            objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
             objetivo.setFilterStyle("width: 280px");
 
             RequestContext.getCurrentInstance().update("form:datosEvento");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            organizador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:organizador");
+            organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
             organizador.setFilterStyle("display: none; visibility: hidden;");
-            objetivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:objetivo");
+            objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
             objetivo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvento");
             bandera = 0;
@@ -213,6 +253,7 @@ public class ControlEventos implements Serializable {
                     if (listEventos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEventos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEventos.size(); j++) {
                             if (j != indice) {
@@ -222,6 +263,7 @@ public class ControlEventos implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            listEventos.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -230,27 +272,33 @@ public class ControlEventos implements Serializable {
 
                     }
                     if (listEventos.get(indice).getDescripcion().isEmpty()) {
+                        listEventos.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (listEventos.get(indice).getDescripcion().equals(" ")) {
+                        listEventos.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
 
                     if (listEventos.get(indice).getOrganizador().isEmpty()) {
+                        listEventos.get(indice).setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (listEventos.get(indice).getOrganizador().equals(" ")) {
+                        listEventos.get(indice).setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (listEventos.get(indice).getObjetivo().isEmpty()) {
+                        listEventos.get(indice).setObjetivo(backUpObjetivo);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
                     if (listEventos.get(indice).getObjetivo().equals(" ")) {
+                        listEventos.get(indice).setObjetivo(backUpObjetivo);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -269,7 +317,73 @@ public class ControlEventos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listEventos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEventos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listEventos.size(); j++) {
+                            if (j != indice) {
+                                if (listEventos.get(indice).getCodigo() == listEventos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            listEventos.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listEventos.get(indice).getDescripcion().isEmpty()) {
+                        listEventos.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (listEventos.get(indice).getDescripcion().equals(" ")) {
+                        listEventos.get(indice).setDescripcion(backUpDescripcion);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (listEventos.get(indice).getOrganizador().isEmpty()) {
+                        listEventos.get(indice).setOrganizador(backUpOrganizador);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (listEventos.get(indice).getOrganizador().equals(" ")) {
+                        listEventos.get(indice).setOrganizador(backUpOrganizador);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (listEventos.get(indice).getObjetivo().isEmpty()) {
+                        listEventos.get(indice).setObjetivo(backUpObjetivo);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+                    if (listEventos.get(indice).getObjetivo().equals(" ")) {
+                        listEventos.get(indice).setObjetivo(backUpObjetivo);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                        context.update("form:ACEPTAR");
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -280,6 +394,7 @@ public class ControlEventos implements Serializable {
                     if (filtrarEventos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEventos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listEventos.size(); j++) {
                             if (j != indice) {
@@ -296,6 +411,7 @@ public class ControlEventos implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            filtrarEventos.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -307,24 +423,30 @@ public class ControlEventos implements Serializable {
                     if (filtrarEventos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarEventos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
                     if (filtrarEventos.get(indice).getObjetivo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
                     }
                     if (filtrarEventos.get(indice).getObjetivo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
                         banderita = false;
                     }
                     if (filtrarEventos.get(indice).getOrganizador().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
                     }
                     if (filtrarEventos.get(indice).getOrganizador().equals(" ")) {
+                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     }
@@ -343,7 +465,85 @@ public class ControlEventos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                        contador = 0;
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarEventos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEventos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listEventos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEventos.get(indice).getCodigo() == listEventos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarEventos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEventos.get(indice).getCodigo() == filtrarEventos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            filtrarEventos.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarEventos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarEventos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarEventos.get(indice).setDescripcion(backUpDescripcion);
+                        banderita = false;
+                    }
+                    if (filtrarEventos.get(indice).getObjetivo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
+                    }
+                    if (filtrarEventos.get(indice).getObjetivo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarEventos.get(indice).setObjetivo(backUpObjetivo);
+                        banderita = false;
+                    }
+                    if (filtrarEventos.get(indice).getOrganizador().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
+                    }
+                    if (filtrarEventos.get(indice).getOrganizador().equals(" ")) {
+                        filtrarEventos.get(indice).setOrganizador(backUpOrganizador);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    }
+
+                    if (banderita == true) {
+                        if (modificarEventos.isEmpty()) {
+                            modificarEventos.add(filtrarEventos.get(indice));
+                        } else if (!modificarEventos.contains(filtrarEventos.get(indice))) {
+                            modificarEventos.add(filtrarEventos.get(indice));
+                        }
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                        context.update("form:ACEPTAR");
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                         contador = 0;
                     }
                     index = -1;
@@ -441,17 +641,18 @@ public class ControlEventos implements Serializable {
 
     public void guardarEventos() {
         RequestContext context = RequestContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
 
         if (guardado == false) {
             if (bandera == 1) {
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                organizador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:organizador");
+                organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
                 organizador.setFilterStyle("display: none; visibility: hidden;");
-                objetivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:objetivo");
+                objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
                 objetivo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvento");
             }
@@ -474,6 +675,9 @@ public class ControlEventos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEventos = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEvento");
             k = 0;
         }
@@ -576,16 +780,18 @@ public class ControlEventos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 4) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                organizador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:organizador");
+                organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
                 organizador.setFilterStyle("display: none; visibility: hidden;");
-                objetivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:objetivo");
+                objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
                 objetivo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvento");
                 bandera = 0;
@@ -728,14 +934,16 @@ public class ControlEventos implements Serializable {
             context.update("form:ACEPTAR");
 
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                organizador = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:organizador");
+                organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
                 organizador.setFilterStyle("display: none; visibility: hidden;");
-                objetivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvento:objetivo");
+                objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
                 objetivo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvento");
                 bandera = 0;
@@ -884,4 +1092,21 @@ public class ControlEventos implements Serializable {
         this.guardado = guardado;
     }
 
+    public Eventos getEventoSeleccionado() {
+        return eventoSeleccionado;
+    }
+
+    public void setEventoSeleccionado(Eventos eventoSeleccionado) {
+        this.eventoSeleccionado = eventoSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    
 }

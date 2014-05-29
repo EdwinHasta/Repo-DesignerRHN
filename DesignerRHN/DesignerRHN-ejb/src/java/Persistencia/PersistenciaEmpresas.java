@@ -7,7 +7,6 @@ import Entidades.Empresas;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
@@ -30,7 +29,9 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public void crear(EntityManager em, Empresas empresas) {
         try {
+            em.getTransaction().begin();
             em.persist(empresas);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("No es posible crear la empresa");
         }
@@ -39,7 +40,9 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public void editar(EntityManager em, Empresas empresas) {
         try {
+            em.getTransaction().begin();
             em.merge(empresas);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("La empresa no exite o esta reservada por lo cual no puede ser modificada");
         }
@@ -47,7 +50,9 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     @Override
     public void borrar(EntityManager em, Empresas empresas) {
+        em.getTransaction().begin();
         em.remove(em.merge(empresas));
+        em.getTransaction().commit();
     }
 
     @Override

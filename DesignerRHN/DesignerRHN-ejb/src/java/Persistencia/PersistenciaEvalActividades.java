@@ -1,8 +1,8 @@
 /*
-* To change this license header, choose License Headers in Project Properties.
-* To change this template file, choose Tools | Templates
-* and open the template in the editor.
-*/
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package Persistencia;
 
 import Entidades.EvalActividades;
@@ -11,41 +11,45 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
-*
-* @author user
-*/
+ *
+ * @author user
+ */
 @Stateless
 public class PersistenciaEvalActividades implements PersistenciaEvalActividadesInterface {
 
     /**
-* Atributo EntityManager. Representa la comunicación con la base de datos.
-*/
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-private EntityManager em;*/
-
-    public void crear(EntityManager em,EvalActividades evalCompetencias) {
+     * Atributo EntityManager. Representa la comunicación con la base de datos.
+     */
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
+    public void crear(EntityManager em, EvalActividades evalCompetencias) {
         try {
+            em.getTransaction().begin();
             em.persist(evalCompetencias);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaEvalActividades : " + e);
         }
     }
 
-    public void editar(EntityManager em,EvalActividades evalCompetencias) {
+    public void editar(EntityManager em, EvalActividades evalCompetencias) {
         try {
+            em.getTransaction().begin();
             em.merge(evalCompetencias);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaEvalActividades : " + e);
         }
     }
 
-    public void borrar(EntityManager em,EvalActividades evalCompetencias) {
+    public void borrar(EntityManager em, EvalActividades evalCompetencias) {
         try {
+            em.getTransaction().begin();
             em.remove(em.merge(evalCompetencias));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaEvalActividades : " + e);
         }
@@ -63,7 +67,7 @@ private EntityManager em;*/
         }
     }
 
-    public EvalActividades consultarEvalActividad(EntityManager em,BigInteger secuencia) {
+    public EvalActividades consultarEvalActividad(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM EvalActividades t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -77,7 +81,7 @@ private EntityManager em;*/
         }
     }
 
-    public BigInteger contarEvalPlanesDesarrollosEvalActividad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarEvalPlanesDesarrollosEvalActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM evalplanesdesarrollos WHERE evalactividad =?";
@@ -92,7 +96,7 @@ private EntityManager em;*/
         }
     }
 
-    public BigInteger contarCapNecesidadesEvalActividad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarCapNecesidadesEvalActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM CAPNECESIDADES WHERE tipoeducacion =?";
@@ -107,7 +111,7 @@ private EntityManager em;*/
         }
     }
 
-    public BigInteger contarCapBuzonesEvalActividad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarCapBuzonesEvalActividad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM CAPBUZONES WHERE tipoeducacion =?";

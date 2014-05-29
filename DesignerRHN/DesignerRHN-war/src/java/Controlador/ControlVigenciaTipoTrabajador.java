@@ -85,6 +85,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     //elementos retirados
     private Retirados retiroVigencia;
     private List<MotivosRetiros> motivosRetiros;
+    private List<MotivosRetiros> filtradoMotivosRetiros;
     private MotivosRetiros motivoRetiroSeleccionado;
     private int indexRetiro;
     private int indexPension;
@@ -101,10 +102,13 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     private List<Pensionados> listaPensionados;
     private Pensionados pensionVigencia;
     private Pensionados pensionadoSeleccionado;
+    
     private List<Personas> listaPersonas;
     private Personas personaSeleccionada;
+    
     private List<ClasesPensiones> clasesPensiones;
     private ClasesPensiones clasesPensionesSeleccionada;
+    
     private List<TiposPensionados> tiposPensionados;
     private TiposPensionados tiposPensionadosSeleccionada;
     private Pensionados pensionCopia;
@@ -1652,6 +1656,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         index = -1;
         secRegistro = null;
         motivoRetiroSeleccionado = null;
+        filtradoMotivosRetiros = null;
         context.update("form:RetirosDialogo");
         context.update("form:lovMotivosRetiros");
         context.update("form:aceptarMR");
@@ -2323,5 +2328,13 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
 
     public boolean isGuardado() {
         return guardado;
+    }
+
+    public List<MotivosRetiros> getFiltradoMotivosRetiros() {
+        return filtradoMotivosRetiros;
+    }
+
+    public void setFiltradoMotivosRetiros(List<MotivosRetiros> filtradoMotivosRetiros) {
+        this.filtradoMotivosRetiros = filtradoMotivosRetiros;
     }
 }

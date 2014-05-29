@@ -215,13 +215,13 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlClasesPensiones.nuevoClasesPensiones.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlClasesPensiones.nuevoClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="Descripcion: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlClasesPensiones.nuevoClasesPensiones.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlClasesPensiones.nuevoClasesPensiones.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripcion" />
@@ -239,13 +239,13 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlClasesPensiones.duplicarClasesPensiones.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" value="#{controlClasesPensiones.duplicarClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlClasesPensiones.duplicarClasesPensiones.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlClasesPensiones.duplicarClasesPensiones.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
