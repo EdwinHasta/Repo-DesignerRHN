@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,25 +27,69 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Comprobantes comprobante) {
-        em.persist(comprobante);
+    public void crear(EntityManager em, Comprobantes comprobante) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(comprobante);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,Comprobantes comprobante) {
-        em.merge(comprobante);
+    public void editar(EntityManager em, Comprobantes comprobante) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(comprobante);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
-    public void borrar(EntityManager em,Comprobantes comprobante) {
-        em.remove(em.merge(comprobante));
+    public void borrar(EntityManager em, Comprobantes comprobante) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(comprobante));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
-    public Comprobantes buscarComprobanteSecuencia(EntityManager em,BigInteger secuencia) {
+    public Comprobantes buscarComprobanteSecuencia(EntityManager em, BigInteger secuencia) {
         return em.find(Comprobantes.class, secuencia);
     }
 
@@ -56,7 +101,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     }
 
     @Override
-    public List<Comprobantes> comprobantesEmpleado(EntityManager em,BigInteger secuenciaEmpleado) {
+    public List<Comprobantes> comprobantesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);

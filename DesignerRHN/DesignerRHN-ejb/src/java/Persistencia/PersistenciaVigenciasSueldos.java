@@ -10,32 +10,80 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaVigenciasSueldosInterface;
 import java.math.BigInteger;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'VigenciasSueldos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'VigenciasSueldos' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public void crear(EntityManager em, VigenciasSueldos vigenciasSueldos) {
-        em.persist(vigenciasSueldos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vigenciasSueldos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     public void editar(EntityManager em, VigenciasSueldos vigenciasSueldos) {
-        em.merge(vigenciasSueldos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vigenciasSueldos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     public void borrar(EntityManager em, VigenciasSueldos vigenciasSueldos) {
-        em.remove(em.merge(vigenciasSueldos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(vigenciasSueldos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     public List<VigenciasSueldos> buscarVigenciasSeldos(EntityManager em) {

@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.FlushModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -36,32 +37,32 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
     //private UserTransaction utx;
     @Override
     public void crear(EntityManager em, VigenciasCargos vigenciasCargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasCargos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
-                //utx.rollback();
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
             } catch (Exception ex) {
                 System.out.println("No se puede hacer rollback porque no hay una transacción");
             }
-            //emr.getTransaction().rollback();
-        } /*finally {
-         em.close();
-         }*/
-
+        }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasCargos vigenciasCargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasCargos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
             System.out.println("ALERTA! Error xD");
@@ -70,14 +71,21 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
 
     @Override
     public void borrar(EntityManager em, VigenciasCargos vigenciasCargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(vigenciasCargos));
-            em.getTransaction().commit();
+            tx.commit();
+            
         } catch (Exception e) {
-            //em.getTransaction().rollback();
-            System.out.println("Error Persistencia Borrar VC: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 

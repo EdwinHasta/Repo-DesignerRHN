@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,37 +30,61 @@ public class PersistenciaMvrs implements PersistenciaMvrsInterface {
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, Mvrs mvrs) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(mvrs);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(mvrs);
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error crear PersistenciaMvrsInterface : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Mvrs mvrs) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(mvrs);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error editar PersistenciaMvrsInterface : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Mvrs mvrs) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(mvrs));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error borrar PersistenciaMvrsInterface : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
