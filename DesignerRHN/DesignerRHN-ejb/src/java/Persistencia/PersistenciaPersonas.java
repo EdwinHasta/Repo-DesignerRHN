@@ -7,7 +7,6 @@ import Entidades.Personas;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaPersonasInterface;
 import java.math.BigInteger;
 import javax.persistence.Query;
@@ -27,14 +26,17 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Personas personas) {
+        em.clear();
+        em.getTransaction().begin();
         em.persist(personas);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, Personas personas) {
+        em.clear();
         em.getTransaction().begin();
         em.merge(personas);
         em.getTransaction().commit();
@@ -42,7 +44,10 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
 
     @Override
     public void borrar(EntityManager em, Personas personas) {
+        em.clear();
+        em.getTransaction().begin();
         em.remove(em.merge(personas));
+        em.getTransaction().commit();
     }
 
     @Override

@@ -100,9 +100,10 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
 
     @Override
     public List<Formulas> consultarLOVFormulas() {
-        List<Formulas> listLOVFormulas;
-        listLOVFormulas = persistenciaFormulas.buscarFormulas(em);
-        return listLOVFormulas;
+       // List<Formulas> listLOVFormulas;
+        //listLOVFormulas = persistenciaFormulas.buscarFormulas(em);
+        //return listLOVFormulas;
+        return null;
     }
 
     public List<Procesos> consultarLOVProcesos() {
@@ -112,9 +113,10 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
     }
 
     public List<Periodicidades> consultarLOVPPeriodicidades() {
-        List<Periodicidades> listLOVFormulas;
+        /*List<Periodicidades> listLOVFormulas;
         listLOVFormulas = persistenciaPeriodicidades.consultarPeriodicidades(em);
-        return listLOVFormulas;
+        return listLOVFormulas;*/
+        return null;
     }
 
 }

@@ -25,14 +25,16 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposEntidades tiposEntidades) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.persist(tiposEntidades);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaTiposEntidades");
         }
@@ -41,7 +43,10 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public void editar(EntityManager em, TiposEntidades tiposEntidades) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.merge(tiposEntidades);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaTiposEntidades");
         }
@@ -50,7 +55,10 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
     @Override
     public void borrar(EntityManager em, TiposEntidades tiposEntidades) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.remove(em.merge(tiposEntidades));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaTiposEntidades");
         }

@@ -25,38 +25,46 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Formulascontratos formulascontratos) {
+    public void crear(EntityManager em, Formulascontratos formulascontratos) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.persist(formulascontratos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaFormulasContratos : " + e.toString());
         }
     }
 
     @Override
-    public void editar(EntityManager em,Formulascontratos formulascontratos) {
+    public void editar(EntityManager em, Formulascontratos formulascontratos) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.merge(formulascontratos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaFormulasContratos : " + e.toString());
         }
     }
 
     @Override
-    public void borrar(EntityManager em,Formulascontratos formulascontratos) {
+    public void borrar(EntityManager em, Formulascontratos formulascontratos) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.remove(em.merge(formulascontratos));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaFormulasContratos : " + e.toString());
         }
     }
 
     @Override
-    public List<Formulascontratos> formulasContratosParaFormulaSecuencia(EntityManager em,BigInteger secuencia) {
+    public List<Formulascontratos> formulasContratosParaFormulaSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.formula.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
@@ -70,7 +78,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
     }
 
     @Override
-    public List<Formulascontratos> formulasContratosParaContratoSecuencia(EntityManager em,BigInteger secuencia) {
+    public List<Formulascontratos> formulasContratosParaContratoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.contrato.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);
@@ -83,7 +91,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
         }
     }
 
-    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(EntityManager em,BigInteger secuencia) {
+    public Formulascontratos formulasContratosParaContratoFormulasContratosEntidades(EntityManager em, BigInteger secuencia) {
         try {
             Query queryFinal = em.createQuery("SELECT fc FROM Formulascontratos fc WHERE fc.secuencia=:secuencia");
             queryFinal.setParameter("secuencia", secuencia);

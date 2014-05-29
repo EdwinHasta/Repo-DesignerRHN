@@ -4,7 +4,6 @@
  */
 package Controlador;
 
-import Entidades.Formulas;
 import Entidades.FormulasContratosEntidades;
 import Entidades.Formulascontratos;
 import Entidades.TiposEntidades;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -40,7 +40,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
     AdministrarFormulasContratosEntidadesInterface administrarFormulasContratosEntidades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<FormulasContratosEntidades> listFormulasContratosEntidades;
     private List<FormulasContratosEntidades> filtrarFormulasContratosEntidades;
     private List<FormulasContratosEntidades> crearFormulasContratosEntidades;
@@ -49,6 +49,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
     private FormulasContratosEntidades nuevoFormulasContratosEntidades;
     private FormulasContratosEntidades duplicarFormulasContratosEntidades;
     private FormulasContratosEntidades editarFormulasContratosEntidades;
+    private FormulasContratosEntidades formulaContratoEntidadSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -72,6 +73,8 @@ public class ControlFormulasContratosEntidades implements Serializable {
     private String nuevoYduplicarCompletarTipoEntidad;
     private Formulascontratos formulaContratoSeleccionada;
     //private BigInteger secuenciaFormulaSeleccionada;
+    private String infoRegistro;
+    private String infoRegistroLOVTipoEntidad;
 
     public ControlFormulasContratosEntidades() {
         listFormulasContratosEntidades = null;
@@ -87,12 +90,13 @@ public class ControlFormulasContratosEntidades implements Serializable {
         listaTiposEntidades = null;
         filtradoTiposEntidades = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
         secuenciaFormulasContratos = BigInteger.valueOf(10510720);
         //secuenciaFormulaSeleccionada = BigInteger.valueOf(4613967);
         formulaContratoSeleccionada = null;
 
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -210,7 +214,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
+            tamano = 246;
             personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasContratosEntidades:personafir");
             personafir.setFilterStyle("width: 270px");
             RequestContext.getCurrentInstance().update("form:datosFormulasContratosEntidades");
@@ -218,7 +222,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
+            tamano = 270;
             personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasContratosEntidades:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
 
@@ -408,6 +412,8 @@ public class ControlFormulasContratosEntidades implements Serializable {
                     borrarFormulasContratosEntidades.add(listFormulasContratosEntidades.get(index));
                 }
                 listFormulasContratosEntidades.remove(index);
+                infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
+
             }
             if (tipoLista == 1) {
                 System.out.println("borrandoFormulasContratosEntidades ");
@@ -424,13 +430,14 @@ public class ControlFormulasContratosEntidades implements Serializable {
                 int VCIndex = listFormulasContratosEntidades.indexOf(filtrarFormulasContratosEntidades.get(index));
                 listFormulasContratosEntidades.remove(VCIndex);
                 filtrarFormulasContratosEntidades.remove(index);
+                infoRegistro = "Cantidad de registros: " + filtrarFormulasContratosEntidades.size();
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosFormulasContratosEntidades");
             index = -1;
             secRegistro = null;
-
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
             }
@@ -597,7 +604,9 @@ public class ControlFormulasContratosEntidades implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listFormulasContratosEntidades = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosFormulasContratosEntidades");
             k = 0;
             guardado = true;
@@ -648,8 +657,8 @@ public class ControlFormulasContratosEntidades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevoFormulasContratosEntidades.getTipoentidad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *un Tipo Entidad \n";
+        if (nuevoFormulasContratosEntidades.getTipoentidad().getNombre() == null || nuevoFormulasContratosEntidades.getTipoentidad().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Tipo Entidad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -683,6 +692,8 @@ public class ControlFormulasContratosEntidades implements Serializable {
             nuevoFormulasContratosEntidades.setFormulacontrato(formulaContratoSeleccionada);
             crearFormulasContratosEntidades.add(nuevoFormulasContratosEntidades);
             listFormulasContratosEntidades.add(nuevoFormulasContratosEntidades);
+            infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
+            context.update("form:informacionRegistro");
             nuevoFormulasContratosEntidades = new FormulasContratosEntidades();
             nuevoFormulasContratosEntidades.setTipoentidad(new TiposEntidades());
             context.update("form:datosFormulasContratosEntidades");
@@ -757,8 +768,8 @@ public class ControlFormulasContratosEntidades implements Serializable {
         Integer a = 0;
         a = null;
 
-        if (duplicarFormulasContratosEntidades.getTipoentidad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Concepto \n";
+        if (duplicarFormulasContratosEntidades.getTipoentidad().getNombre() == null || duplicarFormulasContratosEntidades.getTipoentidad().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Tipo Entidad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -792,6 +803,8 @@ public class ControlFormulasContratosEntidades implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -889,7 +902,13 @@ public class ControlFormulasContratosEntidades implements Serializable {
         if (listFormulasContratosEntidades == null) {
             listFormulasContratosEntidades = administrarFormulasContratosEntidades.consultarFormulasContratosEntidadesPorFormulaContrato(secuenciaFormulasContratos);
         }
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listFormulasContratosEntidades == null || listFormulasContratosEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
+        }
+        context.update("form:infoRegistroLOVTipoEntidad");
         return listFormulasContratosEntidades;
     }
 
@@ -984,6 +1003,14 @@ public class ControlFormulasContratosEntidades implements Serializable {
         if (listaTiposEntidades == null) {
             listaTiposEntidades = administrarFormulasContratosEntidades.consultarLOVTiposEntidades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaTiposEntidades == null || listaTiposEntidades.isEmpty()) {
+            infoRegistroLOVTipoEntidad = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroLOVTipoEntidad = "Cantidad de registros: " + listaTiposEntidades.size();
+        }
+        context.update("form:infoRegistroLOVTipoEntidad");
         return listaTiposEntidades;
     }
 
@@ -1005,6 +1032,30 @@ public class ControlFormulasContratosEntidades implements Serializable {
 
     public void setTipoentidadSeleccionado(TiposEntidades tipoEntidadSeleccionado) {
         this.tipoEntidadSeleccionado = tipoEntidadSeleccionado;
+    }
+
+    public FormulasContratosEntidades getFormulaContratoEntidadSeleccionada() {
+        return formulaContratoEntidadSeleccionada;
+    }
+
+    public void setFormulaContratoEntidadSeleccionada(FormulasContratosEntidades formulaContratoEntidadSeleccionada) {
+        this.formulaContratoEntidadSeleccionada = formulaContratoEntidadSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroLOVTipoEntidad() {
+        return infoRegistroLOVTipoEntidad;
+    }
+
+    public void setInfoRegistroLOVTipoEntidad(String infoRegistroLOVTipoEntidad) {
+        this.infoRegistroLOVTipoEntidad = infoRegistroLOVTipoEntidad;
     }
 
 }

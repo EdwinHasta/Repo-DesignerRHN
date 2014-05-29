@@ -29,6 +29,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public void crear(EntityManager em, Empresas empresas) {
         try {
+            em.clear();
             em.getTransaction().begin();
             em.persist(empresas);
             em.getTransaction().commit();
@@ -40,6 +41,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
     @Override
     public void editar(EntityManager em, Empresas empresas) {
         try {
+            em.clear();
             em.getTransaction().begin();
             em.merge(empresas);
             em.getTransaction().commit();
@@ -50,6 +52,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     @Override
     public void borrar(EntityManager em, Empresas empresas) {
+        em.clear();
         em.getTransaction().begin();
         em.remove(em.merge(empresas));
         em.getTransaction().commit();

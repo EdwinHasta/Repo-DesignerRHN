@@ -11,45 +11,57 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Formulas'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Formulas' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaFormulas implements PersistenciaFormulasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
 
     @Override
-    public void crear(EntityManager em,Formulas formulas) {
+    public void crear(EntityManager em, Formulas formulas) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.persist(formulas);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("No es posible crear la Formula");
         }
     }
 
     @Override
-    public void editar(EntityManager em,Formulas formulas) {
+    public void editar(EntityManager em, Formulas formulas) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.merge(formulas);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("La formula no exite o esta reservada por lo cual no puede ser modificada");
         }
     }
 
     @Override
-    public void borrar(EntityManager em,Formulas formulas) {
+    public void borrar(EntityManager em, Formulas formulas) {
+        em.clear();
+        em.getTransaction().begin();
         em.remove(em.merge(formulas));
+        em.getTransaction().commit();
     }
 
     @Override
-    public Formulas buscarFormula(EntityManager em,BigInteger secuencia) {
+    public Formulas buscarFormula(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Formulas.class, secuencia);
         } catch (Exception e) {
@@ -102,7 +114,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void clonarFormulas(EntityManager em,String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
+    public void clonarFormulas(EntityManager em, String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
         int i = 0;
         try {
             String sqlQuery = "call FORMULAS_PKG.CLONARFORMULA(?, ?, ?, ?)";
@@ -118,7 +130,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     }
 
     @Override
-    public void operandoFormulas(EntityManager em,BigInteger secFormula) {
+    public void operandoFormulas(EntityManager em, BigInteger secFormula) {
         int i = 0;
         try {
             String sqlQuery = "call UTL_FORMS.INSERTAROPERANDOFORMULA(?)";

@@ -28,20 +28,28 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Periodicidades periodicidades) {
+        em.clear();
+        em.getTransaction().begin();
         em.persist(periodicidades);
+        em.getTransaction().commit();
     }
 
     @Override
     public void editar(EntityManager em, Periodicidades periodicidades) {
+        em.clear();
+        em.getTransaction().begin();
         em.merge(periodicidades);
+        em.getTransaction().commit();
     }
 
     @Override
     public void borrar(EntityManager em, Periodicidades periodicidades) {
+        em.clear();
+        em.getTransaction().begin();
         em.remove(em.merge(periodicidades));
+        em.getTransaction().commit();
     }
 
     @Override

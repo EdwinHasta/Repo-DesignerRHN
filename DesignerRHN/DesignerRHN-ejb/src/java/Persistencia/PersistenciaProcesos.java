@@ -13,23 +13,27 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Procesos'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Procesos' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaProcesos implements PersistenciaProcesosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-    
     @Override
     public void crear(EntityManager em, Procesos procesos) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.persist(procesos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaProcesos");
         }
@@ -38,7 +42,10 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public void editar(EntityManager em, Procesos procesos) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.merge(procesos);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaProcesos");
         }
@@ -47,12 +54,15 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
     @Override
     public void borrar(EntityManager em, Procesos procesos) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.remove(em.merge(procesos));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaProcesos");
         }
     }
-   
+
     @Override
     public List<Procesos> buscarProcesos(EntityManager em) {
         try {

@@ -7,7 +7,6 @@ import Entidades.Cargos;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -27,26 +26,33 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Cargos cargos) {
+    public void crear(EntityManager em, Cargos cargos) {
+        em.clear();
+        em.getTransaction().begin();
         em.persist(cargos);
+        em.getTransaction().commit();
     }
 
     @Override
-    public void editar(EntityManager em,Cargos cargos) {
+    public void editar(EntityManager em, Cargos cargos) {
+        em.clear();
+        em.getTransaction().begin();
         em.merge(cargos);
+        em.getTransaction().commit();
     }
 
-
     @Override
-    public void borrar(EntityManager em,Cargos cargos) {
+    public void borrar(EntityManager em, Cargos cargos) {
+        em.clear();
+        em.getTransaction().begin();
         em.remove(em.merge(cargos));
+        em.getTransaction().commit();
     }
 
     @Override
-    public Cargos buscarCargoSecuencia(EntityManager em,BigInteger secuencia) {
+    public Cargos buscarCargoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             BigInteger in;
             in = (BigInteger) secuencia;
@@ -90,7 +96,8 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
             return null;
         }
     }
-@Override
+
+    @Override
     public List<Cargos> buscarCargosPorSecuenciaEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Cargos c  WHERE c.empresa.secuencia=:secEmpresa");

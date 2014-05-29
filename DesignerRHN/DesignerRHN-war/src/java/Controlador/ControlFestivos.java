@@ -578,7 +578,6 @@ public class ControlFestivos implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
-
             context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             context.update("form:ACEPTAR");
@@ -868,6 +867,8 @@ public class ControlFestivos implements Serializable {
             System.err.println("fecha " + duplicarFestivos.getDia());
             System.err.println("Pais " + duplicarFestivos.getPais().getNombre());
             System.err.println("-----------------------------------------------");
+            infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
             }
@@ -876,8 +877,6 @@ public class ControlFestivos implements Serializable {
                 //CERRAR FILTRADO
                 fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
-                context.update("form:informacionRegistro");
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
                 filtrarFestivosPorPais = null;
@@ -956,6 +955,13 @@ public class ControlFestivos implements Serializable {
     public List<Festivos> getListFestivosPorPais() {
         if (listFestivosPorPais == null) {
             listFestivosPorPais = administrarFestivos.consultarFestivosPais(paisSeleccionado.getSecuencia());
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listFestivosPorPais == null || listFestivosPorPais.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+            }
+            context.update("form:informacionRegistro");
         }
         return listFestivosPorPais;
     }
@@ -1033,10 +1039,10 @@ public class ControlFestivos implements Serializable {
             listPaises = administrarFestivos.consultarLOVPaises();
             paisSeleccionado = listPaises.get(0);
             RequestContext context = RequestContext.getCurrentInstance();
-            if (!listFestivosPorPais.isEmpty() || listFestivosPorPais != null) {
-                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
-            } else {
+            if (listFestivosPorPais == null || listFestivosPorPais.isEmpty()) {
                 infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
             }
             context.update("form:informacionRegistro");
         }

@@ -25,27 +25,35 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,FormulasAseguradas formulasAseguradas) {
+     private EntityManager em;*/
+    public void crear(EntityManager em, FormulasAseguradas formulasAseguradas) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.persist(formulasAseguradas);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaFormulasAseguradas");
         }
     }
 
-    public void editar(EntityManager em,FormulasAseguradas formulasAseguradas) {
+    public void editar(EntityManager em, FormulasAseguradas formulasAseguradas) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.merge(formulasAseguradas);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error editar PersistenciaFormulasAseguradas");
         }
     }
 
-    public void borrar(EntityManager em,FormulasAseguradas formulasAseguradas) {
+    public void borrar(EntityManager em, FormulasAseguradas formulasAseguradas) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.remove(em.merge(formulasAseguradas));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("Error borrar PersistenciaFormulasAseguradas");
         }
@@ -63,7 +71,7 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
         }
     }
 
-    public FormulasAseguradas consultarFormulaAsegurada(EntityManager em,BigInteger secuencia) {
+    public FormulasAseguradas consultarFormulaAsegurada(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM FormulasAseguradas te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);

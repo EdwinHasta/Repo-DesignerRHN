@@ -11,15 +11,17 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/> 
                     <f:loadBundle basename="Recursos.formulasaseguradas" var="msg" />
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
-                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 835px; height: 375px; border-radius: 10px; ">
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['titulo1']}</strong></legend>
 
                             <p:dataTable id="datosFormulasAseguradas" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ;font-size: 10px; border: 1px;"                           
                                          value="#{controlFormulasAseguradas.listFormulasAseguradas}"  scrollHeight="#{controlFormulasAseguradas.tamano}"  scrollWidth="830"
                                          filteredValue="#{controlFormulasAseguradas.filtrarFormulasAseguradas}" emptyMessage="#{msg['lovvacio']}"
-                                         editable="true" scrollable="true" liveScroll="true" scrollRows="20" editMode="cell" paginator="false" 
+                                         selection="#{controlFormulasAseguradas.formulaAseguradaSeleccion}" selectionMode="single"
+                                         editable="true" editMode="cell" scrollable="true" liveScroll="true" scrollRows="50"  
                                          >
                                 <p:ajax event="filter" listener="#{controlFormulasAseguradas.eventoFiltrar()}"/>
 

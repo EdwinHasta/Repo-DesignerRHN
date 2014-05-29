@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -40,7 +41,7 @@ public class ControlFirmasReportes implements Serializable {
     AdministrarFirmasReportesInterface administrarFirmasReportes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<FirmasReportes> listFirmasReportes;
     private List<FirmasReportes> filtrarFirmasReportes;
     private List<FirmasReportes> crearFirmasReportes;
@@ -49,6 +50,7 @@ public class ControlFirmasReportes implements Serializable {
     private FirmasReportes nuevoFirmasReportes;
     private FirmasReportes duplicarFirmasReportes;
     private FirmasReportes editarFirmasReportes;
+    private FirmasReportes firmaReporteSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -86,6 +88,11 @@ public class ControlFirmasReportes implements Serializable {
     private Cargos cargoSeleccionado;
     private String nuevoYduplicarCompletarCargo;
 
+    private String infoRegistro;
+    private String infoLOVCargo;
+    private String infoLOVPersona;
+    private String infoLOVEmpresa;
+
     public ControlFirmasReportes() {
         listFirmasReportes = null;
         crearFirmasReportes = new ArrayList<FirmasReportes>();
@@ -108,9 +115,9 @@ public class ControlFirmasReportes implements Serializable {
         listaCargos = null;
         filtradoCargos = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -253,18 +260,19 @@ public class ControlFirmasReportes implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-           codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:pais");
             pais.setFilterStyle("display: none; visibility: hidden;");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
             subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFirmasReportes");
             bandera = 0;
@@ -287,39 +295,40 @@ public class ControlFirmasReportes implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:codigo");
             codigo.setFilterStyle("width: 20px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
             descripcion.setFilterStyle("width: 110px");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:pais");
             pais.setFilterStyle("width: 130px");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
-            subTituloFirma.setFilterStyle("width: 130px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:personafir");
-            personafir.setFilterStyle("width: 130px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:cargo");
-            cargo.setFilterStyle("width: 130px");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
+            subTituloFirma.setFilterStyle("width: 100px");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:personafir");
+            personafir.setFilterStyle("width: 100px");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:cargo");
+            cargo.setFilterStyle("width: 100px");
             RequestContext.getCurrentInstance().update("form:datosFirmasReportes");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:pais");
+            pais = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:pais");
             pais.setFilterStyle("display: none; visibility: hidden;");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
             subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
-           
+
             RequestContext.getCurrentInstance().update("form:datosFirmasReportes");
             bandera = 0;
             filtrarFirmasReportes = null;
@@ -572,7 +581,7 @@ public class ControlFirmasReportes implements Serializable {
                         }
 
                     }
-                    if (listFirmasReportes.get(indice).getDescripcion().isEmpty()) {
+                    if (listFirmasReportes.get(indice).getDescripcion().isEmpty() || listFirmasReportes.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listFirmasReportes.get(indice).setDescripcion(backupDescripcion);
@@ -643,7 +652,7 @@ public class ControlFirmasReportes implements Serializable {
                         }
 
                     }
-                    if (listFirmasReportes.get(indice).getDescripcion().isEmpty()) {
+                    if (listFirmasReportes.get(indice).getDescripcion().isEmpty() || listFirmasReportes.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listFirmasReportes.get(indice).setDescripcion(backupDescripcion);
@@ -715,7 +724,7 @@ public class ControlFirmasReportes implements Serializable {
 
                     }
 
-                    if (filtrarFirmasReportes.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarFirmasReportes.get(indice).getDescripcion().isEmpty() || filtrarFirmasReportes.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarFirmasReportes.get(indice).setDescripcion(backupDescripcion);
@@ -787,7 +796,7 @@ public class ControlFirmasReportes implements Serializable {
 
                     }
 
-                    if (filtrarFirmasReportes.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarFirmasReportes.get(indice).getDescripcion().isEmpty() || filtrarFirmasReportes.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarFirmasReportes.get(indice).setDescripcion(backupDescripcion);
@@ -1089,6 +1098,7 @@ public class ControlFirmasReportes implements Serializable {
                     borrarFirmasReportes.add(listFirmasReportes.get(index));
                 }
                 listFirmasReportes.remove(index);
+                infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
             }
             if (tipoLista == 1) {
                 System.out.println("borrandoFirmasReportes ");
@@ -1105,10 +1115,13 @@ public class ControlFirmasReportes implements Serializable {
                 int VCIndex = listFirmasReportes.indexOf(filtrarFirmasReportes.get(index));
                 listFirmasReportes.remove(VCIndex);
                 filtrarFirmasReportes.remove(index);
+                infoRegistro = "Cantidad de registros: " + filtrarFirmasReportes.size();
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosFirmasReportes");
+
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -1524,7 +1537,9 @@ public class ControlFirmasReportes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listFirmasReportes = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosFirmasReportes");
             k = 0;
             guardado = true;
@@ -1607,8 +1622,8 @@ public class ControlFirmasReportes implements Serializable {
                 contador++;
             }
         }
-        if (nuevoFirmasReportes.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
+        if (nuevoFirmasReportes.getDescripcion() == null || nuevoFirmasReportes.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1616,8 +1631,8 @@ public class ControlFirmasReportes implements Serializable {
             contador++;
 
         }
-        if (nuevoFirmasReportes.getEmpresa().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Empresa \n";
+        if (nuevoFirmasReportes.getEmpresa().getNombre() == null || nuevoFirmasReportes.getEmpresa().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Empresa \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1625,8 +1640,8 @@ public class ControlFirmasReportes implements Serializable {
             contador++;
 
         }
-        if (nuevoFirmasReportes.getPersonaFirma().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Persona \n";
+        if (nuevoFirmasReportes.getPersonaFirma().getNombre() == null || nuevoFirmasReportes.getPersonaFirma().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Persona \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1635,8 +1650,17 @@ public class ControlFirmasReportes implements Serializable {
 
         }
 
-        if (nuevoFirmasReportes.getCargo().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Cargo \n";
+        if (nuevoFirmasReportes.getCargo().getNombre() == null || nuevoFirmasReportes.getCargo().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Cargo \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else {
+            System.out.println("bandera");
+            contador++;
+
+        }
+        if (nuevoFirmasReportes.getSubtitulofirma() == null || nuevoFirmasReportes.getSubtitulofirma().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Subitulo Firma \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1647,22 +1671,23 @@ public class ControlFirmasReportes implements Serializable {
 
         System.out.println("contador " + contador);
 
-        if (contador == 5) {
+        if (contador == 6) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:pais");
-            pais.setFilterStyle("display: none; visibility: hidden;");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
-            subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:personafir");
-            personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:cargo");
-            cargo.setFilterStyle("display: none; visibility: hidden;");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:codigo");
+                codigo.setFilterStyle("display: none; visibility: hidden;");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
+                pais = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:pais");
+                pais.setFilterStyle("display: none; visibility: hidden;");
+                subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
+                subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:personafir");
+                personafir.setFilterStyle("display: none; visibility: hidden;");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:cargo");
+                cargo.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarFirmasReportes = null;
                 tipoLista = 0;
@@ -1678,6 +1703,10 @@ public class ControlFirmasReportes implements Serializable {
             listFirmasReportes.add(nuevoFirmasReportes);
             nuevoFirmasReportes = new FirmasReportes();
             nuevoFirmasReportes.setEmpresa(new Empresas());
+            nuevoFirmasReportes.setPersonaFirma(new Personas());
+            nuevoFirmasReportes.setCargo(new Cargos());
+            infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFirmasReportes");
             if (guardado == true) {
                 guardado = false;
@@ -1757,7 +1786,7 @@ public class ControlFirmasReportes implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarFirmasReportes.getDescripcion());
 
         if (duplicarFirmasReportes.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listFirmasReportes.size(); x++) {
@@ -1774,40 +1803,49 @@ public class ControlFirmasReportes implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarFirmasReportes.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarFirmasReportes.getDescripcion() == null || duplicarFirmasReportes.getDescripcion().equals(" ")) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarFirmasReportes.getEmpresa().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * un Pais \n";
+        if (duplicarFirmasReportes.getEmpresa().getNombre() == null || duplicarFirmasReportes.getEmpresa().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Empresa \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarFirmasReportes.getPersonaFirma().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Persona \n";
+        if (duplicarFirmasReportes.getPersonaFirma().getNombre() == null || duplicarFirmasReportes.getPersonaFirma().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Persona \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarFirmasReportes.getCargo().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Cargo \n";
+        if (duplicarFirmasReportes.getCargo().getNombre() == null || duplicarFirmasReportes.getEmpresa().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Cargo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
+        if (duplicarFirmasReportes.getSubtitulofirma() == null || duplicarFirmasReportes.getSubtitulofirma().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Subtitulo Firma \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        if (contador == 5) {
+        } else {
+            System.out.println("bandera");
+            contador++;
+
+        }
+
+        if (contador == 6) {
 
             System.out.println("Datos Duplicando: " + duplicarFirmasReportes.getSecuencia() + "  " + duplicarFirmasReportes.getCodigo());
             if (crearFirmasReportes.contains(duplicarFirmasReportes)) {
@@ -1815,6 +1853,8 @@ public class ControlFirmasReportes implements Serializable {
             }
             listFirmasReportes.add(duplicarFirmasReportes);
             crearFirmasReportes.add(duplicarFirmasReportes);
+            infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFirmasReportes");
             index = -1;
             System.out.println("--------------DUPLICAR------------------------");
@@ -1832,19 +1872,20 @@ public class ControlFirmasReportes implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-              codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
-            pais = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:pais");
-            pais.setFilterStyle("display: none; visibility: hidden;");
-            subTituloFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
-            subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:personafir");
-            personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFirmasReportes:cargo");
-            cargo.setFilterStyle("display: none; visibility: hidden;");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:codigo");
+                codigo.setFilterStyle("display: none; visibility: hidden;");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
+                pais = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:pais");
+                pais.setFilterStyle("display: none; visibility: hidden;");
+                subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
+                subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:personafir");
+                personafir.setFilterStyle("display: none; visibility: hidden;");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:cargo");
+                cargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFirmasReportes");
                 bandera = 0;
                 filtrarFirmasReportes = null;
@@ -1929,6 +1970,13 @@ public class ControlFirmasReportes implements Serializable {
         if (listFirmasReportes == null) {
             listFirmasReportes = administrarFirmasReportes.consultarFirmasReportes();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listFirmasReportes == null || listFirmasReportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
+        }
+        context.update("form:informacionRegistro");
         return listFirmasReportes;
     }
 
@@ -2012,6 +2060,14 @@ public class ControlFirmasReportes implements Serializable {
         if (listaEmpresas == null) {
             listaEmpresas = administrarFirmasReportes.consultarLOVEmpresas();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaEmpresas == null || listaEmpresas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoLOVEmpresa = "Cantidad de registros: " + listaEmpresas.size();
+        }
+        context.update("form:infoLOVEmpresa");
         return listaEmpresas;
     }
 
@@ -2039,6 +2095,14 @@ public class ControlFirmasReportes implements Serializable {
         if (listaPersonas == null) {
             listaPersonas = administrarFirmasReportes.consultarLOVPersonas();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaPersonas == null || listaPersonas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoLOVPersona = "Cantidad de registros: " + listaPersonas.size();
+        }
+        context.update("form:infoLOVPersona");
         return listaPersonas;
     }
 
@@ -2066,6 +2130,14 @@ public class ControlFirmasReportes implements Serializable {
         if (listaCargos == null) {
             listaCargos = administrarFirmasReportes.consultarLOVCargos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaCargos == null || listaCargos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoLOVCargo = "Cantidad de registros: " + listaCargos.size();
+        }
+        context.update("form:infoLOVCargo");
         return listaCargos;
     }
 
@@ -2087,6 +2159,46 @@ public class ControlFirmasReportes implements Serializable {
 
     public void setCargoSeleccionado(Cargos cargoSeleccionado) {
         this.cargoSeleccionado = cargoSeleccionado;
+    }
+
+    public FirmasReportes getFirmaReporteSeleccionada() {
+        return firmaReporteSeleccionada;
+    }
+
+    public void setFirmaReporteSeleccionada(FirmasReportes firmaReporteSeleccionada) {
+        this.firmaReporteSeleccionada = firmaReporteSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoLOVCargo() {
+        return infoLOVCargo;
+    }
+
+    public void setInfoLOVCargo(String infoLOVCargo) {
+        this.infoLOVCargo = infoLOVCargo;
+    }
+
+    public String getInfoLOVPersona() {
+        return infoLOVPersona;
+    }
+
+    public void setInfoLOVPersona(String infoLOVPersona) {
+        this.infoLOVPersona = infoLOVPersona;
+    }
+
+    public String getInfoLOVEmpresa() {
+        return infoLOVEmpresa;
+    }
+
+    public void setInfoLOVEmpresa(String infoLOVEmpresa) {
+        this.infoLOVEmpresa = infoLOVEmpresa;
     }
 
 }
