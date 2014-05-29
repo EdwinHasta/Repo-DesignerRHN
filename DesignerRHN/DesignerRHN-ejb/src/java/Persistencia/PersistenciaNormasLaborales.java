@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,23 +33,62 @@ public class PersistenciaNormasLaborales implements PersistenciaNormasLaboralesI
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, NormasLaborales normasLaborales) {
-        em.getTransaction().begin();
-        em.persist(normasLaborales);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(normasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La norma laboral no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, NormasLaborales normasLaborales) {
-        em.getTransaction().begin();
-        em.merge(normasLaborales);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(normasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La norma laboral no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, NormasLaborales normasLaborales) {
-        em.getTransaction().begin();
-        em.remove(em.merge(normasLaborales));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(normasLaborales));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La norma laboral no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override

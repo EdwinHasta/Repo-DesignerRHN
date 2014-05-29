@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,34 +31,61 @@ public class PersistenciaVigenciasContratos implements PersistenciaVigenciasCont
 
     @Override
     public void crear(EntityManager em, VigenciasContratos vigenciasContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasContratos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (PersistenciaVigenciasContratos - Crear)");
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasContratos vigenciasContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasContratos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la Vigencias Contratos (PersistenciaVigenciasContratos - editar)");
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasContratos vigenciasContratos) {
-        try{
-            em.getTransaction().begin();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
             em.remove(em.merge(vigenciasContratos));
-            em.getTransaction().commit();
-        }catch(Exception e){
-            System.out.println("la vigencia contrato no se ha podido eliminar (PersistenciaVigenciasContratos - borrar)");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 

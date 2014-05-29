@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,37 +32,61 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
      */
     @Override
     public void crear(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(vigenciasTiposTrabajadores);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(vigenciasTiposTrabajadores);
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser creada (VigenciasTiposTrabajadores) : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasTiposTrabajadores);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("No se pudo modificar la Vigencias TiposTrabajadores : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasTiposTrabajadores vigenciasTiposTrabajadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(vigenciasTiposTrabajadores));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error borrarVigenciasTiposTrabajadores (PersistenciaVigenciasTiposTrabajadores) : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
