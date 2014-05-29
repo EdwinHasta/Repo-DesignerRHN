@@ -590,7 +590,7 @@
                             <p:inputText id="nuevaValor" value="#{controlVigenciaSueldo.nuevaVigencia.valor}" style=" width: 122px; position: absolute; left: 220px; top: 270px; text-transform: uppercase">
                                 <p:ajax event="change" update="nuevaValor"/>
                             </p:inputText>
-                            <p:watermark for="nuevaValor" value="#{msg['valor']}" />
+                            <p:watermark for="nuevaValor" value="#{msg['valor']}"/>
 
                             <strong><h:outputText value="#{msg['observacionesVS']}" style=" position: absolute; top: 310px; left: 50px" /></strong>
                             <p:inputText id="nuevaObservaciones" value="#{controlVigenciaSueldo.nuevaVigencia.observaciones}" style=" width: 122px; position: absolute; left: 220px; top: 310px; text-transform: uppercase">
@@ -638,7 +638,7 @@
                             <strong><h:outputText value="#{msg['retroactivoVS']}" style=" position: absolute; top: 190px; left: 50px" /></strong>
                             <p:selectBooleanCheckbox id="duplicarRetroactivo" value="#{controlVigenciaSueldo.duplicarVS.checkRetroactivo}" style="position: absolute; left: 220px; top: 190px;">
                                 <p:ajax event="change" update="duplicarRetroactivo"/>
-                            </p:selectBooleanCheckbox> 
+                            </p:selectBooleanCheckbox>
 
                             <strong><h:outputText value="#{msg['vigenciaretroactivoVS']}" style=" position: absolute; top: 230px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaRetroDuplicarRegVS" style=" position: absolute; top: 230px; left: 220px">
@@ -710,7 +710,6 @@
                                 <p:ajax event="change" update="nuevaValorVA"  />
                             </p:inputText>
                             <p:watermark for="nuevaValorVA" value="#{msg['valor']}" />
-
 
                             <p:commandButton id="limpiarVA" value="#{msg['limpiar']}" style="  ;position: absolute; left: 20px; top: 280px;" icon="ui-icon-trash" actionListener="#{controlVigenciaSueldo.limpiarNuevaVA()}" update="nuevaVA" process="@this"/>
                             <p:commandButton id="agregarVA" value="#{msg['agregar']}" style=" position: absolute; left: 190px; top: 280px;" icon="ui-icon-circle-check" actionListener="#{controlVigenciaSueldo.agregarNuevaVA()}" process="@this"/>

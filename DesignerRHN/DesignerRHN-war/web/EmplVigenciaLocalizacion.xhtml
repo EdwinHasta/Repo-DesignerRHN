@@ -60,7 +60,15 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaLocalizacion.verificarRastroTabla()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                            </p:toolbarGroup>  
+                                
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciasCargos.salir()}" action="nomina" process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                                
+                            </p:toolbarGroup>
                         </p:toolbar> 
 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 182px;width: 830px; border-radius: 10px; text-align: left">
@@ -71,7 +79,6 @@
                                          value="#{controlVigenciaLocalizacion.vigenciaLocalizaciones}" scrollable="true" scrollHeight="#{controlVigenciaLocalizacion.altoTabla1}" scrollWidth="820"
                                          filteredValue="#{controlVigenciaLocalizacion.filtrarVL}" emptyMessage="#{msg['vacio']}"
                                          editable="true" editMode="cell" selection="#{controlVigenciaLocalizacion.vigenciaLocalizacionSeleccionada}" selectionMode="single" >
-
                                 <p:ajax event="filter" listener="#{controlVigenciaLocalizacion.eventoFiltrar()}"/>
 
                                 <p:column style=""  sortBy="#{infoDVL.fechavigencia}" filterBy="#{infoDVL.fechavigencia}" filterMatchMode="contains"  width="72" id="vlFechaVigencia" filterStyle="display: none; visibility: hidden;"  >  
@@ -661,10 +668,9 @@
                         </p:dialog>
 
 
-                        <p:commandButton style="position: absolute; left: 688px; top: 478px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVLEmpleado" process="@this" disabled="#{controlVigenciaLocalizacion.guardado}" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 478px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" update=":form:datosVLEmpleado" process="@this" disabled="#{controlVigenciaLocalizacion.guardado}" />
                         <p:tooltip  for="ACEPTAR" value="Guardar cambios efectuados en la pagina." />
-                        <p:commandButton style="position: absolute; left: 15px; top: 478px;  " id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlVigenciaLocalizacion.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 785px; top: 478px; " id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w"  actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 478px; " id="ATRAS" value="#{msg['atras']}" icon="ui-icon-closethick"  actionListener="#{controlVigenciaLocalizacion.salir()}" action="nomina" process="@this" />
                         <p:commandButton style="position: absolute; left: 120px; top: 478px;" id="ARCHIVOPLANO" value="#{msg['archivo']}" process="@this" icon="ui-icon-gear"/>
                         <p:tooltip  for="ARCHIVOPLANO" value="Genera el archivo plano de la tabla seleccionada de prorrateos" />
 
