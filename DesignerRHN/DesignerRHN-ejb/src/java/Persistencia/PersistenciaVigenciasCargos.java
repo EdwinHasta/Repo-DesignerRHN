@@ -8,16 +8,11 @@ import Entidades.VigenciasCargos;
 import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
 import java.math.BigInteger;
 import java.util.List;
-import javax.annotation.Resource;
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.FlushModeType;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.transaction.UserTransaction;
 
 /**
  * Clase Stateless.<br>
@@ -44,13 +39,9 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             em.merge(vigenciasCargos);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
-            try {
-                if (tx.isActive()) {
-                    tx.rollback();
-                }
-            } catch (Exception ex) {
-                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
             }
         }
     }
@@ -64,8 +55,10 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             em.merge(vigenciasCargos);
             tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("ALERTA! Error xD");
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaVigenciasCargos.editar: " + e);
         }
     }
 
@@ -77,14 +70,14 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
             tx.begin();
             em.remove(em.merge(vigenciasCargos));
             tx.commit();
-            
+
         } catch (Exception e) {
             try {
                 if (tx.isActive()) {
                     tx.rollback();
                 }
             } catch (Exception ex) {
-                System.out.println("No se puede hacer rollback porque no hay una transacción");
+                System.out.println("Error PersistenciaVigenciasCargos.borrar: " + e);
             }
         }
     }
