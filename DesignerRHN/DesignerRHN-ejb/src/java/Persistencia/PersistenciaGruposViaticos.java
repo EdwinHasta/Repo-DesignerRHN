@@ -25,25 +25,33 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,GruposViaticos gruposViaticos) {
+    public void crear(EntityManager em, GruposViaticos gruposViaticos) {
+        em.clear();
+        em.getTransaction().begin();
         em.persist(gruposViaticos);
+        em.getTransaction().commit();
     }
 
     @Override
-    public void editar(EntityManager em,GruposViaticos gruposViaticos) {
+    public void editar(EntityManager em, GruposViaticos gruposViaticos) {
+        em.clear();
+        em.getTransaction().begin();
         em.merge(gruposViaticos);
+        em.getTransaction().commit();
     }
 
     @Override
-    public void borrar(EntityManager em,GruposViaticos gruposViaticos) {
+    public void borrar(EntityManager em, GruposViaticos gruposViaticos) {
+        em.clear();
+        em.getTransaction().begin();
         em.remove(em.merge(gruposViaticos));
+        em.getTransaction().commit();
     }
 
     @Override
-    public GruposViaticos buscarGrupoViatico(EntityManager em,BigInteger secuenciaGV) {
+    public GruposViaticos buscarGrupoViatico(EntityManager em, BigInteger secuenciaGV) {
         try {
             return em.find(GruposViaticos.class, secuenciaGV);
         } catch (Exception e) {
@@ -61,7 +69,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     }
 
     @Override
-    public BigInteger contadorCargos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorCargos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM cargos WHERE grupoviatico = ?";
@@ -77,7 +85,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     }
 
     @Override
-    public BigInteger contadorPlantas(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorPlantas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM plantas WHERE grupoviatico = ?";
@@ -93,7 +101,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     }
 
     @Override
-    public BigInteger contadorTablasViaticos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorTablasViaticos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM tablasviaticos  WHERE grupoviatico = ?";
@@ -109,7 +117,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
     }
 
     @Override
-    public BigInteger contadorEersViaticos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorEersViaticos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = " SELECT COUNT(*) FROM eersviaticos WHERE grupoviatico = ?";

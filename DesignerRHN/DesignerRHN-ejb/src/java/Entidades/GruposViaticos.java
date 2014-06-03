@@ -71,10 +71,7 @@ public class GruposViaticos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
-        return descripcion;
+    return descripcion;
     }
 
     public void setDescripcion(String descripcion) {

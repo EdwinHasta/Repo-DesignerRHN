@@ -124,10 +124,7 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrecorto() {
-        if (nombrecorto == null) {
-            nombrecorto = " ";
-        }
-        return nombrecorto;
+       return nombrecorto;
     }
 
     public void setNombrecorto(String nombrecorto) {
@@ -139,10 +136,7 @@ public class Formulas implements Serializable {
     }
 
     public String getNombrelargo() {
-        if (nombrelargo == null) {
-            nombrelargo = " ";
-        }
-        return nombrelargo;
+                return nombrelargo;
     }
 
     public void setNombrelargo(String nombrelargo) {

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -28,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "GruposFactoresRiesgos.findAll", query = "SELECT g FROM GruposFactoresRiesgos g")})
 public class GruposFactoresRiesgos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -35,7 +35,7 @@ public class GruposFactoresRiesgos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-   @Column(name = "CODIGO")
+    @Column(name = "CODIGO")
     private Integer codigo;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
@@ -71,9 +71,6 @@ public class GruposFactoresRiesgos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion==null){
-        descripcion=" ";
-        }
         return descripcion;
     }
 
@@ -105,5 +102,5 @@ public class GruposFactoresRiesgos implements Serializable {
     public String toString() {
         return "Entidades.GruposFactoresRiesgos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

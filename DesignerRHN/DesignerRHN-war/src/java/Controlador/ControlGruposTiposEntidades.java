@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlGruposTiposEntidades implements Serializable {
     private Grupostiposentidades nuevoGruposTiposEntidades;
     private Grupostiposentidades duplicarGruposTiposEntidades;
     private Grupostiposentidades editarGruposTiposEntidades;
+    private Grupostiposentidades grupoFactorRiesgoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -61,6 +63,7 @@ public class ControlGruposTiposEntidades implements Serializable {
     private int tamano;
     private Integer backupCodigo;
     private String backupDescripcion;
+    private String infoRegistro;
 
     public ControlGruposTiposEntidades() {
         listGruposTiposEntidades = null;
@@ -72,7 +75,7 @@ public class ControlGruposTiposEntidades implements Serializable {
         nuevoGruposTiposEntidades = new Grupostiposentidades();
         duplicarGruposTiposEntidades = new Grupostiposentidades();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -86,7 +89,7 @@ public class ControlGruposTiposEntidades implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlGruposTiposEntidades.eventoFiltrar \n");
@@ -100,6 +103,7 @@ public class ControlGruposTiposEntidades implements Serializable {
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
+        System.err.println("permitirIndex  " + permitirIndex);
 
         if (permitirIndex == true) {
             index = indice;
@@ -142,11 +146,12 @@ public class ControlGruposTiposEntidades implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosGruposTiposEntidades");
             bandera = 0;
@@ -169,21 +174,22 @@ public class ControlGruposTiposEntidades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosGruposTiposEntidades");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosGruposTiposEntidades");
             bandera = 0;
@@ -226,7 +232,6 @@ public class ControlGruposTiposEntidades implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
-                            System.out.println("BANDERA FALSE backupCodigo : " + backupCodigo);
                             listGruposTiposEntidades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
@@ -476,7 +481,9 @@ public class ControlGruposTiposEntidades implements Serializable {
                 filtrarGruposTiposEntidades.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosGruposTiposEntidades");
             index = -1;
             secRegistro = null;
@@ -492,6 +499,7 @@ public class ControlGruposTiposEntidades implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         BigInteger contarTSgruposTiposEntidadesTipoEntidad;
+        BigInteger contarSoProActividadesGrupoFactorRiesgo;
         BigInteger contarTiposEntidadesGrupoTipoEntidad;
 
         try {
@@ -555,7 +563,9 @@ public class ControlGruposTiposEntidades implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listGruposTiposEntidades = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosGruposTiposEntidades");
             k = 0;
             guardado = true;
@@ -621,8 +631,8 @@ public class ControlGruposTiposEntidades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoGruposTiposEntidades.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoGruposTiposEntidades.getNombre() == null || nuevoGruposTiposEntidades.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -634,12 +644,13 @@ public class ControlGruposTiposEntidades implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosGruposTiposEntidades");
                 bandera = 0;
@@ -655,6 +666,8 @@ public class ControlGruposTiposEntidades implements Serializable {
             crearGruposTiposEntidades.add(nuevoGruposTiposEntidades);
 
             listGruposTiposEntidades.add(nuevoGruposTiposEntidades);
+            infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
+            context.update("form:informacionRegistro");
             nuevoGruposTiposEntidades = new Grupostiposentidades();
             context.update("form:datosGruposTiposEntidades");
             if (guardado == true) {
@@ -737,8 +750,8 @@ public class ControlGruposTiposEntidades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarGruposTiposEntidades.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarGruposTiposEntidades.getNombre() == null || duplicarGruposTiposEntidades.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -756,16 +769,19 @@ public class ControlGruposTiposEntidades implements Serializable {
             crearGruposTiposEntidades.add(duplicarGruposTiposEntidades);
             context.update("form:datosGruposTiposEntidades");
             index = -1;
+            infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
+            context.update("form:informacionRegistro");
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosGruposTiposEntidades");
                 bandera = 0;
@@ -844,6 +860,14 @@ public class ControlGruposTiposEntidades implements Serializable {
         if (listGruposTiposEntidades == null) {
             listGruposTiposEntidades = administrarGruposTiposEntidades.consultarGruposTiposEntidades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listGruposTiposEntidades == null || listGruposTiposEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
+        }
+        context.update("form:infoLOVCargo");
         return listGruposTiposEntidades;
     }
 
@@ -921,6 +945,22 @@ public class ControlGruposTiposEntidades implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public Grupostiposentidades getGrupoFactorRiesgoSeleccionado() {
+        return grupoFactorRiesgoSeleccionado;
+    }
+
+    public void setGrupoFactorRiesgoSeleccionado(Grupostiposentidades grupoFactorRiesgoSeleccionado) {
+        this.grupoFactorRiesgoSeleccionado = grupoFactorRiesgoSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

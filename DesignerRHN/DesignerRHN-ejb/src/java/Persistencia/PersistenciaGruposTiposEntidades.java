@@ -26,46 +26,54 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;*/
-
+     EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+    public void crear(EntityManager em, Grupostiposentidades gruposTiposEntidades) {
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.persist(gruposTiposEntidades);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades crear ERROR : " + e);
         }
     }
 
     @Override
-    public void editar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+    public void editar(EntityManager em, Grupostiposentidades gruposTiposEntidades) {
         System.out.println("PERSISTENCIA-------------");
         System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
         System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
         System.out.println("-------------PERSISTENCIA");
         try {
+            em.clear();
+            em.getTransaction().begin();
             em.merge(gruposTiposEntidades);
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades editar error " + e);
         }
     }
 
     @Override
-    public void borrar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+    public void borrar(EntityManager em, Grupostiposentidades gruposTiposEntidades) {
         try {
             System.out.println("PERSISTENCIA-------------");
             System.out.println("----------BORRAR--------------------------------");
             System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
             System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
             System.out.println("-------------PERSISTENCIA");
+            em.clear();
+            em.getTransaction().begin();
             em.remove(em.merge(gruposTiposEntidades));
+            em.getTransaction().commit();
         } catch (Exception e) {
             System.err.println("\n ERROR EN PersistenciaGruposTiposEntidades borrar ERROR " + e.toString());
         }
     }
 
     @Override
-    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         try {
 
             return em.find(Grupostiposentidades.class, secuencia);
@@ -89,7 +97,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tiposentidades WHERE grupo =?";
@@ -104,7 +112,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";

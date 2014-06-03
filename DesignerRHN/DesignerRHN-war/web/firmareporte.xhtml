@@ -34,7 +34,9 @@
                                                 <p:ajax event="change" listener="#{controlFirmasReportes.modificarFirmasReportes(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
                                         </f:facet>  
-                                    </p:cellEditor>
+                                    </p:cellEditor>  <f:facet name="footer">
+                                        <h:outputText value="Código"/>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="120" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -45,7 +47,10 @@
                                                 <p:ajax event="change"  listener="#{controlFirmasReportes.modificarFirmasReportes(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
                                         </f:facet>  
-                                    </p:cellEditor>
+                                    </p:cellEditor>  
+                                    <f:facet name="footer">
+                                        <h:outputText value="Descripción"/>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Empresa" sortBy="#{info.empresa.nombre}" filterBy="#{info.empresa.nombre}" filterMatchMode="contains" id="pais" width="140" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -58,6 +63,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 200px; margin: -14px; height: 50px; border: none; color: blue" id="fooEmpresa" action="normaLaboral" value="Empresa"/>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="SubTituloFirma" sortBy="#{info.subtitulofirma}" filterBy="#{info.subtitulofirma}" filterMatchMode="contains" id="subTituloFirma" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -67,8 +75,11 @@
                                                 <p:ajax event="select" listener="#{controlFirmasReportes.cambiarIndice(indice, 3)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlFirmasReportes.modificarFirmasReportes(indice, 'N', info.subtitulofirma)}" update="subTituloFirma"/>
                                             </p:inputText>
-                                        </f:facet>  
+                                        </f:facet>
                                     </p:cellEditor>
+                                        <f:facet name="footer">
+                                            <h:outputText value="SubtituloFirma"/>
+                                        </f:facet>
                                 </p:column>
                                 <p:column headerText="Persona" sortBy="#{info.personaFirma.nombre}" filterBy="#{info.personaFirma.nombre}" filterMatchMode="contains" id="personafir" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -81,6 +92,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" id="fooPersona" value="Persona"/>
+                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Cargo" sortBy="#{info.cargo.nombre}" filterBy="#{info.cargo.nombre}" filterMatchMode="contains" id="cargo" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -93,6 +107,9 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+                                    <f:facet name="footer">
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" id="fooCargo" value="Cargo"/>
+                                    </f:facet>
                                 </p:column>
                             </p:dataTable>
 
