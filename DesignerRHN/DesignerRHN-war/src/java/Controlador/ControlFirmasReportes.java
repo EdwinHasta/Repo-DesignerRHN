@@ -2063,7 +2063,7 @@ public class ControlFirmasReportes implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (listaEmpresas == null || listaEmpresas.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            infoLOVEmpresa = "Cantidad de registros: 0 ";
         } else {
             infoLOVEmpresa = "Cantidad de registros: " + listaEmpresas.size();
         }
@@ -2098,7 +2098,7 @@ public class ControlFirmasReportes implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (listaPersonas == null || listaPersonas.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            infoLOVPersona = "Cantidad de registros: 0 ";
         } else {
             infoLOVPersona = "Cantidad de registros: " + listaPersonas.size();
         }
@@ -2133,7 +2133,7 @@ public class ControlFirmasReportes implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (listaCargos == null || listaCargos.isEmpty()) {
-            infoRegistro = "Cantidad de registros: 0 ";
+            infoLOVCargo = "Cantidad de registros: 0 ";
         } else {
             infoLOVCargo = "Cantidad de registros: " + listaCargos.size();
         }

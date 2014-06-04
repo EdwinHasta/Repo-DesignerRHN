@@ -97,6 +97,9 @@ public class ControlFormulasAseguradas implements Serializable {
     private List<FormulasAseguradas> listFormulasAseguradasBoton;
     private List<FormulasAseguradas> filterFormulasAseguradasBoton;
 
+    private boolean buscarFormulas;
+    private boolean mostrarTodos;
+
     public ControlFormulasAseguradas() {
         listFormulasAseguradasBoton = null;
         listFormulasAseguradas = null;
@@ -122,6 +125,8 @@ public class ControlFormulasAseguradas implements Serializable {
         guardado = true;
         tamano = 270;
         formulaAseguradaSeleccionada = new FormulasAseguradas();
+        mostrarTodos = true;
+        buscarFormulas = false;
     }
 
     @PostConstruct
@@ -273,9 +278,13 @@ public class ControlFormulasAseguradas implements Serializable {
         listFormulasAseguradas = null;
         guardado = true;
         permitirIndex = true;
+        mostrarTodos = true;
+        buscarFormulas = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosFormulasAseguradas");
         context.update("form:ACEPTAR");
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARCENTROCOSTO");
     }
 
     public void cancelarModificacionCambio() {
@@ -331,7 +340,9 @@ public class ControlFormulasAseguradas implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listFormulasAseguradas = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosConceptosSoportes");
             k = 0;
             guardado = true;
@@ -1293,8 +1304,8 @@ public class ControlFormulasAseguradas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevoFormulasAseguradas.getFormula().getNombrelargo().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *un Concepto \n";
+        if (nuevoFormulasAseguradas.getFormula().getNombrelargo() == null || nuevoFormulasAseguradas.getFormula().getNombrelargo().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1302,8 +1313,8 @@ public class ControlFormulasAseguradas implements Serializable {
             contador++;//3
 
         }
-        if (nuevoFormulasAseguradas.getProceso().getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *un Proceso \n";
+        if (nuevoFormulasAseguradas.getProceso().getDescripcion() == null || nuevoFormulasAseguradas.getProceso().getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1424,7 +1435,7 @@ public class ControlFormulasAseguradas implements Serializable {
         Integer a = 0;
         a = null;
 
-        if (duplicarFormulasAseguradas.getFormula().getNombrelargo().equals(" ")) {
+        if (duplicarFormulasAseguradas.getFormula().getNombrelargo() == null || duplicarFormulasAseguradas.getFormula().getNombrelargo().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * una Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1432,7 +1443,7 @@ public class ControlFormulasAseguradas implements Serializable {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarFormulasAseguradas.getProceso().getDescripcion().equals(" ")) {
+        if (duplicarFormulasAseguradas.getProceso().getDescripcion() == null || duplicarFormulasAseguradas.getProceso().getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * una Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1474,7 +1485,7 @@ public class ControlFormulasAseguradas implements Serializable {
             }
 
             infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
-            context.update("form:infoRegistro");
+            context.update("form:informacionRegistro");
             duplicarFormulasAseguradas = new FormulasAseguradas();
             duplicarFormulasAseguradas.setFormula(new Formulas());
 
@@ -1587,13 +1598,17 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.update("form:datosFormulasAseguradas");
                 context.execute("buscarCentrosCostosDialogo.hide()");
                 context.reset("formularioDialogos:lovCentrosCostos:globalFilter");
-
+                mostrarTodos = false;
+                buscarFormulas = true;
+                context.update("form:MOSTRARTODOS");
+                context.update("form:BUSCARCENTROCOSTO");
                 if (listFormulasAseguradas == null || listFormulasAseguradas.isEmpty()) {
                     infoRegistro = "Cantidad de registros: 0 ";
                 } else {
                     infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
                 }
                 context.update("form:infoRegistro");
+
             } else {
                 context.update("form:confirmarGuardarFormulas");
                 context.execute("confirmarGuardarFormulas.show()");
@@ -1639,7 +1654,7 @@ public class ControlFormulasAseguradas implements Serializable {
         } else {
             infoRegistroFormulasAseguradas = "Cantidad de registros: " + listFormulasAseguradasBoton.size();
         }
-        context.update("form:infoRegistroFormulasAseguradas");
+        context.update("formularioDialogos:infoRegistroFormulasAseguradas");
         return listFormulasAseguradasBoton;
     }
 
@@ -1914,6 +1929,22 @@ public class ControlFormulasAseguradas implements Serializable {
 
     public void setInfoRegistroFormulasAseguradas(String infoRegistroFormulasAseguradas) {
         this.infoRegistroFormulasAseguradas = infoRegistroFormulasAseguradas;
+    }
+
+    public boolean isBuscarFormulas() {
+        return buscarFormulas;
+    }
+
+    public void setBuscarFormulas(boolean buscarFormulas) {
+        this.buscarFormulas = buscarFormulas;
+    }
+
+    public boolean isMostrarTodos() {
+        return mostrarTodos;
+    }
+
+    public void setMostrarTodos(boolean mostrarTodos) {
+        this.mostrarTodos = mostrarTodos;
     }
 
 }

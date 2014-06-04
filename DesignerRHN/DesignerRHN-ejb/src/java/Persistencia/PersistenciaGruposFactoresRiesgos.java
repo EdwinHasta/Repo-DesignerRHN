@@ -65,7 +65,6 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
             tx.begin();
             em.remove(em.merge(grupoFactoresRiesgos));
             tx.commit();
-
         } catch (Exception e) {
             try {
                 if (tx.isActive()) {
@@ -89,7 +88,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public GruposFactoresRiesgos consultarGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
+    public GruposFactoresRiesgos consultarGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT t FROM GruposFactoresRiesgos t WHERE t.secuencia =:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -103,7 +102,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public BigInteger contarSoProActividadesGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarSoProActividadesGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soprogactividades WHERE factorriesgo = ?";
@@ -118,7 +117,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public BigInteger contarSoIndicadoresGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarSoIndicadoresGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM soindicadores WHERE factorriesgo = ?";
@@ -133,7 +132,7 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
         }
     }
 
-    public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarFactoresRiesgoGrupoFactorRiesgo(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM factoresriesgos WHERE grupo = ?";

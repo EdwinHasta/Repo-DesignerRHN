@@ -27,8 +27,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;*/
-
+     EntityManager em;*/
     @Override
     public void crear(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
         em.clear();
@@ -69,7 +68,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
             tx.begin();
             em.remove(em.merge(gruposTiposEntidades));
             tx.commit();
-
+            em.getTransaction().commit();
         } catch (Exception e) {
             try {
                 if (tx.isActive()) {
@@ -82,7 +81,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
     }
 
     @Override
-    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         try {
 
             return em.find(Grupostiposentidades.class, secuencia);
@@ -106,7 +105,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tiposentidades WHERE grupo =?";
@@ -121,7 +120,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";

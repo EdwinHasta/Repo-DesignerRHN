@@ -57,6 +57,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
             }
             System.out.println("Error PersistenciaGruposViaticos.editar: " + e);
         }
+        
     }
 
     @Override
@@ -77,6 +78,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
                 System.out.println("Error PersistenciaGruposViaticos.borrar: " + e);
             }
         }
+        
     }
 
     @Override

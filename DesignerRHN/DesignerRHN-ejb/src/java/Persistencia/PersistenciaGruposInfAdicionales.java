@@ -27,9 +27,8 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em,GruposInfAdicionales gruposInfAdicionales) {
         em.clear();
@@ -70,7 +69,6 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
             tx.begin();
             em.remove(em.merge(gruposInfAdicionales));
             tx.commit();
-
         } catch (Exception e) {
             try {
                 if (tx.isActive()) {
@@ -83,11 +81,11 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     }
 
     @Override
-    public GruposInfAdicionales buscarGrupoInfAdicional(EntityManager em,BigInteger secuencia) {
+    public GruposInfAdicionales buscarGrupoInfAdicional(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(GruposInfAdicionales.class, secuencia);
         } catch (Exception e) {
-            System.out.println("Error buscarGrupoInfAdicional PersistenciaGruposInfAdicionales : " + e.toString());
+            System.err.println("Error buscarGrupoInfAdicional PersistenciaGruposInfAdicionales : " + e.toString());
             return null;
         }
     }
@@ -95,16 +93,17 @@ public class PersistenciaGruposInfAdicionales implements PersistenciaGruposInfAd
     @Override
     public List<GruposInfAdicionales> buscarGruposInfAdicionales(EntityManager em) {
         try {
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(GruposInfAdicionales.class));
-            return em.createQuery(cq).getResultList();
+            Query query = em.createQuery("SELECT t FROM GruposInfAdicionales t ORDER BY t.codigo  ASC");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<GruposInfAdicionales> listaGruposInfAdicionales = query.getResultList();
+            return listaGruposInfAdicionales;
         } catch (Exception e) {
-            System.out.println("Error buscarGruposInfAdicionales PersistenciaGruposInfAdicionales");
+            System.err.println("Error buscarGruposInfAdicionales PersistenciaGruposInfAdicionales ERORR " + e);
             return null;
         }
     }
 
-    public BigInteger contadorInformacionesAdicionales(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorInformacionesAdicionales(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM informacionesadicionales aa where grupo=?";
