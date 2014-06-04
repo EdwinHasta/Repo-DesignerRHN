@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -28,28 +29,49 @@ public class PersistenciaVigenciasConceptosTT implements PersistenciaVigenciasCo
 
     @Override 
     public void crear(EntityManager em, VigenciasConceptosTT conceptosTT) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(conceptosTT);
+            tx.begin();
+            em.merge(conceptosTT);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciasConceptosTT Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasConceptosTT.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override 
     public void editar(EntityManager em, VigenciasConceptosTT conceptosTT) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(conceptosTT);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciasConceptosTT Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasConceptosTT.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override 
     public void borrar(EntityManager em, VigenciasConceptosTT conceptosTT) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(conceptosTT));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciasConceptosTT Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasConceptosTT.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

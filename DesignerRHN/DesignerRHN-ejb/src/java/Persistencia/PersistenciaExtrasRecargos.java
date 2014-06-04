@@ -9,40 +9,79 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'ExtrasRecargos' 
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'ExtrasRecargos' de la
+ * base de datos.
+ *
  * @author Andres Pineda.
  */
 @Stateless
-public class PersistenciaExtrasRecargos implements PersistenciaExtrasRecargosInterface{
+public class PersistenciaExtrasRecargos implements PersistenciaExtrasRecargosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,ExtrasRecargos extrasRecargos) {
-        em.persist(extrasRecargos);
+    public void crear(EntityManager em, ExtrasRecargos extrasRecargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(extrasRecargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaExtrasRecargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,ExtrasRecargos extrasRecargos) {
-        em.merge(extrasRecargos);
+    public void editar(EntityManager em, ExtrasRecargos extrasRecargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(extrasRecargos);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaExtrasRecargos.editar: " + e);
+        }
     }
 
     @Override
-    public void borrar(EntityManager em,ExtrasRecargos extrasRecargos) {
-        em.remove(em.merge(extrasRecargos));
+    public void borrar(EntityManager em, ExtrasRecargos extrasRecargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(extrasRecargos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaExtrasRecargos.borrar: " + e);
+            }
+        }
     }
 
     @Override
-    public ExtrasRecargos buscarExtraRecargo(EntityManager em,BigInteger secuencia) {
+    public ExtrasRecargos buscarExtraRecargo(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(ExtrasRecargos.class, secuencia);
         } catch (Exception e) {

@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,19 +26,51 @@ public class PersistenciaTiposFamiliares implements PersistenciaTiposFamiliaresI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     public void crear(EntityManager em, TiposFamiliares tiposFamiliares) {
-        em.persist(tiposFamiliares);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposFamiliares);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposFamiliares.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, TiposFamiliares tiposFamiliares) {
-        em.merge(tiposFamiliares);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposFamiliares);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposFamiliares.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, TiposFamiliares tiposFamiliares) {
-        em.remove(em.merge(tiposFamiliares));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposFamiliares));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposFamiliares.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public TiposFamiliares buscarTiposFamiliares(EntityManager em, BigInteger secuenciaTF) {

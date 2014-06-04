@@ -9,37 +9,72 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Sucursales'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Sucursales' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-    
     @Override
     public void crear(EntityManager em, Sucursales sucursales) {
-        em.persist(sucursales);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(sucursales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSucursales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Sucursales sucursales) {
-        em.merge(sucursales);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(sucursales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSucursales.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Sucursales sucursales) {
-        em.remove(em.merge(sucursales));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(sucursales));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSucursales.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -47,7 +82,7 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
         try {
             return em.find(Sucursales.class, secuencia);
         } catch (Exception e) {
-            System.out.println("Persistencia Sucursales "+e);
+            System.out.println("Persistencia Sucursales " + e);
             return null;
         }
     }
@@ -59,8 +94,8 @@ public class PersistenciaSucursales implements PersistenciaSucursalesInterface {
         List<Sucursales> lista = query.getResultList();
         return lista;
     }
-    
-     public BigInteger contarVigenciasFormasPagosSucursal(EntityManager em, BigInteger secuencia) {
+
+    public BigInteger contarVigenciasFormasPagosSucursal(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM vigenciasformaspagos WHERE sucursal = ?";

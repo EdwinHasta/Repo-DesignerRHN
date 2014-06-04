@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,30 +28,53 @@ public class PersistenciaEersPrestamos implements PersistenciaEersPrestamosInter
 
     @Override
     public void crear(EntityManager em,EersPrestamos eersPrestamos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(eersPrestamos);
+            tx.begin();
+            em.merge(eersPrestamos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El eersPrestamos no exite o esta reservada por lo cual no puede ser modificada (eersPrestamos)");
+            System.out.println("Error PersistenciaEersPrestamos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,EersPrestamos eersPrestamos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            System.out.println("eersPrestamos : "+eersPrestamos);
-            System.out.println("eersPrestamos secuencia : "+eersPrestamos.getSecuencia());
+            tx.begin();
             em.merge(eersPrestamos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el eersPrestamos : " + e.toString());
+            System.out.println("Error PersistenciaEersPrestamos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,EersPrestamos eersPrestamos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(eersPrestamos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("El eersPrestamos no se ha podido eliminar");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEersPrestamos.borrar: " + e);
+            }
         }
     }
 

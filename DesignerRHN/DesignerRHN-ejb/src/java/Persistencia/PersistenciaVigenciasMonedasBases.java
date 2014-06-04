@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -32,28 +33,49 @@ public class PersistenciaVigenciasMonedasBases implements PersistenciaVigenciasM
 
     @Override
     public void crear(EntityManager em, VigenciasMonedasBases monedasBases) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(monedasBases);
+            tx.begin();
+            em.merge(monedasBases);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaVigenciasMonedasBases : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasMonedasBases.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasMonedasBases monedasBases) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(monedasBases);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaVigenciasMonedasBases : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasMonedasBases.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasMonedasBases monedasBases) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(monedasBases));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaVigenciasMonedasBases : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasMonedasBases.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,15 +30,52 @@ public class PersistenciaHvEntrevistas implements PersistenciaHvEntrevistasInter
     /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, HvEntrevistas hvEntrevistas) {
-        em.persist(hvEntrevistas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(hvEntrevistas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHvEntrevistas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, HvEntrevistas hvEntrevistas) {
-        em.merge(hvEntrevistas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(hvEntrevistas);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaHvEntrevistas.editar: " + e);
+        }
     }
 
     public void borrar(EntityManager em, HvEntrevistas hvEntrevistas) {
-        em.remove(em.merge(hvEntrevistas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(hvEntrevistas));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaHvEntrevistas.borrar: " + e);
+            }
+        }
     }
 
     public HvEntrevistas buscarHvEntrevista(EntityManager em, BigInteger secuenciaHvEntrevista) {

@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -26,20 +27,56 @@ public class PersistenciaLugaresOcurrencias implements PersistenciaLugaresOcurre
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, LugaresOcurrencias lugaresOcurrencias) {
-        em.persist(lugaresOcurrencias);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(lugaresOcurrencias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHistoriasformulas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, LugaresOcurrencias lugaresOcurrencias) {
-        em.merge(lugaresOcurrencias);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(lugaresOcurrencias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHistoriasformulas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, LugaresOcurrencias lugaresOcurrencias) {
-        em.remove(em.merge(lugaresOcurrencias));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(lugaresOcurrencias));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaHistoriasformulas.borrar: " + e);
+            }
+        }
     }
 
     @Override

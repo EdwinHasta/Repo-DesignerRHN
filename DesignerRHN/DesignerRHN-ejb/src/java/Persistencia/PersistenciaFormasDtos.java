@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,28 +28,53 @@ public class PersistenciaFormasDtos implements PersistenciaFormasDtosInterface {
 
     @Override
     public void crear(EntityManager em,FormasDtos formasDtos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(formasDtos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El formasDtos no exite o esta reservada por lo cual no puede ser modificada (formasDtos)");
+            System.out.println("Error PersistenciaFormasDtos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,FormasDtos formasDtos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(formasDtos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el formasDtos");
+            System.out.println("Error PersistenciaFormasDtos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,FormasDtos formasDtos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(formasDtos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("El formasDtos no se ha podido eliminar");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFormasDtos.borrar: " + e);
+            }
         }
     }
 

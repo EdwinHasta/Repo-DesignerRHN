@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,36 +31,49 @@ public class PersistenciaTiposPensionados implements PersistenciaTiposPensionado
      */
     @Override
     public void crear(EntityManager em, TiposPensionados tiposPensionados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(tiposPensionados);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(tiposPensionados);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposPensionados e : " + e);
+            System.out.println("Error PersistenciaTiposPensionados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposPensionados tiposPensionados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposPensionados);
-            em.getTransaction().commit();
-
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposPensionados");
+            System.out.println("Error PersistenciaTiposPensionados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposPensionados tiposPensionados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(tiposPensionados));
-            em.getTransaction().commit();
-
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposPensionados");
+            System.out.println("Error PersistenciaTiposPensionados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

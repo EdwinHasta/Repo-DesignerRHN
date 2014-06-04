@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaUnidadesInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -27,28 +28,49 @@ public class PersistenciaUnidades implements PersistenciaUnidadesInterface{
 
     @Override
     public void crear(EntityManager em, Unidades unidad) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(unidad);
+            tx.begin();
+            em.merge(unidad);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaUnidades.crear");
+            System.out.println("Error PersistenciaUnidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Unidades unidad) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(unidad);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaUnidades.editar");
+            System.out.println("Error PersistenciaUnidades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Unidades unidad) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(unidad));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaUnidades.borrar");
+            System.out.println("Error PersistenciaUnidades.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

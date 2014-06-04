@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Persistencia;
 
 import Entidades.VigenciasRetenciones;
@@ -11,6 +10,7 @@ import InterfacePersistencia.PersistenciaVigenciasRetencionesInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -19,30 +19,62 @@ import javax.persistence.Query;
  * @author user
  */
 @Stateless
-public class PersistenciaVigenciasRetenciones implements PersistenciaVigenciasRetencionesInterface{
+public class PersistenciaVigenciasRetenciones implements PersistenciaVigenciasRetencionesInterface {
 
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, VigenciasRetenciones vretenciones) {
-        em.persist(vretenciones);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vretenciones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasRetenciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasRetenciones vretenciones) {
-        em.merge(vretenciones);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vretenciones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasRetenciones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasRetenciones vretenciones) {
-        em.remove(em.merge(vretenciones));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(vretenciones));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasRetenciones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
-    
+
     @Override
     public List<VigenciasRetenciones> buscarVigenciasRetenciones(EntityManager em) {
         Query query = em.createNamedQuery("VigenciasRetenciones.findAll");

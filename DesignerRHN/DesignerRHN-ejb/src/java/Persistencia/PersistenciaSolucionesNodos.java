@@ -11,13 +11,15 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'SolucionesNodos'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'SolucionesNodos' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
@@ -28,20 +30,52 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, SolucionesNodos solucionNodo) {
-        em.persist(solucionNodo);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(solucionNodo);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSolucionesNodos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, SolucionesNodos solucionNodo) {
-        em.merge(solucionNodo);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(solucionNodo);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSolucionesNodos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, SolucionesNodos solucionNodo) {
-        em.remove(em.merge(solucionNodo));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(solucionNodo));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSolucionesNodos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -207,10 +241,10 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
             Query query = em.createQuery("SELECT count(sn) FROM SolucionesNodos sn WHERE sn.concepto.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            Long valor =(Long) query.getSingleResult();
-            return valor>0;
+            Long valor = (Long) query.getSingleResult();
+            return valor > 0;
         } catch (Exception e) {
-            System.out.println("Error solucionesNodosParaConcepto PersistenciaSolucionesNodos : "+e.toString());
+            System.out.println("Error solucionesNodosParaConcepto PersistenciaSolucionesNodos : " + e.toString());
             return false;
         }
     }

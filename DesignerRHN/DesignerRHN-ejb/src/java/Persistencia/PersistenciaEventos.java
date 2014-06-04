@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,23 +30,54 @@ public class PersistenciaEventos implements PersistenciaEventosInterface {
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Eventos eventos) {
-        em.getTransaction().begin();
-        em.persist(eventos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(eventos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEventos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Eventos eventos) {
-        em.getTransaction().begin();
-        em.merge(eventos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(eventos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEventos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Eventos eventos) {
-        em.getTransaction().begin();
-        em.remove(em.merge(eventos));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(eventos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEventos.borrar: " + e);
+            }
+        }
     }
 
     @Override

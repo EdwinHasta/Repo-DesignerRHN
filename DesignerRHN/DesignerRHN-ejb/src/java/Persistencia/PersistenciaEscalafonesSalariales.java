@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,28 +32,49 @@ public class PersistenciaEscalafonesSalariales implements PersistenciaEscalafone
 
     @Override
     public void crear(EntityManager em,EscalafonesSalariales escalafonesSalariales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(escalafonesSalariales);
+            tx.begin();
+            em.merge(escalafonesSalariales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (EscalafonesSalariales)");
+            System.out.println("Error PersistenciaEscalafonesSalariales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,EscalafonesSalariales escalafonesSalariales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(escalafonesSalariales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el EscalafonesSalariales PersistenciaEscalafonesSalariales : "+e.toString());
+            System.out.println("Error PersistenciaEscalafonesSalariales.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,EscalafonesSalariales escalafonesSalariales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(escalafonesSalariales));
+            tx.begin();
+            em.merge(escalafonesSalariales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el EscalafonesSalariales PersistenciaEscalafonesSalariales : "+e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaEscalafonesSalariales.borrar: " + e);
         }
     }
 

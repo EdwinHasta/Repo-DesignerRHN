@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaTEFormulasConceptos implements PersistenciaTEFormulasCo
 
     @Override
     public void crear(EntityManager em, TEFormulasConceptos tEFormulasConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tEFormulasConceptos);
+            tx.begin();
+            em.merge(tEFormulasConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTEFormulasConceptos : " + e.toString());
+            System.out.println("Error PersistenciaTEFormulasConceptos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TEFormulasConceptos tEFormulasConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tEFormulasConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTEFormulasConceptos : " + e.toString());
+            System.out.println("Error PersistenciaTEFormulasConceptos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TEFormulasConceptos tEFormulasConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tEFormulasConceptos));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTEFormulasConceptos : " + e.toString());
+            System.out.println("Error PersistenciaTEFormulasConceptos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,21 +29,53 @@ public class PersistenciaJuzgados implements PersistenciaJuzgadosInterface {
 
     @Override
     public void crear(EntityManager em, Juzgados juzgados) {
-        em.persist(juzgados);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(juzgados);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaJuzgados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Juzgados juzgados) {
-        em.merge(juzgados);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(juzgados);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaJuzgados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Juzgados juzgados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(juzgados));
+            tx.commit();
+
         } catch (Exception e) {
-            System.err.println("PERSISTENCIA JUZGADOS ERROR : ");
-            System.out.println(e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaJuzgados.borrar: " + e);
+            }
         }
     }
 

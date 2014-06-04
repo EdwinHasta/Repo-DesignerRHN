@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -30,26 +31,54 @@ public class PersistenciaMotivosCambiosCargos implements PersistenciaMotivosCamb
 
     @Override
     public void crear(EntityManager em, MotivosCambiosCargos motivoCambioCargo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(motivoCambioCargo);
+            tx.begin();
+            em.merge(motivoCambioCargo);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No es posible crear El MotivosCambiosCargos");
+            System.out.println("Error PersistenciaMotivosCambiosCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, MotivosCambiosCargos motivoCambioCargo) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(motivoCambioCargo);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El MotivosCambiosCargos no exite o esta reservado por lo cual no puede ser modificado");
+            System.out.println("Error PersistenciaMotivosCambiosCargos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosCambiosCargos motivoCambioCargo) {
-        //revisar        
-        em.remove(em.merge(motivoCambioCargo));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(motivoCambioCargo));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaMotivosCambiosCargos.borrar: " + e);
+            }
+        }
     }
 
     @Override

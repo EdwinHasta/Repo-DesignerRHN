@@ -9,47 +9,75 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Cuentas'
- * de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'Cuentas' de la base
+ * de datos
+ *
  * @author betelgeuse
  */
 @Stateful
 public class PersistenciaCuentas implements PersistenciaCuentasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
 
     @Override
-    public void crear(EntityManager em,Cuentas cuentas) {
+    public void crear(EntityManager em, Cuentas cuentas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(cuentas);
-        } catch (Exception e) {
-            System.out.println("Error crear PersistenciaCuentas : " + e.toString());
-        }
-    }
-    
-    @Override
-    public void editar(EntityManager em,Cuentas cuentas) {
-        try {
+            tx.begin();
             em.merge(cuentas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaCuentas : " + e.toString());
+            System.out.println("Error PersistenciaCuentas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
-    public void borrar(EntityManager em,Cuentas cuentas) {
+    public void editar(EntityManager em, Cuentas cuentas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(cuentas));
+            tx.begin();
+            em.merge(cuentas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaCuentas : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaCuentas.editar: " + e);
+        }
+    }
+
+    @Override
+    public void borrar(EntityManager em, Cuentas cuentas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(cuentas));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCuentas.borrar: " + e);
+            }
         }
     }
 
@@ -65,7 +93,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
 
     @Override
-    public Cuentas buscarCuentasSecuencia(EntityManager em,BigInteger secuencia) {
+    public Cuentas buscarCuentasSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Cuentas c WHERE c.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -80,7 +108,7 @@ public class PersistenciaCuentas implements PersistenciaCuentasInterface {
     }
 
     @Override
-    public List<Cuentas> buscarCuentasSecuenciaEmpresa(EntityManager em,BigInteger secuencia) {
+    public List<Cuentas> buscarCuentasSecuenciaEmpresa(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT c FROM Cuentas c WHERE c.empresa.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);

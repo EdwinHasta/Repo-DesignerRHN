@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,25 +32,49 @@ public class PersistenciaPeriodicidades implements PersistenciaPeriodicidadesInt
     @Override
     public void crear(EntityManager em, Periodicidades periodicidades) {
         em.clear();
-        em.getTransaction().begin();
-        em.persist(periodicidades);
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(periodicidades);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPeriodicidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Periodicidades periodicidades) {
         em.clear();
-        em.getTransaction().begin();
-        em.merge(periodicidades);
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(periodicidades);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPeriodicidades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Periodicidades periodicidades) {
         em.clear();
-        em.getTransaction().begin();
-        em.remove(em.merge(periodicidades));
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(periodicidades));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPeriodicidades.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,37 +31,49 @@ public class PersistenciaRetirados implements PersistenciaRetiradosInterface {
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, Retirados retirados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(retirados);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(retirados);
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error crear PersistenciaRetirados : " + e.toString());
+            System.out.println("Error PersistenciaRetirados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Retirados retirados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(retirados);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error editar PersistenciaRetirados : " + e.toString());
+            System.out.println("Error PersistenciaRetirados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Retirados retirados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(retirados));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("Error borrar PersistenciaRetirados : " + e.toString());
+            System.out.println("Error PersistenciaRetirados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

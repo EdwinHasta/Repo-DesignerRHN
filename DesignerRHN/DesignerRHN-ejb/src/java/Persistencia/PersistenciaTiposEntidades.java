@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,37 +31,49 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
      */
     @Override
     public void crear(EntityManager em, TiposEntidades tiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
-            em.persist(tiposEntidades);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(tiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposEntidades");
+            System.out.println("Error PersistenciaTiposEntidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposEntidades tiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposEntidades);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposEntidades");
+            System.out.println("Error PersistenciaTiposEntidades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposEntidades tiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(tiposEntidades));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposEntidades");
+            System.out.println("Error PersistenciaTiposEntidades.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,26 +29,51 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
 //    EntityManager em;
 
     public void crear(EntityManager em, Jornadas jornadas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(jornadas);
+            tx.begin();
+            em.merge(jornadas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaJornadas crear ERROR : " + e);
+            System.out.println("Error PersistenciaJornadas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, Jornadas jornadas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(jornadas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaJornadas editar error " + e);
+            System.out.println("Error PersistenciaJornadas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, Jornadas jornadas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(jornadas));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaJornadas borrar ERROR +" + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaJornadas.borrar: " + e);
+            }
         }
     }
 

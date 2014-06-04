@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -28,28 +29,49 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
 
     @Override
     public void crear(EntityManager em, VigenciasIndicadores vigenciasIndicadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(vigenciasIndicadores);
+            tx.begin();
+            em.merge(vigenciasIndicadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaVigenciasIndicadores : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasIndicadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasIndicadores vigenciasIndicadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasIndicadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaVigenciasIndicadores : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasIndicadores.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasIndicadores vigenciasIndicadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(vigenciasIndicadores));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaVigenciasIndicadores : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasIndicadores.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

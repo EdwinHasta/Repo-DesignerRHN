@@ -9,36 +9,71 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposJornadas'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposJornadas' de la
+ * base de datos.
+ *
  * @author Andres Pineda.
  */
 @Stateless
-public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInterface{
+public class PersistenciaTiposJornadas implements PersistenciaTiposJornadasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, TiposJornadas tiposJornadas) {
-        em.persist(tiposJornadas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposJornadas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposJornadas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, TiposJornadas tiposJornadas) {
-        em.merge(tiposJornadas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposJornadas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposJornadas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposJornadas tiposJornadas) {
-        em.remove(em.merge(tiposJornadas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposJornadas));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposJornadas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

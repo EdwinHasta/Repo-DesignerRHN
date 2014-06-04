@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,28 +29,53 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
 
     @Override
     public void crear(EntityManager em,FormulasConceptos conceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(conceptos);
+            tx.begin();
+            em.merge(conceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearFormulasConceptos Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaFormulasConceptos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,FormulasConceptos conceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(conceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearFormulasConceptos Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaFormulasConceptos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,FormulasConceptos conceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(conceptos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error crearFormulasConceptos Persistencia : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFormulasConceptos.borrar: " + e);
+            }
         }
     }
 

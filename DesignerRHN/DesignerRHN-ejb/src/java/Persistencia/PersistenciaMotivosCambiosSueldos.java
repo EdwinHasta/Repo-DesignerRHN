@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -32,28 +33,53 @@ public class PersistenciaMotivosCambiosSueldos implements PersistenciaMotivosCam
 
     @Override
     public void crear(EntityManager em, MotivosCambiosSueldos motivosCambiosSueldos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(motivosCambiosSueldos);
+            tx.begin();
+            em.merge(motivosCambiosSueldos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaMotivosCambiosSueldos");
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, MotivosCambiosSueldos motivosCambiosSueldos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(motivosCambiosSueldos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaMotivosCambiosSueldos");
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosCambiosSueldos motivosCambiosSueldos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(motivosCambiosSueldos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaMotivosCambiosSueldos");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaMotivosCambiosSueldos.borrar: " + e);
+            }
         }
     }
 

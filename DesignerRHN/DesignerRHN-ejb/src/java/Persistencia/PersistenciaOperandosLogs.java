@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,6 +29,53 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
+    @Override
+    public void crear(EntityManager em, OperandosLogs operandos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(operandos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaOperandosLogs.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void editar(EntityManager em, OperandosLogs operandos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(operandos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaOperandosLogs.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrar(EntityManager em, OperandosLogs operandos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(operandos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaOperandosLogs.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
 
     @Override
     public List<OperandosLogs> buscarOperandosLogs(EntityManager em) {
@@ -38,33 +86,6 @@ public class PersistenciaOperandosLogs implements PersistenciaOperandosLogsInter
         } catch (Exception e) {
             System.out.println("Error buscarOperandos PersistenciaOperandosLogs : " + e.toString());
             return null;
-        }
-    }
-
-    @Override
-    public void crear(EntityManager em, OperandosLogs operandos) {
-        try {
-            em.persist(operandos);
-        } catch (Exception e) {
-            System.out.println("El Operandos no exite o esta reservada por lo cual no puede ser modificada (PersistenciaOperandosLogs) : " + e.toString());
-        }
-    }
-
-    @Override
-    public void editar(EntityManager em, OperandosLogs operandos) {
-        try {
-            em.merge(operandos);
-        } catch (Exception e) {
-            System.out.println("No se pudo modificar el OperandoLog (PersistenciaOperandosLogs) : " + e.toString());
-        }
-    }
-
-    @Override
-    public void borrar(EntityManager em, OperandosLogs operandos) {
-        try {
-            em.remove(em.merge(operandos));
-        } catch (Exception e) {
-            System.out.println("El OperandoLog no se ha podido eliminar (PersistenciaOperandosLogs) : " + e.toString());
         }
     }
 

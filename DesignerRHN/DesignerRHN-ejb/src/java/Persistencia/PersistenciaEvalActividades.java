@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -26,32 +27,51 @@ public class PersistenciaEvalActividades implements PersistenciaEvalActividadesI
     /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, EvalActividades evalCompetencias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(evalCompetencias);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(evalCompetencias);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaEvalActividades : " + e);
+            System.out.println("Error PersistenciaEvalActividades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, EvalActividades evalCompetencias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(evalCompetencias);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaEvalActividades : " + e);
+            System.out.println("Error PersistenciaEvalActividades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, EvalActividades evalCompetencias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(evalCompetencias));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaEvalActividades : " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEvalActividades.borrar: " + e);
+            }
         }
     }
 

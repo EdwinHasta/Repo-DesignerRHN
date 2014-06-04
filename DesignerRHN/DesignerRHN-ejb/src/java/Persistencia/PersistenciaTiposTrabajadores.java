@@ -10,44 +10,71 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposTrabajadores'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposTrabajadores' de
+ * la base de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
-public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajadoresInterface{
+public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajadoresInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposTrabajadores tiposTrabajadores) {
-        try{
-        em.persist(tiposTrabajadores);
-        }catch(Exception e){
-            System.out.println("Error almacenar en persistencia tipos trbajadores");
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposTrabajadores);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposTrabajadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposTrabajadores tiposTrabajadores) {
-        em.merge(tiposTrabajadores);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposTrabajadores);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposTrabajadores.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposTrabajadores tiposTrabajadores) {
-        try{
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
             em.remove(em.merge(tiposTrabajadores));
-        }catch(Exception e){
-            System.out.println("Error borrarTiposTrabajadores(PersistenciaTiposTrabajadores)");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposTrabajadores.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
@@ -70,15 +97,14 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         TiposTrabajadores tipoT = null;
         return tipoT;
     }
-    
+
     @Override
-    public TiposTrabajadores buscarTipoTrabajadorCodigo (EntityManager em, BigDecimal codigo){
-        try{
+    public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo) {
+        try {
             Query query = em.createNamedQuery("TiposTrabajadores.findByCodigo").setParameter("codigo", codigo);
-             TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
-             return tipoTC;
-        }
-        catch(Exception e){
+            TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
+            return tipoTC;
+        } catch (Exception e) {
         }
         TiposTrabajadores tipoTC = null;
         return null;

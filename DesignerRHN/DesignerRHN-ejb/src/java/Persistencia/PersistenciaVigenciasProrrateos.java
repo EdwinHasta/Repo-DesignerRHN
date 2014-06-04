@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -20,37 +21,51 @@ import javax.persistence.criteria.CriteriaQuery;
 @Stateless
 public class PersistenciaVigenciasProrrateos implements PersistenciaVigenciasProrrateosInterface {
 
- 
     @Override
     public void crear(EntityManager em, VigenciasProrrateos vigenciasProrrateos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-                     em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasProrrateos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El registro VigenciasProrrateos no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateos) : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasProrrateos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasProrrateos vigenciasProrrateos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasProrrateos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro VigenciasProrrateos: " + e.toString());
+            System.out.println("Error PersistenciaVigenciasProrrateos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasProrrateos vigenciasProrrateos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(vigenciasProrrateos));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro VigenciasProrrateos: " + e.toString());
+            System.out.println("Error PersistenciaVigenciasProrrateos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

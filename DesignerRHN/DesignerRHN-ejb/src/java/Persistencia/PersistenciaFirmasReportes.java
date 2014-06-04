@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -37,33 +38,53 @@ public class PersistenciaFirmasReportes implements PersistenciaFirmasReportesInt
             System.out.println("CARGO : " + tiposCursos.getCargo().getNombre());
             System.out.println("--------------CREAR------------------------");
             em.clear();
-            em.getTransaction().begin();
-            em.persist(tiposCursos);
-            em.getTransaction().commit();
+            EntityTransaction tx = em.getTransaction();
+            try {
+                tx.begin();
+                em.merge(tiposCursos);
+                tx.commit();
+            } catch (Exception e) {
+                System.out.println("Error PersistenciaFirmasReportes.crear: " + e);
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            }
         } catch (Exception e) {
             System.out.println("Error crear PersistenciaFirmasReportes : " + e.toString());
         }
     }
 
     public void editar(EntityManager em, FirmasReportes tiposCursos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposCursos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaFirmasReportes : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaFirmasReportes.editar: " + e);
         }
     }
 
     public void borrar(EntityManager em, FirmasReportes tiposCursos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(tiposCursos));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaFirmasReportes : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFirmasReportes.borrar: " + e);
+            }
         }
     }
 

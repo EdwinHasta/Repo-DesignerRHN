@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,37 +30,49 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, Procesos procesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
-            em.persist(procesos);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(procesos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaProcesos");
+            System.out.println("Error PersistenciaProcesos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Procesos procesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(procesos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaProcesos");
+            System.out.println("Error PersistenciaProcesos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Procesos procesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(procesos));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaProcesos");
+            System.out.println("Error PersistenciaProcesos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

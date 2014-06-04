@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaSubCategorias implements PersistenciaSubCategoriasInter
 
     @Override
     public void crear(EntityManager em, SubCategorias subCategorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(subCategorias);
+            tx.begin();
+            em.merge(subCategorias);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (SubCategoria)");
+            System.out.println("Error PersistenciaSubCategorias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, SubCategorias subCategorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(subCategorias);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la SubCategoria");
+            System.out.println("Error PersistenciaSubCategorias.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, SubCategorias subCategorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(subCategorias));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar la SubCategoria");
+            System.out.println("Error PersistenciaSubCategorias.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

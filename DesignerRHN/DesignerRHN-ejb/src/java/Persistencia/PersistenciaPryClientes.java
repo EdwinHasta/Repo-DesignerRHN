@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,17 +28,49 @@ public class PersistenciaPryClientes implements PersistenciaPryClientesInterface
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     public void crear(EntityManager em, PryClientes pryClientes) {
-        em.persist(pryClientes);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(pryClientes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPryClientes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, PryClientes pryClientes) {
-        em.merge(pryClientes);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(pryClientes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPryClientes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, PryClientes pryClientes) {
-        em.remove(em.merge(pryClientes));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(pryClientes));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPryClientes.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public PryClientes buscarPryCliente(EntityManager em, BigInteger secuenciaPC) {

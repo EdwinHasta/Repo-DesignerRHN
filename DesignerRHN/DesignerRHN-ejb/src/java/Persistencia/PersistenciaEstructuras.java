@@ -12,6 +12,7 @@ import InterfacePersistencia.PersistenciaEstructurasInterface;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -32,25 +33,54 @@ public class PersistenciaEstructuras implements PersistenciaEstructurasInterface
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Estructuras estructuras) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(estructuras);
+            tx.begin();
+            em.merge(estructuras);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No es posible crear la estructura");
+            System.out.println("Error PersistenciaEstructuras.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Estructuras estructuras) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(estructuras);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La estructura no exite o esta reservada por lo cual no puede ser modificada");
+            System.out.println("Error PersistenciaEstructuras.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Estructuras estructuras) {
-        em.remove(em.merge(estructuras));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(estructuras));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEstructuras.borrar: " + e);
+            }
+        }
     }
 
     @Override

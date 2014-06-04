@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,28 +32,49 @@ public class PersistenciaOperandosGruposConceptos implements PersistenciaOperand
 
     @Override
     public void crear(EntityManager em, OperandosGruposConceptos gruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(gruposConceptos);
+            tx.begin();
+            em.merge(gruposConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El OperandosGruposConceptos no exite o esta reservada por lo cual no puede ser modificada (PersistenciaOperandosGruposConceptos): " + e.toString());
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, OperandosGruposConceptos gruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(gruposConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el OperandosGruposConceptos (PersistenciaOperandosGruposConceptos) : " + e.toString());
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, OperandosGruposConceptos gruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(gruposConceptos));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El OperandosGruposConceptos no se ha podido eliminar (PersistenciaOperandosGruposConceptos) : " + e.toString());
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

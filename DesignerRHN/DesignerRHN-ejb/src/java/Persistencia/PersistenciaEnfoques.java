@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import Entidades.Enfoques;
 import java.math.BigInteger;
 import java.util.List;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -27,32 +28,51 @@ public class PersistenciaEnfoques implements PersistenciaEnfoquesInterface {
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, Enfoques enfoques) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(enfoques);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(enfoques);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaEnfoques crear ERROR " + e);
+            System.out.println("Error PersistenciaEnfoques.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, Enfoques enfoques) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(enfoques);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaEnfoques editar ERROR " + e);
+            System.out.println("Error PersistenciaEnfoques.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, Enfoques enfoques) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(enfoques));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciEnfoques borrar ERROR " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEnfoques.borrar: " + e);
+            }
         }
     }
 

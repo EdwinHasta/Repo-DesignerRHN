@@ -3,19 +3,21 @@
  */
 package Persistencia;
 
-import InterfacePersistencia.PersistenciaTiposEmbargosInterface;
 import Entidades.TiposEmbargos;
+import InterfacePersistencia.PersistenciaTiposEmbargosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposEmbargos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposEmbargos' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
@@ -24,27 +26,54 @@ public class PersistenciaTiposEmbargos implements PersistenciaTiposEmbargosInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposEmbargos tiposEmbargos) {
-        em.persist(tiposEmbargos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposEmbargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposEmbargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, TiposEmbargos tiposEmbargos) {
-        em.merge(tiposEmbargos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposEmbargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposEmbargos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposEmbargos tiposEmbargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(tiposEmbargos));
+            tx.begin();
+            em.merge(tiposEmbargos);
+            tx.commit();
         } catch (Exception e) {
-            System.err.println("Error borrando TiposEmbargos");
-            System.out.println(e);
+            System.out.println("Error PersistenciaTiposEmbargos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

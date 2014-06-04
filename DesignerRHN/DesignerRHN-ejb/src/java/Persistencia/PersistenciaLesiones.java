@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,17 +29,54 @@ public class PersistenciaLesiones implements PersistenciaLesionesInterface {
 
     @Override
     public void crear(EntityManager em, Lesiones lesiones) {
-        em.persist(lesiones);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(lesiones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaLesiones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Lesiones lesiones) {
-        em.merge(lesiones);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(lesiones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaLesiones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Lesiones lesiones) {
-        em.remove(em.merge(lesiones));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(lesiones));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaLesiones.borrar: " + e);
+            }
+        }
     }
 
     @Override

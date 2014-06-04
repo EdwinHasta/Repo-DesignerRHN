@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,17 +31,54 @@ public class PersistenciaDetallesReformasLaborales implements PersistenciaDetall
 
     @Override
     public void crear(EntityManager em,DetallesReformasLaborales detallesReformasLaborales) {
-        em.persist(detallesReformasLaborales);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(detallesReformasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDetallesReformasLaborales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em,DetallesReformasLaborales detallesReformasLaborales) {
-        em.merge(detallesReformasLaborales);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(detallesReformasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaDetallesReformasLaborales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em,DetallesReformasLaborales detallesReformasLaborales) {
-        em.remove(em.merge(detallesReformasLaborales));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(detallesReformasLaborales));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaDetallesReformasLaborales.borrar: " + e);
+            }
+        }
     }
 
     @Override

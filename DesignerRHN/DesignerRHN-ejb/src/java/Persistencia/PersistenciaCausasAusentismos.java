@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaCausasAusentismosInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -26,21 +27,54 @@ public class PersistenciaCausasAusentismos implements PersistenciaCausasAusentis
 
     @Override
     public void crear(EntityManager em,Causasausentismos causasAusentismos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(causasAusentismos);
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaCausasAusentismos.crear");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCausasAusentismos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Causasausentismos causasAusentismos) {
-        em.merge(causasAusentismos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(causasAusentismos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCausasAusentismos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em,Causasausentismos causasAusentismos) {
-        em.remove(em.merge(causasAusentismos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(causasAusentismos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCausasAusentismos.borrar: " + e);
+            }
+        }
     }
 
     @Override

@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,26 +28,47 @@ public class PersistenciaPapeles implements PersistenciaPapelesInterface {
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
     public void crear(EntityManager em, Papeles papel) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(papel);
+            tx.begin();
+            em.merge(papel);
+            tx.commit();
         } catch (Exception e) {
-            System.err.println("ERROR PERSISTENCIAPAPELES AL CREAR ERROR : " + e);
+            System.out.println("Error PersistenciaPapeles.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, Papeles papel) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(papel);
+            tx.commit();
         } catch (Exception e) {
-            System.err.println("ERROR PERSISTENCIAPAPELES AL EDITAR ERROR : " + e);
+            System.out.println("Error PersistenciaPapeles.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, Papeles papel) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(papel));
+            tx.commit();
         } catch (Exception e) {
-            System.err.println("ERROR PERSISTENCIAPAPELES AL BORRAR ERROR : " + e);
+            System.out.println("Error PersistenciaPapeles.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

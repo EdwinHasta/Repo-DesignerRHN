@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,32 +29,51 @@ public class PersistenciaDepartamentos implements PersistenciaDepartamentosInter
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, Departamentos departamentos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(departamentos);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(departamentos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando Departamentos PersistenciaDepartamentos " + e);
+            System.out.println("Error PersistenciaDepartamentos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, Departamentos departamentos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(departamentos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando Departamentos PersistenciaDepartamentos " + e);
+            System.out.println("Error PersistenciaDepartamentos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, Departamentos departamentos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(departamentos));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrando Departamentos PersistenciaDepartamentos " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaDepartamentos.borrar: " + e);
+            }
         }
     }
 

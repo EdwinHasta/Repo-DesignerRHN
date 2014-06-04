@@ -9,40 +9,72 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'SoAusentismos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'SoAusentismos' de la
+ * base de datos.
+ *
  * @author John Pineda.
  */
 @Stateless
 public class PersistenciaSoausentismos implements PersistenciaSoausentismosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Soausentismos soausentismos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(soausentismos);
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaSoausentismos.crear");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoausentismos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Soausentismos soausentismos) {
-        em.merge(soausentismos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(soausentismos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoausentismos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Soausentismos soausentismos) {
-        em.remove(em.merge(soausentismos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(soausentismos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoausentismos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -89,5 +121,5 @@ public class PersistenciaSoausentismos implements PersistenciaSoausentismosInter
             System.out.println("Error: (prorrogaMostrar)" + e);
             return null;
         }
-    }     
+    }
 }

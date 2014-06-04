@@ -9,37 +9,69 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposExamenes'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposExamenes' de la
+ * base de datos.
+ *
  * @author John Pineda
  */
 @Stateless
 public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
-     public void crear(EntityManager em, TiposExamenes tiposExamenes) {
-        em.persist(tiposExamenes);
+    public void crear(EntityManager em, TiposExamenes tiposExamenes) {
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposExamenes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersitenciaTiposExamenes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, TiposExamenes tiposExamenes) {
-        em.merge(tiposExamenes);
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposExamenes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersitenciaTiposExamenes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposExamenes tiposExamenes) {
-        em.remove(em.merge(tiposExamenes));
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposExamenes));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersitenciaTiposExamenes.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

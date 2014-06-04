@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,37 +29,51 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
     /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;
      */
-
     @Override
     public void crear(EntityManager em, TiposContratos tiposContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposContratos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("(PersistenciaTiposContratos - crear)" + e);
+            System.out.println("Error PersistenciaTiposContratos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposContratos tiposContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposContratos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("(PersistenciaTiposContratos - editar)" + e);
+            System.out.println("Error PersistenciaTiposContratos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposContratos tiposContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(tiposContratos));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("(PersistenciaTiposContratos - borrar)" + e);
+            System.out.println("Error PersistenciaTiposContratos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
 
     }

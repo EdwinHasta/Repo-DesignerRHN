@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -34,28 +35,49 @@ public class PersistenciaTiposFunciones implements PersistenciaTiposFuncionesInt
     
     @Override
     public void crear(EntityManager em, TiposFunciones tiposFunciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposFunciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El tiposFunciones no exite o esta reservada por lo cual no puede ser modificada (tiposFunciones)");
+            System.out.println("Error PersistenciaTiposFunciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposFunciones tiposFunciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposFunciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el tiposFunciones");
+            System.out.println("Error PersistenciaTiposFunciones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposFunciones tiposFunciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tiposFunciones));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El tiposFunciones no se ha podido eliminar");
+            System.out.println("Error PersistenciaTiposFunciones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

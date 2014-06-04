@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Persistencia;
 
 import InterfacePersistencia.PersistenciaVigenciasPlantasInterface;
@@ -12,8 +11,10 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  *
  * @author user
@@ -21,23 +22,55 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlantasInterface {
 
-  /**
+    /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public void crear(EntityManager em, VigenciasPlantas vigenciasPlantas) {
-        em.persist(vigenciasPlantas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vigenciasPlantas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasPlantas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, VigenciasPlantas vigenciasPlantas) {
-        em.merge(vigenciasPlantas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vigenciasPlantas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasPlantas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, VigenciasPlantas vigenciasPlantas) {
-        em.remove(em.merge(vigenciasPlantas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(vigenciasPlantas));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasPlantas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public VigenciasPlantas consultarVigenciaPlanta(EntityManager em, BigInteger secVigenciasPlantas) {
@@ -56,7 +89,7 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
 
     }
 
-      public BigInteger contarPlantasVigenciaPlanta(EntityManager em, BigInteger secuencia) {
+    public BigInteger contarPlantasVigenciaPlanta(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*)FROM plantas WHERE vigencia = ?";
@@ -71,5 +104,4 @@ public class PersistenciaVigenciasPlantas implements PersistenciaVigenciasPlanta
         }
     }
 
-    
 }

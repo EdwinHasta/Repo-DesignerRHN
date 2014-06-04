@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -30,25 +31,53 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
     @Override
     public void crear(EntityManager em, Cargos cargos) {
         em.clear();
-        em.getTransaction().begin();
-        em.persist(cargos);
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(cargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Cargos cargos) {
         em.clear();
-        em.getTransaction().begin();
-        em.merge(cargos);
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(cargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCargos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Cargos cargos) {
         em.clear();
-        em.getTransaction().begin();
-        em.remove(em.merge(cargos));
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(cargos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCargos.borrar: " + e);
+            }
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -43,28 +44,53 @@ public class PersistenciaConceptosRedondeos implements PersistenciaConceptosRedo
 
     @Override
     public void crear(EntityManager em,ConceptosRedondeos conceptosRedondeos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(conceptosRedondeos);
+            tx.begin();
+            em.merge(conceptosRedondeos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El ConceptosRedondeos no exite o esta reservada por lo cual no puede ser modificada (ConceptosRedondeos)");
+            System.out.println("Error PersistenciaConceptosRedondeos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,ConceptosRedondeos conceptosRedondeos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(conceptosRedondeos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el ConceptosRedondeos");
+            System.out.println("Error PersistenciaConceptosRedondeos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,ConceptosRedondeos conceptosRedondeos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(conceptosRedondeos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("El ConceptosRedondeos no se ha podido eliminar");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaConceptosRedondeos.borrar: " + e);
+            }
         }
     }
 

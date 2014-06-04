@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,21 +28,52 @@ public class PersistenciaFestivos implements PersistenciaFestivosInterface {
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, Festivos festivos) {
-        em.getTransaction().begin();
-        em.persist(festivos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(festivos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaFestivos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, Festivos festivos) {
-        em.getTransaction().begin();
-        em.merge(festivos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(festivos);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaFestivos.editar: " + e);
+        }
     }
 
     public void borrar(EntityManager em, Festivos festivos) {
-        em.getTransaction().begin();
-        em.remove(em.merge(festivos));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(festivos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFestivos.borrar: " + e);
+            }
+        }
     }
 
     public List<Festivos> consultarFestivosPais(EntityManager em, BigInteger secPais) {

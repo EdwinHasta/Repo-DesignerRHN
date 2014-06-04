@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -28,23 +29,50 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
-        em.getTransaction().begin();
-        em.persist(soCondicionesAmbientalesP);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(soCondicionesAmbientalesP);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoCondicionesAmbientalesP.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
-        em.getTransaction().begin();
-        em.merge(soCondicionesAmbientalesP);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(soCondicionesAmbientalesP);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoCondicionesAmbientalesP.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, SoCondicionesAmbientalesP soCondicionesAmbientalesP) {
-        em.getTransaction().begin();
-        em.remove(em.merge(soCondicionesAmbientalesP));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(soCondicionesAmbientalesP));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoCondicionesAmbientalesP.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

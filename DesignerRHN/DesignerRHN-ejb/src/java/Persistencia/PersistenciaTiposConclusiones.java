@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -24,31 +25,51 @@ public class PersistenciaTiposConclusiones implements PersistenciaTiposConclusio
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public void crear(EntityManager em, TiposConclusiones tiposConclusiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tiposConclusiones);
+            tx.begin();
+            em.merge(tiposConclusiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposConclusiones : " + e);
+            System.out.println("Error PersistenciaTiposConclusiones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, TiposConclusiones tiposConclusiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposConclusiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposConclusiones : " + e);
+            System.out.println("Error PersistenciaTiposConclusiones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, TiposConclusiones tiposConclusiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tiposConclusiones));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposConclusiones : " + e);
+            System.out.println("Error PersistenciaTiposConclusiones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

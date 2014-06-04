@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,25 +26,61 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Enfermedades enfermedades) {
-        em.persist(enfermedades);
+    public void crear(EntityManager em, Enfermedades enfermedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(enfermedades);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEnfermedades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,Enfermedades enfermedades) {
-        em.merge(enfermedades);
+    public void editar(EntityManager em, Enfermedades enfermedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(enfermedades);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEnfermedades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void borrar(EntityManager em,Enfermedades enfermedades) {
-        em.remove(em.merge(enfermedades));
+    public void borrar(EntityManager em, Enfermedades enfermedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(enfermedades));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEnfermedades.borrar: " + e);
+            }
+        }
     }
 
     @Override
-    public Enfermedades buscarEnfermedad(EntityManager em,BigInteger secuencia) {
+    public Enfermedades buscarEnfermedad(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Enfermedades.class, secuencia);
         } catch (Exception e) {
@@ -65,7 +102,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
         }
     }
 
-    public BigInteger contadorAusentimos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorAusentimos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM ausentismos WHERE enfermedad = ?";
@@ -81,7 +118,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
         }
     }
 
-    public BigInteger contadorDetallesLicencias(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorDetallesLicencias(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM detalleslicencias WHERE enfermedad = ?";
@@ -97,7 +134,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
         }
     }
 
-    public BigInteger contadorEnfermedadesPadecidas(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorEnfermedadesPadecidas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM enfermedadespadecidas WHERE enfermedad= ?";
@@ -113,7 +150,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
         }
     }
 
-    public BigInteger contadorSoausentismos(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSoausentismos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM soausentismos e  WHERE enfermedad = ?";
@@ -129,7 +166,7 @@ public class PersistenciaEnfermedades implements PersistenciaEnfermedadesInterfa
         }
     }
 
-    public BigInteger contadorSorevisionessSistemas(EntityManager em,BigInteger secuencia) {
+    public BigInteger contadorSorevisionessSistemas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;
         try {
             String sqlQuery = "SELECT COUNT(*) FROM sorevisionessistemas e WHERE enfermedadactual = ?";

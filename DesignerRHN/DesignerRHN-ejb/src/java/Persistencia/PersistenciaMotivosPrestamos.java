@@ -9,40 +9,70 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'MotivosPrestamos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'MotivosPrestamos' de
+ * la base de datos.
+ *
  * @author John Pineda.
  */
 @Stateless
 public class PersistenciaMotivosPrestamos implements PersistenciaMotivosPrestamosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-    
     @Override
     public void crear(EntityManager em, MotivosPrestamos motivosPrestamos) {
-        em.persist(motivosPrestamos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosPrestamos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosPrestamos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, MotivosPrestamos motivosPrestamos) {
-        em.merge(motivosPrestamos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosPrestamos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosPrestamos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosPrestamos motivosPrestamos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(motivosPrestamos));
+            tx.commit();
         } catch (Exception e) {
-            System.err.println("Error borrando TiposDias");
-            System.out.println(e);
+            System.out.println("Error PersistenciaMotivosPrestamos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,35 +33,50 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
 
     @Override
     public void crear(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasNormasEmpleados);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasNormasEmpleados)" + e);
+            System.out.println("Error PersistenciaVigenciasNormasEmpleados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         
     }
 
     @Override
     public void editar(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasNormasEmpleados);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasNormasEmpleados)" + e);
+            System.out.println("Error PersistenciaVigenciasNormasEmpleados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasNormasEmpleados vigenciasNormasEmpleados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(vigenciasNormasEmpleados));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error Persistencia Borrar VC: " + e);
+            System.out.println("Error PersistenciaVigenciasNormasEmpleados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
         
     }

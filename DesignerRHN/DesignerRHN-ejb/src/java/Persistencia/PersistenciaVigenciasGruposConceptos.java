@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -28,28 +29,49 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
 
     @Override
     public void crear(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(vigenciasGruposConceptos);
+            tx.begin();
+            em.merge(vigenciasGruposConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciasGruposConceptos Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasGruposConceptos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasGruposConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciasGruposConceptos Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasGruposConceptos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasGruposConceptos vigenciasGruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(vigenciasGruposConceptos));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciasGruposConceptos Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasGruposConceptos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

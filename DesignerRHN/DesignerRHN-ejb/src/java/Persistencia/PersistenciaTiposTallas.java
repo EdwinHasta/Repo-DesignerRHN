@@ -9,37 +9,72 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposTallas'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposTallas' de la
+ * base de datos.
+ *
  * @author John Pineda.
  */
 @Stateless
 public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposTallas tiposTallas) {
-        em.persist(tiposTallas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposTallas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposTallas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, TiposTallas tiposTallas) {
-        em.merge(tiposTallas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposTallas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposTallas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposTallas tiposTallas) {
-        em.remove(em.merge(tiposTallas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposTallas));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposTallas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

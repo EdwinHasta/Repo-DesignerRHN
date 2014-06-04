@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,28 +29,53 @@ public class PersistenciaGruposConceptos implements PersistenciaGruposConceptosI
 
     @Override
     public void crear(EntityManager em,GruposConceptos gruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(gruposConceptos);
+            tx.begin();
+            em.merge(gruposConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaGruposConceptos " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,GruposConceptos gruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(gruposConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("error editar PersistenciaGruposConceptos " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,GruposConceptos gruposConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(gruposConceptos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar gruposConceptos PersistenciaGruposConceptos");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaVigenciasCargos.borrar: " + e);
+            }
         }
     }
    

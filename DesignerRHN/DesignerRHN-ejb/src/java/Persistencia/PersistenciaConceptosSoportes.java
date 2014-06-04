@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,26 +29,51 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
     private EntityManager em;*/
 
     public void crear(EntityManager em,ConceptosSoportes conceptosSoportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(conceptosSoportes);
+            tx.begin();
+            em.merge(conceptosSoportes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaConceptosSoportes");
+            System.out.println("Error PersistenciaConceptosSoportes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em,ConceptosSoportes conceptosSoportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(conceptosSoportes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaConceptosSoportes");
+            System.out.println("Error PersistenciaConceptosSoportes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em,ConceptosSoportes conceptosSoportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(conceptosSoportes));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaConceptosSoportes");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaConceptosSoportes.borrar: " + e);
+            }
         }
     }
 

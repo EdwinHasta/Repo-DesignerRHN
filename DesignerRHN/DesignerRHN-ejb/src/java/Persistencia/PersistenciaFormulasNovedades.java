@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaFormulasNovedades implements PersistenciaFormulasNoveda
 
     @Override
     public void crear(EntityManager em,FormulasNovedades formulasNovedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(formulasNovedades);
+            tx.begin();
+            em.merge(formulasNovedades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaFormulasNovedades : " + e.toString());
+            System.out.println("Error PersistenciaFormulasNovedades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,FormulasNovedades formulasNovedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(formulasNovedades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaFormulasNovedades : " + e.toString());
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaFormulasNovedades.editar: " + e);
         }
     }
 
     @Override
     public void borrar(EntityManager em,FormulasNovedades formulasNovedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(formulasNovedades));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaFormulasNovedades : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFormulasNovedades.borrar: " + e);
+            }
         }
     }
 

@@ -12,6 +12,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,21 +29,52 @@ public class PersistenciaEvalCompetencias implements PersistenciaEvalCompetencia
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, EvalCompetencias evalCompetencias) {
-        em.getTransaction().begin();
-        em.persist(evalCompetencias);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(evalCompetencias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEvalCompetencias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, EvalCompetencias evalCompetencias) {
-        em.getTransaction().begin();
-        em.merge(evalCompetencias);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(evalCompetencias);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaEvalCompetencias.editar: " + e);
+        }
     }
 
     public void borrar(EntityManager em, EvalCompetencias evalCompetencias) {
-        em.getTransaction().begin();
-        em.remove(em.merge(evalCompetencias));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(evalCompetencias));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEvalCompetencias.borrar: " + e);
+            }
+        }
     }
 
     public EvalCompetencias buscarEvalCompetencia(EntityManager em, BigInteger secuenciaTE) {

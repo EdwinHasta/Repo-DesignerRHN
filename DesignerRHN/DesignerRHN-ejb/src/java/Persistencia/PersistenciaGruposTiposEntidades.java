@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,37 +31,53 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
 
     @Override
     public void crear(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(gruposTiposEntidades);
+            tx.begin();
+            em.merge(gruposTiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades crear ERROR : " + e);
+            System.out.println("Error PersistenciaGruposTiposEntidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
-        System.out.println("PERSISTENCIA-------------");
-        System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
-        System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
-        System.out.println("-------------PERSISTENCIA");
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(gruposTiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades editar error " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaGruposTiposEntidades.editar: " + e);
         }
     }
 
     @Override
     public void borrar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            System.out.println("PERSISTENCIA-------------");
-            System.out.println("----------BORRAR--------------------------------");
-            System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
-            System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
-            System.out.println("-------------PERSISTENCIA");
+            tx.begin();
             em.remove(em.merge(gruposTiposEntidades));
+            tx.commit();
+
         } catch (Exception e) {
-            System.err.println("\n ERROR EN PersistenciaGruposTiposEntidades borrar ERROR " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaGruposTiposEntidades.borrar: " + e);
+            }
         }
     }
 

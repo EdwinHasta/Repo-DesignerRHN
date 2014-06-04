@@ -5,12 +5,13 @@
  */
 package Persistencia;
 
-import InterfacePersistencia.PersistenciaSucursalesPilaInterface;
 import Entidades.SucursalesPila;
+import InterfacePersistencia.PersistenciaSucursalesPilaInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,21 +27,49 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     public void crear(EntityManager em, SucursalesPila sucursalesPilas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(sucursalesPilas);
-        } catch (Exception ex) {
-            System.err.println("Error PersistenciaSucursalesPila.crear " + ex);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPensionados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, SucursalesPila sucursalesPilas) {
-        em.merge(sucursalesPilas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(sucursalesPilas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPensionados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, SucursalesPila sucursalesPilas) {
-        em.remove(em.merge(sucursalesPilas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(sucursalesPilas));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPensionados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

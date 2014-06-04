@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -27,19 +28,33 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
     
     @Override
     public void crear(EntityManager em, Parametros parametro) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(parametro);
+            tx.begin();
+            em.merge(parametro);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaParametros.crear" + e);
+            System.out.println("Error PersistenciaParametros.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Parametros parametro) {
-        try{
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
             em.remove(em.merge(parametro));
-        }catch(Exception e){
-            System.out.println("Error PersistenciaParametros.borrar");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
     

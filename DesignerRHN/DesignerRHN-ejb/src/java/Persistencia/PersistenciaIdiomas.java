@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaIdiomas implements PersistenciaIdiomasInterface {
 
     @Override
     public void crear(EntityManager em, Idiomas idiomas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(idiomas);
+            tx.begin();
+            em.merge(idiomas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando Idiomas PersistenciaIdiomas");
+            System.out.println("Error PersistenciaIdiomas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Idiomas idiomas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(idiomas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando Idiomas PersistenciaIdiomas");
+            System.out.println("Error PersistenciaIdiomas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Idiomas idiomas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(idiomas));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrando Idiomas PersistenciaIdiomas");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaIdiomas.borrar: " + e);
+            }
         }
     }
 

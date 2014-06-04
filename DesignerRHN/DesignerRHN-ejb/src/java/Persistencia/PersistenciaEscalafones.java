@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,28 +32,53 @@ public class PersistenciaEscalafones implements PersistenciaEscalafonesInterface
 
     @Override
     public void crear(EntityManager em,Escalafones escalafones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(escalafones);
+            tx.begin();
+            em.merge(escalafones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (Escalafones)");
+            System.out.println("Error PersistenciaEscalafones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Escalafones escalafones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(escalafones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el Escalafon");
+            System.out.println("Error PersistenciaEscalafones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,Escalafones escalafon) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(escalafon));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el Escalafon");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEscalafones.borrar: " + e);
+            }
         }
     }
 

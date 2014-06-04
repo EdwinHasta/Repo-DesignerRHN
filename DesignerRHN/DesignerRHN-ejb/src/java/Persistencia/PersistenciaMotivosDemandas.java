@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaMotivosDemandas implements PersistenciaMotivosDemandasI
 
     @Override
     public void crear(EntityManager em, MotivosDemandas motivosDemandas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(motivosDemandas);
+            tx.begin();
+            em.merge(motivosDemandas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaMotivosDemandas : " + e.toString());
+            System.out.println("Error PersistenciaMotivosDemandas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, MotivosDemandas motivosDemandas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(motivosDemandas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaMotivosDemandas : " + e.toString());
+            System.out.println("Error PersistenciaMotivosDemandas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosDemandas motivosDemandas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(motivosDemandas));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaMotivosDemandas : " + e.toString());
+            System.out.println("Error PersistenciaMotivosDemandas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

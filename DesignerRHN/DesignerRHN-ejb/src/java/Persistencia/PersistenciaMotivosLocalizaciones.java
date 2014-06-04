@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaMotivosLocalizaciones implements PersistenciaMotivosLoc
 
     @Override
     public void crear(EntityManager em, MotivosLocalizaciones motivosLocalizaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(motivosLocalizaciones);
+            tx.begin();
+            em.merge(motivosLocalizaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearMotivoLoc");
+            System.out.println("Error PersistenciaMotivosLocalizaciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, MotivosLocalizaciones motivosLocalizaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(motivosLocalizaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editarMotivoLoc");
+            System.out.println("Error PersistenciaMotivosLocalizaciones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosLocalizaciones motivosLocalizaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(motivosLocalizaciones));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrarMotivoLoc");
+            System.out.println("Error PersistenciaMotivosLocalizaciones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

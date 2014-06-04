@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,28 +29,49 @@ public class PersistenciaSectoresEconomicos implements PersistenciaSectoresEcono
 
     @Override
     public void crear(EntityManager em, SectoresEconomicos sectoresEconomicos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(sectoresEconomicos);
+            tx.begin();
+            em.merge(sectoresEconomicos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaSectoresEconomicos : "+e.toString());
+            System.out.println("Error PersistenciaSectoresEconomicos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, SectoresEconomicos sectoresEconomicos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(sectoresEconomicos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaSectoresEconomicos : "+e.toString());
+            System.out.println("Error PersistenciaSectoresEconomicos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, SectoresEconomicos sectoresEconomicos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(sectoresEconomicos));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaSectoresEconomicos : "+e.toString());
+            System.out.println("Error PersistenciaSectoresEconomicos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,28 +33,53 @@ public class PersistenciaDetallesEmpresas implements PersistenciaDetallesEmpresa
 
     @Override
     public void crear(EntityManager em,DetallesEmpresas detallesEmpresas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(detallesEmpresas);
+            tx.begin();
+            em.merge(detallesEmpresas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando detallesEmpresas PersistenciaDetallesEmpresas : " + e.toString());
+            System.out.println("Error PersistenciaDetallesEmpresas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,DetallesEmpresas detallesEmpresas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(detallesEmpresas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando detallesEmpresas PersistenciaDetallesEmpresas : " + e.toString());
+            System.out.println("Error PersistenciaDetallesEmpresas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,DetallesEmpresas detallesEmpresas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(detallesEmpresas));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrando detallesEmpresas PersistenciaDetallesEmpresas : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaDetallesEmpresas.borrar: " + e);
+            }
         }
     }
 

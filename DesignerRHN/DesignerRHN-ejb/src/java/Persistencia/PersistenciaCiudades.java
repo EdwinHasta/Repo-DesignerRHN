@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
@@ -32,28 +33,54 @@ public class PersistenciaCiudades implements PersistenciaCiudadesInterface {
 
     @Override
     public void crear(EntityManager em, Ciudades ciudades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(ciudades);
-            em.getTransaction().commit();
-        } catch (PersistenceException ex) {
-            Logger.getLogger(Ciudades.class.getName()).log(Level.SEVERE, null, ex);
-            throw new EntityExistsException(ex);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCiudades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Ciudades ciudades) {
-        em.getTransaction().begin();
-        em.merge(ciudades);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(ciudades);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCiudades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Ciudades ciudades) {
-        em.getTransaction().begin();
-        em.remove(em.merge(ciudades));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(ciudades));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCiudades.borrar: " + e);
+            }
+        }
     }
 
     @Override

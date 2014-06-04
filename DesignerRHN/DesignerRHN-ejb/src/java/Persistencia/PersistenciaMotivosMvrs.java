@@ -3,12 +3,13 @@
  */
 package Persistencia;
 
-import InterfacePersistencia.PersistenciaMotivosMvrsInterface;
 import Entidades.Motivosmvrs;
+import InterfacePersistencia.PersistenciaMotivosMvrsInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,23 +32,50 @@ public class PersistenciaMotivosMvrs implements PersistenciaMotivosMvrsInterface
 
     @Override
     public void crear(EntityManager em, Motivosmvrs motivosMvrs) {
-        em.getTransaction().begin();
-        em.persist(motivosMvrs);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosMvrs);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosMvrs.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Motivosmvrs motivosMvrs) {
-        em.getTransaction().begin();
-        em.merge(motivosMvrs);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosMvrs);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosMvrs.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Motivosmvrs motivosMvrs) {
-        em.getTransaction().begin();
-        em.remove(em.merge(motivosMvrs));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(motivosMvrs));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosMvrs.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

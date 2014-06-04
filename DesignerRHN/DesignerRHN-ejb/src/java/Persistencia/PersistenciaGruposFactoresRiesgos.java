@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,26 +29,51 @@ public class PersistenciaGruposFactoresRiesgos implements PersistenciaGruposFact
     private EntityManager em;*/
 
     public void crear(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(grupoFactoresRiesgos);
+            tx.begin();
+            em.merge(grupoFactoresRiesgos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaGruposFactoresRiesgos : " + e);
+            System.out.println("Error PersistenciaGruposFactoresRiesgos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(grupoFactoresRiesgos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaGruposFactoresRiesgos : " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaGruposFactoresRiesgos.editar: " + e);
         }
     }
 
     public void borrar(EntityManager em,GruposFactoresRiesgos grupoFactoresRiesgos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(grupoFactoresRiesgos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaGruposFactoresRiesgos : " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaGruposFactoresRiesgos.borrar: " + e);
+            }
         }
     }
 

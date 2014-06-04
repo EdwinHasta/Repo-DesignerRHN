@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,6 +28,53 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
+    @Override
+    public void crear(EntityManager em, RetencionesMinimas retenciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(retenciones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaRetencionesMinimas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void editar(EntityManager em, RetencionesMinimas retenciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(retenciones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaRetencionesMinimas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrar(EntityManager em, RetencionesMinimas retenciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(retenciones));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaRetencionesMinimas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
 
     //Trae las relaciones en base al ausentismo seleccionado
     @Override
@@ -46,24 +94,9 @@ public class PersistenciaRetencionesMinimas implements PersistenciaRetencionesMi
             return null;
         }
     }
-    
-    @Override
-    public void crear(EntityManager em, RetencionesMinimas retenciones) {
-        em.persist(retenciones);
-    }
 
     @Override
-    public void editar(EntityManager em, RetencionesMinimas retenciones) {
-        em.merge(retenciones);
-    }
-
-    @Override
-    public void borrar(EntityManager em, RetencionesMinimas retenciones) {
-        em.remove(em.merge(retenciones));
-    }
-
-    @Override
-    public List<RetencionesMinimas> buscarRetencionesMinimasVig(EntityManager em, BigInteger secRetencion){
+    public List<RetencionesMinimas> buscarRetencionesMinimasVig(EntityManager em, BigInteger secRetencion) {
         try {
             Query query = em.createQuery("SELECT r FROM RetencionesMinimas r WHERE r.vigenciaretencionminima.secuencia = :secRetencion");
             query.setParameter("secRetencion", secRetencion);

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -31,28 +32,53 @@ public class PersistenciaCirculares implements PersistenciaCircularesInterface {
 
     @Override
     public void crear(EntityManager em,Circulares circulares) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(circulares);
+            tx.begin();
+            em.merge(circulares);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaCirculares : " + e.toString());
+            System.out.println("Error PersistenciaCentrosCostos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Circulares circulares) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(circulares);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaCirculares : " + e.toString());
+            System.out.println("Error PersistenciaCentrosCostos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,Circulares circulares) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(circulares));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaCirculares : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCentrosCostos.borrar: " + e);
+            }
         }
     }
 

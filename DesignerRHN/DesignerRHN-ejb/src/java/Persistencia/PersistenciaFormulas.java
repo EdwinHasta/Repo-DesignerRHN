@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,37 +28,56 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
      */
     /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
-
     @Override
     public void crear(EntityManager em, Formulas formulas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
-            em.persist(formulas);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(formulas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No es posible crear la Formula");
+            System.out.println("Error PersistenciaFormulas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Formulas formulas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(formulas);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La formula no exite o esta reservada por lo cual no puede ser modificada");
+            System.out.println("Error PersistenciaFormulas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Formulas formulas) {
         em.clear();
-        em.getTransaction().begin();
-        em.remove(em.merge(formulas));
-        em.getTransaction().commit();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(formulas));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFormulas.borrar: " + e);
+            }
+        }
     }
 
     @Override

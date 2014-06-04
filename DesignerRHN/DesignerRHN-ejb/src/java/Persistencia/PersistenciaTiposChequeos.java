@@ -9,38 +9,74 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'TiposChequeos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'TiposChequeos' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
-     public void crear(EntityManager em, TiposChequeos tiposChequeos) {
-        em.persist(tiposChequeos);
+    public void crear(EntityManager em, TiposChequeos tiposChequeos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposChequeos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposChequeos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
-     
+
     @Override
     public void editar(EntityManager em, TiposChequeos tiposChequeos) {
-        em.merge(tiposChequeos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposChequeos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposChequeos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
-    
+
     @Override
     public void borrar(EntityManager em, TiposChequeos tiposChequeos) {
-        em.remove(em.merge(tiposChequeos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposChequeos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposChequeos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
-    
+
     @Override
     public TiposChequeos buscarTipoChequeo(EntityManager em, BigInteger secuenciaTC) {
         try {
@@ -49,7 +85,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
             return null;
         }
     }
-    
+
     @Override
     public List<TiposChequeos> buscarTiposChequeos(EntityManager em) {
         try {
@@ -62,7 +98,7 @@ public class PersistenciaTiposChequeos implements PersistenciaTiposChequeosInter
             return null;
         }
     }
-   
+
     @Override
     public BigInteger contadorChequeosMedicos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno;

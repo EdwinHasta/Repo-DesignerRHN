@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,34 +30,49 @@ public class PersistenciaClasesCategorias implements PersistenciaClasesCategoria
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, ClasesCategorias clasesCategorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(clasesCategorias);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(clasesCategorias);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (ClasesCategorias)");
+            System.out.println("Error PersistenciaClasesCategorias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, ClasesCategorias clasesCategorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(clasesCategorias);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la ClaseCategoria");
+            System.out.println("Error PersistenciaClasesCategorias.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, ClasesCategorias clasesCategorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(clasesCategorias));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar la ClaseCategoria");
+            System.out.println("Error PersistenciaClasesCategorias.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

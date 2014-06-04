@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,34 +30,53 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, EvalEvaluadores evalEvaluadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(evalEvaluadores);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(evalEvaluadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaMotivosContratos crear ERROR " + e);
+            System.out.println("Error PersistenciaEvalEvaluadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, EvalEvaluadores evalEvaluadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(evalEvaluadores);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaEvalEvaluadores editar ERROR " + e);
+            System.out.println("Error PersistenciaEvalEvaluadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, EvalEvaluadores evalEvaluadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(evalEvaluadores));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaEvalEvaluadores borrar ERROR " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEvalEvaluadores.borrar: " + e);
+            }
         }
     }
 

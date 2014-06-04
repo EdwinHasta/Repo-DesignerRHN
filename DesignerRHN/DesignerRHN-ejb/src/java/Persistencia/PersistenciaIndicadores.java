@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaIndicadores implements PersistenciaIndicadoresInterface
 
     @Override
     public void crear(EntityManager em, Indicadores indicadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(indicadores);
+            tx.begin();
+            em.merge(indicadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaIndicadores : " + e.toString());
+            System.out.println("Error PersistenciaIndicadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Indicadores indicadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(indicadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaIndicadores : " + e.toString());
+            System.out.println("Error PersistenciaIndicadores.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Indicadores indicadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(indicadores));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaIndicadores : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaIndicadores.borrar: " + e);
+            }
         }
     }
 

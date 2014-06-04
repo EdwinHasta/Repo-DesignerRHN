@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -29,23 +30,50 @@ public class PersistenciaTiposDias implements PersistenciaTiposDiasInterface {
      */
     @Override
     public void crear(EntityManager em, TiposDias tiposDias) {
-        em.getTransaction().begin();
-        em.persist(tiposDias);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposDias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposDias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, TiposDias tiposDias) {
-        em.getTransaction().begin();
-        em.merge(tiposDias);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposDias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposDias.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposDias tiposDias) {
-        em.getTransaction().begin();
-        em.remove(em.merge(tiposDias));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposDias));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposDias.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

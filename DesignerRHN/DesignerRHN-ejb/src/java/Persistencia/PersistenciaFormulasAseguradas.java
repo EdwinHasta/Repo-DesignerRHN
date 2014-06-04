@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,35 +28,51 @@ public class PersistenciaFormulasAseguradas implements PersistenciaFormulasAsegu
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, FormulasAseguradas formulasAseguradas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
-            em.persist(formulasAseguradas);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(formulasAseguradas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaFormulasAseguradas");
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, FormulasAseguradas formulasAseguradas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(formulasAseguradas);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaFormulasAseguradas");
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, FormulasAseguradas formulasAseguradas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.clear();
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(formulasAseguradas));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaFormulasAseguradas");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaVigenciasCargos.borrar: " + e);
+            }
         }
     }
 

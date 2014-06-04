@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaPlantasPersonales implements PersistenciaPlantasPersona
 
     @Override
     public void crear(EntityManager em, PlantasPersonales plantasPersonales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(plantasPersonales);
-        } catch (Exception ex) {
-            System.err.println("Error crear PersistenciaPlantasPersonales: " + ex.toString());
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPlantasPersonales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, PlantasPersonales plantasPersonales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(plantasPersonales);
-        } catch (Exception ex) {
-            System.err.println("Error editar PersistenciaPlantasPersonales: " + ex.toString());
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPlantasPersonales.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, PlantasPersonales plantasPersonales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(plantasPersonales));
-        } catch (Exception ex) {
-            System.err.println("Error borrar PersistenciaPlantasPersonales: " + ex.toString());
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPlantasPersonales.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

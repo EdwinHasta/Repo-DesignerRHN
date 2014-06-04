@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -30,24 +31,52 @@ public class PersistenciaNovedadesSistema implements PersistenciaNovedadesSistem
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, NovedadesSistema novedades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(novedades);
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaNovedades.crear");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNovedadesSistema.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, NovedadesSistema novedades) {
-        em.merge(novedades);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(novedades);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNovedadesSistema.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, NovedadesSistema novedades) {
-        em.remove(em.merge(novedades));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(novedades));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNovedadesSistema.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

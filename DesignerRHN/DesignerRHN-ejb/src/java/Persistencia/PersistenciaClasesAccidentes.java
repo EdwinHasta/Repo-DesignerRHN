@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -26,21 +27,52 @@ public class PersistenciaClasesAccidentes implements PersistenciaClasesAccidente
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, ClasesAccidentes clasesAccidentes) {
-        em.getTransaction().begin();
-        em.persist(clasesAccidentes);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(clasesAccidentes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaClasesAccidentes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, ClasesAccidentes clasesAccidentes) {
-        em.getTransaction().begin();
-        em.merge(clasesAccidentes);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(clasesAccidentes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaClasesAccidentes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, ClasesAccidentes clasesAccidentes) {
-        em.getTransaction().begin();
-        em.remove(em.merge(clasesAccidentes));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(clasesAccidentes));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaClasesAccidentes.borrar: " + e);
+            }
+        }
     }
 
     public ClasesAccidentes buscarClaseAccidente(EntityManager em, BigInteger secuenciaCA) {

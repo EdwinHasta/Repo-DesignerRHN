@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,34 +31,49 @@ public class PersistenciaVigenciasCompensaciones implements PersistenciaVigencia
 
     @Override
     public void crear(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasCompensaciones);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El registro VigenciasCompensaciones no exite o esta reservada por lo cual no puede ser modificada (VigenciasProrrateos)");
+            System.out.println("Error PersistenciaVigenciasCompensaciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vigenciasCompensaciones);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el registro VigenciasCompensaciones");
+            System.out.println("Error PersistenciaVigenciasCompensaciones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasCompensaciones vigenciasCompensaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(vigenciasCompensaciones));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo borrar el registro VigenciasCompensaciones");
+            System.out.println("Error PersistenciaVigenciasCompensaciones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
