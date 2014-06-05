@@ -64,7 +64,6 @@ public class ControlActividades implements Serializable {
     private int tamano;
     private Integer backupCodigo;
     private String backupDescripcion;
-
     public ControlActividades() {
         listActividades = null;
         crearActividades = new ArrayList<Actividades>();
@@ -279,11 +278,11 @@ public class ControlActividades implements Serializable {
                         }
 
                     }
-                    if (listActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (listActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listActividades.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
@@ -338,11 +337,11 @@ public class ControlActividades implements Serializable {
                         }
 
                     }
-                    if (listActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (listActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listActividades.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
@@ -399,12 +398,12 @@ public class ControlActividades implements Serializable {
 
                     }
 
-                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarActividades.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
@@ -457,12 +456,12 @@ public class ControlActividades implements Serializable {
 
                     }
 
-                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarActividades.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);

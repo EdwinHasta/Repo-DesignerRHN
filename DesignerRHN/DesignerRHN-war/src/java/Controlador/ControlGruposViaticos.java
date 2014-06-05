@@ -175,7 +175,15 @@ public class ControlGruposViaticos implements Serializable {
         listGruposViaticos = null;
         guardado = true;
         permitirIndex = true;
+        getListGruposViaticos();
         RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listGruposViaticos == null || listGruposViaticos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosGruposViaticos");
         context.update("form:ACEPTAR");
     }
@@ -927,7 +935,7 @@ public class ControlGruposViaticos implements Serializable {
         } else {
             infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
         }
-        context.update("form:infoLOVCargo");
+        context.update("form:informacionRegistro");
         return listGruposViaticos;
     }
 

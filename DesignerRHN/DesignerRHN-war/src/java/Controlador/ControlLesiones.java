@@ -1,6 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controlador;
@@ -8,8 +7,8 @@ package Controlador;
 import Entidades.Lesiones;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarLesionesInterface;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -43,9 +43,10 @@ public class ControlLesiones implements Serializable {
     private List<Lesiones> crearLesiones;
     private List<Lesiones> modificarLesiones;
     private List<Lesiones> borrarLesiones;
-    private Lesiones nuevaLesion;
-    private Lesiones duplicarLesion;
-    private Lesiones editarLesion;
+    private Lesiones nuevoLesiones;
+    private Lesiones duplicarLesiones;
+    private Lesiones editarLesiones;
+    private Lesiones lesionSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,8 +59,11 @@ public class ControlLesiones implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigInteger detallesLicensias;
-    private BigInteger soAccidentesDomesticos;
+    //filtrado table
+    private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
+    private String infoRegistro;
 
     public ControlLesiones() {
         listLesiones = null;
@@ -67,11 +71,13 @@ public class ControlLesiones implements Serializable {
         modificarLesiones = new ArrayList<Lesiones>();
         borrarLesiones = new ArrayList<Lesiones>();
         permitirIndex = true;
-        editarLesion = new Lesiones();
-        nuevaLesion = new Lesiones();
-        duplicarLesion = new Lesiones();
+        editarLesiones = new Lesiones();
+        nuevoLesiones = new Lesiones();
+        duplicarLesiones = new Lesiones();
+        guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -86,30 +92,37 @@ public class ControlLesiones implements Serializable {
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n EVENTO FILTRAR \n");
+            System.out.println("\n ENTRE A ControlLesiones.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlLesiones eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
+        System.err.println("permitirIndex  " + permitirIndex);
 
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
             secRegistro = listLesiones.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listLesiones.get(index).getCodigo();
+                backupDescripcion = listLesiones.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarLesiones.get(index).getCodigo();
+                backupDescripcion = filtrarLesiones.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE CONTROLESIONES  AsignarIndex \n");
+            System.out.println("\n ENTRE A ControlLesiones.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -121,7 +134,7 @@ public class ControlLesiones implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLLESIONES asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlLesiones.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -133,13 +146,14 @@ public class ControlLesiones implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosLesiones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosLesiones:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datoslesion");
+            RequestContext.getCurrentInstance().update("form:datosLesiones");
             bandera = 0;
             filtrarLesiones = null;
             tipoLista = 0;
@@ -155,51 +169,64 @@ public class ControlLesiones implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
-        context.update("form:datoslesion");
+
+        if (listLesiones == null || listLesiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listLesiones.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosLesiones");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:codigo");
-            codigo.setFilterStyle("width: 360px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosLesiones:codigo");
+            codigo.setFilterStyle("width: 220px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosLesiones:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datoslesion");
+            RequestContext.getCurrentInstance().update("form:datosLesiones");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosLesiones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosLesiones:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datoslesion");
+            RequestContext.getCurrentInstance().update("form:datosLesiones");
             bandera = 0;
             filtrarLesiones = null;
             tipoLista = 0;
         }
     }
 
-    public void modificandoLesion(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("MODIFICAR LESIONES");
+    public void modificarLesiones(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
-        int contador1 = 0;
         boolean banderita = false;
-        Short a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("MODIFICANDO LESIONES  CONFIRMAR CAMBIO = N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearLesiones.contains(listLesiones.get(indice))) {
-                    if (listLesiones.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listLesiones.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listLesiones.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listLesiones.size(); j++) {
                             if (j != indice) {
@@ -208,9 +235,11 @@ public class ControlLesiones implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listLesiones.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -218,14 +247,18 @@ public class ControlLesiones implements Serializable {
                     }
                     if (listLesiones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listLesiones.get(indice).getDescripcion().equals(" ")) {
+                        banderita1 = false;
+                        listLesiones.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listLesiones.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listLesiones.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarLesiones.isEmpty()) {
                             modificarLesiones.add(listLesiones.get(indice));
                         } else if (!modificarLesiones.contains(listLesiones.get(indice))) {
@@ -238,40 +271,94 @@ public class ControlLesiones implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosLesiones");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listLesiones.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listLesiones.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listLesiones.size(); j++) {
+                            if (j != indice) {
+                                if (listLesiones.get(indice).getCodigo() == listLesiones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listLesiones.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listLesiones.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listLesiones.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listLesiones.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listLesiones.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosLesiones");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearLesiones.contains(filtrarLesiones.get(indice))) {
-                    if (filtrarLesiones.get(indice).getCodigo() == a) {
+                    if (filtrarLesiones.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarLesiones.get(indice).setCodigo(backupCodigo);
                     } else {
-                        System.err.println("indice filtrar indice : " + filtrarLesiones.get(indice).getCodigo());
-                        for (int j = 0; j < listLesiones.size(); j++) {
-                            System.err.println("indice lista  indice : " + listLesiones.get(j).getCodigo());
-                            if (filtrarLesiones.get(indice).getCodigo() == listLesiones.get(j).getCodigo()) {
-                                contador++;
-                            }
-                        }
-
                         for (int j = 0; j < filtrarLesiones.size(); j++) {
-                            System.err.println("indice filtrar indice : " + filtrarLesiones.get(j).getCodigo());
-                            if (j == indice) {
-                                if (filtrarLesiones.get(indice).getCodigo() == filtrarLesiones.get(j).getCodigo()) {
-                                    contador1++;
+                            if (j != indice) {
+                                if (filtrarLesiones.get(indice).getCodigo() == listLesiones.get(j).getCodigo()) {
+                                    contador++;
                                 }
                             }
                         }
-                        System.err.println("contador es igual a " + contador);
-                        System.err.println("contador1 es igual a " + contador1);
-
-                        if (contador > 0 || contador1 > 0) {
+                        for (int j = 0; j < listLesiones.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarLesiones.get(indice).getCodigo() == listLesiones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarLesiones.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -280,14 +367,16 @@ public class ControlLesiones implements Serializable {
 
                     if (filtrarLesiones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarLesiones.get(indice).setDescripcion(backupDescripcion);
                     }
                     if (filtrarLesiones.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarLesiones.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarLesiones.isEmpty()) {
                             modificarLesiones.add(filtrarLesiones.get(indice));
                         } else if (!modificarLesiones.contains(filtrarLesiones.get(indice))) {
@@ -300,26 +389,76 @@ public class ControlLesiones implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarLesiones.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarLesiones.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarLesiones.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarLesiones.get(indice).getCodigo() == listLesiones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listLesiones.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarLesiones.get(indice).getCodigo() == listLesiones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarLesiones.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarLesiones.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarLesiones.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarLesiones.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarLesiones.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
-            context.update("form:datoslesion");
+            context.update("form:datosLesiones");
+            context.update("form:ACEPTAR");
         }
 
     }
 
     public void borrandoLesiones() {
 
-        RequestContext context = RequestContext.getCurrentInstance();
-
         if (index >= 0) {
-
             if (tipoLista == 0) {
-                System.out.println("borrarandoLesiones");
+                System.out.println("Entro a borrandoLesiones");
                 if (!modificarLesiones.isEmpty() && modificarLesiones.contains(listLesiones.get(index))) {
                     int modIndex = modificarLesiones.indexOf(listLesiones.get(index));
                     modificarLesiones.remove(modIndex);
@@ -333,7 +472,7 @@ public class ControlLesiones implements Serializable {
                 listLesiones.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrarandoLesiones");
+                System.out.println("borrandoLesiones ");
                 if (!modificarLesiones.isEmpty() && modificarLesiones.contains(filtrarLesiones.get(index))) {
                     int modIndex = modificarLesiones.indexOf(filtrarLesiones.get(index));
                     modificarLesiones.remove(modIndex);
@@ -349,7 +488,10 @@ public class ControlLesiones implements Serializable {
                 filtrarLesiones.remove(index);
 
             }
-            context.update("form:datoslesion");
+            infoRegistro = "Cantidad de registros: " + listLesiones.size();
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
+            context.update("form:datosLesiones");
             index = -1;
             secRegistro = null;
 
@@ -362,16 +504,20 @@ public class ControlLesiones implements Serializable {
     }
 
     public void verificarBorrado() {
-        System.out.println("verificarBorrado");
+        System.out.println("Estoy en verificarBorrado");
+        BigInteger contarDetallesLicensiasLesion;
+        BigInteger contarSoAccidentesDomesticosLesion;
+
         try {
+            System.err.println("Control Secuencia de ControlLesiones ");
             if (tipoLista == 0) {
-                detallesLicensias = administrarLesiones.contarDetallesLicensiasLesion(listLesiones.get(index).getSecuencia());
-                soAccidentesDomesticos = administrarLesiones.contarSoAccidentesDomesticosLesion(listLesiones.get(index).getSecuencia());
+                contarDetallesLicensiasLesion = administrarLesiones.contarDetallesLicensiasLesion(listLesiones.get(index).getSecuencia());
+                contarSoAccidentesDomesticosLesion = administrarLesiones.contarSoAccidentesDomesticosLesion(listLesiones.get(index).getSecuencia());
             } else {
-                detallesLicensias = administrarLesiones.contarDetallesLicensiasLesion(filtrarLesiones.get(index).getSecuencia());
-                soAccidentesDomesticos = administrarLesiones.contarSoAccidentesDomesticosLesion(filtrarLesiones.get(index).getSecuencia());
+                contarDetallesLicensiasLesion = administrarLesiones.contarDetallesLicensiasLesion(filtrarLesiones.get(index).getSecuencia());
+                contarSoAccidentesDomesticosLesion = administrarLesiones.contarSoAccidentesDomesticosLesion(filtrarLesiones.get(index).getSecuencia());
             }
-            if (detallesLicensias.equals(new BigInteger("0")) && soAccidentesDomesticos.equals(new BigInteger("0"))) {
+            if (contarDetallesLicensiasLesion.equals(new BigInteger("0")) && contarSoAccidentesDomesticosLesion.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoLesiones();
             } else {
@@ -381,11 +527,12 @@ public class ControlLesiones implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                detallesLicensias = new BigInteger("-1");
-                soAccidentesDomesticos = new BigInteger("-1");
+                contarDetallesLicensiasLesion = new BigInteger("-1");
+                contarSoAccidentesDomesticosLesion = new BigInteger("-1");
+
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlTiposCertificados verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlLesiones verificarBorrado ERROR " + e);
         }
     }
 
@@ -399,33 +546,35 @@ public class ControlLesiones implements Serializable {
 
     }
 
-    public void guardandoLesiones() {
+    public void guardarLesiones() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando TipoCertificados");
+            System.out.println("Realizando guardarLesiones");
             if (!borrarLesiones.isEmpty()) {
                 administrarLesiones.borrarLesiones(borrarLesiones);
+                //mostrarBorrados
                 registrosBorrados = borrarLesiones.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarLesiones.clear();
             }
-            if (!crearLesiones.isEmpty()) {
-                administrarLesiones.crearLesiones(crearLesiones);
-                crearLesiones.clear();
-            }
             if (!modificarLesiones.isEmpty()) {
                 administrarLesiones.modificarLesiones(modificarLesiones);
                 modificarLesiones.clear();
             }
+            if (!crearLesiones.isEmpty()) {
+                administrarLesiones.crearLesiones(crearLesiones);
+                crearLesiones.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listLesiones = null;
-            context.update("form:datoslesion");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            context.update("form:datosLesiones");
             k = 0;
-            if (guardado == false) {
-                guardado = true;
-            }
+            guardado = true;
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -435,10 +584,10 @@ public class ControlLesiones implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarLesion = listLesiones.get(index);
+                editarLesiones = listLesiones.get(index);
             }
             if (tipoLista == 1) {
-                editarLesion = filtrarLesiones.get(index);
+                editarLesiones = filtrarLesiones.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -458,24 +607,23 @@ public class ControlLesiones implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevaLesion() {
-        System.out.println("agregarNuevaLesion");
+    public void agregarNuevoLesiones() {
+        System.out.println("agregarNuevoLesiones");
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevaLesion.getCodigo() == a) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+        if (nuevoLesiones.getCodigo() == a) {
+            mensajeValidacion = " *Debe Tener Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevaLesion.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoLesiones.getCodigo());
 
             for (int x = 0; x < listLesiones.size(); x++) {
-                if (listLesiones.get(x).getCodigo().equals(nuevaLesion.getCodigo())) {
-                    System.out.println("tengo un duplicado");
+                if (listLesiones.get(x).getCodigo() == nuevoLesiones.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -489,8 +637,8 @@ public class ControlLesiones implements Serializable {
                 contador++;
             }
         }
-        if (nuevaLesion.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una descripcion \n";
+        if (nuevoLesiones.getDescripcion() == null || nuevoLesiones.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -502,14 +650,15 @@ public class ControlLesiones implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosLesiones:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosLesiones:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datoslesion");
+                RequestContext.getCurrentInstance().update("form:datosLesiones");
                 bandera = 0;
                 filtrarLesiones = null;
                 tipoLista = 0;
@@ -518,19 +667,21 @@ public class ControlLesiones implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevaLesion.setSecuencia(l);
+            nuevoLesiones.setSecuencia(l);
 
-            crearLesiones.add(nuevaLesion);
+            crearLesiones.add(nuevoLesiones);
 
-            listLesiones.add(nuevaLesion);
-            nuevaLesion = new Lesiones();
-            context.update("form:datoslesion");
+            listLesiones.add(nuevoLesiones);
+            infoRegistro = "Cantidad de registros: " + listLesiones.size();
+            context.update("form:informacionRegistro");
+            nuevoLesiones = new Lesiones();
+            context.update("form:datosLesiones");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
-            context.execute("nuevoRegistroLesion.hide()");
+            context.execute("nuevoRegistroLesiones.hide()");
             index = -1;
             secRegistro = null;
 
@@ -543,7 +694,7 @@ public class ControlLesiones implements Serializable {
 
     public void limpiarNuevoLesiones() {
         System.out.println("limpiarNuevoLesiones");
-        nuevaLesion = new Lesiones();
+        nuevoLesiones = new Lesiones();
         secRegistro = null;
         index = -1;
 
@@ -551,48 +702,48 @@ public class ControlLesiones implements Serializable {
 
     //------------------------------------------------------------------------------
     public void duplicandoLesiones() {
-        System.out.println("duplicandoTiposCertificados");
+        System.out.println("duplicandoLesiones");
         if (index >= 0) {
-            duplicarLesion = new Lesiones();
+            duplicarLesiones = new Lesiones();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarLesion.setSecuencia(l);
-                duplicarLesion.setCodigo(listLesiones.get(index).getCodigo());
-                duplicarLesion.setDescripcion(listLesiones.get(index).getDescripcion());
+                duplicarLesiones.setSecuencia(l);
+                duplicarLesiones.setCodigo(listLesiones.get(index).getCodigo());
+                duplicarLesiones.setDescripcion(listLesiones.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarLesion.setSecuencia(l);
-                duplicarLesion.setCodigo(filtrarLesiones.get(index).getCodigo());
-                duplicarLesion.setDescripcion(filtrarLesiones.get(index).getDescripcion());
+                duplicarLesiones.setSecuencia(l);
+                duplicarLesiones.setCodigo(filtrarLesiones.get(index).getCodigo());
+                duplicarLesiones.setDescripcion(filtrarLesiones.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarLl");
-            context.execute("duplicarRegistroLesion.show()");
+            context.update("formularioDialogos:duplicarTE");
+            context.execute("duplicarRegistroLesiones.show()");
             index = -1;
             secRegistro = null;
         }
     }
 
     public void confirmarDuplicar() {
-        System.err.println("CONFIRMAR DUPLICAR LESIONES");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarLesion.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarLesion.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarLesiones.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarLesiones.getDescripcion());
 
-        if (duplicarLesion.getCodigo() == a) {
+        if (duplicarLesiones.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listLesiones.size(); x++) {
-                if (listLesiones.get(x).getCodigo().equals(duplicarLesion.getCodigo())) {
+                if (listLesiones.get(x).getCodigo() == duplicarLesiones.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -605,8 +756,8 @@ public class ControlLesiones implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarLesion.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+        if (duplicarLesiones.getDescripcion() == null || duplicarLesiones.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -616,32 +767,35 @@ public class ControlLesiones implements Serializable {
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarLesion.getSecuencia() + "  " + duplicarLesion.getCodigo());
-            if (crearLesiones.contains(duplicarLesion)) {
+            System.out.println("Datos Duplicando: " + duplicarLesiones.getSecuencia() + "  " + duplicarLesiones.getCodigo());
+            if (crearLesiones.contains(duplicarLesiones)) {
                 System.out.println("Ya lo contengo.");
             }
-            listLesiones.add(duplicarLesion);
-            crearLesiones.add(duplicarLesion);
-            context.update("form:datoslesion");
+            listLesiones.add(duplicarLesiones);
+            crearLesiones.add(duplicarLesiones);
+            context.update("form:datosLesiones");
             index = -1;
+            infoRegistro = "Cantidad de registros: " + listLesiones.size();
+            context.update("form:informacionRegistro");
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosLesiones:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datoslesion:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosLesiones:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datoslesion");
+                RequestContext.getCurrentInstance().update("form:datosLesiones");
                 bandera = 0;
                 filtrarLesiones = null;
                 tipoLista = 0;
             }
-            duplicarLesion = new Lesiones();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroLesion.hide()");
+            duplicarLesiones = new Lesiones();
+            RequestContext.getCurrentInstance().execute("duplicarRegistroLesiones.hide()");
 
         } else {
             contador = 0;
@@ -651,11 +805,11 @@ public class ControlLesiones implements Serializable {
     }
 
     public void limpiarDuplicarLesiones() {
-        duplicarLesion = new Lesiones();
+        duplicarLesiones = new Lesiones();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datoslesionExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosLesionesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "LESIONES", false, false, "UTF-8", null, null);
@@ -665,7 +819,7 @@ public class ControlLesiones implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datoslesionExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosLesionesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "LESIONES", false, false, "UTF-8", null, null);
@@ -707,11 +861,19 @@ public class ControlLesiones implements Serializable {
         index = -1;
     }
 
-    //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
+    //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<Lesiones> getListLesiones() {
         if (listLesiones == null) {
             listLesiones = administrarLesiones.consultarLesiones();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listLesiones == null || listLesiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listLesiones.size();
+        }
+        context.update("form:infoRegistro");
         return listLesiones;
     }
 
@@ -727,28 +889,28 @@ public class ControlLesiones implements Serializable {
         this.filtrarLesiones = filtrarLesiones;
     }
 
-    public Lesiones getNuevaLesion() {
-        return nuevaLesion;
+    public Lesiones getNuevoLesiones() {
+        return nuevoLesiones;
     }
 
-    public void setNuevaLesion(Lesiones nuevaLesion) {
-        this.nuevaLesion = nuevaLesion;
+    public void setNuevoLesiones(Lesiones nuevoLesiones) {
+        this.nuevoLesiones = nuevoLesiones;
     }
 
-    public Lesiones getDuplicarLesion() {
-        return duplicarLesion;
+    public Lesiones getDuplicarLesiones() {
+        return duplicarLesiones;
     }
 
-    public void setDuplicarLesion(Lesiones duplicarLesion) {
-        this.duplicarLesion = duplicarLesion;
+    public void setDuplicarLesiones(Lesiones duplicarLesiones) {
+        this.duplicarLesiones = duplicarLesiones;
     }
 
-    public Lesiones getEditarLesion() {
-        return editarLesion;
+    public Lesiones getEditarLesiones() {
+        return editarLesiones;
     }
 
-    public void setEditarLesion(Lesiones editarLesion) {
-        this.editarLesion = editarLesion;
+    public void setEditarLesiones(Lesiones editarLesiones) {
+        this.editarLesiones = editarLesiones;
     }
 
     public BigInteger getSecRegistro() {
@@ -781,6 +943,30 @@ public class ControlLesiones implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public Lesiones getLesionSeleccionada() {
+        return lesionSeleccionada;
+    }
+
+    public void setLesionSeleccionada(Lesiones lesionSeleccionada) {
+        this.lesionSeleccionada = lesionSeleccionada;
+    }
+
+   public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

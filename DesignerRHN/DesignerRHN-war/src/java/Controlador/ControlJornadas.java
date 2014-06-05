@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlJornadas implements Serializable {
     private Jornadas nuevoJornadas;
     private Jornadas duplicarJornadas;
     private Jornadas editarJornadas;
+    private Jornadas jornadaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -61,6 +63,7 @@ public class ControlJornadas implements Serializable {
     private int tamano;
     private Integer backupCodigo;
     private String backupDescripcion;
+    private String infoRegistro;
 
     public ControlJornadas() {
         listJornadas = null;
@@ -72,9 +75,9 @@ public class ControlJornadas implements Serializable {
         nuevoJornadas = new Jornadas();
         duplicarJornadas = new Jornadas();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -86,7 +89,6 @@ public class ControlJornadas implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
 
     public void eventoFiltrar() {
         try {
@@ -101,6 +103,7 @@ public class ControlJornadas implements Serializable {
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
+        System.err.println("permitirIndex  " + permitirIndex);
 
         if (permitirIndex == true) {
             index = indice;
@@ -143,11 +146,12 @@ public class ControlJornadas implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosJornadas:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosJornadas:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosJornadas");
             bandera = 0;
@@ -164,27 +168,36 @@ public class ControlJornadas implements Serializable {
         listJornadas = null;
         guardado = true;
         permitirIndex = true;
+        getListJornadas();
         RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listJornadas == null || listJornadas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listJornadas.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosJornadas");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosJornadas:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosJornadas:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosJornadas");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosJornadas:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosJornadas:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosJornadas");
             bandera = 0;
@@ -214,6 +227,7 @@ public class ControlJornadas implements Serializable {
                     if (listJornadas.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listJornadas.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listJornadas.size(); j++) {
                             if (j != indice) {
@@ -379,7 +393,8 @@ public class ControlJornadas implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
-                } else {if (filtrarJornadas.get(indice).getCodigo() == null) {
+                } else {
+                    if (filtrarJornadas.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarJornadas.get(indice).setCodigo(backupCodigo);
@@ -474,7 +489,9 @@ public class ControlJornadas implements Serializable {
                 filtrarJornadas.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listJornadas.size();
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosJornadas");
             index = -1;
             secRegistro = null;
@@ -553,7 +570,9 @@ public class ControlJornadas implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listJornadas = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosJornadas");
             k = 0;
             guardado = true;
@@ -619,8 +638,8 @@ public class ControlJornadas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoJornadas.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoJornadas.getDescripcion() == null || nuevoJornadas.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -632,12 +651,13 @@ public class ControlJornadas implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosJornadas:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosJornadas:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosJornadas");
                 bandera = 0;
@@ -653,6 +673,8 @@ public class ControlJornadas implements Serializable {
             crearJornadas.add(nuevoJornadas);
 
             listJornadas.add(nuevoJornadas);
+            infoRegistro = "Cantidad de registros: " + listJornadas.size();
+            context.update("form:informacionRegistro");
             nuevoJornadas = new Jornadas();
             context.update("form:datosJornadas");
             if (guardado == true) {
@@ -735,8 +757,8 @@ public class ControlJornadas implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarJornadas.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarJornadas.getDescripcion() == null || duplicarJornadas.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -754,16 +776,19 @@ public class ControlJornadas implements Serializable {
             crearJornadas.add(duplicarJornadas);
             context.update("form:datosJornadas");
             index = -1;
+            infoRegistro = "Cantidad de registros: " + listJornadas.size();
+            context.update("form:informacionRegistro");
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosJornadas:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosJornadas:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosJornadas:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosJornadas");
                 bandera = 0;
@@ -842,6 +867,14 @@ public class ControlJornadas implements Serializable {
         if (listJornadas == null) {
             listJornadas = administrarJornadas.consultarJornadas();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listJornadas == null || listJornadas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listJornadas.size();
+        }
+        context.update("form:informacionRegistro");
         return listJornadas;
     }
 
@@ -919,6 +952,22 @@ public class ControlJornadas implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public Jornadas getJornadaSeleccionada() {
+        return jornadaSeleccionada;
+    }
+
+    public void setJornadaSeleccionada(Jornadas jornadaSeleccionada) {
+        this.jornadaSeleccionada = jornadaSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

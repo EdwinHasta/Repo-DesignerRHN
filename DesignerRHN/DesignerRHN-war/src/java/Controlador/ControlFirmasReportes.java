@@ -289,8 +289,14 @@ public class ControlFirmasReportes implements Serializable {
         listFirmasReportes = null;
         guardado = true;
         permitirIndex = true;
+        getListFirmasReportes();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosFirmasReportes");
+         if (listFirmasReportes == null || listFirmasReportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
+        }
+        context.update("form:informacionRegistro");context.update("form:datosFirmasReportes");
         context.update("form:ACEPTAR");
     }
 

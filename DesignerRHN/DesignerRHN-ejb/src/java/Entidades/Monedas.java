@@ -71,25 +71,27 @@ public class Monedas implements Serializable {
     }
 
     public String getCodigo() {
-        if (codigo == null) {
-            codigo = " ";
-        }
         return codigo;
     }
 
     public void setCodigo(String codigo) {
-        this.codigo = codigo.toUpperCase();
+        if (nombre != null) {
+            this.codigo = codigo.toUpperCase();
+        } else {
+            this.codigo = codigo;
+        }
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     public String getCodigoalternativo() {

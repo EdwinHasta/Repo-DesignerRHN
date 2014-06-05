@@ -207,7 +207,14 @@ public class ControlFormulasContratosEntidades implements Serializable {
         listFormulasContratosEntidades = null;
         guardado = true;
         permitirIndex = true;
+        getListFormulasContratosEntidades();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listFormulasContratosEntidades == null || listFormulasContratosEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosFormulasContratosEntidades");
         context.update("form:ACEPTAR");
     }
@@ -908,7 +915,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         } else {
             infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
         }
-        context.update("form:infoRegistroLOVTipoEntidad");
+        context.update("form:informacionRegistro");
         return listFormulasContratosEntidades;
     }
 

@@ -168,7 +168,14 @@ public class ControlGruposTiposEntidades implements Serializable {
         listGruposTiposEntidades = null;
         guardado = true;
         permitirIndex = true;
+        getListGruposTiposEntidades();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listGruposTiposEntidades == null || listGruposTiposEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosGruposTiposEntidades");
         context.update("form:ACEPTAR");
     }
@@ -867,7 +874,7 @@ public class ControlGruposTiposEntidades implements Serializable {
         } else {
             infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
         }
-        context.update("form:infoLOVCargo");
+        context.update("form:informacionRegistro");
         return listGruposTiposEntidades;
     }
 

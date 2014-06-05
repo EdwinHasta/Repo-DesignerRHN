@@ -17,7 +17,7 @@
                             <legend style="font-size: 14px; color: blue"><strong>Moneda</strong></legend>
 
                             <p:dataTable id="datosMoneda" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
-                                         value="#{controlMonedas.listMonedas}"  scrollHeight="230" 
+                                         value="#{controlMonedas.listMonedas}"  scrollHeight="#{controlMonedas.tamano}" 
                                          filteredValue="#{controlMonedas.filtrarMonedas}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          selectionMode="single"
                                          selection="#{controlMonedas.monedaSeleccionada}"
@@ -94,18 +94,24 @@
                                 <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMonedas.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
+                                <p:separator style="position: relative; top: -9px"/> 
 
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMonedas.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlMonedas.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlMonedas.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlMonedas.revisarDialogoGuardar()}"  disabled="#{controlMonedas.guardado}"   process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="Atras"    />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlMonedas.guardarMonedas()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlMonedas.guardarMonedas()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                             <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlMonedas.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
@@ -204,13 +210,13 @@
 
 
 
-                    <p:dialog id="nuevoRegistroMoneda" header="Nuevo Registro" widgetVar="nuevoRegistroMoneda" closable="false" resizable="false"  draggable="false" modal="true" height="140" width="320" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroMoneda" header="Nuevo Registro" widgetVar="nuevoRegistroMoneda" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Ingresar Nueva Moneda" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaaMoneda" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlMonedas.nuevoMoneda.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlMonedas.nuevoMoneda.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -228,18 +234,18 @@
 
 
 
-                    <p:dialog id="duplicarRegistroMoneda" header="duplicar Registro" widgetVar="duplicarRegistroMoneda" closable="false" resizable="false"  draggable="false" modal="true" height="140" width="320" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroMoneda" header="duplicar Registro" widgetVar="duplicarRegistroMoneda" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Moneda" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarMO" style="border: none;">
-                            <strong><h:outputText value="código "  style="left: 10px; position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlMonedas.duplicarMoneda.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="Código :"  style="left: 10px; position: absolute; top: 60px;"/></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlMonedas.duplicarMoneda.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="Moneda"  style="left: 10px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlMonedas.duplicarMoneda.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*Moneda :"  style="left: 10px; position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlMonedas.duplicarMoneda.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Moneda" />
