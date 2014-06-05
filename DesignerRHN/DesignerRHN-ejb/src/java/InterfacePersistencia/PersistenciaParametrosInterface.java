@@ -35,7 +35,7 @@ public interface PersistenciaParametrosInterface {
      *
      * @return Retorna una lista de Parámetros.
      */
-    public List<Parametros> empleadosParametros(EntityManager em);
+    public List<Parametros> empleadosParametros(EntityManager em, String usuarioBD);
 
     /**
      * Método encargado de eliminar de la base de datos el Parámetro que entra

@@ -2,15 +2,18 @@ package ClasesAyuda;
 
 import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
+import Entidades.Personas;
 import java.io.Serializable;
 
 public class EmpleadoIndividualExportar implements Serializable {
 
     private Empleados empleado;
+    private Personas persona;
     private HVHojasDeVida hojaDeVida;
 
-    public EmpleadoIndividualExportar(Empleados empleado, HVHojasDeVida hojaDeVida) {
+    public EmpleadoIndividualExportar(Empleados empleado, Personas persona, HVHojasDeVida hojaDeVida) {
         this.empleado = empleado;
+        this.persona = persona;
         this.hojaDeVida = hojaDeVida;
     }
 
@@ -29,4 +32,13 @@ public class EmpleadoIndividualExportar implements Serializable {
     public void setHojaDeVida(HVHojasDeVida hojaDeVida) {
         this.hojaDeVida = hojaDeVida;
     }
+
+    public Personas getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Personas persona) {
+        this.persona = persona;
+    }    
+    
 }

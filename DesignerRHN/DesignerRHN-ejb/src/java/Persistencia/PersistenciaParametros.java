@@ -12,20 +12,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Parametros'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Parametros' de la
+ * base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaParametros implements PersistenciaParametrosInterface{
+public class PersistenciaParametros implements PersistenciaParametrosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-    
+
     @Override
     public void crear(EntityManager em, Parametros parametro) {
         em.clear();
@@ -57,7 +60,7 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
             }
         }
     }
-    
+
     @Override
     public List<Parametros> parametrosComprobantes(EntityManager em, String usuarioBD) {
         try {
@@ -71,29 +74,36 @@ public class PersistenciaParametros implements PersistenciaParametrosInterface{
             return null;
         }
     }
-    
+
     @Override
-    public List<Parametros> empleadosParametros(EntityManager em) {
+    public List<Parametros> empleadosParametros(EntityManager em, String usuarioBD) {
         try {
-            Query query = em.createQuery("SELECT p FROM Parametros p WHERE p.empleado IS NOT NULL");
-            List<Parametros> listaParametros = query.getResultList();
+            Query query = em.createQuery("SELECT p FROM Parametros p WHERE p.empleado IS NOT NULL AND p.usuario.alias = :usuarioBD");
+            query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Parametros> listaParametros = query.getResultList();
             return listaParametros;
         } catch (Exception e) {
             System.out.println("Exepcion en PersistenciaParametros.empleadosParametros" + e);
             return null;
         }
     }
-    
+
     @Override
     public void borrarParametros(EntityManager em, BigInteger secParametrosEstructuras) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             Query query = em.createQuery("DELETE FROM Parametros p WHERE p.parametroestructura.secuencia = :secParametrosEstructuras");
             query.setParameter("secParametrosEstructuras", secParametrosEstructuras);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("PersistenciaParametros.borrarParametros. ");
+            System.out.println("PersistenciaParametros.borrarParametros. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 }

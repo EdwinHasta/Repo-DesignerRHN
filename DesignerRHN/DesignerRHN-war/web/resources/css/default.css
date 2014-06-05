@@ -142,7 +142,7 @@ a:link:hover, a:visited:hover  {
 
 .ui-fileupload{
     position: absolute;
-    left: 120px;
+    left: 20px;
     top: 50px;
 }
 .ui-fileupload .start {
@@ -166,8 +166,8 @@ a:link:hover, a:visited:hover  {
 
 .ui-fileupload .fileinput-button {
     position: absolute;
-    left: 15px;
-    top: -11px;
+    left: -5px;
+    top: -5px;
 }
 
 .ui-datatable .ui-sortable-column-icon {

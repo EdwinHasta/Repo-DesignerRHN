@@ -28,7 +28,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
+    
     @Override
     public void editar(EntityManager em, ParametrosEstructuras parametroEstructura) {
         em.clear();
@@ -82,13 +82,20 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
 
     @Override
     public void adicionarEmpleados(EntityManager em, BigInteger secParametroEstructura) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call PARAMETROS_PKG.InsertarParametrosProceso(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secParametroEstructura);
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("PersistenciaParametrosEstructuras.adicionarEmpleados: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -80,8 +80,6 @@ public class AdministrarInicioRed implements AdministrarInicioRedInterface, Seri
             perfilUsuario = persistenciaConexionInicial.perfilUsuario(sessionEMF.getEmf().createEntityManager(), secPerfil);
             sessionEMF.getEmf().close();
             boolean resultado = sessionEMF.crearFactoryUsuario(usuario, contraseña, baseDatos);
-            System.out.println("EntityManagerGlobalInterface AdministrarInicioRed: " + sessionEMF.toString());
-            System.out.println("Factory Global AdministrarInicioRed: " + sessionEMF.getEmf().toString());
             return resultado;
         } catch (Exception e) {
             System.out.println("Error creando EMF AdministrarLogin.conexionUsuario: " + e);

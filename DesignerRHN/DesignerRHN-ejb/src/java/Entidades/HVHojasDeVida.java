@@ -34,6 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "HVHojasDeVida.findAll", query = "SELECT h FROM HVHojasDeVida h")})
 public class HVHojasDeVida implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hojadevida")
     private Collection<HvReferencias> hvReferenciasCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hojadevida")
@@ -132,6 +133,9 @@ public class HVHojasDeVida implements Serializable {
     }
 
     public Cargos getCargo() {
+        if (cargo == null) {
+            cargo = new Cargos();
+        }
         return cargo;
     }
 
@@ -190,5 +194,5 @@ public class HVHojasDeVida implements Serializable {
     public void setHvEntrevistasCollection(Collection<HvEntrevistas> hvEntrevistasCollection) {
         this.hvEntrevistasCollection = hvEntrevistasCollection;
     }
-    
+
 }
