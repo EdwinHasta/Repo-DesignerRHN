@@ -24,11 +24,8 @@ import javax.persistence.criteria.CriteriaQuery;
 @Stateless
 public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterface {
 
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+   
+    
     @Override
     public void crear(EntityManager em, MetodosPagos metodosPagos) {
         em.clear();

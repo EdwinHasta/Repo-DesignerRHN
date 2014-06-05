@@ -280,7 +280,14 @@ public class ControlFormulasAseguradas implements Serializable {
         permitirIndex = true;
         mostrarTodos = true;
         buscarFormulas = false;
+        getListFormulasAseguradas();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listFormulasAseguradas == null || listFormulasAseguradas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosFormulasAseguradas");
         context.update("form:ACEPTAR");
         context.update("form:MOSTRARTODOS");
@@ -1694,7 +1701,7 @@ public class ControlFormulasAseguradas implements Serializable {
             } else {
                 infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
             }
-            context.update("form:infoRegistro");
+            context.update("form:informacionRegistro");
         }
 
         return listFormulasAseguradas;

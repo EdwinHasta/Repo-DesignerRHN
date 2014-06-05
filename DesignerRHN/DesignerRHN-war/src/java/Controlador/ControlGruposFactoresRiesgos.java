@@ -168,7 +168,14 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         listGruposFactoresRiesgos = null;
         guardado = true;
         permitirIndex = true;
+        getListGruposFactoresRiesgos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listGruposFactoresRiesgos == null || listGruposFactoresRiesgos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosGruposFactoresRiesgos");
         context.update("form:ACEPTAR");
     }
@@ -869,7 +876,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         } else {
             infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
         }
-        context.update("form:infoLOVCargo");
+        context.update("form:informacionRegistro");
         return listGruposFactoresRiesgos;
     }
 

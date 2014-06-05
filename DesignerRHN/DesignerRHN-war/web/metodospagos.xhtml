@@ -23,22 +23,22 @@
                                          selectionMode="single">
                                 <p:ajax event="filter" listener="#{controlMetodoPago.eventoFiltrar()}"/>
 
-                                <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlMetodoPago.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlMetodoPago.modificarMetodosPagos(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column headerText="Descripción" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="240" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripción" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="300" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="  border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlMetodoPago.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlMetodoPago.modificarMetodosPagos(indice, 'N', info.descripcion)}"  update="descripcion"/>
                                             </p:inputText>
@@ -46,19 +46,14 @@
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column headerText="Pago" sortBy="#{info.pago}" filterBy="#{info.pago}" filterMatchMode="contains" id="pago" width="125" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText id="outPago" value="#{info.pago}"/></f:facet>  
-                                        <f:facet name="input">
-                                            <p:selectOneMenu id="editarPago" value="#{info.pago}" style=" width: 99%; font-weight: bold;" panelStyle="width: 170px" >  
-                                                <f:selectItem itemLabel=" " itemValue="" />  
-                                                <f:selectItem itemLabel="CONSIGNACION" itemValue="CONSIGNACION" />
-                                                <f:selectItem itemLabel="TRANSFERENCIA" itemValue="TRANSFERENCIA" />  
-                                                <f:selectItem itemLabel="CHEQUE" itemValue="CHEQUE" />
-                                                <p:ajax listener="#{controlMetodoPago.modificarMetodosPagos(indice, 'N', info.pago)}"  update="editarPago" />
-                                            </p:selectOneMenu>
-                                        </f:facet>  
-                                    </p:cellEditor>
+                                <p:column headerText="Pago" sortBy="#{info.pago}" filterBy="#{info.pago}" style="padding: 0px" filterMatchMode="contains" id="pago" width="100" filterStyle="display: none; visibility: hidden;" >                                                              
+                                    <p:selectOneMenu id="editarPago" value="#{info.pago}"  panelStyle="width: 120px" >  
+                                        <f:selectItem itemLabel=" " itemValue="" />  
+                                        <f:selectItem itemLabel="CONSIGNACION" itemValue="CONSIGNACION" />
+                                        <f:selectItem itemLabel="TRANSFERENCIA" itemValue="TRANSFERENCIA" />  
+                                        <f:selectItem itemLabel="CHEQUE" itemValue="CHEQUE" />
+                                        <p:ajax listener="#{controlMetodoPago.modificarMetodosPagos(indice, 'N', info.pago)}"  update="editarPago" />
+                                    </p:selectOneMenu>
                                 </p:column>  
                             </p:dataTable>
                         </fieldset>
@@ -104,13 +99,19 @@
                                 <p:tooltip style="" for="duplicar" value="Duplicar Metodo Pago" />
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMetodoPago.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
+                                <p:separator style="position: relative; top: -9px"/> 
 
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMetodoPago.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
 
+                        <h:outputText id="informacionRegistro" value="#{controlMetodoPago.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
 
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlMetodoPago.cancelarModificacion()}"  value="Refrescar" process="@this" />
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlMetodoPago.guardado}"  update="datosMetodoPago"  process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -219,7 +220,7 @@
                         <p:inputTextarea value="#{controlMetodoPago.editarMetodoPago.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="nuevoRegistroMetodosPagos" header="Nuevo Registro" widgetVar="nuevoRegistroMetodosPagos" closable="false" resizable="false"  draggable="false" modal="true" height="170" width="320" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroMetodosPagos" header="Nuevo Registro" widgetVar="nuevoRegistroMetodosPagos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value=" Nuevo  Metodo Pago " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoMetodosPagos" style="border: none;">
@@ -250,7 +251,7 @@
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="duplicarRegistroMetodosPagos" header="duplicar Registro" widgetVar="duplicarRegistroMetodosPagos" closable="false" resizable="false"  draggable="false" modal="true" height="170" width="320" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroMetodosPagos" header="duplicar Registro" widgetVar="duplicarRegistroMetodosPagos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Metodo Pago" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarMetodosPagos" style="border: none;">

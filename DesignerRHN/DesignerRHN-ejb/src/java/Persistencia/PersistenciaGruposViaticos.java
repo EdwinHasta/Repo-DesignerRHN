@@ -22,11 +22,6 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInterface {
 
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos
-     */
-    /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-     private EntityManager em;*/
     @Override
     public void crear(EntityManager em, GruposViaticos gruposViaticos) {
         em.clear();
@@ -57,7 +52,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
             }
             System.out.println("Error PersistenciaGruposViaticos.editar: " + e);
         }
-        
+
     }
 
     @Override
@@ -78,7 +73,7 @@ public class PersistenciaGruposViaticos implements PersistenciaGruposViaticosInt
                 System.out.println("Error PersistenciaGruposViaticos.borrar: " + e);
             }
         }
-        
+
     }
 
     @Override

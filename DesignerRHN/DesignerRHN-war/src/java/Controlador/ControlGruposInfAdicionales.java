@@ -174,7 +174,15 @@ public class ControlGruposInfAdicionales implements Serializable {
         listGruposInfAdicionales = null;
         guardado = true;
         permitirIndex = true;
+        getListGruposInfAdicionales();
         RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listGruposInfAdicionales == null || listGruposInfAdicionales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposInfAdicionales.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosGruposInfAdicionales");
         context.update("form:ACEPTAR");
     }
@@ -917,7 +925,7 @@ public class ControlGruposInfAdicionales implements Serializable {
         } else {
             infoRegistro = "Cantidad de registros: " + listGruposInfAdicionales.size();
         }
-        context.update("form:infoLOVCargo");
+        context.update("form:informacionRegistro");
         return listGruposInfAdicionales;
     }
 

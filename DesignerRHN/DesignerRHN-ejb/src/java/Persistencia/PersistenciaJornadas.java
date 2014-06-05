@@ -103,7 +103,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
     public BigInteger contarTarifasEscalafonesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT FROM(*)tarifasescalafones WHERE jornada =?";
+            String sqlQuery = "SELECT COUNT (*) FROM tarifasescalafones WHERE jornada =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
@@ -118,7 +118,7 @@ public class PersistenciaJornadas implements PersistenciaJornadasInterface {
     public BigInteger contarJornadasLaboralesJornada(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT FROM(*)jornadaslaborales WHERE jornada =?";
+            String sqlQuery = "SELECT COUNT (*) FROM jornadaslaborales WHERE jornada =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
             retorno = new BigInteger(query.getSingleResult().toString());
