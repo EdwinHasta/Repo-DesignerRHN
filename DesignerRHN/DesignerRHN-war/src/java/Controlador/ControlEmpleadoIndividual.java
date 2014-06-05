@@ -16,6 +16,7 @@ import Entidades.HvExperienciasLaborales;
 import Entidades.HvReferencias;
 import Entidades.IdiomasPersonas;
 import Entidades.InformacionesAdicionales;
+import Entidades.Personas;
 import Entidades.Telefonos;
 import Entidades.TiposDocumentos;
 import Entidades.VigenciasAficiones;
@@ -28,8 +29,8 @@ import Entidades.VigenciasIndicadores;
 import Entidades.VigenciasProyectos;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarEmpleadoIndividualInterface;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -47,7 +48,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.export.Exporter;
@@ -66,6 +66,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     AdministrarRastrosInterface administrarRastros;
 
     private Empleados empleado;
+    private Personas persona;
     private BigInteger secuencia;
     private HVHojasDeVida hojaDeVidaPersona;
     private Telefonos telefono;
@@ -136,15 +137,18 @@ public class ControlEmpleadoIndividual implements Serializable {
     private String vehiculoPropio;
     private StreamedContent fotoEmpleado;
     private FileInputStream fis;
+    private boolean existenHV;
 
     public ControlEmpleadoIndividual() {
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         aceptar = true;
         empleado = null;
+        persona = null;
         modificacionPersona = false;
         modificacionEmpleado = false;
         modificacionHV = false;
         guardado = true;
+        existenHV = true;
     }
 
     @PostConstruct
@@ -162,11 +166,10 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void recibirEmpleado(BigInteger sec) {
         secuencia = sec;
         empleado = null;
+        persona = null;
         getEmpleado();
         datosEmpleado();
         getFotoEmpleado();
-        empleadoIndividualExportar = new ArrayList<EmpleadoIndividualExportar>();
-        empleadoIndividualExportar.add(new EmpleadoIndividualExportar(empleado, hojaDeVidaPersona));
         listaTiposDocumentos = null;
         listaCiudades = null;
         listaCargos = null;
@@ -174,10 +177,13 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     public void datosEmpleado() {
-        BigInteger secPersona = empleado.getPersona().getSecuencia();
+        BigInteger secPersona = null;
+        if (persona != null) {
+            secPersona = persona.getSecuencia();
+        }
         BigInteger secEmpleado = empleado.getSecuencia();
         hojaDeVidaPersona = administrarEmpleadoIndividual.hvHojaDeVidaPersona(secPersona);
-        if (hojaDeVidaPersona != null) {
+        if (hojaDeVidaPersona != null && hojaDeVidaPersona.getSecuencia() != null) {
             BigInteger secHv = hojaDeVidaPersona.getSecuencia();
 
             hvReferenciasPersonales = administrarEmpleadoIndividual.referenciasPersonalesPersona(secHv);
@@ -205,11 +211,14 @@ public class ControlEmpleadoIndividual implements Serializable {
             } else {
                 entrevistasP = "SIN REGISTRAR";
             }
+            existenHV = false;
         } else {
+            hojaDeVidaPersona = new HVHojasDeVida();
             referenciasPersonalesP = "SIN REGISTRAR";
             referenciasFamiliaresP = "SIN REGISTRAR";
             experienciaLaboralP = "SIN REGISTRAR";
-            experienciaLaboralP = "SIN REGISTRAR";
+            entrevistasP = "SIN REGISTRAR";
+            existenHV = true;
         }
         telefono = administrarEmpleadoIndividual.primerTelefonoPersona(secPersona);
         if (telefono != null) {
@@ -308,7 +317,7 @@ public class ControlEmpleadoIndividual implements Serializable {
             pruebasAplicadasP = "SIN REGISTRAR";
         }
         //VEHICULO PROPIO
-        if (empleado.getPersona().getPlacavehiculo() != null) {
+        if (persona.getPlacavehiculo() != null) {
             estadoVP = false;
             vehiculoPropio = "S";
         } else {
@@ -323,8 +332,8 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     //METODOS LOVS
     public void seleccionarTipoDocumento() {
-        if (seleccionTipoDocumento != null && empleado != null) {
-            empleado.getPersona().setTipodocumento(seleccionTipoDocumento);
+        if (seleccionTipoDocumento != null && persona != null) {
+            persona.setTipodocumento(seleccionTipoDocumento);
             seleccionTipoDocumento = null;
             filtradoListaTiposDocumentos = null;
             aceptar = true;
@@ -364,13 +373,13 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     public void seleccionarCiudad() {
-        if (seleccionCiudad != null && empleado != null) {
+        if (seleccionCiudad != null && persona != null) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (modificacionCiudad == 0) {
-                empleado.getPersona().setCiudaddocumento(seleccionCiudad);
+                persona.setCiudaddocumento(seleccionCiudad);
                 context.update("form:lugarExpedicion");
             } else if (modificacionCiudad == 1) {
-                empleado.getPersona().setCiudadnacimiento(seleccionCiudad);
+                persona.setCiudadnacimiento(seleccionCiudad);
                 context.update("form:lugarNacimiento");
             }
             if (modificacionPersona == false) {
@@ -400,7 +409,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     public void seleccionarCargo() {
-        if (seleccionCargo != null && hojaDeVidaPersona != null) {
+        if (seleccionCargo != null && hojaDeVidaPersona != null && hojaDeVidaPersona.getSecuencia() != null) {
             hojaDeVidaPersona.setCargo(seleccionCargo);
             seleccionCargo = null;
             filtradoListaCargos = null;
@@ -431,17 +440,17 @@ public class ControlEmpleadoIndividual implements Serializable {
     //AUTOCOMPLETAR
     public void valoresBackupAutocompletar(String Campo) {
         if (Campo.equals("TIPODOCUMENTO")) {
-            tipoDocumento = empleado.getPersona().getTipodocumento().getNombrecorto();
+            tipoDocumento = persona.getTipodocumento().getNombrecorto();
             dialogo = 0;
             nombreTabla = "Personas";
         } else if (Campo.equals("CIUDADDOCUMENTO")) {
             modificacionCiudad = 0;
-            ciudad = empleado.getPersona().getCiudaddocumento().getNombre();
+            ciudad = persona.getCiudaddocumento().getNombre();
             dialogo = 1;
             nombreTabla = "Personas";
         } else if (Campo.equals("CIUDADNACIMIENTO")) {
             modificacionCiudad = 1;
-            ciudad = empleado.getPersona().getCiudadnacimiento().getNombre();
+            ciudad = persona.getCiudadnacimiento().getNombre();
             dialogo = 1;
             nombreTabla = "Personas";
         } else if (Campo.equals("CARGOPOSTULADO")) {
@@ -456,7 +465,7 @@ public class ControlEmpleadoIndividual implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TIPODOCUMENTO")) {
-            empleado.getPersona().getTipodocumento().setNombrecorto(tipoDocumento);
+            persona.getTipodocumento().setNombrecorto(tipoDocumento);
             for (int i = 0; i < listaTiposDocumentos.size(); i++) {
                 if (listaTiposDocumentos.get(i).getNombrecorto().startsWith(valorConfirmar.toUpperCase())) {
                     indiceUnicoElemento = i;
@@ -464,7 +473,7 @@ public class ControlEmpleadoIndividual implements Serializable {
                 }
             }
             if (coincidencias == 1) {
-                empleado.getPersona().setTipodocumento(listaTiposDocumentos.get(indiceUnicoElemento));
+                persona.setTipodocumento(listaTiposDocumentos.get(indiceUnicoElemento));
                 context.update("form:tipo");
                 listaTiposDocumentos = null;
                 getListaTiposDocumentos();
@@ -482,9 +491,9 @@ public class ControlEmpleadoIndividual implements Serializable {
             }
         } else if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
             if (modificacionCiudad == 0) {
-                empleado.getPersona().getCiudaddocumento().setNombre(ciudad);
+                persona.getCiudaddocumento().setNombre(ciudad);
             } else if (modificacionCiudad == 1) {
-                empleado.getPersona().getCiudadnacimiento().setNombre(ciudad);
+                persona.getCiudadnacimiento().setNombre(ciudad);
             }
             for (int i = 0; i < listaCiudades.size(); i++) {
                 if (listaCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -494,10 +503,10 @@ public class ControlEmpleadoIndividual implements Serializable {
             }
             if (coincidencias == 1) {
                 if (modificacionCiudad == 0) {
-                    empleado.getPersona().setCiudaddocumento(listaCiudades.get(indiceUnicoElemento));
+                    persona.setCiudaddocumento(listaCiudades.get(indiceUnicoElemento));
                     context.update("form:lugarExpedicion");
                 } else if (modificacionCiudad == 1) {
-                    empleado.getPersona().setCiudadnacimiento(listaCiudades.get(indiceUnicoElemento));
+                    persona.setCiudadnacimiento(listaCiudades.get(indiceUnicoElemento));
                     context.update("form:lugarNacimiento");
                 }
                 listaCiudades = null;
@@ -568,6 +577,7 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     public void refrescar() {
+        persona = null;
         empleado = null;
         getEmpleado();
         datosEmpleado();
@@ -604,13 +614,13 @@ public class ControlEmpleadoIndividual implements Serializable {
         int resultado = -1;
         if (nombreTabla != null) {
             if (nombreTabla.equals("Personas")) {
-                secRastro = empleado.getPersona().getSecuencia();
+                secRastro = persona.getSecuencia();
                 resultado = administrarRastros.obtenerTabla(secRastro, nombreTabla.toUpperCase());
             } else if (nombreTabla.equals("Empleados")) {
                 secRastro = empleado.getSecuencia();
                 resultado = administrarRastros.obtenerTabla(secRastro, nombreTabla.toUpperCase());
             } else if (nombreTabla.equals("HVHojasDeVida")) {
-                secRastro = empleado.getSecuencia();
+                secRastro = hojaDeVidaPersona.getSecuencia();
                 resultado = administrarRastros.obtenerTabla(secRastro, nombreTabla.toUpperCase());
             }
             if (resultado == 1) {
@@ -644,6 +654,10 @@ public class ControlEmpleadoIndividual implements Serializable {
             if (modificacionEmpleado == false) {
                 modificacionEmpleado = true;
             }
+        } else if (tipoCampo.equals("HV")) {
+            if (modificacionHV == false) {
+                modificacionHV = true;
+            }
         }
         if (guardado == true) {
             guardado = false;
@@ -656,19 +670,29 @@ public class ControlEmpleadoIndividual implements Serializable {
     public void guardarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado == false) {
+            if (modificacionPersona == true) {
+                administrarEmpleadoIndividual.modificarPersona(persona);
+                modificacionPersona = false;
+            }
             if (modificacionEmpleado == true) {
                 administrarEmpleadoIndividual.modificarEmpleado(empleado);
                 modificacionEmpleado = false;
             }
-            if (modificacionPersona == true) {
-                administrarEmpleadoIndividual.modificarPersona(empleado.getPersona());
-                modificacionPersona = false;
-            }
             if (modificacionHV == true) {
-                administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
+                if (hojaDeVidaPersona.getCargo().getSecuencia() == null) {
+                    hojaDeVidaPersona.setCargo(null);
+                }
+                if (hojaDeVidaPersona.getSecuencia() == null) {
+                    hojaDeVidaPersona.setSecuencia(BigInteger.valueOf(0));
+                    hojaDeVidaPersona.setPersona(persona);
+                    administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
+                } else {
+                    administrarEmpleadoIndividual.modificarHojaDeVida(hojaDeVidaPersona);
+                }
                 modificacionHV = false;
             }
             empleado = null;
+            persona = null;
             getEmpleado();
             datosEmpleado();
             guardado = true;
@@ -683,28 +707,36 @@ public class ControlEmpleadoIndividual implements Serializable {
     //SUBIR FOTO EMPLEADO
     public void subirFotoEmpleado(FileUploadEvent event) throws IOException {
         RequestContext context = RequestContext.getCurrentInstance();
-        //context.execute("espera.show()");
-        Generales general = administrarEmpleadoIndividual.obtenerRutaFoto();
-        if (general != null && empleado != null) {
-            destino = general.getPathfoto();
-            identificacionEmpleado = empleado.getPersona().getNumerodocumento();
-            //File fichero = new File(destino + identificacionEmpleado + ".jpg");
-            /*if (fichero.delete()) {
-             System.out.println("El fichero ha sido borrado satisfactoriamente");
-             } else {
-             System.out.println("El fichero no puede ser borrado");
-             }*/
-            transformarArchivo(event.getFile().getSize(), event.getFile().getInputstream());
-//          nombreArchivoFoto = event.getFile().getFileName();
-            context.execute("subirFoto.hide()");
-            context.update("form:btnFoto");
-            //context.execute("Exito.show()");
-            FacesMessage msg = new FacesMessage("Información", "Archivo cargado con éxito.");
-            FacesContext fc = FacesContext.getCurrentInstance();
-            fc.addMessage(null, msg);
-            context.update("form:growl");
+        String extencion = event.getFile().getFileName().split("[.]")[1];
+        Long tamanho = event.getFile().getSize();
+        if (extencion.equals("jpg") || extencion.equals("JPG")) {
+            if (tamanho <= 307200) {
+                Generales general = administrarEmpleadoIndividual.obtenerRutaFoto();
+                if (general != null && persona != null) {
+                    destino = general.getPathfoto();
+                    identificacionEmpleado = persona.getNumerodocumento();
+                    transformarArchivo(tamanho, event.getFile().getInputstream());
+                    context.execute("subirFoto.hide()");
+                    context.update("form:btnFoto");
+                    FacesMessage msg = new FacesMessage("Información", "Archivo cargado con éxito.");
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    fc.addMessage(null, msg);
+                    context.update("form:growl");
+
+                } else {
+                    FacesMessage msg = new FacesMessage("Información", "Ruta generales ó empleado, nulo.");
+                    FacesContext fc = FacesContext.getCurrentInstance();
+                    fc.addMessage(null, msg);
+                    context.update("form:growl");
+                }
+            } else {
+                FacesMessage msg = new FacesMessage("Información", "El tamaño maximo permitido es de 300 KB.");
+                FacesContext fc = FacesContext.getCurrentInstance();
+                fc.addMessage(null, msg);
+                context.update("form:growl");
+            }
         } else {
-            FacesMessage msg = new FacesMessage("Información", "Ruta generales ó empleado, nulo.");
+            FacesMessage msg = new FacesMessage("Información", "Solo se admiten imagenes con formato (.JPG).");
             FacesContext fc = FacesContext.getCurrentInstance();
             fc.addMessage(null, msg);
             context.update("form:growl");
@@ -731,7 +763,7 @@ public class ControlEmpleadoIndividual implements Serializable {
             in.close();
             out.flush();
             out.close();
-            administrarEmpleadoIndividual.actualizarFotoPersona(empleado.getPersona());
+            administrarEmpleadoIndividual.actualizarFotoPersona(persona);
         } catch (IOException e) {
             System.out.println("Error: ControlEmpleadoIndividual.transformarArchivo: " + e);
         }
@@ -745,7 +777,7 @@ public class ControlEmpleadoIndividual implements Serializable {
             context.update("form:placa");
         } else {
             estadoVP = true;
-            empleado.getPersona().setPlacavehiculo(null);
+            persona.setPlacavehiculo(null);
             modificarCampo("P");
             context.update("form:placa");
         }
@@ -755,6 +787,9 @@ public class ControlEmpleadoIndividual implements Serializable {
     public Empleados getEmpleado() {
         if (empleado == null) {
             empleado = administrarEmpleadoIndividual.buscarEmpleado(secuencia);
+            if(empleado != null){
+                persona = empleado.getPersona();
+            }
         }
         return empleado;
     }
@@ -1022,6 +1057,8 @@ public class ControlEmpleadoIndividual implements Serializable {
     }
 
     public List<EmpleadoIndividualExportar> getEmpleadoIndividualExportar() {
+        empleadoIndividualExportar = new ArrayList<EmpleadoIndividualExportar>();
+        empleadoIndividualExportar.add(new EmpleadoIndividualExportar(empleado, persona, hojaDeVidaPersona));
         return empleadoIndividualExportar;
     }
 
@@ -1063,7 +1100,20 @@ public class ControlEmpleadoIndividual implements Serializable {
 
     public StreamedContent getFotoEmpleado() {
         obtenerFotoEmpleado();
+        refrescarDatos();
         return fotoEmpleado;
+    }
+
+    public boolean isExistenHV() {
+        return existenHV;
+    }
+
+    public Personas getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Personas persona) {
+        this.persona = persona;
     }
 
     public void obtenerFotoEmpleado() {
@@ -1077,6 +1127,14 @@ public class ControlEmpleadoIndividual implements Serializable {
                 fotoEmpleado = null;
                 System.out.println("Foto del empleado no encontrada. \n" + e);
             }
+        }
+    }
+
+    public void refrescarDatos() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (context != null) {
+            datosEmpleado();
+            context.update("form:panelInferior");
         }
     }
 }

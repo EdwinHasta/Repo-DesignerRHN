@@ -87,7 +87,8 @@ public class AdministrarParametros implements AdministrarParametrosInterface {
 
     @Override
     public List<Parametros> empleadosParametros() {
-        return persistenciaParametros.empleadosParametros(em);
+        String usuarioBD = persistenciaActualUsuario.actualAliasBD(em);
+        return persistenciaParametros.empleadosParametros(em, usuarioBD);
     }
 
     @Override
