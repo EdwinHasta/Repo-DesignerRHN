@@ -64,6 +64,7 @@ public class ControlMotivosMvrs implements Serializable {
     private Integer backUpCodigo;
     private String backUpDescripcion;
     private int tamano;
+    private String infoRegistro;
 
     public ControlMotivosMvrs() {
         listMotivosMvrs = null;
@@ -77,7 +78,6 @@ public class ControlMotivosMvrs implements Serializable {
         tamano = 270;
     }
 
-
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -89,7 +89,7 @@ public class ControlMotivosMvrs implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlNormasLaborales.eventoFiltrar \n");
@@ -177,6 +177,12 @@ public class ControlMotivosMvrs implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosMvrs == null || listMotivosMvrs.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosMvrs.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosMotivoMvr");
         context.update("form:ACEPTAR");
     }
@@ -459,6 +465,8 @@ public class ControlMotivosMvrs implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + listMotivosMvrs.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosMotivoMvr");
             index = -1;
             secRegistro = null;
@@ -621,7 +629,8 @@ public class ControlMotivosMvrs implements Serializable {
 
             listMotivosMvrs.add(nuevoMotivoMvr);
             nuevoMotivoMvr = new Motivosmvrs();
-
+            infoRegistro = "Cantidad de registros: " + listMotivosMvrs.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosMotivoMvr");
             if (guardado == true) {
                 guardado = false;
@@ -703,7 +712,7 @@ public class ControlMotivosMvrs implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMotivosMvrs.getNombre() == (null) || duplicarMotivosMvrs.getNombre().equals(" ") || duplicarMotivosMvrs.getNombre().isEmpty()) {
+        if (duplicarMotivosMvrs.getNombre() == (null) || duplicarMotivosMvrs.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -740,6 +749,8 @@ public class ControlMotivosMvrs implements Serializable {
                 tipoLista = 0;
             }
             duplicarMotivosMvrs = new Motivosmvrs();
+            infoRegistro = "Cantidad de registros: " + listMotivosMvrs.size();
+            context.update("form:informacionRegistro");
             RequestContext.getCurrentInstance().execute("duplicarRegistroMotivosMvr.hide()");
 
         } else {
@@ -811,6 +822,13 @@ public class ControlMotivosMvrs implements Serializable {
         if (listMotivosMvrs == null) {
             listMotivosMvrs = administrarMotivosMvrs.consultarMotivosMvrs();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosMvrs == null || listMotivosMvrs.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosMvrs.size();
+        }
+        context.update("form:informacionRegistro");
         return listMotivosMvrs;
     }
 
@@ -896,6 +914,14 @@ public class ControlMotivosMvrs implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

@@ -88,6 +88,8 @@ public class MotivosCambiosCargos implements Serializable {
     public void setNombre(String nombre) {
         if (nombre != null) {
             this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
         }
     }
 
