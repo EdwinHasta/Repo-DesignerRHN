@@ -86,14 +86,16 @@ public class TiposCentrosCostos implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre == null) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = nombre.toUpperCase();
+        }
+
     }
 
     public GruposTiposCC getGrupotipocc() {

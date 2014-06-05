@@ -112,10 +112,19 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlActividades.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlActividades.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlActividades.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlActividades.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
+
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlActividades.revisarDialogoGuardar()}" disabled="#{controlActividades.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"    />
 
@@ -227,18 +236,18 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="#{msg['codigoN']} "  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlActividades.nuevoActividades.codigo}" style=" width: 135px; position: absolute; left: 157px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlActividades.nuevoActividades.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigo']}" />
 
                             <strong><h:outputText value="#{msg['descripcionN']} "  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlActividades.nuevoActividades.descripcion}" style=" width: 135px; position: absolute; left: 157px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlActividades.nuevoActividades.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="#{msg['descripcion']}"  />
                             <strong><h:outputText value="#{msg['claseN']}" style="left: 15px; position: absolute; top: 120px" /></strong>
-                            <p:selectOneMenu id="nuevaClase" value="#{controlActividades.nuevoActividades.claseactividad}" style=" width: 143px; position: absolute;left: 157px; top: 115px">  
+                            <p:selectOneMenu id="nuevaClase" value="#{controlActividades.nuevoActividades.claseactividad}" style=" width: 150px; position: absolute;left: 150px; top: 115px">  
                                 <f:selectItem  itemLabel="" itemValue=" "/>  
                                 <f:selectItem itemLabel="BIENESTAR" itemValue="BIENESTAR" />                
                                 <f:selectItem itemLabel="EPIDEMIOLOGICA" itemValue="EPIDEMIOLOGICA"/>  
@@ -260,19 +269,19 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['duplicarDD']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
-                            <strong><h:outputText value="#{msg['codigoN']} "  style="left: 15px; position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlActividades.duplicarActividades.codigo}" style=" width: 135px; position: absolute; left: 157px; top: 55px;">
+                            <strong><h:outputText value="#{msg['codigoN']} "  style="left: 15px; position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlActividades.duplicarActividades.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigo']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlActividades.duplicarActividades.descripcion}"  style=" width: 135px; position: absolute; left: 157px; top: 85px;" >
+                            <strong><h:outputText value="#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlActividades.duplicarActividades.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="#{msg['descipcion']}" />
                             <strong><h:outputText value="#{msg['claseN']}" style="left: 15px; position: absolute; top: 120px" /></strong>
-                            <p:selectOneMenu id="duplicarClase" value="#{controlActividades.duplicarActividades.claseactividad}" style=" width: 143px; position: absolute;left: 157px; top: 115px">  
+                            <p:selectOneMenu id="duplicarClase" value="#{controlActividades.duplicarActividades.claseactividad}" style=" width: 150px; position: absolute;left: 150px; top: 115px">  
                                 <f:selectItem  itemLabel="" itemValue=" "/>  
                                 <f:selectItem itemLabel="BIENESTAR" itemValue="BIENESTAR" />                
                                 <f:selectItem itemLabel="EPIDEMIOLOGICA" itemValue="EPIDEMIOLOGICA"/>  

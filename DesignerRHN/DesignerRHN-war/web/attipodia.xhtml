@@ -113,11 +113,18 @@
                                 <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDias.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDias.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlTiposDias.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlTiposDias.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;"  icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  disabled="#{controlTiposDias.guardado}" actionListener="#{controlTiposDias.revisarDialogoGuardar()}"     process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"    />
 
@@ -222,25 +229,25 @@
                     </p:dialog>
 
 
-                    <p:dialog id="nuevoRegistroTiposReemplazos" header="#{msg['nuevoregistro']}" widgetVar="nuevoRegistroTiposReemplazos" closable="false" resizable="false"  draggable="false" modal="true" height="190" width="310" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroTiposReemplazos" header="#{msg['nuevoregistro']}" widgetVar="nuevoRegistroTiposReemplazos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="330" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoReemplazo" style="border: none;">
 
                             <strong><h:outputText value="*#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlTiposDias.nuevoTipoDia.codigo}" style="left: 15px; width: 135px; position: absolute; left: 160px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlTiposDias.nuevoTipoDia.codigo}" style="left: 15px; width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoWM']}" />
 
                             <strong><h:outputText value="*#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlTiposDias.nuevoTipoDia.descripcion}" style=" width: 135px; position: absolute; left: 160px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlTiposDias.nuevoTipoDia.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="#{msg['descripcionWM']}" />
 
                             <strong><h:outputText value="#{msg['tipoN']}"  style="left: 15px; position: absolute; top: 120px;" /></strong>
-                            <p:selectOneMenu effect="fold"  id="nuevoTipo" value="#{controlTiposDias.nuevoTipoDia.tipo}" style=" width: 143px; position: absolute; left: 160px; top: 115px;text-transform: uppercase">  
+                            <p:selectOneMenu effect="fold"  id="nuevoTipo" value="#{controlTiposDias.nuevoTipoDia.tipo}" style=" width: 150px; position: absolute; left: 150px; top: 115px;text-transform: uppercase">  
                                 <f:selectItem itemLabel="#{msg['ord']}" itemValue="ORD" />                
                                 <f:selectItem itemLabel="#{msg['fes']}" itemValue="FES"/>  
                                 <f:selectItem itemLabel="#{msg['dom']}" itemValue="DOM" /> 
@@ -257,33 +264,33 @@
 
 
 
-                    <p:dialog id="duplicarRegistroTiposReemplazos" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroTiposReemplazos" closable="false" resizable="false"  draggable="false" modal="true" height="190" width="310" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroTiposReemplazos" header="#{msg['duplicarregistro']}" widgetVar="duplicarRegistroTiposReemplazos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="330" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTTR" style="border: none;">
                             <strong><h:outputText value="#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlTiposDias.duplicarTipoDia.codigo}" style=" width: 135px; position: absolute; left: 160px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" value="#{controlTiposDias.duplicarTipoDia.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoWM']}" />
 
                             <strong><h:outputText value="#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposDias.duplicarTipoDia.descripcion}"  style=" width: 135px; position: absolute; left: 160px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlTiposDias.duplicarTipoDia.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="#{msg['descripcionWM']}" />
 
                             <strong><h:outputText value="#{msg['tipoN']}" style="left: 15px; position: absolute; top: 120px;" /></strong>
-                            <p:selectOneMenu effect="fold"  id="duplicarTipo" value="#{controlTiposDias.duplicarTipoDia.tipo}" style=" width: 143px; position: absolute; left: 160px; top: 115px;">  
+                            <p:selectOneMenu effect="fold"  id="duplicarTipo" value="#{controlTiposDias.duplicarTipoDia.tipo}" style=" width: 150px; position: absolute; left: 150px; top: 115px;">  
                                 <f:selectItem itemLabel="#{msg['ord']}" itemValue="ORD" />                
                                 <f:selectItem itemLabel="#{msg['fes']}" itemValue="FES"/>  
                                 <f:selectItem itemLabel="#{msg['dom']}" itemValue="DOM" /> 
                                 <p:ajax update="@this"/>
                             </p:selectOneMenu>   
 
-                            <p:commandButton id="limpiarD" value="#{msg['limpiar']}" style=" position: absolute; left: 10px; top: 150px;"  actionListener="#{controlTiposDias.limpiarDuplicarTiposDias()}" update="duplicarTTR"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" style=" position: absolute; left: 120px; top: 150px;" actionListener="#{controlTiposDias.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}" style=" position: absolute; left: 213px; top: 150px;"  update="duplicarTTR" onclick="duplicarRegistroTiposReemplazos.hide();" actionListener="#{controlTiposDias.limpiarDuplicarTiposDias()}"  process="@this"/>
+                            <p:commandButton icon="ui-icon-trash" id="limpiarD" value="#{msg['limpiar']}" style=" position: absolute; left: 10px; top: 150px;"  actionListener="#{controlTiposDias.limpiarDuplicarTiposDias()}" update="duplicarTTR"  process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="duplicarVFP" value="#{msg['agregar']}" style=" position: absolute; left: 120px; top: 150px;" actionListener="#{controlTiposDias.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarDuplicarVFP" value="#{msg['cancelar']}" style=" position: absolute; left: 213px; top: 150px;"  update="duplicarTTR" onclick="duplicarRegistroTiposReemplazos.hide();" actionListener="#{controlTiposDias.limpiarDuplicarTiposDias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>
