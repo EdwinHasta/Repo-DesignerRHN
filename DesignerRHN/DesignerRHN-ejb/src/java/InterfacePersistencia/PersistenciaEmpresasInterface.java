@@ -69,5 +69,9 @@ public interface PersistenciaEmpresasInterface {
      
      public String consultarPrimeraEmpresa(EntityManager em);
      public Empresas consultarPrimeraEmpresaSinPaquete(EntityManager em);
+     
+     public BigInteger calcularControlEmpleadosEmpresa(EntityManager em,BigInteger secuencia);
+     
+     public BigInteger obtenerMaximoEmpleadosEmpresa(EntityManager em,BigInteger secuencia);
     
 }

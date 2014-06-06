@@ -7,7 +7,10 @@ package Administrar;
 
 import Entidades.Cargos;
 import Entidades.Ciudades;
+import Entidades.Comprobantes;
 import Entidades.Contratos;
+import Entidades.CortesProcesos;
+import Entidades.Direcciones;
 import Entidades.Empleados;
 import Entidades.Empresas;
 import Entidades.EstadosCiviles;
@@ -22,25 +25,46 @@ import Entidades.NormasLaborales;
 import Entidades.Papeles;
 import Entidades.Periodicidades;
 import Entidades.Personas;
+import Entidades.Procesos;
 import Entidades.ReformasLaborales;
+import Entidades.Sets;
 import Entidades.Sucursales;
+import Entidades.Telefonos;
 import Entidades.TercerosSucursales;
 import Entidades.TiposContratos;
 import Entidades.TiposDocumentos;
+import Entidades.TiposEntidades;
 import Entidades.TiposSueldos;
 import Entidades.TiposTelefonos;
 import Entidades.TiposTrabajadores;
 import Entidades.UbicacionesGeograficas;
 import Entidades.Unidades;
+import Entidades.VWValidaBancos;
+import Entidades.VigenciasAfiliaciones;
+import Entidades.VigenciasCargos;
+import Entidades.VigenciasContratos;
+import Entidades.VigenciasFormasPagos;
+import Entidades.VigenciasJornadas;
+import Entidades.VigenciasLocalizaciones;
+import Entidades.VigenciasNormasEmpleados;
+import Entidades.VigenciasReformasLaborales;
+import Entidades.VigenciasSueldos;
+import Entidades.VigenciasTiposContratos;
+import Entidades.VigenciasTiposTrabajadores;
+import Entidades.VigenciasUbicaciones;
 import InterfaceAdministrar.AdministrarPersonaIndividualInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import InterfacePersistencia.PersistenciaCiudadesInterface;
+import InterfacePersistencia.PersistenciaComprobantesInterface;
 import InterfacePersistencia.PersistenciaContratosInterface;
+import InterfacePersistencia.PersistenciaCortesProcesosInterface;
+import InterfacePersistencia.PersistenciaDireccionesInterface;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaEstadosCivilesInterface;
 import InterfacePersistencia.PersistenciaEstructurasInterface;
+import InterfacePersistencia.PersistenciaGeneralesInterface;
 import InterfacePersistencia.PersistenciaJornadasLaboralesInterface;
 import InterfacePersistencia.PersistenciaMetodosPagosInterface;
 import InterfacePersistencia.PersistenciaMotivosCambiosCargosInterface;
@@ -51,16 +75,34 @@ import InterfacePersistencia.PersistenciaNormasLaboralesInterface;
 import InterfacePersistencia.PersistenciaPapelesInterface;
 import InterfacePersistencia.PersistenciaPeriodicidadesInterface;
 import InterfacePersistencia.PersistenciaPersonasInterface;
+import InterfacePersistencia.PersistenciaProcesosInterface;
 import InterfacePersistencia.PersistenciaReformasLaboralesInterface;
+import InterfacePersistencia.PersistenciaSetsInterface;
 import InterfacePersistencia.PersistenciaSucursalesInterface;
+import InterfacePersistencia.PersistenciaTelefonosInterface;
+import InterfacePersistencia.PersistenciaTercerosInterface;
 import InterfacePersistencia.PersistenciaTercerosSucursalesInterface;
 import InterfacePersistencia.PersistenciaTiposContratosInterface;
 import InterfacePersistencia.PersistenciaTiposDocumentosInterface;
+import InterfacePersistencia.PersistenciaTiposEntidadesInterface;
 import InterfacePersistencia.PersistenciaTiposSueldosInterface;
 import InterfacePersistencia.PersistenciaTiposTelefonosInterface;
 import InterfacePersistencia.PersistenciaTiposTrabajadoresInterface;
 import InterfacePersistencia.PersistenciaUbicacionesGeograficasInterface;
 import InterfacePersistencia.PersistenciaUnidadesInterface;
+import InterfacePersistencia.PersistenciaVWValidaBancosInterface;
+import InterfacePersistencia.PersistenciaVigenciasAfiliacionesInterface;
+import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
+import InterfacePersistencia.PersistenciaVigenciasContratosInterface;
+import InterfacePersistencia.PersistenciaVigenciasFormasPagosInterface;
+import InterfacePersistencia.PersistenciaVigenciasJornadasInterface;
+import InterfacePersistencia.PersistenciaVigenciasLocalizacionesInterface;
+import InterfacePersistencia.PersistenciaVigenciasNormasEmpleadosInterface;
+import InterfacePersistencia.PersistenciaVigenciasReformasLaboralesInterface;
+import InterfacePersistencia.PersistenciaVigenciasSueldosInterface;
+import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
+import InterfacePersistencia.PersistenciaVigenciasTiposTrabajadoresInterface;
+import InterfacePersistencia.PersistenciaVigenciasUbicacionesInterface;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -85,8 +127,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     PersistenciaCargosInterface persistenciaCargos;
     @EJB
     PersistenciaMotivosCambiosCargosInterface persistenciaMotivosCambiosCargos;
-    //@EJB
-    //Persistencia
+    @EJB
+    PersistenciaTiposEntidadesInterface persistenciaTiposEntidades;
     @EJB
     PersistenciaEstructurasInterface persistenciaEstructuras;
     @EJB
@@ -131,6 +173,48 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     PersistenciaPersonasInterface persistenciaPersonas;
     @EJB
     PersistenciaPapelesInterface persistenciaPapeles;
+    @EJB
+    PersistenciaTercerosInterface persistenciaTerceros;
+    @EJB
+    PersistenciaGeneralesInterface persistenciaGenerales;
+    @EJB
+    PersistenciaVWValidaBancosInterface persistenciaVWValidaBancos;
+    @EJB
+    PersistenciaVigenciasCargosInterface persistenciaVigenciasCargos;
+    @EJB
+    PersistenciaVigenciasLocalizacionesInterface persistenciaVigenciasLocalizaciones;
+    @EJB
+    PersistenciaVigenciasTiposTrabajadoresInterface persistenciaVigenciasTiposTrabajadores;
+    @EJB
+    PersistenciaVigenciasReformasLaboralesInterface persistenciaVigenciasReformasLaborales;
+    @EJB
+    PersistenciaVigenciasSueldosInterface persistenciaVigenciasSueldos;
+    @EJB
+    PersistenciaVigenciasTiposContratosInterface persistenciaVigenciasTiposContratos;
+    @EJB
+    PersistenciaVigenciasNormasEmpleadosInterface persistenciaVigenciasNormasEmpleados;
+    @EJB
+    PersistenciaVigenciasContratosInterface persistenciaVigenciasContratos;
+    @EJB
+    PersistenciaVigenciasUbicacionesInterface persistenciaVigenciasUbicaciones;
+    @EJB
+    PersistenciaVigenciasJornadasInterface persistenciaVigenciasJornadas;
+    @EJB
+    PersistenciaVigenciasFormasPagosInterface persistenciaVigenciasFormasPagos;
+    @EJB
+    PersistenciaDireccionesInterface persistenciaDirecciones;
+    @EJB
+    PersistenciaTelefonosInterface persistenciaTelefonos;
+    @EJB
+    PersistenciaSetsInterface persistenciaSets;
+    @EJB
+    PersistenciaProcesosInterface persistenciaProcesos;
+    @EJB
+    PersistenciaComprobantesInterface persistenciaComprobantes;
+    @EJB
+    PersistenciaCortesProcesosInterface persistenciaCortesProcesos;
+    @EJB
+    PersistenciaVigenciasAfiliacionesInterface persistenciaVigenciasAfiliaciones;
 
     @EJB
     AdministrarSesionesInterface administrarSesiones;
@@ -199,17 +283,18 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @Override
     public List<Estructuras> lovEstructurasModCargos(BigInteger secEmpresa, Date fechaIngreso) {
         try {
-            List<Estructuras> lista = persistenciaEstructuras.buscarEstructurasPorEmpresaFechaIngreso(em,secEmpresa,fechaIngreso);
+            List<Estructuras> lista = persistenciaEstructuras.buscarEstructurasPorEmpresaFechaIngreso(em, secEmpresa, fechaIngreso);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovEstructurasModCargos Admi : " + e.toString());
             return null;
         }
     }
+
     @Override
     public List<Estructuras> lovEstructurasModCentroCosto(BigInteger secEmpresa) {
         try {
-            List<Estructuras> lista = persistenciaEstructuras.buscarEstructurasPorEmpresa(em,secEmpresa);
+            List<Estructuras> lista = persistenciaEstructuras.buscarEstructurasPorEmpresa(em, secEmpresa);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovEstructurasModCentroCosto Admi : " + e.toString());
@@ -229,9 +314,9 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     }
 
     @Override
-    public List<UbicacionesGeograficas> lovUbicacionesGeograficas() {
+    public List<UbicacionesGeograficas> lovUbicacionesGeograficas(BigInteger secuencia) {
         try {
-            List<UbicacionesGeograficas> lista = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficas(em);
+            List<UbicacionesGeograficas> lista = persistenciaUbicacionesGeograficas.consultarUbicacionesGeograficasPorEmpresa(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovUbicacionesGeograficas Admi : " + e.toString());
@@ -304,10 +389,10 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
-    @Override
+    ///@Override
     public List<Contratos> lovContratos() {
         try {
-            List<Contratos> lista = persistenciaContratos.buscarContratos(em);
+            List<Contratos> lista = persistenciaContratos.buscarContratosPorUsuario(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovContratos Admi : " + e.toString());
@@ -329,7 +414,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     @Override
     public List<TiposSueldos> lovTiposSueldos() {
         try {
-            List<TiposSueldos> lista = persistenciaTiposSueldos.buscarTiposSueldos(em);
+            List<TiposSueldos> lista = persistenciaTiposSueldos.buscarTiposSueldosParaUsuarioConectado(em);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovTiposSueldos Admi : " + e.toString());
@@ -381,10 +466,10 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
-    @Override
-    public List<TercerosSucursales> lovTercerosSucursales() {
+    //@Override
+    public List<TercerosSucursales> lovTercerosSucursales(BigInteger secuencia) {
         try {
-            List<TercerosSucursales> lista = persistenciaTercerosSucursales.buscarTercerosSucursales(em);
+            List<TercerosSucursales> lista = persistenciaTercerosSucursales.buscarTercerosSucursalesPorEmpresa(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error lovTercerosSucursales Admi : " + e.toString());
@@ -444,5 +529,420 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
+
+    @Override
+    public TiposEntidades buscarTipoEntidadPorCodigo(Short codigo) {
+        try {
+            TiposEntidades entidad = persistenciaTiposEntidades.buscarTipoEntidadPorCodigo(em, codigo);
+            return entidad;
+        } catch (Exception e) {
+            System.out.println("Error buscarTipoEntidadPorCodigo Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String buscarCodigoSSTercero(BigInteger secuencia) {
+        try {
+            String codigo = persistenciaTerceros.buscarCodigoSSPorSecuenciaTercero(em, secuencia);
+            return codigo;
+        } catch (Exception e) {
+            System.out.println("Error buscarCodigoSSTercero Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String buscarCodigoSPTercero(BigInteger secuencia) {
+        try {
+            String codigo = persistenciaTerceros.buscarCodigoSPPorSecuenciaTercero(em, secuencia);
+            return codigo;
+        } catch (Exception e) {
+            System.out.println("Error buscarCodigoSPTercero Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String buscarCodigoSCTercero(BigInteger secuencia) {
+        try {
+            String codigo = persistenciaTerceros.buscarCodigoSCPorSecuenciaTercero(em, secuencia);
+            return codigo;
+        } catch (Exception e) {
+            System.out.println("Error buscarCodigoSCTercero Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    //@Override
+    public BigInteger calcularNumeroEmpleadosEmpresa(BigInteger secuencia) {
+        try {
+            System.out.println("calcularNumeroEmpleadosEmpresa");
+            BigInteger valor = persistenciaEmpresas.calcularControlEmpleadosEmpresa(em, secuencia);
+            System.out.println("calcularNumeroEmpleadosEmpresa valor : " + valor);
+            return valor;
+        } catch (Exception e) {
+            System.out.println("Error calcularNumeroEmpleadosEmpresa Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    //@Override
+    public BigInteger obtenerMaximoEmpleadosEmpresa(BigInteger secuencia) {
+        try {
+            System.out.println("obtenerMaximoEmpleadosEmpresa");
+            BigInteger valor = persistenciaEmpresas.obtenerMaximoEmpleadosEmpresa(em, secuencia);
+            System.out.println("obtenerMaximoEmpleadosEmpresa valor : " + valor);
+            return valor;
+        } catch (Exception e) {
+            System.out.println("Error obtenerMaximoEmpleadosEmpresa Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(BigInteger codigo, BigInteger empresa) {
+        try {
+            Empleados empl = persistenciaEmpleado.buscarEmpleadoPorCodigoyEmpresa(em, codigo, empresa);
+            return empl;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpleadoPorCodigoyEmpresa Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Personas buscarPersonaPorNumeroDocumento(BigInteger numeroDocumento) {
+        try {
+            Personas persona = persistenciaPersonas.buscarPersonaPorNumeroDocumento(em, numeroDocumento);
+            return persona;
+        } catch (Exception e) {
+            System.out.println("Error buscarPersonaPorNumeroDocumento Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String obtenerPreValidadContabilidad() {
+        try {
+            String variable = persistenciaGenerales.obtenerPreValidadContabilidad(em);
+            return variable;
+        } catch (Exception e) {
+            System.out.println("Error obtenerPreValidadContabilidad Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String obtenerPreValidaBloqueAIngreso() {
+        try {
+            String variable = persistenciaGenerales.obtenerPreValidaBloqueAIngreso(em);
+            return variable;
+        } catch (Exception e) {
+            System.out.println("Error obtenerPreValidaBloqueAIngreso Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public VWValidaBancos validarCodigoPrimarioVWValidaBancos(BigInteger documento) {
+        try {
+            VWValidaBancos valida = persistenciaVWValidaBancos.validarDocumentoVWValidaBancos(em, documento);
+            return valida;
+        } catch (Exception e) {
+            System.out.println("Error validarCodigoPrimarioVWValidaBancos Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    //@Override
+    public String validarTipoTrabajadorReformaLaboral(BigInteger tipoTrabajador, BigInteger reformaLaboral) {
+        try {
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorReformaLaboral(em, tipoTrabajador, reformaLaboral);
+            return validar;
+        } catch (Exception e) {
+            System.out.println("Error validarTipoTrabajadorReformaLaboral Admi : " + e.toString());
+            return "N";
+        }
+    }
+
+    //@Override
+    public String validarTipoTrabajadorTipoSueldo(BigInteger tipoTrabajador, BigInteger tipoSueldo) {
+        try {
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, tipoSueldo);
+            return validar;
+        } catch (Exception e) {
+            System.out.println("Error validarTipoTrabajadorTipoSueldo Admi : " + e.toString());
+            return "N";
+        }
+    }
+
+    //@Override
+    public String validarTipoTrabajadorTipoContrato(BigInteger tipoTrabajador, BigInteger tipoContrato) {
+        try {
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoContrato(em, tipoTrabajador, tipoContrato);
+            return validar;
+        } catch (Exception e) {
+            System.out.println("Error validarTipoTrabajadorTipoContrato Admi : " + e.toString());
+            return "N";
+        }
+    }
+
+    //@Override
+    public String validarTipoTrabajadorNormaLaboral(BigInteger tipoTrabajador, BigInteger normaLaboral) {
+        try {
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoSueldo(em, tipoTrabajador, normaLaboral);
+            return validar;
+        } catch (Exception e) {
+            System.out.println("Error validarTipoTrabajadorNormaLaboral Admi : " + e.toString());
+            return "N";
+        }
+    }
+
+    //@Override
+    public String validarTipoTrabajadorContrato(BigInteger tipoTrabajador, BigInteger contrato) {
+        try {
+            String validar = persistenciaTiposTrabajadores.plantillaValidarTipoTrabajadorTipoContrato(em, tipoTrabajador, contrato);
+            return validar;
+        } catch (Exception e) {
+            System.out.println("Error validarTipoTrabajadorContrato Admi : " + e.toString());
+            return "N";
+        }
+    }
+
+    //Override
+    public String obtenerCheckIntegralReformaLaboral(BigInteger reformaLaboral) {
+        try {
+            String variable = persistenciaReformasLaborales.obtenerCheckIntegralReformaLaboral(em, reformaLaboral);
+            return variable;
+        } catch (Exception e) {
+            System.out.println("Error obtenerCheckIntegralReformaLaboral Admi : " + e.toString());
+            return "N";
+        }
+
+    }
+
+    public void crearNuevaPersona(Personas persona) {
+        try {
+            persistenciaPersonas.crear(em, persona);
+        } catch (Exception e) {
+            System.out.println("Error crearNuevaPersona Admi : " + e.toString());
+        }
+    }
+
+    public Personas obtenerUltimoRegistroPersona() {
+        try {
+            Personas persona = persistenciaPersonas.obtenerUltimaPersonaAlmacenada(em);
+            return persona;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoRegistroPersona Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    public void crearNuevoEmpleado(Empleados empleado) {
+        try {
+            persistenciaEmpleado.crear(em, empleado);
+        } catch (Exception e) {
+            System.out.println("Error crearNuevaPersona Admi : " + e.toString());
+        }
+    }
+
+    public Empleados obtenerUltimoRegistroEmpleado(BigInteger empresa, BigInteger codigoEmpleado) {
+        try {
+            Empleados empleado = persistenciaEmpleado.obtenerUltimoEmpleadoAlmacenado(em, empresa, codigoEmpleado);
+            return empleado;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoRegistroEmpleado Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    /**//**//**//**//**//**//**//**//**//**//**//**/
+
+
+
+
+
+
+
+
+
+
+
+    public void crearVigenciaCargo(VigenciasCargos vigencia) {
+        try {
+            persistenciaVigenciasCargos.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoRegistroEmpleado Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaLocalizacion(VigenciasLocalizaciones vigencia) {
+        try {
+            persistenciaVigenciasLocalizaciones.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaLocalizacion Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaTipoTrabajador(VigenciasTiposTrabajadores vigencia) {
+        try {
+            persistenciaVigenciasTiposTrabajadores.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaTipoTrabajador Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaReformaLaboral(VigenciasReformasLaborales vigencia) {
+        try {
+            persistenciaVigenciasReformasLaborales.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaReformaLaboral Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaSueldo(VigenciasSueldos vigencia) {
+        try {
+            persistenciaVigenciasSueldos.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaSueldo Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaTipoContrato(VigenciasTiposContratos vigencia) {
+        try {
+            persistenciaVigenciasTiposContratos.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaTipoContrato Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaNormaEmpleado(VigenciasNormasEmpleados vigencia) {
+        try {
+            persistenciaVigenciasNormasEmpleados.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaNormaEmpleado Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaContrato(VigenciasContratos vigencia) {
+        try {
+            persistenciaVigenciasContratos.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaContrato Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaUbicacion(VigenciasUbicaciones vigencia) {
+        try {
+            persistenciaVigenciasUbicaciones.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaUbicacion Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaJornada(VigenciasJornadas vigencia) {
+        try {
+            persistenciaVigenciasJornadas.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaJornada Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaFormaPago(VigenciasFormasPagos vigencia) {
+        try {
+            persistenciaVigenciasFormasPagos.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaFormaPago Admi : " + e.toString());
+        }
+    }
+
+    public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia) {
+        try {
+            persistenciaVigenciasAfiliaciones.crear(em, vigencia);
+        } catch (Exception e) {
+            System.out.println("Error crearVigenciaAfiliacion Admi : " + e.toString());
+        }
+    }
+
+    public void crearEstadoCivil(EstadosCiviles estado) {
+        try {
+            persistenciaEstadosCiviles.crear(em, estado);
+        } catch (Exception e) {
+            System.out.println("Error crearEstadoCivil Admi : " + e.toString());
+        }
+    }
+
+    public void crearDireccion(Direcciones direccion) {
+        try {
+            persistenciaDirecciones.crear(em, direccion);
+        } catch (Exception e) {
+            System.out.println("Error crearDireccion Admi : " + e.toString());
+        }
+    }
+
+    public void crearTelefono(Telefonos telefono) {
+        try {
+            persistenciaTelefonos.crear(em, telefono);
+        } catch (Exception e) {
+            System.out.println("Error crearTelefono Admi : " + e.toString());
+        }
+    }
+
+    public void crearSets(Sets set) {
+        try {
+            persistenciaSets.crear(em, set);
+        } catch (Exception e) {
+            System.out.println("Error crearSets Admi : " + e.toString());
+        }
+    }
+
+    public Procesos buscarProcesoPorCodigo(short codigo) {
+        try {
+            Procesos proceso = persistenciaProcesos.buscarProcesosPorCodigo(em, codigo);
+            return proceso;
+        } catch (Exception e) {
+            System.out.println("Error buscarProcesoPorCodigo Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    public BigInteger obtenerNumeroMaximoComprobante() {
+        try {
+            BigInteger valor = persistenciaComprobantes.buscarValorNumeroMaximo(em);
+            return valor;
+        } catch (Exception e) {
+            System.out.println("Error obtenerNumeroMaximoComprobante Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    public void crearComprobante(Comprobantes comprobante) {
+        try {
+            persistenciaComprobantes.crear(em, comprobante);
+        } catch (Exception e) {
+            System.out.println("Error crearComprobante Admi : " + e.toString());
+        }
+    }
+
+    public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(BigInteger secEmpleado) {
+        try {
+            Comprobantes comprobante = persistenciaComprobantes.buscarComprobanteParaPrimerRegistroEmpleado(em, secEmpleado);
+            return comprobante;
+        } catch (Exception e) {
+            System.out.println("Error buscarComprobanteParaPrimerRegistroEmpleado Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    public void crearCortesProcesos(CortesProcesos corte) {
+        try {
+            persistenciaCortesProcesos.crear(em, corte);
+        } catch (Exception e) {
+            System.out.println("Error crearCortesProcesos Admi : " + e.toString());
+        }
+    }
+
+   
 
 }

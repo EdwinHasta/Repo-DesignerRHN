@@ -36,12 +36,12 @@ import org.primefaces.context.RequestContext;
 @ManagedBean
 @SessionScoped
 public class ControlBetaCentrosCostos implements Serializable {
-    
+
     @EJB
     AdministrarCentroCostosInterface administrarCentroCostos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
     private boolean aceptar, guardado;
@@ -55,7 +55,7 @@ public class ControlBetaCentrosCostos implements Serializable {
 //EMPRESA
     private List<Empresas> listaEmpresas;
     private List<Empresas> filtradoListaEmpresas;
-    
+
     private Empresas empresaSeleccionada;
     private int banderaModificacionEmpresa;
     private int indiceEmpresaMostrada;
@@ -70,7 +70,7 @@ public class ControlBetaCentrosCostos implements Serializable {
     private CentrosCostos duplicarCentroCosto;
     private CentrosCostos editarCentroCosto;
     private CentrosCostos centroCostoBetaSeleccionado;
-    
+
     private Column codigoCC, nombreCentroCosto,
             tipoCentroCosto, manoDeObra, codigoAT,
             obsoleto, codigoCTT, dimensiones;
@@ -83,12 +83,12 @@ public class ControlBetaCentrosCostos implements Serializable {
     private List<CentrosCostos> filterCentrosCostosPorEmpresa;
     private String nuevoTipoCCAutoCompletar;
     private Empresas backUpEmpresaActual;
-    
+
     private CentrosCostos CentrosCostosPorEmpresaSeleccionado;
     private boolean banderaSeleccionCentrosCostosPorEmpresa;
-    
+
     private int tamano;
-    
+
     public ControlBetaCentrosCostos() {
         permitirIndex = true;
         listaEmpresas = null;
@@ -107,9 +107,9 @@ public class ControlBetaCentrosCostos implements Serializable {
         filtradoListaEmpresas = null;
         guardado = true;
         banderaSeleccionCentrosCostosPorEmpresa = false;
-        tamano = 270;
+        tamano = 260;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -117,27 +117,27 @@ public class ControlBetaCentrosCostos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCentroCostos.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
-            
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS eventoFiltrar ERROR===" + e.getMessage());
         }
     }
-    
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("BETA CENTRO COSTO TIPO LISTA = " + tipoLista);
         System.err.println("PERMITIR INDEX = " + permitirIndex);
-        
+
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
@@ -148,7 +148,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 if (tipoLista == 0) {
                     grupoTipoCentroCostoAutocompletar = listCentrosCostosPorEmpresa.get(index).getTipocentrocosto().getNombre();
                     System.err.println("grupoTipoCentroCostoAutocompletar = " + grupoTipoCentroCostoAutocompletar);
-                    
+
                 } else {
                     grupoTipoCentroCostoAutocompletar = filtrarCentrosCostos.get(index).getTipocentrocosto().getNombre();
                 }
@@ -156,9 +156,9 @@ public class ControlBetaCentrosCostos implements Serializable {
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
-    
+
     public void modificandoCentroCosto(int indice, String confirmarCambio, String valorConfirmar) {
-        
+
         System.err.println("ENTRE A MODIFICAR CENTROCOSTO");
         index = indice;
         banderaModificacionEmpresa = 1;
@@ -195,9 +195,9 @@ public class ControlBetaCentrosCostos implements Serializable {
                         } else {
                             banderita = true;
                         }
-                        
+
                     }
-                    
+
                     if (listCentrosCostosPorEmpresa.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
@@ -207,7 +207,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     } else {
                         banderita1 = true;
                     }
-                    
+
                     if (banderita == true && banderita1 == true) {
                         if (modificarCentrosCostos.isEmpty()) {
                             modificarCentrosCostos.add(listCentrosCostosPorEmpresa.get(indice));
@@ -216,10 +216,10 @@ public class ControlBetaCentrosCostos implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
-                            
+
                         }
                         context.update("form:ACEPTAR");
-                        
+
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
@@ -229,7 +229,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     secRegistro = null;
                 }
             } else {
-                
+
                 if (!crearCentrosCostos.contains(filtrarCentrosCostos.get(indice))) {
                     if (filtrarCentrosCostos.get(indice).getCodigo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
@@ -259,7 +259,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                             banderita = true;
                         }
                     }
-                    
+
                     if (filtrarCentrosCostos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
@@ -270,7 +270,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     } else {
                         banderita1 = true;
                     }
-                    
+
                     if (banderita == true && banderita1 == true) {
                         if (modificarCentrosCostos.isEmpty()) {
                             modificarCentrosCostos.add(filtrarCentrosCostos.get(indice));
@@ -280,7 +280,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-                        
+
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
@@ -289,7 +289,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     index = -1;
                     secRegistro = null;
                 }
-                
+
             }
             context.update("form:datosCentrosCostos");
         } else if (confirmarCambio.equalsIgnoreCase("TIPOCENTROCOSTO")) {
@@ -300,7 +300,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 System.err.println("COMPLETAR   grupoTipoCentroCostoAutocompletar " + grupoTipoCentroCostoAutocompletar);
                 listCentrosCostosPorEmpresa.get(indice).getTipocentrocosto().setNombre(grupoTipoCentroCostoAutocompletar);
             } else {
-                
+
                 filtrarCentrosCostos.get(indice).getTipocentrocosto().setNombre(grupoTipoCentroCostoAutocompletar);
             }
             getListaTiposCentrosCostos();
@@ -327,13 +327,13 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
         }
         context.update("form:datosCentrosCostos");
-        
+
     }
-    
+
     public void cancelarModificacion() {
         try {
             System.out.println("entre a CONTROLBETACENTROSCOSTOS.cancelarModificacion");
-           FacesContext c = FacesContext.getCurrentInstance();
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 //0
@@ -360,12 +360,12 @@ public class ControlBetaCentrosCostos implements Serializable {
                 //7 
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 270;
+                tamano = 260;
                 bandera = 0;
                 filtrarCentrosCostos = null;
                 tipoLista = 0;
             }
-            
+
             borrarCentrosCostos.clear();
             crearCentrosCostos.clear();
             modificarCentrosCostos.clear();
@@ -379,17 +379,66 @@ public class ControlBetaCentrosCostos implements Serializable {
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
             }
+            if (listCentrosCostosPorEmpresa == null || listCentrosCostosPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosCentrosCostos");
             context.update("form:ACEPTAR");
         } catch (Exception E) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.ModificarModificacion ERROR====================" + E.getMessage());
         }
     }
-    
+
+    public void salir() {
+        try {
+            System.out.println("entre a CONTROLBETACENTROSCOSTOS.Salir");
+            FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                codigoCC.setFilterStyle("display: none; visibility: hidden;");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                obsoleto.setFilterStyle("display: none; visibility: hidden;");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                codigoCTT.setFilterStyle("display: none; visibility: hidden;");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                tamano = 260;
+                bandera = 0;
+                filtrarCentrosCostos = null;
+                tipoLista = 0;
+            }
+
+            borrarCentrosCostos.clear();
+            crearCentrosCostos.clear();
+            modificarCentrosCostos.clear();
+            index = -1;
+            k = 0;
+            listCentrosCostosPorEmpresa = null;
+            guardado = true;
+            permitirIndex = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosCentrosCostos");
+            context.update("form:ACEPTAR");
+        } catch (Exception E) {
+            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.ModificarModificacion ERROR====================" + E.getMessage());
+        }
+    }
+
     public void mostrarInfo(int indice, int celda) {
         if (permitirIndex == true) {
             RequestContext context = RequestContext.getCurrentInstance();
-            
+
             banderaModificacionEmpresa = 1;
             index = indice;
             cualCelda = celda;
@@ -415,7 +464,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 System.out.println("DIMENSIONES  " + listCentrosCostosPorEmpresa.get(indice).getDimensiones());
             }
             if (!crearCentrosCostos.contains(listCentrosCostosPorEmpresa.get(indice))) {
-                
+
                 if (modificarCentrosCostos.isEmpty()) {
                     modificarCentrosCostos.add(listCentrosCostosPorEmpresa.get(indice));
                 } else if (!modificarCentrosCostos.contains(listCentrosCostosPorEmpresa.get(indice))) {
@@ -427,18 +476,18 @@ public class ControlBetaCentrosCostos implements Serializable {
                 }
             }
             context.update("form:datosCentrosCostos");
-            
+
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
-        
+
     }
-    
+
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
             System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.asignarIndex \n");
             index = indice;
             RequestContext context = RequestContext.getCurrentInstance();
-            
+
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
@@ -452,16 +501,16 @@ public class ControlBetaCentrosCostos implements Serializable {
                 context.execute("tiposCentrosCostosDialogo.show()");
                 dig = -1;
             }
-            
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.asignarIndex ERROR======" + e.getMessage());
         }
     }
-    
+
     public void activarAceptar() {
         aceptar = false;
     }
-    
+
     public void actualizarCentroCosto() {
         System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.actualizarCentroCosto \n");
         try {
@@ -480,7 +529,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         guardado = false;
                         RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
-                    
+
                 }
                 context.update("form:datosCentrosCostos");
                 context.execute("tiposCentrosCostosDialogo.hide()");
@@ -506,7 +555,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             System.out.println("ERROR BETA .actualizarCentroCosto ERROR============" + e.getMessage());
         }
     }
-    
+
     public void cancelarCambioTiposCentroCosto() {
         try {
             filtradoTiposCentrosCostos = null;
@@ -514,37 +563,37 @@ public class ControlBetaCentrosCostos implements Serializable {
             aceptar = true;
             index = -1;
             tipoActualizacion = -1;
-            
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarCambioCentroCosto ERROR=====" + e.getMessage());
         }
     }
-    
+
     public void llamadoDialogoBuscarCentrosCostos() {
         RequestContext context = RequestContext.getCurrentInstance();
         try {
             if (guardado == false) {
                 banderaSeleccionCentrosCostosPorEmpresa = true;
                 context.execute("confirmarGuardar.show()");
-                
+
             } else {
                 listCentrosCostosPorEmpresaBoton = null;
                 getListCentrosCostosPorEmpresaBoton();
                 index = -1;
                 context.update("formularioDialogos:lovCentrosCostos");
                 context.execute("buscarCentrosCostosDialogo.show()");
-                
+
             }
         } catch (Exception e) {
             System.err.println("ERROR LLAMADO DIALOGO BUSCAR CENTROS COSTOS " + e);
         }
-        
+
     }
-    
+
     public void seleccionCentrosCostosPorEmpresa() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            
+
             if (guardado == true) {
                 listCentrosCostosPorEmpresa.clear();
                 System.err.println("seleccionCentrosCostosPorEmpresa " + CentrosCostosPorEmpresaSeleccionado.getNombre());
@@ -573,13 +622,13 @@ public class ControlBetaCentrosCostos implements Serializable {
              context.execute("buscarCentrosCostosDialogo.hide()");
              context.reset("formularioDialogos:lovCentrosCostos:globalFilter");
              }*/
-            
-            
+
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.seleccionaVigencia ERROR====" + e.getMessage());
         }
     }
-    
+
     public void cancelarSeleccionCentroCostoPorEmpresa() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -589,12 +638,12 @@ public class ControlBetaCentrosCostos implements Serializable {
             index = -1;
             tipoActualizacion = -1;
             context.update("form:aceptarNCC");
-            
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
         }
     }
-    
+
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
         System.out.println("1...");
         if (Campo.equals("TIPOSCENTROSCOSTOS")) {
@@ -603,19 +652,19 @@ public class ControlBetaCentrosCostos implements Serializable {
             } else if (tipoNuevo == 2) {
                 nuevoTipoCCAutoCompletar = duplicarCentroCosto.getTipocentrocosto().getNombre();
             }
-            
+
         }
     }
-    
+
     public void autocompletarNuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
-        
+
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("TIPOSCENTROSCOSTOS")) {
             System.out.println(" nuevoTipoCentroCosto    Entro al if 'Centro costo'");
             System.out.println("NOMBRE CENTRO COSTO: " + nuevoCentroCosto.getTipocentrocosto().getNombre());
-            
+
             if (!nuevoCentroCosto.getTipocentrocosto().getNombre().equals("")) {
                 System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("valorConfirmar: " + valorConfirmar);
@@ -647,9 +696,9 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
             context.update("formularioDialogos:nuevoGrupoTipoCC");
         }
-        
+
     }
-    
+
     public void autocompletarDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
         System.out.println("entrooooooooooooooooooooooooooooooooooooooooooooooooooooooo!!!");
         int coincidencias = 0;
@@ -658,7 +707,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("TIPOSCENTROSCOSTOS")) {
             System.out.println("Entro al if 'Centro costo'");
             System.out.println("NOMBRE CENTRO COSTO: " + duplicarCentroCosto.getTipocentrocosto().getNombre());
-            
+
             if (!duplicarCentroCosto.getTipocentrocosto().getNombre().equals("")) {
                 System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("valorConfirmar: " + valorConfirmar);
@@ -690,7 +739,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             context.update("formularioDialogos:duplicarTipoCentroCostos");
         }
     }
-    
+
     public void asignarVariableTiposCC(int tipoNuevo) {
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
@@ -702,7 +751,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         context.update("form:tiposCentrosCostosDialogo");
         context.execute("tiposCentrosCostosDialogo.show()");
     }
-    
+
     public void limpiarNuevoCentroCostos() {
         System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.limpiarNuevoCentroCostos \n");
         try {
@@ -713,7 +762,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             System.out.println("Error CONTROLBETACENTROSCOSTOS.LimpiarNuevoCentroCostos ERROR=============================" + e.getMessage());
         }
     }
-    
+
     public void agregarNuevoCentroCostos() {
         System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.agregarNuevoCentroCostos \n");
         try {
@@ -721,29 +770,29 @@ public class ControlBetaCentrosCostos implements Serializable {
             mensajeValidacion = " ";
             int duplicados = 0;
             RequestContext context = RequestContext.getCurrentInstance();
-            
+
             banderaModificacionEmpresa = 1;
             if (nuevoCentroCosto.getCodigo() == null) {
                 mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
-                
+
             } else if (nuevoCentroCosto.getCodigo().isEmpty()) {
                 mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
-                
+
             } else if (nuevoCentroCosto.getCodigo().equals(" ")) {
                 mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
-                
+
             } else {
                 System.out.println("codigo en Motivo Cambio Cargo: " + nuevoCentroCosto.getCodigo());
-                
+
                 for (int x = 0; x < listCentrosCostosPorEmpresa.size(); x++) {
                     if (listCentrosCostosPorEmpresa.get(x).getCodigo().equals(nuevoCentroCosto.getCodigo())) {
                         duplicados++;
                     }
                 }
                 System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
-                
+
                 if (duplicados > 0) {
                     mensajeValidacion = " *Que NO hayan codigos repetidos \n";
                     System.out.println("Mensaje validacion : " + mensajeValidacion);
@@ -755,14 +804,14 @@ public class ControlBetaCentrosCostos implements Serializable {
             if (nuevoCentroCosto.getNombre() == null) {
                 mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
-                
+
             } else if (nuevoCentroCosto.getNombre().isEmpty()) {
                 mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
-                
+
             } else if (nuevoCentroCosto.getNombre().equals(" ")) {
                 mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
-                
+
             } else {
                 System.out.println("Bandera : ");
                 contador++;
@@ -770,7 +819,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             if (nuevoCentroCosto.getTipocentrocosto().getSecuencia() == null) {
                 mensajeValidacion = mensajeValidacion + "   *Un tipo de centro costo \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
-                
+
             } else {
                 System.out.println("Bandera : ");
                 contador++;
@@ -792,7 +841,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     System.out.println("Ya lo contengo.");
                 } else {
                     crearCentrosCostos.add(nuevoCentroCosto);
-                    
+
                 }
                 listCentrosCostosPorEmpresa.add(nuevoCentroCosto);
                 context.update("form:datosCentrosCostos");
@@ -804,7 +853,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
-                     FacesContext c = FacesContext.getCurrentInstance();
+                    FacesContext c = FacesContext.getCurrentInstance();
                     codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                     codigoCC.setFilterStyle("display: none; visibility: hidden;");
                     nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
@@ -821,27 +870,29 @@ public class ControlBetaCentrosCostos implements Serializable {
                     codigoCTT.setFilterStyle("display: none; visibility: hidden;");
                     dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                     dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                    tamano = 270;
+                    tamano = 260;
                     RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
-                    
+
                     bandera = 0;
                     filtrarCentrosCostos = null;
                     tipoLista = 0;
                 }
                 mensajeValidacion = " ";
+                context.update("form:datosTipoReemplazo");
+                infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
                 RequestContext.getCurrentInstance().execute("NuevoRegistroCentroCostos.hide()");
-                
+
             } else {
                 contador = 0;
                 context.update("form:validacionDuplicarVigencia");
                 context.execute("validacionDuplicarVigencia.show()");
             }
-            
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.agregarNuevoCentroCostos ERROR===========================" + e.getMessage());
         }
     }
-    
+
     public void cargarTiposCentrosCostosNuevoRegistro(int tipoNuevo) {
         if (tipoNuevo == 0) {
             tipoActualizacion = 1;
@@ -855,7 +906,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             context.execute("tiposCentrosCostosDialogo.show()");
         }
     }
-    
+
     public void mostrarDialogoNuevoTiposCentrosCostos() {
         RequestContext context = RequestContext.getCurrentInstance();
         nuevoCentroCosto = new CentrosCostos();
@@ -864,21 +915,21 @@ public class ControlBetaCentrosCostos implements Serializable {
         context.update("formularioDialogos:nuevoCentroCostos");
         context.execute("NuevoRegistroCentroCostos.show()");
     }
-    
+
     public void mostrarDialogoListaEmpresas() {
         RequestContext context = RequestContext.getCurrentInstance();
         index = -1;
         context.execute("buscarCentrosCostosDialogo.show()");
     }
-    
+
     public void duplicandoCentroCostos() {
         try {
             banderaModificacionEmpresa = 1;
             System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.duplicarCentroCostos INDEX===" + index);
-            
+
             if (index >= 0) {
                 System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.duplicarCentroCostos TIPOLISTA===" + tipoLista);
-                
+
                 duplicarCentroCosto = new CentrosCostos();
                 k++;
                 l = BigInteger.valueOf(k);
@@ -894,10 +945,10 @@ public class ControlBetaCentrosCostos implements Serializable {
                     duplicarCentroCosto.setCodigoctt(listCentrosCostosPorEmpresa.get(index).getCodigoctt());
                     duplicarCentroCosto.setDimensiones(listCentrosCostosPorEmpresa.get(index).getDimensiones());
                     duplicarCentroCosto.setComodin(listCentrosCostosPorEmpresa.get(index).getComodin());
-                    
+
                 }
                 if (tipoLista == 1) {
-                    
+
                     duplicarCentroCosto.setSecuencia(l);
                     duplicarCentroCosto.setEmpresa(filtrarCentrosCostos.get(index).getEmpresa());
                     duplicarCentroCosto.setCodigo(filtrarCentrosCostos.get(index).getCodigo());
@@ -908,9 +959,9 @@ public class ControlBetaCentrosCostos implements Serializable {
                     duplicarCentroCosto.setObsoleto(filtrarCentrosCostos.get(index).getObsoleto());
                     duplicarCentroCosto.setCodigoctt(filtrarCentrosCostos.get(index).getCodigoctt());
                     duplicarCentroCosto.setDimensiones(filtrarCentrosCostos.get(index).getDimensiones());
-                    
+
                 }
-                
+
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("formularioDialogos:duplicarCentroCostos");
                 context.execute("DuplicarRegistroCentroCostos.show()");
@@ -920,7 +971,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.DuplicarCentroCostos ERROR===============" + e.getMessage());
         }
     }
-    
+
     public void limpiarDuplicarCentroCostos() {
         System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.limpiarDuplicarCentroCostos \n");
         try {
@@ -928,9 +979,9 @@ public class ControlBetaCentrosCostos implements Serializable {
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.limpiarDuplicarCentroCostos ERROR========" + e.getMessage());
         }
-        
+
     }
-    
+
     public void confirmarDuplicar() {
         System.err.println("ESTOY EN CONFIRMAR DUPLICAR CONTROLTIPOSCENTROSCOSTOS");
         int contador = 0;
@@ -939,24 +990,24 @@ public class ControlBetaCentrosCostos implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Short a = 0;
         a = null;
-        
+
         if (duplicarCentroCosto.getCodigo().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-            
+
         } else if (duplicarCentroCosto.getCodigo().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
-            
+
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + duplicarCentroCosto.getCodigo());
-            
+
             for (int x = 0; x < listCentrosCostosPorEmpresa.size(); x++) {
                 if (listCentrosCostosPorEmpresa.get(x).getCodigo().equals(duplicarCentroCosto.getCodigo())) {
                     duplicados++;
                 }
             }
             System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
-            
+
             if (duplicados > 0) {
                 mensajeValidacion = " *Que NO hayan codigos repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
@@ -964,15 +1015,15 @@ public class ControlBetaCentrosCostos implements Serializable {
                 System.out.println("bandera");
                 contador++;
             }
-            
+
         }
         if (duplicarCentroCosto.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-            
+
         } else if (duplicarCentroCosto.getNombre().equals(" ")) {
             mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
-            
+
         } else {
             System.out.println("Bandera : ");
             contador++;
@@ -980,7 +1031,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         if (duplicarCentroCosto.getTipocentrocosto().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + "   *Un tipo de centro costo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-            
+
         } else {
             System.out.println("Bandera : ");
             contador++;
@@ -990,10 +1041,10 @@ public class ControlBetaCentrosCostos implements Serializable {
         } else if (duplicarCentroCosto.getManoobra().isEmpty()) {
             duplicarCentroCosto.setManoobra(null);
         }
-        
+
         if (contador == 3) {
             System.err.println("DUPLICAR MANO DE OBRA " + duplicarCentroCosto.getManoobra());
-            
+
             System.err.println("DUPLICAR OBSOLETO " + duplicarCentroCosto.getObsoleto());
             System.err.println("DUPLICAR DIMENSIONES " + duplicarCentroCosto.getDimensiones());
             if (crearCentrosCostos.contains(duplicarCentroCosto)) {
@@ -1003,16 +1054,16 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
             crearCentrosCostos.add(duplicarCentroCosto);
             context.update("form:datosCentrosCostos");
-            
+
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                 FacesContext c = FacesContext.getCurrentInstance();
+                FacesContext c = FacesContext.getCurrentInstance();
                 codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
@@ -1037,7 +1088,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 //7 COMBO BOX
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 270;
+                tamano = 260;
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
                 bandera = 0;
                 filtrarCentrosCostos = null;
@@ -1045,17 +1096,20 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
             duplicarCentroCosto = new CentrosCostos();
             duplicarCentroCosto.setTipocentrocosto(new TiposCentrosCostos());
+            context.update("form:datosTipoReemplazo");
+            infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
+            context.update("form:informacionRegistro");
             RequestContext.getCurrentInstance().execute("DuplicarRegistroCentroCostos.hide()");
             mensajeValidacion = " ";
             banderaModificacionEmpresa = 1;
-            
+
         } else {
             contador = 0;
             context.update("form:validacionDuplicarVigencia");
             context.execute("validacionDuplicarVigencia.show()");
         }
     }
-    
+
     private BigInteger contadorComprobantesContables;
     private BigInteger contadorDetallesCCConsolidador;
     private BigInteger contadorEmpresas;
@@ -1080,7 +1134,7 @@ public class ControlBetaCentrosCostos implements Serializable {
     private BigInteger contadorVigenciasCuentasC;
     private BigInteger contadorVigenciasCuentasD;
     private BigInteger contadorVigenciasProrrateos;
-    
+
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         System.out.println("TIPOLISTA = " + tipoLista);
@@ -1215,7 +1269,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 System.out.println("Borrado==0");
                 borrandoCentroCosto();
             } else {
-                
+
                 System.out.println("Borrado>0");
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
@@ -1250,7 +1304,7 @@ public class ControlBetaCentrosCostos implements Serializable {
             System.err.println("ERROR CONTROL BETA CENTROS COSTOS verificarBorrado ERROR " + e);
         }
     }
-    
+
     public void borrandoCentroCosto() {
         try {
             banderaModificacionEmpresa = 1;
@@ -1264,7 +1318,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                         int crearIndex = crearCentrosCostos.indexOf(listCentrosCostosPorEmpresa.get(index));
                         crearCentrosCostos.remove(crearIndex);
                     } else {
-                        
+
                         borrarCentrosCostos.add(listCentrosCostosPorEmpresa.get(index));
                     }
                     listCentrosCostosPorEmpresa.remove(index);
@@ -1272,7 +1326,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                 if (tipoLista == 1) {
                     if (!modificarCentrosCostos.isEmpty() && modificarCentrosCostos.contains(filtrarCentrosCostos.get(index))) {
                         System.out.println("\n 6 ENTRE A CONTROLBETACENTROSCOSTOS.borrarCentroCosto tipolista==1 try if if if filtrarCentrosCostos.get(index).getCodigo()" + filtrarCentrosCostos.get(index).getCodigo());
-                        
+
                         int modIndex = modificarCentrosCostos.indexOf(filtrarCentrosCostos.get(index));
                         modificarCentrosCostos.remove(modIndex);
                         borrarCentrosCostos.add(filtrarCentrosCostos.get(index));
@@ -1288,7 +1342,7 @@ public class ControlBetaCentrosCostos implements Serializable {
                     listCentrosCostosPorEmpresa.remove(VCIndex);
                     filtrarCentrosCostos.remove(index);
                 }
-                
+
                 RequestContext context = RequestContext.getCurrentInstance();
                 index = -1;
                 System.err.println("verificar Borrado " + guardado);
@@ -1302,10 +1356,10 @@ public class ControlBetaCentrosCostos implements Serializable {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.BorrarCentroCosto ERROR=====================" + e.getMessage());
         }
     }
-    
+
     public void guardarCambiosCentroCosto() {
         RequestContext context = RequestContext.getCurrentInstance();
-        
+
         if (guardado == false) {
             System.out.println("Realizando Operaciones Vigencias Localizacion");
             if (!borrarCentrosCostos.isEmpty()) {
@@ -1329,11 +1383,11 @@ public class ControlBetaCentrosCostos implements Serializable {
             context.update("form:datosTipoCentroCosto");
             k = 0;
             guardado = true;
-            
+
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
                 banderaModificacionEmpresa = 1;
-                
+
             }
             if (banderaSeleccionCentrosCostosPorEmpresa == true) {
                 listCentrosCostosPorEmpresaBoton = null;
@@ -1351,7 +1405,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         banderaModificacionEmpresa = 0;
     }
-    
+
     public void cancelarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (banderaModificacionEmpresa == 0) {
@@ -1359,17 +1413,17 @@ public class ControlBetaCentrosCostos implements Serializable {
             context.update("formularioDialogos:lovEmpresas");
             banderaModificacionEmpresa = 1;
         }
-        
+
     }
-    
+
     public void activarCtrlF11() {
         System.out.println("\n ENTRE A CONTROLBETACENTROSCOSTOS.activarCtrlF11 \n");
-        
+
         try {
-            
-                 FacesContext c = FacesContext.getCurrentInstance();
+
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
-                tamano = 246;
+                tamano = 236;
                 System.out.println("Activar");
                 codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
                 codigoCC.setFilterStyle("width: 40px");
@@ -1408,14 +1462,14 @@ public class ControlBetaCentrosCostos implements Serializable {
                 codigoCTT.setFilterStyle("display: none; visibility: hidden;");
                 dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
                 dimensiones.setFilterStyle("display: none; visibility: hidden;");
-                tamano = 270;
+                tamano = 260;
                 RequestContext.getCurrentInstance().update("form:datosCentrosCostos");
                 bandera = 0;
                 filtrarCentrosCostos = null;
                 tipoLista = 0;
             }
         } catch (Exception e) {
-            
+
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.activarCtrlF11 ERROR====================" + e.getMessage());
         }
     }
@@ -1469,16 +1523,16 @@ public class ControlBetaCentrosCostos implements Serializable {
                         context.update("form:datosCentrosCostos");
                         context.update("formularioDialogos:buscarCentrosCostosDialogo");
                     }
-                    
+
                 }
             }
-            
+
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cambiarEmpresaSeleccionada ERROR======" + e.getMessage());
         }
-        
+
     }
-    
+
     public void editarCelda() {
         try {
             System.out.println("\n ENTRE A editarCelda INDEX  " + index);
@@ -1531,9 +1585,9 @@ public class ControlBetaCentrosCostos implements Serializable {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.editarCelDa ERROR=====================" + E.getMessage());
         }
     }
-    
+
     public void listaValoresBoton() {
-        
+
         try {
             if (index >= 0) {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1546,10 +1600,10 @@ public class ControlBetaCentrosCostos implements Serializable {
             }
         } catch (Exception e) {
             System.out.println("\n ERROR CONTROLBETACENTROSCOSTOS.listaValoresBoton ERROR====================" + e.getMessage());
-            
+
         }
     }
-    
+
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosCentrosCostosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1571,7 +1625,7 @@ public class ControlBetaCentrosCostos implements Serializable {
         context.responseComplete();
         index = -1;
     }
-    
+
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
@@ -1600,18 +1654,18 @@ public class ControlBetaCentrosCostos implements Serializable {
             } else {
                 context.execute("errorRastroHistorico.show()");
             }
-            
+
         }
         index = -1;
     }
-    
+
     public void lovEmpresas() {
         index = -1;
         secRegistro = null;
         cualCelda = -1;
         RequestContext.getCurrentInstance().execute("EmpresasDialogo.show()");
     }
-    
+
     public void cambiarEmpresa() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("Cambiar empresa  GUARDADO = " + guardado);
@@ -1631,13 +1685,13 @@ public class ControlBetaCentrosCostos implements Serializable {
             banderaModificacionEmpresa = 0;
             context.update("form:datosCentrosCostos");
             context.update("formularioDialogos:lovCentrosCostos");
-            
+
         } else {
             banderaModificacionEmpresa = 0;
             context.execute("confirmarGuardar.show()");
         }
     }
-    
+
     public void cancelarCambioEmpresa() {
         filtradoListaEmpresas = null;
         banderaModificacionEmpresa = 0;
@@ -1648,27 +1702,28 @@ public class ControlBetaCentrosCostos implements Serializable {
     public BigInteger getSecRegistro() {
         return secRegistro;
     }
-    
+
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
+
     public int getRegistrosBorrados() {
         return registrosBorrados;
     }
-    
+
     public void setRegistrosBorrados(int registrosBorrados) {
         this.registrosBorrados = registrosBorrados;
     }
-    
+
     public String getMensajeValidacion() {
         return mensajeValidacion;
     }
-    
+
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
-    
+    private String infoRegistroEmpresas;
+
     public List<Empresas> getListaEmpresas() {
         try {
             if (listaEmpresas == null) {
@@ -1678,25 +1733,32 @@ public class ControlBetaCentrosCostos implements Serializable {
                     backUpEmpresaActual = empresaSeleccionada;
                 }
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listCentrosCostosPorEmpresa == null || listaEmpresas.isEmpty()) {
+                infoRegistroEmpresas = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroEmpresas = "Cantidad de registros: " + listaEmpresas.size();
+            }
+            context.update("form:infoRegistroEmpresas");
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("ERRO LISTA EMPRESAS " + e);
             return null;
         }
     }
-    
+
     public void setListaEmpresas(List<Empresas> listaEmpresas) {
         this.listaEmpresas = listaEmpresas;
     }
-    
+
     public List<Empresas> getFiltradoListaEmpresas() {
         return filtradoListaEmpresas;
     }
-    
+
     public void setFiltradoListaEmpresas(List<Empresas> filtradoListaEmpresas) {
         this.filtradoListaEmpresas = filtradoListaEmpresas;
     }
-    
+
     public Empresas getEmpresaSeleccionada() {
         try {
             if (empresaSeleccionada == null) {
@@ -1709,11 +1771,12 @@ public class ControlBetaCentrosCostos implements Serializable {
             return empresaSeleccionada;
         }
     }
-    
+
     public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
         this.empresaSeleccionada = empresaSeleccionada;
     }
-    
+    private String infoRegistro;
+
     public List<CentrosCostos> getListCentrosCostosPorEmpresa() {
         try {
             if (empresaSeleccionada == null) {
@@ -1726,13 +1789,22 @@ public class ControlBetaCentrosCostos implements Serializable {
             } else if (listCentrosCostosPorEmpresa == null) {
                 listCentrosCostosPorEmpresa = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
             }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listCentrosCostosPorEmpresa == null || listCentrosCostosPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
+
             return listCentrosCostosPorEmpresa;
         } catch (Exception e) {
             System.out.println(" BETA  BETA ControlCentrosCosto: Error al recibir los CentrosCostos de la empresa seleccionada /n" + e.getMessage());
             return null;
         }
     }
-    
+
     public List<CentrosCostos> getListCentrosCostosPorEmpresaBoton() {
         try {
             if (listCentrosCostosPorEmpresaBoton == null) {
@@ -1745,123 +1817,158 @@ public class ControlBetaCentrosCostos implements Serializable {
             return null;
         }
     }
-    
+
     public void setListCentrosCostosPorEmpresaBoton(List<CentrosCostos> listCentrosCostosPorEmpresaBoton) {
         this.listCentrosCostosPorEmpresaBoton = listCentrosCostosPorEmpresaBoton;
     }
-    
+
     public void setListCentrosCostosPorEmpresa(List<CentrosCostos> listCentrosCostosPorEmpresa) {
         this.listCentrosCostosPorEmpresa = listCentrosCostosPorEmpresa;
     }
-    
+
     public List<CentrosCostos> getFiltrarCentrosCostos() {
         return filtrarCentrosCostos;
     }
-    
+
     public void setFiltrarCentrosCostos(List<CentrosCostos> filtrarCentrosCostos) {
         this.filtrarCentrosCostos = filtrarCentrosCostos;
     }
-    
+
     public CentrosCostos getNuevoCentroCosto() {
         if (nuevoCentroCosto == null) {
             nuevoCentroCosto = new CentrosCostos();
         }
         return nuevoCentroCosto;
     }
-    
+
     public void setNuevoCentroCosto(CentrosCostos nuevoCentroCosto) {
         this.nuevoCentroCosto = nuevoCentroCosto;
     }
-    
+
     public CentrosCostos getDuplicarCentroCosto() {
         return duplicarCentroCosto;
     }
-    
+
     public void setDuplicarCentroCosto(CentrosCostos duplicarCentroCosto) {
         this.duplicarCentroCosto = duplicarCentroCosto;
     }
-    
+
+    private String infoRegistroTiposEmpresas;
+
     public List<TiposCentrosCostos> getListaTiposCentrosCostos() {
         if (listaTiposCentrosCostos == null) {
             listaTiposCentrosCostos = administrarCentroCostos.lovTiposCentrosCostos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaTiposCentrosCostos == null || listaTiposCentrosCostos.isEmpty()) {
+            infoRegistroTiposEmpresas = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroTiposEmpresas = "Cantidad de registros: " + listaTiposCentrosCostos.size();
+        }
+
+        context.update("form:infoRegistroTiposEmpresas");
         return listaTiposCentrosCostos;
     }
-    
+
     public void setListaTiposCentrosCostos(List<TiposCentrosCostos> listaTiposCentrosCostos) {
         this.listaTiposCentrosCostos = listaTiposCentrosCostos;
     }
-    
+
     public List<TiposCentrosCostos> getFiltradoTiposCentrosCostos() {
         return filtradoTiposCentrosCostos;
     }
-    
+
     public void setFiltradoTiposCentrosCostos(List<TiposCentrosCostos> filtradoTiposCentrosCostos) {
         this.filtradoTiposCentrosCostos = filtradoTiposCentrosCostos;
     }
-    
+
     public TiposCentrosCostos getTipoCentroCostoSeleccionado() {
         return tipoCentroCostoSeleccionado;
     }
-    
+
     public void setTipoCentroCostoSeleccionado(TiposCentrosCostos tipoCentroCostoSeleccionado) {
         this.tipoCentroCostoSeleccionado = tipoCentroCostoSeleccionado;
     }
-    
+
     public boolean isAceptar() {
         return aceptar;
     }
-    
+
     public void setAceptar(boolean aceptar) {
         this.aceptar = aceptar;
     }
-    
+
     public List<CentrosCostos> getFilterCentrosCostosPorEmpresa() {
         return filterCentrosCostosPorEmpresa;
     }
-    
+
     public void setFilterCentrosCostosPorEmpresa(List<CentrosCostos> filterCentrosCostosPorEmpresa) {
         this.filterCentrosCostosPorEmpresa = filterCentrosCostosPorEmpresa;
     }
-    
+
     public CentrosCostos getCentrosCostosPorEmpresaSeleccionado() {
         return CentrosCostosPorEmpresaSeleccionado;
     }
-    
+
     public void setCentrosCostosPorEmpresaSeleccionado(CentrosCostos CentrosCostosPorEmpresaSeleccionado) {
         this.CentrosCostosPorEmpresaSeleccionado = CentrosCostosPorEmpresaSeleccionado;
     }
-    
+
     public CentrosCostos getEditarCentroCosto() {
         return editarCentroCosto;
     }
-    
+
     public void setEditarCentroCosto(CentrosCostos editarCentroCosto) {
         this.editarCentroCosto = editarCentroCosto;
     }
-    
+
     public boolean isGuardado() {
         return guardado;
     }
-    
+
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
-    
+
     public CentrosCostos getCentroCostoBetaSeleccionado() {
         return centroCostoBetaSeleccionado;
     }
-    
+
     public void setCentroCostoBetaSeleccionado(CentrosCostos centroCostoBetaSeleccionado) {
         this.centroCostoBetaSeleccionado = centroCostoBetaSeleccionado;
     }
-    
+
     public int getTamano() {
         return tamano;
     }
-    
+
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
-    
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroEmpresas() {
+        return infoRegistroEmpresas;
+    }
+
+    public void setInfoRegistroEmpresas(String infoRegistroEmpresas) {
+        this.infoRegistroEmpresas = infoRegistroEmpresas;
+    }
+
+    public String getInfoRegistroTiposEmpresas() {
+        return infoRegistroTiposEmpresas;
+    }
+
+    public void setInfoRegistroTiposEmpresas(String infoRegistroTiposEmpresas) {
+        this.infoRegistroTiposEmpresas = infoRegistroTiposEmpresas;
+    }
+
 }

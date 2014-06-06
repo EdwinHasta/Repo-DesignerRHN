@@ -163,4 +163,18 @@ public class PersistenciaTiposEntidades implements PersistenciaTiposEntidadesInt
             return tiposEntidades;
         }
     }
+
+    @Override
+    public TiposEntidades buscarTipoEntidadPorCodigo(EntityManager em, Short codigo) {
+        try {
+            Query query = em.createQuery("SELECT te FROM TiposEntidades te WHERE te.codigo=:codigo");
+            query.setParameter("codigo", codigo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            TiposEntidades tiposEntidades = (TiposEntidades) query.getSingleResult();
+            return tiposEntidades;
+        } catch (Exception e) {
+            System.out.println("Error buscarTipoEntidadPorCodigo PersistenciaTiposEntidades : " + e.toString());
+            return null;
+        }
+    }
 }

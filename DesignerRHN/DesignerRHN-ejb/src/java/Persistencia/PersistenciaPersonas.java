@@ -129,4 +129,37 @@ public class PersistenciaPersonas implements PersistenciaPersonasInterface {
         }
         return persona;
     }
+
+    @Override
+    public Personas buscarPersonaPorNumeroDocumento(EntityManager em, BigInteger numeroDocumento) {
+        try {
+            Query query = em.createQuery("SELECT p FROM Personas p WHERE p.numerodocumento=:numeroDocumento AND p.digitoverificaciondocumento is null");
+            query.setParameter("numeroDocumento", numeroDocumento);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Personas persona = (Personas) query.getSingleResult();
+            return persona;
+        } catch (Exception e) {
+            System.out.println("Error buscarPersonaPorNumeroDocumento PersistenciaPersonas : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Personas obtenerUltimaPersonaAlmacenada(EntityManager em) {
+        try {
+            Personas persona = null;
+            Query query = em.createQuery("SELECT p FROM Personas p");
+            List<Personas> lista = query.getResultList();
+            if (lista != null) {
+                int tam = lista.size();
+                if (tam > 0) {
+                    persona = lista.get(tam - 1);
+                }
+            }
+            return persona;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimaPersonaAlmacenada PersistenciaPersonas : " + e.toString());
+            return null;
+        }
+    }
 }
