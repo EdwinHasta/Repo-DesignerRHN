@@ -44,7 +44,7 @@ public class MotivosLocalizaciones implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @Basic(optional = false)
     @Column(name = "DESCRIPCION")
     private String descripcion;
@@ -58,7 +58,7 @@ public class MotivosLocalizaciones implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public MotivosLocalizaciones(BigInteger secuencia, Short codigo, String descripcion) {
+    public MotivosLocalizaciones(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -72,23 +72,25 @@ public class MotivosLocalizaciones implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
+
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion == null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;  
+        }
     }
 
     @XmlTransient

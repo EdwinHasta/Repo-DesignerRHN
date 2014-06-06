@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,34 +29,53 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, EstadosCiviles estadosCiviles) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(estadosCiviles);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(estadosCiviles);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando EstadosCiviles PersistenciaEstadosCiviles");
+            System.out.println("Error PersistenciaEstadosCiviles.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, EstadosCiviles estadosCiviles) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(estadosCiviles);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando EstadosCiviles PersistenciaEstadosCiviles");
+            System.out.println("Error PersistenciaEstadosCiviles.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, EstadosCiviles estadosCiviles) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(estadosCiviles));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrando EstadosCiviles PersistenciaEstadosCiviles");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEstadosCiviles.borrar: " + e);
+            }
         }
     }
 

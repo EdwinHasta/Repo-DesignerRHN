@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,28 +29,53 @@ public class PersistenciaGruposSalariales implements PersistenciaGruposSalariale
 
     @Override
     public void crear(EntityManager em,GruposSalariales gruposSalariales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(gruposSalariales);
+            tx.begin();
+            em.merge(gruposSalariales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaGruposSalariales : " + e.toString());
+            System.out.println("Error PersistenciaGruposSalariales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,GruposSalariales gruposSalariales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(gruposSalariales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaGruposSalariales : " + e.toString());
+            System.out.println("Error PersistenciaGruposSalariales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,GruposSalariales gruposSalariales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(gruposSalariales));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaGruposSalariales : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaGruposSalariales.borrar: " + e);
+            }
         }
     }
 

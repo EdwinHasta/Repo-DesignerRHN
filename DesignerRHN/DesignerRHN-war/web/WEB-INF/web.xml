@@ -24,10 +24,6 @@
             <param-name>thresholdSize</param-name>
             <param-value>2097152</param-value>
         </init-param>
-        <init-param>
-            <param-name>uploadDirectory</param-name>
-            <param-value>C:\Prueba\Juguetito\FirstFormWhitBD\web\ArchivosCargados</param-value>
-        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>PrimeFaces FileUpload Filter</filter-name>

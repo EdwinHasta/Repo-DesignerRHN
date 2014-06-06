@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,28 +28,49 @@ public class PersistenciaAsociaciones implements PersistenciaAsociacionesInterfa
 
     @Override
     public void crear(EntityManager em, Asociaciones asociaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(asociaciones);
+            tx.begin();
+            em.merge(asociaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaAsociaciones");
+            System.out.println("Error PersistenciaAsociaciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Asociaciones asociaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(asociaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaAsociaciones");
+            System.out.println("Error PersistenciaAsociaciones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Asociaciones asociaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(asociaciones));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaAsociaciones");
+            System.out.println("Error PersistenciaAsociaciones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

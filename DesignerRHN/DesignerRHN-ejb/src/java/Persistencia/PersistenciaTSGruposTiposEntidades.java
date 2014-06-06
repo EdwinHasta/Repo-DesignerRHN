@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -31,28 +32,49 @@ public class PersistenciaTSGruposTiposEntidades implements PersistenciaTSGruposT
 
     @Override
     public void crear(EntityManager em, TSGruposTiposEntidades tSGruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tSGruposTiposEntidades);
+            tx.begin();
+            em.merge(tSGruposTiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTSGruposTiposEntidades : " + e.toString());
+            System.out.println("Error PersistenciaTSGruposTiposEntidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TSGruposTiposEntidades tSGruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tSGruposTiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTSGruposTiposEntidades : " + e.toString());
+            System.out.println("Error PersistenciaTSGruposTiposEntidades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TSGruposTiposEntidades tSGruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tSGruposTiposEntidades));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTSGruposTiposEntidades : " + e.toString());
+            System.out.println("Error PersistenciaTSGruposTiposEntidades.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

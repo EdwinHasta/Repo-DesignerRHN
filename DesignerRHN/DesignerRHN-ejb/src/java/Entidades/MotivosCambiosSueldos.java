@@ -82,14 +82,15 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre == null) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = nombre.toUpperCase();
+        }
     }
 
     public String getSueldopromedio() {
@@ -119,8 +120,8 @@ public class MotivosCambiosSueldos implements Serializable {
     }
 
     public void setEstadoSueldoPromedio(Boolean estadoSueldoPromedio) {
-        if (estadoSueldoPromedio == null || estadoSueldoPromedio==false) {
-            sueldopromedio="N";
+        if (estadoSueldoPromedio == null || estadoSueldoPromedio == false) {
+            sueldopromedio = "N";
         } else {
             this.sueldopromedio = "S";
         }

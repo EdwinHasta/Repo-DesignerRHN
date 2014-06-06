@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,28 +30,53 @@ public class PersistenciaConceptosJuridicos implements PersistenciaConceptosJuri
 
     @Override
     public void crear(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(conceptosJuridicos);
+            tx.begin();
+            em.merge(conceptosJuridicos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaConceptosJuridicos : " + e.toString());
+            System.out.println("Error PersistenciaConceptosJuridicos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(conceptosJuridicos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaConceptosJuridicos : " + e.toString());
+            System.out.println("Error PersistenciaConceptosJuridicos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,ConceptosJuridicos conceptosJuridicos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(conceptosJuridicos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaConceptosJuridicos : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaConceptosJuridicos.borrar: " + e);
+            }
         }
     }
 

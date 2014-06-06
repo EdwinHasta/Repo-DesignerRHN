@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -28,28 +29,53 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
    
     @Override
     public void crear(EntityManager em,EstadosAfiliaciones afiliaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(afiliaciones);
+            tx.begin();
+            em.merge(afiliaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando bancos persistencia bancos");
+            System.out.println("Error PersistenciaEstadosAfiliaciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
     
     @Override
     public void editar(EntityManager em,EstadosAfiliaciones afiliaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(afiliaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando bancos persistencia bancos");
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaEstadosAfiliaciones.editar: " + e);
         }
     }
     
     @Override
     public void borrar(EntityManager em,EstadosAfiliaciones afiliaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(afiliaciones));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrando bancos persistencia bancos");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEstadosAfiliaciones.borrar: " + e);
+            }
         }
     }
     

@@ -9,39 +9,75 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'HvExperienciasLaborales'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'HvExperienciasLaborales' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperienciasLaboralesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,HvExperienciasLaborales experienciasLaborales) {
-        em.persist(experienciasLaborales);
+    public void crear(EntityManager em, HvExperienciasLaborales experienciasLaborales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(experienciasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHistoriasformulas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,HvExperienciasLaborales experienciasLaborales) {
-        em.merge(experienciasLaborales);
+    public void editar(EntityManager em, HvExperienciasLaborales experienciasLaborales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(experienciasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHistoriasformulas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void borrar(EntityManager em,HvExperienciasLaborales experienciasLaborales) {
-        em.remove(em.merge(experienciasLaborales));
+    public void borrar(EntityManager em, HvExperienciasLaborales experienciasLaborales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(experienciasLaborales);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHistoriasformulas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public HvExperienciasLaborales buscarHvExperienciaLaboral(EntityManager em,BigInteger secuencia) {
+    public HvExperienciasLaborales buscarHvExperienciaLaboral(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(HvExperienciasLaborales.class, secuencia);
         } catch (Exception e) {
@@ -51,7 +87,7 @@ public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperi
     }
 
     @Override
-    public List<HvExperienciasLaborales> experienciaLaboralPersona(EntityManager em,BigInteger secuenciaHV) {
+    public List<HvExperienciasLaborales> experienciaLaboralPersona(EntityManager em, BigInteger secuenciaHV) {
         try {
             Query query = em.createQuery("SELECT COUNT(hve) FROM HvExperienciasLaborales hve WHERE hve.hojadevida.secuencia = :secuenciaHV");
             query.setParameter("secuenciaHV", secuenciaHV);
@@ -72,7 +108,7 @@ public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperi
     }
 
     @Override
-    public List<HvExperienciasLaborales> experienciasLaboralesSecuenciaEmpleado(EntityManager em,BigInteger secuenciaHv) {
+    public List<HvExperienciasLaborales> experienciasLaboralesSecuenciaEmpleado(EntityManager em, BigInteger secuenciaHv) {
         try {
             Query queryFinal = em.createQuery("SELECT hve FROM HvExperienciasLaborales hve WHERE hve.hojadevida.secuencia = :secuenciaHV");
             queryFinal.setParameter("secuenciaHV", secuenciaHv);
@@ -80,7 +116,7 @@ public class PersistenciaHvExperienciasLaborales implements PersistenciaHvExperi
             List<HvExperienciasLaborales> listaExperienciasLaborales = queryFinal.getResultList();
             return listaExperienciasLaborales;
         } catch (Exception e) {
-            System.out.println("Error experienciasLaboralesSecuenciaEmpleado PersistenciaHvExperienciasLaborales : "+e.toString());
+            System.out.println("Error experienciasLaboralesSecuenciaEmpleado PersistenciaHvExperienciasLaborales : " + e.toString());
             return null;
         }
     }

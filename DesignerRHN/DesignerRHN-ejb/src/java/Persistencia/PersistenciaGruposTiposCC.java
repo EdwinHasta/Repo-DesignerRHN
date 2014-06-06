@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 
@@ -28,28 +29,53 @@ public class PersistenciaGruposTiposCC implements PersistenciaGruposTiposCCInter
 
     @Override
     public void crear(EntityManager em,GruposTiposCC gruposTiposCC) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(gruposTiposCC);
+            tx.begin();
+            em.merge(gruposTiposCC);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaTiposCentrosCostos crear ERROR " + e);
+            System.out.println("Error PersistenciaGruposTiposCC.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,GruposTiposCC gruposTiposCC) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(gruposTiposCC);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaTiposCentrosCostos editar ERROR " + e);
+            System.out.println("Error PersistenciaGruposTiposCC.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,GruposTiposCC gruposTiposCC) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(gruposTiposCC));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaTiposCentrosCostos borrar ERROR " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaGruposTiposCC.borrar: " + e);
+            }
         }
     }
 

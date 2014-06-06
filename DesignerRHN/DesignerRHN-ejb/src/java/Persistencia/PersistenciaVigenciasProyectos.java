@@ -9,42 +9,74 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
+
 /**
- * Clase Stateless.<br> 
+ * Clase Stateless.<br>
  * Clase encargada de realizar operaciones sobre la tabla 'VigenciasProyectos'
  * de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProyectosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-    
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, VigenciasProyectos vigenciasProyectos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasProyectos);
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaVigenciasFormales.crear");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasProyectos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
-    
+
     @Override
     public void editar(EntityManager em, VigenciasProyectos vigenciasProyectos) {
-        em.merge(vigenciasProyectos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(vigenciasProyectos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasProyectos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasProyectos vigenciasProyectos) {
-        em.remove(em.merge(vigenciasProyectos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(vigenciasProyectos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaVigenciasProyectos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -53,7 +85,7 @@ public class PersistenciaVigenciasProyectos implements PersistenciaVigenciasProy
         cq.select(cq.from(VigenciasProyectos.class));
         return em.createQuery(cq).getResultList();
     }
-    
+
     @Override
     public List<VigenciasProyectos> proyectosEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {

@@ -9,40 +9,71 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Contratos'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Contratos' de la base
+ * de datos.
+ *
  * @author AndresPineda
  */
 @Stateless
 public class PersistenciaContratos implements PersistenciaContratosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Contratos contratos) {
-        em.persist(contratos);
-    }
-
-    @Override
-    public void editar(EntityManager em,Contratos contratos) {
+    public void crear(EntityManager em, Contratos contratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(contratos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaContratos.editar: " + e);
+            System.out.println("Error PersistenciaContratos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
-    public void borrar(EntityManager em,Contratos contratos) {
-        em.remove(em.merge(contratos));
+    public void editar(EntityManager em, Contratos contratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(contratos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaContratos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrar(EntityManager em, Contratos contratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(contratos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaContratos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -54,7 +85,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     }
 
     @Override
-    public Contratos buscarContratoSecuencia(EntityManager em,BigInteger secuencia) {
+    public Contratos buscarContratoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT e FROM Contratos e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -80,7 +111,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
     }
 
     @Override
-    public void reproducirContrato(EntityManager em,Short codigoOrigen, Short codigoDestino) {        
+    public void reproducirContrato(EntityManager em, Short codigoOrigen, Short codigoDestino) {
         try {
             String sqlQuery = "call FORMULASCONTRATOS_PKG.CLONARLEGISLACION(?, ?)";
             Query query = em.createNativeQuery(sqlQuery);

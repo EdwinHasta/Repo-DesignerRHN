@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -23,30 +24,58 @@ import javax.persistence.criteria.CriteriaQuery;
 @Stateless
 public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterface {
 
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-//    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-//    private EntityManager em;
+   
+    
     @Override
     public void crear(EntityManager em, MetodosPagos metodosPagos) {
-        em.getTransaction().begin();
-        em.persist(metodosPagos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(metodosPagos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMetodosPagos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, MetodosPagos metodosPagos) {
-        em.getTransaction().begin();
-        em.merge(metodosPagos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(metodosPagos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMetodosPagos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, MetodosPagos metodosPagos) {
-        em.getTransaction().begin();
-        em.remove(em.merge(metodosPagos));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(metodosPagos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaMetodosPagos.borrar: " + e);
+            }
+        }
     }
 
     @Override

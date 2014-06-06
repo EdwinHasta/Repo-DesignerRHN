@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -28,26 +28,47 @@ public class PersistenciaTiposIndices implements PersistenciaTiposIndicesInterfa
     private EntityManager em;*/
 
     public void crear(EntityManager em, TiposIndices tiposIndices) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tiposIndices);
+            tx.begin();
+            em.merge(tiposIndices);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposIndices : " + e);
+            System.out.println("Error PersistenciaTiposIndices.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, TiposIndices tiposIndices) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposIndices);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposIndices : " + e);
+            System.out.println("Error PersistenciaTiposIndices.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, TiposIndices tiposIndices) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tiposIndices));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposIndices : " + e);
+            System.out.println("Error PersistenciaTiposIndices.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

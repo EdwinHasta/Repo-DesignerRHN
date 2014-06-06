@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
 
     @Override
     public void crear(EntityManager em,Competenciascargos competenciascargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(competenciascargos);
+            tx.begin();
+            em.merge(competenciascargos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaCompetenciasCargos : " + e.toString());
+            System.out.println("Error PersistenciaCompetenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Competenciascargos competenciascargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(competenciascargos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaCompetenciasCargos : " + e.toString());
+            System.out.println("Error PersistenciaCompetenciasCargos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,Competenciascargos competenciascargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(competenciascargos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaCompetenciasCargos : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCompetenciasCargos.borrar: " + e);
+            }
         }
     }
 

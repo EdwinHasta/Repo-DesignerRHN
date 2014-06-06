@@ -9,26 +9,40 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'ParametrosEstructuras'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'ParametrosEstructuras' de la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaParametrosEstructuras implements PersistenciaParametrosEstructurasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
+    
     @Override
     public void editar(EntityManager em, ParametrosEstructuras parametroEstructura) {
-        em.merge(parametroEstructura);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(parametroEstructura);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosCambiosSueldos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -52,7 +66,7 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long resultado = (Long) query.getSingleResult();
             if (resultado > 0) {
-                query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");                
+                query = em.createQuery("SELECT pe FROM ParametrosEstructuras pe WHERE pe.usuario.alias = :usuarioBD");
                 query.setParameter("usuarioBD", usuarioBD);
                 query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 ParametrosEstructuras parametroEstructura = (ParametrosEstructuras) query.getSingleResult();
@@ -68,13 +82,20 @@ public class PersistenciaParametrosEstructuras implements PersistenciaParametros
 
     @Override
     public void adicionarEmpleados(EntityManager em, BigInteger secParametroEstructura) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call PARAMETROS_PKG.InsertarParametrosProceso(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secParametroEstructura);
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("PersistenciaParametrosEstructuras.adicionarEmpleados: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -27,28 +28,53 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
 
     @Override
     public void crear(EntityManager em, IdiomasPersonas idiomasPersonas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(idiomasPersonas);
+            tx.begin();
+            em.merge(idiomasPersonas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaIdiomasPersonas : " + e.toString());
+            System.out.println("Error PersistenciaIdiomasPersonas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, IdiomasPersonas idiomasPersonas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(idiomasPersonas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaIdiomasPersonas : " + e.toString());
+            System.out.println("Error PersistenciaIdiomasPersonas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, IdiomasPersonas idiomasPersonas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(idiomasPersonas));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaIdiomasPersonas : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaIdiomasPersonas.borrar: " + e);
+            }
         }
     }
     

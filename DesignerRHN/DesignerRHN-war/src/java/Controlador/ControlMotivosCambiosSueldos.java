@@ -61,6 +61,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
     private BigInteger borradoVS;
     private int registrosBorrados;
     private int tamano;
+    private String infoRegistro;
 
     //----------------------
     public ControlMotivosCambiosSueldos() {
@@ -87,6 +88,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlMotivosCambiosSueldos.eventoFiltrar \n");
@@ -179,6 +181,14 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        getListMotivosCambiosSueldos();
+        if (listMotivosCambiosSueldos == null || listMotivosCambiosSueldos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosSueldos.size();
+        }
+        context.update("form:informacionRegistro");
+
         context.update("form:datosMotivoCambioSueldo");
         context.update("form:ACEPTAR");
     }
@@ -527,7 +537,9 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                 filtrarMotivosCambiosSueldos.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosSueldos.size();
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosMotivoCambioSueldo");
             index = -1;
             secRegistro = null;
@@ -596,7 +608,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoMotivoCambioSueldo.getNombre() == null) {
+        if (nuevoMotivoCambioSueldo.getNombre() == null || nuevoMotivoCambioSueldo.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Una  Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -650,7 +662,8 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             listMotivosCambiosSueldos.add(nuevoMotivoCambioSueldo);
             nuevoMotivoCambioSueldo = new MotivosCambiosSueldos();
             nuevoMotivoCambioSueldo.getEstadoSueldoPromedio();
-
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosSueldos.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosMotivoCambioSueldo");
             if (guardado == true) {
                 guardado = false;
@@ -740,7 +753,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMotivoCambioSueldo.getNombre().isEmpty()) {
+        if (duplicarMotivoCambioSueldo.getNombre() == null || duplicarMotivoCambioSueldo.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -766,6 +779,8 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             listMotivosCambiosSueldos.add(duplicarMotivoCambioSueldo);
             crearMotivosCambiosSueldos.add(duplicarMotivoCambioSueldo);
             context.update("form:datosMotivoCambioSueldo");
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosSueldos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -897,6 +912,14 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         if (listMotivosCambiosSueldos == null) {
             listMotivosCambiosSueldos = administrarMotivosCambiosSueldos.consultarMotivosCambiosSueldos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listMotivosCambiosSueldos == null || listMotivosCambiosSueldos.isEmpty()) {
+            infoRegistro = "agregaCantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosSueldos.size();
+        }
+        context.update("form:informacionRegistro");
         return listMotivosCambiosSueldos;
     }
 
@@ -982,6 +1005,14 @@ public class ControlMotivosCambiosSueldos implements Serializable {
 
     public void setMotivoCambioSueldoSeleccionado(MotivosCambiosSueldos motivoCambioSueldoSeleccionado) {
         this.motivoCambioSueldoSeleccionado = motivoCambioSueldoSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

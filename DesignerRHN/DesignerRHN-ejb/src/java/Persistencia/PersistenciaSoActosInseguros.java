@@ -3,12 +3,13 @@
  */
 package Persistencia;
 
-import InterfacePersistencia.PersistenciaSoActosInsegurosInterface;
 import Entidades.SoActosInseguros;
+import InterfacePersistencia.PersistenciaSoActosInsegurosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,23 +30,50 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, SoActosInseguros SoActosInseguros) {
-        em.getTransaction().begin();
-        em.persist(SoActosInseguros);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(SoActosInseguros);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoActosInseguros.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, SoActosInseguros SoActosInseguros) {
-        em.getTransaction().begin();
-        em.merge(SoActosInseguros);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(SoActosInseguros);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoActosInseguros.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, SoActosInseguros SoActosInseguros) {
-        em.getTransaction().begin();
-        em.remove(em.merge(SoActosInseguros));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(SoActosInseguros));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoActosInseguros.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -77,7 +105,7 @@ public class PersistenciaSoActosInseguros implements PersistenciaSoActosInseguro
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sam WHERE sam.actoinseguro = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador PersistenciaSoActosInseguros contadorSoAccidentesMedicos persistencia " + retorno);
             return retorno;
         } catch (Exception e) {

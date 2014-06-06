@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,34 +27,49 @@ public class PersistenciaTiposDescansos implements PersistenciaTiposDescansosInt
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, TiposDescansos tiposDescansos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(tiposDescansos);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(tiposDescansos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposDescansos");
+            System.out.println("Error PersistenciaTiposDescansos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposDescansos tiposDescansos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposDescansos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposDescansos");
+            System.out.println("Error PersistenciaTiposDescansos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposDescansos tiposDescansos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(tiposDescansos));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposDescansos");
+            System.out.println("Error PersistenciaTiposDescansos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

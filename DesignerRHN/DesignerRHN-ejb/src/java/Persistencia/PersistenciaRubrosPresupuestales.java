@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaRubrosPresupuestales implements PersistenciaRubrosPresu
 
     @Override
     public void crear(EntityManager em, Rubrospresupuestales rubrospresupuestales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(rubrospresupuestales);
+            tx.begin();
+            em.merge(rubrospresupuestales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaCuentas : " + e.toString());
+            System.out.println("Error PersistenciaRubrosPresupuestales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Rubrospresupuestales rubrospresupuestales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(rubrospresupuestales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaCuentas : " + e.toString());
+            System.out.println("Error PersistenciaRubrosPresupuestales.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Rubrospresupuestales rubrospresupuestales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(rubrospresupuestales));
+            tx.begin();
+            em.merge(rubrospresupuestales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaCuentas : " + e.toString());
+            System.out.println("Error PersistenciaRubrosPresupuestales.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

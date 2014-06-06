@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,37 +27,61 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,EvalEvaluadores evalEvaluadores) {
+    public void crear(EntityManager em, EvalEvaluadores evalEvaluadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(evalEvaluadores);
-        } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaMotivosContratos crear ERROR " + e);
-        }
-    }
-
-    @Override
-    public void editar(EntityManager em,EvalEvaluadores evalEvaluadores) {
-        try {
+            tx.begin();
             em.merge(evalEvaluadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaEvalEvaluadores editar ERROR " + e);
+            System.out.println("Error PersistenciaEvalEvaluadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
-    public void borrar(EntityManager em,EvalEvaluadores evalEvaluadores) {
+    public void editar(EntityManager em, EvalEvaluadores evalEvaluadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(evalEvaluadores));
+            tx.begin();
+            em.merge(evalEvaluadores);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaEvalEvaluadores borrar ERROR " + e);
+            System.out.println("Error PersistenciaEvalEvaluadores.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
-    public EvalEvaluadores buscarEvalEvaluador(EntityManager em,BigInteger secuenciaEvalEvaluadores) {
+    public void borrar(EntityManager em, EvalEvaluadores evalEvaluadores) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(evalEvaluadores));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEvalEvaluadores.borrar: " + e);
+            }
+        }
+    }
+
+    @Override
+    public EvalEvaluadores buscarEvalEvaluador(EntityManager em, BigInteger secuenciaEvalEvaluadores) {
         try {
             return em.find(EvalEvaluadores.class, secuenciaEvalEvaluadores);
         } catch (Exception e) {
@@ -79,7 +104,7 @@ public class PersistenciaEvalEvaluadores implements PersistenciaEvalEvaluadoresI
     }
 
     @Override
-    public BigInteger verificarBorradoEvalPruebas(EntityManager em,BigInteger secuencia) {
+    public BigInteger verificarBorradoEvalPruebas(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             Query query = em.createQuery("SELECT count(vp) FROM EvalPruebas vp WHERE vp.evalevaluador.secuencia =:secEvalEvalualores ");

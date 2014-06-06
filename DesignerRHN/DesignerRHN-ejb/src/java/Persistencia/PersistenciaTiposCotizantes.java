@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaTiposCotizantesInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -28,28 +29,49 @@ public class PersistenciaTiposCotizantes implements PersistenciaTiposCotizantesI
     
     @Override
     public void crear(EntityManager em, TiposCotizantes tiposCotizantes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tiposCotizantes);
+            tx.begin();
+            em.merge(tiposCotizantes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposCotizantes");
+            System.out.println("Error PersistenciaTiposCotizantes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposCotizantes tiposCotizantes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposCotizantes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposCotizantes");
+            System.out.println("Error PersistenciaTiposCotizantes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposCotizantes tiposCotizantes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tiposCotizantes));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposCotizantes");
+            System.out.println("Error PersistenciaTiposCotizantes.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
     

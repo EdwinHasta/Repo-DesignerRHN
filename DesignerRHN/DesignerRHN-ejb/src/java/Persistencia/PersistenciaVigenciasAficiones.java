@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -28,28 +29,49 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
    
     @Override
     public void crear(EntityManager em, VigenciasAficiones vigenciasAficiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasAficiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasAficiones)");
+            System.out.println("Error PersistenciaVigenciasAficiones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
    
     @Override
     public void editar(EntityManager em, VigenciasAficiones vigenciasAficiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasAficiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("ALERTA! Error Persistencia VigenciasAficiones : "+e.toString());
+            System.out.println("Error PersistenciaVigenciasAficiones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
    
     @Override
     public void borrar(EntityManager em, VigenciasAficiones vigenciasAficiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(vigenciasAficiones));
+            tx.begin();
+            em.merge(vigenciasAficiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error Persistencia Borrar VigenciasAficiones: " + e);
+            System.out.println("Error PersistenciaVigenciasAficiones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
    

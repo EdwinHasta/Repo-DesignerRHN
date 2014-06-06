@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,21 +27,52 @@ public class PersistenciaMotivosCesantias implements PersistenciaMotivosCesantia
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
-public void crear(EntityManager em, MotivosCesantias motivosCesantias) {
-        em.persist(motivosCesantias);
+    public void crear(EntityManager em, MotivosCesantias motivosCesantias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosCesantias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosCesantias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, MotivosCesantias motivosCesantias) {
-        em.merge(motivosCesantias);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosCesantias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosCesantias.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, MotivosCesantias motivosCesantias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(motivosCesantias));
+            tx.commit();
+
         } catch (Exception e) {
-            System.err.println("Error borrando MotivosCensanticas");
-            System.out.println(e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaMotivosCesantias.borrar: " + e);
+            }
         }
     }
 
@@ -75,5 +107,4 @@ public void crear(EntityManager em, MotivosCesantias motivosCesantias) {
         }
     }
 
-    
 }

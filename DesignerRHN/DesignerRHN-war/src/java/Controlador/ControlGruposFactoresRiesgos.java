@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     private GruposFactoresRiesgos nuevoGruposFactoresRiesgos;
     private GruposFactoresRiesgos duplicarGruposFactoresRiesgos;
     private GruposFactoresRiesgos editarGruposFactoresRiesgos;
+    private GruposFactoresRiesgos grupoFactorRiesgoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -61,6 +63,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     private int tamano;
     private Integer backupCodigo;
     private String backupDescripcion;
+    private String infoRegistro;
 
     public ControlGruposFactoresRiesgos() {
         listGruposFactoresRiesgos = null;
@@ -72,7 +75,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         nuevoGruposFactoresRiesgos = new GruposFactoresRiesgos();
         duplicarGruposFactoresRiesgos = new GruposFactoresRiesgos();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -143,11 +146,12 @@ public class ControlGruposFactoresRiesgos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
             bandera = 0;
@@ -164,27 +168,35 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         listGruposFactoresRiesgos = null;
         guardado = true;
         permitirIndex = true;
+        getListGruposFactoresRiesgos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listGruposFactoresRiesgos == null || listGruposFactoresRiesgos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosGruposFactoresRiesgos");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
             bandera = 0;
@@ -476,7 +488,9 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 filtrarGruposFactoresRiesgos.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosGruposFactoresRiesgos");
             index = -1;
             secRegistro = null;
@@ -558,7 +572,9 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listGruposFactoresRiesgos = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosGruposFactoresRiesgos");
             k = 0;
             guardado = true;
@@ -624,8 +640,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoGruposFactoresRiesgos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoGruposFactoresRiesgos.getDescripcion() == null || nuevoGruposFactoresRiesgos.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -637,12 +653,13 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
                 bandera = 0;
@@ -658,6 +675,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             crearGruposFactoresRiesgos.add(nuevoGruposFactoresRiesgos);
 
             listGruposFactoresRiesgos.add(nuevoGruposFactoresRiesgos);
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
+            context.update("form:informacionRegistro");
             nuevoGruposFactoresRiesgos = new GruposFactoresRiesgos();
             context.update("form:datosGruposFactoresRiesgos");
             if (guardado == true) {
@@ -740,8 +759,8 @@ public class ControlGruposFactoresRiesgos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarGruposFactoresRiesgos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarGruposFactoresRiesgos.getDescripcion() == null || duplicarGruposFactoresRiesgos.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -759,16 +778,19 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             crearGruposFactoresRiesgos.add(duplicarGruposFactoresRiesgos);
             context.update("form:datosGruposFactoresRiesgos");
             index = -1;
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
+            context.update("form:informacionRegistro");
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
                 bandera = 0;
@@ -847,6 +869,14 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         if (listGruposFactoresRiesgos == null) {
             listGruposFactoresRiesgos = administrarGruposFactoresRiesgos.consultarGruposFactoresRiesgos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listGruposFactoresRiesgos == null || listGruposFactoresRiesgos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
+        }
+        context.update("form:informacionRegistro");
         return listGruposFactoresRiesgos;
     }
 
@@ -924,6 +954,22 @@ public class ControlGruposFactoresRiesgos implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public GruposFactoresRiesgos getGrupoFactorRiesgoSeleccionado() {
+        return grupoFactorRiesgoSeleccionado;
+    }
+
+    public void setGrupoFactorRiesgoSeleccionado(GruposFactoresRiesgos grupoFactorRiesgoSeleccionado) {
+        this.grupoFactorRiesgoSeleccionado = grupoFactorRiesgoSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

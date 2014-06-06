@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,17 +28,55 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Empleados empleados) {
-        em.persist(empleados);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(empleados);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpleados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Empleados empleados) {
-        em.merge(empleados);
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(empleados);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpleados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Empleados empleados) {
-        em.remove(em.merge(empleados));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(empleados));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEmpleados.borrar: " + e);
+            }
+        }
     }
 
     @Override
@@ -73,6 +112,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     @Override
     public Empleados buscarEmpleadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");

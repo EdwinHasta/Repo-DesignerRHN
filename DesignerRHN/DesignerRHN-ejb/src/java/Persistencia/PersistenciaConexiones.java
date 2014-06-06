@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaConexionesInterface;
 import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 /**
  * Clase Stateless. <br> 
@@ -20,12 +21,17 @@ public class PersistenciaConexiones implements PersistenciaConexionesInterface {
 
     @Override
     public void crear_Modificar(Conexiones conexion, EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(conexion);
-            em.getTransaction().commit();
-        } catch (Exception ex) {
-            System.out.println("Error PersistenciaConexiones.crear: " + ex);            
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaConexiones.crear_modificar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

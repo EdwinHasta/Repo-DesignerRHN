@@ -10,39 +10,79 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'CortesProcesos'
- * de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'CortesProcesos' de la
+ * base de datos
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,CortesProcesos corteProceso) {
-        em.persist(corteProceso);
+    public void crear(EntityManager em, CortesProcesos corteProceso) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(corteProceso);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCortesProcesos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,CortesProcesos corteProceso) {
-        em.merge(corteProceso);
+    public void editar(EntityManager em, CortesProcesos corteProceso) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(corteProceso);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCortesProcesos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void borrar(EntityManager em,CortesProcesos corteProceso) {
-        em.remove(em.merge(corteProceso));
+    public void borrar(EntityManager em, CortesProcesos corteProceso) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(corteProceso));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCortesProcesos.borrar: " + e);
+            }
+        }
     }
 
     @Override
-    public CortesProcesos buscarCorteProcesoSecuencia(EntityManager em,BigInteger secuencia) {
+    public CortesProcesos buscarCorteProcesoSecuencia(EntityManager em, BigInteger secuencia) {
         return em.find(CortesProcesos.class, secuencia);
     }
 
@@ -54,7 +94,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
     }
 
     @Override
-    public List<CortesProcesos> cortesProcesosComprobante(EntityManager em,BigInteger secuenciaComprobante) {
+    public List<CortesProcesos> cortesProcesosComprobante(EntityManager em, BigInteger secuenciaComprobante) {
         try {
             Query query = em.createQuery("SELECT cp FROM CortesProcesos cp WHERE cp.comprobante.secuencia = :secuenciaComprobante");
             query.setParameter("secuenciaComprobante", secuenciaComprobante);
@@ -68,7 +108,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
     }
 
     @Override
-    public Integer contarLiquidacionesCerradas(EntityManager em,BigInteger secProceso, String fechaDesde, String fechaHasta) {
+    public Integer contarLiquidacionesCerradas(EntityManager em, BigInteger secProceso, String fechaDesde, String fechaHasta) {
         try {
             String sqlQuery = "SELECT nvl(COUNT(CP.SECUENCIA),0)\n"
                     + "       FROM CORTESPROCESOS CP, empleados e, comprobantes co\n"
@@ -88,9 +128,9 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
             return null;
         }
     }
-    
+
     @Override
-    public void eliminarComprobante(EntityManager em,Short codigoProceso, String fechaDesde, String fechaHasta) {
+    public void eliminarComprobante(EntityManager em, Short codigoProceso, String fechaDesde, String fechaHasta) {
         try {
             String sqlQuery = "call CORTESPROCESOS_PKG.ELIMINARCOMPROBANTE(?, To_date( ?, 'dd/mm/yyyy'), To_date( ?, 'dd/mm/yyyy'))";
             Query query = em.createNativeQuery(sqlQuery);
@@ -102,9 +142,9 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
             System.out.println("Error cerrarLiquidacion. " + e);
         }
     }
-    
+
     @Override
-    public CortesProcesos buscarComprobante (EntityManager em, BigInteger secuenciaEmpleado) {
+    public CortesProcesos buscarComprobante(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createNativeQuery("SELECT cp.* from cortesprocesos cp, procesos p\n"
                     + "where cp.empleado=?\n"

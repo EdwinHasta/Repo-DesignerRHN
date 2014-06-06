@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaNovedadesOperandos implements PersistenciaNovedadesOper
 
     @Override
     public void crear(EntityManager em, NovedadesOperandos novedadesOperandos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(novedadesOperandos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El novedadesOperandos no exite o esta reservada por lo cual no puede ser modificada (novedadesOperandos)");
+            System.out.println("Error PersistenciaNovedadesOperandos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, NovedadesOperandos novedadesOperandos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(novedadesOperandos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el novedadesOperandos");
+            System.out.println("Error PersistenciaNovedadesOperandos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, NovedadesOperandos novedadesOperandos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(novedadesOperandos));
+            tx.begin();
+            em.merge(novedadesOperandos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El novedadesOperandos no se ha podido eliminar");
+            System.out.println("Error PersistenciaNovedadesOperandos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

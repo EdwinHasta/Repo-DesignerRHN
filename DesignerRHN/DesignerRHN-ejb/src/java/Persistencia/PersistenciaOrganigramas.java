@@ -12,15 +12,19 @@ import InterfacePersistencia.PersistenciaOrganigramasInterface;
 import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'Organigramas'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Organigramas' de la
+ * base de datos.
+ *
  * @author Hugo David Sin Gutiérrez.
  */
 @Stateless
 public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -29,25 +33,50 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
 
     @Override
     public void crear(EntityManager em, Organigramas organigramas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(organigramas);
+            tx.begin();
+            em.merge(organigramas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No es posible crear el organigrama");
+            System.out.println("Error PersistenciaOrganigramas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Organigramas organigramas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(organigramas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El organigrama no exite o esta reservada por lo cual no puede ser modificada");
+            System.out.println("Error PersistenciaOrganigramas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Organigramas organigramas) {
-        em.remove(em.merge(organigramas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(organigramas));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaOrganigramas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
@@ -65,11 +94,11 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
         cq.select(cq.from(Organigramas.class));
         return em.createQuery(cq).getResultList();
     }
-    
+
     @Override
     public List<Organigramas> buscarOrganigramasVigentes(EntityManager em, BigInteger secEmpresa, Date fechaVigencia) {
         try {
-            SimpleDateFormat formatoFecha=new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
             String fecha = formatoFecha.format(fechaVigencia);
             Query query = em.createQuery("SELECT o FROM Organigramas o WHERE o.empresa.secuencia = :secEmpresa AND o.fecha >= TO_DATE(:fechaVigencia,'dd/MM/yyyy')");
             query.setParameter("secEmpresa", secEmpresa);

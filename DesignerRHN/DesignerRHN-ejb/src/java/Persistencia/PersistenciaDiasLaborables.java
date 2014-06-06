@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
 
     @Override
     public void crear(EntityManager em,DiasLaborables diasLaborables) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(diasLaborables);
+            tx.begin();
+            em.merge(diasLaborables);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear DiasLaborables (PersistenciaDiasLaborables) : " + e.toString());
+            System.out.println("Error PersistenciaDiasLaborables.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,DiasLaborables diasLaborables) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(diasLaborables);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar DiasLaborables (PersistenciaDiasLaborables) : " + e.toString());
+            System.out.println("Error PersistenciaDiasLaborables.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,DiasLaborables diasLaborables) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(diasLaborables));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar DiasLaborables (PersistenciaDiasLaborables) : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaDiasLaborables.borrar: " + e);
+            }
         }
     }
 

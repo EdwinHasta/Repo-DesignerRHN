@@ -10,6 +10,9 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import InterfacePersistencia.PersistenciaEmpresasInterface;
+import java.math.BigInteger;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -29,31 +32,54 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Empresas empresas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(empresas);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(empresas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No es posible crear la empresa");
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Empresas empresas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(empresas);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La empresa no exite o esta reservada por lo cual no puede ser modificada");
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Empresas empresas) {
-        em.getTransaction().begin();
-        em.remove(em.merge(empresas));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(empresas));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaVigenciasCargos.borrar: " + e);
+            }
+        }
     }
 
     @Override

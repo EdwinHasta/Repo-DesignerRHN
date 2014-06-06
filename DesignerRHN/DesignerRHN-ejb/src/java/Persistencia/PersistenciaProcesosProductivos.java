@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaProcesosProductivos implements PersistenciaProcesosProd
 
     @Override
     public void crear(EntityManager em, ProcesosProductivos procesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(procesos);
+            tx.begin();
+            em.merge(procesos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaProcesosProductivos : " + e.toString());
+            System.out.println("Error PersistenciaPensionados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, ProcesosProductivos procesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(procesos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaProcesosProductivos : " + e.toString());
+            System.out.println("Error PersistenciaPensionados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, ProcesosProductivos procesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(procesos));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaProcesosProductivos : " + e.toString());
+            System.out.println("Error PersistenciaPensionados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

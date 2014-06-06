@@ -65,6 +65,7 @@ public class ControlTiposDias implements Serializable {
     private Integer backUpCodigo;
     private String backUpDescripcion;
     private int tamano;
+    private String infoRegistro;
 
     public ControlTiposDias() {
         listTiposDias = null;
@@ -181,6 +182,11 @@ public class ControlTiposDias implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDias == null || listTiposDias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDias.size();
+        }
         context.update("form:datosTipoReemplazo");
         context.update("form:ACEPTAR");
     }
@@ -528,6 +534,8 @@ public class ControlTiposDias implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + listTiposDias.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosTipoReemplazo");
             context.update("form:ACEPTAR");
             index = -1;
@@ -674,7 +682,11 @@ public class ControlTiposDias implements Serializable {
             }
         }
         System.out.println("NUEVA DESCRIPCION : " + nuevoTipoDia.getDescripcion());
-        if (nuevoTipoDia.getDescripcion().equals(" ") || nuevoTipoDia.getDescripcion().equals(null) || nuevoTipoDia.getDescripcion().isEmpty()) {
+        if (nuevoTipoDia.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe tener una descripción \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoTipoDia.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe tener una descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -715,6 +727,8 @@ public class ControlTiposDias implements Serializable {
             listTiposDias.add(nuevoTipoDia);
             nuevoTipoDia = new TiposDias();
             context.update("form:datosTipoReemplazo");
+            infoRegistro = "Cantidad de registros: " + listTiposDias.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -803,11 +817,7 @@ public class ControlTiposDias implements Serializable {
             mensajeValidacion = mensajeValidacion + "   * Un descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (duplicarTipoDia.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Un descripción \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-        } else if (duplicarTipoDia.getDescripcion().equals("")) {
+        } else if (duplicarTipoDia.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + "   * Un descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -825,6 +835,8 @@ public class ControlTiposDias implements Serializable {
             listTiposDias.add(duplicarTipoDia);
             crearTiposDias.add(duplicarTipoDia);
             context.update("form:datosTipoReemplazo");
+            infoRegistro = "Cantidad de registros: " + listTiposDias.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -915,6 +927,13 @@ public class ControlTiposDias implements Serializable {
         if (listTiposDias == null) {
             listTiposDias = administrarTiposDias.mostrarTiposDias();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDias == null || listTiposDias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDias.size();
+        }
+        context.update("form:informacionRegistro");
         return listTiposDias;
     }
 
@@ -1000,6 +1019,14 @@ public class ControlTiposDias implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaClasesPensiones implements PersistenciaClasesPensionesI
 
     @Override
     public void crear(EntityManager em, ClasesPensiones clasesPensiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(clasesPensiones);
+            tx.begin();
+            em.merge(clasesPensiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaClasesPensiones");
+            System.out.println("Error PersistenciaClasesPensiones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, ClasesPensiones clasesPensiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(clasesPensiones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaClasesPensiones");
+            System.out.println("Error PersistenciaClasesPensiones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, ClasesPensiones clasesPensiones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(clasesPensiones));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaClasesPensiones");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaClasesPensiones.borrar: " + e);
+            }
         }
     }
 

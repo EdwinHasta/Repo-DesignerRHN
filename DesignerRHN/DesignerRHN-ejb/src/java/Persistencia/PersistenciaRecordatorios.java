@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaRecordatoriosInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -22,6 +23,54 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
+    
+    @Override
+    public void crear(EntityManager em, Recordatorios recordatorios) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(recordatorios);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaRecordatorios.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void editar(EntityManager em, Recordatorios recordatorios) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(recordatorios);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaRecordatorios.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
+
+    @Override
+    public void borrar(EntityManager em, Recordatorios recordatorios) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(recordatorios));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaRecordatorios.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
+    }
     
     @Override
     public Recordatorios recordatorioRandom(EntityManager entity) {
@@ -99,33 +148,6 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
         } catch (Exception e) {
             System.out.println("Error: PersistenciaRecordatorios.mensajesRecordatorios");
             return null;
-        }
-    }
-    
-     @Override
-    public void crear(EntityManager em, Recordatorios recordatorios) {
-        try {
-            em.persist(recordatorios);
-        } catch (Exception e) {
-            System.out.println("Error crear PersistenciaRecordatorios");
-        }
-    }
-
-    @Override
-    public void editar(EntityManager em, Recordatorios recordatorios) {
-        try {
-            em.merge(recordatorios);
-        } catch (Exception e) {
-            System.out.println("Error editar PersistenciaRecordatorios");
-        }
-    }
-
-    @Override
-    public void borrar(EntityManager em, Recordatorios recordatorios) {
-        try {
-            em.remove(em.merge(recordatorios));
-        } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaRecordatorios");
         }
     }
     

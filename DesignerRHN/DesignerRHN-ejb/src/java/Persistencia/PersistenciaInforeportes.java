@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaInforeportesInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -29,28 +30,53 @@ public class PersistenciaInforeportes implements PersistenciaInforeportesInterfa
 
     @Override
     public void crear(EntityManager em, Inforeportes inforeportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(inforeportes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El Inforeportes no exite o esta reservada por lo cual no puede ser modificada (Inforeportes)");
+            System.out.println("Error PersistenciaInforeportes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Inforeportes inforeportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(inforeportes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el Inforeportes");
+            System.out.println("Error PersistenciaInforeportes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Inforeportes inforeportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(inforeportes));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("El Inforeportes no se ha podido eliminar");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaInforeportes.borrar: " + e);
+            }
         }
     }
 

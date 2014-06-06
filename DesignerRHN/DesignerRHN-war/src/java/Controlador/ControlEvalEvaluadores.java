@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,7 +39,7 @@ public class ControlEvalEvaluadores implements Serializable {
     AdministrarEvalEvaluadoresInterface administrarEvalEvaluadores;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<EvalEvaluadores> listEvalEvaluadores;
     private List<EvalEvaluadores> filtrarEvalEvaluadores;
     private List<EvalEvaluadores> crearEvalEvaluadores;
@@ -47,6 +48,7 @@ public class ControlEvalEvaluadores implements Serializable {
     private EvalEvaluadores nuevoEvalEvaluador;
     private EvalEvaluadores duplicarEvalEvaluador;
     private EvalEvaluadores editarEvalEvaluador;
+    private EvalEvaluadores evalEvaluadorSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +61,7 @@ public class ControlEvalEvaluadores implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    private int tamano;
 
     public ControlEvalEvaluadores() {
 
@@ -71,8 +74,9 @@ public class ControlEvalEvaluadores implements Serializable {
         nuevoEvalEvaluador = new EvalEvaluadores();
         duplicarEvalEvaluador = new EvalEvaluadores();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -96,6 +100,9 @@ public class ControlEvalEvaluadores implements Serializable {
         }
     }
 
+    private String backupDescripcion;
+    private Integer backupCodigo;
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
@@ -103,7 +110,13 @@ public class ControlEvalEvaluadores implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listEvalEvaluadores.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listEvalEvaluadores.get(index).getCodigo();
+                backupDescripcion = listEvalEvaluadores.get(index).getDescripcion();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarEvalEvaluadores.get(index).getCodigo();
+                backupDescripcion = filtrarEvalEvaluadores.get(index).getDescripcion();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -134,11 +147,12 @@ public class ControlEvalEvaluadores implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
             bandera = 0;
@@ -161,20 +175,22 @@ public class ControlEvalEvaluadores implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
             codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
             bandera = 0;
@@ -184,22 +200,25 @@ public class ControlEvalEvaluadores implements Serializable {
     }
 
     public void modificarEvalEvaluador(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR EVALUADOR");
-        index = indice;
-
+        System.err.println("ENTRE A MODIFICAR EVALDIMENSIONES");
         int contador = 0;
         boolean banderita = false;
-        Short a;
-        a = null;
+        boolean banderita1 = false;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR EVALUADOR, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearEvalEvaluadores.contains(listEvalEvaluadores.get(indice))) {
-                    if (listEvalEvaluadores.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listEvalEvaluadores.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listEvalEvaluadores.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listEvalEvaluadores.size(); j++) {
                             if (j != indice) {
@@ -208,9 +227,12 @@ public class ControlEvalEvaluadores implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
+                            banderita = false;
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listEvalEvaluadores.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -218,14 +240,18 @@ public class ControlEvalEvaluadores implements Serializable {
                     }
                     if (listEvalEvaluadores.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listEvalEvaluadores.get(indice).getDescripcion().equals(" ")) {
+                        banderita1 = false;
+                        listEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listEvalEvaluadores.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        listEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarEvalEvaluadores.isEmpty()) {
                             modificarEvalEvaluadores.add(listEvalEvaluadores.get(indice));
                         } else if (!modificarEvalEvaluadores.contains(listEvalEvaluadores.get(indice))) {
@@ -238,18 +264,82 @@ public class ControlEvalEvaluadores implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
+                    context.update("form:datosEvalEvaluadores");
+                    context.update("form:ACEPTAR");
+                } else {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listEvalEvaluadores.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listEvalEvaluadores.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < listEvalEvaluadores.size(); j++) {
+                            if (j != indice) {
+                                if (listEvalEvaluadores.get(indice).getCodigo() == listEvalEvaluadores.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            listEvalEvaluadores.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listEvalEvaluadores.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listEvalEvaluadores.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        listEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        banderita1 = true;
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosEvalEvaluadores");
+                    context.update("form:ACEPTAR");
+
                 }
             } else {
 
                 if (!crearEvalEvaluadores.contains(filtrarEvalEvaluadores.get(indice))) {
-                    if (filtrarEvalEvaluadores.get(indice).getCodigo() == a) {
+                    if (filtrarEvalEvaluadores.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarEvalEvaluadores.get(indice).setCodigo(backupCodigo);
                     } else {
+                        for (int j = 0; j < filtrarEvalEvaluadores.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalEvaluadores.get(indice).getCodigo() == listEvalEvaluadores.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
                         for (int j = 0; j < listEvalEvaluadores.size(); j++) {
                             if (j != indice) {
                                 if (filtrarEvalEvaluadores.get(indice).getCodigo() == listEvalEvaluadores.get(j).getCodigo()) {
@@ -257,16 +347,11 @@ public class ControlEvalEvaluadores implements Serializable {
                                 }
                             }
                         }
-                        for (int j = 0; j < filtrarEvalEvaluadores.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarEvalEvaluadores.get(indice).getCodigo() == filtrarEvalEvaluadores.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarEvalEvaluadores.get(indice).setCodigo(backupCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -275,14 +360,16 @@ public class ControlEvalEvaluadores implements Serializable {
 
                     if (filtrarEvalEvaluadores.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
                     }
                     if (filtrarEvalEvaluadores.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        banderita1 = false;
+                        filtrarEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
                     }
 
-                    if (banderita == true) {
+                    if (banderita == true && banderita1 == true) {
                         if (modificarEvalEvaluadores.isEmpty()) {
                             modificarEvalEvaluadores.add(filtrarEvalEvaluadores.get(indice));
                         } else if (!modificarEvalEvaluadores.contains(filtrarEvalEvaluadores.get(indice))) {
@@ -295,7 +382,59 @@ public class ControlEvalEvaluadores implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarEvalEvaluadores.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarEvalEvaluadores.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarEvalEvaluadores.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalEvaluadores.get(indice).getCodigo() == listEvalEvaluadores.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listEvalEvaluadores.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarEvalEvaluadores.get(indice).getCodigo() == listEvalEvaluadores.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarEvalEvaluadores.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarEvalEvaluadores.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
+                    }
+                    if (filtrarEvalEvaluadores.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita1 = false;
+                        filtrarEvalEvaluadores.get(indice).setDescripcion(backupDescripcion);
+                    }
+
+                    if (banderita == true && banderita1 == true) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -303,6 +442,7 @@ public class ControlEvalEvaluadores implements Serializable {
 
             }
             context.update("form:datosEvalEvaluadores");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -404,6 +544,9 @@ public class ControlEvalEvaluadores implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listEvalEvaluadores = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosEvalEvaluadores");
             k = 0;
             guardado = true;
@@ -444,7 +587,7 @@ public class ControlEvalEvaluadores implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
@@ -483,11 +626,12 @@ public class ControlEvalEvaluadores implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
                 bandera = 0;
@@ -566,7 +710,7 @@ public class ControlEvalEvaluadores implements Serializable {
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarEvalEvaluador.getCodigo());
         System.err.println("ConfirmarDuplicar nombre " + duplicarEvalEvaluador.getDescripcion());
@@ -614,10 +758,11 @@ public class ControlEvalEvaluadores implements Serializable {
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
                 bandera = 0;
@@ -765,6 +910,22 @@ public class ControlEvalEvaluadores implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public EvalEvaluadores getEvalEvaluadorSeleccionado() {
+        return evalEvaluadorSeleccionado;
+    }
+
+    public void setEvalEvaluadorSeleccionado(EvalEvaluadores evalEvaluadorSeleccionado) {
+        this.evalEvaluadorSeleccionado = evalEvaluadorSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

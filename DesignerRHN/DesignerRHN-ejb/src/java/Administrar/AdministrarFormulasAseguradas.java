@@ -68,7 +68,7 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
             if (listaFormulasAseguradas.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaFormulasAseguradas.get(i).setPeriodicidad(null);
             }
-            persistenciaFormulasAseguradas.editar(em,listaFormulasAseguradas.get(i));
+            persistenciaFormulasAseguradas.editar(em, listaFormulasAseguradas.get(i));
         }
     }
 
@@ -78,7 +78,7 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
             if (listaFormulasAseguradas.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaFormulasAseguradas.get(i).setPeriodicidad(null);
             }
-            persistenciaFormulasAseguradas.borrar(em,listaFormulasAseguradas.get(i));
+            persistenciaFormulasAseguradas.borrar(em, listaFormulasAseguradas.get(i));
         }
     }
 
@@ -87,7 +87,7 @@ public class AdministrarFormulasAseguradas implements AdministrarFormulasAsegura
             if (listaFormulasAseguradas.get(i).getPeriodicidad().getSecuencia() == null) {
                 listaFormulasAseguradas.get(i).setPeriodicidad(null);
             }
-            persistenciaFormulasAseguradas.crear(em,listaFormulasAseguradas.get(i));
+            persistenciaFormulasAseguradas.crear(em, listaFormulasAseguradas.get(i));
         }
     }
 

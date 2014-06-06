@@ -9,35 +9,74 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 
 /**
  * Clase Stateless.<br>
- * Clase encargada de realizar operaciones sobre la tabla 'Modulos'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Modulos' de la base
+ * de datos.
+ *
  * @author -Felipphe- Felipe Triviño
  */
 @Stateless
-public class PersistenciaModulos implements PersistenciaModulosInterface{
+public class PersistenciaModulos implements PersistenciaModulosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Modulos modulos) {
-        em.persist(modulos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(modulos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaModulos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Modulos modulos) {
-        em.merge(modulos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(modulos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaModulos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Modulos modulos) {
-        em.remove(em.merge(modulos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(modulos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaModulos.borrar: " + e);
+            }
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,46 +27,61 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    EntityManager em;*/
-
+     EntityManager em;*/
     @Override
     public void crear(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(gruposTiposEntidades);
+            tx.begin();
+            em.merge(gruposTiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades crear ERROR : " + e);
+            System.out.println("Error PersistenciaGruposTiposEntidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
-        System.out.println("PERSISTENCIA-------------");
-        System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
-        System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
-        System.out.println("-------------PERSISTENCIA");
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(gruposTiposEntidades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaGruposTiposEntidades editar error " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaGruposTiposEntidades.editar: " + e);
         }
     }
 
     @Override
     public void borrar(EntityManager em,Grupostiposentidades gruposTiposEntidades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            System.out.println("PERSISTENCIA-------------");
-            System.out.println("----------BORRAR--------------------------------");
-            System.out.println("CODIGO " + gruposTiposEntidades.getCodigo());
-            System.out.println("NOMBRE " + gruposTiposEntidades.getNombre());
-            System.out.println("-------------PERSISTENCIA");
+            tx.begin();
             em.remove(em.merge(gruposTiposEntidades));
+            tx.commit();
+            em.getTransaction().commit();
         } catch (Exception e) {
-            System.err.println("\n ERROR EN PersistenciaGruposTiposEntidades borrar ERROR " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaGruposTiposEntidades.borrar: " + e);
+            }
         }
     }
 
     @Override
-    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public Grupostiposentidades consultarGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         try {
 
             return em.find(Grupostiposentidades.class, secuencia);
@@ -89,7 +105,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarTiposEntidadesGrupoTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tiposentidades WHERE grupo =?";
@@ -104,7 +120,7 @@ public class PersistenciaGruposTiposEntidades implements PersistenciaGruposTipos
         }
     }
 
-    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em,BigInteger secuencia) {
+    public BigInteger contarTSgruposTiposEntidadesTipoEntidad(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM tsgrupostiposentidades WHERE grupotipoentidad =?";

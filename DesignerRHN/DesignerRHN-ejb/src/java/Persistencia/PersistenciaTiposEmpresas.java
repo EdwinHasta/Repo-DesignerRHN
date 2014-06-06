@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -24,20 +25,52 @@ public class PersistenciaTiposEmpresas implements PersistenciaTiposEmpresasInter
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public void crear(EntityManager em, TiposEmpresas tiposEmpresas) {
-        em.persist(tiposEmpresas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposEmpresas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposEmpresas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, TiposEmpresas tiposEmpresas) {
-        em.merge(tiposEmpresas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposEmpresas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposEmpresas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, TiposEmpresas tiposEmpresas) {
-        em.remove(em.merge(tiposEmpresas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposEmpresas));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposEmpresas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public TiposEmpresas buscarTipoEmpresa(EntityManager em, BigInteger secuenciaTE) {

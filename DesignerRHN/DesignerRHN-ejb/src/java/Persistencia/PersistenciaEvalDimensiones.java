@@ -11,6 +11,7 @@ import Entidades.EvalDimensiones;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -26,21 +27,52 @@ public class PersistenciaEvalDimensiones implements PersistenciaEvalDimensionesI
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, EvalDimensiones evalDimensiones) {
-        em.getTransaction().begin();
-        em.persist(evalDimensiones);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(evalDimensiones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEvalDimensiones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, EvalDimensiones evalDimensiones) {
-        em.getTransaction().begin();
-        em.merge(evalDimensiones);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(evalDimensiones);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEvalDimensiones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, EvalDimensiones evalDimensiones) {
-        em.getTransaction().begin();
-        em.remove(em.merge(evalDimensiones));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(evalDimensiones));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEvalDimensiones.borrar: " + e);
+            }
+        }
     }
 
     public EvalDimensiones buscarEvalDimension(EntityManager em, BigInteger secuencia) {

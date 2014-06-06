@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -29,28 +30,49 @@ public class PersistenciaParametrosInformes implements PersistenciaParametrosInf
 
     @Override
     public void crear(EntityManager em, ParametrosInformes parametrosInformes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(parametrosInformes);
+            tx.begin();
+            em.merge(parametrosInformes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El ParametroInforme no exite o esta reservada por lo cual no puede ser modificada (ParametrosInformes)");
+            System.out.println("Error PersistenciaParametrosInformes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, ParametrosInformes parametrosInformes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(parametrosInformes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el ParametroInforme : "+e.toString());
+            System.out.println("Error PersistenciaParametrosInformes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, ParametrosInformes parametrosInformes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(parametrosInformes));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El ParametroInforme no se ha podido eliminar");
+            System.out.println("Error PersistenciaParametrosInformes.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

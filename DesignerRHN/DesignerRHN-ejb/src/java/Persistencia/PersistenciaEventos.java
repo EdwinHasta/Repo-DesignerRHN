@@ -3,46 +3,85 @@
  */
 package Persistencia;
 
-import Entidades.Eventos; 
+import Entidades.Eventos;
 import InterfacePersistencia.PersistenciaEventosInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Eventos'
- * de la base de datos.
+ * Clase encargada de realizar operaciones sobre la tabla 'Eventos' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaEventos implements PersistenciaEventosInterface{
+public class PersistenciaEventos implements PersistenciaEventosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Eventos eventos) {
-        em.persist(eventos);
+    public void crear(EntityManager em, Eventos eventos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(eventos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEventos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,Eventos eventos) {
-        em.merge(eventos);
+    public void editar(EntityManager em, Eventos eventos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(eventos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEventos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void borrar(EntityManager em,Eventos eventos) {
-        em.remove(em.merge(eventos));
+    public void borrar(EntityManager em, Eventos eventos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(eventos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEventos.borrar: " + e);
+            }
+        }
     }
 
     @Override
-    public Eventos buscarEvento(EntityManager em,BigInteger secuencia) {
+    public Eventos buscarEvento(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Eventos.class, secuencia);
         } catch (Exception e) {
@@ -63,8 +102,8 @@ public class PersistenciaEventos implements PersistenciaEventosInterface{
             return null;
         }
     }
-    
-        public BigInteger contadorVigenciasEventos(EntityManager em,BigInteger secuencia){
+
+    public BigInteger contadorVigenciasEventos(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
             String sqlQuery = "SELECT COUNT(*) FROM vigenciaseventos WHERE evento = ?";

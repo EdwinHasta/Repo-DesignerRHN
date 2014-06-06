@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,37 +31,49 @@ public class PersistenciaPensionados implements PersistenciaPensionadosInterface
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, Pensionados pensionados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(pensionados);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(pensionados);
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("El registro Pensionados no exite o esta reservada por lo cual no puede ser modificada (Pensionados) : " + e.toString());
+            System.out.println("Error PersistenciaPensionados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Pensionados pensionados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(pensionados);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("No se pudo modificar el registro Pensionados : " + e.toString());
+            System.out.println("Error PersistenciaPensionados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Pensionados pensionados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(pensionados));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            em.getTransaction().rollback();
-            System.out.println("No se pudo borrar el registro Pensionados : " + e.toString());
+            System.out.println("Error PersistenciaPensionados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

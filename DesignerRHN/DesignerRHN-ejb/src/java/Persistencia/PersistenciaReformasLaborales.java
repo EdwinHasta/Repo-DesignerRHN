@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,17 +30,50 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, ReformasLaborales reformaLaboral) {
-        em.persist(reformaLaboral);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(reformaLaboral);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaReformasLaborales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, ReformasLaborales reformaLaboral) {
-        em.merge(reformaLaboral);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(reformaLaboral);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaReformasLaborales.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, ReformasLaborales reformaLaboral) {
-        em.remove(em.merge(reformaLaboral));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(reformaLaboral));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaReformasLaborales.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

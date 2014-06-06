@@ -9,36 +9,71 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'PartesCuerpo'
- * de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'PartesCuerpo' de la
+ * base de datos
+ *
  * @author John Pineda.
  */
 @Stateless
 public class PersistenciaPartesCuerpo implements PersistenciaPartesCuerpoInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, PartesCuerpo partesCuerpo) {
-        em.persist(partesCuerpo);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(partesCuerpo);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPartesCuerpo.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, PartesCuerpo partesCuerpo) {
-        em.merge(partesCuerpo);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(partesCuerpo);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPartesCuerpo.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, PartesCuerpo partesCuerpo) {
-        em.remove(em.merge(partesCuerpo));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(partesCuerpo));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaPartesCuerpo.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

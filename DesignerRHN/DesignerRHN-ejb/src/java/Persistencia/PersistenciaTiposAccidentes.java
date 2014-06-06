@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -24,20 +25,52 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     public void crear(EntityManager em, TiposAccidentes tiposAccidentes) {
-        em.persist(tiposAccidentes);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposAccidentes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposAccidentes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, TiposAccidentes tiposAccidentes) {
-        em.merge(tiposAccidentes);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposAccidentes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposAccidentes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, TiposAccidentes tiposAccidentes) {
-        em.remove(em.merge(tiposAccidentes));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposAccidentes));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposAccidentes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public TiposAccidentes buscarTipoAccidente(EntityManager em, BigInteger secuenciaTA) {

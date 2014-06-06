@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,17 +30,54 @@ public class PersistenciaMotivosDefinitivas implements PersistenciaMotivosDefini
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, MotivosDefinitivas motivosDefinitivas) {
-        em.persist(motivosDefinitivas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosDefinitivas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosDefinitivas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, MotivosDefinitivas motivosDefinitivas) {
-        em.merge(motivosDefinitivas);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(motivosDefinitivas);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaMotivosDefinitivas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosDefinitivas motivosDefinitivas) {
-        em.remove(em.merge(motivosDefinitivas));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(motivosDefinitivas));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaMotivosDefinitivas.borrar: " + e);
+            }
+        }
     }
 
     @Override

@@ -127,7 +127,7 @@
                                     <f:facet name="footer">
                                         <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue;" id="fooEstructuras" onclick="estructurasDialog.show();"/>
                                     </f:facet>
-                                </p:column>  
+                                </p:column>
 
                                 <p:column headerText="Motivo" sortBy="#{info.motivocambiocargo.nombre}" filterBy="#{info.motivocambiocargo.nombre}" filterMatchMode="contains"  id="vcMotivo" width="150" filterStyle="display: none; visibility: hidden;" >      
                                     <f:facet name="header"><h:outputText value="#{msg['motivo']}"/></f:facet>
@@ -142,7 +142,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-
 
                                     <f:facet name="footer" >
                                         <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue" id="fooMotivos" onclick="motivosDialog.show();"/>
@@ -342,7 +341,7 @@
                                 <h:outputText value="#{msg['nombrejefeD']}" />  
                                 <h:outputText value="#{controlVigenciasCargos.vigenciaSeleccionada.empleadojefe.persona.nombre}" style="font-weight:bold"/> 
                             </h:panelGrid>  
-                        </p:dialog>  
+                        </p:dialog>
 
                         <!-- DIALOGO DE EMPLEADO JEFE-->
                         <p:dialog id="dialogoEmpleadoJefe" header="#{msg['empleadosEJ']}" widgetVar="dialogoEmpleadoJefe"  resizable="false" draggable="false" modal="true" height="300"  width="745"  closable="false">  
@@ -461,6 +460,7 @@
                     <!-- Hotkey Ctrl + F11 -->
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasCargos.activarCtrlF11()}"/> 
                 </h:form>
+                
                 <h:form id="formularioDialogos">
 
                     <p:dialog id="NuevoRegistroVC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="300" style=" padding: 0px">  

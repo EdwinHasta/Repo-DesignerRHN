@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -32,27 +33,50 @@ public class PersistenciaTiposAusentismos implements PersistenciaTiposAusentismo
 
     @Override
     public void crear(EntityManager em, Tiposausentismos tiposAusentismos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(tiposAusentismos);
-            em.getTransaction().commit();
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaTiposAusentismos.crear");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposAusentismos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Tiposausentismos tiposAusentismos) {
-        em.getTransaction().begin();
-        em.merge(tiposAusentismos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposAusentismos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposAusentismos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Tiposausentismos tiposAusentismos) {
-        em.getTransaction().begin();
-        em.remove(em.merge(tiposAusentismos));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(tiposAusentismos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposAusentismos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

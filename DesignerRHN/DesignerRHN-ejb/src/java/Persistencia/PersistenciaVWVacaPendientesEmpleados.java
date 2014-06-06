@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -31,34 +32,61 @@ public class PersistenciaVWVacaPendientesEmpleados implements PersistenciaVWVaca
 
     @Override
     public void crear(EntityManager em, VWVacaPendientesEmpleados vacaP) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(vacaP);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(vacaP);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando VWVacaPendientesEmpleados : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VWVacaPendientesEmpleados vacaP) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(vacaP);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando VWVacaPendientesEmpleados : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VWVacaPendientesEmpleados vacaP) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(vacaP));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrando VWVacaPendientesEmpleados : " + e.toString());
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 

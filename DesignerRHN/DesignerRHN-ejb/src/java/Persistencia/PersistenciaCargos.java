@@ -7,10 +7,10 @@ import Entidades.Cargos;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import InterfacePersistencia.PersistenciaCargosInterface;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -27,26 +27,61 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Cargos cargos) {
-        em.persist(cargos);
+    public void crear(EntityManager em, Cargos cargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(cargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
-    public void editar(EntityManager em,Cargos cargos) {
-        em.merge(cargos);
+    public void editar(EntityManager em, Cargos cargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(cargos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCargos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
-
     @Override
-    public void borrar(EntityManager em,Cargos cargos) {
-        em.remove(em.merge(cargos));
+    public void borrar(EntityManager em, Cargos cargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(cargos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCargos.borrar: " + e);
+            }
+        }
     }
 
     @Override
-    public Cargos buscarCargoSecuencia(EntityManager em,BigInteger secuencia) {
+    public Cargos buscarCargoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             BigInteger in;
             in = (BigInteger) secuencia;
@@ -90,7 +125,8 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
             return null;
         }
     }
-@Override
+
+    @Override
     public List<Cargos> buscarCargosPorSecuenciaEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT c FROM Cargos c  WHERE c.empresa.secuencia=:secEmpresa");

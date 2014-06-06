@@ -9,13 +9,15 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'SoCondicionesTrabajos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla
+ * 'SoCondicionesTrabajos' de la base de datos.
+ *
  * @author John Pineda.
  */
 @Stateful
@@ -26,20 +28,52 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, SoCondicionesTrabajos soCondicionesTrabajos) {
-        em.persist(soCondicionesTrabajos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(soCondicionesTrabajos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoCondicionesTrabajos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, SoCondicionesTrabajos soCondicionesTrabajos) {
-        em.merge(soCondicionesTrabajos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(soCondicionesTrabajos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoCondicionesTrabajos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, SoCondicionesTrabajos soCondicionesTrabajos) {
-        em.remove(em.merge(soCondicionesTrabajos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(soCondicionesTrabajos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaSoCondicionesTrabajos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

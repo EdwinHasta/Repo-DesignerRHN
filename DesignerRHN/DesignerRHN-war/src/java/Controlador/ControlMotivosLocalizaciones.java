@@ -4,10 +4,10 @@
  */
 package Controlador;
 
+import InterfaceAdministrar.AdministrarMotivosLocalizacionesInterface;
 import Entidades.MotivosLocalizaciones;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarMotivosLocalizacionesInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
@@ -35,18 +35,17 @@ import org.primefaces.context.RequestContext;
 public class ControlMotivosLocalizaciones implements Serializable {
 
     @EJB
-    AdministrarMotivosLocalizacionesInterface administrarMotivosLocalizacion;
+    AdministrarMotivosLocalizacionesInterface administrarMotivosLocalizaciones;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-
     private List<MotivosLocalizaciones> listMotivosLocalizaciones;
     private List<MotivosLocalizaciones> filtrarMotivosLocalizaciones;
     private List<MotivosLocalizaciones> crearMotivosLocalizaciones;
-    private List<MotivosLocalizaciones> modificarMotivosLocalizaciones;
-    private List<MotivosLocalizaciones> borrarMotivosLocalizaciones;
-    private MotivosLocalizaciones nuevoMotivoLocalizacion;
-    private MotivosLocalizaciones duplicarMotivoLocalizacion;
-    private MotivosLocalizaciones editarMotivoLocalizacion;
+    private List<MotivosLocalizaciones> modificarMotivoContrato;
+    private List<MotivosLocalizaciones> borrarMotivoContrato;
+    private MotivosLocalizaciones nuevoMotivoContrato;
+    private MotivosLocalizaciones duplicarMotivoContrato;
+    private MotivosLocalizaciones editarMotivoContrato;
     private MotivosLocalizaciones motivoLocalizacionSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
@@ -60,28 +59,33 @@ public class ControlMotivosLocalizaciones implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    private BigInteger contarVigenciasLocalizacionesMotivoLocalizacion;
     private int tamano;
+
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+    private String infoRegistro;
 
     public ControlMotivosLocalizaciones() {
 
         listMotivosLocalizaciones = null;
         crearMotivosLocalizaciones = new ArrayList<MotivosLocalizaciones>();
-        modificarMotivosLocalizaciones = new ArrayList<MotivosLocalizaciones>();
-        borrarMotivosLocalizaciones = new ArrayList<MotivosLocalizaciones>();
+        modificarMotivoContrato = new ArrayList<MotivosLocalizaciones>();
+        borrarMotivoContrato = new ArrayList<MotivosLocalizaciones>();
         permitirIndex = true;
-        editarMotivoLocalizacion = new MotivosLocalizaciones();
-        nuevoMotivoLocalizacion = new MotivosLocalizaciones();
-        duplicarMotivoLocalizacion = new MotivosLocalizaciones();
-        tamano = 270;
+        editarMotivoContrato = new MotivosLocalizaciones();
+        nuevoMotivoContrato = new MotivosLocalizaciones();
+        duplicarMotivoContrato = new MotivosLocalizaciones();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
-            administrarMotivosLocalizacion.obtenerConexion(ses.getId());
+            administrarMotivosLocalizaciones.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -90,16 +94,14 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A ControlMotivosLocalizaciones.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlMotiviosCambiosCargos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR ControlMotivosLocalizaciones eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlMotiviosCambiosCargos eventoFiltrar ERROR===" + e.getMessage());
         }
     }
-    private String backUpDescripcion;
-    private Short backUpCodigo;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -110,19 +112,24 @@ public class ControlMotivosLocalizaciones implements Serializable {
             if (tipoLista == 0) {
                 if (cualCelda == 0) {
                     backUpCodigo = listMotivosLocalizaciones.get(index).getCodigo();
-                    System.out.println("backupCodigo :" + backUpCodigo);
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
                 } else if (cualCelda == 1) {
                     backUpDescripcion = listMotivosLocalizaciones.get(index).getDescripcion();
-                    System.out.println("backUpDescripcion :" + backUpDescripcion);
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
                 }
+                secRegistro = listMotivosLocalizaciones.get(index).getSecuencia();
             } else {
                 if (cualCelda == 0) {
                     backUpCodigo = filtrarMotivosLocalizaciones.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
                 } else if (cualCelda == 1) {
                     backUpDescripcion = filtrarMotivosLocalizaciones.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
                 }
+                secRegistro = filtrarMotivosLocalizaciones.get(index).getSecuencia();
             }
-            secRegistro = listMotivosLocalizaciones.get(index).getSecuencia();
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -130,7 +137,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A ControlMotivosLocalizaciones.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlMotiviosCambiosCargos.asignarIndex \n");
             index = indice;
             RequestContext context = RequestContext.getCurrentInstance();
             if (LND == 0) {
@@ -143,7 +150,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR ControlMotivosLocalizaciones.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlMotiviosCambiosCargos.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -158,20 +165,21 @@ public class ControlMotivosLocalizaciones implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
-            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:codigo");
+
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosMotivoLocalizacion");
+            RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
             bandera = 0;
             filtrarMotivosLocalizaciones = null;
             tipoLista = 0;
             tamano = 270;
         }
 
-        borrarMotivosLocalizaciones.clear();
+        borrarMotivoContrato.clear();
         crearMotivosLocalizaciones.clear();
-        modificarMotivosLocalizaciones.clear();
+        modificarMotivoContrato.clear();
         index = -1;
         secRegistro = null;
         k = 0;
@@ -179,7 +187,13 @@ public class ControlMotivosLocalizaciones implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosMotivoLocalizacion");
+        context.update("form:datosMotivoContrato");
+        if (listMotivosLocalizaciones == null || listMotivosLocalizaciones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosLocalizaciones.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:ACEPTAR");
     }
 
@@ -187,47 +201,46 @@ public class ControlMotivosLocalizaciones implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:codigo");
-            codigo.setFilterStyle("width: 80px");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:descripcion");
-            descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosMotivoLocalizacion");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
+            codigo.setFilterStyle("width: 200px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
+            descripcion.setFilterStyle("width: 200px");
+            RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosMotivoLocalizacion");
+            RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
             bandera = 0;
             filtrarMotivosLocalizaciones = null;
             tipoLista = 0;
-            tamano = 270;
-
         }
+        RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
     }
 
-    public void modificarMotivosLocalizaciones(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR MOTIVOS LOCALIZACIONES");
+    public void modificarMotivosContrato(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR MOTIVOS CONTRATO");
         index = indice;
 
         int contador = 0;
         boolean banderita = false;
-        Short a;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR MOTIVOS LOCALIZACIONES, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR MOTIVOS CONTRATOS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearMotivosLocalizaciones.contains(listMotivosLocalizaciones.get(indice))) {
                     if (listMotivosLocalizaciones.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
-                        System.out.println(" listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo)" + listMotivosLocalizaciones.get(indice).getCodigo());
+                        listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMotivosLocalizaciones.size(); j++) {
                             if (j != indice) {
@@ -237,29 +250,33 @@ public class ControlMotivosLocalizaciones implements Serializable {
                             }
                         }
                         if (contador > 0) {
-                            listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
+
                         } else {
                             banderita = true;
                         }
 
                     }
                     if (listMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
-                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
+
                     }
                     if (listMotivosLocalizaciones.get(indice).getDescripcion().equals(" ")) {
-                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
+
                     }
+
                     if (banderita == true) {
-                        if (modificarMotivosLocalizaciones.isEmpty()) {
-                            modificarMotivosLocalizaciones.add(listMotivosLocalizaciones.get(indice));
-                        } else if (!modificarMotivosLocalizaciones.contains(listMotivosLocalizaciones.get(indice))) {
-                            modificarMotivosLocalizaciones.add(listMotivosLocalizaciones.get(indice));
+                        if (modificarMotivoContrato.isEmpty()) {
+                            modificarMotivoContrato.add(listMotivosLocalizaciones.get(indice));
+                        } else if (!modificarMotivoContrato.contains(listMotivosLocalizaciones.get(indice))) {
+                            modificarMotivoContrato.add(listMotivosLocalizaciones.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -274,8 +291,8 @@ public class ControlMotivosLocalizaciones implements Serializable {
                 } else {
                     if (listMotivosLocalizaciones.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
+                        listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listMotivosLocalizaciones.size(); j++) {
                             if (j != indice) {
@@ -285,25 +302,30 @@ public class ControlMotivosLocalizaciones implements Serializable {
                             }
                         }
                         if (contador > 0) {
-                            listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            listMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
+
                         } else {
                             banderita = true;
                         }
 
                     }
                     if (listMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
-                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
+
                     }
                     if (listMotivosLocalizaciones.get(indice).getDescripcion().equals(" ")) {
-                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
+
                     }
+
                     if (banderita == true) {
+
                         if (guardado == true) {
                             guardado = false;
                         }
@@ -314,6 +336,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
+
                 }
             } else {
 
@@ -332,13 +355,14 @@ public class ControlMotivosLocalizaciones implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            filtrarMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
+                            filtrarMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
 
                     }
+
                     if (filtrarMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -346,15 +370,15 @@ public class ControlMotivosLocalizaciones implements Serializable {
                     }
                     if (filtrarMotivosLocalizaciones.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
+                        filtrarMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
-                        if (modificarMotivosLocalizaciones.isEmpty()) {
-                            modificarMotivosLocalizaciones.add(filtrarMotivosLocalizaciones.get(indice));
-                        } else if (!modificarMotivosLocalizaciones.contains(filtrarMotivosLocalizaciones.get(indice))) {
-                            modificarMotivosLocalizaciones.add(filtrarMotivosLocalizaciones.get(indice));
+                        if (modificarMotivoContrato.isEmpty()) {
+                            modificarMotivoContrato.add(filtrarMotivosLocalizaciones.get(indice));
+                        } else if (!modificarMotivoContrato.contains(filtrarMotivosLocalizaciones.get(indice))) {
+                            modificarMotivoContrato.add(filtrarMotivosLocalizaciones.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -381,13 +405,14 @@ public class ControlMotivosLocalizaciones implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            filtrarMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
+                            filtrarMotivosLocalizaciones.get(indice).setCodigo(backUpCodigo);
                         } else {
                             banderita = true;
                         }
 
                     }
+
                     if (filtrarMotivosLocalizaciones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
@@ -395,8 +420,8 @@ public class ControlMotivosLocalizaciones implements Serializable {
                     }
                     if (filtrarMotivosLocalizaciones.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        filtrarMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
+                        filtrarMotivosLocalizaciones.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -410,12 +435,12 @@ public class ControlMotivosLocalizaciones implements Serializable {
                     }
                     index = -1;
                     secRegistro = null;
+
                 }
 
             }
-            context.update("form:datosMotivoLocalizacion");
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
+            context.update("form:datosMotivoContrato");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -425,30 +450,30 @@ public class ControlMotivosLocalizaciones implements Serializable {
         if (index >= 0) {
 
             if (tipoLista == 0) {
-                System.out.println("Entro a borrardatosMotivoLocalizacion");
-                if (!modificarMotivosLocalizaciones.isEmpty() && modificarMotivosLocalizaciones.contains(listMotivosLocalizaciones.get(index))) {
-                    int modIndex = modificarMotivosLocalizaciones.indexOf(listMotivosLocalizaciones.get(index));
-                    modificarMotivosLocalizaciones.remove(modIndex);
-                    borrarMotivosLocalizaciones.add(listMotivosLocalizaciones.get(index));
+                System.out.println("Entro a borrarMotivosLocalizaciones");
+                if (!modificarMotivoContrato.isEmpty() && modificarMotivoContrato.contains(listMotivosLocalizaciones.get(index))) {
+                    int modIndex = modificarMotivoContrato.indexOf(listMotivosLocalizaciones.get(index));
+                    modificarMotivoContrato.remove(modIndex);
+                    borrarMotivoContrato.add(listMotivosLocalizaciones.get(index));
                 } else if (!crearMotivosLocalizaciones.isEmpty() && crearMotivosLocalizaciones.contains(listMotivosLocalizaciones.get(index))) {
                     int crearIndex = crearMotivosLocalizaciones.indexOf(listMotivosLocalizaciones.get(index));
                     crearMotivosLocalizaciones.remove(crearIndex);
                 } else {
-                    borrarMotivosLocalizaciones.add(listMotivosLocalizaciones.get(index));
+                    borrarMotivoContrato.add(listMotivosLocalizaciones.get(index));
                 }
                 listMotivosLocalizaciones.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrardatosMotivoLocalizacion ");
-                if (!modificarMotivosLocalizaciones.isEmpty() && modificarMotivosLocalizaciones.contains(filtrarMotivosLocalizaciones.get(index))) {
-                    int modIndex = modificarMotivosLocalizaciones.indexOf(filtrarMotivosLocalizaciones.get(index));
-                    modificarMotivosLocalizaciones.remove(modIndex);
-                    borrarMotivosLocalizaciones.add(filtrarMotivosLocalizaciones.get(index));
+                System.out.println("borrarMotivosLocalizaciones ");
+                if (!modificarMotivoContrato.isEmpty() && modificarMotivoContrato.contains(filtrarMotivosLocalizaciones.get(index))) {
+                    int modIndex = modificarMotivoContrato.indexOf(filtrarMotivosLocalizaciones.get(index));
+                    modificarMotivoContrato.remove(modIndex);
+                    borrarMotivoContrato.add(filtrarMotivosLocalizaciones.get(index));
                 } else if (!crearMotivosLocalizaciones.isEmpty() && crearMotivosLocalizaciones.contains(filtrarMotivosLocalizaciones.get(index))) {
                     int crearIndex = crearMotivosLocalizaciones.indexOf(filtrarMotivosLocalizaciones.get(index));
                     crearMotivosLocalizaciones.remove(crearIndex);
                 } else {
-                    borrarMotivosLocalizaciones.add(filtrarMotivosLocalizaciones.get(index));
+                    borrarMotivoContrato.add(filtrarMotivosLocalizaciones.get(index));
                 }
                 int VCIndex = listMotivosLocalizaciones.indexOf(filtrarMotivosLocalizaciones.get(index));
                 listMotivosLocalizaciones.remove(VCIndex);
@@ -456,15 +481,16 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosMotivoLocalizacion");
+            context.update("form:datosMotivoContrato");
+            infoRegistro = "Cantidad de registros: " + listMotivosLocalizaciones.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
             }
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -472,24 +498,25 @@ public class ControlMotivosLocalizaciones implements Serializable {
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
         try {
-            BigInteger borradoVC = new BigInteger("-1");
-            borradoVC = administrarMotivosLocalizacion.contarVigenciasLocalizacionesMotivoLocalizacion(listMotivosLocalizaciones.get(index).getSecuencia());
-            if (borradoVC.equals(new BigInteger("0"))) {
+            if (tipoLista == 0) {
+                contarVigenciasLocalizacionesMotivoLocalizacion = administrarMotivosLocalizaciones.contarVigenciasLocalizacionesMotivoLocalizacion(listMotivosLocalizaciones.get(index).getSecuencia());
+            } else {
+                contarVigenciasLocalizacionesMotivoLocalizacion = administrarMotivosLocalizaciones.contarVigenciasLocalizacionesMotivoLocalizacion(filtrarMotivosLocalizaciones.get(index).getSecuencia());
+            }
+            if (contarVigenciasLocalizacionesMotivoLocalizacion.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrarMotivosLocalizaciones();
-            }
-            if (borradoVC.intValue() != 0) {
+            } else {
                 System.out.println("Borrado>0");
-
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                borradoVC = new BigInteger("-1");
+                contarVigenciasLocalizacionesMotivoLocalizacion = new BigInteger("-1");
             }
 
         } catch (Exception e) {
-            System.err.println("ERROR ControlTiposEntidades verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlMotivosLocalizaciones verificarBorrado ERROR " + e);
         }
     }
 
@@ -497,46 +524,47 @@ public class ControlMotivosLocalizaciones implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando Operaciones Motivos Localizacion");
-            if (!borrarMotivosLocalizaciones.isEmpty()) {
-                administrarMotivosLocalizacion.borrarMotivosLocalizaciones(borrarMotivosLocalizaciones);
-
-                //mostrarBorrados
-                registrosBorrados = borrarMotivosLocalizaciones.size();
+            System.out.println("Realizando Motivos Contratos");
+            if (!borrarMotivoContrato.isEmpty()) {
+                System.out.println("Borrando...");
+                administrarMotivosLocalizaciones.borrarMotivosLocalizaciones(borrarMotivoContrato);
+                registrosBorrados = borrarMotivoContrato.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarMotivosLocalizaciones.clear();
+                borrarMotivoContrato.clear();
             }
             if (!crearMotivosLocalizaciones.isEmpty()) {
-                administrarMotivosLocalizacion.crearMotivosLocalizaciones(crearMotivosLocalizaciones);
-
-                crearMotivosLocalizaciones.clear();
+                administrarMotivosLocalizaciones.crearMotivosLocalizaciones(crearMotivosLocalizaciones);
             }
-            if (!modificarMotivosLocalizaciones.isEmpty()) {
-                administrarMotivosLocalizacion.modificarMotivosLocalizaciones(modificarMotivosLocalizaciones);
-                modificarMotivosLocalizaciones.clear();
+            crearMotivosLocalizaciones.clear();
+
+            if (!modificarMotivoContrato.isEmpty()) {
+                administrarMotivosLocalizaciones.modificarMotivosLocalizaciones(modificarMotivoContrato);
+                modificarMotivoContrato.clear();
             }
             System.out.println("Se guardaron los datos con exito");
             listMotivosLocalizaciones = null;
-            context.update("form:datosMotivoLocalizacion");
-            k = 0;
+            context.update("form:datosMotivoContrato");
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
+            k = 0;
             guardado = true;
         }
         index = -1;
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+
+        RequestContext.getCurrentInstance()
+                .update("form:ACEPTAR");
 
     }
 
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarMotivoLocalizacion = listMotivosLocalizaciones.get(index);
+                editarMotivoContrato = listMotivosLocalizaciones.get(index);
             }
             if (tipoLista == 1) {
-                editarMotivoLocalizacion = filtrarMotivosLocalizaciones.get(index);
+                editarMotivoContrato = filtrarMotivosLocalizaciones.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -556,23 +584,23 @@ public class ControlMotivosLocalizaciones implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoMotivoLocalizacion() {
-        System.out.println("Agregar Motivo Localizacion");
+    public void agregarNuevoMotivoContrato() {
+        System.out.println("Agregar Motivo Contrato");
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoMotivoLocalizacion.getCodigo() == a) {
+        if (nuevoMotivoContrato.getCodigo() == a) {
             mensajeValidacion = " *Debe Tener Un Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoLocalizacion.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoContrato.getCodigo());
 
             for (int x = 0; x < listMotivosLocalizaciones.size(); x++) {
-                if (listMotivosLocalizaciones.get(x).getCodigo() == nuevoMotivoLocalizacion.getCodigo()) {
+                if (listMotivosLocalizaciones.get(x).getCodigo() == nuevoMotivoContrato.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -586,7 +614,11 @@ public class ControlMotivosLocalizaciones implements Serializable {
                 contador++;
             }
         }
-        if (nuevoMotivoLocalizacion.getDescripcion() == (null)) {
+        if (nuevoMotivoContrato.getDescripcion() == (null)) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoMotivoContrato.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -600,43 +632,44 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
-                //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
+                //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosMotivoLocalizacion");
+                RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
                 bandera = 0;
                 filtrarMotivosLocalizaciones = null;
                 tipoLista = 0;
                 tamano = 270;
-
             }
             System.out.println("Despues de la bandera");
 
             //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
             k++;
             l = BigInteger.valueOf(k);
-            nuevoMotivoLocalizacion.setSecuencia(l);
+            nuevoMotivoContrato.setSecuencia(l);
 
-            crearMotivosLocalizaciones.add(nuevoMotivoLocalizacion);
+            crearMotivosLocalizaciones.add(nuevoMotivoContrato);
 
-            listMotivosLocalizaciones.add(nuevoMotivoLocalizacion);
-            nuevoMotivoLocalizacion = new MotivosLocalizaciones();
+            listMotivosLocalizaciones.add(nuevoMotivoContrato);
+            nuevoMotivoContrato = new MotivosLocalizaciones();
 
-            context.update("form:datosMotivoLocalizacion");
+            context.update("form:datosMotivoContrato");
+            infoRegistro = "Cantidad de registros: " + listMotivosLocalizaciones.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             System.out.println("Despues de la bandera guardado");
 
-            context.execute("nuevoRegistroMotivoLocalizaciones.hide()");
+            context.execute("nuevoRegistroMotivosLocalizaciones.hide()");
             index = -1;
             secRegistro = null;
-            System.out.println("Despues de nuevoRegistroMotivoLocalizaciones");
+            System.out.println("Despues de nuevoRegistroMotivosLocalizaciones");
 
         } else {
             context.update("form:validacionNuevaCentroCosto");
@@ -645,9 +678,9 @@ public class ControlMotivosLocalizaciones implements Serializable {
         }
     }
 
-    public void limpiarNuevoMotivoLocalizacion() {
-        System.out.println("limpiarNuevoMotivoLocalizacion");
-        nuevoMotivoLocalizacion = new MotivosLocalizaciones();
+    public void limpiarNuevoMotivosLocalizaciones() {
+        System.out.println("limpiarnuevoMotivoContrato");
+        nuevoMotivoContrato = new MotivosLocalizaciones();
         secRegistro = null;
         index = -1;
 
@@ -655,25 +688,25 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
     //------------------------------------------------------------------------------
     public void duplicarMotivosLocalizaciones() {
-        System.out.println("duplicarMotivosLocalizaciones");
+        System.out.println("duplicarMotivosCambiosCargos");
         if (index >= 0) {
-            duplicarMotivoLocalizacion = new MotivosLocalizaciones();
+            duplicarMotivoContrato = new MotivosLocalizaciones();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarMotivoLocalizacion.setSecuencia(l);
-                duplicarMotivoLocalizacion.setCodigo(listMotivosLocalizaciones.get(index).getCodigo());
-                duplicarMotivoLocalizacion.setDescripcion(listMotivosLocalizaciones.get(index).getDescripcion());
+                duplicarMotivoContrato.setSecuencia(l);
+                duplicarMotivoContrato.setCodigo(listMotivosLocalizaciones.get(index).getCodigo());
+                duplicarMotivoContrato.setDescripcion(listMotivosLocalizaciones.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarMotivoLocalizacion.setSecuencia(l);
-                duplicarMotivoLocalizacion.setCodigo(filtrarMotivosLocalizaciones.get(index).getCodigo());
-                duplicarMotivoLocalizacion.setDescripcion(filtrarMotivosLocalizaciones.get(index).getDescripcion());
+                duplicarMotivoContrato.setSecuencia(l);
+                duplicarMotivoContrato.setCodigo(filtrarMotivosLocalizaciones.get(index).getCodigo());
+                duplicarMotivoContrato.setDescripcion(filtrarMotivosLocalizaciones.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarMotivosLocalizaciones");
+            context.update("formularioDialogos:duplicarMotivosCambiosCargos");
             context.execute("duplicarRegistroMotivosLocalizaciones.show()");
             index = -1;
             secRegistro = null;
@@ -681,22 +714,22 @@ public class ControlMotivosLocalizaciones implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR ControlMotivosLocalizaciones");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR CONTROLTIPOSCENTROSCOSTOS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarMotivoLocalizacion.getCodigo());
-        System.err.println("ConfirmarDuplicar nombre " + duplicarMotivoLocalizacion.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarMotivoContrato.getCodigo());
+        System.err.println("ConfirmarDuplicar nombre " + duplicarMotivoContrato.getDescripcion());
 
-        if (duplicarMotivoLocalizacion.getCodigo() == a) {
+        if (duplicarMotivoContrato.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosLocalizaciones.size(); x++) {
-                if (listMotivosLocalizaciones.get(x).getCodigo() == duplicarMotivoLocalizacion.getCodigo()) {
+                if (listMotivosLocalizaciones.get(x).getCodigo() == duplicarMotivoContrato.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -709,7 +742,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMotivoLocalizacion.getDescripcion().isEmpty()) {
+        if (duplicarMotivoContrato.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -720,13 +753,15 @@ public class ControlMotivosLocalizaciones implements Serializable {
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarMotivoLocalizacion.getSecuencia() + "  " + duplicarMotivoLocalizacion.getCodigo());
-            if (crearMotivosLocalizaciones.contains(duplicarMotivoLocalizacion)) {
+            System.out.println("Datos Duplicando: " + duplicarMotivoContrato.getSecuencia() + "  " + duplicarMotivoContrato.getCodigo());
+            if (crearMotivosLocalizaciones.contains(duplicarMotivoContrato)) {
                 System.out.println("Ya lo contengo.");
             }
-            listMotivosLocalizaciones.add(duplicarMotivoLocalizacion);
-            crearMotivosLocalizaciones.add(duplicarMotivoLocalizacion);
-            context.update("form:datosMotivoLocalizacion");
+            listMotivosLocalizaciones.add(duplicarMotivoContrato);
+            crearMotivosLocalizaciones.add(duplicarMotivoContrato);
+            context.update("form:datosMotivoContrato");
+            infoRegistro = "Cantidad de registros: " + listMotivosLocalizaciones.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -736,18 +771,17 @@ public class ControlMotivosLocalizaciones implements Serializable {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
-                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:codigo");
+                tamano = 270;
+                codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoLocalizacion:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosMotivoLocalizacion");
+                RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
                 bandera = 0;
                 filtrarMotivosLocalizaciones = null;
                 tipoLista = 0;
-                tamano = 270;
-
             }
-            duplicarMotivoLocalizacion = new MotivosLocalizaciones();
+            duplicarMotivoContrato = new MotivosLocalizaciones();
             RequestContext.getCurrentInstance().execute("duplicarRegistroMotivosLocalizaciones.hide()");
 
         } else {
@@ -758,11 +792,11 @@ public class ControlMotivosLocalizaciones implements Serializable {
     }
 
     public void limpiarduplicarMotivosLocalizaciones() {
-        duplicarMotivoLocalizacion = new MotivosLocalizaciones();
+        duplicarMotivoContrato = new MotivosLocalizaciones();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosMotivoLocalizacionExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosMotivoContratoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "MotivosLocalizacionesPDF", false, false, "UTF-8", null, null);
@@ -772,7 +806,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosMotivoLocalizacionExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosMotivoContratoExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "MotivosLocalizacionesXLS", false, false, "UTF-8", null, null);
@@ -814,11 +848,19 @@ public class ControlMotivosLocalizaciones implements Serializable {
         index = -1;
     }
 
-//**----------------------------------------------------------------------------
+//-----------------------//---------------//----------------------//------------
     public List<MotivosLocalizaciones> getListMotivosLocalizaciones() {
         if (listMotivosLocalizaciones == null) {
-            listMotivosLocalizaciones = administrarMotivosLocalizacion.mostrarMotivosCambiosCargos();
+            listMotivosLocalizaciones = administrarMotivosLocalizaciones.mostrarMotivosCambiosCargos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listMotivosLocalizaciones == null || listMotivosLocalizaciones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosLocalizaciones.size();
+        }
+        context.update("form:informacionRegistro");
         return listMotivosLocalizaciones;
     }
 
@@ -834,20 +876,20 @@ public class ControlMotivosLocalizaciones implements Serializable {
         this.filtrarMotivosLocalizaciones = filtrarMotivosLocalizaciones;
     }
 
-    public MotivosLocalizaciones getEditarMotivoLocalizacion() {
-        return editarMotivoLocalizacion;
+    public MotivosLocalizaciones getNuevoMotivoContrato() {
+        return nuevoMotivoContrato;
     }
 
-    public void setEditarMotivoLocalizacion(MotivosLocalizaciones editarMotivoLocalizacion) {
-        this.editarMotivoLocalizacion = editarMotivoLocalizacion;
+    public void setNuevoMotivoContrato(MotivosLocalizaciones nuevoMotivoContrato) {
+        this.nuevoMotivoContrato = nuevoMotivoContrato;
     }
 
-    public String getMensajeValidacion() {
-        return mensajeValidacion;
+    public MotivosLocalizaciones getEditarMotivoContrato() {
+        return editarMotivoContrato;
     }
 
-    public void setMensajeValidacion(String mensajeValidacion) {
-        this.mensajeValidacion = mensajeValidacion;
+    public void setEditarMotivoContrato(MotivosLocalizaciones editarMotivoContrato) {
+        this.editarMotivoContrato = editarMotivoContrato;
     }
 
     public int getRegistrosBorrados() {
@@ -858,20 +900,20 @@ public class ControlMotivosLocalizaciones implements Serializable {
         this.registrosBorrados = registrosBorrados;
     }
 
-    public MotivosLocalizaciones getNuevoMotivoLocalizacion() {
-        return nuevoMotivoLocalizacion;
+    public String getMensajeValidacion() {
+        return mensajeValidacion;
     }
 
-    public void setNuevoMotivoLocalizacion(MotivosLocalizaciones nuevoMotivoLocalizacion) {
-        this.nuevoMotivoLocalizacion = nuevoMotivoLocalizacion;
+    public void setMensajeValidacion(String mensajeValidacion) {
+        this.mensajeValidacion = mensajeValidacion;
     }
 
-    public MotivosLocalizaciones getDuplicarMotivoLocalizacion() {
-        return duplicarMotivoLocalizacion;
+    public MotivosLocalizaciones getDuplicarMotivoContrato() {
+        return duplicarMotivoContrato;
     }
 
-    public void setDuplicarMotivoLocalizacion(MotivosLocalizaciones duplicarMotivoLocalizacion) {
-        this.duplicarMotivoLocalizacion = duplicarMotivoLocalizacion;
+    public void setDuplicarMotivoContrato(MotivosLocalizaciones duplicarMotivoContrato) {
+        this.duplicarMotivoContrato = duplicarMotivoContrato;
     }
 
     public BigInteger getSecRegistro() {
@@ -882,12 +924,12 @@ public class ControlMotivosLocalizaciones implements Serializable {
         this.secRegistro = secRegistro;
     }
 
-    public int getTamano() {
-        return tamano;
+    public boolean isGuardado() {
+        return guardado;
     }
 
-    public void setTamano(int tamano) {
-        this.tamano = tamano;
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
     }
 
     public MotivosLocalizaciones getMotivoLocalizacionSeleccionado() {
@@ -898,12 +940,20 @@ public class ControlMotivosLocalizaciones implements Serializable {
         this.motivoLocalizacionSeleccionado = motivoLocalizacionSeleccionado;
     }
 
-    public boolean isGuardado() {
-        return guardado;
+    public int getTamano() {
+        return tamano;
     }
 
-    public void setGuardado(boolean guardado) {
-        this.guardado = guardado;
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

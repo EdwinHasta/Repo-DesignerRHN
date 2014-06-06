@@ -13,6 +13,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -31,26 +32,47 @@ public class PersistenciaValoresConceptos implements PersistenciaValoresConcepto
 */
 
     public void crear(EntityManager em, ValoresConceptos valoresConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(valoresConceptos);
+            tx.begin();
+            em.merge(valoresConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaValoresConceptos");
+            System.out.println("Error PersistenciaValoresConceptos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void editar(EntityManager em, ValoresConceptos valoresConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(valoresConceptos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaValoresConceptos");
+            System.out.println("Error PersistenciaValoresConceptos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     public void borrar(EntityManager em, ValoresConceptos valoresConceptos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(valoresConceptos));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaValoresConceptos");
+            System.out.println("Error PersistenciaValoresConceptos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

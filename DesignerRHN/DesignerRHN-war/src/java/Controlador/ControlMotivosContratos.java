@@ -64,6 +64,7 @@ public class ControlMotivosContratos implements Serializable {
 
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    private String infoRegistro;
 
     public ControlMotivosContratos() {
 
@@ -79,7 +80,6 @@ public class ControlMotivosContratos implements Serializable {
         tamano = 270;
     }
 
-    
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -92,7 +92,7 @@ public class ControlMotivosContratos implements Serializable {
         }
     }
 
-   public void eventoFiltrar() {
+    public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlMotiviosCambiosCargos.eventoFiltrar \n");
             if (tipoLista == 0) {
@@ -188,6 +188,12 @@ public class ControlMotivosContratos implements Serializable {
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosMotivoContrato");
+        if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:ACEPTAR");
     }
 
@@ -476,6 +482,8 @@ public class ControlMotivosContratos implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMotivoContrato");
+            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -610,12 +618,7 @@ public class ControlMotivosContratos implements Serializable {
             mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (nuevoMotivoContrato.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-        }
-        if (nuevoMotivoContrato.getNombre().isEmpty()) {
+        } else if (nuevoMotivoContrato.getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -655,6 +658,8 @@ public class ControlMotivosContratos implements Serializable {
             nuevoMotivoContrato = new MotivosContratos();
 
             context.update("form:datosMotivoContrato");
+            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -755,6 +760,8 @@ public class ControlMotivosContratos implements Serializable {
             listMotivosContratos.add(duplicarMotivoContrato);
             crearMotivoContratos.add(duplicarMotivoContrato);
             context.update("form:datosMotivoContrato");
+            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -846,6 +853,14 @@ public class ControlMotivosContratos implements Serializable {
         if (listMotivosContratos == null) {
             listMotivosContratos = administrarMotivosContratos.consultarMotivosContratos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+        }
+        context.update("form:informacionRegistro");
         return listMotivosContratos;
     }
 
@@ -931,6 +946,14 @@ public class ControlMotivosContratos implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

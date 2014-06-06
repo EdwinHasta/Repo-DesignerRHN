@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,17 +30,64 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Comprobantes comprobante) {
-        em.persist(comprobante);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(comprobante);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, Comprobantes comprobante) {
-        em.merge(comprobante);
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(comprobante);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Comprobantes comprobante) {
-        em.remove(em.merge(comprobante));
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(comprobante));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
     }
 
     @Override

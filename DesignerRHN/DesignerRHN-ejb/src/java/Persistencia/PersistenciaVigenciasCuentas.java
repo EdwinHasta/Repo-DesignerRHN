@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,28 +30,49 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
 
     @Override
     public void crear(EntityManager em, VigenciasCuentas vigenciasCuentas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(vigenciasCuentas);
+            tx.begin();
+            em.merge(vigenciasCuentas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciaCuenta Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCuentas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasCuentas vigenciasCuentas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasCuentas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciaCuenta Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCuentas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasCuentas vigenciasCuentas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(vigenciasCuentas));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crearVigenciaCuenta Persistencia : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCuentas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,34 +33,53 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
 //    private EntityManager em;
     @Override
     public void crear(EntityManager em, MotivosContratos motivosContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(motivosContratos);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(motivosContratos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaMotivosContratos crear ERROR " + e);
+            System.out.println("Error PersistenciaMotivosContratos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, MotivosContratos motivosContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(motivosContratos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaMotivosContratos editar ERROR " + e);
+            System.out.println("Error PersistenciaMotivosContratos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, MotivosContratos motivosContratos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(motivosContratos));
-            em.getTransaction().commit();
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaMotivosContratos borrar ERROR " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaMotivosContratos.borrar: " + e);
+            }
         }
     }
 

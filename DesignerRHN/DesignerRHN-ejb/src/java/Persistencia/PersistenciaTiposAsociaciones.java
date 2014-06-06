@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -29,28 +30,49 @@ public class PersistenciaTiposAsociaciones implements PersistenciaTiposAsociacio
 
     @Override
     public void crear(EntityManager em, TiposAsociaciones tiposAsociaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tiposAsociaciones);
+            tx.begin();
+            em.merge(tiposAsociaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposAsociaciones");
+            System.out.println("Error PersistenciaTiposAsociaciones.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposAsociaciones tiposAsociaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposAsociaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposAsociaciones");
+            System.out.println("Error PersistenciaTiposAsociaciones.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposAsociaciones tiposAsociaciones) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(tiposAsociaciones));
+            tx.begin();
+            em.merge(tiposAsociaciones);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposAsociaciones");
+            System.out.println("Error PersistenciaTiposAsociaciones.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

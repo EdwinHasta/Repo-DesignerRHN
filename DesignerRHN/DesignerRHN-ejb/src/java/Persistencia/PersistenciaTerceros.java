@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
      */
     @Override
     public void crear(EntityManager em, Terceros terceros) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(terceros);
+            tx.begin();
+            em.merge(terceros);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTerceros");
+            System.out.println("Error PersistenciaTerceros.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Terceros terceros) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(terceros);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTerceros");
+            System.out.println("Error PersistenciaTerceros.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Terceros terceros) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(terceros));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTerceros");
+            System.out.println("Error PersistenciaTerceros.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

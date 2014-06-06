@@ -9,6 +9,7 @@ import InterfacePersistencia.PersistenciaVigenciasReformasLaboralesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,25 +31,63 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
 
     @Override
     public void crear(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(vigenciaRefLab);
+            tx.begin();
+            em.merge(vigenciaRefLab);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasReformaLaboral)");
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciaRefLab);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la Vigencias ReformaLaboral");
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasReformasLaborales vigenciaRefLab) {
-        em.remove(em.merge(vigenciaRefLab));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(vigenciaRefLab));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("No se puede hacer rollback porque no hay una transacción");
+            }
+        }
+        
     }
 
     @Override

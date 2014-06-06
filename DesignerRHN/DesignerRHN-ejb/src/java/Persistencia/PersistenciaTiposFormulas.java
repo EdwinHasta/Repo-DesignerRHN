@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -32,28 +33,49 @@ public class PersistenciaTiposFormulas implements PersistenciaTiposFormulasInter
     
     @Override
     public void crear(EntityManager em, TiposFormulas tiposFormulas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposFormulas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El tiposFormulas no exite o esta reservada por lo cual no puede ser modificada (tiposFormulas)");
+            System.out.println("Error PersistenciaTiposFormulas.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposFormulas tiposFormulas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposFormulas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el tiposFormulas");
+            System.out.println("Error PersistenciaTiposFormulas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposFormulas tiposFormulas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(tiposFormulas));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El tiposFormulas no se ha podido eliminar");
+            System.out.println("Error PersistenciaTiposFormulas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

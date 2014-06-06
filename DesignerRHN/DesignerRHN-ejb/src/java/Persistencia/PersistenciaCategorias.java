@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,28 +32,53 @@ public class PersistenciaCategorias implements PersistenciaCategoriasInterface{
 
     @Override
     public void crear(EntityManager em,Categorias categorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(categorias);
+            tx.begin();
+            em.merge(categorias);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (Categorias)");
+            System.out.println("Error PersistenciaCategorias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,Categorias categorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(categorias);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la Categoria");
+            System.out.println("Error PersistenciaCategorias.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,Categorias categorias) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(categorias));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("No se pudo borrar la Categoria");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaCategorias.borrar: " + e);
+            }
         }
     }
 

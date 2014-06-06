@@ -10,6 +10,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -34,28 +35,49 @@ public class PersistenciaTiposCentrosCostos implements PersistenciaTiposCentrosC
 
     @Override
     public void crear(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(TiposCentrosCostos);
+            tx.begin();
+            em.merge(TiposCentrosCostos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaTiposCentrosCostos crear ERROR " + e);
+            System.out.println("Error PersistenciaTiposCentrosCostos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(TiposCentrosCostos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaTiposCentrosCostos editar ERROR " + e);
+            System.out.println("Error PersistenciaTiposCentrosCostos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposCentrosCostos TiposCentrosCostos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(TiposCentrosCostos));
+            tx.begin();
+            em.merge(TiposCentrosCostos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("\n ERROR EN PersistenciaTiposCentrosCostos borrar ERROR " + e);
+            System.out.println("Error PersistenciaTiposCentrosCostos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

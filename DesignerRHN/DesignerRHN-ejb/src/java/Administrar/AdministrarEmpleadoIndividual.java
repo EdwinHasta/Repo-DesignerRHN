@@ -386,8 +386,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
             empleado = persistenciaEmpleado.buscarEmpleadoSecuencia(em, secuencia);
             return empleado;
         } catch (Exception e) {
-            empleado = null;
-            return empleado;
+            return null;
         }
     }
 
@@ -405,7 +404,7 @@ public class AdministrarEmpleadoIndividual implements AdministrarEmpleadoIndivid
         try {
             persistenciaHVHojasDeVida.editar(em, hojaVida);
         } catch (Exception e) {
-            System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarHojaDeVida");
+            System.out.println("Error modificando. AdministrarEmpleadoIndividual.modificarHojaDeVida " + e);
         }
     }
 

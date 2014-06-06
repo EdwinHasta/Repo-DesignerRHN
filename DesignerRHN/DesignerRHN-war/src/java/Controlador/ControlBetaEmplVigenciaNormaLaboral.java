@@ -883,7 +883,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("Nueva Fecha : " + nuevoEmplVigenciaNormaLaboral.getFechavigencia());
         if (nuevoEmplVigenciaNormaLaboral.getFechavigencia() == null || nuevoEmplVigenciaNormaLaboral.getFechavigencia().equals("")) {
-            mensajeValidacion = " *Debe tener una fecha \n";
+            mensajeValidacion = " *Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int i = 0; i < listEmplVigenciaNormaLaboralPorEmpleado.size(); i++) {
@@ -898,7 +898,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             }
         }
         if (nuevoEmplVigenciaNormaLaboral.getNormalaboral().getSecuencia() == null || nuevoEmplVigenciaNormaLaboral.getNormalaboral().getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   *Una norma laboral\n";
+            mensajeValidacion = mensajeValidacion + "   *Norma laboral\n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
             System.out.println("NORMA LABORAL  : " + nuevoEmplVigenciaNormaLaboral.getNormalaboral().getNombre());
 

@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -26,17 +27,49 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     public void crear(EntityManager em, Niveles niveles) {
-        em.persist(niveles);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(niveles);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNiveles.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, Niveles niveles) {
-        em.merge(niveles);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(niveles);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNiveles.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, Niveles niveles) {
-        em.remove(em.merge(niveles));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(niveles));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNiveles.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public Niveles consultarNivel(EntityManager em, BigInteger secNiveles) {

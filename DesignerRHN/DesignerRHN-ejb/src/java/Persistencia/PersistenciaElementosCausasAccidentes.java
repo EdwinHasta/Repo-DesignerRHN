@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -27,21 +28,52 @@ public class PersistenciaElementosCausasAccidentes implements PersistenciaElemen
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
      private EntityManager em;*/
     public void crear(EntityManager em, ElementosCausasAccidentes elementosCausasAccidentes) {
-        em.getTransaction().begin();
-        em.persist(elementosCausasAccidentes);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(elementosCausasAccidentes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaElementosCausasAccidentes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void editar(EntityManager em, ElementosCausasAccidentes elementosCausasAccidentes) {
-        em.getTransaction().begin();
-        em.merge(elementosCausasAccidentes);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(elementosCausasAccidentes);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaElementosCausasAccidentes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     public void borrar(EntityManager em, ElementosCausasAccidentes elementosCausasAccidentes) {
-        em.getTransaction().begin();
-        em.remove(em.merge(elementosCausasAccidentes));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(elementosCausasAccidentes));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaElementosCausasAccidentes.borrar: " + e);
+            }
+        }
     }
 
     public ElementosCausasAccidentes buscarElementoCausaAccidente(EntityManager em, BigInteger secuenciaECA) {

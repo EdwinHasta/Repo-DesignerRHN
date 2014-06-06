@@ -11,11 +11,13 @@ import InterfaceAdministrar.AdministrarGruposViaticosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -42,9 +44,10 @@ public class ControlGruposViaticos implements Serializable {
     private List<GruposViaticos> crearGruposViaticos;
     private List<GruposViaticos> modificarGruposViaticos;
     private List<GruposViaticos> borrarGruposViaticos;
-    private GruposViaticos nuevoGrupoViatico;
-    private GruposViaticos duplicarGrupoViatico;
-    private GruposViaticos editarGrupoViatico;
+    private GruposViaticos nuevoGruposViaticos;
+    private GruposViaticos duplicarGruposViaticos;
+    private GruposViaticos editarGruposViaticos;
+    private GruposViaticos grupoFactorRiesgoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -53,15 +56,15 @@ public class ControlGruposViaticos implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column codigo, descripcion, porcentaje;
+    private Column codigo, descripcion, estado;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private Integer a;
-    private BigInteger cargos;
-    private BigInteger plantas;
-    private BigInteger tablasViaticos;
-    private BigInteger ersViaticos;
+    //filtrado table
+    private int tamano;
+    private Integer backupCodigo;
+    private String backupDescripcion;
+    private String infoRegistro;
 
     public ControlGruposViaticos() {
         listGruposViaticos = null;
@@ -69,11 +72,11 @@ public class ControlGruposViaticos implements Serializable {
         modificarGruposViaticos = new ArrayList<GruposViaticos>();
         borrarGruposViaticos = new ArrayList<GruposViaticos>();
         permitirIndex = true;
-        editarGrupoViatico = new GruposViaticos();
-        nuevoGrupoViatico = new GruposViaticos();
-        duplicarGrupoViatico = new GruposViaticos();
-        a = null;
+        editarGruposViaticos = new GruposViaticos();
+        nuevoGruposViaticos = new GruposViaticos();
+        duplicarGruposViaticos = new GruposViaticos();
         guardado = true;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -87,6 +90,7 @@ public class ControlGruposViaticos implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlGruposViaticos.eventoFiltrar \n");
@@ -98,14 +102,25 @@ public class ControlGruposViaticos implements Serializable {
         }
     }
 
+    private BigDecimal backUpPorcentaje;
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
+        System.err.println("permitirIndex  " + permitirIndex);
 
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
             secRegistro = listGruposViaticos.get(index).getSecuencia();
-
+            if (tipoLista == 0) {
+                backupCodigo = listGruposViaticos.get(index).getCodigo();
+                backupDescripcion = listGruposViaticos.get(index).getDescripcion();
+                backUpPorcentaje = listGruposViaticos.get(index).getPorcentajelastday();
+            } else if (tipoLista == 1) {
+                backupCodigo = filtrarGruposViaticos.get(index).getCodigo();
+                backupDescripcion = filtrarGruposViaticos.get(index).getDescripcion();
+                backUpPorcentaje = filtrarGruposViaticos.get(index).getPorcentajelastday();
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -136,15 +151,16 @@ public class ControlGruposViaticos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            porcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:porcentaje");
-            porcentaje.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosGrupoViatico");
+            estado = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:estado");
+            estado.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosGruposViaticos");
             bandera = 0;
             filtrarGruposViaticos = null;
             tipoLista = 0;
@@ -159,53 +175,67 @@ public class ControlGruposViaticos implements Serializable {
         listGruposViaticos = null;
         guardado = true;
         permitirIndex = true;
+        getListGruposViaticos();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosGrupoViatico");
+
+        if (listGruposViaticos == null || listGruposViaticos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosGruposViaticos");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:codigo");
-            codigo.setFilterStyle("width: 200px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:descripcion");
-            descripcion.setFilterStyle("width: 270px");
-            porcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:porcentaje");
-            porcentaje.setFilterStyle("width: 270px");
-            RequestContext.getCurrentInstance().update("form:datosGrupoViatico");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:codigo");
+            codigo.setFilterStyle("width: 220px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:descripcion");
+            descripcion.setFilterStyle("width: 400px");
+            RequestContext.getCurrentInstance().update("form:datosGruposViaticos");
+            estado = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:estado");
+            estado.setFilterStyle("width: 400px");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            porcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:porcentaje");
-            porcentaje.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosGrupoViatico");
+            estado = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:estado");
+            estado.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosGruposViaticos");
             bandera = 0;
             filtrarGruposViaticos = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarGrupoViatico(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR GRUPOS VIATIVOS");
+    public void modificarGruposViaticos(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
-        int contador = 0;
-        boolean banderita = false;
+        int contador = 0, pass = 0;
+
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR GRUPOS VIATIVOS, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearGruposViaticos.contains(listGruposViaticos.get(indice))) {
-                    if (listGruposViaticos.get(indice).getCodigo() == a) {
+
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listGruposViaticos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listGruposViaticos.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listGruposViaticos.size(); j++) {
                             if (j != indice) {
@@ -214,27 +244,37 @@ public class ControlGruposViaticos implements Serializable {
                                 }
                             }
                         }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            listGruposViaticos.get(indice).setCodigo(backupCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
                     if (listGruposViaticos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listGruposViaticos.get(indice).setDescripcion(backupDescripcion);
                     } else if (listGruposViaticos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        pass++;
                     }
                     if (listGruposViaticos.get(indice).getPorcentajelastday() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
+                    } else if (listGruposViaticos.get(indice).getPorcentajelastday().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
+
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 3) {
                         if (modificarGruposViaticos.isEmpty()) {
                             modificarGruposViaticos.add(listGruposViaticos.get(indice));
                         } else if (!modificarGruposViaticos.contains(listGruposViaticos.get(indice))) {
@@ -243,21 +283,24 @@ public class ControlGruposViaticos implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-                        context.update("form:ACEPTAR");
+
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
                     }
                     index = -1;
                     secRegistro = null;
-                }
-            } else {
+                    context.update("form:datosGruposViaticos");
+                    context.update("form:ACEPTAR");
+                } else {
 
-                if (!crearGruposViaticos.contains(filtrarGruposViaticos.get(indice))) {
-                    if (filtrarGruposViaticos.get(indice).getCodigo() == a) {
+                    System.out.println("backupCodigo : " + backupCodigo);
+                    System.out.println("backupDescripcion : " + backupDescripcion);
+
+                    if (listGruposViaticos.get(indice).getCodigo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listGruposViaticos.get(indice).setCodigo(backupCodigo);
                     } else {
                         for (int j = 0; j < listGruposViaticos.size(); j++) {
                             if (j != indice) {
@@ -266,36 +309,97 @@ public class ControlGruposViaticos implements Serializable {
                                 }
                             }
                         }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listGruposViaticos.get(indice).setCodigo(backupCodigo);
+                        } else {
+                            pass++;
+                        }
+
+                    }
+                    if (listGruposViaticos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (listGruposViaticos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+
+                    } else {
+                        pass++;
+                    }
+                    if (listGruposViaticos.get(indice).getPorcentajelastday() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 3) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                    context.update("form:datosGruposViaticos");
+                    context.update("form:ACEPTAR");
+
+                }
+            } else {
+
+                if (!crearGruposViaticos.contains(filtrarGruposViaticos.get(indice))) {
+                    if (filtrarGruposViaticos.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setCodigo(backupCodigo);
+                    } else {
                         for (int j = 0; j < filtrarGruposViaticos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarGruposViaticos.get(indice).getCodigo() == filtrarGruposViaticos.get(j).getCodigo()) {
+                                if (filtrarGruposViaticos.get(indice).getCodigo() == listGruposViaticos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listGruposViaticos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposViaticos.get(indice).getCodigo() == listGruposViaticos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            filtrarGruposViaticos.get(indice).setCodigo(backupCodigo);
+
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
 
                     if (filtrarGruposViaticos.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarGruposViaticos.get(indice).getDescripcion().equals(" ")) {
+                        filtrarGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (filtrarGruposViaticos.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+                    } else {
+                        pass++;
                     }
                     if (filtrarGruposViaticos.get(indice).getPorcentajelastday() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
+                        filtrarGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
+                    } else if (filtrarGruposViaticos.get(indice).getPorcentajelastday().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
 
-                    if (banderita == true) {
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 3) {
                         if (modificarGruposViaticos.isEmpty()) {
                             modificarGruposViaticos.add(filtrarGruposViaticos.get(indice));
                         } else if (!modificarGruposViaticos.contains(filtrarGruposViaticos.get(indice))) {
@@ -304,18 +408,77 @@ public class ControlGruposViaticos implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-                        context.update("form:ACEPTAR");
+
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarGruposViaticos.get(indice).getCodigo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setCodigo(backupCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarGruposViaticos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposViaticos.get(indice).getCodigo() == listGruposViaticos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listGruposViaticos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarGruposViaticos.get(indice).getCodigo() == listGruposViaticos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarGruposViaticos.get(indice).setCodigo(backupCodigo);
+
+                        } else {
+                            pass++;
+                        }
+
+                    }
+
+                    if (filtrarGruposViaticos.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+                    } else if (filtrarGruposViaticos.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setDescripcion(backupDescripcion);
+                    } else {
+                        pass++;
+                    }
+                    if (filtrarGruposViaticos.get(indice).getPorcentajelastday() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
+                    } else if (filtrarGruposViaticos.get(indice).getPorcentajelastday().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarGruposViaticos.get(indice).setPorcentajelastday(backUpPorcentaje);
+
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 3) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
-            context.update("form:datosGrupoViatico");
+            context.update("form:datosGruposViaticos");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -354,8 +517,10 @@ public class ControlGruposViaticos implements Serializable {
                 filtrarGruposViaticos.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosGrupoViatico");
+            context.update("form:informacionRegistro");
+            context.update("form:datosGruposViaticos");
             index = -1;
             secRegistro = null;
 
@@ -364,24 +529,33 @@ public class ControlGruposViaticos implements Serializable {
             }
             context.update("form:ACEPTAR");
         }
+
     }
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
+        BigInteger verificarCargos;
+        BigInteger verificarEersViaticos;
+        BigInteger verificarPlantas;
+        BigInteger verificarTablasViaticos;
+
         try {
             System.err.println("Control Secuencia de ControlGruposViaticos ");
             if (tipoLista == 0) {
-                cargos = administrarGruposViaticos.verificarCargos(listGruposViaticos.get(index).getSecuencia());
-                plantas = administrarGruposViaticos.verificarPlantas(listGruposViaticos.get(index).getSecuencia());
-                tablasViaticos = administrarGruposViaticos.verificarTablasViaticos(listGruposViaticos.get(index).getSecuencia());
-                ersViaticos = administrarGruposViaticos.verificarEersViaticos(listGruposViaticos.get(index).getSecuencia());
+                verificarCargos = administrarGruposViaticos.verificarCargos(listGruposViaticos.get(index).getSecuencia());
+                verificarEersViaticos = administrarGruposViaticos.verificarEersViaticos(listGruposViaticos.get(index).getSecuencia());
+                verificarPlantas = administrarGruposViaticos.verificarPlantas(listGruposViaticos.get(index).getSecuencia());
+                verificarTablasViaticos = administrarGruposViaticos.verificarTablasViaticos(listGruposViaticos.get(index).getSecuencia());
             } else {
-                cargos = administrarGruposViaticos.verificarCargos(filtrarGruposViaticos.get(index).getSecuencia());
-                plantas = administrarGruposViaticos.verificarPlantas(filtrarGruposViaticos.get(index).getSecuencia());
-                tablasViaticos = administrarGruposViaticos.verificarTablasViaticos(filtrarGruposViaticos.get(index).getSecuencia());
-                ersViaticos = administrarGruposViaticos.verificarEersViaticos(filtrarGruposViaticos.get(index).getSecuencia());
+                verificarCargos = administrarGruposViaticos.verificarCargos(filtrarGruposViaticos.get(index).getSecuencia());
+                verificarEersViaticos = administrarGruposViaticos.verificarEersViaticos(filtrarGruposViaticos.get(index).getSecuencia());
+                verificarPlantas = administrarGruposViaticos.verificarPlantas(filtrarGruposViaticos.get(index).getSecuencia());
+                verificarTablasViaticos = administrarGruposViaticos.verificarTablasViaticos(filtrarGruposViaticos.get(index).getSecuencia());
             }
-            if (cargos.equals(new BigInteger("0")) || plantas.equals(new BigInteger("0")) || tablasViaticos.equals(new BigInteger("0")) || ersViaticos.equals(new BigInteger("0"))) {
+            if (verificarCargos.equals(new BigInteger("0"))
+                    && verificarEersViaticos.equals(new BigInteger("0"))
+                    && verificarPlantas.equals(new BigInteger("0"))
+                    && verificarTablasViaticos.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoGruposViaticos();
             } else {
@@ -391,11 +565,11 @@ public class ControlGruposViaticos implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
+                verificarCargos = new BigInteger("-1");
+                verificarEersViaticos = new BigInteger("-1");
+                verificarPlantas = new BigInteger("-1");
+                verificarTablasViaticos = new BigInteger("-1");
 
-                cargos = new BigInteger("-1");
-                plantas = new BigInteger("-1");
-                tablasViaticos = new BigInteger("-1");
-                ersViaticos = new BigInteger("-1");
             }
         } catch (Exception e) {
             System.err.println("ERROR ControlGruposViaticos verificarBorrado ERROR " + e);
@@ -425,21 +599,23 @@ public class ControlGruposViaticos implements Serializable {
                 context.execute("mostrarBorrados.show()");
                 borrarGruposViaticos.clear();
             }
-            if (!crearGruposViaticos.isEmpty()) {
-                administrarGruposViaticos.crearGruposViaticos(crearGruposViaticos);
-
-                crearGruposViaticos.clear();
-            }
             if (!modificarGruposViaticos.isEmpty()) {
                 administrarGruposViaticos.modificarGruposViaticos(modificarGruposViaticos);
                 modificarGruposViaticos.clear();
             }
+            if (!crearGruposViaticos.isEmpty()) {
+                administrarGruposViaticos.crearGruposViaticos(crearGruposViaticos);
+                crearGruposViaticos.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listGruposViaticos = null;
-            context.update("form:datosGrupoViatico");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            context.update("form:datosGruposViaticos");
             k = 0;
+            guardado = true;
         }
-        guardado = true;
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
@@ -448,10 +624,10 @@ public class ControlGruposViaticos implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarGrupoViatico = listGruposViaticos.get(index);
+                editarGruposViaticos = listGruposViaticos.get(index);
             }
             if (tipoLista == 1) {
-                editarGrupoViatico = filtrarGruposViaticos.get(index);
+                editarGruposViaticos = filtrarGruposViaticos.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -463,11 +639,6 @@ public class ControlGruposViaticos implements Serializable {
             } else if (cualCelda == 1) {
                 context.update("formularioDialogos:editDescripcion");
                 context.execute("editDescripcion.show()");
-                cualCelda = -1;
-
-            } else if (cualCelda == 2) {
-                context.update("formularioDialogos:editporcentaje");
-                context.execute("editporcentaje.show()");
                 cualCelda = -1;
             }
 
@@ -481,16 +652,18 @@ public class ControlGruposViaticos implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
+        Integer a = 0;
+        a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoGrupoViatico.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+        if (nuevoGruposViaticos.getCodigo() == a) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Grupos Viaticos: " + nuevoGrupoViatico.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoGruposViaticos.getCodigo());
 
             for (int x = 0; x < listGruposViaticos.size(); x++) {
-                if (listGruposViaticos.get(x).getCodigo() == nuevoGrupoViatico.getCodigo()) {
+                if (listGruposViaticos.get(x).getCodigo() == nuevoGruposViaticos.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -504,38 +677,37 @@ public class ControlGruposViaticos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoGrupoViatico.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+        if (nuevoGruposViaticos.getDescripcion() == null || nuevoGruposViaticos.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("bandera");
             contador++;
-
         }
-        if (nuevoGrupoViatico.getPorcentajelastday() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Un Porcentaje \n";
+        if (nuevoGruposViaticos.getPorcentajelastday() == null || nuevoGruposViaticos.getPorcentajelastday() == null) {
+            mensajeValidacion = mensajeValidacion + " *Porcentaje \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("bandera");
             contador++;
-
         }
 
         System.out.println("contador " + contador);
 
         if (contador == 3) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                porcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:porcentaje");
-                porcentaje.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosGrupoViatico");
+                estado = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:estado");
+                estado.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosGruposViaticos");
                 bandera = 0;
                 filtrarGruposViaticos = null;
                 tipoLista = 0;
@@ -544,13 +716,15 @@ public class ControlGruposViaticos implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoGrupoViatico.setSecuencia(l);
+            nuevoGruposViaticos.setSecuencia(l);
 
-            crearGruposViaticos.add(nuevoGrupoViatico);
+            crearGruposViaticos.add(nuevoGruposViaticos);
 
-            listGruposViaticos.add(nuevoGrupoViatico);
-            nuevoGrupoViatico = new GruposViaticos();
-            context.update("form:datosGrupoViatico");
+            listGruposViaticos.add(nuevoGruposViaticos);
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
+            context.update("form:informacionRegistro");
+            nuevoGruposViaticos = new GruposViaticos();
+            context.update("form:datosGruposViaticos");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -569,7 +743,7 @@ public class ControlGruposViaticos implements Serializable {
 
     public void limpiarNuevoGruposViaticos() {
         System.out.println("limpiarNuevoGruposViaticos");
-        nuevoGrupoViatico = new GruposViaticos();
+        nuevoGruposViaticos = new GruposViaticos();
         secRegistro = null;
         index = -1;
 
@@ -579,25 +753,26 @@ public class ControlGruposViaticos implements Serializable {
     public void duplicandoGruposViaticos() {
         System.out.println("duplicandoGruposViaticos");
         if (index >= 0) {
-            duplicarGrupoViatico = new GruposViaticos();
+            duplicarGruposViaticos = new GruposViaticos();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarGrupoViatico.setSecuencia(l);
-                duplicarGrupoViatico.setCodigo(listGruposViaticos.get(index).getCodigo());
-                duplicarGrupoViatico.setDescripcion(listGruposViaticos.get(index).getDescripcion());
-                duplicarGrupoViatico.setPorcentajelastday(listGruposViaticos.get(index).getPorcentajelastday());
+                duplicarGruposViaticos.setSecuencia(l);
+                duplicarGruposViaticos.setCodigo(listGruposViaticos.get(index).getCodigo());
+                duplicarGruposViaticos.setDescripcion(listGruposViaticos.get(index).getDescripcion());
+                duplicarGruposViaticos.setPorcentajelastday(listGruposViaticos.get(index).getPorcentajelastday());
             }
             if (tipoLista == 1) {
-                duplicarGrupoViatico.setSecuencia(l);
-                duplicarGrupoViatico.setCodigo(filtrarGruposViaticos.get(index).getCodigo());
-                duplicarGrupoViatico.setDescripcion(filtrarGruposViaticos.get(index).getDescripcion());
-                duplicarGrupoViatico.setPorcentajelastday(filtrarGruposViaticos.get(index).getPorcentajelastday());
+                duplicarGruposViaticos.setSecuencia(l);
+                duplicarGruposViaticos.setCodigo(filtrarGruposViaticos.get(index).getCodigo());
+                duplicarGruposViaticos.setDescripcion(filtrarGruposViaticos.get(index).getDescripcion());
+                duplicarGruposViaticos.setPorcentajelastday(filtrarGruposViaticos.get(index).getPorcentajelastday());
+
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarGV");
+            context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroGruposViaticos.show()");
             index = -1;
             secRegistro = null;
@@ -605,21 +780,22 @@ public class ControlGruposViaticos implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR GRUPOSVIATIVOS");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
+        Integer a = 0;
+        a = null;
+        System.err.println("ConfirmarDuplicar codigo " + duplicarGruposViaticos.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarGruposViaticos.getDescripcion());
 
-        System.err.println("ConfirmarDuplicar codigo " + duplicarGrupoViatico.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarGrupoViatico.getDescripcion());
-
-        if (duplicarGrupoViatico.getCodigo() == a) {
+        if (duplicarGruposViaticos.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   * Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listGruposViaticos.size(); x++) {
-                if (listGruposViaticos.get(x).getCodigo() == duplicarGrupoViatico.getCodigo()) {
+                if (listGruposViaticos.get(x).getCodigo() == duplicarGruposViaticos.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -632,51 +808,55 @@ public class ControlGruposViaticos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarGrupoViatico.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
+        if (duplicarGruposViaticos.getDescripcion() == null || duplicarGruposViaticos.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarGrupoViatico.getPorcentajelastday() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Porcentaje \n";
+        if (duplicarGruposViaticos.getPorcentajelastday() == null || duplicarGruposViaticos.getPorcentajelastday() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Porcentaje \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
+
         if (contador == 3) {
 
-            System.out.println("Datos Duplicando: " + duplicarGrupoViatico.getSecuencia() + "  " + duplicarGrupoViatico.getCodigo());
-            if (crearGruposViaticos.contains(duplicarGrupoViatico)) {
+            System.out.println("Datos Duplicando: " + duplicarGruposViaticos.getSecuencia() + "  " + duplicarGruposViaticos.getCodigo());
+            if (crearGruposViaticos.contains(duplicarGruposViaticos)) {
                 System.out.println("Ya lo contengo.");
             }
-            listGruposViaticos.add(duplicarGrupoViatico);
-            crearGruposViaticos.add(duplicarGrupoViatico);
-            context.update("form:datosGrupoViatico");
+            listGruposViaticos.add(duplicarGruposViaticos);
+            crearGruposViaticos.add(duplicarGruposViaticos);
+            context.update("form:datosGruposViaticos");
             index = -1;
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
+            context.update("form:informacionRegistro");
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                porcentaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosGrupoViatico:porcentaje");
-                porcentaje.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosGrupoViatico");
+                estado = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:estado");
+                estado.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosGruposViaticos");
                 bandera = 0;
                 filtrarGruposViaticos = null;
                 tipoLista = 0;
             }
-            duplicarGrupoViatico = new GruposViaticos();
+            duplicarGruposViaticos = new GruposViaticos();
             RequestContext.getCurrentInstance().execute("duplicarRegistroGruposViaticos.hide()");
 
         } else {
@@ -687,24 +867,24 @@ public class ControlGruposViaticos implements Serializable {
     }
 
     public void limpiarDuplicarGruposViaticos() {
-        duplicarGrupoViatico = new GruposViaticos();
+        duplicarGruposViaticos = new GruposViaticos();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGrupoViaticoExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGruposViaticosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "GRUPOSVIATICOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "GRUPOSINFADICIONALES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGrupoViaticoExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosGruposViaticosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "GRUPOSVIATICOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "GRUPOSINFADICIONALES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -716,7 +896,7 @@ public class ControlGruposViaticos implements Serializable {
         if (!listGruposViaticos.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "GRUPOSVIATICOS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "GRUPOSINFADICIONALES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
                 System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
@@ -733,7 +913,7 @@ public class ControlGruposViaticos implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("GRUPOSVIATICOS")) { // igual acá
+            if (administrarRastros.verificarHistoricosTabla("GRUPOSINFADICIONALES")) { // igual acá
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -743,11 +923,19 @@ public class ControlGruposViaticos implements Serializable {
         index = -1;
     }
 
-    //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*
+    //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<GruposViaticos> getListGruposViaticos() {
         if (listGruposViaticos == null) {
             listGruposViaticos = administrarGruposViaticos.consultarGruposViaticos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listGruposViaticos == null || listGruposViaticos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
+        }
+        context.update("form:informacionRegistro");
         return listGruposViaticos;
     }
 
@@ -763,28 +951,28 @@ public class ControlGruposViaticos implements Serializable {
         this.filtrarGruposViaticos = filtrarGruposViaticos;
     }
 
-    public GruposViaticos getNuevoGrupoViatico() {
-        return nuevoGrupoViatico;
+    public GruposViaticos getNuevoGruposViaticos() {
+        return nuevoGruposViaticos;
     }
 
-    public void setNuevoGrupoViatico(GruposViaticos nuevoGrupoViatico) {
-        this.nuevoGrupoViatico = nuevoGrupoViatico;
+    public void setNuevoGruposViaticos(GruposViaticos nuevoGruposViaticos) {
+        this.nuevoGruposViaticos = nuevoGruposViaticos;
     }
 
-    public GruposViaticos getDuplicarGrupoViatico() {
-        return duplicarGrupoViatico;
+    public GruposViaticos getDuplicarGruposViaticos() {
+        return duplicarGruposViaticos;
     }
 
-    public void setDuplicarGrupoViatico(GruposViaticos duplicarGrupoViatico) {
-        this.duplicarGrupoViatico = duplicarGrupoViatico;
+    public void setDuplicarGruposViaticos(GruposViaticos duplicarGruposViaticos) {
+        this.duplicarGruposViaticos = duplicarGruposViaticos;
     }
 
-    public GruposViaticos getEditarGrupoViatico() {
-        return editarGrupoViatico;
+    public GruposViaticos getEditarGruposViaticos() {
+        return editarGruposViaticos;
     }
 
-    public void setEditarGrupoViatico(GruposViaticos editarGrupoViatico) {
-        this.editarGrupoViatico = editarGrupoViatico;
+    public void setEditarGruposViaticos(GruposViaticos editarGruposViaticos) {
+        this.editarGruposViaticos = editarGruposViaticos;
     }
 
     public BigInteger getSecRegistro() {
@@ -817,6 +1005,30 @@ public class ControlGruposViaticos implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public GruposViaticos getGrupoFactorRiesgoSeleccionado() {
+        return grupoFactorRiesgoSeleccionado;
+    }
+
+    public void setGrupoFactorRiesgoSeleccionado(GruposViaticos grupoFactorRiesgoSeleccionado) {
+        this.grupoFactorRiesgoSeleccionado = grupoFactorRiesgoSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

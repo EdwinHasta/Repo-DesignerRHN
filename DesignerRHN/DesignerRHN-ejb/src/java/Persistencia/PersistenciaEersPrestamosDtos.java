@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,28 +29,53 @@ public class PersistenciaEersPrestamosDtos implements PersistenciaEersPrestamosD
 
     @Override
     public void crear(EntityManager em,EersPrestamosDtos eersPrestamosDtos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(eersPrestamosDtos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("El eersPrestamosDtos no exite o esta reservada por lo cual no puede ser modificada (eersPrestamosDtos)");
+            System.out.println("Error PersistenciaEersPrestamosDtos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,EersPrestamosDtos eersPrestamosDtos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(eersPrestamosDtos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar el eersPrestamosDtos");
+            System.out.println("Error PersistenciaEersPrestamosDtos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,EersPrestamosDtos eersPrestamosDtos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(eersPrestamosDtos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("El eersPrestamosDtos no se ha podido eliminar");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaEersPrestamosDtos.borrar: " + e);
+            }
         }
     }
 

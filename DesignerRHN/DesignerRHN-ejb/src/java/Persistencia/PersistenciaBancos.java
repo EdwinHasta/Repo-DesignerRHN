@@ -8,6 +8,7 @@ import InterfacePersistencia.PersistenciaBancosInterface;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -27,34 +28,49 @@ public class PersistenciaBancos implements PersistenciaBancosInterface {
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Bancos bancos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(bancos);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(bancos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando bancos persistencia bancos");
+            System.out.println("Error PersistenciaBancos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Bancos bancos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(bancos);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando bancos persistencia bancos");
+            System.out.println("Error PersistenciaBancos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Bancos bancos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(bancos));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrando bancos persistencia bancos");
+            System.out.println("Error PersistenciaBancos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

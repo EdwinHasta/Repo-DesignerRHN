@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,29 +31,53 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
 
     @Override
     public void crear(EntityManager em,DetallesCargos detallesCargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(detallesCargos);
+            tx.begin();
+            em.merge(detallesCargos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaDetallesCargos : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,DetallesCargos detallesCargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            System.out.println("detallesCargos : "+detallesCargos.getDescripcion()+" ::::: "+detallesCargos.getSecuencia());
+            tx.begin();
             em.merge(detallesCargos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaDetallesCargos : " + e.toString());
+            System.out.println("Error PersistenciaVigenciasCargos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,DetallesCargos detallesCargos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(detallesCargos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaDetallesCargos : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaVigenciasCargos.borrar: " + e);
+            }
         }
     }
 

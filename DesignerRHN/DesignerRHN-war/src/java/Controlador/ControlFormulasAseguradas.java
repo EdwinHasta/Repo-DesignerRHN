@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -40,7 +41,7 @@ public class ControlFormulasAseguradas implements Serializable {
     AdministrarFormulasAseguradasInterface administrarFormulasAseguradas;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<FormulasAseguradas> listFormulasAseguradas;
     private List<FormulasAseguradas> filtrarFormulasAseguradas;
     private List<FormulasAseguradas> crearFormulasAseguradas;
@@ -49,6 +50,8 @@ public class ControlFormulasAseguradas implements Serializable {
     private FormulasAseguradas nuevoFormulasAseguradas;
     private FormulasAseguradas duplicarFormulasAseguradas;
     private FormulasAseguradas editarFormulasAseguradas;
+    private FormulasAseguradas formulaAseguradaSeleccionada;
+    private FormulasAseguradas formulaAseguradaSeleccion;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -63,6 +66,11 @@ public class ControlFormulasAseguradas implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private String infoRegistro;
+    private String infoRegistroFormulas;
+    private String infoRegistroProcesos;
+    private String infoRegistroPeriocididades;
+    private String infoRegistroFormulasAseguradas;
     //---------------------------------
     private String backupFormula;
     private List<Formulas> listaFormulas;
@@ -89,6 +97,9 @@ public class ControlFormulasAseguradas implements Serializable {
     private List<FormulasAseguradas> listFormulasAseguradasBoton;
     private List<FormulasAseguradas> filterFormulasAseguradasBoton;
 
+    private boolean buscarFormulas;
+    private boolean mostrarTodos;
+
     public ControlFormulasAseguradas() {
         listFormulasAseguradasBoton = null;
         listFormulasAseguradas = null;
@@ -112,10 +123,12 @@ public class ControlFormulasAseguradas implements Serializable {
         listaPeriodicidades = null;
         filtradoPeriodicidades = null;
         guardado = true;
-        tamano = 302;
+        tamano = 270;
         formulaAseguradaSeleccionada = new FormulasAseguradas();
+        mostrarTodos = true;
+        buscarFormulas = false;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -241,13 +254,14 @@ public class ControlFormulasAseguradas implements Serializable {
     }
 
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
             proceso.setFilterStyle("display: none; visibility: hidden;");
-            periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+            periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
             periodicidad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
             bandera = 0;
@@ -264,19 +278,31 @@ public class ControlFormulasAseguradas implements Serializable {
         listFormulasAseguradas = null;
         guardado = true;
         permitirIndex = true;
+        mostrarTodos = true;
+        buscarFormulas = false;
+        getListFormulasAseguradas();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listFormulasAseguradas == null || listFormulasAseguradas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosFormulasAseguradas");
         context.update("form:ACEPTAR");
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARCENTROCOSTO");
     }
 
     public void cancelarModificacionCambio() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
             proceso.setFilterStyle("display: none; visibility: hidden;");
-            periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+            periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
             periodicidad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
             bandera = 0;
@@ -321,7 +347,9 @@ public class ControlFormulasAseguradas implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listFormulasAseguradas = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosConceptosSoportes");
             k = 0;
             guardado = true;
@@ -333,25 +361,26 @@ public class ControlFormulasAseguradas implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+            tamano = 246;
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
             personafir.setFilterStyle("width: 270px");
-            proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
             proceso.setFilterStyle("width: 130px");
-            periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+            periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
             periodicidad.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+            tamano = 270;
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
             proceso.setFilterStyle("display: none; visibility: hidden;");
-            periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+            periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
             periodicidad.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
@@ -837,6 +866,7 @@ public class ControlFormulasAseguradas implements Serializable {
                     borrarFormulasAseguradas.add(listFormulasAseguradas.get(index));
                 }
                 listFormulasAseguradas.remove(index);
+                infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
             }
             if (tipoLista == 1) {
                 System.out.println("borrandoFormulasAseguradas ");
@@ -853,9 +883,11 @@ public class ControlFormulasAseguradas implements Serializable {
                 int VCIndex = listFormulasAseguradas.indexOf(filtrarFormulasAseguradas.get(index));
                 listFormulasAseguradas.remove(VCIndex);
                 filtrarFormulasAseguradas.remove(index);
+                infoRegistro = "Cantidad de registros: " + filtrarFormulasAseguradas.size();
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulasAseguradas");
             index = -1;
             secRegistro = null;
@@ -1226,7 +1258,9 @@ public class ControlFormulasAseguradas implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listFormulasAseguradas = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosFormulasAseguradas");
             k = 0;
             guardado = true;
@@ -1277,8 +1311,8 @@ public class ControlFormulasAseguradas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevoFormulasAseguradas.getFormula().getNombrelargo().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *un Concepto \n";
+        if (nuevoFormulasAseguradas.getFormula().getNombrelargo() == null || nuevoFormulasAseguradas.getFormula().getNombrelargo().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1286,8 +1320,8 @@ public class ControlFormulasAseguradas implements Serializable {
             contador++;//3
 
         }
-        if (nuevoFormulasAseguradas.getProceso().getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *un Proceso \n";
+        if (nuevoFormulasAseguradas.getProceso().getDescripcion() == null || nuevoFormulasAseguradas.getProceso().getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1301,13 +1335,14 @@ public class ControlFormulasAseguradas implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+                proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
                 proceso.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+                periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
                 periodicidad.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarFormulasAseguradas = null;
@@ -1325,6 +1360,8 @@ public class ControlFormulasAseguradas implements Serializable {
             nuevoFormulasAseguradas.setFormula(new Formulas());
             nuevoFormulasAseguradas.setProceso(new Procesos());
             nuevoFormulasAseguradas.setPeriodicidad(new Periodicidades());
+            infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulasAseguradas");
             if (guardado == true) {
                 guardado = false;
@@ -1405,7 +1442,7 @@ public class ControlFormulasAseguradas implements Serializable {
         Integer a = 0;
         a = null;
 
-        if (duplicarFormulasAseguradas.getFormula().getNombrelargo().equals(" ")) {
+        if (duplicarFormulasAseguradas.getFormula().getNombrelargo() == null || duplicarFormulasAseguradas.getFormula().getNombrelargo().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * una Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1413,7 +1450,7 @@ public class ControlFormulasAseguradas implements Serializable {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarFormulasAseguradas.getProceso().getDescripcion().equals(" ")) {
+        if (duplicarFormulasAseguradas.getProceso().getDescripcion() == null || duplicarFormulasAseguradas.getProceso().getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * una Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1440,18 +1477,22 @@ public class ControlFormulasAseguradas implements Serializable {
             }
             context.update("form:ACEPTAR");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                proceso = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+                proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
                 proceso.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                periodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+                periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
                 periodicidad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
                 bandera = 0;
                 filtrarFormulasAseguradas = null;
                 tipoLista = 0;
             }
+
+            infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+            context.update("form:informacionRegistro");
             duplicarFormulasAseguradas = new FormulasAseguradas();
             duplicarFormulasAseguradas.setFormula(new Formulas());
 
@@ -1524,7 +1565,6 @@ public class ControlFormulasAseguradas implements Serializable {
         index = -1;
     }
     private boolean cambioFormulasAseguradas = false;
-    private FormulasAseguradas formulaAseguradaSeleccionada;
 
     public void llamadoDialogoBuscarFormulas() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1565,6 +1605,17 @@ public class ControlFormulasAseguradas implements Serializable {
                 context.update("form:datosFormulasAseguradas");
                 context.execute("buscarCentrosCostosDialogo.hide()");
                 context.reset("formularioDialogos:lovCentrosCostos:globalFilter");
+                mostrarTodos = false;
+                buscarFormulas = true;
+                context.update("form:MOSTRARTODOS");
+                context.update("form:BUSCARCENTROCOSTO");
+                if (listFormulasAseguradas == null || listFormulasAseguradas.isEmpty()) {
+                    infoRegistro = "Cantidad de registros: 0 ";
+                } else {
+                    infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+                }
+                context.update("form:infoRegistro");
+
             } else {
                 context.update("form:confirmarGuardarFormulas");
                 context.execute("confirmarGuardarFormulas.show()");
@@ -1602,6 +1653,15 @@ public class ControlFormulasAseguradas implements Serializable {
         if (listFormulasAseguradasBoton == null) {
             listFormulasAseguradasBoton = administrarFormulasAseguradas.consultarFormulasAseguradas();
         }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listFormulasAseguradasBoton == null || listFormulasAseguradasBoton.isEmpty()) {
+            infoRegistroFormulasAseguradas = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroFormulasAseguradas = "Cantidad de registros: " + listFormulasAseguradasBoton.size();
+        }
+        context.update("formularioDialogos:infoRegistroFormulasAseguradas");
         return listFormulasAseguradasBoton;
     }
 
@@ -1634,6 +1694,14 @@ public class ControlFormulasAseguradas implements Serializable {
                     listFormulasAseguradas.get(i).setPeriodicidad(new Periodicidades());
                 }
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+
+            if (listFormulasAseguradas == null || listFormulasAseguradas.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+            }
+            context.update("form:informacionRegistro");
         }
 
         return listFormulasAseguradas;
@@ -1719,6 +1787,15 @@ public class ControlFormulasAseguradas implements Serializable {
         if (listaFormulas == null) {
             listaFormulas = administrarFormulasAseguradas.consultarLOVFormulas();
         }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaFormulas == null || listaFormulas.isEmpty()) {
+            infoRegistroFormulas = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroFormulas = "Cantidad de registros: " + listaFormulas.size();
+        }
+        context.update("form:infoRegistroProcesos");
         return listaFormulas;
     }
 
@@ -1746,7 +1823,16 @@ public class ControlFormulasAseguradas implements Serializable {
         if (listaProcesos == null) {
             listaProcesos = administrarFormulasAseguradas.consultarLOVProcesos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaProcesos == null || listaProcesos.isEmpty()) {
+            infoRegistroProcesos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroProcesos = "Cantidad de registros: " + listaProcesos.size();
+        }
+        context.update("form:infoRegistroProcesos");
         return listaProcesos;
+
     }
 
     public void setListaProcesos(List<Procesos> listaProcesos) {
@@ -1773,6 +1859,14 @@ public class ControlFormulasAseguradas implements Serializable {
         if (listaPeriodicidades == null) {
             listaPeriodicidades = administrarFormulasAseguradas.consultarLOVPPeriodicidades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaPeriodicidades == null || listaPeriodicidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroPeriocididades = "Cantidad de registros: " + listaPeriodicidades.size();
+        }
+        context.update("form:infoRegistroPeriocididades");
         return listaPeriodicidades;
     }
 
@@ -1794,6 +1888,70 @@ public class ControlFormulasAseguradas implements Serializable {
 
     public void setPeriodicidadSeleccionado(Periodicidades periodicidadSeleccionado) {
         this.periodicidadSeleccionado = periodicidadSeleccionado;
+    }
+
+    public FormulasAseguradas getFormulaAseguradaSeleccion() {
+        return formulaAseguradaSeleccion;
+    }
+
+    public void setFormulaAseguradaSeleccion(FormulasAseguradas formulaAseguradaSeleccion) {
+        this.formulaAseguradaSeleccion = formulaAseguradaSeleccion;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroFormulas() {
+        return infoRegistroFormulas;
+    }
+
+    public void setInfoRegistroFormulas(String infoRegistroFormulas) {
+        this.infoRegistroFormulas = infoRegistroFormulas;
+    }
+
+    public String getInfoRegistroProcesos() {
+        return infoRegistroProcesos;
+    }
+
+    public void setInfoRegistroProcesos(String infoRegistroProcesos) {
+        this.infoRegistroProcesos = infoRegistroProcesos;
+    }
+
+    public String getInfoRegistroPeriocididades() {
+        return infoRegistroPeriocididades;
+    }
+
+    public void setInfoRegistroPeriocididades(String infoRegistroPeriocididades) {
+        this.infoRegistroPeriocididades = infoRegistroPeriocididades;
+    }
+
+    public String getInfoRegistroFormulasAseguradas() {
+        return infoRegistroFormulasAseguradas;
+    }
+
+    public void setInfoRegistroFormulasAseguradas(String infoRegistroFormulasAseguradas) {
+        this.infoRegistroFormulasAseguradas = infoRegistroFormulasAseguradas;
+    }
+
+    public boolean isBuscarFormulas() {
+        return buscarFormulas;
+    }
+
+    public void setBuscarFormulas(boolean buscarFormulas) {
+        this.buscarFormulas = buscarFormulas;
+    }
+
+    public boolean isMostrarTodos() {
+        return mostrarTodos;
+    }
+
+    public void setMostrarTodos(boolean mostrarTodos) {
+        this.mostrarTodos = mostrarTodos;
     }
 
 }

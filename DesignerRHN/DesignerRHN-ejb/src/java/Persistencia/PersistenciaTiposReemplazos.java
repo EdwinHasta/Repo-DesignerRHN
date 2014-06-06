@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -24,23 +25,55 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, TiposReemplazos tiposReemplazos) {
-        em.persist(tiposReemplazos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposReemplazos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposReemplazos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, TiposReemplazos tiposReemplazos) {
-        em.merge(tiposReemplazos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposReemplazos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposReemplazos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, TiposReemplazos tiposReemplazos) {
-        em.remove(em.merge(tiposReemplazos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(tiposReemplazos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaTiposReemplazos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

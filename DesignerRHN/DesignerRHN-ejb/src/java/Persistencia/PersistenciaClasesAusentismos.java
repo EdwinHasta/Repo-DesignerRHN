@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
@@ -30,27 +31,54 @@ public class PersistenciaClasesAusentismos implements PersistenciaClasesAusentis
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Clasesausentismos clasesAusentismos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(clasesAusentismos);
-            em.getTransaction().commit();
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaClasesAusentismos.crear");
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaClasesAusentismos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Clasesausentismos clasesAusentismos) {
-        em.getTransaction().begin();
-        em.merge(clasesAusentismos);
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(clasesAusentismos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaClasesAusentismos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Clasesausentismos clasesAusentismos) {
-        em.getTransaction().begin();
-        em.remove(em.merge(clasesAusentismos));
-        em.getTransaction().commit();
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(clasesAusentismos));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaClasesAusentismos.borrar: " + e);
+            }
+        }
     }
 
     @Override

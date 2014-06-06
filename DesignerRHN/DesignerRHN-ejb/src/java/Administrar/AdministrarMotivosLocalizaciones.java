@@ -4,8 +4,8 @@
  */
 package Administrar;
 
-import InterfaceAdministrar.AdministrarMotivosLocalizacionesInterface;
 import Entidades.MotivosLocalizaciones;
+import InterfaceAdministrar.AdministrarMotivosLocalizacionesInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosLocalizacionesInterface;
 import java.math.BigInteger;

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -28,28 +29,53 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
 
     @Override
     public void crear(EntityManager em,FormulasProcesos formulasProcesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(formulasProcesos);
+            tx.begin();
+            em.merge(formulasProcesos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaFormulasProcesos : " + e.toString());
+            System.out.println("Error PersistenciaFormulasProcesos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em,FormulasProcesos formulasProcesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(formulasProcesos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaFormulasProcesos : " + e.toString());
+            System.out.println("Error PersistenciaFormulasProcesos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em,FormulasProcesos formulasProcesos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(formulasProcesos));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaFormulasProcesos : " + e.toString());
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFormulasProcesos.borrar: " + e);
+            }
         }
     }
 

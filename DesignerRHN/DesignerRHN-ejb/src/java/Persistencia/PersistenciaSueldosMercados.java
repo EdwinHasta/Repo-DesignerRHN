@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,49 @@ public class PersistenciaSueldosMercados implements PersistenciaSueldosMercadosI
 
     @Override
     public void crear(EntityManager em, SueldosMercados sueldosMercados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(sueldosMercados);
+            tx.begin();
+            em.merge(sueldosMercados);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaSueldosMercados : " + e.toString());
+            System.out.println("Error PersistenciaSueldosMercados.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, SueldosMercados sueldosMercados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(sueldosMercados);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaSueldosMercados : " + e.toString());
+            System.out.println("Error PersistenciaSueldosMercados.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, SueldosMercados sueldosMercados) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(sueldosMercados));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaSueldosMercados : " + e.toString());
+            System.out.println("Error PersistenciaSueldosMercados.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

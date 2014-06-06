@@ -75,7 +75,7 @@ public class ControlMetodoPago implements Serializable {
         a = null;
         tamano = 270;
     }
-   
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -87,8 +87,8 @@ public class ControlMetodoPago implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-      public void eventoFiltrar() {
+
+    public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlMotiviosCambiosCargos.eventoFiltrar \n");
             if (tipoLista == 0) {
@@ -177,7 +177,14 @@ public class ControlMetodoPago implements Serializable {
         listMetodosPagos = null;
         guardado = true;
         permitirIndex = true;
+        getListMetodosPagos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listMetodosPagos == null || listMetodosPagos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosMetodoPago");
         context.update("form:ACEPTAR");
     }
@@ -188,11 +195,11 @@ public class ControlMetodoPago implements Serializable {
 
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
-            codigo.setFilterStyle("width: 280px");
+            codigo.setFilterStyle("width: 100px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
-            descripcion.setFilterStyle("width: 290px");
+            descripcion.setFilterStyle("width: 100px");
             pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
-            pago.setFilterStyle("width: 150px");
+            pago.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:datosMetodoPago");
             System.out.println("Activar");
             bandera = 1;
@@ -488,6 +495,9 @@ public class ControlMetodoPago implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+
+            infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosMetodoPago");
             index = -1;
             secRegistro = null;
@@ -632,7 +642,8 @@ public class ControlMetodoPago implements Serializable {
 
             listMetodosPagos.add(nuevoMetodoPago);
             nuevoMetodoPago = new MetodosPagos();
-
+            infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosMetodoPago");
             if (guardado == true) {
                 guardado = false;
@@ -753,6 +764,8 @@ public class ControlMetodoPago implements Serializable {
                 filtrarMetodosPagos = null;
                 tipoLista = 0;
             }
+            infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
+            context.update("form:informacionRegistro");
             duplicarMetodoPago = new MetodosPagos();
             RequestContext.getCurrentInstance().execute("duplicarRegistroMetodosPagos.hide()");
 
@@ -819,8 +832,9 @@ public class ControlMetodoPago implements Serializable {
         }
         index = -1;
     }
-
+    private String infoRegistro;
 //*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
     public List<MetodosPagos> getListMetodosPagos() {
         if (listMetodosPagos == null) {
             listMetodosPagos = administrarMetodosPagos.consultarMetodosPagos();
@@ -828,6 +842,14 @@ public class ControlMetodoPago implements Serializable {
                 System.out.println(listMetodosPagos.get(i).getSecuencia());
             }
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listMetodosPagos == null || listMetodosPagos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
+        }
+        context.update("form:informacionRegistro");
         return listMetodosPagos;
     }
 
@@ -913,6 +935,14 @@ public class ControlMetodoPago implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

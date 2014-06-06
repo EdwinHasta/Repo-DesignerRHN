@@ -81,10 +81,7 @@ public class Grupostiposentidades implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
-        return nombre;
+      return nombre;
     }
 
     public void setNombre(String nombre) {

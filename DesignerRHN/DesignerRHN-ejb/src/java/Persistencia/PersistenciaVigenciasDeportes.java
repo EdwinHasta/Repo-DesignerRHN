@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 /**
@@ -28,28 +29,49 @@ public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDepor
 
     @Override
     public void crear(EntityManager em, VigenciasDeportes vigenciasDeportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(vigenciasDeportes);
+            tx.begin();
+            em.merge(vigenciasDeportes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada (VigenciasDeportes)");
+            System.out.println("Error PersistenciaVigenciasDeportes.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, VigenciasDeportes vigenciasDeportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(vigenciasDeportes);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("No se pudo modificar la VigenciasDeportes");
+            System.out.println("Error PersistenciaVigenciasDeportes.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, VigenciasDeportes vigenciasDeportes) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(vigenciasDeportes));
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("la VigenciasDeportes no se ha podido eliminar");
+            System.out.println("Error PersistenciaVigenciasDeportes.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,52 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
      */
     @Override
     public void crear(EntityManager em, TiposSueldos tiposSueldos) {
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(tiposSueldos);
+            tx.begin();
+            em.merge(tiposSueldos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaTiposSueldos");
+            System.out.println("Error PersistenciaTiposSueldos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, TiposSueldos tiposSueldos) {
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(tiposSueldos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaTiposSueldos");
+            System.out.println("Error PersistenciaTiposSueldos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, TiposSueldos tiposSueldos) {
+
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(tiposSueldos));
+            tx.begin();
+            em.merge(tiposSueldos);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaTiposSueldos");
+            System.out.println("Error PersistenciaTiposSueldos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

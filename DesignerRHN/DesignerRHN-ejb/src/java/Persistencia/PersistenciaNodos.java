@@ -9,41 +9,72 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Nodos'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Nodos' de la base de
+ * datos.
+ *
  * @author Andres Pineda.
  */
 @Stateless
 public class PersistenciaNodos implements PersistenciaNodosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Nodos nodos) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(nodos);
-        } catch (PersistenceException ex) {
-            System.out.println("Error PersistenciaNovedades.crear");
+            tx.begin();
+            em.merge(nodos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNodos.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Nodos nodos) {
-        em.merge(nodos);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(nodos);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNodos.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, Nodos nodos) {
-        em.remove(em.merge(nodos));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(nodos));
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaNodos.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override

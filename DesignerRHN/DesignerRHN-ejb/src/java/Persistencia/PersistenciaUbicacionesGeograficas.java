@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,6 +31,8 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
      */
     @Override
     public void crear(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
 
             if (ubicacionGeografica.getZona() != null) {
@@ -37,9 +40,9 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
                     ubicacionGeografica.setZona(null);
                 }
             }
-            em.getTransaction().begin();
-            em.persist(ubicacionGeografica);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(ubicacionGeografica);
+            tx.commit();
         } catch (Exception e) {
             System.err.println("Error crear PersistenciaUbicacionesGeograficas ERROR " + e);
         }
@@ -47,23 +50,33 @@ public class PersistenciaUbicacionesGeograficas implements PersistenciaUbicacion
 
     @Override
     public void editar(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(ubicacionGeografica);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaUbicacionesGeograficas");
+            System.out.println("Error PersistenciaUbicacionesGeograficas.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, UbicacionesGeograficas ubicacionGeografica) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(ubicacionGeografica));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaUbicacionesGeograficas");
+            System.out.println("Error PersistenciaUbicacionesGeograficas.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

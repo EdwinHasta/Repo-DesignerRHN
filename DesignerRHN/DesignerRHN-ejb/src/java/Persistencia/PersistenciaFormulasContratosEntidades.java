@@ -6,13 +6,12 @@
 package Persistencia;
 
 import Entidades.FormulasContratosEntidades;
-import Entidades.Formulascontratos;
 import InterfacePersistencia.PersistenciaFormulasContratosEntidadesInterface;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 /**
@@ -25,30 +24,54 @@ public class PersistenciaFormulasContratosEntidades implements PersistenciaFormu
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,FormulasContratosEntidades formulasAseguradas) {
+    /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;*/
+    public void crear(EntityManager em, FormulasContratosEntidades formulasAseguradas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(formulasAseguradas);
-        } catch (Exception e) {
-            System.out.println("Error crear PersistenciaFormulasContratosEntidades");
-        }
-    }
-
-    public void editar(EntityManager em,FormulasContratosEntidades formulasAseguradas) {
-        try {
+            tx.begin();
             em.merge(formulasAseguradas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaFormulasContratosEntidades ERROR : " + e);
+            System.out.println("Error PersistenciaFormulasContratosEntidades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
-    public void borrar(EntityManager em,FormulasContratosEntidades formulasAseguradas) {
+    public void editar(EntityManager em, FormulasContratosEntidades formulasAseguradas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.remove(em.merge(formulasAseguradas));
+            tx.begin();
+            em.merge(formulasAseguradas);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaFormulasContratosEntidades ERROR : " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error PersistenciaFormulasContratosEntidades.editar: " + e);
+        }
+    }
+
+    public void borrar(EntityManager em, FormulasContratosEntidades formulasAseguradas) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(formulasAseguradas));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaFormulasContratosEntidades.borrar: " + e);
+            }
         }
     }
 
@@ -64,7 +87,7 @@ public class PersistenciaFormulasContratosEntidades implements PersistenciaFormu
         }
     }
 
-    public List<FormulasContratosEntidades> consultarFormulasContratosEntidadesPorFormulaContrato(EntityManager em,BigInteger secFormulaContrato) {
+    public List<FormulasContratosEntidades> consultarFormulasContratosEntidadesPorFormulaContrato(EntityManager em, BigInteger secFormulaContrato) {
         try {
             Query query = em.createQuery("SELECT te FROM FormulasContratosEntidades te WHERE te.formulacontrato.secuencia = :formulaContrato");
             query.setParameter("formulaContrato", secFormulaContrato);
@@ -77,9 +100,7 @@ public class PersistenciaFormulasContratosEntidades implements PersistenciaFormu
         }
     }
 
-    
-
-    public FormulasContratosEntidades consultarFormulaContratoEntidad(EntityManager em,BigInteger secuencia) {
+    public FormulasContratosEntidades consultarFormulaContratoEntidad(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM FormulasContratosEntidades te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);

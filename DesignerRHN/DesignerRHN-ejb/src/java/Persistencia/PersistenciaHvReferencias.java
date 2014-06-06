@@ -10,6 +10,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,17 +31,54 @@ public class PersistenciaHvReferencias implements PersistenciaHvReferenciasInter
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, HvReferencias hvReferencias) {
-        em.persist(hvReferencias);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(hvReferencias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHvReferencias.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void editar(EntityManager em, HvReferencias hvReferencias) {
-        em.merge(hvReferencias);
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.merge(hvReferencias);
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaHvReferencias.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+        }
     }
 
     @Override
     public void borrar(EntityManager em, HvReferencias hvReferencias) {
-        em.remove(em.merge(hvReferencias));
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            em.remove(em.merge(hvReferencias));
+            tx.commit();
+
+        } catch (Exception e) {
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaHvReferencias.borrar: " + e);
+            }
+        }
     }
 
     @Override

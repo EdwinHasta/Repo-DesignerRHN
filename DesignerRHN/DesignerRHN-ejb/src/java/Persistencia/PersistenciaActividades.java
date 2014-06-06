@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaQuery;
@@ -30,34 +31,49 @@ public class PersistenciaActividades implements PersistenciaActividadesInterface
      private EntityManager em;*/
     @Override
     public void crear(EntityManager em, Actividades actividades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
-            em.persist(actividades);
-            em.getTransaction().commit();
+            tx.begin();
+            em.merge(actividades);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error creando bancos PersistenciaActividades");
+            System.out.println("Error PersistenciaActividades.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, Actividades actividades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.merge(actividades);
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editando bancos PersistenciaActividades");
+            System.out.println("Error PersistenciaActividades.editar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, Actividades actividades) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.getTransaction().begin();
+            tx.begin();
             em.remove(em.merge(actividades));
-            em.getTransaction().commit();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error borrando bancos PersistenciaActividades");
+            System.out.println("Error PersistenciaActividades.borrar: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

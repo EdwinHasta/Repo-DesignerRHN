@@ -64,6 +64,7 @@ public class ControlActividades implements Serializable {
     private int tamano;
     private Integer backupCodigo;
     private String backupDescripcion;
+    private String infoRegistro;
 
     public ControlActividades() {
         listActividades = null;
@@ -76,6 +77,7 @@ public class ControlActividades implements Serializable {
         duplicarActividades = new Actividades();
         guardado = true;
         tamano = 270;
+        guardado=true;
     }
 
     @PostConstruct
@@ -172,6 +174,12 @@ public class ControlActividades implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listActividades == null || listActividades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listActividades.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosActividades");
         context.update("form:ACEPTAR");
     }
@@ -279,11 +287,11 @@ public class ControlActividades implements Serializable {
                         }
 
                     }
-                    if (listActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (listActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listActividades.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
@@ -338,11 +346,11 @@ public class ControlActividades implements Serializable {
                         }
 
                     }
-                    if (listActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (listActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listActividades.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listActividades.get(indice).setDescripcion(backupDescripcion);
@@ -399,12 +407,12 @@ public class ControlActividades implements Serializable {
 
                     }
 
-                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarActividades.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
@@ -457,12 +465,12 @@ public class ControlActividades implements Serializable {
 
                     }
 
-                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarActividades.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarActividades.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarActividades.get(indice).setDescripcion(backupDescripcion);
@@ -524,6 +532,8 @@ public class ControlActividades implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosActividades");
+            infoRegistro = "Cantidad de registros: " + listActividades.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -669,7 +679,11 @@ public class ControlActividades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoActividades.getDescripcion().equals(" ")) {
+        if (nuevoActividades.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoActividades.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -714,6 +728,8 @@ public class ControlActividades implements Serializable {
             listActividades.add(nuevoActividades);
             nuevoActividades = new Actividades();
             context.update("form:datosActividades");
+            infoRegistro = "Cantidad de registros: " + listActividades.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -796,13 +812,18 @@ public class ControlActividades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarActividades.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+         if (duplicarActividades.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarActividades.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
         if (duplicarActividades.getClaseactividad() == null) {
             duplicarActividades.setClaseactividad(null);
@@ -825,6 +846,8 @@ public class ControlActividades implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listActividades.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
 
@@ -912,6 +935,13 @@ public class ControlActividades implements Serializable {
         if (listActividades == null) {
             listActividades = administrarActividades.consultarActividades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listActividades == null || listActividades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listActividades.size();
+        }
+        context.update("form:informacionRegistro");
         return listActividades;
     }
 
@@ -997,6 +1027,14 @@ public class ControlActividades implements Serializable {
 
     public void setActividadSeleccionada(Actividades actividadSeleccionada) {
         this.actividadSeleccionada = actividadSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

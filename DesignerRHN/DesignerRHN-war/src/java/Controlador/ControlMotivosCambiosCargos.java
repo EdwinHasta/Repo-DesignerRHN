@@ -64,6 +64,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
     private Short backupCodigo;
     private String backupNombre;
     private int tamano;
+    private String infoRegistro;
 
     /**
      * Creates a new instance of ControlMotivosCambiosCargos
@@ -81,7 +82,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         guardado = true;
         tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -183,6 +184,13 @@ public class ControlMotivosCambiosCargos implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        getListMotivosCambiosCargos();
+        if (listMotivosCambiosCargos == null || listMotivosCambiosCargos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosCargos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosMotivoCambioCargo");
         context.update("form:ACEPTAR");
     }
@@ -381,7 +389,9 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 filtrarMotivosCambiosCargos.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosCargos.size();
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosMotivoCambioCargo");
             index = -1;
             secRegistro = null;
@@ -553,7 +563,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
             listMotivosCambiosCargos.add(nuevoMotivoCambioCargo);
             nuevoMotivoCambioCargo = new MotivosCambiosCargos();
-
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosCargos.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosMotivoCambioCargo");
             if (guardado == true) {
                 guardado = false;
@@ -674,6 +685,8 @@ public class ControlMotivosCambiosCargos implements Serializable {
                 filtrarMotivosCambiosCargos = null;
                 tipoLista = 0;
             }
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosCargos.size();
+            context.update("form:informacionRegistro");
             duplicarMotivoCambioCargo = new MotivosCambiosCargos();
             RequestContext.getCurrentInstance().execute("duplicarRegistroMotivosCambiosCargos.hide()");
 
@@ -746,6 +759,14 @@ public class ControlMotivosCambiosCargos implements Serializable {
         if (listMotivosCambiosCargos == null) {
             listMotivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listMotivosCambiosCargos == null || listMotivosCambiosCargos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosCargos.size();
+        }
+        context.update("form:informacionRegistro");
         return listMotivosCambiosCargos;
     }
 
@@ -831,6 +852,14 @@ public class ControlMotivosCambiosCargos implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

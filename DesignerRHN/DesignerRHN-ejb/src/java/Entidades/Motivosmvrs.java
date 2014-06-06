@@ -42,13 +42,8 @@ public class Motivosmvrs implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivo")
@@ -76,14 +71,15 @@ public class Motivosmvrs implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre == null) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = nombre.toUpperCase();
+        }
     }
 
     public Integer getCodigo() {

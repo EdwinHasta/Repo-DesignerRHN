@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -30,28 +31,53 @@ public class PersistenciaJornadasLaborales implements PersistenciaJornadasLabora
 
     @Override
     public void crear(EntityManager em, JornadasLaborales jornadasLaborales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
-            em.persist(jornadasLaborales);
+            tx.begin();
+            em.merge(jornadasLaborales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error crear PersistenciaJornadasLaborales");
+            System.out.println("Error PersistenciaJornadasLaborales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void editar(EntityManager em, JornadasLaborales jornadasLaborales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.merge(jornadasLaborales);
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error editar PersistenciaJornadasLaborales");
+            System.out.println("Error PersistenciaJornadasLaborales.crear: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void borrar(EntityManager em, JornadasLaborales jornadasLaborales) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             em.remove(em.merge(jornadasLaborales));
+            tx.commit();
+
         } catch (Exception e) {
-            System.out.println("Error borrar PersistenciaJornadasLaborales");
+            try {
+                if (tx.isActive()) {
+                    tx.rollback();
+                }
+            } catch (Exception ex) {
+                System.out.println("Error PersistenciaJornadasLaborales.borrar: " + e);
+            }
         }
     }
 
