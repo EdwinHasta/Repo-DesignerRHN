@@ -97,10 +97,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSoActosInseguros.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSoActosInseguros.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlSoActosInseguros.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlSoActosInseguros.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlSoActosInseguros.revisarDialogoGuardar()}" disabled="#{controlSoActosInseguros.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"/>
 
@@ -212,13 +220,13 @@
 
                         <p:panel id="nuevaaSoCondicionesAmbientalP" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlSoActosInseguros.nuevaSoActoInseguro.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlSoActosInseguros.nuevaSoActoInseguro.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
+                            <strong><h:outputText value="*#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlSoActosInseguros.nuevaSoActoInseguro.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
@@ -235,17 +243,17 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarRCAP" style="border: none;">
-                            <strong><h:outputText value="#{msg['codigoN']}" style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlSoActosInseguros.duplicarSoActoInseguro.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}" style="left: 15px; position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlSoActosInseguros.duplicarSoActoInseguro.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlSoActosInseguros.duplicarSoActoInseguro.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*#{msg['descripcionN']}"  style="left: 15px; position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlSoActosInseguros.duplicarSoActoInseguro.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:watermark for="duplicarNombre" value="#{msg['codigoWM']}" />
+                            <p:watermark for="duplicarNombre" value="#{msg['descripcionWM']}" />
                             <p:commandButton id="limpiarD" value="#{msg['limpiar']}" icon="ui-icon-trash" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlSoActosInseguros.limpiarDuplicarSoActosInseguros()}" update="duplicarRCAP"  process="@this"/>
                             <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlSoActosInseguros.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 203px; top: 120px;"  update="duplicarRCAP" onclick="duplicarRegistroSoCondicionesAmbientalesP.hide();" actionListener="#{controlSoActosInseguros.limpiarDuplicarSoActosInseguros()}"  process="@this"/>

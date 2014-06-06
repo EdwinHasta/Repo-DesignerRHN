@@ -65,6 +65,7 @@ public class ControlSoActosInseguros implements Serializable {
 
     private String backUpCodigo;
     private String backUpDescripcion;
+    private String infoRegistro;
 
     public ControlSoActosInseguros() {
         listSoActosInseguros = null;
@@ -177,6 +178,12 @@ public class ControlSoActosInseguros implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoActosInseguros == null || listSoActosInseguros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoActosInseguros.size();
+        }
+        context.update("form:informacionRegistro");
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         context.update("form:datosSoCondicionesAmbientalesP");
     }
@@ -188,7 +195,7 @@ public class ControlSoActosInseguros implements Serializable {
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
             codigo.setFilterStyle("width: 120px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
-            descripcion.setFilterStyle("width: 600px");
+            descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
             System.out.println("Activar");
             bandera = 1;
@@ -495,6 +502,8 @@ public class ControlSoActosInseguros implements Serializable {
 
             }
             context.update("form:datosSoCondicionesAmbientalesP");
+            infoRegistro = "Cantidad de registros: " + listSoActosInseguros.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -672,6 +681,8 @@ public class ControlSoActosInseguros implements Serializable {
 
             listSoActosInseguros.add(nuevaSoActoInseguro);
             nuevaSoActoInseguro = new SoActosInseguros();
+            infoRegistro = "Cantidad de registros: " + listSoActosInseguros.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosSoCondicionesAmbientalesP");
             if (guardado == true) {
                 guardado = false;
@@ -778,6 +789,8 @@ public class ControlSoActosInseguros implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listSoActosInseguros.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -862,6 +875,13 @@ public class ControlSoActosInseguros implements Serializable {
         if (listSoActosInseguros == null) {
             listSoActosInseguros = administrarSoActosInseguros.consultarSoActosInseguros();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoActosInseguros == null || listSoActosInseguros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoActosInseguros.size();
+        }
+        context.update("form:informacionRegistro");
         return listSoActosInseguros;
     }
 
@@ -955,6 +975,14 @@ public class ControlSoActosInseguros implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
