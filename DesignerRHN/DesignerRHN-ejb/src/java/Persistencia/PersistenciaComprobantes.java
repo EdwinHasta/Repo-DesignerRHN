@@ -26,25 +26,24 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Comprobantes comprobante) {
+    public void crear(EntityManager em, Comprobantes comprobante) {
         em.persist(comprobante);
     }
 
     @Override
-    public void editar(EntityManager em,Comprobantes comprobante) {
+    public void editar(EntityManager em, Comprobantes comprobante) {
         em.merge(comprobante);
     }
 
     @Override
-    public void borrar(EntityManager em,Comprobantes comprobante) {
+    public void borrar(EntityManager em, Comprobantes comprobante) {
         em.remove(em.merge(comprobante));
     }
 
     @Override
-    public Comprobantes buscarComprobanteSecuencia(EntityManager em,BigInteger secuencia) {
+    public Comprobantes buscarComprobanteSecuencia(EntityManager em, BigInteger secuencia) {
         return em.find(Comprobantes.class, secuencia);
     }
 
@@ -56,7 +55,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     }
 
     @Override
-    public List<Comprobantes> comprobantesEmpleado(EntityManager em,BigInteger secuenciaEmpleado) {
+    public List<Comprobantes> comprobantesEmpleado(EntityManager em, BigInteger secuenciaEmpleado) {
         try {
             Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia = :secuenciaEmpleado ORDER BY c.numero DESC");
             query.setParameter("secuenciaEmpleado", secuenciaEmpleado);
@@ -78,6 +77,33 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
             return max;
         } catch (Exception e) {
             System.out.println("Error: (PersistenciaComprobantes.numeroMaximoComprobante)" + e);
+            return null;
+        }
+    }
+
+    @Override
+    public BigInteger buscarValorNumeroMaximo(EntityManager em) {
+        try {
+            String sql = "SELECT nvl(MAX(NUMERO),0) FROM COMPROBANTES";
+            Query query = em.createNativeQuery(sql);
+            BigInteger valor = (BigInteger) query.getSingleResult();
+            return valor;
+        } catch (Exception e) {
+            System.out.println("Error buscarValorNumeroMaximo PersistenciaComprobantes : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(EntityManager em, BigInteger secEmpleado) {
+        try {
+            Query query = em.createQuery("SELECT c FROM Comprobantes c WHERE c.empleado.secuencia=:secEmpleado");
+            query.setParameter("secEmpleado", secEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Comprobantes comprobante = (Comprobantes) query.getSingleResult();
+            return comprobante;
+        } catch (Exception e) {
+            System.out.println("Error buscarComprobanteParaPrimerRegistroEmpleado PersistenciaComprobantes : " + e.toString());
             return null;
         }
     }

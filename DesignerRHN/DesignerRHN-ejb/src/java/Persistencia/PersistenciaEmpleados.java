@@ -21,28 +21,27 @@ import javax.persistence.Query;
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface { 
+public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
-    public void crear(EntityManager em,Empleados empleados) {
+    public void crear(EntityManager em, Empleados empleados) {
         em.persist(empleados);
     }
 
     @Override
-    public void editar(EntityManager em,Empleados empleados) {
+    public void editar(EntityManager em, Empleados empleados) {
         em.merge(empleados);
     }
 
     @Override
-    public void borrar(EntityManager em,Empleados empleados) {
+    public void borrar(EntityManager em, Empleados empleados) {
         em.remove(em.merge(empleados));
     }
 
     @Override
-    public Empleados buscarEmpleado(EntityManager em,BigInteger secuencia) {
+    public Empleados buscarEmpleado(EntityManager em, BigInteger secuencia) {
         try {
             return em.find(Empleados.class, secuencia);
         } catch (Exception e) {
@@ -72,7 +71,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public Empleados buscarEmpleadoSecuencia(EntityManager em,BigInteger secuencia) {
+    public Empleados buscarEmpleadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -86,7 +85,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public boolean verificarCodigoEmpleado_Empresa(EntityManager em,BigInteger codigoEmpleado, BigInteger secEmpresa) {
+    public boolean verificarCodigoEmpleado_Empresa(EntityManager em, BigInteger codigoEmpleado, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT COUNT(e) FROM Empleados e WHERE e.codigoempleado = :codigo AND e.empresa.secuencia = :secEmpresa");
             query.setParameter("codigo", codigoEmpleado);
@@ -101,7 +100,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public Empleados buscarEmpleadoCodigo_Empresa(EntityManager em,BigInteger codigoEmpleado, BigInteger secEmpresa) {
+    public Empleados buscarEmpleadoCodigo_Empresa(EntityManager em, BigInteger codigoEmpleado, BigInteger secEmpresa) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE AND e.empresa.secuencia = :secEmpresa");
             query.setParameter("codigoE", codigoEmpleado);
@@ -116,7 +115,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public Empleados buscarEmpleadoTipo(EntityManager em,BigInteger codigoEmpleado) {
+    public Empleados buscarEmpleadoTipo(EntityManager em, BigInteger codigoEmpleado) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE");
             query.setParameter("codigoE", codigoEmpleado);
@@ -130,7 +129,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public Empleados buscarEmpleadoCodigo(EntityManager em,BigInteger codigoEmpleado) {
+    public Empleados buscarEmpleadoCodigo(EntityManager em, BigInteger codigoEmpleado) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.codigoempleado = :codigoE");
             query.setParameter("codigoE", codigoEmpleado);
@@ -144,7 +143,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public List<Empleados> empleadosComprobantes(EntityManager em,String usuarioBD) {
+    public List<Empleados> empleadosComprobantes(EntityManager em, String usuarioBD) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE EXISTS (SELECT 1 FROM Parametros p ,ParametrosInstancias pi, UsuariosInstancias ui, Usuarios u WHERE p.empleado = e.secuencia and p.secuencia = pi.parametro and pi.instancia = ui.instancia and ui.usuario = u.secuencia and u.alias = :usuarioBD)");
             query.setParameter("usuarioBD", usuarioBD);
@@ -236,7 +235,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     }
 
     @Override
-    public List<Empleados> buscarEmpleadosBusquedaAvanzada(EntityManager em,String queryBusquedaAvanzada) {
+    public List<Empleados> buscarEmpleadosBusquedaAvanzada(EntityManager em, String queryBusquedaAvanzada) {
         try {
             Query query = em.createNativeQuery(queryBusquedaAvanzada, Empleados.class);
             List<Empleados> empleado = query.getResultList();
@@ -246,15 +245,44 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return null;
         }
     }
-    
-    @Override 
-    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(EntityManager em,String queryBusquedaAvanzada) {
+
+    @Override
+    public List<BigInteger> buscarEmpleadosBusquedaAvanzadaCodigo(EntityManager em, String queryBusquedaAvanzada) {
         try {
             Query query = em.createNativeQuery(queryBusquedaAvanzada);
             List<BigInteger> empleado = query.getResultList();
             return empleado;
         } catch (Exception e) {
             System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzadaCodigo : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa) {
+        try {
+            String sql = "SELECT * FROM empleados WHERE CODIGOEMPLEADO =? AND NVL(EMPRESA,?)=?";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            query.setParameter(1, codigo);
+            query.setParameter(2, empresa);
+            query.setParameter(3, empresa);
+            Empleados empl = (Empleados) query.getSingleResult();
+            return empl;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpleadoPorCodigoyEmpresa PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override 
+    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em,BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
+        try {
+            Empleados empleado = null;
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
+            Empleados empl = (Empleados) query.getSingleResult();
+            return empleado;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoEmpleadoAlmacenado PersistenciaEmpleados : " + e.toString());
             return null;
         }
     }

@@ -50,4 +50,6 @@ public interface PersistenciaTercerosSucursalesInterface {
      */
     public List<TercerosSucursales> buscarTercerosSucursalesPorTerceroSecuencia(EntityManager em, BigInteger secuencia);
     
+    public List<TercerosSucursales> buscarTercerosSucursalesPorEmpresa(EntityManager em, BigInteger secuencia);
+    
 }

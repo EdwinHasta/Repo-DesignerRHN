@@ -11,20 +11,22 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless. <br> 
- * Clase encargada de realizar operaciones sobre la tabla 'ReformasLaborales'
- * de la base de datos.
+ * Clase Stateless. <br>
+ * Clase encargada de realizar operaciones sobre la tabla 'ReformasLaborales' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
-public class PersistenciaReformasLaborales implements PersistenciaReformasLaboralesInterface{
+public class PersistenciaReformasLaborales implements PersistenciaReformasLaboralesInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, ReformasLaborales reformaLaboral) {
         em.persist(reformaLaboral);
@@ -60,5 +62,22 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
         }
         ReformasLaborales reformaL = null;
         return reformaL;
+    }
+
+    @Override
+    public String obtenerCheckIntegralReformaLaboral(EntityManager em, BigInteger secuencia) {
+        try {
+            String sql = "SELECT REFORMASLABORALES_PKG.CheckIntegral(?) FROM dual";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            String variable = (String) query.getSingleResult();
+            if (variable == null) {
+                variable = "N";
+            }
+            return variable;
+        } catch (Exception e) {
+            System.out.println("Error obtenerCheckIntegralReformaLaboral PersistenciaReformasLaborales : " + e.toString());
+            return "N";
+        }
     }
 }

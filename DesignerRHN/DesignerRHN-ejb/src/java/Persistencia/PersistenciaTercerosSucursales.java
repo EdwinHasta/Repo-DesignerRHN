@@ -98,4 +98,18 @@ public class PersistenciaTercerosSucursales implements PersistenciaTercerosSucur
             return null;
         }
     }
+    
+    @Override
+    public List<TercerosSucursales> buscarTercerosSucursalesPorEmpresa(EntityManager em, BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT ts FROM TercerosSucursales ts WHERE ts.tercero.empresa.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<TercerosSucursales> listTercerosS = query.getResultList();
+            return listTercerosS;
+        } catch (Exception e) {
+            System.out.println("Error buscarTercerosSucursalesPorEmpresa PersistenciaTerceroSurcusal : " + e.toString());
+            return null;
+        }
+    }
 }

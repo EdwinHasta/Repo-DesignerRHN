@@ -10,10 +10,14 @@ import javax.persistence.EntityManager;
 public interface PersistenciaGeneralesInterface {
 
     /**
-     * Método encargado de consultar en la base de datos las rutas que se encuentran
-     * en generales.
+     * Método encargado de consultar en la base de datos las rutas que se
+     * encuentran en generales.
      *
      * @return Retorna una entidad de tipo Generales que contiene las rutas.
      */
     public Generales obtenerRutas(EntityManager em);
+
+    public String obtenerPreValidadContabilidad(EntityManager em);
+
+    public String obtenerPreValidaBloqueAIngreso(EntityManager em);
 }

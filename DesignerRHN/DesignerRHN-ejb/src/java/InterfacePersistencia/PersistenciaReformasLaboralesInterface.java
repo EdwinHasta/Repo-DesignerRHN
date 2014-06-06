@@ -42,4 +42,6 @@ public interface PersistenciaReformasLaboralesInterface {
      * @return Retorna la ReformaLaboral identificada con la secuencia dada por parámetro.
      */
     public ReformasLaborales buscarReformaSecuencia(EntityManager em, BigInteger secuencia);
+    
+    public String obtenerCheckIntegralReformaLaboral(EntityManager em, BigInteger secuencia);
 }
