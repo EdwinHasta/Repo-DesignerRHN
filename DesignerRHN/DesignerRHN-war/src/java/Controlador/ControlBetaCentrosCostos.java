@@ -392,6 +392,49 @@ public class ControlBetaCentrosCostos implements Serializable {
         }
     }
 
+    public void salir() {
+        try {
+            System.out.println("entre a CONTROLBETACENTROSCOSTOS.Salir");
+            FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCC");
+                codigoCC.setFilterStyle("display: none; visibility: hidden;");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:nombreCentroCosto");
+                nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:tipoCentroCosto");
+                tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:manoDeObra");
+                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoAT");
+                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+                obsoleto = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:obsoleto");
+                obsoleto.setFilterStyle("display: none; visibility: hidden;");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:codigoCTT");
+                codigoCTT.setFilterStyle("display: none; visibility: hidden;");
+                dimensiones = (Column) c.getViewRoot().findComponent("form:datosCentrosCostos:dimensiones");
+                dimensiones.setFilterStyle("display: none; visibility: hidden;");
+                tamano = 260;
+                bandera = 0;
+                filtrarCentrosCostos = null;
+                tipoLista = 0;
+            }
+
+            borrarCentrosCostos.clear();
+            crearCentrosCostos.clear();
+            modificarCentrosCostos.clear();
+            index = -1;
+            k = 0;
+            listCentrosCostosPorEmpresa = null;
+            guardado = true;
+            permitirIndex = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosCentrosCostos");
+            context.update("form:ACEPTAR");
+        } catch (Exception E) {
+            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.ModificarModificacion ERROR====================" + E.getMessage());
+        }
+    }
+
     public void mostrarInfo(int indice, int celda) {
         if (permitirIndex == true) {
             RequestContext context = RequestContext.getCurrentInstance();
