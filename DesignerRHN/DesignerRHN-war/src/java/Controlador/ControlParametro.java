@@ -548,6 +548,9 @@ public class ControlParametro implements Serializable {
                     listaCrearParametros.get(i).setFechasistema(fechaSistema);
                     listaCrearParametros.get(i).setProceso(proceso);
                     listaCrearParametros.get(i).setUsuario(au);
+                    if(listaCrearParametros.get(i).getParametroestructura().getTipotrabajador().getSecuencia() == null){
+                        listaCrearParametros.get(i).getParametroestructura().setTipotrabajador(null);
+                    }
                 }
                 administrarParametros.crearParametros(listaCrearParametros);
                 listaCrearParametros.clear();

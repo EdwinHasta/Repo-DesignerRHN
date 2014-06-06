@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.ejb.EJB;
@@ -36,6 +37,20 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
      */
     @EJB
     PersistenciaVWActualesCargosInterface persistenciaVWActualesCargos;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaVWActualesFechas'.
+     */
+    @EJB
+    PersistenciaVWActualesFechasInterface persistenciaVWActualesFechas;
+    /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'PersistenciaVigenciasArps'.
+     */
+    @EJB
+    PersistenciaVigenciasArpsInterface persistenciaVigenciasArps;
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -274,6 +289,27 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         } catch (Exception e) {
             System.out.println("ConsultarCargo.");
             System.out.println("Exception" + e);
+            return null;
+        }
+    }
+    
+    public Date consultarActualesFechas() {
+        try {
+            Date actualFechaHasta = persistenciaVWActualesFechas.actualFechaHasta(em);
+            return actualFechaHasta;
+        } catch (Exception e) {
+            System.out.println("Error - AdministrarCarpetaPersonal.consultarActualesFechas" + e);
+            return null;
+        }
+    }
+    
+    @Override
+    public String consultarActualARP(BigInteger secEstructura, BigInteger secCargo, Date fechaHasta) {
+        try {
+            String actualARP = persistenciaVigenciasArps.actualARP(em, secEstructura, secCargo, fechaHasta);
+            return actualARP;
+        } catch (Exception e) {
+            System.out.println("Error - AdministrarCarpetaPersonal.consultarActualesFechas" + e);
             return null;
         }
     }

@@ -36,10 +36,9 @@ public class VWActualesCargos implements Serializable {
     @JoinColumn(name = "EMPLEADO", referencedColumnName = "SECUENCIA")
     @ManyToOne(optional = false)
     private Empleados empleado;
-    @Basic(optional = false)
-    @NotNull
-    @Column(name = "ESTRUCTURA")
-    private BigInteger estructura;
+    @JoinColumn(name = "ESTRUCTURA", referencedColumnName = "SECUENCIA")
+    @ManyToOne(optional = false)
+    private Estructuras estructura;
     @Column(name = "FECHAVIGENCIA")
     @Temporal(TemporalType.DATE)
     private Date fechaVigencia;
@@ -93,11 +92,11 @@ public class VWActualesCargos implements Serializable {
         this.empleado = empleado;
     }
 
-    public BigInteger getEstructura() {
+    public Estructuras getEstructura() {
         return estructura;
     }
 
-    public void setEstructura(BigInteger estructura) {
+    public void setEstructura(Estructuras estructura) {
         this.estructura = estructura;
     }
 
