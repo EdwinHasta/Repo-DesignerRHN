@@ -95,18 +95,26 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesAccidentes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesAccidentes.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesAccidentes.salir()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlClasesAccidentes.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlClasesAccidentes.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlClasesAccidentes.revisarDialogoGuardar()}" disabled="#{controlClasesAccidentes.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"/>
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" actionListener="#{controlClasesAccidentes.salir()}" value="#{msg['atras']}"/>
 
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlClasesAccidentes.guardandoClasesAccidentes()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlClasesAccidentes.guardandoClasesAccidentes()}"  style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlClasesAccidentes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
@@ -211,7 +219,7 @@
                         <p:panel id="nuevaaClasesAccidentes" style="border: none;">
 
                             <strong><h:outputText value="*#{msg['codigoN']}"  style="left: 15px; position: absolute; top: 60px" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlClasesAccidentes.nuevaClaseAccidente.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlClasesAccidentes.nuevaClaseAccidente.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoWM']}" />
@@ -233,14 +241,14 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarCA" style="border: none;">
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlClasesAccidentes.duplicarClaseAccidente.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}"  style=" position: absolute; top: 60px" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlClasesAccidentes.duplicarClaseAccidente.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['nombreN']}"  style=" position: absolute; top: 90px" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlClasesAccidentes.duplicarClaseAccidente.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*#{msg['nombreN']}"  style=" position: absolute; top: 90px" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlClasesAccidentes.duplicarClaseAccidente.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="#{msg['nombreWM']}" />

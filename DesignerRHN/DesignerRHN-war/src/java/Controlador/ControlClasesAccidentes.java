@@ -175,6 +175,42 @@ public class ControlClasesAccidentes implements Serializable {
         listClasesAccidentes = null;
         guardado = true;
         permitirIndex = true;
+        getListClasesAccidentes();
+        RequestContext context = RequestContext.getCurrentInstance();
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        context.update("form:datosClasesAccidentes");
+        if (listClasesAccidentes == null || listClasesAccidentes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listClasesAccidentes.size();
+        }
+        context.update("form:informacionRegistro");
+    }
+    private String infoRegistro;
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesAccidentes:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosClasesAccidentes");
+            bandera = 0;
+            filtrarClasesAccidentes = null;
+            tipoLista = 0;
+        }
+
+        borrarClasesAccidentes.clear();
+        crearClasesAccidentes.clear();
+        modificarClasesAccidentes.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listClasesAccidentes = null;
+        guardado = true;
+        permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         context.update("form:datosClasesAccidentes");
@@ -510,7 +546,8 @@ public class ControlClasesAccidentes implements Serializable {
             context.update("form:datosClasesAccidentes");
             index = -1;
             secRegistro = null;
-
+            infoRegistro = "Cantidad de registros: " + listClasesAccidentes.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
             }
@@ -696,6 +733,8 @@ public class ControlClasesAccidentes implements Serializable {
 
             listClasesAccidentes.add(nuevaClaseAccidente);
             nuevaClaseAccidente = new ClasesAccidentes();
+            infoRegistro = "Cantidad de registros: " + listClasesAccidentes.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosClasesAccidentes");
             if (guardado == true) {
                 guardado = false;
@@ -802,6 +841,8 @@ public class ControlClasesAccidentes implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listClasesAccidentes.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -887,6 +928,13 @@ public class ControlClasesAccidentes implements Serializable {
             listClasesAccidentes = administrarClasesAccidentes.consultarClasesAccidentes();
 
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listClasesAccidentes == null || listClasesAccidentes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listClasesAccidentes.size();
+        }
+        context.update("form:informacionRegistro");
         return listClasesAccidentes;
     }
 
@@ -972,6 +1020,14 @@ public class ControlClasesAccidentes implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

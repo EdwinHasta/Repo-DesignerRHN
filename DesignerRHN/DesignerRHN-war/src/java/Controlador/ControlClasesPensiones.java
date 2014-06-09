@@ -159,8 +159,45 @@ public class ControlClasesPensiones implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesPensiones:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesPensiones:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosClasesPensiones");
+            bandera = 0;
+            filtrarClasesPensiones = null;
+            tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarClasesPensiones.clear();
+        crearClasesPensiones.clear();
+        modificarClasesPensiones.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listClasesPensiones = null;
+        guardado = true;
+        permitirIndex = true;
+        getListClasesPensiones();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listClasesPensiones == null || listClasesPensiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listClasesPensiones.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosClasesPensiones");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
@@ -467,6 +504,9 @@ public class ControlClasesPensiones implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosClasesPensiones");
+            infoRegistro = "Cantidad de registros: " + listClasesPensiones.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -540,7 +580,6 @@ public class ControlClasesPensiones implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listClasesPensiones = null;
-            context.execute("mostrarGuardar.show()");
             context.update("form:datosClasesPensiones");
             k = 0;
             guardado = true;
@@ -609,7 +648,11 @@ public class ControlClasesPensiones implements Serializable {
                 contador++;
             }
         }
-        if (nuevoClasesPensiones.getDescripcion().equals(" ")) {
+        if (nuevoClasesPensiones.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoClasesPensiones.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -646,6 +689,9 @@ public class ControlClasesPensiones implements Serializable {
             listClasesPensiones.add(nuevoClasesPensiones);
             nuevoClasesPensiones = new ClasesPensiones();
             context.update("form:datosClasesPensiones");
+            infoRegistro = "Cantidad de registros: " + listClasesPensiones.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -709,7 +755,7 @@ public class ControlClasesPensiones implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarClasesPensiones.getDescripcion());
 
         if (duplicarClasesPensiones.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listClasesPensiones.size(); x++) {
@@ -726,13 +772,18 @@ public class ControlClasesPensiones implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarClasesPensiones.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarClasesPensiones.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarClasesPensiones.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
@@ -750,6 +801,9 @@ public class ControlClasesPensiones implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listClasesPensiones.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -834,6 +888,12 @@ public class ControlClasesPensiones implements Serializable {
         if (listClasesPensiones == null) {
             System.out.println("ControlClasesPensiones getListClasesPensiones");
             listClasesPensiones = administrarClasesPensiones.consultarClasesPensiones();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listClasesPensiones == null || listClasesPensiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listClasesPensiones.size();
         }
         return listClasesPensiones;
     }
@@ -920,6 +980,14 @@ public class ControlClasesPensiones implements Serializable {
 
     public void setClasesPensionesSeleccionado(ClasesPensiones clasesPensionesSeleccionado) {
         this.clasesPensionesSeleccionado = clasesPensionesSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

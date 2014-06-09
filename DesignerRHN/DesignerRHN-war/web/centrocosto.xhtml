@@ -43,9 +43,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; " value="#{msg['codigocc']}"/>
-                                    </f:facet>
+
                                 </p:column>  
                                 <p:tooltip style="" for="fooCodigoCC" value="#{msg['codigodelcentrodecostoT']}" />
 
@@ -59,9 +57,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none;" value="#{msg['nombrecentrocosto']}" />
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="#{msg['tipocentrocosto']}" sortBy="#{info.tipocentrocosto.nombre}" filterBy="#{info.tipocentrocosto.nombre}" filterMatchMode="contains" id="tipoCentroCosto" width="113" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -74,8 +70,8 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <p:commandButton style="width: 140px; margin: -14px; height: 50px; border: none; color: blue" id="fooTipoCentroCosto"  action="cambioTipoCentroCosto" value="#{msg['tipocentrocosto']}"/>
+                                    <f:facet name="footer" >
+                                        <p:commandButton value="" style="width: 170px; margin: -14px; height: 20px; border: none; color: blue" id="fooTipoCentroCosto"  action="cambioTipoCentroCosto" />
                                     </f:facet>
                                 </p:column>  
                                 <p:column headerText="#{msg['manodeobra']}" sortBy="#{info.variableManoObra}" filterBy="#{info.variableManoObra}" filterMatchMode="contains" id="manoDeObra" width="110" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
@@ -92,9 +88,7 @@
                                             </p:selectOneMenu>   
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; " id="fooManoObra" value="#{msg['manodeobra']}" />
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="#{msg['codigoat']}" sortBy="#{info.codigoalternativo}" filterBy="#{info.codigoalternativo}" filterMatchMode="contains" id="codigoAT" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -106,25 +100,15 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; " id="fooCodigoAT" value="#{msg['codigoat']}"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="#{msg['obsoleto']}" sortBy="#{info.variableObsoleto}" filterBy="#{info.variableObsoleto}" filterMatchMode="contains" id="obsoleto" width="70" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{info.variableObsoleto}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:selectOneMenu effect="fold" value="#{info.variableObsoleto}" style="height: 20px; width:73px">  
-                                                <f:selectItem itemLabel="" itemValue=" "/>  
-                                                <f:selectItem itemLabel="#{msg['SI']}" itemValue="SI" />  
-                                                <f:selectItem itemLabel="#{msg['NO']}" itemValue="NO" />  
-                                                <p:ajax event="change" listener="#{controlBetaCentrosCostos.mostrarInfo(indice, 5)}" update="obsoleto"/>
-                                            </p:selectOneMenu>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; " id="fooObsoleto" value="#{msg['obsoleto']}" />
-                                    </f:facet>
+                                    <p:selectOneMenu effect="fold" value="#{info.variableObsoleto}" style="padding: 0px; height: 20px; width:70px">  
+                                        <f:selectItem itemLabel="" itemValue=" "/>  
+                                        <f:selectItem itemLabel="#{msg['SI']}" itemValue="SI" />  
+                                        <f:selectItem itemLabel="#{msg['NO']}" itemValue="NO" />  
+                                        <p:ajax event="change" listener="#{controlBetaCentrosCostos.mostrarInfo(indice, 5)}" update="obsoleto"/>
+                                    </p:selectOneMenu>
                                 </p:column>
                                 <p:column headerText="#{msg['codigoctt']}" sortBy="#{info.codigoctt}" filterBy="#{info.codigoctt}" filterMatchMode="contains" id="codigoCTT" width="113" filterStyle="display: none; visibility: hidden;" style="padding: 0px">                                  
                                     <p:cellEditor>  
@@ -136,9 +120,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; " id="fooCodigoCTT" value="#{msg['codigoctt']}"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="D" sortBy="#{info.dimensiones}" filterBy="#{info.dimensiones}" filterMatchMode="contains" id="dimensiones" width="30" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>
@@ -155,9 +137,7 @@
                                             </p:selectOneMenu>                                          
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText style="width: 100%; height: 16px;  border: none; " id="fooD" value="D" />
-                                    </f:facet>
+
                                 </p:column>
                             </p:dataTable> 
                         </fieldset>
@@ -254,8 +234,8 @@
 
 
                         <h:outputText id="informacionRegistro" value="#{controlBetaCentrosCostos.infoRegistro}" style="position: absolute; left: 15px; top: 455px; font-weight: bold"/>
-                        <p:commandButton style="position: absolute; left: 10px; top: 475px;  "  icon="ui-icon-search" id="BUSCARCENTROCOSTO" value="#{msg['buscar']}" actionListener="#{controlBetaCentrosCostos.llamadoDialogoBuscarCentrosCostos()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 180px; top: 475px;  " icon="ui-icon-search" id="MOSTRARTODOS" value="#{msg['mostrar']}" actionListener="#{controlBetaCentrosCostos.cancelarModificacion()}" process="@this"/>
+                        <p:commandButton style="position: absolute; left: 10px; top: 475px;  "  icon="ui-icon-search" id="BUSCARCENTROCOSTO" disabled="#{controlBetaCentrosCostos.buscarCentrocosto}" value="#{msg['buscar']}" actionListener="#{controlBetaCentrosCostos.llamadoDialogoBuscarCentrosCostos()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 180px; top: 475px;  " icon="ui-icon-search" id="MOSTRARTODOS" disabled="#{controlBetaCentrosCostos.mostrartodos}" value="#{msg['mostrar']}" actionListener="#{controlBetaCentrosCostos.cancelarModificacion()}" process="@this"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 475px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlBetaCentrosCostos.guardado}" onclick="confirmarGuardar.show();" update=":form:datosCentrosCostos" process="@this" />
                         <p:commandButton style=" position: absolute; left: 785px; top: 475px;  " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}" actionListener="#{controlBetaCentrosCostos.salir()}" action="nomina" process="@this" />
 
@@ -362,19 +342,19 @@
                         <p:panel id="nuevoCentroCostos" style="border: none;">
 
                             <!--0-->
-                            <strong><h:outputText value="#{msg['codigoccN']}" style=" position: absolute; top: 60px" /></strong>
+                            <strong><h:outputText value="*#{msg['codigoccN']}" style=" position: absolute; top: 60px" /></strong>
                             <p:inputText id="nuevaCodigoCC" value="#{controlBetaCentrosCostos.nuevoCentroCosto.codigo}" style=" width: 140px; position: absolute; left: 190px; top: 55px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoCC" value="#{msg['codigoccWM']}" />
                             <!--1-->
-                            <strong><h:outputText value="#{msg['nombrecentrocostoN']}" style=" position: absolute; top: 90px" /></strong>
+                            <strong><h:outputText value="*#{msg['nombrecentrocostoN']}" style=" position: absolute; top: 90px" /></strong>
                             <p:inputText id="nuevaNombreCentroCostos" value="#{controlBetaCentrosCostos.nuevoCentroCosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaNombreCentroCostos" value="#{msg['nombrecentrocostoWM']}" />
                             <!--2-->
-                            <strong><h:outputText value="#{msg['tipocentrocostoN']}" style=" position: absolute; top: 120px" /></strong>
+                            <strong><h:outputText value="*#{msg['tipocentrocostoN']}" style=" position: absolute; top: 120px" /></strong>
                             <p:inputText id="nuevaTipoCentroCostos" value="#{controlBetaCentrosCostos.nuevoCentroCosto.tipocentrocosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 115px;text-transform: uppercase">  
                                 <p:ajax event="click" listener="#{controlBetaCentrosCostos.valoresBackupAutocompletar(1, 'TIPOSCENTROSCOSTOS')}" />
                                 <p:ajax event="change" listener="#{controlBetaCentrosCostos.autocompletarNuevo('TIPOSCENTROSCOSTOS', controlBetaCentrosCostos.nuevoCentroCosto.tipocentrocosto.nombre , 1)}" />
@@ -457,7 +437,7 @@
                                 <h:outputText  value="#{centroscostosporempresa.codigo}" />
                             </p:column>
                             <p:column filterBy="#{centroscostosporempresa.nombre}" width="120"  filterMatchMode="contains">
-                                <f:facet name="header">
+                                <f:facet name="header"> 
                                     <h:outputText value="#{msg['nombreC']}" />
                                 </f:facet>
                                 <h:outputText value="#{centroscostosporempresa.nombre}" />
@@ -479,19 +459,19 @@
 
                         <p:panel id="duplicarCentroCostos" style="border: none;">
                             <!--0-->
-                            <strong><h:outputText value="#{msg['codigoccN']}" style=" position: absolute; top: 60px" /></strong>
+                            <strong><h:outputText value="*#{msg['codigoccN']}" style=" position: absolute; top: 60px" /></strong>
                             <p:inputText id="duplicarCodigoCC" value="#{controlBetaCentrosCostos.duplicarCentroCosto.codigo}" style=" width: 140px; position: absolute; left: 190px; top: 55px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoCC" value="#{msg['codigoccWM']}" />
                             <!--1-->
-                            <strong><h:outputText value="#{msg['nombrecentrocostoN']}" style=" position: absolute; top: 90px" /></strong>
+                            <strong><h:outputText value="*#{msg['nombrecentrocostoN']}" style=" position: absolute; top: 90px" /></strong>
                             <p:inputText id="duplicarNombreCentroCostos" value="#{controlBetaCentrosCostos.duplicarCentroCosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 85px;text-transform: uppercase">  
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombreCentroCostos" value="#{msg['nombrecentrocostoWM']}" />
                             <!--2-->
-                            <strong><h:outputText value="#{msg['tipocentrocostoN']}" style=" position: absolute; top: 120px" /></strong>
+                            <strong><h:outputText value="*#{msg['tipocentrocostoN']}" style=" position: absolute; top: 120px" /></strong>
                             <p:inputText id="duplicarTipoCentroCostos" value="#{controlBetaCentrosCostos.duplicarCentroCosto.tipocentrocosto.nombre}" style=" width: 140px; position: absolute; left: 190px; top: 115px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlBetaCentrosCostos.valoresBackupAutocompletar(2, 'TIPOSCENTROSCOSTOS')}" />
                                 <p:ajax event="change" listener="#{controlBetaCentrosCostos.autocompletarDuplicado('TIPOSCENTROSCOSTOS', controlBetaCentrosCostos.duplicarCentroCosto.tipocentrocosto.nombre , 2)}" />
