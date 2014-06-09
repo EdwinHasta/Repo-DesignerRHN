@@ -294,6 +294,47 @@ public class ControlFormulasAseguradas implements Serializable {
         context.update("form:BUSCARCENTROCOSTO");
     }
 
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:proceso");
+            proceso.setFilterStyle("display: none; visibility: hidden;");
+            periodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulasAseguradas:periodicidad");
+            periodicidad.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosFormulasAseguradas");
+            bandera = 0;
+            filtrarFormulasAseguradas = null;
+            tipoLista = 0;
+        }
+
+        borrarFormulasAseguradas.clear();
+        crearFormulasAseguradas.clear();
+        modificarFormulasAseguradas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listFormulasAseguradas = null;
+        guardado = true;
+        permitirIndex = true;
+        mostrarTodos = true;
+        buscarFormulas = false;
+        getListFormulasAseguradas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listFormulasAseguradas == null || listFormulasAseguradas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFormulasAseguradas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosFormulasAseguradas");
+        context.update("form:ACEPTAR");
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARCENTROCOSTO");
+    }
+
     public void cancelarModificacionCambio() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
@@ -1312,7 +1353,7 @@ public class ControlFormulasAseguradas implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (nuevoFormulasAseguradas.getFormula().getNombrelargo() == null || nuevoFormulasAseguradas.getFormula().getNombrelargo().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Concepto \n";
+            mensajeValidacion = mensajeValidacion + " *Formula \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1443,7 +1484,7 @@ public class ControlFormulasAseguradas implements Serializable {
         a = null;
 
         if (duplicarFormulasAseguradas.getFormula().getNombrelargo() == null || duplicarFormulasAseguradas.getFormula().getNombrelargo().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * una Concepto \n";
+            mensajeValidacion = mensajeValidacion + "   *Formula \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1451,7 +1492,7 @@ public class ControlFormulasAseguradas implements Serializable {
             contador++;
         }
         if (duplicarFormulasAseguradas.getProceso().getDescripcion() == null || duplicarFormulasAseguradas.getProceso().getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * una Proceso \n";
+            mensajeValidacion = mensajeValidacion + "   *Proceso \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

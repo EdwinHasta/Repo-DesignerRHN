@@ -274,6 +274,52 @@ public class ControlEmpresasBancos implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEmpresasBancos == null || listEmpresasBancos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEmpresasBancos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEmpresasBancos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            obsoleto = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:obsoleto");
+            obsoleto.setFilterStyle("display: none; visibility: hidden;");
+            pais = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:pais");
+            pais.setFilterStyle("display: none; visibility: hidden;");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:subTituloFirma");
+            subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosEmpresasBancos:cargo");
+            cargo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEmpresasBancos");
+            bandera = 0;
+            filtrarEmpresasBancos = null;
+            tipoLista = 0;
+        }
+
+        borrarEmpresasBancos.clear();
+        crearEmpresasBancos.clear();
+        modificarEmpresasBancos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEmpresasBancos = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEmpresasBancos == null || listEmpresasBancos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEmpresasBancos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEmpresasBancos");
         context.update("form:ACEPTAR");
     }
@@ -1035,6 +1081,8 @@ public class ControlEmpresasBancos implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEmpresasBancos");
+            infoRegistro = "Cantidad de registros: " + listEmpresasBancos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -1110,8 +1158,7 @@ public class ControlEmpresasBancos implements Serializable {
                 nuevoEmpresasBancos.getEmpresa().setNombre(nuevoYduplicarCompletarEmpresa);
                 System.out.println("valorConfirmar cuando es vacio: " + valorConfirmar);
                 nuevoEmpresasBancos.setEmpresa(new Empresas());
-                nuevoEmpresasBancos.getEmpresa().setNombre(" ");
-                System.out.println("NUEVA NORMA LABORAL" + nuevoEmpresasBancos.getEmpresa().getNombre());
+                System.out.println("empresa" + nuevoEmpresasBancos.getEmpresa().getNombre());
             }
             context.update("formularioDialogos:nuevoPais");
         } else if (confirmarCambio.equalsIgnoreCase("PERSONA")) {
@@ -1180,7 +1227,6 @@ public class ControlEmpresasBancos implements Serializable {
                 nuevoEmpresasBancos.getCiudad().setNombre(nuevoYduplicarCompletarCargo);
                 System.out.println("valorConfirmar cuando es vacio: " + valorConfirmar);
                 nuevoEmpresasBancos.setCiudad(new Ciudades());
-                nuevoEmpresasBancos.getCiudad().setNombre(" ");
                 System.out.println("NUEVO CARGO " + nuevoEmpresasBancos.getCiudad().getNombre());
             }
             context.update("formularioDialogos:nuevoCargo");
@@ -1505,8 +1551,8 @@ public class ControlEmpresasBancos implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoEmpresasBancos.getNumerocuenta().isEmpty()) {
-            mensajeValidacion = " *Debe Tener Un Numero Cuenta \n";
+        if (nuevoEmpresasBancos.getNumerocuenta() == null) {
+            mensajeValidacion = " *Numero Cuenta \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEmpresasBancos.getNumerocuenta());
@@ -1526,8 +1572,8 @@ public class ControlEmpresasBancos implements Serializable {
                 contador++;//1
             }
         }
-        if (nuevoEmpresasBancos.getEmpresa().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Empresa \n";
+        if (nuevoEmpresasBancos.getEmpresa().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Empresa \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1535,8 +1581,8 @@ public class ControlEmpresasBancos implements Serializable {
             contador++;//2
 
         }
-        if (nuevoEmpresasBancos.getBanco().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Banco \n";
+        if (nuevoEmpresasBancos.getBanco().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1545,8 +1591,8 @@ public class ControlEmpresasBancos implements Serializable {
 
         }
 
-        if (nuevoEmpresasBancos.getCiudad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Ciudad \n";
+        if (nuevoEmpresasBancos.getCiudad().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1590,6 +1636,8 @@ public class ControlEmpresasBancos implements Serializable {
             nuevoEmpresasBancos.setCiudad(new Ciudades());
             nuevoEmpresasBancos.setBanco(new Bancos());
             context.update("form:datosEmpresasBancos");
+            infoRegistro = "Cantidad de registros: " + listEmpresasBancos.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1620,15 +1668,15 @@ public class ControlEmpresasBancos implements Serializable {
     //------------------------------------------------------------------------------
     public void cargarNuevoEmpresasBancos() {
         System.out.println("cargarNuevoEmpresasBancos");
-        
-            duplicarEmpresasBancos = new EmpresasBancos();
-            duplicarEmpresasBancos.setEmpresa(new Empresas());
-            duplicarEmpresasBancos.setBanco(new Bancos());
-            duplicarEmpresasBancos.setCiudad(new Ciudades());
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("nuevoRegistroEmpresasBancos.show()");
-         
-   }
+
+        duplicarEmpresasBancos = new EmpresasBancos();
+        duplicarEmpresasBancos.setEmpresa(new Empresas());
+        duplicarEmpresasBancos.setBanco(new Bancos());
+        duplicarEmpresasBancos.setCiudad(new Ciudades());
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("nuevoRegistroEmpresasBancos.show()");
+
+    }
 
     public void duplicandoEmpresasBancos() {
         System.out.println("duplicandoEmpresasBancos");
@@ -1675,8 +1723,8 @@ public class ControlEmpresasBancos implements Serializable {
         a = null;
         System.err.println("ConfirmarDuplicar codigo " + duplicarEmpresasBancos.getNumerocuenta());
 
-        if (duplicarEmpresasBancos.getNumerocuenta().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Numero Cuenta \n";
+        if (duplicarEmpresasBancos.getNumerocuenta() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Numero Cuenta \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEmpresasBancos.size(); x++) {
@@ -1694,24 +1742,24 @@ public class ControlEmpresasBancos implements Serializable {
             }
         }
 
-        if (duplicarEmpresasBancos.getEmpresa().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * un Pais \n";
+        if (duplicarEmpresasBancos.getEmpresa().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Empresa \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarEmpresasBancos.getBanco().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Banco \n";
+        if (duplicarEmpresasBancos.getBanco().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarEmpresasBancos.getCiudad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Ciudad \n";
+        if (duplicarEmpresasBancos.getCiudad().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1741,6 +1789,8 @@ public class ControlEmpresasBancos implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listEmpresasBancos.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -1834,11 +1884,20 @@ public class ControlEmpresasBancos implements Serializable {
         index = -1;
     }
 
+    private String infoRegistro;
+
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<EmpresasBancos> getListEmpresasBancos() {
         if (listEmpresasBancos == null) {
             listEmpresasBancos = administrarEmpresasBancos.consultarEmpresasBancos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEmpresasBancos == null || listEmpresasBancos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEmpresasBancos.size();
+        }
+        context.update("form:informacionRegistro");
         return listEmpresasBancos;
     }
 
@@ -1917,11 +1976,19 @@ public class ControlEmpresasBancos implements Serializable {
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
+    private String infoRegistroEmpresas;
 
     public List<Empresas> getListaEmpresas() {
         if (listaEmpresas == null) {
             listaEmpresas = administrarEmpresasBancos.consultarLOVEmpresas();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaEmpresas == null || listaEmpresas.isEmpty()) {
+            infoRegistroEmpresas = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroEmpresas = "Cantidad de registros: " + listaEmpresas.size();
+        }
+        context.update("form:infoRegistroEmpresas");
         return listaEmpresas;
     }
 
@@ -1944,11 +2011,19 @@ public class ControlEmpresasBancos implements Serializable {
     public void setEmpresaSeleccionado(Empresas empresaSeleccionado) {
         this.empresaSeleccionado = empresaSeleccionado;
     }
+    private String infoRegistrosBancos;
 
     public List<Bancos> getListaBancos() {
         if (listaBancos == null) {
             listaBancos = administrarEmpresasBancos.consultarLOVBancos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaBancos == null || listaBancos.isEmpty()) {
+            infoRegistrosBancos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistrosBancos = "Cantidad de registros: " + listaBancos.size();
+        }
+        context.update("form:infoRegistrosBancos");
         return listaBancos;
     }
 
@@ -1972,10 +2047,21 @@ public class ControlEmpresasBancos implements Serializable {
         this.bancoSeleccionado = bancoSeleccionado;
     }
 
+    private String infoRegistroCiudades;
+
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
             listaCiudades = administrarEmpresasBancos.consultarLOVCiudades();
         }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaCiudades == null || listaCiudades.isEmpty()) {
+            infoRegistroCiudades = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroCiudades = "Cantidad de registros: " + listaCiudades.size();
+        }
+        context.update("form:infoRegistroCiudades");
+
         return listaCiudades;
     }
 
@@ -2005,6 +2091,46 @@ public class ControlEmpresasBancos implements Serializable {
 
     public void setEmpresasBancoSeleccionado(EmpresasBancos empresasBancoSeleccionado) {
         this.empresasBancoSeleccionado = empresasBancoSeleccionado;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroEmpresas() {
+        return infoRegistroEmpresas;
+    }
+
+    public void setInfoRegistroEmpresas(String infoRegistroEmpresas) {
+        this.infoRegistroEmpresas = infoRegistroEmpresas;
+    }
+
+    public String getInfoRegistrosBancos() {
+        return infoRegistrosBancos;
+    }
+
+    public void setInfoRegistrosBancos(String infoRegistrosBancos) {
+        this.infoRegistrosBancos = infoRegistrosBancos;
+    }
+
+    public String getInfoRegistroCiudades() {
+        return infoRegistroCiudades;
+    }
+
+    public void setInfoRegistroCiudades(String infoRegistroCiudades) {
+        this.infoRegistroCiudades = infoRegistroCiudades;
     }
 
 }

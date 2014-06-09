@@ -34,9 +34,7 @@
                                                 <p:ajax event="change" listener="#{controlFirmasReportes.modificarFirmasReportes(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
                                         </f:facet>  
-                                    </p:cellEditor>  <f:facet name="footer">
-                                        <h:outputText value="Código"/>
-                                    </f:facet>
+                                    </p:cellEditor> 
                                 </p:column>
                                 <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="120" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -48,9 +46,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>  
-                                    <f:facet name="footer">
-                                        <h:outputText value="Descripción"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="Empresa" sortBy="#{info.empresa.nombre}" filterBy="#{info.empresa.nombre}" filterMatchMode="contains" id="pais" width="140" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -64,7 +60,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 200px; margin: -14px; height: 50px; border: none; color: blue" id="fooEmpresa" action="normaLaboral" value="Empresa"/>
+                                        <p:commandButton style="width: 200px; margin: -14px; height: 20px; border: none; color: blue" id="fooEmpresa"  value=""/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="SubTituloFirma" sortBy="#{info.subtitulofirma}" filterBy="#{info.subtitulofirma}" filterMatchMode="contains" id="subTituloFirma" width="100" filterStyle="display: none; visibility: hidden;" >                                  
@@ -77,9 +73,7 @@
                                             </p:inputText>
                                         </f:facet>
                                     </p:cellEditor>
-                                        <f:facet name="footer">
-                                            <h:outputText value="SubtituloFirma"/>
-                                        </f:facet>
+
                                 </p:column>
                                 <p:column headerText="Persona" sortBy="#{info.personaFirma.nombre}" filterBy="#{info.personaFirma.nombre}" filterMatchMode="contains" id="personafir" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -93,7 +87,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" id="fooPersona" value="Persona"/>
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 20px; border: none; color: blue" id="fooPersona" value=""/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="Cargo" sortBy="#{info.cargo.nombre}" filterBy="#{info.cargo.nombre}" filterMatchMode="contains" id="cargo" width="100" filterStyle="display: none; visibility: hidden;" >                                  
@@ -108,7 +102,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" id="fooCargo" value="Cargo"/>
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 20px; border: none; color: blue" id="fooCargo" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -162,7 +156,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFirmasReportes.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFirmasReportes.salir()}"  process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -200,7 +194,7 @@
 
                             <h:outputText id="infoLOVEmpresa" value="#{controlFirmasReportes.infoLOVEmpresa}" style="position: relative; left: 5px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 110px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlFirmasReportes.actualizarPais()}" update="lovTiposFamiliares, aceptarS" process="@this">
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 110px" value="Aceptar" disabled="#{controlFirmasReportes.aceptar}" onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlFirmasReportes.actualizarPais()}" update="lovTiposFamiliares, aceptarS" process="@this">
                                 <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 110px" value="Atras"  actionListener="#{controlFirmasReportes.cancelarCambioPais()}" onclick="sucursalesDialogo.hide();
@@ -236,10 +230,10 @@
                                 </p:column>
                             </p:dataTable>
                             <h:outputText id="infoLOVPersona" value="#{controlFirmasReportes.infoLOVPersona}" style="position: relative; left: 5px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 110px" value="Aceptar"  onclick="personasDialogo.hide(), lovPersonas.clearFilters();"  actionListener="#{controlFirmasReportes.actualizarPersonas()}" update="lovPersonas, aceptarPer" process="@this">
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 80px" value="Aceptar"  onclick="personasDialogo.hide(), lovPersonas.clearFilters();" disabled="#{controlFirmasReportes.aceptar}" actionListener="#{controlFirmasReportes.actualizarPersonas()}" update="lovPersonas, aceptarPer" process="@this">
                                 <p:resetInput target=":form:lovPersonas:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 110px" value="Atras"  actionListener="#{controlFirmasReportes.cancelarCambioPersonas()}" onclick="personasDialogo.hide();
+                            <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 80px" value="Atras"  actionListener="#{controlFirmasReportes.cancelarCambioPersonas()}" onclick="personasDialogo.hide();
                                     lovPersonas.clearFilters();" update="lovPersonas" process="@this">
                                 <p:resetInput target=":form:lovPersonas:globalFilter"/>
                             </p:commandButton>
@@ -272,10 +266,10 @@
                                 </p:column>
                             </p:dataTable>
                             <h:outputText id="infoLOVCargo" value="#{controlFirmasReportes.infoLOVCargo}" style="position: relative; left: 5px; font-weight: bold"/>
-                            <p:commandButton id="aceptarCar" icon="ui-icon-check"  style="position: relative; left: 100px" value="Aceptar"  onclick="cargosDialogo.hide(), lovCargos.clearFilters();"  actionListener="#{controlFirmasReportes.actualizarCargos()}" update="lovCargos, aceptarCar" process="@this">
+                            <p:commandButton id="aceptarCar" icon="ui-icon-check"  style="position: relative; left: 80px" value="Aceptar"  onclick="cargosDialogo.hide(), lovCargos.clearFilters();" disabled="#{controlFirmasReportes.aceptar}"  actionListener="#{controlFirmasReportes.actualizarCargos()}" update="lovCargos, aceptarCar" process="@this">
                                 <p:resetInput target=":form:lovCargos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasCar"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="Atras"  actionListener="#{controlFirmasReportes.cancelarCambioCargos()}" onclick="cargosDialogo.hide();
+                            <p:commandButton id="atrasCar"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 80px" value="Atras"  actionListener="#{controlFirmasReportes.cancelarCambioCargos()}" onclick="cargosDialogo.hide();
                                     lovCargos.clearFilters();" update="lovCargos" process="@this">
                                 <p:resetInput target=":form:lovCargos:globalFilter"/>
                             </p:commandButton>
@@ -404,7 +398,7 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlFirmasReportes.nuevoFirmasReportes.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlFirmasReportes.nuevoFirmasReportes.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />

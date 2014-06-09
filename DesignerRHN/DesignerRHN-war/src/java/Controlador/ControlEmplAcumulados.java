@@ -58,7 +58,7 @@ public class ControlEmplAcumulados implements Serializable {
 
     public ControlEmplAcumulados() {
         empleadoSeleccionado = null;
-        secuenciaEmpleado = BigInteger.valueOf(10664356);
+        secuenciaEmpleado = BigInteger.valueOf(11349682);
         listVWAcumuladosPorEmpleado = null;
         editarVWAcumuladosPorEmpleado = new VWAcumulados();
         secRegistro = null;
@@ -453,8 +453,14 @@ public class ControlEmplAcumulados implements Serializable {
         if (listVWAcumuladosPorEmpleado == null) {
             listVWAcumuladosPorEmpleado = administrarEmplAcumulados.consultarVWAcumuladosEmpleado(secuenciaEmpleado);
             System.out.println("Lista: " + listVWAcumuladosPorEmpleado.size());
-
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listVWAcumuladosPorEmpleado == null || listVWAcumuladosPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVWAcumuladosPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
         return listVWAcumuladosPorEmpleado;
     }
 

@@ -71,6 +71,7 @@ public class ControlDepartamentos implements Serializable {
     private List<Paises> filtradoPaises;
     private Paises paisSeleccionado;
     private String nuevoYduplicarCompletarPais;
+    private String infoRegistro;
 
     public ControlDepartamentos() {
         listDepartamentos = null;
@@ -87,6 +88,7 @@ public class ControlDepartamentos implements Serializable {
         filtradoPaises = null;
         guardado = true;
         tamano = 270;
+        aceptar = true;
     }
 
     @PostConstruct
@@ -176,6 +178,44 @@ public class ControlDepartamentos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            pais = (Column) c.getViewRoot().findComponent("form:datosDepartamentos:pais");
+            pais.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosDepartamentos");
+            bandera = 0;
+            filtrarDepartamentos = null;
+            tipoLista = 0;
+        }
+
+        borrarDepartamentos.clear();
+        crearDepartamentos.clear();
+        modificarDepartamentos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listDepartamentos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListDepartamentos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listDepartamentos == null || listDepartamentos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listDepartamentos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosDepartamentos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
 
@@ -347,7 +387,7 @@ public class ControlDepartamentos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
-                    } else if (listDepartamentos.get(indice).getNombre().equals(" ")) {
+                    } else if (listDepartamentos.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -406,7 +446,7 @@ public class ControlDepartamentos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
-                    } else if (listDepartamentos.get(indice).getNombre().equals(" ")) {
+                    } else if (listDepartamentos.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -467,7 +507,7 @@ public class ControlDepartamentos implements Serializable {
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
                     }
-                    if (filtrarDepartamentos.get(indice).getNombre().equals(" ")) {
+                    if (filtrarDepartamentos.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -527,7 +567,7 @@ public class ControlDepartamentos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
-                    } else if (filtrarDepartamentos.get(indice).getNombre().equals(" ")) {
+                    } else if (filtrarDepartamentos.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -672,6 +712,8 @@ public class ControlDepartamentos implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDepartamentos");
+            infoRegistro = "Cantidad de registros: " + listDepartamentos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -934,7 +976,7 @@ public class ControlDepartamentos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoDepartamentos.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoDepartamentos.getCodigo());
@@ -954,8 +996,8 @@ public class ControlDepartamentos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoDepartamentos.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
+        if (nuevoDepartamentos.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripción\n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -963,8 +1005,8 @@ public class ControlDepartamentos implements Serializable {
             contador++;
 
         }
-        if (nuevoDepartamentos.getPais().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Pais \n";
+        if (nuevoDepartamentos.getPais().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Pais \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1004,6 +1046,8 @@ public class ControlDepartamentos implements Serializable {
             nuevoDepartamentos = new Departamentos();
             nuevoDepartamentos.setPais(new Paises());
             context.update("form:datosDepartamentos");
+            infoRegistro = "Cantidad de registros: " + listDepartamentos.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1071,7 +1115,7 @@ public class ControlDepartamentos implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarDepartamentos.getNombre());
 
         if (duplicarDepartamentos.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listDepartamentos.size(); x++) {
@@ -1088,16 +1132,16 @@ public class ControlDepartamentos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarDepartamentos.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarDepartamentos.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarDepartamentos.getPais().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * un Pais \n";
+        if (duplicarDepartamentos.getPais().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Pais \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1120,6 +1164,8 @@ public class ControlDepartamentos implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listDepartamentos.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
 
@@ -1210,6 +1256,13 @@ public class ControlDepartamentos implements Serializable {
         if (listDepartamentos == null) {
             listDepartamentos = administrarDepartamentos.consultarDepartamentos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listDepartamentos == null || listDepartamentos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listDepartamentos.size();
+        }
+        context.update("form:informacionRegistro");
         return listDepartamentos;
     }
 
@@ -1288,11 +1341,19 @@ public class ControlDepartamentos implements Serializable {
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
+    private String infoRegistroPaises;
 
     public List<Paises> getListaPaises() {
         if (listaPaises == null) {
             listaPaises = administrarDepartamentos.consultarLOVPaises();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaPaises == null || listaPaises.isEmpty()) {
+            infoRegistroPaises = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroPaises = "Cantidad de registros: " + listaPaises.size();
+        }
+        context.update("form:infoRegistroPaises");
         return listaPaises;
     }
 
@@ -1322,6 +1383,30 @@ public class ControlDepartamentos implements Serializable {
 
     public void setDepartamentoSeleccionado(List<Departamentos> departamentoSeleccionado) {
         this.departamentoSeleccionado = departamentoSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    public String getInfoRegistroPaises() {
+        return infoRegistroPaises;
+    }
+
+    public void setInfoRegistroPaises(String infoRegistroPaises) {
+        this.infoRegistroPaises = infoRegistroPaises;
     }
 
 }

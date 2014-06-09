@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ElementosCausasAccidentes.findAll", query = "SELECT e FROM ElementosCausasAccidentes e")})
 public class ElementosCausasAccidentes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -78,7 +79,11 @@ public class ElementosCausasAccidentes implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     @XmlTransient
@@ -114,5 +119,5 @@ public class ElementosCausasAccidentes implements Serializable {
     public String toString() {
         return "Entidades.Elementoscausasaccidentes[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

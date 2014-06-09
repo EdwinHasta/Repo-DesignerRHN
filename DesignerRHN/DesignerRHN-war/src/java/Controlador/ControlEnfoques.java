@@ -65,6 +65,7 @@ public class ControlEnfoques implements Serializable {
 
     private String backUpDescripcion;
     private Integer backUpCodigo;
+    private String infoRegistro;
 
     public ControlEnfoques() {
         listEnfoques = null;
@@ -176,7 +177,49 @@ public class ControlEnfoques implements Serializable {
         listEnfoques = null;
         guardado = true;
         permitirIndex = true;
+        getListEnfoques();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEnfoques == null || listEnfoques.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEnfoques.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEnfoque");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEnfoque");
+            bandera = 0;
+            filtrarEnfoques = null;
+            tipoLista = 0;
+        }
+
+        borrarEnfoques.clear();
+        crearEnfoques.clear();
+        modificarEnfoques.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEnfoques = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEnfoques();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEnfoques == null || listEnfoques.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEnfoques.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEnfoque");
         context.update("form:ACEPTAR");
     }
@@ -469,7 +512,8 @@ public class ControlEnfoques implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-
+            infoRegistro = "Cantidad de registros: " + listEnfoques.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
             }
@@ -583,7 +627,7 @@ public class ControlEnfoques implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEnfoque.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEnfoque.getCodigo());
@@ -604,7 +648,7 @@ public class ControlEnfoques implements Serializable {
             }
         }
         if (nuevoEnfoque.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -641,6 +685,8 @@ public class ControlEnfoques implements Serializable {
             nuevoEnfoque = new Enfoques();
 
             context.update("form:datosEnfoque");
+            infoRegistro = "Cantidad de registros: " + listEnfoques.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -706,7 +752,7 @@ public class ControlEnfoques implements Serializable {
         System.err.println("ConfirmarDuplicar descripcion " + duplicarEnfoque.getDescripcion());
 
         if (duplicarEnfoque.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEnfoques.size(); x++) {
@@ -724,7 +770,7 @@ public class ControlEnfoques implements Serializable {
             }
         }
         if (duplicarEnfoque.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Descripcion \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -741,6 +787,8 @@ public class ControlEnfoques implements Serializable {
             listEnfoques.add(duplicarEnfoque);
             crearEnfoques.add(duplicarEnfoque);
             context.update("form:datosEnfoque");
+            infoRegistro = "Cantidad de registros: " + listEnfoques.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -831,6 +879,13 @@ public class ControlEnfoques implements Serializable {
         if (listEnfoques == null) {
             listEnfoques = administrarEnfoques.consultarEnfoques();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEnfoques == null || listEnfoques.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEnfoques.size();
+        }
+        context.update("form:informacionRegistro");
         return listEnfoques;
     }
 
@@ -916,6 +971,14 @@ public class ControlEnfoques implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

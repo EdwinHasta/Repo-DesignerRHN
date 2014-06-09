@@ -218,6 +218,37 @@ public class ControlFormulasContratosEntidades implements Serializable {
         context.update("form:datosFormulasContratosEntidades");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulasContratosEntidades:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosFormulasContratosEntidades");
+            bandera = 0;
+            filtrarFormulasContratosEntidades = null;
+            tipoLista = 0;
+        }
+
+        borrarFormulasContratosEntidades.clear();
+        crearFormulasContratosEntidades.clear();
+        modificarFormulasContratosEntidades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listFormulasContratosEntidades = null;
+        guardado = true;
+        permitirIndex = true;
+        getListFormulasContratosEntidades();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listFormulasContratosEntidades == null || listFormulasContratosEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFormulasContratosEntidades.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosFormulasContratosEntidades");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
