@@ -12,21 +12,23 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'Terceros'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'Terceros' de la base
+ * de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaTerceros implements PersistenciaTercerosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
-/*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;
-*/
-
+    /*    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
+     private EntityManager em;
+     */
     @Override
     public void crear(EntityManager em, Terceros terceros) {
         em.clear();
@@ -74,7 +76,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             }
         }
     }
-    
+
     @Override
     public List<Terceros> todosTerceros(EntityManager em) {
         try {
@@ -145,7 +147,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             return false;
         }
     }
-    
+
     @Override
     public List<Terceros> lovTerceros(EntityManager em, BigInteger secEmpresa) {
         try {
@@ -160,7 +162,7 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             return null;
         }
     }
-    
+
     @Override
     public List<Terceros> tercerosEmbargos(EntityManager em) {
         try {
@@ -172,6 +174,59 @@ public class PersistenciaTerceros implements PersistenciaTercerosInterface {
             System.out.println("Error PersistenciaEmpleados.tercerosEmbargos" + e);
             return null;
         }
+    }
 
+    @Override
+    public String buscarCodigoSSPorSecuenciaTercero(EntityManager em, BigInteger secuencia) {
+        try {
+            String retorno = null;
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Terceros tercero = (Terceros) query.getSingleResult();
+            if (tercero != null) {
+                retorno = tercero.getCodigoss();
+            }
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error buscarCodigoSSPorSecuenciaTercero PersistenciaTerceros : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String buscarCodigoSPPorSecuenciaTercero(EntityManager em, BigInteger secuencia) {
+        try {
+            String retorno = null;
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Terceros tercero = (Terceros) query.getSingleResult();
+            if (tercero != null) {
+                retorno = tercero.getCodigosp();
+            }
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error buscarCodigoSPPorSecuenciaTercero PersistenciaTerceros : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public String buscarCodigoSCPorSecuenciaTercero(EntityManager em, BigInteger secuencia) {
+        try {
+            String retorno = null;
+            Query query = em.createQuery("SELECT t FROM Terceros t WHERE t.secuencia=:secuencia");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Terceros tercero = (Terceros) query.getSingleResult();
+            if (tercero != null) {
+                retorno = tercero.getCodigosc();
+            }
+            return retorno;
+        } catch (Exception e) {
+            System.out.println("Error buscarCodigoSCPorSecuenciaTercero PersistenciaTerceros : " + e.toString());
+            return null;
+        }
     }
 }

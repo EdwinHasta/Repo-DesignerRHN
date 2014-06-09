@@ -122,4 +122,17 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
             System.out.println("Error en reproducirContrato: " + e);
         }
     }
+    
+    ///@Override
+    public List<Contratos> buscarContratosPorUsuario(EntityManager em) {        
+        try {
+            String sqlQuery = "SELECT  c.* FROM CONTRATOS c where exists (select 'x' from usuarios u, usuarioscontratos uc where u.alias=user and u.secuencia=uc.usuario and uc.contrato=c.secuencia) ORDER BY c.DESCRIPCION";
+            Query query = em.createNativeQuery(sqlQuery,Contratos.class);
+            List<Contratos> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarContratosPorUsuario PersistenciaContratos : " + e);
+            return null;
+        }
+    }
 }

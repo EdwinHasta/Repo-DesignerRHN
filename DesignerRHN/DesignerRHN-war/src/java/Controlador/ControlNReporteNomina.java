@@ -1333,7 +1333,7 @@ public class ControlNReporteNomina implements Serializable {
             empleadoHastaParametro.setStyle("position: absolute; top: 35px; left: 350px;height: 10px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("formParametros:empleadoHastaParametro");
         }
-        if (reporteS.getGrupo().equals("SI")) {
+        if (reporteS.getGrupo() != null && reporteS.getGrupo().equals("SI")) {
             grupoParametro = (InputText) FacesContext.getCurrentInstance().getViewRoot().findComponent("formParametros:grupoParametro");
             grupoParametro.setStyle("position: absolute; top: 85px; left: 130px;height: 10px;width: 90px; text-decoration: underline; color: red;");
             RequestContext.getCurrentInstance().update("formParametros:grupoParametro");

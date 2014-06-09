@@ -55,4 +55,6 @@ public interface PersistenciaContratosInterface {
      */
     public void reproducirContrato(EntityManager em,Short codigoOrigen, Short codigoDestino);
     
+    public List<Contratos> buscarContratosPorUsuario(EntityManager em);
+    
 }

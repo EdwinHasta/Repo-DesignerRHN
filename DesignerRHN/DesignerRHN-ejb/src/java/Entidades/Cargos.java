@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,6 +36,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Cargos.findAll", query = "SELECT c FROM Cargos c")})
 public class Cargos implements Serializable {
+    @OneToMany(mappedBy = "cargos")
+    private List<VigenciasArps> vigenciasArpsList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cargo")
     private Collection<PlantasPersonales> plantasPersonalesCollection;
 
@@ -453,5 +456,14 @@ public class Cargos implements Serializable {
 
     public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
         this.plantasPersonalesCollection = plantasPersonalesCollection;
+    }
+
+    @XmlTransient
+    public List<VigenciasArps> getVigenciasArpsList() {
+        return vigenciasArpsList;
+    }
+
+    public void setVigenciasArpsList(List<VigenciasArps> vigenciasArpsList) {
+        this.vigenciasArpsList = vigenciasArpsList;
     }
 }

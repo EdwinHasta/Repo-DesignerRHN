@@ -6,6 +6,7 @@ package InterfaceAdministrar;
 import Entidades.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -26,6 +27,19 @@ public interface AdministrarCarpetaPersonalInterface {
      * @return Retorna un VWActualesCargos con la información requerida.
      */
     public VWActualesCargos consultarActualCargoEmpleado(BigInteger secEmpleado);
+    /**
+     * Método encargado de recuperar la actual fecha hasta.
+     * @return Retorna un Date con la información requerida.
+     */
+    public Date consultarActualesFechas();
+    /**
+     * Método encargado de recuperar el cargo actual de un empleado específico.
+     * @param secEstructura Secuencia de la estructura.
+     * @param secCargo Secuencia del cargo.
+     * @param fechaHasta Fechas hasta de VWActualesFechas.
+     * @return Retorna un VWActualesCargos con la información requerida.
+     */
+    public String consultarActualARP(BigInteger secEstructura, BigInteger secCargo, Date fechaHasta);
     /**
      * Método encargado de recuperar el Tipo Contrato actual de un empleado específico.
      * @param secEmpleado Secuencia del Empleado.

@@ -97,4 +97,21 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
         ReformasLaborales reformaL = null;
         return reformaL;
     }
+
+    @Override
+    public String obtenerCheckIntegralReformaLaboral(EntityManager em, BigInteger secuencia) {
+        try {
+            String sql = "SELECT REFORMASLABORALES_PKG.CheckIntegral(?) FROM dual";
+            Query query = em.createNativeQuery(sql);
+            query.setParameter(1, secuencia);
+            String variable = (String) query.getSingleResult();
+            if (variable == null) {
+                variable = "N";
+            }
+            return variable;
+        } catch (Exception e) {
+            System.out.println("Error obtenerCheckIntegralReformaLaboral PersistenciaReformasLaborales : " + e.toString());
+            return "N";
+        }
+    }
 }

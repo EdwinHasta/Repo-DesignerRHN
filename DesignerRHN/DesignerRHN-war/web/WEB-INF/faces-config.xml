@@ -95,6 +95,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/personaindividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>nomina</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>personaIndividual</from-outcome>
+            <to-view-id>/personaindividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/busquedaavanzada.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>nominaf</from-outcome>

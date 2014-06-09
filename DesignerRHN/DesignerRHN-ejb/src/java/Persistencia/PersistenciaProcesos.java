@@ -103,6 +103,21 @@ public class PersistenciaProcesos implements PersistenciaProcesosInterface {
             return procesos;
         }
     }
+    
+    @Override
+    public Procesos buscarProcesosPorCodigo(EntityManager em, short codigo) {
+        try {
+            Query query = em.createQuery("SELECT t FROM Procesos t WHERE t.codigo = :codigo");
+            query.setParameter("codigo", codigo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Procesos procesos = (Procesos) query.getSingleResult();
+            return procesos;
+        } catch (Exception e) {
+            System.out.println("Error buscarProcesosSecuencia");
+            Procesos procesos = null;
+            return procesos;
+        }
+    }
 
     @Override
     public List<Procesos> lovProcesos(EntityManager em) {

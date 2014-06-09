@@ -32,7 +32,7 @@ public class ControlComprobantes implements Serializable {
 
     @EJB
     AdministrarComprobantesInterface administrarComprobantes;
-    
+
     private List<Parametros> listaParametros;
     private Parametros parametroActual;
     private ParametrosEstructuras parametroEstructura;
@@ -65,6 +65,7 @@ public class ControlComprobantes implements Serializable {
     private List<DetallesFormulas> listaDetallesFormulas;
     //FORMATO FECHAS
     private SimpleDateFormat formatoFecha;
+    private boolean estadoBtnArriba, estadoBtnAbajo;
 
     public ControlComprobantes() {
         registroActual = 0;
@@ -79,8 +80,10 @@ public class ControlComprobantes implements Serializable {
         altoScrollSolucionesNodosEmpleador = "105";
         listaDetallesFormulas = null;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        estadoBtnArriba = false;
+        estadoBtnAbajo = false;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -88,7 +91,7 @@ public class ControlComprobantes implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarComprobantes.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -101,10 +104,18 @@ public class ControlComprobantes implements Serializable {
             listaSolucionesNodosEmpleador = null;
             getListaSolucionesNodosEmpleado();
             getListaSolucionesNodosEmpleador();
+            if (registroActual == 0) {
+                estadoBtnArriba = true;
+            }
+            if (registroActual < (listaParametros.size() - 1)) {
+                estadoBtnAbajo = false;
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:panelInf");
             context.update("form:datosSolucionesNodosEmpleado");
             context.update("form:datosSolucionesNodosEmpleador");
+            context.update("form:btnArriba");
+            context.update("form:btnAbajo");
         }
     }
 
@@ -116,10 +127,18 @@ public class ControlComprobantes implements Serializable {
             listaSolucionesNodosEmpleador = null;
             getListaSolucionesNodosEmpleado();
             getListaSolucionesNodosEmpleador();
+            if (registroActual > 0) {
+                estadoBtnArriba = false;
+            }
+            if (registroActual == (listaParametros.size() - 1)) {
+                estadoBtnAbajo = true;
+            }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:panelInf");
             context.update("form:datosSolucionesNodosEmpleado");
             context.update("form:datosSolucionesNodosEmpleador");
+            context.update("form:btnArriba");
+            context.update("form:btnAbajo");
         }
     }
 
@@ -361,6 +380,16 @@ public class ControlComprobantes implements Serializable {
         context.execute("detallesFormulas.show();");
     }
 
+    public void salir() {
+        parametroActual = null;
+        listaSolucionesNodosEmpleado = null;
+        listaSolucionesNodosEmpleador = null;
+        parametroEstructura = null;
+        registroActual = 0;
+        estadoBtnArriba = false;
+        estadoBtnAbajo = false;
+    }
+
     public void activarAceptar() {
         aceptar = false;
     }
@@ -368,6 +397,13 @@ public class ControlComprobantes implements Serializable {
 
     public List<Parametros> getListaParametros() {
         listaParametros = administrarComprobantes.consultarParametrosComprobantesActualUsuario();
+        if (listaParametros == null || listaParametros.isEmpty() || listaParametros.size() == 1) {
+            estadoBtnArriba = false;
+            estadoBtnAbajo = false;
+        } else {
+            estadoBtnArriba = true;
+            estadoBtnAbajo = true;
+        }
         return listaParametros;
     }
 
@@ -566,5 +602,13 @@ public class ControlComprobantes implements Serializable {
 
     public void setListaDetallesFormulas(List<DetallesFormulas> listaDetallesFormulas) {
         this.listaDetallesFormulas = listaDetallesFormulas;
+    }
+
+    public boolean isEstadoBtnArriba() {
+        return estadoBtnArriba;
+    }
+
+    public boolean isEstadoBtnAbajo() {
+        return estadoBtnAbajo;
     }
 }

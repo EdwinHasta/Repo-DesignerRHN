@@ -44,6 +44,7 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     @Override
     public void editar(EntityManager em, Empleados empleados) {
+
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -293,6 +294,35 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return empleado;
         } catch (Exception e) {
             System.out.println("Excepcion en PersistenciaEmpleados.buscarEmpleadosBusquedaAvanzadaCodigo : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
+    public Empleados buscarEmpleadoPorCodigoyEmpresa(EntityManager em, BigInteger codigo, BigInteger empresa) {
+        try {
+            String sql = "SELECT * FROM empleados WHERE CODIGOEMPLEADO =? AND NVL(EMPRESA,?)=?";
+            Query query = em.createNativeQuery(sql, Empleados.class);
+            query.setParameter(1, codigo);
+            query.setParameter(2, empresa);
+            query.setParameter(3, empresa);
+            Empleados empl = (Empleados) query.getSingleResult();
+            return empl;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpleadoPorCodigoyEmpresa PersistenciaEmpleados : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override 
+    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em,BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
+        try {
+            Empleados empleado = null;
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
+            Empleados empl = (Empleados) query.getSingleResult();
+            return empleado;
+        } catch (Exception e) {
+            System.out.println("Error obtenerUltimoEmpleadoAlmacenado PersistenciaEmpleados : " + e.toString());
             return null;
         }
     }
