@@ -151,8 +151,44 @@ public class ControlClasesCategorias implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosClasesCategorias:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosClasesCategorias");
+            bandera = 0;
+            filtrarClasesCategorias = null;
+            tipoLista = 0;
+        }
+
+        borrarClasesCategorias.clear();
+        crearClasesCategorias.clear();
+        modificarClasesCategorias.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listClasesCategorias = null;
+        guardado = true;
+        permitirIndex = true;
+        getListClasesCategorias();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listClasesCategorias == null || listClasesCategorias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listClasesCategorias.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosClasesCategorias");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
@@ -471,6 +507,9 @@ public class ControlClasesCategorias implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosClasesCategorias");
+            infoRegistro = "Cantidad de registros: " + listClasesCategorias.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -592,7 +631,7 @@ public class ControlClasesCategorias implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoClasesCategorias.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoClasesCategorias.getCodigo());
@@ -612,8 +651,12 @@ public class ControlClasesCategorias implements Serializable {
                 contador++;
             }
         }
-        if (nuevoClasesCategorias.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoClasesCategorias.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoClasesCategorias.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -649,6 +692,9 @@ public class ControlClasesCategorias implements Serializable {
             listClasesCategorias.add(nuevoClasesCategorias);
             nuevoClasesCategorias = new ClasesCategorias();
             context.update("form:datosClasesCategorias");
+            infoRegistro = "Cantidad de registros: " + listClasesCategorias.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -729,15 +775,19 @@ public class ControlClasesCategorias implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarClasesCategorias.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarClasesCategorias.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarClasesCategorias.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
-        }
 
+        }
         if (contador == 2) {
 
             System.out.println("Datos Duplicando: " + duplicarClasesCategorias.getSecuencia() + "  " + duplicarClasesCategorias.getCodigo());
@@ -747,6 +797,9 @@ public class ControlClasesCategorias implements Serializable {
             listClasesCategorias.add(duplicarClasesCategorias);
             crearClasesCategorias.add(duplicarClasesCategorias);
             context.update("form:datosClasesCategorias");
+            infoRegistro = "Cantidad de registros: " + listClasesCategorias.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -837,6 +890,13 @@ public class ControlClasesCategorias implements Serializable {
         if (listClasesCategorias == null) {
             listClasesCategorias = administrarClasesCategorias.consultarClasesCategorias();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listClasesCategorias == null || listClasesCategorias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listClasesCategorias.size();
+        }
+        context.update("form:informacionRegistro");
         return listClasesCategorias;
     }
 
@@ -922,6 +982,14 @@ public class ControlClasesCategorias implements Serializable {
 
     public void setClaseCategoriaSeleccionado(ClasesCategorias claseCategoriaSeleccionado) {
         this.claseCategoriaSeleccionado = claseCategoriaSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

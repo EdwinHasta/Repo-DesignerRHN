@@ -17,6 +17,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
@@ -119,6 +120,7 @@ public class ControlRemoto implements Serializable {
     private boolean buscarTablasLOV, mostrarTodasTablas;
     //Visualizar seleccion de tipos trabajadores (StyleClass)
     private String styleActivos, stylePensionados, styleRetirados, styleAspirantes;
+    private String actualCargo;
 
     public ControlRemoto() {
         vwActualesCargos = new VWActualesCargos();
@@ -201,8 +203,12 @@ public class ControlRemoto implements Serializable {
 
         try {
             vwActualesCargos = administrarCarpetaPersonal.consultarActualCargoEmpleado(secuencia);
+            Date actualFechaHasta = administrarCarpetaPersonal.consultarActualesFechas();
+            String actualARP = administrarCarpetaPersonal.consultarActualARP(vwActualesCargos.getEstructura().getSecuencia(), vwActualesCargos.getCargo().getSecuencia(), actualFechaHasta);
+            actualCargo = "%ARP: " + actualARP + " > " + vwActualesCargos.getCargo().getNombre() + " - " + vwActualesCargos.getEstructura().getOrganigrama().getEmpresa().getNombre();
+            //actualCargo = "%ARP: " + " > " + vwActualesCargos.getCargo().getNombre() + " - " + vwActualesCargos.getEstructura().getNombre();
         } catch (Exception e) {
-            vwActualesCargos = null;
+            actualCargo = null;
         }
 
         try {
@@ -1197,6 +1203,10 @@ public class ControlRemoto implements Serializable {
 
     public String getStyleAspirantes() {
         return styleAspirantes;
+    }
+
+    public String getActualCargo() {
+        return actualCargo;
     }
 
     public String getFotoEmpleado() {

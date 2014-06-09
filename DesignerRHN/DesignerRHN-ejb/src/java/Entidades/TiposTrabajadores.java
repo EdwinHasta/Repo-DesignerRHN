@@ -36,6 +36,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposTrabajadores.findAll", query = "SELECT t FROM TiposTrabajadores t ORDER BY t.nombre"),
     @NamedQuery(name = "TiposTrabajadores.findByCodigo", query = "SELECT t FROM TiposTrabajadores t WHERE t.codigo = :codigo")})
 public class TiposTrabajadores implements Serializable {
+    @Size(max = 1)
+    @Column(name = "PROMEDIABASICOACUMULADOS")
+    private String promediabasicoacumulados;
     @OneToMany(mappedBy = "tipotrabajador")
     private Collection<ParametrosInformes> parametrosInformesCollection;
 
@@ -362,5 +365,13 @@ public class TiposTrabajadores implements Serializable {
 
     public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
         this.parametrosInformesCollection = parametrosInformesCollection;
+    }
+
+    public String getPromediabasicoacumulados() {
+        return promediabasicoacumulados;
+    }
+
+    public void setPromediabasicoacumulados(String promediabasicoacumulados) {
+        this.promediabasicoacumulados = promediabasicoacumulados;
     }
 }

@@ -127,5 +127,4 @@ public class GruposViaticos implements Serializable {
     public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
-    
 }

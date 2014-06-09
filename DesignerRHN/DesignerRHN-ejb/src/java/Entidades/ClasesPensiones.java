@@ -62,7 +62,6 @@ public class ClasesPensiones implements Serializable {
     }
 
     public BigInteger getSecuencia() {
-        System.out.println("fasasdsddhkasjkasdasdasd");
         return secuencia;
     }
 
@@ -79,14 +78,15 @@ public class ClasesPensiones implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion == null) {
+            this.descripcion = descripcion;
+        } else {
+            this.descripcion = descripcion.toUpperCase();
+        }
     }
 
     @XmlTransient

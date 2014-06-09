@@ -7,21 +7,25 @@ import InterfacePersistencia.PersistenciaCandadosInterface;
 import java.math.BigDecimal;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
  * Clase Stateless. <br>
- * Clase encargada de realizar operaciones sobre la tabla 'Candados' de la base de datos
+ * Clase encargada de realizar operaciones sobre la tabla 'Candados' de la base
+ * de datos
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaCandados implements PersistenciaCandadosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos
      */
     /*@PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
+     private EntityManager em;*/
     @Override
     public boolean permisoLiquidar(EntityManager em, String usuarioBD) {
         try {
@@ -38,13 +42,20 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
 
     @Override
     public void liquidar(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         int i = -100;
         try {
+            tx.begin();
             String sqlQuery = "call PRCUTL_FORMSLIQUIDAR()";
             Query query = em.createNativeQuery(sqlQuery);
             i = query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error liquidar. " + e);
+            System.out.println("Error PersistenciaCandados.liquidar. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
@@ -79,57 +90,92 @@ public class PersistenciaCandados implements PersistenciaCandadosInterface {
 
     @Override
     public void cancelarLiquidacion(EntityManager em, String usuarioBD) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             Query query = em.createQuery("UPDATE Candados c SET c.estado='CANCELAR' WHERE c.usuario.alias = :usuarioBD");
             query.setParameter("usuarioBD", usuarioBD);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Exepcion: cancelarLiquidacion " + e);
+            System.out.println("Exepcion: PersistenciaCandados.cancelarLiquidacion " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void cerrarLiquidacionAutomatico(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call UTL_FORMS.CERRARLIQUIDACION()";
             Query query = em.createNativeQuery(sqlQuery);
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error cerrarLiquidacion. " + e);
+            System.out.println("Error PersistenciaCandados.cerrarLiquidacionAutomatico. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
-    
+
     @Override
     public void cerrarLiquidacionNoAutomatico(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call UTL_FORMS.CERRARLIQPAGOPORFUERA()";
             Query query = em.createNativeQuery(sqlQuery);
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
-            System.out.println("Error cerrarLiquidacion. " + e);
+            System.out.println("Error PersistenciaCandados.cerrarLiquidacionNoAutomatico. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
-    
+
     @Override
     public void borrarLiquidacionAutomatico(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call UTL_FORMS.ELIMINARLIQUIDACION()";
             Query query = em.createNativeQuery(sqlQuery);
             int resultado = query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error cerrarLiquidacion. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
-    
+
     @Override
     public void borrarLiquidacionNoAutomatico(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call UTL_FORMS.ELIMINARLIQPAGOPORFUERA()";
             Query query = em.createNativeQuery(sqlQuery);
             int resultado = query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error cerrarLiquidacion. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 }

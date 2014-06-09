@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Clasesausentismos.findAll", query = "SELECT c FROM Clasesausentismos c")})
 public class Clasesausentismos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -81,14 +82,15 @@ public class Clasesausentismos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion  = (" ");
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion == null) {
+            this.descripcion = descripcion;
+        } else {
+            this.descripcion = descripcion.toUpperCase();
+        }
     }
 
     @XmlTransient
@@ -141,5 +143,5 @@ public class Clasesausentismos implements Serializable {
     public String toString() {
         return "Entidades.Clasesausentismos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

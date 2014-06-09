@@ -108,6 +108,8 @@ public class ControlBetaCentrosCostos implements Serializable {
         guardado = true;
         banderaSeleccionCentrosCostosPorEmpresa = false;
         tamano = 260;
+        buscarCentrocosto = false;
+        mostrartodos = true;
     }
 
     @PostConstruct
@@ -374,11 +376,14 @@ public class ControlBetaCentrosCostos implements Serializable {
             listCentrosCostosPorEmpresa = null;
             guardado = true;
             permitirIndex = true;
+            buscarCentrocosto = false;
+            mostrartodos = true;
             RequestContext context = RequestContext.getCurrentInstance();
             banderaModificacionEmpresa = 0;
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
             }
+            getListCentrosCostosPorEmpresa();
             if (listCentrosCostosPorEmpresa == null || listCentrosCostosPorEmpresa.isEmpty()) {
                 infoRegistro = "Cantidad de registros: 0 ";
             } else {
@@ -387,6 +392,8 @@ public class ControlBetaCentrosCostos implements Serializable {
             context.update("form:informacionRegistro");
             context.update("form:datosCentrosCostos");
             context.update("form:ACEPTAR");
+            context.update("form:BUSCARCENTROCOSTO");
+            context.update("form:MOSTRARTODOS");
         } catch (Exception E) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.ModificarModificacion ERROR====================" + E.getMessage());
         }
@@ -589,6 +596,8 @@ public class ControlBetaCentrosCostos implements Serializable {
         }
 
     }
+    private boolean buscarCentrocosto;
+    private boolean mostrartodos;
 
     public void seleccionCentrosCostosPorEmpresa() {
         try {
@@ -607,6 +616,17 @@ public class ControlBetaCentrosCostos implements Serializable {
                 context.update("form:datosCentrosCostos");
                 context.execute("buscarCentrosCostosDialogo.hide()");
                 context.reset("formularioDialogos:lovCentrosCostos:globalFilter");
+                buscarCentrocosto = true;
+                mostrartodos = false;
+                listCentrosCostosPorEmpresaBoton = null;
+                if (listCentrosCostosPorEmpresa == null || listCentrosCostosPorEmpresa.isEmpty()) {
+                    infoRegistro = "Cantidad de registros: 0 ";
+                } else {
+                    infoRegistro = "Cantidad de registros: " + listCentrosCostosPorEmpresa.size();
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:BUSCARCENTROCOSTO");
+                context.update("form:MOSTRARTODOS");
             } /*else {
              System.err.println("listCentrosCostosPorEmpresa tamaño " + listCentrosCostosPorEmpresa.size());
              System.err.println("listCentrosCostosPorEmpresa nombre " + listCentrosCostosPorEmpresa.get(0).getNombre());
@@ -1808,8 +1828,7 @@ public class ControlBetaCentrosCostos implements Serializable {
     public List<CentrosCostos> getListCentrosCostosPorEmpresaBoton() {
         try {
             if (listCentrosCostosPorEmpresaBoton == null) {
-                //listCentrosCostosPorEmpresaBoton = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
-                listCentrosCostosPorEmpresaBoton = listCentrosCostosPorEmpresa;
+                listCentrosCostosPorEmpresaBoton = administrarCentroCostos.consultarCentrosCostosPorEmpresa(empresaSeleccionada.getSecuencia());
             }
             return listCentrosCostosPorEmpresaBoton;
         } catch (Exception e) {
@@ -1969,6 +1988,22 @@ public class ControlBetaCentrosCostos implements Serializable {
 
     public void setInfoRegistroTiposEmpresas(String infoRegistroTiposEmpresas) {
         this.infoRegistroTiposEmpresas = infoRegistroTiposEmpresas;
+    }
+
+    public boolean isBuscarCentrocosto() {
+        return buscarCentrocosto;
+    }
+
+    public void setBuscarCentrocosto(boolean buscarCentrocosto) {
+        this.buscarCentrocosto = buscarCentrocosto;
+    }
+
+    public boolean isMostrartodos() {
+        return mostrartodos;
+    }
+
+    public void setMostrartodos(boolean mostrartodos) {
+        this.mostrartodos = mostrartodos;
     }
 
 }

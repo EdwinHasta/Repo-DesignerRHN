@@ -8,16 +8,20 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+
 /**
- * Clase Stateless.<br> 
- * Clase encargada de realizar operaciones sobre la tabla 'ParametrosEstados'
- * de la base de datos.
+ * Clase Stateless.<br>
+ * Clase encargada de realizar operaciones sobre la tabla 'ParametrosEstados' de
+ * la base de datos.
+ *
  * @author betelgeuse
  */
 @Stateless
 public class PersistenciaParametrosEstados implements PersistenciaParametrosEstadosInterface {
+
     /**
      * Atributo EntityManager. Representa la comunicación con la base de datos.
      */
@@ -58,7 +62,10 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
 
     @Override
     public void inicializarParametrosEstados(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "UPDATE PARAMETROSESTADOS pe SET ESTADO= 'A LIQUIDAR'\n"
                     + "        where  ESTADO = 'LIQUIDADO'\n"
                     + "        AND exists (select --+ rule\n"
@@ -68,11 +75,15 @@ public class PersistenciaParametrosEstados implements PersistenciaParametrosEsta
                     + "                    and proceso = (SELECT PROCESO FROM PARAMETROSESTRUCTURAS pe, usuarios u where u.secuencia = pe.usuario and u.alias=user))";
             Query query = em.createNativeQuery(sqlQuery);
             int i = query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
             System.out.println("Error PersistenciaParametrosEstados.inicializarParametrosEstados " + e);
         }
     }
-    
+
     @Override
     public String parametrosComprobantes(EntityManager em, BigInteger secuenciaParametro) {
         try {

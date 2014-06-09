@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,6 +32,8 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ClasesRiesgos.findAll", query = "SELECT c FROM ClasesRiesgos c")})
 public class ClasesRiesgos implements Serializable {
+    @OneToMany(mappedBy = "clasesRiesgos")
+    private List<VigenciasArps> vigenciasArpsList;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -120,6 +123,15 @@ public class ClasesRiesgos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Clasesriesgos[ secuencia=" + secuencia + " ]";
+    }
+
+    @XmlTransient
+    public List<VigenciasArps> getVigenciasArpsList() {
+        return vigenciasArpsList;
+    }
+
+    public void setVigenciasArpsList(List<VigenciasArps> vigenciasArpsList) {
+        this.vigenciasArpsList = vigenciasArpsList;
     }
     
 }

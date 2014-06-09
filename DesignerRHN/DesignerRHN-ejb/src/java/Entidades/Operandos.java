@@ -39,6 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Operandos.findAll", query = "SELECT o FROM Operandos o")})
 public class Operandos implements Serializable {
+
     @OneToMany(mappedBy = "operando")
     private Collection<OperandosGruposConceptos> operandosGruposConceptosCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "operando")
@@ -150,14 +151,15 @@ public class Operandos implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     public String getTipo() {

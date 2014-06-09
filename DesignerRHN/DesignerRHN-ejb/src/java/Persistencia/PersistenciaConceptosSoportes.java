@@ -22,13 +22,7 @@ import javax.persistence.Query;
 @Stateless
 public class PersistenciaConceptosSoportes implements PersistenciaConceptosSoportesInterface {
 
-    /**
-     * Atributo EntityManager. Representa la comunicación con la base de datos.
-     */
-   /* @PersistenceContext(unitName = "DesignerRHN-ejbPU")
-    private EntityManager em;*/
-
-    public void crear(EntityManager em,ConceptosSoportes conceptosSoportes) {
+    public void crear(EntityManager em, ConceptosSoportes conceptosSoportes) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -43,7 +37,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public void editar(EntityManager em,ConceptosSoportes conceptosSoportes) {
+    public void editar(EntityManager em, ConceptosSoportes conceptosSoportes) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -58,7 +52,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public void borrar(EntityManager em,ConceptosSoportes conceptosSoportes) {
+    public void borrar(EntityManager em, ConceptosSoportes conceptosSoportes) {
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -79,17 +73,20 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
 
     public List<ConceptosSoportes> consultarConceptosSoportes(EntityManager em) {
         try {
-            Query query = em.createQuery("SELECT te FROM ConceptosSoportes te");
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            /*Query query = em.createQuery("SELECT te FROM ConceptosSoportes te WHERE te.tipo='UNIDAD' AND EXISTS (SELECT 'X' FROM Conceptos n WHERE n.secuencia= te.concepto.secuencia)");
+             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+             List<ConceptosSoportes> conceptosSoportes = query.getResultList();*/
+            String sql = "SELECT * FROM ConceptosSoportes c WHERE c.tipo = 'UNIDAD' AND EXISTS (SELECT 'X' FROM conceptos n WHERE n.SECUENCIA= c.CONCEPTO)";
+            Query query = em.createNativeQuery(sql,ConceptosSoportes.class);
             List<ConceptosSoportes> conceptosSoportes = query.getResultList();
             return conceptosSoportes;
         } catch (Exception e) {
-            System.out.println("Error consultarConceptosSoportes");
+            System.out.println("Error consultarConceptosSoportes" + e);
             return null;
         }
     }
 
-    public ConceptosSoportes consultarConceptoSoporte(EntityManager em,BigInteger secuencia) {
+    public ConceptosSoportes consultarConceptoSoporte(EntityManager em, BigInteger secuencia) {
         try {
             Query query = em.createQuery("SELECT te FROM ConceptosSoportes te WHERE te.secuencia = :secuencia");
             query.setParameter("secuencia", secuencia);
@@ -103,7 +100,7 @@ public class PersistenciaConceptosSoportes implements PersistenciaConceptosSopor
         }
     }
 
-    public BigInteger consultarConceptoSoporteConceptoOperador(EntityManager em,BigInteger concepto, BigInteger operador) {
+    public BigInteger consultarConceptoSoporteConceptoOperador(EntityManager em, BigInteger concepto, BigInteger operador) {
         try {
             Query query = em.createQuery("SELECT COUNT(te) FROM ConceptosSoportes te WHERE te.concepto.secuencia = :concepto AND te.operando.secuencia = :operando");
             query.setParameter("concepto", concepto);

@@ -7,6 +7,7 @@ package Entidades;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,6 +39,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 
 public class Estructuras implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructuras")
+    private List<VigenciasArps> vigenciasArpsList;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
     private Collection<PlantasPersonales> plantasPersonalesCollection;
@@ -298,5 +301,14 @@ public class Estructuras implements Serializable {
 
     public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
         this.plantasPersonalesCollection = plantasPersonalesCollection;
+    }
+
+    @XmlTransient
+    public List<VigenciasArps> getVigenciasArpsList() {
+        return vigenciasArpsList;
+    }
+
+    public void setVigenciasArpsList(List<VigenciasArps> vigenciasArpsList) {
+        this.vigenciasArpsList = vigenciasArpsList;
     }
 }

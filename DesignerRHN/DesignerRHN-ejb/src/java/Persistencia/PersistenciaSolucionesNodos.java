@@ -225,7 +225,6 @@ public class PersistenciaSolucionesNodos implements PersistenciaSolucionesNodosI
                     + "              AND p.empleado = sn.empleado)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secProceso);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             BigDecimal conteo = (BigDecimal) query.getSingleResult();
             Integer conteoProcesosSN = conteo.intValueExact();
             return conteoProcesosSN;

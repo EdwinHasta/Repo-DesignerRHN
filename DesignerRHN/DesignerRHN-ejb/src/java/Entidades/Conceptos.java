@@ -40,8 +40,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Conceptos.findAll", query = "SELECT c FROM Conceptos c")})
 public class Conceptos implements Serializable {
 
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "concepto")
@@ -201,14 +199,15 @@ public class Conceptos implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion == null) {
+            this.descripcion = descripcion;
+        } else {
+            this.descripcion = descripcion.toUpperCase();
+        }
     }
 
     public String getNaturaleza() {
