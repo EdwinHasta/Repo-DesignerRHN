@@ -30,10 +30,10 @@ public class PersistenciaVigenciasLocalizaciones implements PersistenciaVigencia
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasLocalizaciones);
+            em.persist(vigenciasLocalizaciones);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaVigenciasLocalizaciones La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();

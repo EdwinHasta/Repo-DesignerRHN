@@ -43,6 +43,7 @@ import Entidades.VWValidaBancos;
 import Entidades.VigenciasAfiliaciones;
 import Entidades.VigenciasCargos;
 import Entidades.VigenciasContratos;
+import Entidades.VigenciasEstadosCiviles;
 import Entidades.VigenciasFormasPagos;
 import Entidades.VigenciasJornadas;
 import Entidades.VigenciasLocalizaciones;
@@ -94,6 +95,7 @@ import InterfacePersistencia.PersistenciaVWValidaBancosInterface;
 import InterfacePersistencia.PersistenciaVigenciasAfiliacionesInterface;
 import InterfacePersistencia.PersistenciaVigenciasCargosInterface;
 import InterfacePersistencia.PersistenciaVigenciasContratosInterface;
+import InterfacePersistencia.PersistenciaVigenciasEstadosCivilesInterface;
 import InterfacePersistencia.PersistenciaVigenciasFormasPagosInterface;
 import InterfacePersistencia.PersistenciaVigenciasJornadasInterface;
 import InterfacePersistencia.PersistenciaVigenciasLocalizacionesInterface;
@@ -103,6 +105,7 @@ import InterfacePersistencia.PersistenciaVigenciasSueldosInterface;
 import InterfacePersistencia.PersistenciaVigenciasTiposContratosInterface;
 import InterfacePersistencia.PersistenciaVigenciasTiposTrabajadoresInterface;
 import InterfacePersistencia.PersistenciaVigenciasUbicacionesInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -213,6 +216,8 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     PersistenciaComprobantesInterface persistenciaComprobantes;
     @EJB
     PersistenciaCortesProcesosInterface persistenciaCortesProcesos;
+    @EJB
+    PersistenciaVigenciasEstadosCivilesInterface persistenciaVigenciasEstadosCiviles;
     @EJB
     PersistenciaVigenciasAfiliacionesInterface persistenciaVigenciasAfiliaciones;
 
@@ -577,9 +582,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     //@Override
     public BigInteger calcularNumeroEmpleadosEmpresa(BigInteger secuencia) {
         try {
-            System.out.println("calcularNumeroEmpleadosEmpresa");
             BigInteger valor = persistenciaEmpresas.calcularControlEmpleadosEmpresa(em, secuencia);
-            System.out.println("calcularNumeroEmpleadosEmpresa valor : " + valor);
             return valor;
         } catch (Exception e) {
             System.out.println("Error calcularNumeroEmpleadosEmpresa Admi : " + e.toString());
@@ -590,9 +593,7 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
     //@Override
     public BigInteger obtenerMaximoEmpleadosEmpresa(BigInteger secuencia) {
         try {
-            System.out.println("obtenerMaximoEmpleadosEmpresa");
             BigInteger valor = persistenciaEmpresas.obtenerMaximoEmpleadosEmpresa(em, secuencia);
-            System.out.println("obtenerMaximoEmpleadosEmpresa valor : " + valor);
             return valor;
         } catch (Exception e) {
             System.out.println("Error obtenerMaximoEmpleadosEmpresa Admi : " + e.toString());
@@ -729,9 +730,9 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
-    public Personas obtenerUltimoRegistroPersona() {
+    public Personas obtenerUltimoRegistroPersona(BigInteger documento) {
         try {
-            Personas persona = persistenciaPersonas.obtenerUltimaPersonaAlmacenada(em);
+            Personas persona = persistenciaPersonas.obtenerUltimaPersonaAlmacenada(em, documento);
             return persona;
         } catch (Exception e) {
             System.out.println("Error obtenerUltimoRegistroPersona Admi : " + e.toString());
@@ -756,18 +757,6 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
             return null;
         }
     }
-
-    /**//**//**//**//**//**//**//**//**//**//**//**/
-
-
-
-
-
-
-
-
-
-
 
     public void crearVigenciaCargo(VigenciasCargos vigencia) {
         try {
@@ -859,15 +848,19 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
 
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia) {
         try {
+            System.out.println("Admi vigencia crear Tipo Entidad: "+vigencia.getTipoentidad().getNombre());
+            System.out.println("Admi vigencia crear Secuencia: "+vigencia.getSecuencia());
+            System.out.println("Admi vigencia crear Empleado: "+vigencia.getEmpleado().getSecuencia());
+            System.out.println("Admi vigencia crear Fecha: "+vigencia.getFechainicial());
             persistenciaVigenciasAfiliaciones.crear(em, vigencia);
         } catch (Exception e) {
             System.out.println("Error crearVigenciaAfiliacion Admi : " + e.toString());
         }
     }
 
-    public void crearEstadoCivil(EstadosCiviles estado) {
+    public void crearEstadoCivil(VigenciasEstadosCiviles estado) {
         try {
-            persistenciaEstadosCiviles.crear(em, estado);
+            persistenciaVigenciasEstadosCiviles.crear(em, estado);
         } catch (Exception e) {
             System.out.println("Error crearEstadoCivil Admi : " + e.toString());
         }
@@ -907,9 +900,9 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
-    public BigInteger obtenerNumeroMaximoComprobante() {
+    public BigDecimal obtenerNumeroMaximoComprobante() {
         try {
-            BigInteger valor = persistenciaComprobantes.buscarValorNumeroMaximo(em);
+            BigDecimal valor = persistenciaComprobantes.buscarValorNumeroMaximo(em);
             return valor;
         } catch (Exception e) {
             System.out.println("Error obtenerNumeroMaximoComprobante Admi : " + e.toString());
@@ -943,6 +936,14 @@ public class AdministrarPersonaIndividual implements AdministrarPersonaIndividua
         }
     }
 
-   
+    public TiposTrabajadores buscarTipoTrabajadorPorCodigo(short codigo) {
+        try {
+            TiposTrabajadores tipo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigoTiposhort(em, codigo);
+            return tipo;
+        } catch (Exception e) {
+            System.out.println("Error buscarTipoTrabajadorPorCodigo Admi : " + e.toString());
+            return null;
+        }
+    }
 
 }

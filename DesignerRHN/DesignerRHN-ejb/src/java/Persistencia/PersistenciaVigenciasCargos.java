@@ -35,11 +35,14 @@ public class PersistenciaVigenciasCargos implements PersistenciaVigenciasCargosI
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            System.out.println("vigenciasCargos Persona Nombre: " + vigenciasCargos.getEmpleado().getPersona().getNombre());
+            System.out.println("vigenciasCargos Persona Secuencia: " + vigenciasCargos.getEmpleado().getPersona().getSecuencia());
+            System.out.println("vigenciasCargos Empleado Secuencia: " + vigenciasCargos.getEmpleado().getSecuencia());
             tx.begin();
-            em.merge(vigenciasCargos);
+            em.persist(vigenciasCargos);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
+            System.out.println("Error PersistenciaVigenciasCargos.crear: " + e.toString());
             if (tx.isActive()) {
                 tx.rollback();
             }

@@ -68,7 +68,7 @@ public interface PersistenciaTiposTrabajadoresInterface {
      * @return Retorna el TipoTrabajador identificado con el código dado por
      * parámetro.
      */
-    public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo);
+    //public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo);
 
     public String plantillaValidarTipoTrabajadorReformaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger reformaLaboral);
 
@@ -79,5 +79,7 @@ public interface PersistenciaTiposTrabajadoresInterface {
     public String plantillaValidarTipoTrabajadorNormaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger normaLaboral);
 
     public String plantillaValidarTipoTrabajadorContrato(EntityManager em, BigInteger tipoTrabajador, BigInteger contrato);
+    
+    public TiposTrabajadores buscarTipoTrabajadorCodigoTiposhort(EntityManager em, short codigo);
 
 }

@@ -36,10 +36,10 @@ public class PersistenciaVigenciasAfiliaciones implements PersistenciaVigenciasA
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasAfiliaciones);
+            em.persist(vigenciasAfiliaciones);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia afiliacion no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaVigenciasAfiliaciones La vigencia afiliacion no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();

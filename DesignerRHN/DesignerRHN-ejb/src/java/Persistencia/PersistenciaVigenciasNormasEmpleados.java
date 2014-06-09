@@ -37,7 +37,7 @@ public class PersistenciaVigenciasNormasEmpleados implements PersistenciaVigenci
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasNormasEmpleados);
+            em.persist(vigenciasNormasEmpleados);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasNormasEmpleados.crear: " + e);

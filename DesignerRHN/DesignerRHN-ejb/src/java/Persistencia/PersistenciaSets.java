@@ -34,10 +34,10 @@ public class PersistenciaSets implements PersistenciaSetsInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(sets);
+            em.persist(sets);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaSets La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();

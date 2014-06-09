@@ -43,6 +43,7 @@ import Entidades.VWValidaBancos;
 import Entidades.VigenciasAfiliaciones;
 import Entidades.VigenciasCargos;
 import Entidades.VigenciasContratos;
+import Entidades.VigenciasEstadosCiviles;
 import Entidades.VigenciasFormasPagos;
 import Entidades.VigenciasJornadas;
 import Entidades.VigenciasLocalizaciones;
@@ -52,6 +53,7 @@ import Entidades.VigenciasSueldos;
 import Entidades.VigenciasTiposContratos;
 import Entidades.VigenciasTiposTrabajadores;
 import Entidades.VigenciasUbicaciones;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
@@ -156,7 +158,7 @@ public interface AdministrarPersonaIndividualInterface {
 
     public void crearNuevaPersona(Personas persona);
 
-    public Personas obtenerUltimoRegistroPersona();
+    public Personas obtenerUltimoRegistroPersona(BigInteger documento);
 
     public void crearNuevoEmpleado(Empleados empleado);
 
@@ -186,7 +188,7 @@ public interface AdministrarPersonaIndividualInterface {
 
     public void crearVigenciaAfiliacion(VigenciasAfiliaciones vigencia);
 
-    public void crearEstadoCivil(EstadosCiviles estado);
+    public void crearEstadoCivil(VigenciasEstadosCiviles estado);
 
     public void crearDireccion(Direcciones direccion);
 
@@ -196,12 +198,14 @@ public interface AdministrarPersonaIndividualInterface {
 
     public Procesos buscarProcesoPorCodigo(short codigo);
 
-    public BigInteger obtenerNumeroMaximoComprobante();
+    public BigDecimal obtenerNumeroMaximoComprobante();
 
     public void crearComprobante(Comprobantes comprobante);
 
     public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(BigInteger secEmpleado);
     
     public void crearCortesProcesos(CortesProcesos corte);
-
+    
+    public TiposTrabajadores buscarTipoTrabajadorPorCodigo(short codigo);
+   
 }

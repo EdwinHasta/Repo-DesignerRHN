@@ -41,18 +41,12 @@ public class Direcciones implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 15)
     @Column(name = "PPAL")
     private String ppal;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 1)
     @Column(name = "TIPOPPAL")
     private String tipoppal;
-    @Basic(optional = false)
-    @NotNull
     @Size(min = 1, max = 1)
     @Column(name = "TIPOSECUNDARIO")
     private String tiposecundario;

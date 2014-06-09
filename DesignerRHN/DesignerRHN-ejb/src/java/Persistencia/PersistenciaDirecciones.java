@@ -34,7 +34,7 @@ public class PersistenciaDirecciones implements PersistenciaDireccionesInterface
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(direcciones);
+            em.persist(direcciones);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaDirecciones.crear: " + e);

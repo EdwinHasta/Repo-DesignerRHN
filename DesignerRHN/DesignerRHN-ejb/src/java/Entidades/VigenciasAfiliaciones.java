@@ -201,9 +201,10 @@ public class VigenciasAfiliaciones implements Serializable {
     }
 
     public TiposEntidades getTipoentidad() {
+        /*
         if(tipoentidad == null){
             tipoentidad = new TiposEntidades();
-        }
+        }*/
         return tipoentidad;
     }
 

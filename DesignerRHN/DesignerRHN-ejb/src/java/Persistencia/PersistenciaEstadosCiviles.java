@@ -33,7 +33,7 @@ public class PersistenciaEstadosCiviles implements PersistenciaEstadosCivilesInt
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(estadosCiviles);
+            em.persist(estadosCiviles);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaEstadosCiviles.crear: " + e);

@@ -90,6 +90,6 @@ public interface PersistenciaPersonasInterface {
 
     public Personas buscarPersonaPorNumeroDocumento(EntityManager em, BigInteger numeroDocumento);
 
-    public Personas obtenerUltimaPersonaAlmacenada(EntityManager em);
+    public Personas obtenerUltimaPersonaAlmacenada(EntityManager em,BigInteger documento);
 
 }
