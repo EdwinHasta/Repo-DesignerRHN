@@ -99,7 +99,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         TiposTrabajadores tipoT = null;
         return tipoT;
     }
-
+/*
     @Override
     public TiposTrabajadores buscarTipoTrabajadorCodigo(EntityManager em, BigDecimal codigo) {
         try {
@@ -111,7 +111,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
         TiposTrabajadores tipoTC = null;
         return null;
     }
-
+*/
     @Override
     public String plantillaValidarTipoTrabajadorReformaLaboral(EntityManager em, BigInteger tipoTrabajador, BigInteger reformaLaboral) {
         try {
@@ -200,5 +200,19 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             System.out.println("Error plantillaValidarTipoTrabajadorNormaLaboral PersistenciaTiposTrabajadores : " + e.toString());
             return "N";
         }
+    }
+    
+    @Override
+    public TiposTrabajadores buscarTipoTrabajadorCodigoTiposhort(EntityManager em, short codigo) {
+        try {
+            Query query = em.createQuery("SELECT t FROM TiposTrabajadores t WHERE t.codigo=:codigo");
+            query.setParameter("codigo", codigo);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            TiposTrabajadores tipoTC = (TiposTrabajadores) query.getSingleResult();
+            return tipoTC;
+        } catch (Exception e) {
+        }
+        TiposTrabajadores tipoTC = null;
+        return null;
     }
 }

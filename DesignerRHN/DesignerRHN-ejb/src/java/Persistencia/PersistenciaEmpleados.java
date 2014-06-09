@@ -32,6 +32,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
+            System.out.println("Empleado Persona Nombre : "+empleados.getPersona().getNombre());
+            System.out.println("Empleado Persona Secuencia : "+empleados.getPersona().getSecuencia());
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
@@ -317,10 +319,12 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
     @Override 
     public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em,BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
         try {
-            Empleados empleado = null;
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
+            query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
+            query.setParameter("codigoEmpleado", codigoEmpleado);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Empleados empl = (Empleados) query.getSingleResult();
-            return empleado;
+            return empl;
         } catch (Exception e) {
             System.out.println("Error obtenerUltimoEmpleadoAlmacenado PersistenciaEmpleados : " + e.toString());
             return null;

@@ -107,7 +107,6 @@ public class TiposContratos implements Serializable {
             nombre = " ";
         }
         return nombre;
-
     }
 
     public void setNombre(String nombre) {

@@ -37,7 +37,7 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasTiposContratos);
+            em.persist(vigenciasTiposContratos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasTiposContratos.crear: " + e);

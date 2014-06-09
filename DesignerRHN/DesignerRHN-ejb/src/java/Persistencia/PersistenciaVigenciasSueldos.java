@@ -33,11 +33,14 @@ public class PersistenciaVigenciasSueldos implements PersistenciaVigenciasSueldo
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            if(vigenciasSueldos.getTiposueldo()==null){
+                System.out.println("I'm Null");
+            }
             tx.begin();
             em.merge(vigenciasSueldos);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaVigenciasSueldos La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();

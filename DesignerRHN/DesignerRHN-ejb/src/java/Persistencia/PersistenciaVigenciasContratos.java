@@ -35,10 +35,10 @@ public class PersistenciaVigenciasContratos implements PersistenciaVigenciasCont
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasContratos);
+            em.persist(vigenciasContratos);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaVigenciasContratos La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();

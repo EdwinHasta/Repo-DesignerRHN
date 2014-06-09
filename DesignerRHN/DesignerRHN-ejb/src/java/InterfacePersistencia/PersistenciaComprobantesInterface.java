@@ -4,6 +4,7 @@
 package InterfacePersistencia;
 
 import Entidades.Comprobantes;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -78,7 +79,7 @@ public interface PersistenciaComprobantesInterface {
      */
     public BigInteger numeroMaximoComprobante(EntityManager em);
 
-    public BigInteger buscarValorNumeroMaximo(EntityManager em);
+    public BigDecimal buscarValorNumeroMaximo(EntityManager em);
 
     public Comprobantes buscarComprobanteParaPrimerRegistroEmpleado(EntityManager em, BigInteger secEmpleado);
 }

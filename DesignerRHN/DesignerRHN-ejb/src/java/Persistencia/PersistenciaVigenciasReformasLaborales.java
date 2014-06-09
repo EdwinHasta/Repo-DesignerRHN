@@ -35,10 +35,10 @@ public class PersistenciaVigenciasReformasLaborales implements PersistenciaVigen
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciaRefLab);
+            em.persist(vigenciaRefLab);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaVigenciasReformasLaborales La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();

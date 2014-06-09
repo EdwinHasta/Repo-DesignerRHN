@@ -293,6 +293,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
     
+    @Override
     public Date consultarActualesFechas() {
         try {
             Date actualFechaHasta = persistenciaVWActualesFechas.actualFechaHasta(em);
@@ -556,7 +557,7 @@ public class AdministrarCarpetaPersonal implements AdministrarCarpetaPersonalInt
         }
     }
 
-    @Override
+    //@Override
     public ParametrosEstructuras consultarParametrosUsuario() {
         try {
             ParametrosEstructuras parametrosEstructuras = persistenciaParametrosEstructuras.buscarParametro(em, consultarAliasActualUsuario());

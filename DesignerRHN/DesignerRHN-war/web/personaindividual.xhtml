@@ -69,7 +69,6 @@
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarInformacionPersonal(5,'TIPODOCUMENTO', controlPersonaIndividual.nuevaPersona.tipodocumento.nombrelargo)}" process="@this" update="tipoDocumentoModPersonal"/>
                                         <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(5)}" process="@this"/>
                                         <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
-                                        <p:ajax event="change" process="@this" update="tipoDocumentoModPersonal"/>
                                     </p:inputText>
 
 
@@ -257,14 +256,14 @@
                                         <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
                                     </p:inputText>
 
-                                    <h:outputText  value="#{msg['tipoCompensacion']}" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
+                                    <h:outputText  value="#{msg['tipoCompensacion']}*" style="position: absolute; top: 85px; left: 65px;font-weight: bold"/>
                                     <p:inputText id="tipoSueldoModSueldo" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaSueldo.tiposueldo.descripcion}" style="position: absolute; top: 80px; left: 230px;width: 150px;text-transform: uppercase">
                                         <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceSueldo(2)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarSueldo(2,'TIPOSUELDO', controlPersonaIndividual.nuevaVigenciaSueldo.tiposueldo.descripcion)}" process="@this" update="tipoSueldoModSueldo"/>
                                         <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
                                     </p:inputText>
 
-                                    <h:outputText  value="#{msg['unidadPago']}" style="position: absolute; top: 115px; left: 65px;font-weight: bold"/>
+                                    <h:outputText  value="#{msg['unidadPago']}*" style="position: absolute; top: 115px; left: 65px;font-weight: bold"/>
                                     <p:inputText id="unidadPagoModSueldo" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaSueldo.unidadpago.nombre}" style="position: absolute; top: 110px; left: 230px;width: 150px;text-transform: uppercase">
                                         <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceSueldo(3)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarSueldo(3,'UNIDAD', controlPersonaIndividual.nuevaVigenciaSueldo.unidadpago.nombre)}" process="@this" update="unidadPagoModSueldo"/>
@@ -353,7 +352,7 @@
                                     
                                     <h:outputText  value="#{msg['jornadaLaboral']}*" style="position: absolute; top: 35px; left: 65px;font-weight: bold"/>
                                     <p:inputText id="jornadaLaboralModJornadaLaboral" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaJornada.jornadatrabajo.descripcion}" style="position: absolute; top: 30px; left: 245px;width: 155px;text-transform: uppercase">
-                                        <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceJornadaLaboral(0)}" process="@this"/>
+                                        <p:ajax event="select" listener="#{controlPersonaIndividual.cambiarIndiceJornadaLaboral(0)}" process="@this"/>
                                         <p:ajax event="change" listener="#{controlPersonaIndividual.modificarJornadaLaboral(0,'JORNADA', controlPersonaIndividual.nuevaVigenciaJornada.jornadatrabajo.descripcion)}" process="@this" update="jornadaLaboralModJornadaLaboral"/>
                                         <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
                                     </p:inputText>
@@ -466,8 +465,8 @@
                                         <h:outputText  value="#{msg['factorRH']}" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
                                         <p:selectOneMenu id="factorRHModFactorRH" value="#{controlPersonaIndividual.nuevaPersona.factorrh}" style="position: absolute; top: 50px; left: 230px; font-weight: bold;width: 100px;" >  
                                             <f:selectItem itemLabel="" itemValue="null" />  
-                                            <f:selectItem itemLabel="+" itemValue="+" />  
-                                            <f:selectItem itemLabel="-" itemValue="-" />
+                                            <f:selectItem itemLabel="+" itemValue="P" />  
+                                            <f:selectItem itemLabel="-" itemValue="N" />
                                             <p:ajax event="change" update="@this" />
                                         </p:selectOneMenu>
 
@@ -479,9 +478,9 @@
                                         <h:outputText value="" style="position: absolute; background-image: url(Imagenes/estadocivil.gif); width: 50px; height: 50px; top: 25px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
                                         
                                         <h:outputText  value="#{msg['descripcion']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
-                                        <p:inputText id="estadoCivilModEstadoCivil" onclick="select();" value="#{controlPersonaIndividual.nuevoEstadoCivil.descripcion}" style="position: absolute; top: 20px;left: 205px;width: 155px;text-transform: uppercase">
+                                        <p:inputText id="estadoCivilModEstadoCivil" onclick="select();" value="#{controlPersonaIndividual.nuevoEstadoCivil.estadocivil.descripcion}" style="position: absolute; top: 20px;left: 205px;width: 155px;text-transform: uppercase">
                                             <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceEstadoCivil(0)}" process="@this"/>
-                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarEstadoCivil(0,'ESTADO', controlPersonaIndividual.nuevoEstadoCivil.descripcion)}" process="@this" update="estadoCivilModEstadoCivil"/>
+                                            <p:ajax event="change" listener="#{controlPersonaIndividual.modificarEstadoCivil(0,'ESTADO', controlPersonaIndividual.nuevoEstadoCivil.estadocivil.descripcion)}" process="@this" update="estadoCivilModEstadoCivil"/>
                                             <p:ajax event="dblclick" listener="#{controlPersonaIndividual.botonListaValores()}" process="@this"/>
                                         </p:inputText>
 
@@ -540,8 +539,8 @@
                             </p:scrollPanel>  
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 505px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 505px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick"  action="retornoConcepto" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 505px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" actionListener="#{controlPersonaIndividual.crearNuevoEmpleado()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 505px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlPersonaIndividual.cancelarModificaciones()}" action="nomina" process="@this" />
                     </p:panel>
                     
                      <p:dialog header="#{msg['tipoTTelefonoM']}" widgetVar="TipoTelefonoTelefonoDialogo" draggable="false" resizable="false" closable="false" id="TipoTelefonoTelefonoDialogo"  
@@ -579,7 +578,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCT"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCT']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCiudadTelefono.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadTelefono.filter();" style="width:150px; position: relative; left: 15px;" />  
                             </f:facet>
                             <p:column filterBy="#{ciudadT.nombre}"  filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -611,7 +610,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCD"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCiudadDireccion.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadDireccion.filter();" style="width:150px; position: relative; left: 15px;" />  
                             </f:facet>
                             <p:column filterBy="#{ciudadD.nombre}"  filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -643,7 +642,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarECEC"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarECEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEstadoCivilEstadoCivil.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEstadoCivilEstadoCivil.filter();" style="width:150px; position: relative; left: 50px;" />  
                             </f:facet>
                             <p:column filterBy="#{estadoCivilEC.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -669,7 +668,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarTSA"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTA']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTerceroAfiliacion.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTerceroAfiliacion.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{terceroSA.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -697,11 +696,11 @@
                         <p:dataTable id="lovJornadaJornadaLaboral" style=" width: 370px" var="jornadaLJL" value="#{controlPersonaIndividual.lovJornadasLaborales}" rowKey="#{jornadaLJL.secuencia}"
                                      selection="#{controlPersonaIndividual.jornadaLaboralSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovJornadaJornadaLaboral" scrollable="true" scrollHeight="250"
                                      emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovJornadasLaborales}">
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}"  process="@this" onstart="lovJornadaJornadaLaboral.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}"  process="@this" onstart="lovJornadaJornadaLaboral.clearFilters()" />
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarJLJL"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarJLJL']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovJornadaJornadaLaboral.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovJornadaJornadaLaboral.filter();" style="width:150px; position: relative; left: 35px;" />  
                             </f:facet>
                             <p:column filterBy="#{jornadaLJL.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -710,10 +709,10 @@
                                 <h:outputText  value="#{jornadaLJL.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="JornadaJornadaLaboralDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroMetodoFormaPago()}" update="lovJornadaJornadaLaboral, aceptarJLJL" process="@this" icon="ui-icon-check">
+                        <p:commandButton id="aceptarJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="JornadaJornadaLaboralDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroJornadaJornadaLaboral()}" update="lovJornadaJornadaLaboral, aceptarJLJL" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovJornadaJornadaLaboral:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="JornadaJornadaLaboralDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroMetodoFormaPago()}" update="lovJornadaJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                        <p:commandButton id="atrasJLJL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="JornadaJornadaLaboralDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroJornadaJornadaLaboral()}" update="lovJornadaJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovJornadaJornadaLaboral:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -727,7 +726,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMPFP"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMPFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovMetodoPagoFormaPago.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovMetodoPagoFormaPago.filter();" style="width:150px; position: relative; left: 15px;" />  
                             </f:facet>
                             <p:column filterBy="#{metodoPFP.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -753,7 +752,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarSFP"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarSFP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovSucursalPagoFormaPago.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovSucursalPagoFormaPago.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{sucursalFP.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -797,15 +796,15 @@
                     </p:dialog>
 
                     <p:dialog header="#{msg['ubicacionGeograficaM']}" widgetVar="UbicacionUbicacionGeograficaDialogo" draggable="false" resizable="false" closable="false" id="UbicacionUbicacionGeograficaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
-                        <p:dataTable id="lovUbicacionUbicacionGeografica" style=" width: 370px" var="ubicacionGUG" value="#{controlPersonaIndividual.lovUbicacionesGeograficas}" rowKey="#{ubicacionGUG.secuencia}"
-                                     selection="#{controlPersonaIndividual.ubicacionGeograficaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovUbicacionUbicacionGeografica" scrollable="true" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="810" modal="true" >
+                        <p:dataTable id="lovUbicacionUbicacionGeografica" style=" width: 770px" var="ubicacionGUG" value="#{controlPersonaIndividual.lovUbicacionesGeograficas}" rowKey="#{ubicacionGUG.secuencia}"
+                                     selection="#{controlPersonaIndividual.ubicacionGeograficaSeleccionada}" scrollWidth="788" selectionMode="single" widgetVar="lovUbicacionUbicacionGeografica" scrollable="true" scrollHeight="250"
                                      emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovUbicacionesGeograficas}">
                             <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroUbicacionUbicacionGeografica()}"  process="@this" onstart="lovUbicacionUbicacionGeografica.clearFilters()" />
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarUGUGL"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarUGUGL']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovUbicacionUbicacionGeografica.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovUbicacionUbicacionGeografica.filter();" style="width:150px; position: relative; left: -105px;" />  
                             </f:facet>
                             <p:column filterBy="#{ubicacionGUG.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -844,10 +843,10 @@
                                 <h:outputText  value="#{ubicacionGUG.zona}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarUGUGL" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UbicacionUbicacionGeograficaDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica, aceptarUGUGL" process="@this" icon="ui-icon-check">
+                        <p:commandButton id="aceptarUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UbicacionUbicacionGeograficaDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica, aceptarUGUGL" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovUbicacionUbicacionGeografica:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasUGUGL" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="UbicacionUbicacionGeograficaDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                        <p:commandButton id="atrasUGUGL" style="position: relative; left: 620px; top: 5px" value="#{msg['atras']}" onclick="UbicacionUbicacionGeograficaDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroUbicacionUbicacionGeografica()}" update="lovUbicacionUbicacionGeografica" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovUbicacionUbicacionGeografica:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -861,7 +860,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCLL"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCLL']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovContratoLegislacionLaboral.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovContratoLegislacionLaboral.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{contratoLL.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -887,7 +886,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarNLNL"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarNLNL']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovNormaLaboralNormaLaboral.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovNormaLaboralNormaLaboral.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{normaLaboralNL.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -913,7 +912,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMCTC"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMCTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovMotivoContratoTipoContrato.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovMotivoContratoTipoContrato.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{motivoContratoTC.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -965,7 +964,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMCSS"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMCSS']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovMotivoCambioSueldoSueldo.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovMotivoCambioSueldoSueldo.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{motivoCambioSS.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1013,11 +1012,11 @@
                         <p:dataTable id="lovUnidadSueldo" style=" width: 370px" var="unidadS" value="#{controlPersonaIndividual.lovUnidades}" rowKey="#{unidadS.secuencia}"
                                      selection="#{controlPersonaIndividual.unidadSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovUnidadSueldo" scrollable="true" scrollHeight="250"
                                      emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovUnidades}">
-                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}"  process="@this" onstart="lovUnidadSueldo.clearFilters()" />
+                            <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}"  process="@this" onstart="lovUnidadSueldo.clearFilters()" />
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarUS"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarUS']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovUnidadSueldo.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovUnidadSueldo.filter();" style="width:150px; position: relative; left: 35px;" />  
                             </f:facet>
                             <p:column filterBy="#{unidadS.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1026,10 +1025,10 @@
                                 <h:outputText  value="#{unidadS.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarUS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroTipoSueldoSueldo()}" update="lovUnidadSueldo, aceptarUS" process="@this" icon="ui-icon-check">
+                        <p:commandButton id="aceptarUS" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="UnidadSueldoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroUnidadSueldo()}" update="lovUnidadSueldo, aceptarUS" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovUnidadSueldo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasUS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="UnidadSueldoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroTipoSueldoSueldo()}" update="lovUnidadSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                        <p:commandButton id="atrasUS" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="UnidadSueldoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroUnidadSueldo()}" update="lovUnidadSueldo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovUnidadSueldo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1043,7 +1042,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarRLTS"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarRLTS']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovReformaLaboralTipoSalario.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovReformaLaboralTipoSalario.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{reformaLTS.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1069,7 +1068,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarTTTT"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTTTT']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajadorTipoTrabajador.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoTrabajadorTipoTrabajador.filter();" style="width:150px; position: relative; left: 65px;" />  
                             </f:facet>
                             <p:column filterBy="#{tipoTTT.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1087,15 +1086,15 @@
                     </p:dialog>
 
                     <p:dialog header="#{msg['estructuraM2']}" widgetVar="EstructuraCentroCostoDialogo" draggable="false" resizable="false" closable="false" id="EstructuraCentroCostoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="410" modal="true" >
-                        <p:dataTable id="lovEstructuraCentroCosto" style=" width: 370px" var="estructuraCC" value="#{controlPersonaIndividual.lovEstructurasCentroCosto}" rowKey="#{estructuraCC.secuencia}"
-                                     selection="#{controlPersonaIndividual.estructuraCentroCostoSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEstructuraCentroCosto" scrollable="true" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="510" modal="true" >
+                        <p:dataTable id="lovEstructuraCentroCosto" style=" width: 470px" var="estructuraCC" value="#{controlPersonaIndividual.lovEstructurasCentroCosto}" rowKey="#{estructuraCC.secuencia}"
+                                     selection="#{controlPersonaIndividual.estructuraCentroCostoSeleccionada}" scrollWidth="488" selectionMode="single" widgetVar="lovEstructuraCentroCosto" scrollable="true" scrollHeight="250"
                                      emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEstructurasCentroCosto}">
                             <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}"  process="@this" onstart="lovEstructuraCentroCosto.clearFilters()" />
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarECC"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarECC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEstructuraCentroCosto.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEstructuraCentroCosto.filter();" style="width:150px; position: relative; left: 5px;" />  
                             </f:facet>
                             <p:column filterBy="#{estructuraCC.centrocosto.codigo}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1116,10 +1115,10 @@
                                 <h:outputText  value="#{estructuraCC.centrocosto.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarECC" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto, aceptarECC" process="@this" icon="ui-icon-check">
+                        <p:commandButton id="aceptarECC" style="position: relative; left: 320px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EstructuraCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.actualizarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto, aceptarECC" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEstructuraCentroCosto:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasECC" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EstructuraCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                        <p:commandButton id="atrasECC" style="position: relative; left: 320px; top: 5px" value="#{msg['atras']}" onclick="EstructuraCentroCostoDialogo.hide();" actionListener="#{controlPersonaIndividual.cancelarParametroEstructuraCentroCosto()}" update="lovEstructuraCentroCosto" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEstructuraCentroCosto:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -1133,7 +1132,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMLCC"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMLCC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovMotivoLocalizacionCentroCosto.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovMotivoLocalizacionCentroCosto.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{motivoLCC.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1159,7 +1158,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCCD"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCargoCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovCargoCargoDesempeñado.filter();" style="width:150px; position: relative; left: 5px;" />  
                             </f:facet>
                             <p:column filterBy="#{cargoCD.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1185,7 +1184,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarMCCCD"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarMCCCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovMotivoCambioCargoCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovMotivoCambioCargoCargoDesempeñado.filter();" style="width:150px; position: relative; left: 25px;" />  
                             </f:facet>
                             <p:column filterBy="#{motivoCambioCD.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1211,7 +1210,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarECD"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarECD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEstructuraCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEstructuraCargoDesempeñado.filter();" style="width:150px; position: relative; left: 45px;" />  
                             </f:facet>
                             <p:column filterBy="#{estructuraCD.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1237,7 +1236,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarPCD"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovPapelCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovPapelCargoDesempeñado.filter();" style="width:150px; position: relative; left: 15px;" />  
                             </f:facet>
                             <p:column filterBy="#{papelCD.descripcion}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1262,7 +1261,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarEJCD"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEJCD']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEmpleadoJefeCargoDesempeñado.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpleadoJefeCargoDesempeñado.filter();" style="width:150px; position: relative; left: 35px;" />  
                             </f:facet>
                             <p:column filterBy="#{jefeCD.persona.nombreCompleto}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1279,7 +1278,7 @@
                         </p:commandButton>
                     </p:dialog>
 
-                    <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
+                    <p:dialog header="#{msg['empresaM']}" visible="true" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
                               showEffect="fade" hideEffect="fade" width="410" modal="true" >
                         <p:dataTable id="lovEmpresaInformacionPersonal" style=" width: 370px" var="empresaIP" value="#{controlPersonaIndividual.lovEmpresas}" rowKey="#{empresaIP.secuencia}"
                                      selection="#{controlPersonaIndividual.empresaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpresaInformacionPersonal" scrollable="true" scrollHeight="250"
@@ -1288,7 +1287,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarEIP"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEmpresaInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresaInformacionPersonal.filter();" style="width:150px; position: relative; left: 40px;" />  
                             </f:facet>
                             <p:column filterBy="#{empresaIP.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1321,7 +1320,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarTDIP"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTDIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTipoDocumentoInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoDocumentoInformacionPersonal.filter();" style="width:150px; position: relative; left: 75px;" />  
                             </f:facet>
                             <p:column filterBy="#{tipoDIP.nombrecorto}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1353,7 +1352,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCDIP"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCDIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCiudadDocumentoInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadDocumentoInformacionPersonal.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{ciudadDIP.nombre}"  filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1385,7 +1384,7 @@
                             <p:ajax event="rowSelect" listener="#{controlPersonaIndividual.activarAceptar()}" update=":form:aceptarCNIP"/>
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarCNIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovCiudadNacimientoInformacionPersonal.filter();" style="width:150px; position: relative; left: 55px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovCiudadNacimientoInformacionPersonal.filter();" style="width:150px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{ciudadDIP.nombre}" filterMatchMode="contains" >
                                 <f:facet name="header">
@@ -1573,6 +1572,10 @@
                         <h:outputText value="#{msg['errorCamposObligatorios']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
                     </p:dialog>
                     
+                    <p:dialog id="errorCamposAlternativos" header="#{msg['atencion']}" widgetVar="errorCamposAlternativos"  resizable="false" draggable="false" modal="true" height="60" width="375px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorCamposAlternativos']}" style="position: absolute; left: 70px; top: 10px; width: 285px; font-weight:bold;" />
+                    </p:dialog>
                     
                     <p:dialog id="procesoGuardadoOK" header="#{msg['atencion']}" widgetVar="procesoGuardadoOK"  resizable="false" draggable="false" modal="true" height="60" width="375px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/bien.jpg" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
@@ -1787,7 +1790,7 @@
                     <!-- ESTADO CIVIL -->
 
                     <p:dialog id="editarEstadoEstadoCivil" header="#{msg['editarEstadoEstadoCivil']}" widgetVar="editarEstadoEstadoCivil" resizable="false" draggable="false" modal="true" height="55" width="240" style="padding: 0px;">  
-                        <p:inputTextarea value="#{controlPersonaIndividual.nuevoEstadoCivil.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                        <p:inputTextarea value="#{controlPersonaIndividual.nuevoEstadoCivil.estadocivil.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
                     
                     <!-- DIRECCION -->

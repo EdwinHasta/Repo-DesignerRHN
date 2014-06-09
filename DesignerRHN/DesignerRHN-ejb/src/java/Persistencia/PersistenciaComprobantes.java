@@ -5,6 +5,7 @@ package Persistencia;
 
 import Entidades.Comprobantes;
 import InterfacePersistencia.PersistenciaComprobantesInterface;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -34,7 +35,7 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(comprobante);
+            em.persist(comprobante);
             tx.commit();
         } catch (Exception e) {
             System.out.println("El comprobante no exite o esta reservada por lo cual no puede ser modificada: " + e);
@@ -130,11 +131,11 @@ public class PersistenciaComprobantes implements PersistenciaComprobantesInterfa
     }
 
     @Override
-    public BigInteger buscarValorNumeroMaximo(EntityManager em) {
+    public BigDecimal buscarValorNumeroMaximo(EntityManager em) {
         try {
             String sql = "SELECT nvl(MAX(NUMERO),0) FROM COMPROBANTES";
             Query query = em.createNativeQuery(sql);
-            BigInteger valor = (BigInteger) query.getSingleResult();
+            BigDecimal valor = (BigDecimal) query.getSingleResult();
             return valor;
         } catch (Exception e) {
             System.out.println("Error buscarValorNumeroMaximo PersistenciaComprobantes : " + e.toString());

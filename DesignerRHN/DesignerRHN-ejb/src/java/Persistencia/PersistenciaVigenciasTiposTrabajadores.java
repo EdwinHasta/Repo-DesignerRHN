@@ -6,6 +6,7 @@ package Persistencia;
 import Entidades.VigenciasTiposTrabajadores;
 import InterfacePersistencia.PersistenciaVigenciasTiposTrabajadoresInterface;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -36,10 +37,10 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasTiposTrabajadores);
+            em.persist(vigenciasTiposTrabajadores);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
+            System.out.println("PersistenciaVigenciasTiposTrabajadores La vigencia no exite o esta reservada por lo cual no puede ser modificada: " + e);
             try {
                 if (tx.isActive()) {
                     tx.rollback();
@@ -131,5 +132,21 @@ public class PersistenciaVigenciasTiposTrabajadores implements PersistenciaVigen
                 + "FROM VigenciasTiposTrabajadores vttt)");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         return query.getResultList();
+    }
+    
+    @Override
+    public VigenciasTiposTrabajadores buscarVigenciaTipoTrabajadorRestriccionUN(EntityManager em, BigInteger empleado,Date fechaVigencia, BigInteger tipoTrabajador) {
+        try {
+            Query query = em.createQuery("SELECT vtt FROM VigenciasTiposTrabajadores vtt WHERE vtt.empleado.secuencia = :empleado AND vtt.fechavigencia=:fechaVigencia AND vtt.tipotrabajador.secuencia=:tipoTrabajador");
+            query.setParameter("empleado", empleado);
+            query.setParameter("fechaVigencia", fechaVigencia);
+            query.setParameter("tipoTrabajador", tipoTrabajador);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            VigenciasTiposTrabajadores obj = (VigenciasTiposTrabajadores) query.getSingleResult();
+            return obj;
+        } catch (Exception e) {
+            System.out.println("Error en Persistencia Vigencias TiposTrabajadores buscarVigenciaTipoTrabajadorRestriccionUNB " + e);
+            return null;
+        }
     }
 }
