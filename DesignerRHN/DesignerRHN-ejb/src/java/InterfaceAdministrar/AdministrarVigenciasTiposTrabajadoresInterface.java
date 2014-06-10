@@ -69,7 +69,7 @@ public interface AdministrarVigenciasTiposTrabajadoresInterface {
      * @param codTipoTrabajador Codigo de TipoTrabajador
      * @return tipoT Tipo Trabajador que cumple con el codigo dado
      */
-    public TiposTrabajadores tipoTrabajadorCodigo(BigDecimal codTipoTrabajador);
+    public TiposTrabajadores tipoTrabajadorCodigo(short codTipoTrabajador);
     /**
      * Metodo que crea un Retiro
      * @param retirado Objeto retiro a ser creado

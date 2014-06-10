@@ -49,8 +49,6 @@
 
                                 </p:column>
 
-
-
                             </p:dataTable>
 
                         </fieldset>
@@ -98,14 +96,20 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstadosCiviles.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstadosCiviles.cancelarModificacion()}"  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEstadosCiviles.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlEstadosCiviles.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEstadosCiviles.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  disabled="#{controlEstadosCiviles.guardado}" actionListener="#{controlEstadosCiviles.revisarDialogoGuardar()}"     process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
-                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                        <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
                             <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlEstadosCiviles.guardarEstadoCivil()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />

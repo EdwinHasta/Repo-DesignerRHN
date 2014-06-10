@@ -64,6 +64,7 @@ public class ControlDeportes implements Serializable {
     private Integer a;
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    private String infoRegistro;
 
     public ControlDeportes() {
         listDeportes = null;
@@ -77,6 +78,7 @@ public class ControlDeportes implements Serializable {
         a = null;
         guardado = true;
         tamano = 270;
+
     }
 
     @PostConstruct
@@ -178,6 +180,41 @@ public class ControlDeportes implements Serializable {
         listDeportes = null;
         guardado = true;
         permitirIndex = true;
+        getListDeportes();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listDeportes == null || listDeportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listDeportes.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosDeporte");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosDeporte:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosDeporte:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosDeporte");
+            bandera = 0;
+            filtrarDeportes = null;
+            tipoLista = 0;
+        }
+
+        borrarDeportes.clear();
+        crearDeportes.clear();
+        modificarDeportes.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listDeportes = null;
+        guardado = true;
+        permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosDeporte");
         context.update("form:ACEPTAR");
@@ -247,7 +284,7 @@ public class ControlDeportes implements Serializable {
                         banderita = false;
                         listDeportes.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (listDeportes.get(indice).getNombre().equals(" ")) {
+                    if (listDeportes.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listDeportes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
@@ -296,7 +333,7 @@ public class ControlDeportes implements Serializable {
                         banderita = false;
                         listDeportes.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (listDeportes.get(indice).getNombre().equals(" ")) {
+                    if (listDeportes.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listDeportes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
@@ -352,7 +389,7 @@ public class ControlDeportes implements Serializable {
                         banderita = false;
                         filtrarDeportes.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (filtrarDeportes.get(indice).getNombre().equals(" ")) {
+                    if (filtrarDeportes.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarDeportes.get(indice).setNombre(backUpDescripcion);
@@ -410,7 +447,7 @@ public class ControlDeportes implements Serializable {
                         banderita = false;
                         filtrarDeportes.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (filtrarDeportes.get(indice).getNombre().equals(" ")) {
+                    if (filtrarDeportes.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarDeportes.get(indice).setNombre(backUpDescripcion);
@@ -479,6 +516,8 @@ public class ControlDeportes implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            infoRegistro = "Cantidad de registros: " + listDeportes.size();
+            context.update("form:informacionRegistro");
         }
         context.update("form:datosDeporte");
         context.update("form:ACEPTAR");
@@ -504,7 +543,7 @@ public class ControlDeportes implements Serializable {
                 contadorDeportesPersonas = administrarDeportes.contarPersonasDeporte(filtrarDeportes.get(index).getSecuencia());
                 contadorParametrosInformes = administrarDeportes.contarParametrosInformesDeportes(filtrarDeportes.get(index).getSecuencia());
             }
-            if (!verificarBorradoVigenciasDeportes.equals(new BigInteger("0")) || contadorDeportesPersonas.equals(new BigInteger("0")) || contadorParametrosInformes.equals(new BigInteger("0"))) {
+            if (!verificarBorradoVigenciasDeportes.equals(new BigInteger("0")) && !contadorDeportesPersonas.equals(new BigInteger("0")) && !contadorParametrosInformes.equals(new BigInteger("0"))) {
                 System.out.println("Borrado>0");
 
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -594,7 +633,7 @@ public class ControlDeportes implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoDeporte.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoDeporte.getCodigo());
@@ -615,7 +654,7 @@ public class ControlDeportes implements Serializable {
             }
         }
         if (nuevoDeporte.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -650,7 +689,8 @@ public class ControlDeportes implements Serializable {
 
             listDeportes.add(nuevoDeporte);
             nuevoDeporte = new Deportes();
-
+ infoRegistro = "Cantidad de registros: " + listDeportes.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosDeporte");
             if (guardado == true) {
                 guardado = false;
@@ -714,7 +754,7 @@ public class ControlDeportes implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarDeporte.getNombre());
 
         if (duplicarDeporte.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listDeportes.size(); x++) {
@@ -732,7 +772,7 @@ public class ControlDeportes implements Serializable {
             }
         }
         if (duplicarDeporte.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -768,7 +808,8 @@ public class ControlDeportes implements Serializable {
                 filtrarDeportes = null;
                 tipoLista = 0;
             }
-            duplicarDeporte = new Deportes();
+            duplicarDeporte = new Deportes(); infoRegistro = "Cantidad de registros: " + listDeportes.size();
+            context.update("form:informacionRegistro");
             RequestContext.getCurrentInstance().execute("duplicarRegistroDeporte.hide()");
 
         } else {
@@ -840,6 +881,13 @@ public class ControlDeportes implements Serializable {
         if (listDeportes == null) {
             listDeportes = administrarDeportes.consultarDeportes();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listDeportes == null || listDeportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listDeportes.size();
+        }
+        context.update("form:informacionRegistro");
         return listDeportes;
     }
 
@@ -925,6 +973,14 @@ public class ControlDeportes implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

@@ -334,6 +334,39 @@ public class ControlFestivos implements Serializable {
         context.update("form:datosHvEntrevista");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
+            bandera = 0;
+            filtrarFestivosPorPais = null;
+            tipoLista = 0;
+        }
+
+        borrarFestivosPorPais.clear();
+        crearFestivosPorPais.clear();
+        modificarFestivosPorPais.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listFestivosPorPais = null;
+        guardado = true;
+        permitirIndex = true;
+        getListFestivosPorPais();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listFestivosPorPais != null && !listFestivosPorPais.isEmpty()) {
+            festivoSeleccionado = listFestivosPorPais.get(0);
+            infoRegistro = "Cantidad de registros: " + listFestivosPorPais.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosHvEntrevista");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();

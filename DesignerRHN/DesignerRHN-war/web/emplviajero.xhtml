@@ -43,9 +43,7 @@
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Fecha"/>
-                                    </f:facet>
+
                                 </p:column>
 
                                 <p:column headerText="Tipo Viajero" sortBy="#{info.tipoViajero.nombre}" filterBy="#{info.tipoViajero.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
@@ -61,7 +59,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" value="Tipo Viajero"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooNormaLaboral"/>
                                     </f:facet>
                                 </p:column>
 
@@ -150,7 +148,7 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarS" style="position: relative; left: 275px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlVigenciasViajeros.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
+                            <p:commandButton id="aceptarS" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlVigenciasViajeros.aceptar}"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlVigenciasViajeros.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasS" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlVigenciasViajeros.cancelarCambioNormaLaboral()}" onclick="sucursalesDialogo.hide();

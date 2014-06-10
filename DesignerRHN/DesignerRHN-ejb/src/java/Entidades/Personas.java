@@ -255,8 +255,8 @@ public class Personas implements Serializable {
         if (nombre == null) {
             return "";
         } else {
-            return nombre;
-        }
+        return nombre;
+    }
     }
 
     public void setNombre(String nombre) {
@@ -288,9 +288,6 @@ public class Personas implements Serializable {
     }
 
     public String getSexo() {
-        if (sexo == null) {
-            sexo = "";
-        }
         return sexo;
     }
 

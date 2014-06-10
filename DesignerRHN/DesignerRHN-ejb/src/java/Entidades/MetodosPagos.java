@@ -76,14 +76,15 @@ public class MetodosPagos implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     public String getPago() {

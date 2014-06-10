@@ -42,9 +42,7 @@
                                             </lnk:calendar>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Fecha"/>
-                                    </f:facet>
+
                                 </p:column>
 
                                 <p:column headerText="Nombre Norma Laboral" sortBy="#{info.normalaboral.nombre}" filterBy="#{info.normalaboral.nombre}" filterMatchMode="contains" id="parentesco" width="700" filterStyle="display: none; visibility: hidden;" >                                  
@@ -60,7 +58,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 728px; margin: -14px; height: 26px; border: none; color: blue" id="fooNormaLaboral" action="normaLaboral" value="Nombre Norma Laboral"/>
+                                        <p:commandButton style="width: 728px;  margin: -14px; height: 20px; border: none; color: blue;" id="fooNormaLaboral" action="normaLaboral" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -112,10 +110,15 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlBetaEmplVigenciaNormaLaboral.salir()}" action="normalaboralNominaF" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlBetaEmplVigenciaNormaLaboral.infoRegistro}" style="position: absolute; left: 15px; top: 470px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlBetaEmplVigenciaNormaLaboral.guardado}"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.revisarDialogoGuardar()}"     process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" action="normalaboralNominaF" value="Atras"    />
 
@@ -144,7 +147,9 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarS" style="position: relative; left: 278px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
+                            <h:outputText id="infoRecursoNormasLaborales" value="#{controlBetaEmplVigenciaNormaLaboral.infoRecursoNormasLaborales}" style="position: absolute; left: 15px; top: 355px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarS" style="position: relative; left: 278px" disabled="#{controlBetaEmplVigenciaNormaLaboral.aceptar}" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasS" style="position: relative; left: 278px" value="Atras"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.cancelarCambioNormaLaboral()}" onclick="sucursalesDialogo.hide();
@@ -274,10 +279,10 @@
                                 <p:ajax event="change" listener="#{controlBetaEmplVigenciaNormaLaboral.autocompletarNuevo('NORMASLABORALES',controlBetaEmplVigenciaNormaLaboral.nuevoEmplVigenciaNormaLaboral.normalaboral.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(0)}" />
                             </p:inputText>
-                            
+
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(0)}"/>   
                             <p:watermark for="nuevoNombreSucursal" value="Norma Laboral" />
-                            
+
                             <p:commandButton id="limpiar" value="Limpiar" style="position: absolute; left: 20px; top: 115px;"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarNuevoEmplVigenciaNormaLaboral()}" update="nuevaaEvalEmpresa" process="@this" icon="ui-icon-trash"/>
                             <p:commandButton id="agregarTE" value="Agregar" style="position: absolute; left: 130px; top: 115px;" actionListener="#{controlBetaEmplVigenciaNormaLaboral.agregarNuevoEmplVigenciaNormaLaboral()}" process="@this" icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarTE" value="Cancelar" style="position: absolute; left: 220px; top: 115px;"  update="nuevaaEvalEmpresa" onclick="nuevoRegistroEvalEmpresas.hide();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarNuevoEmplVigenciaNormaLaboral()}"  process="@this" icon="ui-icon-circle-close"/>
@@ -307,7 +312,7 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 80px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.asignarVariableNormasLaborales(1)}"/>   
                             <p:watermark for="duplicarTipoCentroCostos" value="Norma Laboral" />
-                            
+
                             <p:commandButton id="limpiarD" value="Limpiar" style="position: absolute; left: 20px; top: 115px;"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarDuplicarEmplVigenciaNormaLaboral()}" update="duplicarEvC" process="@this" icon="ui-icon-trash"/>
                             <p:commandButton id="duplicarVFP" value="Agregar" style="position: absolute; left: 130px; top: 115px;" actionListener="#{controlBetaEmplVigenciaNormaLaboral.confirmarDuplicar()}" process="@this" icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="position: absolute; left: 220px; top: 115px;"  update="duplicarEvC" onclick="duplicarRegistroEvalCompetencias.hide();"  actionListener="#{controlBetaEmplVigenciaNormaLaboral.limpiarDuplicarEmplVigenciaNormaLaboral()}"  process="@this" icon="ui-icon-circle-close"/>

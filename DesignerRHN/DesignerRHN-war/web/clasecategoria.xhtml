@@ -25,18 +25,18 @@
                                          >
                                 <p:ajax event="filter" listener="#{controlClasesCategorias.eventoFiltrar()}"/>
 
-                                <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="30" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlClasesCategorias.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlClasesCategorias.modificarClasesCategorias(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
-                                        </f:facet>  
+                                        </f:facet>    
                                     </p:cellEditor>
                                 </p:column>
-                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="155" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="510" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
@@ -94,17 +94,25 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesCategorias.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesCategorias.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesCategorias.salir()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlClasesCategorias.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlClasesCategorias.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlClasesCategorias.revisarDialogoGuardar()}" disabled="#{controlClasesCategorias.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlClasesCategorias.guardarMonedas()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlClasesCategorias.guardarClasesCategorias()}"  style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                             <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlClasesCategorias.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
@@ -209,12 +217,12 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlClasesCategorias.nuevoClasesCategorias.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlClasesCategorias.nuevoClasesCategorias.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
-                            <strong><h:outputText value="*Descripcion "  style=" position: absolute; top: 90px;" /></strong>
+                            <strong><h:outputText value="*Descripcion: "  style=" position: absolute; top: 90px;" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlClasesCategorias.nuevoClasesCategorias.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
@@ -231,14 +239,14 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Clase Categoria" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
-                            <strong><h:outputText value="*código :"  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlClasesCategorias.duplicarClasesCategorias.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*código:"  style="left: 15px; position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlClasesCategorias.duplicarClasesCategorias.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="*Descripcion :"  style="left: 15px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlClasesCategorias.duplicarClasesCategorias.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*Descripcion:"  style="left: 15px; position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlClasesCategorias.duplicarClasesCategorias.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />

@@ -143,6 +143,7 @@ public class ControlEvalActividades implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -167,7 +168,49 @@ public class ControlEvalActividades implements Serializable {
         listEvalActividades = null;
         guardado = true;
         permitirIndex = true;
+        getListEvalActividades();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalActividades == null || listEvalActividades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalActividades.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEvalActividades");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalActividades:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEvalActividades");
+            bandera = 0;
+            filtrarEvalActividades = null;
+            tipoLista = 0;
+        }
+
+        borrarEvalActividades.clear();
+        crearEvalActividades.clear();
+        modificarEvalActividades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEvalActividades = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEvalActividades();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalActividades == null || listEvalActividades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalActividades.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEvalActividades");
         context.update("form:ACEPTAR");
     }
@@ -242,7 +285,7 @@ public class ControlEvalActividades implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listEvalActividades.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listEvalActividades.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listEvalActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listEvalActividades.get(indice).setDescripcion(backupDescripcion);
@@ -301,7 +344,7 @@ public class ControlEvalActividades implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listEvalActividades.get(indice).setDescripcion(backupDescripcion);
-                    } else if (listEvalActividades.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listEvalActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listEvalActividades.get(indice).setDescripcion(backupDescripcion);
@@ -363,7 +406,7 @@ public class ControlEvalActividades implements Serializable {
                         banderita1 = false;
                         filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarEvalActividades.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarEvalActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
@@ -421,7 +464,7 @@ public class ControlEvalActividades implements Serializable {
                         banderita1 = false;
                         filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
                     }
-                    if (filtrarEvalActividades.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarEvalActividades.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarEvalActividades.get(indice).setDescripcion(backupDescripcion);
@@ -483,6 +526,8 @@ public class ControlEvalActividades implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEvalActividades");
+            infoRegistro = "Cantidad de registros: " + listEvalActividades.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -612,7 +657,7 @@ public class ControlEvalActividades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEvalActividades.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEvalActividades.getCodigo());
@@ -632,8 +677,8 @@ public class ControlEvalActividades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoEvalActividades.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoEvalActividades.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -669,6 +714,8 @@ public class ControlEvalActividades implements Serializable {
             listEvalActividades.add(nuevoEvalActividades);
             nuevoEvalActividades = new EvalActividades();
             context.update("form:datosEvalActividades");
+            infoRegistro = "Cantidad de registros: " + listEvalActividades.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -732,7 +779,7 @@ public class ControlEvalActividades implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarEvalActividades.getDescripcion());
 
         if (duplicarEvalActividades.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEvalActividades.size(); x++) {
@@ -749,8 +796,8 @@ public class ControlEvalActividades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarEvalActividades.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarEvalActividades.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -773,6 +820,8 @@ public class ControlEvalActividades implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listEvalActividades.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -857,6 +906,13 @@ public class ControlEvalActividades implements Serializable {
         if (listEvalActividades == null) {
             listEvalActividades = administrarEvalActividades.consultarEvalActividades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalActividades == null || listEvalActividades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalActividades.size();
+        }
+        context.update("form:informacionRegistro");
         return listEvalActividades;
     }
 
@@ -942,6 +998,14 @@ public class ControlEvalActividades implements Serializable {
 
     public void setEvalActividadSeleccionada(EvalActividades evalActividadSeleccionada) {
         this.evalActividadSeleccionada = evalActividadSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

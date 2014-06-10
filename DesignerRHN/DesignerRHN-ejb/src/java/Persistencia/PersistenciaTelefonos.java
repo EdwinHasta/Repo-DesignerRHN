@@ -36,7 +36,7 @@ public class PersistenciaTelefonos implements PersistenciaTelefonosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(telefonos);
+            em.persist(telefonos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTelefonos.crear: " + e);

@@ -145,6 +145,7 @@ public class ControlEvalEvaluadores implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -169,7 +170,49 @@ public class ControlEvalEvaluadores implements Serializable {
         listEvalEvaluadores = null;
         guardado = true;
         permitirIndex = true;
+        getListEvalEvaluadores();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalEvaluadores == null || listEvalEvaluadores.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalEvaluadores.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEvalEvaluadores");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
+            bandera = 0;
+            filtrarEvalEvaluadores = null;
+            tipoLista = 0;
+        }
+
+        borrarEvalEvaluadores.clear();
+        crearEvalEvaluadores.clear();
+        modificarEvalEvaluadores.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEvalEvaluadores = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEvalEvaluadores();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalEvaluadores == null || listEvalEvaluadores.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalEvaluadores.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEvalEvaluadores");
         context.update("form:ACEPTAR");
     }
@@ -487,6 +530,9 @@ public class ControlEvalEvaluadores implements Serializable {
                 guardado = false;
             }
             context.update("form:datosEvalEvaluadores");
+            infoRegistro = "Cantidad de registros: " + listEvalEvaluadores.size();
+            context.update("form:informacionRegistro");
+
             context.update("form:ACEPTAR");
             index = -1;
             secRegistro = null;
@@ -592,7 +638,7 @@ public class ControlEvalEvaluadores implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEvalEvaluador.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEvalEvaluador.getCodigo());
@@ -613,7 +659,7 @@ public class ControlEvalEvaluadores implements Serializable {
             }
         }
         if (nuevoEvalEvaluador.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -651,6 +697,9 @@ public class ControlEvalEvaluadores implements Serializable {
             nuevoEvalEvaluador = new EvalEvaluadores();
 
             context.update("form:datosEvalEvaluadores");
+            infoRegistro = "Cantidad de registros: " + listEvalEvaluadores.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -716,7 +765,7 @@ public class ControlEvalEvaluadores implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarEvalEvaluador.getDescripcion());
 
         if (duplicarEvalEvaluador.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEvalEvaluadores.size(); x++) {
@@ -734,7 +783,7 @@ public class ControlEvalEvaluadores implements Serializable {
             }
         }
         if (duplicarEvalEvaluador.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -757,6 +806,9 @@ public class ControlEvalEvaluadores implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+            infoRegistro = "Cantidad de registros: " + listEvalEvaluadores.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -841,6 +893,13 @@ public class ControlEvalEvaluadores implements Serializable {
         if (listEvalEvaluadores == null) {
             listEvalEvaluadores = administrarEvalEvaluadores.consultarEvalEvaluadores();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalEvaluadores == null || listEvalEvaluadores.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalEvaluadores.size();
+        }
+        context.update("form:informacionRegistro");
         return listEvalEvaluadores;
     }
 
@@ -926,6 +985,14 @@ public class ControlEvalEvaluadores implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

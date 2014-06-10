@@ -35,7 +35,7 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(corteProceso);
+            em.persist(corteProceso);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaCortesProcesos.crear: " + e);

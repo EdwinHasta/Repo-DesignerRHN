@@ -153,8 +153,44 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesAmbientalesP:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSoCondicionesAmbientalesP");
+            bandera = 0;
+            filtrarSoCondicionesAmbientalesP = null;
+            tipoLista = 0;
+        }
+
+        borrarSoCondicionesAmbientalesP.clear();
+        crearSoCondicionesAmbientalesP.clear();
+        modificarSoCondicionesAmbientalesP.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listSoCondicionesAmbientalesP = null;
+        guardado = true;
+        permitirIndex = true;
+        getListSoCondicionesAmbientalesP();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoCondicionesAmbientalesP == null || listSoCondicionesAmbientalesP.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesAmbientalesP.size();
+        }
+        context.update("form:informacionRegistro");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        context.update("form:datosSoCondicionesAmbientalesP");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
@@ -499,6 +535,8 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
                 filtrarSoCondicionesAmbientalesP.remove(index);
 
             }
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesAmbientalesP.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosSoCondicionesAmbientalesP");
             index = -1;
             secRegistro = null;
@@ -677,6 +715,8 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             listSoCondicionesAmbientalesP.add(nuevaSoCondicionAmbientalP);
             nuevaSoCondicionAmbientalP = new SoCondicionesAmbientalesP();
             context.update("form:datosSoCondicionesAmbientalesP");
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesAmbientalesP.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -776,6 +816,8 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             listSoCondicionesAmbientalesP.add(duplicarSoCondicionAmbientalP);
             crearSoCondicionesAmbientalesP.add(duplicarSoCondicionAmbientalP);
             context.update("form:datosSoCondicionesAmbientalesP");
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesAmbientalesP.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -866,6 +908,13 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         if (listSoCondicionesAmbientalesP == null) {
             listSoCondicionesAmbientalesP = administrarSoCondicionesAmbientalesP.consultarSoCondicionesAmbientalesP();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoCondicionesAmbientalesP == null || listSoCondicionesAmbientalesP.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesAmbientalesP.size();
+        }
+        context.update("form:informacionRegistro");
         return listSoCondicionesAmbientalesP;
     }
 
@@ -951,6 +1000,14 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

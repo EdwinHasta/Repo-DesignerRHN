@@ -91,6 +91,7 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         filtradoNormasLaborales = null;
         guardado = true;
         altoTabla = "270";
+        aceptar = true;
     }
 
     @PostConstruct
@@ -290,6 +291,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         }
     }
 
+    private String infoRegistro;
+
     public void cancelarModificacion() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
@@ -314,7 +317,50 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         listEmplVigenciaNormaLaboralPorEmpleado = null;
         guardado = true;
         permitirIndex = true;
+        getListEmplVigenciaNormaLaboralPorEmpleado();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEmplVigenciaNormaLaboralPorEmpleado == null || listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosHvEntrevista");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha.setFilterStyle("display: none; visibility: hidden;");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
+            RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
+            bandera = 0;
+            filtrarEmplVigenciaNormaLaboralPorEmplado = null;
+            tipoLista = 0;
+        }
+
+        borrarEmplVigenciaNormaLaboralPorEmplado.clear();
+        crearEmplVigenciaNormaLaboralPorEmplado.clear();
+        modificarEmplVigenciaNormaLaboralPorEmplado.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEmplVigenciaNormaLaboralPorEmpleado = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEmplVigenciaNormaLaboralPorEmpleado();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEmplVigenciaNormaLaboralPorEmpleado == null || listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosHvEntrevista");
         context.update("form:ACEPTAR");
     }
@@ -755,6 +801,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                 guardado = false;
             }
             context.update("form:datosHvEntrevista");
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             index = -1;
             secRegistro = null;
@@ -939,6 +987,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             nuevoEmplVigenciaNormaLaboral = new VigenciasNormasEmpleados();
             nuevoEmplVigenciaNormaLaboral.setNormalaboral(new NormasLaborales());
             context.update("form:datosHvEntrevista");
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1056,6 +1106,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1145,6 +1197,13 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         if (listEmplVigenciaNormaLaboralPorEmpleado == null) {
             listEmplVigenciaNormaLaboralPorEmpleado = administrarVigenciaNormaLaboral.consultarVigenciasNormasEmpleadosPorEmpleado(secuenciaEmpleado);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEmplVigenciaNormaLaboralPorEmpleado == null || listEmplVigenciaNormaLaboralPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEmplVigenciaNormaLaboralPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
         return listEmplVigenciaNormaLaboralPorEmpleado;
     }
 
@@ -1219,10 +1278,19 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         this.empleadoSeleccionado = empleadoSeleccionado;
     }
 
+    private String infoRecursoNormasLaborales;
+
     public List<NormasLaborales> getListaNormasLaborales() {
         if (listaNormasLaborales == null) {
             listaNormasLaborales = administrarVigenciaNormaLaboral.lovNormasLaborales();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaNormasLaborales == null || listaNormasLaborales.isEmpty()) {
+            infoRecursoNormasLaborales = "Cantidad de registros: 0 ";
+        } else {
+            infoRecursoNormasLaborales = "Cantidad de registros: " + listaNormasLaborales.size();
+        }
+        context.update("form:infoRecursoNormasLaborales");
         return listaNormasLaborales;
     }
 
@@ -1265,4 +1333,29 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
     public String getAltoTabla() {
         return altoTabla;
     }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    public String getInfoRecursoNormasLaborales() {
+        return infoRecursoNormasLaborales;
+    }
+
+    public void setInfoRecursoNormasLaborales(String infoRecursoNormasLaborales) {
+        this.infoRecursoNormasLaborales = infoRecursoNormasLaborales;
+    }
+
 }

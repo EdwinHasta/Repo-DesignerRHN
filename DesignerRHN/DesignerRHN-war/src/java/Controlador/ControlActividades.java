@@ -77,7 +77,7 @@ public class ControlActividades implements Serializable {
         duplicarActividades = new Actividades();
         guardado = true;
         tamano = 270;
-        guardado=true;
+        guardado = true;
     }
 
     @PostConstruct
@@ -173,6 +173,7 @@ public class ControlActividades implements Serializable {
         listActividades = null;
         guardado = true;
         permitirIndex = true;
+        getListActividades();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listActividades == null || listActividades.isEmpty()) {
             infoRegistro = "Cantidad de registros: 0 ";
@@ -180,6 +181,37 @@ public class ControlActividades implements Serializable {
             infoRegistro = "Cantidad de registros: " + listActividades.size();
         }
         context.update("form:informacionRegistro");
+        context.update("form:datosActividades");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosActividades:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosActividades:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            dimensiones = (Column) c.getViewRoot().findComponent("form:datosActividades:dimensiones");
+            dimensiones.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosActividades");
+            bandera = 0;
+            filtrarActividades = null;
+            tipoLista = 0;
+        }
+
+        borrarActividades.clear();
+        crearActividades.clear();
+        modificarActividades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listActividades = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosActividades");
         context.update("form:ACEPTAR");
     }
@@ -812,7 +844,7 @@ public class ControlActividades implements Serializable {
                 duplicados = 0;
             }
         }
-         if (duplicarActividades.getDescripcion() == null) {
+        if (duplicarActividades.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 

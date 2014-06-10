@@ -145,6 +145,7 @@ public class ControlEvalCompetencias implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -171,7 +172,51 @@ public class ControlEvalCompetencias implements Serializable {
         listEvalCompetencias = null;
         guardado = true;
         permitirIndex = true;
+        getListEvalCompetencias();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalCompetencias == null || listEvalCompetencias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalCompetencias.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEvalCompetencia");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            descripcionCompetencia = (Column) c.getViewRoot().findComponent("form:datosEvalCompetencia:descripcionCompetencia");
+            descripcionCompetencia.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEvalCompetencia");
+            bandera = 0;
+            filtrarEvalCompetencias = null;
+            tipoLista = 0;
+        }
+
+        borrarEvalCompetencias.clear();
+        crearEvalCompetencias.clear();
+        modificarEvalCompetencias.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEvalCompetencias = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEvalCompetencias();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalCompetencias == null || listEvalCompetencias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalCompetencias.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEvalCompetencia");
         context.update("form:ACEPTAR");
     }
@@ -491,6 +536,8 @@ public class ControlEvalCompetencias implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEvalCompetencia");
+            infoRegistro = "Cantidad de registros: " + listEvalCompetencias.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -674,6 +721,8 @@ public class ControlEvalCompetencias implements Serializable {
             listEvalCompetencias.add(nuevoEvalCompetencia);
             nuevoEvalCompetencia = new EvalCompetencias();
             context.update("form:datosEvalCompetencia");
+            infoRegistro = "Cantidad de registros: " + listEvalCompetencias.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -778,6 +827,8 @@ public class ControlEvalCompetencias implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listEvalCompetencias.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -864,6 +915,13 @@ public class ControlEvalCompetencias implements Serializable {
         if (listEvalCompetencias == null) {
             listEvalCompetencias = administrarEvalCompetencias.consultarEvalCompetencias();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalCompetencias == null || listEvalCompetencias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalCompetencias.size();
+        }
+        context.update("form:informacionRegistro");
         return listEvalCompetencias;
     }
 
@@ -949,6 +1007,14 @@ public class ControlEvalCompetencias implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

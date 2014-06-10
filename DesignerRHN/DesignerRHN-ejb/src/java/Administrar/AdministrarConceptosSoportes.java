@@ -40,7 +40,7 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
     PersistenciaOperandosInterface persistenciaOperandos;
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
-    	/**
+    /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
      * está usando el aplicativo.
@@ -49,6 +49,7 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
     AdministrarSesionesInterface administrarSesiones;
 
     private EntityManager em;
+
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------
@@ -56,24 +57,24 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     public void modificarConceptosSoportes(List<ConceptosSoportes> listaConceptosSoportes) {
         for (int i = 0; i < listaConceptosSoportes.size(); i++) {
             System.out.println("Administrar Modificando...");
-            persistenciaConceptosSoportes.editar(em,listaConceptosSoportes.get(i));
+            persistenciaConceptosSoportes.editar(em, listaConceptosSoportes.get(i));
         }
     }
 
     public void borrarConceptosSoportes(List<ConceptosSoportes> listaConceptosSoportes) {
         for (int i = 0; i < listaConceptosSoportes.size(); i++) {
             System.out.println("Administrar Borrando...");
-            persistenciaConceptosSoportes.borrar(em,listaConceptosSoportes.get(i));
+            persistenciaConceptosSoportes.borrar(em, listaConceptosSoportes.get(i));
         }
     }
 
     public void crearConceptosSoportes(List<ConceptosSoportes> listaConceptosSoportes) {
         for (int i = 0; i < listaConceptosSoportes.size(); i++) {
-            persistenciaConceptosSoportes.crear(em,listaConceptosSoportes.get(i));
+            persistenciaConceptosSoportes.crear(em, listaConceptosSoportes.get(i));
         }
     }
 
@@ -93,7 +94,7 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
     @Override
     public List<Operandos> consultarLOVOperandosPorConcepto(BigInteger secConceptoSoporte) {
         List<Operandos> listLOVOperandos;
-        listLOVOperandos = persistenciaOperandos.operandoPorConceptoSoporte(em,secConceptoSoporte);
+        listLOVOperandos = persistenciaOperandos.operandoPorConceptoSoporte(em, secConceptoSoporte);
         return listLOVOperandos;
     }
 
@@ -104,7 +105,7 @@ public class AdministrarConceptosSoportes implements AdministrarConceptosSoporte
     }
 
     public BigInteger contarConceptosOperandos(BigInteger concepto, BigInteger operando) {
-        BigInteger contarConceptosOperandos = persistenciaConceptosSoportes.consultarConceptoSoporteConceptoOperador(em,concepto, operando);
+        BigInteger contarConceptosOperandos = persistenciaConceptosSoportes.consultarConceptoSoporteConceptoOperador(em, concepto, operando);
         return contarConceptosOperandos;
     }
 }

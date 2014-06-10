@@ -147,9 +147,9 @@ public class AdministrarVigenciasTiposTrabajadores implements AdministrarVigenci
         }
     }
 
-    public TiposTrabajadores tipoTrabajadorCodigo(BigDecimal codTipoTrabajador) {
+    public TiposTrabajadores tipoTrabajadorCodigo(short codTipoTrabajador) {
         try {
-            tipoTrabajadorCodigo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigo(em, codTipoTrabajador);
+            tipoTrabajadorCodigo = persistenciaTiposTrabajadores.buscarTipoTrabajadorCodigoTiposhort(em, codTipoTrabajador);
             return tipoTrabajadorCodigo;
         } catch (Exception e) {
             System.out.println("Error tipoTrabajadorCodigo Admi : " + e.toString());

@@ -40,9 +40,7 @@ public class ControlConceptosSoportes implements Serializable {
     AdministrarConceptosSoportesInterface administrarConceptosSoportes;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
-    
+
     private List<ConceptosSoportes> listConceptosSoportes;
     private List<ConceptosSoportes> filtrarConceptosSoportes;
     private List<ConceptosSoportes> crearConceptosSoportes;
@@ -109,9 +107,11 @@ public class ControlConceptosSoportes implements Serializable {
         filtradoOperandos = null;
         guardado = true;
         tamano = 270;
-
+        mostrarTodos = true;
+        buscarConceptoSoporte = false;
+        aceptar = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -119,7 +119,7 @@ public class ControlConceptosSoportes implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarConceptosSoportes.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -146,13 +146,15 @@ public class ControlConceptosSoportes implements Serializable {
                 if (cualCelda == 0) {
                     //conceptocodigo
                     backupCodigo = listConceptosSoportes.get(index).getConcepto().getCodigo();
+                    backupConcepto = listConceptosSoportes.get(index).getConcepto().getDescripcion();
                 }
-                if (cualCelda == 2) {
+                if (cualCelda == 1) {
+                    backupCodigo = listConceptosSoportes.get(index).getConcepto().getCodigo();
                     backupConcepto = listConceptosSoportes.get(index).getConcepto().getDescripcion();
                     System.out.println("CONCEPTO : " + backupConcepto);
 
                 }
-                if (cualCelda == 3) {
+                if (cualCelda == 2) {
                     backupOperando = listConceptosSoportes.get(index).getOperando().getNombre();
                     System.out.println("OPERANDO : " + backupOperando);
 
@@ -161,13 +163,15 @@ public class ControlConceptosSoportes implements Serializable {
             } else if (tipoLista == 1) {
                 if (cualCelda == 0) {
                     backupCodigo = filtrarConceptosSoportes.get(index).getConcepto().getCodigo();
+                    backupConcepto = filtrarConceptosSoportes.get(index).getConcepto().getDescripcion();
                 }
-                if (cualCelda == 2) {
+                if (cualCelda == 1) {
+                    backupCodigo = filtrarConceptosSoportes.get(index).getConcepto().getCodigo();
                     backupConcepto = filtrarConceptosSoportes.get(index).getConcepto().getDescripcion();
                     System.out.println("CONCEPTO : " + backupConcepto);
 
                 }
-                if (cualCelda == 3) {
+                if (cualCelda == 2) {
                     backupOperando = filtrarConceptosSoportes.get(index).getOperando().getNombre();
                     System.out.println("OPERANDO : " + backupOperando);
 
@@ -242,8 +246,50 @@ public class ControlConceptosSoportes implements Serializable {
             }
         }
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConceptosSoportes:cargo");
+            cargo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosConceptosSoportes");
+            bandera = 0;
+            filtrarConceptosSoportes = null;
+            tipoLista = 0;
+        }
+
+        borrarConceptosSoportes.clear();
+        crearConceptosSoportes.clear();
+        modificarConceptosSoportes.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listConceptosSoportes = null;
+        guardado = true;
+        permitirIndex = true;
+        getListConceptosSoportes();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listConceptosSoportes == null || listConceptosSoportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listConceptosSoportes.size();
+        }
+        context.update("form:informacionRegistro");
+        mostrarTodos = true;
+        buscarConceptoSoporte = false;
+        context.update("form:MOSTRARTODOS");
+        context.update("form:BUSCARCENTROCOSTO");
+        context.update("form:datosConceptosSoportes");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
@@ -374,7 +420,9 @@ public class ControlConceptosSoportes implements Serializable {
             System.out.println("ACTUALIZAR CONCEPTO NUEVO DEPARTAMENTO: " + conceptoSeleccionado.getDescripcion());
             nuevoConceptosSoportes.setConcepto(conceptoSeleccionado);
             secConceptoSeleccionado = nuevoConceptosSoportes.getConcepto().getSecuencia();
+            System.out.println("secuencia concepto seleccionado : " + secConceptoSeleccionado);
             listaOperandos = null;
+            getListaOperandos();
             banderaConceptoEscogido = false;
             context.update("formularioDialogos:nuevoCargo");
             context.update("formularioDialogos:btnnuevoCargo");
@@ -386,6 +434,8 @@ public class ControlConceptosSoportes implements Serializable {
             duplicarConceptosSoportes.setConcepto(conceptoSeleccionado);
             secConceptoSeleccionado = nuevoConceptosSoportes.getConcepto().getSecuencia();
             listaOperandos = null;
+            getListaOperandos();
+
             banderaConceptoEscogido = false;
             RequestContext.getCurrentInstance().update("formularioDialogos:duplicarCargo");
             RequestContext.getCurrentInstance().update("formularioDialogos:btnduplicarCargo");
@@ -465,8 +515,10 @@ public class ControlConceptosSoportes implements Serializable {
     }
 
     public void cancelarCambioConceptos() {
-        listConceptosSoportes.get(index).getConcepto().setDescripcion(backupConcepto);
-        listConceptosSoportes.get(index).getConcepto().setCodigo(backupCodigo);
+        if (index >= 0) {
+            listConceptosSoportes.get(index).getConcepto().setDescripcion(backupConcepto);
+            listConceptosSoportes.get(index).getConcepto().setCodigo(backupCodigo);
+        }
         filtradoConceptos = null;
         conceptoSeleccionado = null;
         aceptar = true;
@@ -503,8 +555,10 @@ public class ControlConceptosSoportes implements Serializable {
             if (!listConceptosSoportes.get(indice).getConcepto().getDescripcion().equals("")) {
                 if (tipoLista == 0) {
                     listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    listConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                 } else {
-                    listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    filtrarConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    filtrarConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                 }
 
                 for (int i = 0; i < listaConceptos.size(); i++) {
@@ -533,9 +587,11 @@ public class ControlConceptosSoportes implements Serializable {
             } else {
                 if (backupConcepto != null) {
                     if (tipoLista == 0) {
-                        listConceptosSoportes.get(index).getConcepto().setCodigo(backupCodigo);
+                        listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                        listConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                     } else {
-                        filtrarConceptosSoportes.get(index).getConcepto().setCodigo(backupCodigo);
+                        filtrarConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                        filtrarConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                     }
                 }
                 tipoActualizacion = 0;
@@ -584,9 +640,11 @@ public class ControlConceptosSoportes implements Serializable {
             System.out.println("MODIFICANDO NORMA LABORAL : " + listConceptosSoportes.get(indice).getConcepto().getDescripcion());
             if (!listConceptosSoportes.get(indice).getConcepto().getDescripcion().equals("")) {
                 if (tipoLista == 0) {
+                    listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
                     listConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                 } else {
-                    listConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
+                    filtrarConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    filtrarConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                 }
 
                 for (int i = 0; i < listaConceptos.size(); i++) {
@@ -615,13 +673,15 @@ public class ControlConceptosSoportes implements Serializable {
             } else {
                 if (backupConcepto != null) {
                     if (tipoLista == 0) {
-                        listConceptosSoportes.get(index).getConcepto().setDescripcion(backupConcepto);
+                        listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                        listConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                     } else {
-                        filtrarConceptosSoportes.get(index).getConcepto().setDescripcion(backupConcepto);
+                        filtrarConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                        filtrarConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                     }
                 }
                 tipoActualizacion = 0;
-                System.out.println("PAIS ANTES DE MOSTRAR DIALOGO PERSONA : " + backupConcepto);
+                System.out.println("BACKUPCONCEPTO CUANDO ES NULO : " + backupConcepto);
                 context.update("form:personasDialogo");
                 context.execute("personasDialogo.show()");
             }
@@ -763,8 +823,10 @@ public class ControlConceptosSoportes implements Serializable {
             if (!listConceptosSoportes.get(indice).getConcepto().getDescripcion().equals("")) {
                 if (tipoLista == 0) {
                     listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    listConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                 } else {
-                    listConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    filtrarConceptosSoportes.get(indice).getConcepto().setCodigo(backupCodigo);
+                    filtrarConceptosSoportes.get(indice).getConcepto().setDescripcion(backupConcepto);
                 }
 
                 for (int i = 0; i < listaConceptos.size(); i++) {
@@ -791,11 +853,13 @@ public class ControlConceptosSoportes implements Serializable {
                     tipoActualizacion = 0;
                 }
             } else {
-                if (backupConcepto != null) {
+                if (backupCodigo != null) {
                     if (tipoLista == 0) {
                         listConceptosSoportes.get(index).getConcepto().setCodigo(backupCodigo);
+                        listConceptosSoportes.get(index).getConcepto().setDescripcion(backupConcepto);
                     } else {
                         filtrarConceptosSoportes.get(index).getConcepto().setCodigo(backupCodigo);
+                        filtrarConceptosSoportes.get(index).getConcepto().setDescripcion(backupConcepto);
                     }
                 }
                 tipoActualizacion = 0;
@@ -879,6 +943,9 @@ public class ControlConceptosSoportes implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosConceptosSoportes");
+            infoRegistro = "Cantidad de registros: " + listConceptosSoportes.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -1409,7 +1476,11 @@ public class ControlConceptosSoportes implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevoConceptosSoportes.getConcepto().getDescripcion().equals(" ")) {
+        if (nuevoConceptosSoportes.getConcepto().getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener un Concepto \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoConceptosSoportes.getConcepto().getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener un Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1419,7 +1490,11 @@ public class ControlConceptosSoportes implements Serializable {
 
         }
 
-        if (nuevoConceptosSoportes.getOperando().getNombre().equals(" ")) {
+        if (nuevoConceptosSoportes.getOperando().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Operando \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoConceptosSoportes.getOperando().getNombre().isEmpty()) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener una Operando \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1431,7 +1506,8 @@ public class ControlConceptosSoportes implements Serializable {
 
         System.out.println("contador " + contador);
 
-        BigInteger contarConceptosOperandos = administrarConceptosSoportes.contarConceptosOperandos(duplicarConceptosSoportes.getConcepto().getSecuencia(), duplicarConceptosSoportes.getOperando().getSecuencia());
+        BigInteger contarConceptosOperandos = administrarConceptosSoportes.contarConceptosOperandos(nuevoConceptosSoportes.getConcepto().getSecuencia(), nuevoConceptosSoportes.getOperando().getSecuencia());
+        System.out.println("CONTROLCONCEPTOSSOPORTES AGREGARNUEVOCONCEPTOSOPORTE contarConceptosPerandos : " + contarConceptosOperandos);
         if (contador == 2 && contarConceptosOperandos.equals(new BigInteger("0"))) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -1460,6 +1536,9 @@ public class ControlConceptosSoportes implements Serializable {
             nuevoConceptosSoportes.setOperando(new Operandos());
             nuevoConceptosSoportes.setConcepto(new Conceptos());
             context.update("form:datosConceptosSoportes");
+            infoRegistro = "Cantidad de registros: " + listConceptosSoportes.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1546,22 +1625,34 @@ public class ControlConceptosSoportes implements Serializable {
         Integer a = 0;
         a = null;
 
-        if (duplicarConceptosSoportes.getConcepto().getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Concepto \n";
+        if (duplicarConceptosSoportes.getConcepto().getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener un Concepto \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarConceptosSoportes.getConcepto().getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener un Concepto \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
-            contador++;
+            System.out.println("bandera");
+            contador++;//3
+
         }
-        if (duplicarConceptosSoportes.getOperando().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Operando \n";
+
+        if (duplicarConceptosSoportes.getOperando().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Operando \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarConceptosSoportes.getOperando().getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Debe Tener una Operando \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
-            contador++;
+            System.out.println("bandera");
+            contador++;//4
+
         }
+
         BigInteger contarConceptosOperandos = administrarConceptosSoportes.contarConceptosOperandos(duplicarConceptosSoportes.getConcepto().getSecuencia(), duplicarConceptosSoportes.getOperando().getSecuencia());
         if (contador == 2 && contarConceptosOperandos.equals(new BigInteger("0"))) {
 
@@ -1582,6 +1673,9 @@ public class ControlConceptosSoportes implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listConceptosSoportes.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1697,6 +1791,9 @@ public class ControlConceptosSoportes implements Serializable {
 
     }
 
+    private boolean mostrarTodos;
+    private boolean buscarConceptoSoporte;
+
     public void seleccionConceptoSoporte() {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1713,6 +1810,16 @@ public class ControlConceptosSoportes implements Serializable {
                 context.update("form:datosConceptosSoportes");
                 context.execute("buscarCentrosCostosDialogo.hide()");
                 context.reset("formularioDialogos:lovCentrosCostos:globalFilter");
+                mostrarTodos = false;
+                buscarConceptoSoporte = true;
+                context.update("form:MOSTRARTODOS");
+                context.update("form:BUSCARCENTROCOSTO");
+                if (listConceptosSoportes == null || listConceptosSoportes.isEmpty()) {
+                    infoRegistro = "Cantidad de registros: 0 ";
+                } else {
+                    infoRegistro = "Cantidad de registros: " + listConceptosSoportes.size();
+                }
+                context.update("form:informacionRegistro");
             } else {
                 context.update("form:confirmarGuardarConceptos");
                 context.execute("confirmarGuardarConceptos.show()");
@@ -1731,17 +1838,25 @@ public class ControlConceptosSoportes implements Serializable {
             aceptar = true;
             index = -1;
             tipoActualizacion = -1;
-            context.update("form:aceptarNCC");
+            context.update("formularioDialogos:aceptarNCC");
 
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETACENTROSCOSTOS.cancelarSeleccionVigencia ERROR====" + e.getMessage());
         }
     }
+    private String infoRecursoConceptoLista;
 
     public List<ConceptosSoportes> getListConceptosSoportesBoton() {
         if (listConceptosSoportesBoton == null) {
             listConceptosSoportesBoton = administrarConceptosSoportes.consultarConceptosSoportes();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listConceptosSoportesBoton == null || listConceptosSoportesBoton.isEmpty()) {
+            infoRecursoConceptoLista = "Cantidad de registros: 0 ";
+        } else {
+            infoRecursoConceptoLista = "Cantidad de registros: " + listConceptosSoportesBoton.size();
+        }
+        context.update("form:infoRecursoConceptoLista");
         return listConceptosSoportesBoton;
     }
 
@@ -1775,9 +1890,18 @@ public class ControlConceptosSoportes implements Serializable {
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<ConceptosSoportes> getListConceptosSoportes() {
+        System.out.println("CONTROLCONCEPTOSSOPORTES getListConceptosSoportes ");
         if (listConceptosSoportes == null) {
             listConceptosSoportes = administrarConceptosSoportes.consultarConceptosSoportes();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listConceptosSoportes == null || listConceptosSoportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listConceptosSoportes.size();
+        }
+        context.update("form:informacionRegistro");
+        System.out.println("CONTROLCONCEPTOSSOPORTES getListConceptosSoportes ANTES RETURN : TAMAÑO " + listConceptosSoportes.size());
         return listConceptosSoportes;
     }
 
@@ -1856,11 +1980,19 @@ public class ControlConceptosSoportes implements Serializable {
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
+    private String infoRegistroConceptos;
 
     public List<Conceptos> getListaConceptos() {
         if (listaConceptos == null) {
             listaConceptos = administrarConceptosSoportes.consultarLOVConceptos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaConceptos == null || listaConceptos.isEmpty()) {
+            infoRegistroConceptos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroConceptos = "Cantidad de registros: " + listaConceptos.size();
+        }
+        context.update("form:infoRegistroConceptos");
         return listaConceptos;
     }
 
@@ -1884,10 +2016,19 @@ public class ControlConceptosSoportes implements Serializable {
         this.conceptoSeleccionado = conceptoSeleccionado;
     }
 
+    private String infoRegistroOperandos;
+
     public List<Operandos> getListaOperandos() {
         if (listaOperandos == null) {
             listaOperandos = administrarConceptosSoportes.consultarLOVOperandosPorConcepto(secConceptoSeleccionado);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaOperandos == null || listaOperandos.isEmpty()) {
+            infoRegistroOperandos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroOperandos = "Cantidad de registros: " + listaOperandos.size();
+        }
+        context.update("form:infoRegistroOperandos");
         return listaOperandos;
     }
 
@@ -1926,4 +2067,53 @@ public class ControlConceptosSoportes implements Serializable {
     public void setConceptoSoporteMostrado(ConceptosSoportes conceptoSoporteMostrado) {
         this.conceptoSoporteMostrado = conceptoSoporteMostrado;
     }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isBuscarConceptoSoporte() {
+        return buscarConceptoSoporte;
+    }
+
+    public void setBuscarConceptoSoporte(boolean buscarConceptoSoporte) {
+        this.buscarConceptoSoporte = buscarConceptoSoporte;
+    }
+
+    public boolean isMostrarTodos() {
+        return mostrarTodos;
+    }
+
+    public void setMostrarTodos(boolean mostrarTodos) {
+        this.mostrarTodos = mostrarTodos;
+    }
+
+    public String getInfoRegistroOperandos() {
+        return infoRegistroOperandos;
+    }
+
+    public void setInfoRegistroOperandos(String infoRegistroOperandos) {
+        this.infoRegistroOperandos = infoRegistroOperandos;
+    }
+
+    public String getInfoRegistroConceptos() {
+        return infoRegistroConceptos;
+    }
+
+    public void setInfoRegistroConceptos(String infoRegistroConceptos) {
+        this.infoRegistroConceptos = infoRegistroConceptos;
+    }
+
+    public String getInfoRecursoConceptoLista() {
+        return infoRecursoConceptoLista;
+    }
+
+    public void setInfoRecursoConceptoLista(String infoRecursoConceptoLista) {
+        this.infoRecursoConceptoLista = infoRecursoConceptoLista;
+    }
+
 }

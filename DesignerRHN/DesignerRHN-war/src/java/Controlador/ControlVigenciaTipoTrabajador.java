@@ -1300,7 +1300,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void cambioVisibleRetiradosMensaje() {
         TiposTrabajadores tipoTrabajadorRetirado;
         if (index >= 0) {
-            tipoTrabajadorRetirado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(BigDecimal.valueOf(1));
+            short n1 = 1;
+            tipoTrabajadorRetirado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(n1);
             VigenciasTiposTrabajadores vigenciaTemporal = vigenciasTiposTrabajadores.get(index);
             panelRetiradosMensaje = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelRetiradosMensaje");
             if (tipoTrabajadorRetirado.getCodigo() == vigenciaTemporal.getTipotrabajador().getCodigo()) {
@@ -1319,7 +1320,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void cambioVisibleRetiradosInput() {
         TiposTrabajadores tipoTrabajadorRetirado;
         if (index >= 0) {
-            tipoTrabajadorRetirado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(BigDecimal.valueOf(1));
+            short n1 = 1;
+            tipoTrabajadorRetirado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(n1);
             VigenciasTiposTrabajadores vigenciaTemporal = vigenciasTiposTrabajadores.get(index);
             panelRetiradosInput = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelRetiradosInput");
             if (tipoTrabajadorRetirado.getCodigo() == vigenciaTemporal.getTipotrabajador().getCodigo()) {
@@ -1344,7 +1346,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void cambioVisiblePensionadoMensaje() {
         TiposTrabajadores tipoTrabajadorPensionado;
         if (index >= 0) {
-            tipoTrabajadorPensionado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(BigDecimal.valueOf(2));
+            short n2 = 2;
+            tipoTrabajadorPensionado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(n2);
             VigenciasTiposTrabajadores vigenciaTemporal = vigenciasTiposTrabajadores.get(index);
             panelPensionadosMensaje = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelPensionadosMensaje");
             if (tipoTrabajadorPensionado.getCodigo() == vigenciaTemporal.getTipotrabajador().getCodigo()) {
@@ -1364,7 +1367,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void cambioVisiblePensionadoInput() {
         TiposTrabajadores tipoTrabajadorPensionado;
         if (index >= 0) {
-            tipoTrabajadorPensionado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(BigDecimal.valueOf(2));
+            short n2 = 2;
+            tipoTrabajadorPensionado = administrarVigenciasTiposTrabajadores.tipoTrabajadorCodigo(n2);
             VigenciasTiposTrabajadores vigenciaTemporal = vigenciasTiposTrabajadores.get(index);
             panelPensionadosInput = (Panel) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:panelPensionadosInput");
             if (tipoTrabajadorPensionado.getCodigo() == vigenciaTemporal.getTipotrabajador().getCodigo()) {

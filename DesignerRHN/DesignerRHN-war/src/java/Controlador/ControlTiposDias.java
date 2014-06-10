@@ -181,12 +181,44 @@ public class ControlTiposDias implements Serializable {
         listTiposDias = null;
         guardado = true;
         permitirIndex = true;
+        getListTiposDias();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listTiposDias == null || listTiposDias.isEmpty()) {
             infoRegistro = "Cantidad de registros: 0 ";
         } else {
             infoRegistro = "Cantidad de registros: " + listTiposDias.size();
         }
+        context.update("form:datosTipoReemplazo");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
+            tipo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:tipo");
+            tipo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
+            bandera = 0;
+            filtrarTiposDias = null;
+            tipoLista = 0;
+        }
+
+        borrarTiposDias.clear();
+        crearTiposDias.clear();
+        modificarTiposDias.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposDias = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosTipoReemplazo");
         context.update("form:ACEPTAR");
     }

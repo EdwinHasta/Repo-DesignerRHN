@@ -37,7 +37,7 @@
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column headerText="Descripcion" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="160" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Descripción" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="160" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
@@ -99,10 +99,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesPensiones.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesPensiones.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlClasesPensiones.salir()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlClasesPensiones.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlClasesPensiones.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlClasesPensiones.revisarDialogoGuardar()}" disabled="#{controlClasesPensiones.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -211,13 +219,13 @@
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
-                            <strong><h:outputText value="Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlClasesPensiones.nuevoClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlClasesPensiones.nuevoClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
-                            <strong><h:outputText value="Descripcion: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
+                            <strong><h:outputText value="*Descripción: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlClasesPensiones.nuevoClasesPensiones.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
@@ -236,13 +244,13 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlClasesPensiones.duplicarClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" value="#{controlClasesPensiones.duplicarClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlClasesPensiones.duplicarClasesPensiones.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*Descripción:"  style=" position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlClasesPensiones.duplicarClasesPensiones.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />

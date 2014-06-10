@@ -40,9 +40,7 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Inicial" />
-                                    </f:facet>
+
                                 </p:column>  
 
                                 <p:column headerText="Cuenta" sortBy="#{info.cuenta}" filterBy="#{info.cuenta}" filterMatchMode="contains" id="cuenta" width="65" filterStyle="display: none; visibility: hidden;" >                                  
@@ -56,9 +54,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Cuenta"/>
-                                    </f:facet>
+
                                 </p:column>  
 
                                 <p:column id="fechaCuenta" headerText="Fecha Cuenta" sortBy="#{info.fechacuenta}" filterBy="#{info.fechacuenta}" filterMatchMode="contains"  width="80"  filterStyle="display: none; visibility: hidden;" >
@@ -75,9 +71,7 @@
                                             </lnk:calendar>
                                         </f:facet>
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Inicial" />
-                                    </f:facet>
+
                                 </p:column>
 
                                 <p:column headerText="Sucursal" sortBy="#{info.sucursal.nombre}" filterBy="#{info.sucursal.nombre}" filterMatchMode="contains" id="sucursal" width="200" filterStyle="display: none; visibility: hidden;" >                                  
@@ -92,7 +86,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px; border: none; color: blue" id="fooSucursal" value="Sucursal"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooSucursal" />
                                     </f:facet>
                                 </p:column> 
 
@@ -108,7 +102,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px; border: none; color: blue" id="fooFormaPago" value="Forma de Pago"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooFormaPago"/>
                                     </f:facet>
                                 </p:column> 
 
@@ -123,9 +117,6 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="TC"/>
-                                    </f:facet>
                                 </p:column> 
 
                                 <p:column headerText="Metodo de Pago" sortBy="#{info.metodopago.descripcion}" filterBy="#{info.metodopago.descripcion}" filterMatchMode="contains" id="metodoPago" width="120" filterStyle="display: none; visibility: hidden;" >                                  
@@ -142,7 +133,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" id="fooMetodoPago" value="Metodo de Pago"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooMetodoPago" />
                                     </f:facet>
                                 </p:column> 
 
@@ -237,7 +228,10 @@
                                     <h:outputText value="#{sucursal.banco.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarS" style="position: relative; left: 280px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovSucursales.clearFilters();"  actionListener="#{controlVigenciasFormasPagos.actualizarSucursal()}" update="lovSucursales, aceptarS, datosVigenciasFormasPagos" process="@this" icon="ui-icon-check">
+
+                            <h:outputText id="infoRegistroSucursales" value="#{controlVigenciasFormasPagos.infoRegistroSucursales}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarS" style="position: relative; left: 280px" value="Aceptar"  disabled="#{controlVigenciasFormasPagos.aceptar}" onclick="sucursalesDialogo.hide(), lovSucursales.clearFilters();"  actionListener="#{controlVigenciasFormasPagos.actualizarSucursal()}" update="lovSucursales, aceptarS, datosVigenciasFormasPagos" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovSucursales:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasS" style="position: relative; left: 280px" value="Atras"  actionListener="#{controlVigenciasFormasPagos.cancelarCambioSucursal()}" onclick="sucursalesDialogo.hide();
@@ -247,8 +241,8 @@
                         </p:dialog>
 
                         <p:dialog header="Forma Pago" widgetVar="periodicidadesDialogo" draggable="false" resizable="false" closable="false" id="periodicidadesDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="370" modal="true" style="">
-                            <p:dataTable id="lovperiodicidades" style=" width: 335px" var="periodicidades" value="#{controlVigenciasFormasPagos.listaPeriodicidades}" rowKey="#{periodicidades.secuencia}"
+                                  showEffect="fade" hideEffect="fade" width="375" modal="true" style="">
+                            <p:dataTable id="lovperiodicidades" style=" width: 330px" var="periodicidades" value="#{controlVigenciasFormasPagos.listaPeriodicidades}" rowKey="#{periodicidades.secuencia}"
                                          selection="#{controlVigenciasFormasPagos.periodicidadSeleccionada}" selectionMode="single" widgetVar="lovperiodicidades" scrollable="true" scrollWidth="355" scrollHeight="200"
                                          filteredValue="#{controlVigenciasFormasPagos.filtradoPeriodicidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasFormasPagos.activarAceptar()}" update=":form:aceptarP"/>
@@ -266,7 +260,10 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarP" style="position: relative; left: 185px" icon="ui-icon-check" value="Aceptar"  actionListener="#{controlVigenciasFormasPagos.actualizarPeriodicidad()}" onclick="periodicidadesDialogo.hide(), lovperiodicidades.clearFilters();" update="lovperiodicidades, aceptarP, datosVigenciasFormasPagos" process="@this">
+
+                            <h:outputText id="infoRegistroPeriodicidades" value="#{controlVigenciasFormasPagos.infoRegistroPeriodicidades}" style="position: absolute; left: 15px; top: 300px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarP" style="position: relative; left: 185px" disabled="#{controlVigenciasFormasPagos.aceptar}" icon="ui-icon-check" value="Aceptar"  actionListener="#{controlVigenciasFormasPagos.actualizarPeriodicidad()}" onclick="periodicidadesDialogo.hide(), lovperiodicidades.clearFilters();" update="lovperiodicidades, aceptarP, datosVigenciasFormasPagos" process="@this">
                                 <p:resetInput target=":form:lovperiodicidades:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasP" style="position: relative; left: 185px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlVigenciasFormasPagos.cancelarCambioPeriodicidad()}" onclick="periodicidadesDialogo.hide();
@@ -277,9 +274,9 @@
 
 
                         <p:dialog header="Metodos pagos" widgetVar="metodosPagosialogo" draggable="false" resizable="false" closable="false" id="metodosPagosialogo"  
-                                  showEffect="fade" hideEffect="fade" width="330" height="270"   modal="true" style="">
-                            <p:dataTable id="lovmetodospagos" style=" width: 300px" var="metodospagos" value="#{controlVigenciasFormasPagos.listaMetodosPagos}" rowKey="#{metodospagos.secuencia}"
-                                         selection="#{controlVigenciasFormasPagos.metodoPagoSeleccionado}" selectionMode="single" widgetVar="lovmetodospagos" scrollable="true" scrollWidth="300" scrollHeight="170"
+                                  showEffect="fade" hideEffect="fade" width="390" height="290"   modal="true" style="">
+                            <p:dataTable id="lovmetodospagos" style=" width: 360px" var="metodospagos" value="#{controlVigenciasFormasPagos.listaMetodosPagos}" rowKey="#{metodospagos.secuencia}"
+                                         selection="#{controlVigenciasFormasPagos.metodoPagoSeleccionado}" selectionMode="single" widgetVar="lovmetodospagos" scrollable="true" scrollWidth="360" scrollHeight="170"
                                          filteredValue="#{controlVigenciasFormasPagos.filtradoMetodosPagos }" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciasFormasPagos.activarAceptar()}" update=":form:aceptarMP"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciasFormasPagos.actualizarMetodoPago()}" process="@this" onstart="lovSucursales.clearFilters()"/>
@@ -296,10 +293,14 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarMP" style="position: absolute; top: 250px; left:153px" icon="ui-icon-check" value="Aceptar" actionListener="#{controlVigenciasFormasPagos.actualizarMetodoPago()}" onclick="metodosPagosialogo.hide(), lovmetodospagos.clearFilters();" update="lovmetodospagos, aceptarMP, datosVigenciasFormasPagos" process="@this">
+
+
+                            <h:outputText id="infoRegistroMetodosPagos" value="#{controlVigenciasFormasPagos.infoRegistroMetodosPagos}" style="position: absolute; left: 15px; top: 275px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarMP" style="position: absolute; top: 265px; left:210px" disabled="#{controlVigenciasFormasPagos.aceptar}" icon="ui-icon-check" value="Aceptar" actionListener="#{controlVigenciasFormasPagos.actualizarMetodoPago()}" onclick="metodosPagosialogo.hide(), lovmetodospagos.clearFilters();" update="lovmetodospagos, aceptarMP, datosVigenciasFormasPagos" process="@this">
                                 <p:resetInput target=":form:lovmetodospagos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasMP" style="position: absolute;  top: 250px; left: 242px" icon="ui-icon-arrowreturnthick-1-w" value="Atras"   actionListener="#{controlVigenciasFormasPagos.cancelarCambioMetodoPago()}"  onclick="metodosPagosialogo.hide();
+                            <p:commandButton id="atrasMP" style="position: absolute;  top: 265px; left: 300px" icon="ui-icon-arrowreturnthick-1-w" value="Atras"   actionListener="#{controlVigenciasFormasPagos.cancelarCambioMetodoPago()}"  onclick="metodosPagosialogo.hide();
                                     lovmetodospagos.clearFilters();" update="lovperiodicidades" process="@this">
                                 <p:resetInput target=":form:lovmetodospagos:globalFilter"/>
                             </p:commandButton>
@@ -310,7 +311,7 @@
                             <h:outputText value="Para agregar una nueva vigencia es necesario adicionar: #{controlVigenciasFormasPagos.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
                             <p:commandButton value="Aceptar" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-                        
+
                         <p:dialog id="fechas" header="ATENCIÓN...!" widgetVar="fechas"  resizable="false" draggable="false" modal="true" height="110" width="400px" style="" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 20px;"  />
                             <h:outputText value="La fecha ingresada ya está registrada. Por favor, ingrese una fecha distinta." style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />

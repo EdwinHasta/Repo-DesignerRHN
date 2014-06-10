@@ -16,7 +16,7 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Eventos</strong></legend>
 
-                            <p:dataTable id="datosEvento" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;border: 1px;"                           
+                            <p:dataTable id="datosEvento" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ;border: 1px;"                           
                                          value="#{controlEventos.listEventos}" scrollable="true" scrollHeight="#{controlEventos.tamano}"  scrollWidth="830"
                                          filteredValue="#{controlEventos.filtrarEventos}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="false" 
@@ -29,7 +29,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 10px; border-radius: 0px; width: 400px; text-transform: uppercase"  > 
+                                            <p:inputText maxlength="4" value="#{info.codigo}" id="editarCodigo" style="height: 10px; border-radius: 0px; width: 400px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlEventos.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlEventos.modificarEventos(indice, 'N', info.codigo)}"  update="codigo"/>
                                             </p:inputText>
@@ -125,10 +125,16 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEventos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEventos.cancelarModificacion()}"  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEventos.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlEventos.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEventos.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlEventos.revisarDialogoGuardar()}"  disabled="#{controlEventos.guardado}"   process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -248,7 +254,7 @@
                         <p:panel id="nuevoE" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 15px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlEventos.nuevoEvento.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlEventos.nuevoEvento.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -281,13 +287,13 @@
 
                         <p:panel id="duplicarE" style="border: none;">
                             <strong><h:outputText value="código "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlEventos.duplicarEvento.codigo}" style="width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlEventos.duplicarEvento.codigo}" style="width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="Descripción"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlEventos.duplicarEvento.descripcion}"  style="width: 140px; position: absolute; left: 150px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlEventos.duplicarEvento.descripcion}"  style="width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />

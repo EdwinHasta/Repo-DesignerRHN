@@ -66,9 +66,6 @@ public class EmpresasBancos implements Serializable {
     }
 
     public String getNumerocuenta() {
-        if (numerocuenta == null) {
-            numerocuenta = " ";
-        }
         return numerocuenta;
     }
 
@@ -87,11 +84,15 @@ public class EmpresasBancos implements Serializable {
 
     public String getTrTipoCuenta() {
         getTipocuenta();
-        if (tipocuenta.equalsIgnoreCase("c")) {
-            trTipoCuenta = "Corriente";
-        }
-        if (tipocuenta.equalsIgnoreCase("a")) {
-            trTipoCuenta = "Ahorros";
+        if (tipocuenta == null) {
+            trTipoCuenta = " ";
+        } else {
+            if (tipocuenta.equalsIgnoreCase("c")) {
+                trTipoCuenta = "Corriente";
+            }
+            if (tipocuenta.equalsIgnoreCase("a")) {
+                trTipoCuenta = "Ahorros";
+            }
         }
         System.out.println("trTipoCuenta : " + trTipoCuenta);
         return trTipoCuenta;

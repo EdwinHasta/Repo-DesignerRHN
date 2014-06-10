@@ -925,7 +925,7 @@ public class ControlVigenciasViajeros implements Serializable {
         }
         if (nuevoVigenciasViajeros.getTipoViajero().getSecuencia() == null) {
             mensajeValidacion = mensajeValidacion + "   *Tipo Viajero\n";
-            
+
         } else {
             contador++;
         }
@@ -1291,6 +1291,14 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public String getInfoRegistro() {
         return infoRegistro;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
     }
 
 }
