@@ -106,7 +106,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.ubicacion.descripcion}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.ubicacion.descripcion}" id="editarUbicacion" style=" border-radius: 0px; width: 97%; text-transform: uppercase; height: 12px;" > 
+                                            <p:inputText value="#{info.ubicacion.descripcion}" id="editarUbicacion" style=" border-radius: 0px; width: 98%; text-transform: uppercase; height: 12px;" > 
                                                 <p:ajax event="change" listener="#{controlVigenciasUbicaciones.modificarVU(indice, 'UBICACION', info.ubicacion.descripcion)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciasUbicaciones.cambiarIndice(indice, 1)}" />
                                                 <p:ajax event="dblclick" listener="#{controlVigenciasUbicaciones.asignarIndex(indice, 0)}"/>
@@ -123,10 +123,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.ubicacion.ciudad.nombre}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText id="editarCiudad" value="#{info.ubicacion.ciudad.nombre}" style=" border-radius: 0px; width: 93.5%; text-transform: uppercase; height: 12px;">
-                                                <p:ajax event="change" listener="#{controlVigenciasUbicaciones.modificarVU(indice, 'N', info.ubicacion.ciudad.nombre)}"/>
-                                                <p:ajax event="select" listener="#{controlVigenciasUbicaciones.cambiarIndice(indice, 2)}" />
-                                            </p:inputText>
+                                            <p:inputText id="editarCiudad" value="#{info.ubicacion.ciudad.nombre}" style=" border-radius: 0px; width: 97%; text-transform: uppercase; height: 12px;" onselect="cambioIndice([{name: 'INDEX', value: '#{indice}'}]);" readonly="true"/>
                                         </f:facet>  
                                     </p:cellEditor>
 
@@ -135,6 +132,8 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable> 
+                            
+                            <p:remoteCommand name="cambioIndice" actionListener="#{controlVigenciasUbicaciones.cambioIndiceReadOnly()}" process="@this"/>
                         </fieldset>
 
                         <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
