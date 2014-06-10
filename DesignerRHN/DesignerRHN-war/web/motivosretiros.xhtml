@@ -33,7 +33,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                              
+
                                 </p:column>
                                 <p:column headerText="Descripcion" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="descripcion" width="100" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -97,10 +97,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosRetiros.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosRetiros.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosRetiros.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlMotivosRetiros.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlMotivosRetiros.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlMotivosRetiros.revisarDialogoGuardar()}" disabled="#{controlMotivosRetiros.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -212,7 +220,7 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlMotivosRetiros.nuevoMotivosRetiros.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlMotivosRetiros.nuevoMotivosRetiros.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -234,14 +242,14 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Motivo Retiro" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
-                            <strong><h:outputText value="*código:"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlMotivosRetiros.duplicarMotivosRetiros.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Código:"  style=" position: absolute; top: 60px" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlMotivosRetiros.duplicarMotivosRetiros.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlMotivosRetiros.duplicarMotivosRetiros.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlMotivosRetiros.duplicarMotivosRetiros.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />

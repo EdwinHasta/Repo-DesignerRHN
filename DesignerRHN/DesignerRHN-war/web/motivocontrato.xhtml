@@ -16,7 +16,7 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Motivos de los Contratos</strong></legend>
 
-                            <p:dataTable id="datosMotivoContrato" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
+                            <p:dataTable id="datosMotivoContrato" var="info" rowKey="#{info.secuencia}" widgetVar="datosMotivoContrato" rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlMotivosContratos.listMotivosContratos}" scrollable="true" scrollHeight="#{controlMotivosContratos.tamano}"  scrollWidth="830"
                                          filteredValue="#{controlMotivosContratos.filtrarMotivosContratos}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell"   liveScroll="true" scrollRows="50"  
@@ -98,7 +98,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosContratos.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMotivosContratos.salir()}"  process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -227,7 +227,7 @@
                         <p:panel id="nuevoMotivoContrato" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlMotivosContratos.nuevoMotivoContrato.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlMotivosContratos.nuevoMotivoContrato.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -251,13 +251,13 @@
 
                         <p:panel id="duplicarMotivosCambiosCargos" style="border: none;">
                             <strong><h:outputText value="*código:"  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlMotivosContratos.duplicarMotivoContrato.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" value="#{controlMotivosContratos.duplicarMotivoContrato.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlMotivosContratos.duplicarMotivoContrato.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlMotivosContratos.duplicarMotivoContrato.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />

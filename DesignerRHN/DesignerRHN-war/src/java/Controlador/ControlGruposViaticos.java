@@ -187,6 +187,43 @@ public class ControlGruposViaticos implements Serializable {
         context.update("form:datosGruposViaticos");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            estado = (Column) c.getViewRoot().findComponent("form:datosGruposViaticos:estado");
+            estado.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosGruposViaticos");
+            bandera = 0;
+            filtrarGruposViaticos = null;
+            tipoLista = 0;
+        }
+
+        borrarGruposViaticos.clear();
+        crearGruposViaticos.clear();
+        modificarGruposViaticos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listGruposViaticos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListGruposViaticos();
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listGruposViaticos == null || listGruposViaticos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposViaticos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosGruposViaticos");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
