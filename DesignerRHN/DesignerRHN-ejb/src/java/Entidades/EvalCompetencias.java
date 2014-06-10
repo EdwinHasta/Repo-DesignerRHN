@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -30,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "EvalCompetencias.findAll", query = "SELECT e FROM EvalCompetencias e")})
 public class EvalCompetencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -41,9 +41,6 @@ public class EvalCompetencias implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 1000)
@@ -80,14 +77,15 @@ public class EvalCompetencias implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     public String getDesCompetencia() {
@@ -95,10 +93,12 @@ public class EvalCompetencias implements Serializable {
     }
 
     public void setDesCompetencia(String desCompetencia) {
-        this.desCompetencia = desCompetencia;
+        if (desCompetencia != null) {
+            this.desCompetencia = desCompetencia.toUpperCase();
+        } else {
+            this.desCompetencia = desCompetencia;
+        }
     }
-
-    
 
     @Override
     public int hashCode() {
@@ -124,5 +124,5 @@ public class EvalCompetencias implements Serializable {
     public String toString() {
         return "Entidades.EvalCompetencias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

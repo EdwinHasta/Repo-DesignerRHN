@@ -84,10 +84,17 @@
                                 <p:tooltip style="" for="duplicar" value="Duplicar Dimension" />
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEvalDimensiones.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEvalDimensiones.cancelarModificacion()}"  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlEvalDimensiones.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlEvalDimensiones.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlEvalDimensiones.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlEvalDimensiones.guardado}" onclick="confirmarGuardar.show();"   update="datosEvalDimension"  process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -192,7 +199,7 @@
 
                     <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="55" width="240" style="">  
                         <p:inputTextarea value="#{controlEvalDimensiones.editarEvalDimension.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                   </p:dialog>
+                    </p:dialog>
 
                     <p:dialog id="editDescripcion" header="Descripción" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlEvalDimensiones.editarEvalDimension.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
@@ -202,13 +209,13 @@
                     <p:dialog id="nuevoRegistroEvalDimensiones" header="Nuevo Registro" widgetVar="nuevoRegistroEvalDimensiones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value=" Nueva Dimension " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevoEvalsDimensiones" style="border: none;">
-                            <strong><h:outputText value="Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlEvalDimensiones.nuevoEvalDimension.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Código : "  style=" position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlEvalDimensiones.nuevoEvalDimension.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
-                            <strong><h:outputText value="Descripcion: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlEvalDimensiones.nuevoEvalDimension.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <strong><h:outputText value="*Descripcion : "  style=" position: absolute; top: 90px;" /></strong>
+                            <p:inputText  id="nuevoNombre" value="#{controlEvalDimensiones.nuevoEvalDimension.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripcion" />
@@ -224,7 +231,7 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Dimension " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="duplicarEvalsDimensiones" style="border: none;">
                             <strong><h:outputText value="*Código :"  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlEvalDimensiones.duplicarEvalDimension.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" value="#{controlEvalDimensiones.duplicarEvalDimension.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
@@ -232,7 +239,7 @@
                             <p:inputText id="duplicarNombre" value="#{controlEvalDimensiones.duplicarEvalDimension.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:watermark for="duplicarNombre" value="*Descripción" />
+                            <p:watermark for="duplicarNombre" value="Descripción" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 20px; top: 120px;"  actionListener="#{controlEvalDimensiones.limpiarduplicarEvalDimensiones()}" update="duplicarEvalsDimensiones"  process="@this"/>
                             <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlEvalDimensiones.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarEvalsDimensiones" onclick="duplicarRegistroEvalDimensiones.hide();" actionListener="#{controlEvalDimensiones.limpiarduplicarEvalDimensiones()}"  process="@this"/>

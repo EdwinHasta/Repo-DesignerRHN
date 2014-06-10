@@ -92,7 +92,11 @@ public class FirmasReportes implements Serializable {
     }
 
     public void setSubtitulofirma(String subtitulofirma) {
-        this.subtitulofirma = subtitulofirma;
+        if (subtitulofirma != null) {
+            this.subtitulofirma = subtitulofirma.toUpperCase();
+        } else {
+            this.subtitulofirma = subtitulofirma;
+        }
     }
 
     public Empresas getEmpresa() {

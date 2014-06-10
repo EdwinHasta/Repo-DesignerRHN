@@ -95,7 +95,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasContratosEntidades.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasContratosEntidades.salir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -135,7 +135,7 @@
 
 
                             <h:outputText id="infoRegistroLOVTipoEntidad" value="#{controlFormulasContratosEntidades.infoRegistroLOVTipoEntidad}" style="position: absolute; left: 15px;  top: 380px; font-weight: bold"/>
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative;left: 285px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovFormulas.clearFilters();"  actionListener="#{controlFormulasContratosEntidades.actualizarTiposEntidades()}" update="lovFormulas, aceptarPer" process="@this">
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative;left: 285px" value="#{msg['aceptar']}"  disabled="#{controlFormulasContratosEntidades.aceptar}" onclick="personasDialogo.hide(), lovFormulas.clearFilters();"  actionListener="#{controlFormulasContratosEntidades.actualizarTiposEntidades()}" update="lovFormulas, aceptarPer" process="@this">
                                 <p:resetInput target=":form:lovFormulas:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasPer" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 285px" value="#{msg['atras']}"  actionListener="#{controlFormulasContratosEntidades.cancelarCambioTiposEntidades()}" onclick="personasDialogo.hide();

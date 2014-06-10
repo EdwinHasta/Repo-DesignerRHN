@@ -116,6 +116,7 @@ public class ControlFirmasReportes implements Serializable {
         filtradoCargos = null;
         guardado = true;
         tamano = 270;
+        aceptar = true;
     }
 
     @PostConstruct
@@ -291,12 +292,56 @@ public class ControlFirmasReportes implements Serializable {
         permitirIndex = true;
         getListFirmasReportes();
         RequestContext context = RequestContext.getCurrentInstance();
-         if (listFirmasReportes == null || listFirmasReportes.isEmpty()) {
+        if (listFirmasReportes == null || listFirmasReportes.isEmpty()) {
             infoRegistro = "Cantidad de registros: 0 ";
         } else {
             infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
         }
-        context.update("form:informacionRegistro");context.update("form:datosFirmasReportes");
+        context.update("form:informacionRegistro");
+        context.update("form:datosFirmasReportes");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            pais = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:pais");
+            pais.setFilterStyle("display: none; visibility: hidden;");
+            subTituloFirma = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:subTituloFirma");
+            subTituloFirma.setFilterStyle("display: none; visibility: hidden;");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosFirmasReportes:cargo");
+            cargo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosFirmasReportes");
+            bandera = 0;
+            filtrarFirmasReportes = null;
+            tipoLista = 0;
+        }
+
+        borrarFirmasReportes.clear();
+        crearFirmasReportes.clear();
+        modificarFirmasReportes.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listFirmasReportes = null;
+        guardado = true;
+        permitirIndex = true;
+        getListFirmasReportes();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listFirmasReportes == null || listFirmasReportes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listFirmasReportes.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosFirmasReportes");
         context.update("form:ACEPTAR");
     }
 
@@ -1608,7 +1653,7 @@ public class ControlFirmasReportes implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoFirmasReportes.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoFirmasReportes.getCodigo());
@@ -2205,6 +2250,14 @@ public class ControlFirmasReportes implements Serializable {
 
     public void setInfoLOVEmpresa(String infoLOVEmpresa) {
         this.infoLOVEmpresa = infoLOVEmpresa;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
     }
 
 }

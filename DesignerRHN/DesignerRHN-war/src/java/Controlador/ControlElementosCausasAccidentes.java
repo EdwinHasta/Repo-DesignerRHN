@@ -67,6 +67,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
     private BigDecimal verificarBorradoSoIndicadoresFr;
     private Integer a;
     private int tamano;
+    private String infoRegistro;
 
     public ControlElementosCausasAccidentes() {
         listElementosCausasAccidentes = null;
@@ -79,6 +80,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
         duplicarElementoCausaAccidente = new ElementosCausasAccidentes();
         a = null;
         tamano = 270;
+        guardado = true;
     }
 
     @PostConstruct
@@ -159,6 +161,41 @@ public class ControlElementosCausasAccidentes implements Serializable {
     }
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosElementosCausasAccidentes:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosElementosCausasAccidentes:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosElementosCausasAccidentes");
+            bandera = 0;
+            filtrarElementosCausasAccidentes = null;
+            tipoLista = 0;
+        }
+
+        borrarElementosCausasAccidentes.clear();
+        crearElementosCausasAccidentes.clear();
+        modificarElementosCausasAccidentes.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listElementosCausasAccidentes = null;
+        guardado = true;
+        permitirIndex = true;
+        getListElementosCausasAccidentes();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listElementosCausasAccidentes == null || listElementosCausasAccidentes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listElementosCausasAccidentes.size();
+        }
+        context.update("form:informacionRegistro");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        context.update("form:datosElementosCausasAccidentes");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
@@ -481,6 +518,8 @@ public class ControlElementosCausasAccidentes implements Serializable {
 
             }
             context.update("form:datosElementosCausasAccidentes");
+            infoRegistro = "Cantidad de registros: " + listElementosCausasAccidentes.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -676,6 +715,8 @@ public class ControlElementosCausasAccidentes implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+            infoRegistro = "Cantidad de registros: " + listElementosCausasAccidentes.size();
+            context.update("form:informacionRegistro");
 
             context.execute("nuevoRegistroElementoCausaAccidente.hide()");
             index = -1;
@@ -775,6 +816,8 @@ public class ControlElementosCausasAccidentes implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listElementosCausasAccidentes.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
@@ -859,6 +902,13 @@ public class ControlElementosCausasAccidentes implements Serializable {
         if (listElementosCausasAccidentes == null) {
             listElementosCausasAccidentes = administrarElementosCausasAccidentes.consultarElementosCausasAccidentes();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listElementosCausasAccidentes == null || listElementosCausasAccidentes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listElementosCausasAccidentes.size();
+        }
+        context.update("form:informacionRegistro");
         return listElementosCausasAccidentes;
     }
 
@@ -944,6 +994,14 @@ public class ControlElementosCausasAccidentes implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

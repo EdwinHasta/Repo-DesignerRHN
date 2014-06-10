@@ -168,6 +168,7 @@ public class ControlEventos implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -197,7 +198,54 @@ public class ControlEventos implements Serializable {
         listEventos = null;
         guardado = true;
         permitirIndex = true;
+        getListEventos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEventos == null || listEventos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEventos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEvento");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvento:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvento:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            organizador = (Column) c.getViewRoot().findComponent("form:datosEvento:organizador");
+            organizador.setFilterStyle("display: none; visibility: hidden;");
+            objetivo = (Column) c.getViewRoot().findComponent("form:datosEvento:objetivo");
+            objetivo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEvento");
+            bandera = 0;
+            filtrarEventos = null;
+            tipoLista = 0;
+        }
+
+        borrarEventos.clear();
+        crearEventos.clear();
+        modificarEventos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEventos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEventos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEventos == null || listEventos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEventos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEvento");
         context.update("form:ACEPTAR");
     }
@@ -592,6 +640,9 @@ public class ControlEventos implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEvento");
+            infoRegistro = "Cantidad de registros: " + listEventos.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -729,7 +780,7 @@ public class ControlEventos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEvento.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEvento.getCodigo());
@@ -750,7 +801,7 @@ public class ControlEventos implements Serializable {
             }
         }
         if (nuevoEvento.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -758,8 +809,8 @@ public class ControlEventos implements Serializable {
             contador++;
 
         }
-        if (nuevoEvento.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoEvento.getOrganizador() == (null)) {
+            mensajeValidacion = mensajeValidacion + " *Organizardor \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -767,8 +818,9 @@ public class ControlEventos implements Serializable {
             contador++;
 
         }
+
         if (nuevoEvento.getObjetivo() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Objetivo \n";
+            mensajeValidacion = mensajeValidacion + " *Objetivo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -810,6 +862,9 @@ public class ControlEventos implements Serializable {
             nuevoEvento = new Eventos();
 
             context.update("form:datosEvento");
+            infoRegistro = "Cantidad de registros: " + listEventos.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
@@ -875,7 +930,7 @@ public class ControlEventos implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarEvento.getDescripcion());
 
         if (duplicarEvento.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEventos.size(); x++) {
@@ -893,7 +948,7 @@ public class ControlEventos implements Serializable {
             }
         }
         if (duplicarEvento.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -932,6 +987,8 @@ public class ControlEventos implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listEventos.size();
+            context.update("form:informacionRegistro");
 
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1021,6 +1078,13 @@ public class ControlEventos implements Serializable {
         if (listEventos == null) {
             listEventos = administrarEventos.consultarEventos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEventos == null || listEventos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEventos.size();
+        }
+        context.update("form:informacionRegistro");
         return listEventos;
     }
 
@@ -1108,5 +1172,12 @@ public class ControlEventos implements Serializable {
         this.tamano = tamano;
     }
 
-    
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
 }

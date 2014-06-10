@@ -105,7 +105,7 @@ public class PersistenciaSoCondicionesAmbientalesP implements PersistenciaSoCond
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos sam WHERE sam.condicionambientalp = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador PersistenciaSoCondicionesAmbientalesP contadorSoAccidentesMedicos persistencia " + retorno);
             return retorno;
         } catch (Exception e) {

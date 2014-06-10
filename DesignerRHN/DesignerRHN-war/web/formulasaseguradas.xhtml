@@ -38,7 +38,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; margin: -14px; height: 50px; border: none; color: blue" id="fooCiudad"  value="#{msg['formula']}"/>
+                                        <p:commandButton style="width: 100%; margin: -14px; height: 20px; border: none; color: blue" id="fooCiudad"  value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -54,7 +54,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; margin: -14px; height: 50px; border: none; color: blue" id="fooProceso"  value="#{msg['proceso']}"/>
+                                        <p:commandButton style="width: 100%; margin: -14px; height: 20px; border: none; color: blue" id="fooProceso"  value=""/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['periodicidad']}" sortBy="#{info.periodicidad.nombre}" filterBy="#{info.periodicidad.nombre}" filterMatchMode="contains" id="periodicidad" width="170" filterStyle="display: none; visibility: hidden;" >                                  
@@ -69,7 +69,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; margin: -14px; height: 50px; border: none; color: blue" id="fooperiodicidad"  value="#{msg['periodicidad']}"/>
+                                        <p:commandButton style="width: 100%; margin: -14px; height: 20px; border: none; color: blue" id="fooperiodicidad"  value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -124,7 +124,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlFormulasAseguradas.salir()}"  process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -299,7 +299,7 @@
                         <h:outputText value=" #{msg['validarNuevo']} #{controlFormulasAseguradas.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
-                    
+
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlFormulasAseguradas.activarCtrlF11()}"/> 
                 </h:form>
 
