@@ -131,15 +131,22 @@ public class PersistenciaCortesProcesos implements PersistenciaCortesProcesosInt
 
     @Override
     public void eliminarComprobante(EntityManager em, Short codigoProceso, String fechaDesde, String fechaHasta) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call CORTESPROCESOS_PKG.ELIMINARCOMPROBANTE(?, To_date( ?, 'dd/mm/yyyy'), To_date( ?, 'dd/mm/yyyy'))";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, codigoProceso);
             query.setParameter(2, fechaDesde);
             query.setParameter(3, fechaHasta);
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error cerrarLiquidacion. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

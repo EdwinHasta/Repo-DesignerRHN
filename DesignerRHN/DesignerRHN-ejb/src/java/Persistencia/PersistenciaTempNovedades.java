@@ -62,6 +62,7 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
 
     @Override
     public void borrarRegistrosTempNovedades(EntityManager em, String usuarioBD) {
+        em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -111,7 +112,10 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
 
     @Override
     public void cargarTempNovedades(EntityManager em, String fechaReporte, String nombreCortoFormula, String usarFormula) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call TEMPNOVEDADES_PKG.INSERTARNOVEDAD(To_date(?, 'dd/mm/yyyy'), ?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, fechaReporte);
@@ -120,14 +124,21 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
             System.out.println("executeUpdate: ");
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error en el carge." + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void reversarTempNovedades(EntityManager em, String usuarioBD, String documentoSoporte) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             Query query = em.createQuery("DELETE FROM TempNovedades t WHERE t.usuariobd = :usuarioBD "
                     + "AND t.estado = 'C' "
                     + "AND t.documentosoporte = :documentoSoporte");
@@ -135,8 +146,12 @@ public class PersistenciaTempNovedades implements PersistenciaTempNovedadesInter
             query.setParameter("documentoSoporte", documentoSoporte);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("No se pudo borrar el registro.");
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 }
