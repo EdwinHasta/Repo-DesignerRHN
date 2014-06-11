@@ -192,7 +192,50 @@ public class ControlNormasLaborales implements Serializable {
         listNormasLaborales = null;
         guardado = true;
         permitirIndex = true;
+        getListNormasLaborales();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosNormaLaboral");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
+            bandera = 0;
+            filtrarNormasLaborales = null;
+            tipoLista = 0;
+        }
+
+        borrarNormaLaboral.clear();
+        crearNormaLaboral.clear();
+        modificarNormaLaboral.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listNormasLaborales = null;
+        guardado = true;
+        permitirIndex = true;
+        getListNormasLaborales();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosNormaLaboral");
         context.update("form:ACEPTAR");
     }
@@ -475,6 +518,8 @@ public class ControlNormasLaborales implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNormaLaboral");
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -611,10 +656,6 @@ public class ControlNormasLaborales implements Serializable {
             mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (nuevoNormaLaboral.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
         } else {
             System.out.println("bandera");
             contador++;
@@ -650,6 +691,8 @@ public class ControlNormasLaborales implements Serializable {
             nuevoNormaLaboral = new NormasLaborales();
 
             context.update("form:datosNormaLaboral");
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -713,7 +756,7 @@ public class ControlNormasLaborales implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarNormaLaboral.getNombre());
 
         if (duplicarNormaLaboral.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listNormasLaborales.size(); x++) {
@@ -738,10 +781,6 @@ public class ControlNormasLaborales implements Serializable {
             mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (duplicarNormaLaboral.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
         } else {
             System.out.println("bandera");
             contador++;
@@ -757,6 +796,8 @@ public class ControlNormasLaborales implements Serializable {
             listNormasLaborales.add(duplicarNormaLaboral);
             crearNormaLaboral.add(duplicarNormaLaboral);
             context.update("form:datosNormaLaboral");
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -843,11 +884,20 @@ public class ControlNormasLaborales implements Serializable {
         index = -1;
     }
 
+    private String infoRegistro;
+
     //-------------------------------------------------------------------------- 
     public List<NormasLaborales> getListNormasLaborales() {
         if (listNormasLaborales == null) {
             listNormasLaborales = administrarNormasLaborales.consultarNormasLaborales();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        }
+        context.update("form:informacionRegistro");
         return listNormasLaborales;
     }
 
@@ -933,6 +983,14 @@ public class ControlNormasLaborales implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

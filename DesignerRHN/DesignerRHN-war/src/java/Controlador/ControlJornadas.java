@@ -181,6 +181,41 @@ public class ControlJornadas implements Serializable {
         context.update("form:datosJornadas");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosJornadas:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosJornadas:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosJornadas");
+            bandera = 0;
+            filtrarJornadas = null;
+            tipoLista = 0;
+        }
+
+        borrarJornadas.clear();
+        crearJornadas.clear();
+        modificarJornadas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listJornadas = null;
+        guardado = true;
+        permitirIndex = true;
+        getListJornadas();
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listJornadas == null || listJornadas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listJornadas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosJornadas");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();

@@ -197,6 +197,41 @@ public class ControlMotivosLocalizaciones implements Serializable {
         context.update("form:informacionRegistro");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
+            bandera = 0;
+            filtrarMotivosLocalizaciones = null;
+            tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarMotivoContrato.clear();
+        crearMotivosLocalizaciones.clear();
+        modificarMotivoContrato.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMotivosLocalizaciones = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosMotivoContrato");
+        if (listMotivosLocalizaciones == null || listMotivosLocalizaciones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosLocalizaciones.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();

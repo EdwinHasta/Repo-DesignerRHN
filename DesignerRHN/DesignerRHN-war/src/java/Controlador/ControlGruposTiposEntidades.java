@@ -181,6 +181,41 @@ public class ControlGruposTiposEntidades implements Serializable {
         context.update("form:ACEPTAR");
     }
 
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposTiposEntidades:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosGruposTiposEntidades");
+            bandera = 0;
+            filtrarGruposTiposEntidades = null;
+            tipoLista = 0;
+        }
+
+        borrarGruposTiposEntidades.clear();
+        crearGruposTiposEntidades.clear();
+        modificarGruposTiposEntidades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listGruposTiposEntidades = null;
+        guardado = true;
+        permitirIndex = true;
+        getListGruposTiposEntidades();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listGruposTiposEntidades == null || listGruposTiposEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposTiposEntidades.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosGruposTiposEntidades");
+        context.update("form:ACEPTAR");
+    }
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -619,7 +654,7 @@ public class ControlGruposTiposEntidades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoGruposTiposEntidades.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoGruposTiposEntidades.getCodigo());
@@ -640,7 +675,7 @@ public class ControlGruposTiposEntidades implements Serializable {
             }
         }
         if (nuevoGruposTiposEntidades.getNombre() == null || nuevoGruposTiposEntidades.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -741,7 +776,7 @@ public class ControlGruposTiposEntidades implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarGruposTiposEntidades.getNombre());
 
         if (duplicarGruposTiposEntidades.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listGruposTiposEntidades.size(); x++) {
@@ -759,7 +794,7 @@ public class ControlGruposTiposEntidades implements Serializable {
             }
         }
         if (duplicarGruposTiposEntidades.getNombre() == null || duplicarGruposTiposEntidades.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

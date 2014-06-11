@@ -181,6 +181,41 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosGruposFactoresRiesgos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosGruposFactoresRiesgos");
+            bandera = 0;
+            filtrarGruposFactoresRiesgos = null;
+            tipoLista = 0;
+        }
+
+        borrarGruposFactoresRiesgos.clear();
+        crearGruposFactoresRiesgos.clear();
+        modificarGruposFactoresRiesgos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listGruposFactoresRiesgos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListGruposFactoresRiesgos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listGruposFactoresRiesgos == null || listGruposFactoresRiesgos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listGruposFactoresRiesgos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosGruposFactoresRiesgos");
+        context.update("form:ACEPTAR");
+    }
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -621,7 +656,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoGruposFactoresRiesgos.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoGruposFactoresRiesgos.getCodigo());
@@ -642,7 +677,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             }
         }
         if (nuevoGruposFactoresRiesgos.getDescripcion() == null || nuevoGruposFactoresRiesgos.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -743,7 +778,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarGruposFactoresRiesgos.getDescripcion());
 
         if (duplicarGruposFactoresRiesgos.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listGruposFactoresRiesgos.size(); x++) {
@@ -761,7 +796,7 @@ public class ControlGruposFactoresRiesgos implements Serializable {
             }
         }
         if (duplicarGruposFactoresRiesgos.getDescripcion() == null || duplicarGruposFactoresRiesgos.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

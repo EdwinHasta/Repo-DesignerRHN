@@ -196,6 +196,42 @@ public class ControlMotivosCambiosCargos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioCargo:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMotivoCambioCargo");
+            bandera = 0;
+            filtrarMotivosCambiosCargos = null;
+            tipoLista = 0;
+        }
+        tamano = 270;
+        borrarMotivoCambioCargo.clear();
+        crearMotivoCambioCargo.clear();
+        modificarMotivoCambioCargo.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMotivosCambiosCargos = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        getListMotivosCambiosCargos();
+        if (listMotivosCambiosCargos == null || listMotivosCambiosCargos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosCargos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosMotivoCambioCargo");
+        context.update("form:ACEPTAR");
+    }
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -506,7 +542,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivoCambioCargo.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoCambioCargo.getCodigo());
@@ -527,7 +563,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             }
         }
         if (nuevoMotivoCambioCargo.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -632,7 +668,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarMotivoCambioCargo.getNombre());
 
         if (duplicarMotivoCambioCargo.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosCambiosCargos.size(); x++) {
@@ -650,7 +686,7 @@ public class ControlMotivosCambiosCargos implements Serializable {
             }
         }
         if (duplicarMotivoCambioCargo.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

@@ -86,11 +86,11 @@ public class ControlSubCategorias implements Serializable {
             administrarSubCategorias.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlSubCategorias.eventoFiltrar \n");
@@ -151,6 +151,7 @@ public class ControlSubCategorias implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -177,6 +178,46 @@ public class ControlSubCategorias implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listSubCategorias == null || listSubCategorias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSubCategorias.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosSubCategoria");
+        context.update("form:ACEPTAR");
+    }
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSubCategoria:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSubCategoria");
+            bandera = 0;
+            filtrarSubCategorias = null;
+            tipoLista = 0;
+        }
+
+        borrarSubCategorias.clear();
+        crearSubCategorias.clear();
+        modificarSubCategorias.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        tamano = 270;
+        listSubCategorias = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSubCategorias == null || listSubCategorias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSubCategorias.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosSubCategoria");
         context.update("form:ACEPTAR");
     }
@@ -211,8 +252,8 @@ public class ControlSubCategorias implements Serializable {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
-        int contador = 0;
-        boolean banderita = false;
+        int contador = 0, pass = 0;
+
         Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -223,7 +264,6 @@ public class ControlSubCategorias implements Serializable {
                 if (!crearSubCategorias.contains(listSubCategorias.get(indice))) {
                     if (listSubCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         listSubCategorias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listSubCategorias.size(); j++) {
@@ -235,25 +275,23 @@ public class ControlSubCategorias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
                             listSubCategorias.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
-                    if (listSubCategorias.get(indice).getDescripcion().isEmpty()) {
+                    if (listSubCategorias.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
-                        banderita = false;
-                    }
-                    if (listSubCategorias.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listSubCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
-                        banderita = false;
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarSubCategorias.isEmpty()) {
                             modificarSubCategorias.add(listSubCategorias.get(indice));
                         } else if (!modificarSubCategorias.contains(listSubCategorias.get(indice))) {
@@ -273,7 +311,6 @@ public class ControlSubCategorias implements Serializable {
 
                     if (listSubCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         listSubCategorias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listSubCategorias.size(); j++) {
@@ -285,25 +322,23 @@ public class ControlSubCategorias implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
                             listSubCategorias.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
-                    if (listSubCategorias.get(indice).getDescripcion().isEmpty()) {
+                    if (listSubCategorias.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
-                        banderita = false;
-                    }
-                    if (listSubCategorias.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listSubCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listSubCategorias.get(indice).setDescripcion(backUpDescripcion);
-                        banderita = false;
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (guardado == true) {
                             guardado = false;
                         }
@@ -320,7 +355,6 @@ public class ControlSubCategorias implements Serializable {
                 if (!crearSubCategorias.contains(filtrarSubCategorias.get(indice))) {
                     if (filtrarSubCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < filtrarSubCategorias.size(); j++) {
@@ -340,25 +374,23 @@ public class ControlSubCategorias implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
-                            banderita = false;
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
 
-                    if (filtrarSubCategorias.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarSubCategorias.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
-                    }
-                    if (filtrarSubCategorias.get(indice).getDescripcion().equals(" ")) {
+                    } else if (filtrarSubCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarSubCategorias.isEmpty()) {
                             modificarSubCategorias.add(filtrarSubCategorias.get(indice));
                         } else if (!modificarSubCategorias.contains(filtrarSubCategorias.get(indice))) {
@@ -377,7 +409,6 @@ public class ControlSubCategorias implements Serializable {
                 } else {
                     if (filtrarSubCategorias.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < filtrarSubCategorias.size(); j++) {
@@ -397,25 +428,23 @@ public class ControlSubCategorias implements Serializable {
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             filtrarSubCategorias.get(indice).setCodigo(backUpCodigo);
-                            banderita = false;
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
 
-                    if (filtrarSubCategorias.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarSubCategorias.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
-                    }
-                    if (filtrarSubCategorias.get(indice).getDescripcion().equals(" ")) {
+                    } else if (filtrarSubCategorias.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
                         filtrarSubCategorias.get(indice).setDescripcion(backUpDescripcion);
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass==2) {
                         if (guardado == true) {
                             guardado = false;
                         }
@@ -470,6 +499,12 @@ public class ControlSubCategorias implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listSubCategorias == null || listSubCategorias.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listSubCategorias.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosSubCategoria");
             index = -1;
             secRegistro = null;
@@ -593,7 +628,7 @@ public class ControlSubCategorias implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoSubCategoria.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoSubCategoria.getCodigo());
@@ -613,8 +648,8 @@ public class ControlSubCategorias implements Serializable {
                 contador++;
             }
         }
-        if (nuevoSubCategoria.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+        if (nuevoSubCategoria.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -652,6 +687,9 @@ public class ControlSubCategorias implements Serializable {
             listSubCategorias.add(nuevoSubCategoria);
             nuevoSubCategoria = new SubCategorias();
             context.update("form:datosSubCategoria");
+
+            infoRegistro = "Cantidad de registros: " + listSubCategorias.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -715,7 +753,7 @@ public class ControlSubCategorias implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarSubCategoria.getDescripcion());
 
         if (duplicarSubCategoria.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listSubCategorias.size(); x++) {
@@ -732,8 +770,8 @@ public class ControlSubCategorias implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarSubCategoria.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
+        if (duplicarSubCategoria.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -756,6 +794,8 @@ public class ControlSubCategorias implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listSubCategorias.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 tamano = 270;
@@ -842,6 +882,13 @@ public class ControlSubCategorias implements Serializable {
         if (listSubCategorias == null) {
             listSubCategorias = administrarSubCategorias.consultarSubCategorias();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSubCategorias == null || listSubCategorias.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSubCategorias.size();
+        }
+        context.update("form:informacionRegistro");
         return listSubCategorias;
     }
 
@@ -927,6 +974,14 @@ public class ControlSubCategorias implements Serializable {
 
     public void setSubCategoriaSeleccionada(SubCategorias subCategoriaSeleccionada) {
         this.subCategoriaSeleccionada = subCategoriaSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

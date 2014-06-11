@@ -194,6 +194,46 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
+    public void salir() {
+        System.err.println("cancelarModificacion");
+        if (bandera == 1) {
+            tamano = 270;
+            FacesContext c = FacesContext.getCurrentInstance();
+//CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            estadoSueldoPromedio = (Column) c.getViewRoot().findComponent("form:datosMotivoCambioSueldo:estadoSueldoPromedio");
+            estadoSueldoPromedio.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMotivoCambioSueldo");
+            bandera = 0;
+            filtrarMotivosCambiosSueldos = null;
+            tipoLista = 0;
+        }
+
+        borrarMotivosCambiosSueldos.clear();
+        crearMotivosCambiosSueldos.clear();
+        modificarrMotivosCambiosSueldos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMotivosCambiosSueldos = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        getListMotivosCambiosSueldos();
+        if (listMotivosCambiosSueldos == null || listMotivosCambiosSueldos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosCambiosSueldos.size();
+        }
+        context.update("form:informacionRegistro");
+
+        context.update("form:datosMotivoCambioSueldo");
+        context.update("form:ACEPTAR");
+    }
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
 
@@ -589,7 +629,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivoCambioSueldo.getCodigo() == a) {
-            mensajeValidacion = " *Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoCambioSueldo.getCodigo());
@@ -610,7 +650,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             }
         }
         if (nuevoMotivoCambioSueldo.getNombre() == null || nuevoMotivoCambioSueldo.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -737,7 +777,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
         System.err.println("ConfirmarDuplicar Sueldo Promedio " + duplicarMotivoCambioSueldo.getSueldopromedio());
 
         if (duplicarMotivoCambioSueldo.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosCambiosSueldos.size(); x++) {
@@ -755,7 +795,7 @@ public class ControlMotivosCambiosSueldos implements Serializable {
             }
         }
         if (duplicarMotivoCambioSueldo.getNombre() == null || duplicarMotivoCambioSueldo.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

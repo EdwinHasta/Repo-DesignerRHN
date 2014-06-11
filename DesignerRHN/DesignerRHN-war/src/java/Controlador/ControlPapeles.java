@@ -67,7 +67,7 @@ public class ControlPapeles implements Serializable {
     private Papeles nuevoPapel;
     private Papeles duplicarPapel;
     private Papeles editarPapel;
-    private Papeles papelSeleccionado;
+    private Papeles papelinho;
 
     private int tamano;
     private Column codigoCC, nombrePapel,
@@ -101,7 +101,7 @@ public class ControlPapeles implements Serializable {
         banderaSeleccionPapelesPorEmpresa = false;
         tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -311,6 +311,7 @@ public class ControlPapeles implements Serializable {
         context.update("form:datosPapeles");
 
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         try {
@@ -340,7 +341,61 @@ public class ControlPapeles implements Serializable {
             listPapelesPorEmpresa = null;
             guardado = true;
             permitirIndex = true;
+            getListPapelesPorEmpresa();
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listPapelesPorEmpresa == null || listPapelesPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listPapelesPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
+            banderaModificacionEmpresa = 0;
+            if (banderaModificacionEmpresa == 0) {
+                cambiarEmpresa();
+            }
+            context.update("form:datosPapeles");
+            context.update("form:ACEPTAR");
+        } catch (Exception E) {
+            System.out.println("ERROR CONTROLPAPELES.ModificarModificacion ERROR====================" + E.getMessage());
+        }
+    }
+
+    public void salir() {
+        try {
+            System.out.println("entre a CONTROLPAPELES.cancelarModificacion");
+            FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                //CERRAR FILTRADO
+                //0
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoCC");
+                codigoCC.setFilterStyle("display: none; visibility: hidden;");
+                //1
+                nombrePapel = (Column) c.getViewRoot().findComponent("form:datosPapeles:nombrePapel");
+                nombrePapel.setFilterStyle("display: none; visibility: hidden;");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosPapeles:codigoAT");
+                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+
+                bandera = 0;
+                filtrarPapeles = null;
+                tipoLista = 0;
+            }
+
+            borrarPapeles.clear();
+            crearPapeles.clear();
+            modificarPapeles.clear();
+            index = -1;
+            k = 0;
+            listPapelesPorEmpresa = null;
+            guardado = true;
+            permitirIndex = true;
+            getListPapelesPorEmpresa();
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listPapelesPorEmpresa == null || listPapelesPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listPapelesPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
             banderaModificacionEmpresa = 0;
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
@@ -494,6 +549,9 @@ public class ControlPapeles implements Serializable {
             }
 
             if (contador == 2) {
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevoPapel.setSecuencia(l);
                 System.err.println("AGREGAR CODIGO " + nuevoPapel.getCodigo());
                 System.err.println("AGREGAR DESCRIPCION" + nuevoPapel.getDescripcion());
                 nuevoPapel.setEmpresa(empresaSeleccionada);
@@ -505,6 +563,8 @@ public class ControlPapeles implements Serializable {
                 }
                 listPapelesPorEmpresa.add(nuevoPapel);
                 context.update("form:datosPapeles");
+                infoRegistro = "Cantidad de registros: " + listPapelesPorEmpresa.size();
+                context.update("form:informacionRegistro");
                 nuevoPapel = new Papeles();
                 // index = -1;
                 secRegistro = null;
@@ -653,7 +713,8 @@ public class ControlPapeles implements Serializable {
             }
             crearPapeles.add(duplicarPapel);
             context.update("form:datosPapeles");
-
+            infoRegistro = "Cantidad de registros: " + listPapelesPorEmpresa.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -765,6 +826,8 @@ public class ControlPapeles implements Serializable {
                 }
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 context.update("form:datosPapeles");
+                infoRegistro = "Cantidad de registros: " + listPapelesPorEmpresa.size();
+                context.update("form:informacionRegistro");
             }
         } catch (Exception e) {
             System.out.println("ERROR CONTROLPAPELES.BorrarPapel ERROR=====================" + e.getMessage());
@@ -1102,6 +1165,7 @@ public class ControlPapeles implements Serializable {
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
+    private String infoRegistroEmpresas;
 
     public List<Empresas> getListaEmpresas() {
         try {
@@ -1112,6 +1176,13 @@ public class ControlPapeles implements Serializable {
                     backUpEmpresaActual = empresaSeleccionada;
                 }
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listaEmpresas == null || listaEmpresas.isEmpty()) {
+                infoRegistroEmpresas = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroEmpresas = "Cantidad de registros: " + listaEmpresas.size();
+            }
+            context.update("form:infoRegistroEmpresas");
             return listaEmpresas;
         } catch (Exception e) {
             System.out.println("ERRO LISTA EMPRESAS " + e);
@@ -1160,6 +1231,13 @@ public class ControlPapeles implements Serializable {
             } else if (listPapelesPorEmpresa == null) {
                 listPapelesPorEmpresa = administrarPapeles.consultarPapelesPorEmpresa(empresaSeleccionada.getSecuencia());
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listPapelesPorEmpresa == null || listPapelesPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listPapelesPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
             return listPapelesPorEmpresa;
         } catch (Exception e) {
             System.err.println("ERROR CONTROLPAPELES GETLISTAPAPELESPOREMPRESA ERROR : " + e);
@@ -1263,12 +1341,28 @@ public class ControlPapeles implements Serializable {
         this.tamano = tamano;
     }
 
-    public Papeles getPapelSeleccionado() {
-        return papelSeleccionado;
+    public Papeles getPapelinho() {
+        return papelinho;
     }
 
-    public void setPapelSeleccionado(Papeles papelSeleccionado) {
-        this.papelSeleccionado = papelSeleccionado;
+    public void setPapelinho(Papeles papelinho) {
+        this.papelinho = papelinho;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroEmpresas() {
+        return infoRegistroEmpresas;
+    }
+
+    public void setInfoRegistroEmpresas(String infoRegistroEmpresas) {
+        this.infoRegistroEmpresas = infoRegistroEmpresas;
     }
 
 }

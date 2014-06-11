@@ -163,6 +163,7 @@ public class ControlMotivosContratos implements Serializable {
     }
 
     public void cancelarModificacion() {
+        System.out.println("ControlMotivosContratos cancelarMOdificacion");
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
@@ -187,13 +188,54 @@ public class ControlMotivosContratos implements Serializable {
         listMotivosContratos = null;
         guardado = true;
         permitirIndex = true;
+        getListMotivosContratos();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosMotivoContrato");
         if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
             infoRegistro = "Cantidad de registros: 0 ";
         } else {
             infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
         }
+        context.update("form:datosMotivoContrato");
+        context.update("form:informacionRegistro");
+        context.update("form:ACEPTAR");
+    }
+    
+    
+    
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoContrato:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMotivoContrato");
+            bandera = 0;
+            filtrarMotivosContratos = null;
+            tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarMotivoContrato.clear();
+        crearMotivoContratos.clear();
+        modificarMotivoContrato.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMotivosContratos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListMotivosContratos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosContratos == null || listMotivosContratos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosContratos.size();
+        }
+        context.update("form:datosMotivoContrato");
         context.update("form:informacionRegistro");
         context.update("form:ACEPTAR");
     }
@@ -595,7 +637,7 @@ public class ControlMotivosContratos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivoContrato.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivoContrato.getCodigo());
@@ -616,11 +658,11 @@ public class ControlMotivosContratos implements Serializable {
             }
         }
         if (nuevoMotivoContrato.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else if (nuevoMotivoContrato.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -726,7 +768,7 @@ public class ControlMotivosContratos implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarMotivoContrato.getNombre());
 
         if (duplicarMotivoContrato.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosContratos.size(); x++) {
@@ -744,7 +786,7 @@ public class ControlMotivosContratos implements Serializable {
             }
         }
         if (duplicarMotivoContrato.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

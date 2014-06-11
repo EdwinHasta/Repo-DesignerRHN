@@ -189,6 +189,42 @@ public class ControlMetodoPago implements Serializable {
         context.update("form:datosMetodoPago");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
+            pago.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMetodoPago");
+            bandera = 0;
+            filtrarMetodosPagos = null;
+            tipoLista = 0;
+        }
+
+        borrarMetodosPagos.clear();
+        crearMetodosPagos.clear();
+        modificarMetodosPagos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMetodosPagos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListMetodosPagos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listMetodosPagos == null || listMetodosPagos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosMetodoPago");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -640,7 +676,6 @@ public class ControlMetodoPago implements Serializable {
             System.err.println("nuevometodopago secuencia " + nuevoMetodoPago.getSecuencia());
 
             crearMetodosPagos.add(nuevoMetodoPago);
-
             listMetodosPagos.add(nuevoMetodoPago);
             nuevoMetodoPago = new MetodosPagos();
             infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
@@ -701,79 +736,93 @@ public class ControlMetodoPago implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR ControlMetodosPagos");
+        System.out.println("Agregar Metodo Pago");
         int contador = 0;
-        mensajeValidacion = " ";
         int duplicados = 0;
-        RequestContext context = RequestContext.getCurrentInstance();
-        System.err.println("ConfirmarDuplicar codigo " + duplicarMetodoPago.getCodigo());
-        System.err.println("ConfirmarDuplicar descripcion " + duplicarMetodoPago.getDescripcion());
-        System.err.println("ConfirmarDuplicar pago " + duplicarMetodoPago.getPago());
 
+        mensajeValidacion = " ";
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.err.println("1");
         if (duplicarMetodoPago.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
+            System.out.println("codigo Metodo: " + duplicarMetodoPago.getCodigo());
+
             for (int x = 0; x < listMetodosPagos.size(); x++) {
                 if (listMetodosPagos.get(x).getCodigo() == duplicarMetodoPago.getCodigo()) {
                     duplicados++;
                 }
             }
+            System.err.println("2");
+            System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
+
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO Existan Codigo Repetidos \n";
+                mensajeValidacion = " *Que NO Hayan Codigos Repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
                 contador++;
-                duplicados = 0;
             }
         }
-        if (duplicarMetodoPago.getDescripcion() == null || duplicarMetodoPago.getDescripcion().isEmpty() || duplicarMetodoPago.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   *Una Descripcion \n";
+        if (duplicarMetodoPago.getDescripcion() == null || duplicarMetodoPago.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
-        if (contador == 2) {
+        System.out.println("contador " + contador);
 
-            System.out.println("Datos Duplicando: " + duplicarMetodoPago.getSecuencia() + "  " + duplicarMetodoPago.getCodigo());
-            if (crearMetodosPagos.contains(duplicarMetodoPago)) {
-                System.out.println("Ya lo contengo.");
-            }
-            listMetodosPagos.add(duplicarMetodoPago);
-            crearMetodosPagos.add(duplicarMetodoPago);
-            context.update("form:datosMetodoPago");
-            index = -1;
-            secRegistro = null;
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
-            }
+        if (contador == 2) {
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
 
                 //CERRAR FILTRADO
+                System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
                 descripcion = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
+                pago = (Column) c.getViewRoot().findComponent("form:datosMetodoPago:pago");
+                pago.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosMetodoPago");
                 bandera = 0;
                 filtrarMetodosPagos = null;
                 tipoLista = 0;
             }
+            System.out.println("Despues de la bandera");
+
+            //AGREGAR REGISTRO A LA LISTA VIGENCIAS CARGOS EMPLEADO.
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarMetodoPago.setSecuencia(l);
+            System.err.println("nuevometodopago secuencia " + duplicarMetodoPago.getSecuencia());
+
+            crearMetodosPagos.add(duplicarMetodoPago);
+            listMetodosPagos.add(duplicarMetodoPago);
+            nuevoMetodoPago = new MetodosPagos();
             infoRegistro = "Cantidad de registros: " + listMetodosPagos.size();
             context.update("form:informacionRegistro");
-            duplicarMetodoPago = new MetodosPagos();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroMetodosPagos.hide()");
+            context.update("form:datosMetodoPago");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            System.out.println("Despues de la bandera guardado");
+
+            context.execute("duplicarRegistroMetodosPagos.hide()");
+            index = -1;
+            secRegistro = null;
+            System.out.println("Despues de duplicarRegistroMetodosPagos");
 
         } else {
+            context.update("form:validacionNuevaCentroCosto");
+            context.execute("validacionNuevaCentroCosto.show()");
             contador = 0;
-            context.update("form:validacionDuplicarVigencia");
-            context.execute("validacionDuplicarVigencia.show()");
         }
     }
 

@@ -32,11 +32,12 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Periodicidades.findAll", query = "SELECT p FROM Periodicidades p")})
 public class Periodicidades implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
-    
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -80,12 +81,14 @@ public class Periodicidades implements Serializable {
     }
 
     public String getNombre() {
-              return nombre;
+        return nombre;
     }
 
     public void setNombre(String nombre) {
         if (nombre != null) {
             this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
         }
     }
 

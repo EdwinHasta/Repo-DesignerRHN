@@ -13,7 +13,7 @@
                 <h:form id="form">
                     <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Periodicidades" style="position: absolute; width: 874px; height: 510px; text-align: left"> 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 330px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Periodicidades</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
 
@@ -37,9 +37,6 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Codigo"/>
-                                    </f:facet>
                                 </p:column>  
 
                                 <p:column headerText="Descripcion" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"  id="nombreUnidad" width="113" filterStyle="display: none; visibility: hidden;" >      
@@ -52,9 +49,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="Descripcion" />
-                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="Codigo Unidad" sortBy="#{info.unidad.codigo}" filterBy="#{info.unidad.codigo}" filterMatchMode="contains" id="codigoUnidad" width="55" filterStyle="display: none; visibility: hidden;" >                                  
@@ -69,7 +63,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 120px; margin: -14px; height: 26px; border: none; color: blue" id="fooCodigoUnidad"  action="cambioTipoUnidad" value="Codigo Unidad"/>
+                                        <p:commandButton style="width: 120px; margin: -14px; height: 20px; border: none; color: blue" id="fooCodigoUnidad"  action="cambioTipoUnidad" value=""/>
                                     </f:facet>
                                 </p:column> 
                                 <p:column headerText="Unidad" sortBy="#{info.unidad.nombre}" filterBy="#{info.unidad.nombre}" filterMatchMode="contains" id="tipoUnidad" width="40" filterStyle="display: none; visibility: hidden;" >                                  
@@ -84,7 +78,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoUnidad"  action="cambioTipoUnidad" value="Unidad"/>
+                                        <p:commandButton style="width: 100px; margin: -14px; height: 20px; border: none; color: blue" id="fooTipoUnidad"  action="cambioTipoUnidad" value=""/>
                                     </f:facet>
                                 </p:column>  
                                 <p:column headerText="Codigo Unidad Base" sortBy="#{info.unidadbase.codigo}" filterBy="#{info.unidadbase.codigo}" filterMatchMode="contains" id="codigoUnidadbase" width="80" filterStyle="display: none; visibility: hidden;" >                                  
@@ -99,7 +93,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 160px; margin: -14px; height: 26px; border: none; color: blue" id="fooCodigoUnidadBase"  action="cambioTipoUnidad" value="Codigo Unidad Base"/>
+                                        <p:commandButton style="width: 160px; margin: -14px; height: 20px; border: none; color: blue" id="fooCodigoUnidadBase"  action="cambioTipoUnidad" value=""/>
                                     </f:facet>
                                 </p:column> 
                                 <p:column headerText="Descripcion Base" sortBy="#{info.unidadbase.nombre}" filterBy="#{info.unidadbase.nombre}" filterMatchMode="contains" id="unidadBase" width="70" filterStyle="display: none; visibility: hidden;" >                                  
@@ -114,7 +108,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 140px; margin: -14px; height: 26px; border: none; color: blue" id="fooUnidadBase"  action="cambioTipoUnidad" value="Descripcion Base"/>
+                                        <p:commandButton style="width: 140px; margin: -14px; height: 20px; border: none; color: blue" id="fooUnidadBase"  action="cambioTipoUnidad" value=""/>
                                     </f:facet>
                                 </p:column>  
 
@@ -166,8 +160,17 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPeriodicidades.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastros"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPeriodicidades.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPeriodicidades.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
-                        </p:toolbar> 
+                        </p:toolbar>
+
                         <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
                         <p:dialog header="Buscar Unidades" widgetVar="tiposPeriodicidadesDialogo" draggable="false" resizable="false" closable="false" id="tiposPeriodicidadesDialogo"  
                                   showEffect="fade" hideEffect="fade" width="460" modal="true" style="">
@@ -194,10 +197,12 @@
                                     <h:outputText value="#{unidads.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 278px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" onclick="tiposPeriodicidadesDialogo.hide(), lovTipoPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.actualizarUnidad()}" update="lovTipoPeriodicidades, aceptarTCC, datosPeriodicidades" process="@this">
+                            <h:outputText id="infoRegistroUnidades" value="#{controlPeriodicidades.infoRegistroUnidades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 270px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" onclick="tiposPeriodicidadesDialogo.hide(), lovTipoPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.actualizarUnidad()}" update="lovTipoPeriodicidades, aceptarTCC, datosPeriodicidades" process="@this">
                                 <p:resetInput target=":form:lovTipoPeriodicidades:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 278px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="tiposPeriodicidadesDialogo.hide(), lovTipoPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.cancelarCambioTiposUnidad()}" update="lovTipoPeriodicidades" process="@this">
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 270px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="tiposPeriodicidadesDialogo.hide(), lovTipoPeriodicidades.clearFilters();" actionListener="#{controlPeriodicidades.cancelarCambioTiposUnidad()}" update="lovTipoPeriodicidades" process="@this">
                                 <p:resetInput target=":form:lovTipoPeriodicidades:globalFilter"/>
                             </p:commandButton>
                         </p:dialog> 
@@ -227,6 +232,8 @@
                                     <h:outputText value="#{unidads.nombre}" />
                                 </p:column>
                             </p:dataTable>
+                            <h:outputText id="infoRegistroUnidades1" value="#{controlPeriodicidades.infoRegistroUnidades1}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+
                             <p:commandButton id="aceptarUB" style="position: relative; left: 280px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" onclick="unidadesBaseDialogo.hide(), lovUnidadesBase.clearFilters();" actionListener="#{controlPeriodicidades.actualizarUnidadBase()}" update="lovUnidadesBase, aceptarUB, datosPeriodicidades" process="@this">
                                 <p:resetInput target=":form:lovUnidadesBase:globalFilter"/>
                             </p:commandButton>
@@ -236,9 +243,9 @@
                         </p:dialog> 
 
 
-                        <p:commandButton style=" position: absolute; left: 10px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPeriodicidades.cancelarModificacion()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 110px; top: 470px;  "  icon="ui-icon-search" id="BUSCARCENTROCOSTO" value="Buscar Periodicidad" actionListener="#{controlPeriodicidades.llamadoDialogoBuscarPeriodicidades()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 270px; top: 470px;  " icon="ui-icon-search" id="MOSTRARTODOS" value="Mostrar Todos" disabled="#{controlPeriodicidades.mostrarTodos}" actionListener="#{controlPeriodicidades.cancelarModificacion()}" process="@this"/>
+                        <h:outputText id="informacionRegistro" value="#{controlPeriodicidades.infoRegistro}" style="position: absolute; left: 15px; top: 442px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 10px; top: 470px;  "  icon="ui-icon-search" id="BUSCARCENTROCOSTO" value="Buscar Periodicidad" actionListener="#{controlPeriodicidades.llamadoDialogoBuscarPeriodicidades()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 170px; top: 470px;  " icon="ui-icon-search" id="MOSTRARTODOS" value="Mostrar Todos" disabled="#{controlPeriodicidades.mostrarTodos}" actionListener="#{controlPeriodicidades.cancelarModificacion()}" process="@this"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlPeriodicidades.guardado}" onclick="confirmarGuardar.show();" update=":form:datosPeriodicidades" process="@this" />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-closethick" id="ATRAS" value="Atras" actionListener="#{controlPeriodicidades.refrescar()}" action="#{controlPeriodicidades.redirigir()}" process="@this" />
 
@@ -341,7 +348,7 @@
 
                             <!--0-->
                             <strong><h:outputText value="*Codigo :" style="left: 15px; position: absolute; top: 60px" /></strong>
-                            <p:inputText id="nuevaCodigoCC" value="#{controlPeriodicidades.nuevaPeriodicidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 55px;">
+                            <p:inputText id="nuevaCodigoCC" value="#{controlPeriodicidades.nuevaPeriodicidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 55px; text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevaCodigoCC" value="Codigo" />
@@ -354,7 +361,7 @@
                             <!--2-->
 
                             <strong><h:outputText value="*Codigo Unidad :" style="left: 15px; position: absolute; top: 120px" /></strong>
-                            <p:inputText id="nuevaTipoUnidadsCodigo" value="#{controlPeriodicidades.nuevaPeriodicidad.unidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 115px;">
+                            <p:inputText id="nuevaTipoUnidadsCodigo" value="#{controlPeriodicidades.nuevaPeriodicidad.unidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 115px; text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlPeriodicidades.valoresBackupAutocompletar(1, 'UNIDADCODIGO')}" />
                                 <p:ajax event="change" listener="#{controlPeriodicidades.autocompletarNuevo('UNIDADCODIGO', controlPeriodicidades.nuevaPeriodicidad.unidad.codigo , 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlPeriodicidades.asignarVariableUnidad(0)}" />
@@ -363,7 +370,7 @@
                             <p:watermark for="nuevaTipoUnidadsCodigo" value="Codigo Unidad" />
 
                             <strong><h:outputText value="*Unidad :" style="left: 15px; position: absolute; top: 150px" /></strong>
-                            <p:inputText id="nuevaTipoUnidads" value="#{controlPeriodicidades.nuevaPeriodicidad.unidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 145px;">
+                            <p:inputText id="nuevaTipoUnidads" value="#{controlPeriodicidades.nuevaPeriodicidad.unidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 145px; text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlPeriodicidades.valoresBackupAutocompletar(1, 'UNIDADNOMBRE')}" />
                                 <p:ajax event="change" listener="#{controlPeriodicidades.autocompletarNuevo('UNIDADNOMBRE', controlPeriodicidades.nuevaPeriodicidad.unidad.nombre , 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlPeriodicidades.asignarVariableUnidad(0)}" />
@@ -372,7 +379,7 @@
                             <p:watermark for="nuevaTipoUnidads" value="Unidad" />
 
                             <strong><h:outputText value="*Codigo Unidad Base :" style="left: 15px; position: absolute; top: 180px" /></strong>
-                            <p:inputText id="nuevaCodigoBase" value="#{controlPeriodicidades.nuevaPeriodicidad.unidadbase.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 175px;">
+                            <p:inputText id="nuevaCodigoBase" value="#{controlPeriodicidades.nuevaPeriodicidad.unidadbase.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 175px; text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlPeriodicidades.valoresBackupAutocompletar(1, 'UNIDADBASECODIGO')}" />
                                 <p:ajax event="change" listener="#{controlPeriodicidades.autocompletarNuevo('UNIDADBASECODIGO', controlPeriodicidades.nuevaPeriodicidad.unidadbase.codigo , 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlPeriodicidades.asignarVariableUnidadBase(0)}" />
@@ -381,7 +388,7 @@
                             <p:watermark for="nuevaCodigoBase" value="Codigo Base" />
 
                             <strong><h:outputText value="*Descripción Base :" style="left: 15px; position: absolute; top: 210px" /></strong>
-                            <p:inputText id="nuevaNombreBase" value="#{controlPeriodicidades.nuevaPeriodicidad.unidadbase.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 205px;">
+                            <p:inputText id="nuevaNombreBase" value="#{controlPeriodicidades.nuevaPeriodicidad.unidadbase.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 205px; text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlPeriodicidades.valoresBackupAutocompletar(1, 'UNIDADBASENOMBRE')}" />
                                 <p:ajax event="change" listener="#{controlPeriodicidades.autocompletarNuevo('UNIDADBASENOMBRE', controlPeriodicidades.nuevaPeriodicidad.unidadbase.nombre , 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlPeriodicidades.asignarVariableUnidadBase(0)}" />
@@ -428,6 +435,9 @@
                                 <h:outputText value="#{centroscostosporempresa.nombre}" />
                             </p:column>
                         </p:dataTable>
+
+                        <h:outputText id="infoRegistroPeriodicidadesBoton" value="#{controlPeriodicidades.infoRegistroPeriodicidadesBoton}" style="position: absolute; left: 15px; top: 442px; font-weight: bold"/>
+
                         <p:commandButton id="aceptarNCC" icon="ui-icon-check" style="position: relative; left: 280px" value="Aceptar" disabled="#{controlPeriodicidades.aceptar}" actionListener="#{controlPeriodicidades.seleccionPeriodicidades()}" update="lovPeriodicidades, aceptarNCC, :form:datosPeriodicidades" process="@this">
                             <p:resetInput target=":formularioDialogos:lovPeriodicidades:globalFilter"/>
                         </p:commandButton>
@@ -444,13 +454,13 @@
                         <p:panel id="duplicarUnidads" style="border: none;">
                             <!--0-->
                             <strong><h:outputText value="*Codigo :" style="left: 15px; position: absolute; top: 60px" /></strong>
-                            <p:inputText id="duplicarCodigoCC" value="#{controlPeriodicidades.duplicarPeriodicidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 55px;">
+                            <p:inputText id="duplicarCodigoCC" value="#{controlPeriodicidades.duplicarPeriodicidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 55px; text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigoCC" value="Codigo" />
                             <!--1-->
                             <strong><h:outputText value="*Nombre :" style="left: 15px; position: absolute; top: 90px" /></strong>
-                            <p:inputText id="duplicarNombreUnidads" value="#{controlPeriodicidades.duplicarPeriodicidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 85px;">
+                            <p:inputText id="duplicarNombreUnidads" value="#{controlPeriodicidades.duplicarPeriodicidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 85px; text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombreUnidads" value="Nombre" />
