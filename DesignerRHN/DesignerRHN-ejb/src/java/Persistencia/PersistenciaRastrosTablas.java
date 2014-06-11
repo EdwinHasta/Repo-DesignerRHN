@@ -36,7 +36,7 @@ public class PersistenciaRastrosTablas implements PersistenciaRastrosTablasInter
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Exepcion en verificarRastroTabla " + e);
+            System.out.println("Excepcion en verificarRastroTabla " + e);
             return false;
         }
     }

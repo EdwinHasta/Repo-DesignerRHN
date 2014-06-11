@@ -14,7 +14,7 @@
                     <f:loadBundle basename="Recursos.sucursal" var="msg" />
                     <p:growl id="growl" showDetail="true"/>
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left;">  
-                        
+
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['titulo']}</strong></legend>
 
@@ -34,9 +34,7 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['codigo']}"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="#{msg['nombre']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="descripcion" width="155" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -48,9 +46,6 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['nombre']}"/>
-                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['banco']}" sortBy="#{info.banco.nombre}" filterBy="#{info.banco.nombre}" filterMatchMode="contains" id="personafir" width="140" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -64,7 +59,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 225px; margin: -14px; height: 26px; border: none; color: blue" id="fooBanco"  value="#{msg['banco']}"/>
+                                        <p:commandButton style="width: 225px; margin: -14px; height: 20px; border: none; color: blue" id="fooBanco"  value=""/>
                                     </f:facet>
                                 </p:column>
                                 <p:column headerText="#{msg['ciudad']}" sortBy="#{info.ciudad.nombre}" filterBy="#{info.ciudad.nombre}" filterMatchMode="contains" id="cargo" width="145" filterStyle="display: none; visibility: hidden;" >                                  
@@ -79,7 +74,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCiudad"  value="#{msg['ciudad']}"/>
+                                        <p:commandButton style="width: 220px; margin: -14px; height: 20px;  border: none; color: blue" id="fooCiudad"  value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -129,10 +124,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSucursales.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSucursales.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlSucursales.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlSucursales.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlSucursales.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlSucursales.revisarDialogoGuardar()}" disabled="#{controlSucursales.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"    />
 
@@ -164,7 +167,10 @@
                                     <h:outputText value="#{personaFirmas.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovBancos.clearFilters();"  actionListener="#{controlSucursales.actualizarBancos()}" update="lovBancos, aceptarPer" process="@this" icon="ui-icon-check">
+
+                            <h:outputText id="infoRegistroBancos" value="#{controlSucursales.infoRegistroBancos}" style="position: absolute; left: 15px; top: 400px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlSucursales.aceptar}" onclick="personasDialogo.hide(), lovBancos.clearFilters();"  actionListener="#{controlSucursales.actualizarBancos()}" update="lovBancos, aceptarPer" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovBancos:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasPer" style="position: relative; left: 283px" value="#{msg['atras']}"  actionListener="#{controlSucursales.cancelarCambioBancos()}" onclick="personasDialogo.hide();
@@ -199,7 +205,10 @@
                                     <h:outputText value="#{personaCiudades.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarCar" style="position: relative; left: 283px" value="#{msg['aceptar']}"  onclick="cargosDialogo.hide(), lovCiudades.clearFilters();"  actionListener="#{controlSucursales.actualizarCiudades()}" update="lovCiudades, aceptarCar" process="@this" icon="ui-icon-check">
+
+                            <h:outputText id="infoRegistroCiudades" value="#{controlSucursales.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 380px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarCar" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlSucursales.aceptar}"  onclick="cargosDialogo.hide(), lovCiudades.clearFilters();"  actionListener="#{controlSucursales.actualizarCiudades()}" update="lovCiudades, aceptarCar" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovCiudades:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasCar" style="position: relative; left: 283px" value="#{msg['atras']}"  actionListener="#{controlSucursales.cancelarCambioCiudades()}" onclick="cargosDialogo.hide();
@@ -207,11 +216,11 @@
                                 <p:resetInput target=":form:lovCiudades:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
-                        
-                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+
+                        <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlSucursales.guardarSucursales()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlSucursales.guardarSucursales()}"  style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlSucursales.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
@@ -219,35 +228,36 @@
                     </p:panel>
 
 
-                    <p:dialog id="validacionDuplicarVigencia" header="#{msg['atencion']}" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="#{msg['necesita']} #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    <p:dialog id="validacionDuplicarVigencia" header="#{msg['atencion']}" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="#{msg['necesita']} #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="validacionModificar" header="#{msg['atencion']}" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 30px; top: 20px;"  />
-                        <h:outputText value=" #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 100px; top: 25px; width: 250px; font-weight:bold" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionModificar.hide();" style="position: absolute; top: 60px; left: 250px" process="@this" />
+
+
+                    <p:dialog id="validacionModificar" header="#{msg['atencion']}" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="77" width="330px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="60" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value=" #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 80px; top: 15px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionModificar.hide();" style="position: absolute; top: 40px; left: 230px" process="@this" />
+                    </p:dialog> 
+
+                    <p:dialog id="validacionBorrar" header="#{msg['atencion']}" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="77" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="60" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['validacionBorrar']}" style="position: absolute; left: 80px; top: 15px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionBorrar.hide();" style="position: absolute; top: 40px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="validacionBorrar" header="#{msg['atencion']}" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
-                        <h:outputText value="#{msg['validacionBorrar']}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionBorrar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+
+
+                    <p:dialog id="mostrarBorrados" header="#{msg['atencion']}" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="87" width="280px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value=" #{msg['borrado1']}  #{controlSucursales.registrosBorrados}  #{msg['borrado2']}" style="position: absolute; left: 90px; top: 15px; width: 180px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 50px; left: 180px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="mostrarBorrados" header="#{msg['atencion']}" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="50" height="70" style="position: absolute; left: 20px; top: 10px;"  />
-                        <h:outputText value="#{msg['borrado1']} #{controlSucursales.registrosBorrados}  #{msg['borrado2']}" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
-                    </p:dialog>
-                    <p:dialog id="mostrarGuardar" header="#{msg['atencion']}" widgetVar="mostrarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 20px; top: 10px;"  />
-                        <h:outputText value="#{msg['guardadoExitoso']}" style="position: absolute; left: 100px; top: 20px; width: 250px; font-weight:bold" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="mostrarGuardar.hide();" style="position: absolute; top: 60px; left: 240px" process="@this" />
-                    </p:dialog>
-                    <p:dialog id="validacionNuevaCentroCosto" header="#{msg['atencion']}" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="105" width="450px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="60" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="#{msg['validarNuevo']} #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 120px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 65px; left: 340px" process="@this" />
+
+                    <p:dialog id="validacionNuevaCentroCosto" header="#{msg['atencion']}" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value=" #{msg['validarNuevo']} #{controlSucursales.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlSucursales.activarCtrlF11()}"/> 
                 </h:form>
@@ -323,16 +333,17 @@
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlSucursales.nuevoSucursales.codigo}" style=" width: 135px; position: absolute; left: 120px; top: 55px;">
+                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlSucursales.nuevoSucursales.codigo}" style=" width: 135px; position: absolute; left: 120px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoNN']}" />
 
-                            <strong><h:outputText value="#{msg['nombreN']} "  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="#{msg['nombreN']} "  style=" position: absolute; top: 90px" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlSucursales.nuevoSucursales.nombre}" style=" width: 135px; position: absolute; left: 120px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
+                            <p:watermark for="nuevoNombre" value="#{msg['nombre']}" />
 
                             <strong><h:outputText value="#{msg['bancoN']} "  style=" position: absolute; top: 120px" /></strong>
                             <p:inputText  id="nuevoPersona" value="#{controlSucursales.nuevoSucursales.banco.nombre}" style=" width: 135px; position: absolute; left: 120px; top: 115px;text-transform: uppercase">
@@ -368,19 +379,19 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlSucursales.duplicarSucursales.codigo}" style=" width: 135px; position: absolute; left: 120px; top: 55px;">
+                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlSucursales.duplicarSucursales.codigo}" style=" width: 135px; position: absolute; left: 120px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoNN']}" />
 
-                            <strong><h:outputText value="#{msg['nombreN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="#{msg['nombreN']}"  style=" position: absolute; top: 90px" /></strong>
                             <p:inputText  id="duplicarNombre" value="#{controlSucursales.duplicarSucursales.nombre}" style=" width: 135px; position: absolute; left: 120px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:watermark for="duplicarNombre" value="#{msg['nombreNN']}" />
+                            <p:watermark for="duplicarNombre" value="#{msg['nombre']}" />
 
-                            <strong><h:outputText value="#{msg['bancoN']}"  style=" position: absolute; top: 120px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="#{msg['bancoN']}"  style=" position: absolute; top: 120px" /></strong>
                             <p:inputText id="duplicarPersona" value="#{controlSucursales.duplicarSucursales.banco.nombre}"  style=" width: 135px; position: absolute; left: 120px; top: 115px;" >
                                 <p:ajax event="click" listener="#{controlSucursales.valoresBackupAutocompletar(2,'PERSONA')}" />
                                 <p:ajax event="change" listener="#{controlSucursales.autocompletarDuplicado('PERSONA', controlSucursales.duplicarSucursales.banco.nombre , 2)}" />
@@ -389,7 +400,7 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 265px; top: 115px;  " id="btnduplicarPersona" icon="ui-icon-search" process="@this"  actionListener="#{controlSucursales.asignarVariableBancos(1)}"/>   
                             <p:watermark for="duplicarPersona" value="#{msg['bancoNN']}" />
 
-                            <strong><h:outputText value="#{msg['ciudadN']}"  style=" position: absolute; top: 150px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="#{msg['ciudadN']}"  style=" position: absolute; top: 150px" /></strong>
                             <p:inputText id="duplicarCargo" value="#{controlSucursales.duplicarSucursales.ciudad.nombre}"  style=" width: 135px; position: absolute; left: 120px; top: 145px;" >
                                 <p:ajax event="click" listener="#{controlSucursales.valoresBackupAutocompletar(2,'CARGO')}" />
                                 <p:ajax event="change" listener="#{controlSucursales.autocompletarDuplicado('CARGO', controlSucursales.duplicarSucursales.ciudad.nombre , 2)}" />
