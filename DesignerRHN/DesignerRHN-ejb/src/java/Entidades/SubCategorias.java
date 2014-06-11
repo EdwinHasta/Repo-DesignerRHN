@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -31,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "SubCategorias.findAll", query = "SELECT s FROM SubCategorias s")})
 public class SubCategorias implements Serializable {
+
     @Column(name = "CODIGO")
     private Integer codigo;
 
@@ -68,14 +68,16 @@ public class SubCategorias implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
+
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion == null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     @XmlTransient
