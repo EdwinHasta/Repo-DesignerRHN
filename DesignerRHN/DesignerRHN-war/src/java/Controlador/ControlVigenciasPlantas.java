@@ -76,6 +76,7 @@ public class ControlVigenciasPlantas implements Serializable {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciasPlantas.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
             System.out.println("Causa: " + e.getCause());

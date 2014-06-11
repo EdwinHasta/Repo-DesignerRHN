@@ -34,7 +34,7 @@ public class ControlTiposPensionados implements Serializable {
     AdministrarTiposPensionadosInterface administrarTiposPensionados;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<TiposPensionados> listTiposPensionados;
     private List<TiposPensionados> filtrarTiposPensionados;
     private List<TiposPensionados> crearTiposPensionados;
@@ -60,9 +60,9 @@ public class ControlTiposPensionados implements Serializable {
     private int tamano;
     private Integer backUpCodigo;
     private String backUpDescripcion;
-    
+
     public ControlTiposPensionados() {
-         listTiposPensionados = null;
+        listTiposPensionados = null;
         crearTiposPensionados = new ArrayList<TiposPensionados>();
         modificarTiposPensionados = new ArrayList<TiposPensionados>();
         borrarTiposPensionados = new ArrayList<TiposPensionados>();
@@ -73,19 +73,20 @@ public class ControlTiposPensionados implements Serializable {
         guardado = true;
         tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposPensionados.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposPensionados.eventoFiltrar \n");

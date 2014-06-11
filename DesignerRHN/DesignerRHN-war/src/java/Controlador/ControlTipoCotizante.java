@@ -163,6 +163,7 @@ public class ControlTipoCotizante implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposCotizantes.obtenerConexion(ses.getId());
             administrarDetallesTiposCotizantes.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
             System.out.println("Causa: " + e.getCause());

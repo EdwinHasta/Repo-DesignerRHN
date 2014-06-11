@@ -129,6 +129,7 @@ public class ControlTipoBloque implements Serializable {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
+            administrarRastros.obtenerConexion(ses.getId());
             administrarTiposBloques.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);

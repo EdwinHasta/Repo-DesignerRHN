@@ -125,6 +125,7 @@ public class ControlVigenciasProyectos implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarVigenciasProyectos.obtenerConexion(ses.getId());
             administrarProyectos.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
             System.out.println("Causa: " + e.getCause());
