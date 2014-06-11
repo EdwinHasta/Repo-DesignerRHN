@@ -176,6 +176,7 @@ public class ControlVigenciasCargos implements Serializable {
             administrarVigenciasCargos.obtenerConexion(ses.getId());
             administrarMotivosCambiosCargos.obtenerConexion(ses.getId());
             administrarEstructuras.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
             System.out.println("Causa: " + e.getCause());
