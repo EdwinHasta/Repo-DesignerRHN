@@ -13,7 +13,6 @@
                 <h:form id="form"> 
                     <f:loadBundle basename="Recursos.emplacumulados" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 510px; text-align: left">  
-                        <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute;color: #BF1A1A; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlEmplAcumulados.empleadoSeleccionado.persona.primerapellido} #{controlEmplAcumulados.empleadoSeleccionado.persona.segundoapellido} #{controlEmplAcumulados.empleadoSeleccionado.persona.nombre}"/>
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['acumulados']}</strong></legend>
 
@@ -262,7 +261,7 @@
 
                                 </p:column>
                                 <p:column headerText="..." width="25" style="padding: 0px"  exportable="false">  
-                                    <p:commandButton id="selectButton" icon="ui-icon-search" style=" height: 22px; width: 25px; height:12px"  actionListener="#{controlEmplAcumulados.cambiarIndice(indice, 18)}" action="#{controlEmplAcumulados.editarCelda()}" title="View">  
+                                    <p:commandButton id="selectButton" icon="ui-icon-search" style=" height: 22px; width: 25px; height:15px"  actionListener="#{controlEmplAcumulados.cambiarIndice(indice, 18)}" action="#{controlEmplAcumulados.editarCelda()}" title="View">  
                                     </p:commandButton>  
                                     <p:tooltip style="" for="selectButton" value="#{msg['detalle']}" />
 
@@ -318,8 +317,8 @@
                             </p:toolbarGroup>
                         </p:toolbar>
 
-                        <h:outputText id="informacionRegistro" value="#{controlEmplAcumulados.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 775px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="Cancelar" action="nomina"   />
+                        <h:outputText id="informacionRegistro" value="#{controlEmplAcumulados.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
+                        <p:commandButton style=" position: absolute; left: 760px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="Cancelar" action="nomina"   />
 
                     </p:panel>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlEmplAcumulados.activarCtrlF11()}"  /> 

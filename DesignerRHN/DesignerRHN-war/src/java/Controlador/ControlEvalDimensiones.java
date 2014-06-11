@@ -145,6 +145,7 @@ public class ControlEvalDimensiones implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -169,12 +170,55 @@ public class ControlEvalDimensiones implements Serializable {
         listEvalDimensiones = null;
         guardado = true;
         permitirIndex = true;
+        getListEvalDimensiones();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalDimensiones == null || listEvalDimensiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalDimensiones.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEvalDimension");
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() { FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEvalDimension:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalDimension:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEvalDimension");
+            bandera = 0;
+            filtrarEvalDimensiones = null;
+            tipoLista = 0;
+        }
+
+        borrarEvalDimensiones.clear();
+        crearEvalDimensiones.clear();
+        modificarEvalDimensiones.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEvalDimensiones = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEvalDimensiones();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalDimensiones == null || listEvalDimensiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalDimensiones.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEvalDimension");
+        context.update("form:ACEPTAR");
+    }
+
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosEvalDimension:codigo");
@@ -514,6 +558,8 @@ public class ControlEvalDimensiones implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + listEvalDimensiones.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosEvalDimension");
             index = -1;
             secRegistro = null;
@@ -619,7 +665,7 @@ public class ControlEvalDimensiones implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoEvalDimension.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoEvalDimension.getCodigo());
@@ -640,7 +686,7 @@ public class ControlEvalDimensiones implements Serializable {
             }
         }
         if (nuevoEvalDimension.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Una  Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -651,7 +697,8 @@ public class ControlEvalDimensiones implements Serializable {
 
         System.out.println("contador " + contador);
 
-        if (contador == 2) { FacesContext c = FacesContext.getCurrentInstance();
+        if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -677,6 +724,8 @@ public class ControlEvalDimensiones implements Serializable {
             nuevoEvalDimension = new EvalDimensiones();
 
             context.update("form:datosEvalDimension");
+            infoRegistro = "Cantidad de registros: " + listEvalDimensiones.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -742,7 +791,7 @@ public class ControlEvalDimensiones implements Serializable {
         System.err.println("ConfirmarDuplicar descripcion " + duplicarEvalDimension.getDescripcion());
 
         if (duplicarEvalDimension.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listEvalDimensiones.size(); x++) {
@@ -760,7 +809,7 @@ public class ControlEvalDimensiones implements Serializable {
             }
         }
         if (duplicarEvalDimension.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Descripcion \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -777,12 +826,15 @@ public class ControlEvalDimensiones implements Serializable {
             listEvalDimensiones.add(duplicarEvalDimension);
             crearEvalDimensiones.add(duplicarEvalDimension);
             context.update("form:datosEvalDimension");
+            infoRegistro = "Cantidad de registros: " + listEvalDimensiones.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
-            if (bandera == 1) { FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosEvalDimension:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -866,6 +918,13 @@ public class ControlEvalDimensiones implements Serializable {
         if (listEvalDimensiones == null) {
             listEvalDimensiones = administrarEvalDimensiones.consultarEvalDimensiones();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEvalDimensiones == null || listEvalDimensiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEvalDimensiones.size();
+        }
+        context.update("form:informacionRegistro");
         return listEvalDimensiones;
     }
 
@@ -951,6 +1010,14 @@ public class ControlEvalDimensiones implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

@@ -83,13 +83,14 @@ public class Unidades implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     public String getCodigo() {
-        if (codigo == null) {
-            codigo = " ";
-        }
         return codigo;
     }
 

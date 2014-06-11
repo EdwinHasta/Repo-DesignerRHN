@@ -22,12 +22,12 @@
                             <legend style="font-size: 14px; color: blue"><strong>Papeles</strong></legend>
                             <!-- TABLA EMPLVIGENCIACARGO -->
 
-                            <p:dataTable id="datosPapeles" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                      
+                            <p:dataTable id="datosPapeles" rowKey="#{info.secuencia}" var="info" rowIndexVar="indice" style="width: 830px ; border: 1px;"                      
                                          value="#{controlPapeles.listPapelesPorEmpresa}" scrollable="true" scrollHeight="#{controlPapeles.tamano}"  scrollWidth="830"
                                          filteredValue="#{controlPapeles.filtrarPapeles}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" rows="9" 
-                                         selection="#{controlPapeles.papelSeleccionado}" selectionMode="single"
-                                         >
+                                         editable="true" editMode="cell" 
+                                         selectionMode="single"
+                                         selection="#{controlPapeles.papelinho}">
 
                                 <p:ajax event="filter" listener="#{controlPapeles.eventoFiltrar()}"/>
 
@@ -116,12 +116,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPapeles.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPapeles.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPapeles.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
-                        </p:toolbar> 
+                        </p:toolbar>
 
-
-
-                        <p:commandButton style=" position: absolute; left: 10px; top: 475px; " icon="ui-icon-refresh" id="REFRESCAR" value="Refrescar" actionListener="#{controlPapeles.cancelarModificacion()}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlPapeles.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 475px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" disabled="#{controlPapeles.guardado}" onclick="confirmarGuardar.show();" update=":form:datosPapeles" process="@this" />
                         <p:commandButton style=" position: absolute; left: 785px; top: 475px;" icon="ui-icon-closethick" id="ATRAS" value="Atras" actionListener="#{controlPapel.salir()}" action="nomina" process="@this" />
 
@@ -285,9 +291,9 @@
 
                     <!-- LOV EMPRESAS -->
                     <p:dialog header="Empresas" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="350" modal="true" style="">
-                        <p:dataTable id="lovEmpresas" style=" width: 310px" var="empresa" value="#{controlPapeles.listaEmpresas}" rowKey="#{empresa.secuencia}"
-                                     selection="#{controlPapeles.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="330" scrollHeight="120"
+                              showEffect="fade" hideEffect="fade" width="360" modal="true" style="">
+                        <p:dataTable id="lovEmpresas" style=" width: 320px" var="empresa" value="#{controlPapeles.listaEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlPapeles.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="340" scrollHeight="120"
                                      filteredValue="#{controlPapeles.filtradoListaEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlPapeles.activarAceptar()}" update=":formularioDialogos:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlPapeles.cambiarEmpresa()}" process="@this" onstart="lovEmpresas.clearFilters()"/>
@@ -308,10 +314,13 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" style="position: relative; left: 150px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPapeles.aceptar}" actionListener="#{controlPapeles.cambiarEmpresa()}" update="aceptarE" process="@this">
+
+                        <h:outputText id="infoRegistroEmpresas" value="#{controlPapeles.infoRegistroEmpresas}" style="position: absolute; left: 15px; top: 220px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarE" style="position: relative; left: 155px" icon="ui-icon-check" value="Aceptar" disabled="#{controlPapeles.aceptar}" actionListener="#{controlPapeles.cambiarEmpresa()}" update="aceptarE" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 150px" icon="ui-icon-arrowreturnthick-1-w" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlPapeles.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
+                        <p:commandButton id="atrasE" style="position: relative; left: 155px" icon="ui-icon-arrowreturnthick-1-w" value="Cancelar" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlPapeles.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
                             <p:resetInput target=":formularioDialogos:lovEmpresas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -335,23 +344,23 @@
 
 
                 <h:form id="formExportar">
-                    <p:dataTable id="datosPapelesExportar" var="info" style="visibility: hidden; display: none;"                           
+                    <p:dataTable id="datosPapelesExportar" var="info2" style="visibility: hidden; display: none;"                           
                                  value="#{controlPapeles.listPapelesPorEmpresa}"> 
                         <!--COLUMNAS TABLA DATOS VIGENCIAS TIPOS CONTRATOS DE UN EMPLEADO --> 
                         <!--0-->
                         <p:column headerText="Codigo">      
                             <f:facet name="header"><h:outputText value="Codigo"/></f:facet>
-                            <h:outputText value="#{info.codigo}" />
+                            <h:outputText value="#{info2.codigo}" />
                         </p:column>
                         <!--1-->
                         <p:column headerText="Descripcion">      
                             <f:facet name="header"><h:outputText value="Descripcion"/></f:facet>
-                            <h:outputText value="#{info.descripcion}" />
+                            <h:outputText value="#{info2.descripcion}" />
                         </p:column>
                         <!--2-->
                         <p:column headerText="CodigoAlternativo">      
                             <f:facet name="header"><h:outputText value="CodigoAlternativo"/></f:facet>
-                            <h:outputText value="#{info.codigoalternativo}" />
+                            <h:outputText value="#{info2.codigoalternativo}" />
                         </p:column>
 
                     </p:dataTable>

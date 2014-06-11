@@ -88,7 +88,6 @@ public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterfa
         }
     }
 
-    @Override
     public List<MetodosPagos> buscarMetodosPagos(EntityManager em) {
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(MetodosPagos.class));

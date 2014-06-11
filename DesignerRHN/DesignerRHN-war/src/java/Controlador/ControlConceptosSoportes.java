@@ -273,6 +273,7 @@ public class ControlConceptosSoportes implements Serializable {
         listConceptosSoportes = null;
         guardado = true;
         permitirIndex = true;
+        getListConceptosSoportes();
         RequestContext context = RequestContext.getCurrentInstance();
         if (listConceptosSoportes == null || listConceptosSoportes.isEmpty()) {
             infoRegistro = "Cantidad de registros: 0 ";

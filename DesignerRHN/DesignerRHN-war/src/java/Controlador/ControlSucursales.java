@@ -108,11 +108,11 @@ public class ControlSucursales implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarSucursales.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlSucursales.eventoFiltrar \n");
@@ -221,6 +221,7 @@ public class ControlSucursales implements Serializable {
             }
         }
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -250,6 +251,49 @@ public class ControlSucursales implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listSucursales == null || listSucursales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSucursales.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosSucursales");
+        context.update("form:ACEPTAR");
+    }
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSucursales:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSucursales:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosSucursales:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosSucursales:cargo");
+            cargo.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSucursales");
+            bandera = 0;
+            filtrarSucursales = null;
+            tipoLista = 0;
+        }
+
+        borrarSucursales.clear();
+        crearSucursales.clear();
+        modificarSucursales.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listSucursales = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSucursales == null || listSucursales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSucursales.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosSucursales");
         context.update("form:ACEPTAR");
     }
@@ -469,7 +513,7 @@ public class ControlSucursales implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
-                    } else if (listSucursales.get(indice).getNombre().equals(" ")) {
+                    } else if (listSucursales.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
@@ -528,7 +572,7 @@ public class ControlSucursales implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
-                    } else if (listSucursales.get(indice).getNombre().equals(" ")) {
+                    } else if (listSucursales.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
@@ -590,7 +634,7 @@ public class ControlSucursales implements Serializable {
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
                     }
-                    if (filtrarSucursales.get(indice).getNombre().equals(" ")) {
+                    if (filtrarSucursales.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
@@ -648,7 +692,7 @@ public class ControlSucursales implements Serializable {
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
                     }
-                    if (filtrarSucursales.get(indice).getNombre().equals(" ")) {
+                    if (filtrarSucursales.get(indice).getNombre()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
@@ -897,10 +941,17 @@ public class ControlSucursales implements Serializable {
                 }
                 int VCIndex = listSucursales.indexOf(filtrarSucursales.get(index));
                 listSucursales.remove(VCIndex);
+
                 filtrarSucursales.remove(index);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listSucursales == null || listSucursales.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listSucursales.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosSucursales");
             index = -1;
             secRegistro = null;
@@ -1266,7 +1317,7 @@ public class ControlSucursales implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoSucursales.getCodigo() == null) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoSucursales.getCodigo());
@@ -1286,8 +1337,8 @@ public class ControlSucursales implements Serializable {
                 contador++;//1
             }
         }
-        if (nuevoSucursales.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Nombre \n";
+        if (nuevoSucursales.getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1295,8 +1346,8 @@ public class ControlSucursales implements Serializable {
             contador++;//2
 
         }
-        if (nuevoSucursales.getBanco().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Banco \n";
+        if (nuevoSucursales.getBanco().getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + " *Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1305,8 +1356,8 @@ public class ControlSucursales implements Serializable {
 
         }
 
-        if (nuevoSucursales.getCiudad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Ciudad \n";
+        if (nuevoSucursales.getCiudad().getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + " *Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1347,6 +1398,8 @@ public class ControlSucursales implements Serializable {
             nuevoSucursales.setCiudad(new Ciudades());
             nuevoSucursales.setBanco(new Bancos());
             context.update("form:datosSucursales");
+            infoRegistro = "Cantidad de registros: " + listSucursales.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1429,7 +1482,7 @@ public class ControlSucursales implements Serializable {
         System.err.println("ConfirmarDuplicar codigo " + duplicarSucursales.getCodigo());
 
         if (duplicarSucursales.getCodigo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listSucursales.size(); x++) {
@@ -1447,24 +1500,24 @@ public class ControlSucursales implements Serializable {
             }
         }
 
-        if (duplicarSucursales.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * un Pais \n";
+        if (duplicarSucursales.getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarSucursales.getBanco().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Banco \n";
+        if (duplicarSucursales.getBanco().getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + "   *Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarSucursales.getCiudad().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Ciudad \n";
+        if (duplicarSucursales.getCiudad().getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + "   *Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1494,6 +1547,8 @@ public class ControlSucursales implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listSucursales.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1587,6 +1642,13 @@ public class ControlSucursales implements Serializable {
         if (listSucursales == null) {
             listSucursales = administrarSucursales.consultarSucursales();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSucursales == null || listSucursales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSucursales.size();
+        }
+        context.update("form:informacionRegistro");
         return listSucursales;
     }
 
@@ -1665,11 +1727,20 @@ public class ControlSucursales implements Serializable {
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
+    private String infoRegistroBancos;
 
     public List<Bancos> getListaBancos() {
         if (listaBancos == null) {
             listaBancos = administrarSucursales.consultarLOVBancos();
         }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaBancos == null || listaBancos.isEmpty()) {
+            infoRegistroBancos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroBancos = "Cantidad de registros: " + listaBancos.size();
+        }
+        context.update("form:infoRegistroBancos");
         return listaBancos;
     }
 
@@ -1692,11 +1763,20 @@ public class ControlSucursales implements Serializable {
     public void setBancoSeleccionado(Bancos bancoSeleccionado) {
         this.bancoSeleccionado = bancoSeleccionado;
     }
+    private String infoRegistroCiudades;
 
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
             listaCiudades = administrarSucursales.consultarLOVCiudades();
         }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaCiudades == null || listaCiudades.isEmpty()) {
+            infoRegistroCiudades = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroCiudades = "Cantidad de registros: " + listaCiudades.size();
+        }
+        context.update("form:infoRegistroCiudades");
         return listaCiudades;
     }
 
@@ -1726,6 +1806,38 @@ public class ControlSucursales implements Serializable {
 
     public void setSucursalSeleccionada(Sucursales sucursalSeleccionada) {
         this.sucursalSeleccionada = sucursalSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroBancos() {
+        return infoRegistroBancos;
+    }
+
+    public void setInfoRegistroBancos(String infoRegistroBancos) {
+        this.infoRegistroBancos = infoRegistroBancos;
+    }
+
+    public String getInfoRegistroCiudades() {
+        return infoRegistroCiudades;
+    }
+
+    public void setInfoRegistroCiudades(String infoRegistroCiudades) {
+        this.infoRegistroCiudades = infoRegistroCiudades;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
     }
 
 }

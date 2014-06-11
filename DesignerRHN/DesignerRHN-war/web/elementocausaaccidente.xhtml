@@ -11,6 +11,7 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true"/> 
                     <f:loadBundle basename="Recursos.elementocausaaccidente" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}"  style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
@@ -97,11 +98,18 @@
                                 <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlElementosCausasAccidentes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlElementosCausasAccidentes.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlElementosCausasAccidentes.salir()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlElementosCausasAccidentes.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlElementosCausasAccidentes.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlElementosCausasAccidentes.revisarDialogoGuardar()}" disabled="#{controlElementosCausasAccidentes.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}" />
 
@@ -213,19 +221,19 @@
 
                         <p:panel id="nuevooElementoCausaAccidente" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlElementosCausasAccidentes.nuevoElementoCausaAccidente.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}"  style=" position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlElementosCausasAccidentes.nuevoElementoCausaAccidente.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlElementosCausasAccidentes.nuevoElementoCausaAccidente.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['descripcionN']}"  style=" position: absolute; top: 90px;" /></strong>
+                            <p:inputText  id="nuevoNombre" value="#{controlElementosCausasAccidentes.nuevoElementoCausaAccidente.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="#{msg['descripcionWM']}" />
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 120px;"  actionListener="#{controlElementosCausasAccidentes.limpiarNuevoElementoCausaAccidente()}" update="nuevooElementoCausaAccidente" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="#{msg['agregar']}" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlElementosCausasAccidentes.agregarNuevoElementoCausaAccidente()}" process="@this" />
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="#{msg['agregar']}" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlElementosCausasAccidentes.agregarNuevoElementoCausaAccidente()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style=" position: absolute; left: 210px; top: 120px;"  update="nuevooElementoCausaAccidente" onclick="nuevoRegistroElementoCausaAccidente.hide();"  actionListener="#{controlElementosCausasAccidentes.limpiarNuevoElementoCausaAccidente()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -236,19 +244,19 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarECA" style="border: none;">
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlElementosCausasAccidentes.duplicarElementoCausaAccidente.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}"  style=" position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlElementosCausasAccidentes.duplicarElementoCausaAccidente.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlElementosCausasAccidentes.duplicarElementoCausaAccidente.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*#{msg['descripcionN']}"  style=" position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlElementosCausasAccidentes.duplicarElementoCausaAccidente.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="#{msg['descripcionWM']}" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 120px;"  actionListener="#{controlElementosCausasAccidentes.limpiarDuplicarElementosCausasAccidentes()}" update="duplicarECA"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="#{msg['agregar']}" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlElementosCausasAccidentes.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="#{msg['agregar']}" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlElementosCausasAccidentes.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarECA" onclick="duplicarRegistroElementoCausaAccidente.hide();" actionListener="#{controlElementosCausasAccidentes.limpiarDuplicarElementosCausasAccidentes()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>

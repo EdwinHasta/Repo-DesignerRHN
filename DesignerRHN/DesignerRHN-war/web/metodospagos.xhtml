@@ -15,7 +15,7 @@
                     <p:panel  id="PanelTotal" header="Métodos de Pago" style="position: absolute; width: 874px; height: 510px; text-align: left"> 
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Métodos de Pago</strong></legend>
-                            <p:dataTable id="datosMetodoPago" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
+                            <p:dataTable id="datosMetodoPago" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlMetodoPago.listMetodosPagos}" scrollable="true" scrollHeight="#{controlMetodoPago.tamano}"  scrollWidth="830"
                                          filteredValue="#{controlMetodoPago.filtrarMetodosPagos}" emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell"   liveScroll="true" scrollRows="50"  
@@ -47,7 +47,7 @@
 
                                 </p:column>
                                 <p:column headerText="Pago" sortBy="#{info.pago}" filterBy="#{info.pago}" style="padding: 0px" filterMatchMode="contains" id="pago" width="100" filterStyle="display: none; visibility: hidden;" >                                                              
-                                    <p:selectOneMenu id="editarPago" value="#{info.pago}"  panelStyle="width: 120px" >  
+                                    <p:selectOneMenu id="editarPago" value="#{info.pago}"  panelStyle="width: 42%" >  
                                         <f:selectItem itemLabel=" " itemValue="" />  
                                         <f:selectItem itemLabel="CONSIGNACION" itemValue="CONSIGNACION" />
                                         <f:selectItem itemLabel="TRANSFERENCIA" itemValue="TRANSFERENCIA" />  
@@ -104,7 +104,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMetodoPago.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlMetodoPago.salir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -255,18 +255,18 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Metodo Pago" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarMetodosPagos" style="border: none;">
-                            <strong><h:outputText value="*código :"  style="left: 15px; position: absolute; top: 60px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*Código :"  style="left: 15px; position: absolute; top: 60px;" /></strong>
                             <p:inputText id="duplicarCodigo" value="#{controlMetodoPago.duplicarMetodoPago.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="*Descripción :"  style="left: 15px; position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*Descripción :"  style="left: 15px; position: absolute; top: 90px;" /></strong>
                             <p:inputText id="duplicarNombre" value="#{controlMetodoPago.duplicarMetodoPago.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />
-                            <strong><h:outputText value="Pago : "  style="left: 15px; position: absolute; top: 120px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="Pago : "  style="left: 15px; position: absolute; top: 120px;" /></strong>
                             <p:selectOneMenu id="duplicarPago" value="#{controlMetodoPago.duplicarMetodoPago.pago}" style="position:absolute; top: 115px; left: 150px ;  width: 145px; font-weight: bold;" panelStyle="width: 98px" >  
                                 <f:selectItem itemLabel=" " itemValue="" />  
                                 <f:selectItem itemLabel="CONSIGNACION" itemValue="CONSIGNACION" />

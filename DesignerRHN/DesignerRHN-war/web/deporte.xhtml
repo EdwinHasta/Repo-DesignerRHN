@@ -10,7 +10,8 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form"> 
+                <h:form id="form">
+                    <p:growl id="growl" showDetail="true"/> 
                     <f:loadBundle basename="Recursos.deporte" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}"  style="position: absolute; width: 874px; height: 510px; text-align: left">  
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
@@ -98,11 +99,18 @@
                                 <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeportes.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeportes.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeportes.salir()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlDeportes.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlDeportes.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlDeportes.guardado}" onclick="confirmarGuardar.show();"   update="datosDeporte"  process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"    />
 
@@ -212,13 +220,13 @@
 
                         <p:panel id="nuevaDeporte" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlDeportes.nuevoDeporte.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlDeportes.nuevoDeporte.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['nombreN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="*#{msg['nombreN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlDeportes.nuevoDeporte.nombre}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
@@ -235,17 +243,17 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarDepor" style="border: none;">
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlDeportes.duplicarDeporte.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*#{msg['codigoN']}"  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlDeportes.duplicarDeporte.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoWM']}" />
 
-                            <strong><h:outputText value="#{msg['nombreN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlDeportes.duplicarDeporte.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <strong><h:outputText value="*#{msg['nombreN']}"  style=" position: absolute; top: 90px;text-transform: uppercase" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlDeportes.duplicarDeporte.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:watermark for="duplicarNombre" value="#{msg['nombreWM']}" />
+                            <p:watermark for="duplicarNombre" value="*#{msg['nombreWM']}" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="#{msg['limpiar']}" style=" position: absolute; left: 20px; top: 120px;"  actionListener="#{controlDeportes.limpiarDuplicarDeportes()}" update="duplicarDepor"  process="@this"/>
                             <p:commandButton id="duplicarVFP" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlDeportes.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarDepor" onclick="duplicarRegistroDeporte.hide();" actionListener="#{controlDeportes.limpiarDuplicarDeportes()}"  process="@this"/>

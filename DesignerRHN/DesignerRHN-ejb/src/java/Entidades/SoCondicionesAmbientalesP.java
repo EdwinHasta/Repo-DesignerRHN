@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -29,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "SoCondicionesAmbientalesP.findAll", query = "SELECT s FROM SoCondicionesAmbientalesP s")})
 public class SoCondicionesAmbientalesP implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -75,7 +75,11 @@ public class SoCondicionesAmbientalesP implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     @Override
@@ -102,5 +106,5 @@ public class SoCondicionesAmbientalesP implements Serializable {
     public String toString() {
         return "Entidades.Socondicionesambientalesp[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

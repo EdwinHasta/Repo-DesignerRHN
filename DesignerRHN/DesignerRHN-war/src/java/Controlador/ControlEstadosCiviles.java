@@ -77,7 +77,7 @@ public class ControlEstadosCiviles implements Serializable {
         duplicarEstadoCivil = new EstadosCiviles();
         a = null;
         guardado = true;
-        tamano =270;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -153,6 +153,7 @@ public class ControlEstadosCiviles implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -177,7 +178,49 @@ public class ControlEstadosCiviles implements Serializable {
         listEstadosCiviles = null;
         guardado = true;
         permitirIndex = true;
+        getListEstadosCiviles();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listEstadosCiviles == null || listEstadosCiviles.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEstadosCiviles.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosEstadosCiviles");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosEstadosCiviles:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosEstadosCiviles");
+            bandera = 0;
+            filtrarEstadosCiviles = null;
+            tipoLista = 0;
+        }
+
+        borrarEstadosCiviles.clear();
+        crearEstadosCiviles.clear();
+        modificarEstadosCiviles.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listEstadosCiviles = null;
+        guardado = true;
+        permitirIndex = true;
+        getListEstadosCiviles();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEstadosCiviles == null || listEstadosCiviles.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEstadosCiviles.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosEstadosCiviles");
         context.update("form:ACEPTAR");
     }
@@ -459,6 +502,8 @@ public class ControlEstadosCiviles implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosEstadosCiviles");
+            infoRegistro = "Cantidad de registros: " + listEstadosCiviles.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -594,7 +639,7 @@ public class ControlEstadosCiviles implements Serializable {
                 contador++;
             }
         }
-        if (nuevoEstadoCivil.getDescripcion() == (null) || nuevoEstadoCivil.getDescripcion().equals(" ")) {
+        if (nuevoEstadoCivil.getDescripcion() == (null)) {
             mensajeValidacion = mensajeValidacion + " *Debe Tener un Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -632,6 +677,8 @@ public class ControlEstadosCiviles implements Serializable {
             nuevoEstadoCivil = new EstadosCiviles();
 
             context.update("form:datosEstadosCiviles");
+            infoRegistro = "Cantidad de registros: " + listEstadosCiviles.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -711,7 +758,7 @@ public class ControlEstadosCiviles implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarEstadoCivil.getDescripcion() == null || duplicarEstadoCivil.getDescripcion().equals(" ") || duplicarEstadoCivil.getDescripcion().isEmpty()) {
+        if (duplicarEstadoCivil.getDescripcion() == null || duplicarEstadoCivil.getDescripcion().isEmpty()) {
             mensajeValidacion = mensajeValidacion + "   * Un Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -729,6 +776,8 @@ public class ControlEstadosCiviles implements Serializable {
             listEstadosCiviles.add(duplicarEstadoCivil);
             crearEstadosCiviles.add(duplicarEstadoCivil);
             context.update("form:datosEstadosCiviles");
+            infoRegistro = "Cantidad de registros: " + listEstadosCiviles.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -818,6 +867,13 @@ public class ControlEstadosCiviles implements Serializable {
         if (listEstadosCiviles == null) {
             listEstadosCiviles = administrarEstadosCiviles.consultarEstadosCiviles();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listEstadosCiviles == null || listEstadosCiviles.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listEstadosCiviles.size();
+        }
+        context.update("form:informacionRegistro");
         return listEstadosCiviles;
     }
 
@@ -911,6 +967,14 @@ public class ControlEstadosCiviles implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
