@@ -1928,7 +1928,7 @@ public class ControlPersonaIndividual implements Serializable {
                     context.execute("errorCamposAlternativos.show()");
                 }
             } else {
-                mensajeErrorFechasEmpleado = "Existe un error en las siguientes fechas: "+mensajeErrorFechasEmpleado;
+                mensajeErrorFechasEmpleado = "Existe un error en las siguientes fechas: " + mensajeErrorFechasEmpleado;
                 context.update("formDialogos:errorFechasEmpleado");
                 context.execute("errorFechasEmpleado.show()");
             }
@@ -2695,9 +2695,13 @@ public class ControlPersonaIndividual implements Serializable {
             empleado = administrarPersonaIndividual.buscarEmpleadoPorCodigoyEmpresa(nuevaPersona.getNumerodocumento(), null);
         }
         if (persona != null && empleado != null) {
+            nuevaPersona.setNumerodocumento(null);
+            context.update("form:numeroDocumentoModPersonal");
             context.execute("errorEmpleadoRegistrado.show()");
         }
         if (persona != null && empleado == null) {
+            nuevaPersona.setNumerodocumento(null);
+            context.update("form:numeroDocumentoModPersonal");
             context.execute("errorPersonaRepetida.show()");
         }
         String contabilidad = administrarPersonaIndividual.obtenerPreValidadContabilidad();
@@ -3006,49 +3010,60 @@ public class ControlPersonaIndividual implements Serializable {
             }
         }
         if (confirmarCambio.equalsIgnoreCase("PAPEL")) {
-            nuevaVigenciaCargo.getPapel().setDescripcion(auxCargoDesempeñadoPapel);
-            if (lovPapeles != null) {
-                for (int i = 0; i < lovPapeles.size(); i++) {
-                    if (lovPapeles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevaVigenciaCargo.getPapel().setDescripcion(auxCargoDesempeñadoPapel);
+                if (lovPapeles != null) {
+                    for (int i = 0; i < lovPapeles.size(); i++) {
+                        if (lovPapeles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaCargo.setPapel(lovPapeles.get(indiceUnicoElemento));
-                lovPapeles.clear();
-                getLovPapeles();
-                context.update("form:papelModCargoDesempeñado");
+                if (coincidencias == 1) {
+                    nuevaVigenciaCargo.setPapel(lovPapeles.get(indiceUnicoElemento));
+                    lovPapeles.clear();
+                    getLovPapeles();
+                    context.update("form:papelModCargoDesempeñado");
+                } else {
+                    permitirIndexCargoDesempeñado = false;
+                    getInfoRegistroPapelCargoDesempenado();
+                    context.update("formLovs:formDCargoDesempenado:PapelCargoDesempeñadoDialogo");
+                    context.execute("PapelCargoDesempeñadoDialogo.show()");
+                    context.update("form:papelModCargoDesempeñado");
+                }
             } else {
-                permitirIndexCargoDesempeñado = false;
-                getInfoRegistroPapelCargoDesempenado();
-                context.update("formLovs:formDCargoDesempenado:PapelCargoDesempeñadoDialogo");
-                context.execute("PapelCargoDesempeñadoDialogo.show()");
+                nuevaVigenciaCargo.setPapel(new Papeles());
                 context.update("form:papelModCargoDesempeñado");
             }
         }
         if (confirmarCambio.equalsIgnoreCase("JEFE")) {
-            nuevaVigenciaCargo.getEmpleado().getPersona().setNombreCompleto(auxCargoDesempeñadoEmpleadoJefe);
-            if (lovEmpleados != null) {
-                for (int i = 0; i < lovEmpleados.size(); i++) {
-                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevaVigenciaCargo.getEmpleadojefe().getPersona().setNombreCompleto(auxCargoDesempeñadoEmpleadoJefe);
+                if (lovEmpleados != null) {
+                    for (int i = 0; i < lovEmpleados.size(); i++) {
+                        if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaCargo.setEmpleadojefe(lovEmpleados.get(indiceUnicoElemento));
-                lovEmpleados.clear();
-                getLovEmpleados();
-                context.update("form:empleadoJefeModCargoDesempeñado");
+                if (coincidencias == 1) {
+                    nuevaVigenciaCargo.setEmpleadojefe(lovEmpleados.get(indiceUnicoElemento));
+                    lovEmpleados.clear();
+                    getLovEmpleados();
+                    context.update("form:empleadoJefeModCargoDesempeñado");
+                } else {
+                    permitirIndexCargoDesempeñado = false;
+                    getInfoRegistroJefeCargoDesempenado();
+                    context.update("formLovs:formDCargoDesempenado:EmpleadoJefeCargoDesempeñadoDialogo");
+                    context.execute("EmpleadoJefeCargoDesempeñadoDialogo.show()");
+                    context.update("form:empleadoJefeModCargoDesempeñado");
+                }
             } else {
-                permitirIndexCargoDesempeñado = false;
-                getInfoRegistroJefeCargoDesempenado();
-                context.update("formLovs:formDCargoDesempenado:EmpleadoJefeCargoDesempeñadoDialogo");
-                context.execute("EmpleadoJefeCargoDesempeñadoDialogo.show()");
-                context.update("form:empleadoJefeModCargoDesempeñado");
+                nuevaVigenciaCargo.setEmpleadojefe(new Empleados());
+                nuevaVigenciaCargo.getEmpleadojefe().setPersona(new Personas());
+                context.update("form:papelModCargoDesempeñado");
             }
         }
     }
@@ -3453,25 +3468,30 @@ public class ControlPersonaIndividual implements Serializable {
             }
         }
         if (confirmarCambio.equalsIgnoreCase("SUCURSAL")) {
-            nuevaVigenciaFormaPago.getSucursal().setNombre(auxFormaPagoSucursal);
-            if (lovSucursales != null) {
-                for (int i = 0; i < lovSucursales.size(); i++) {
-                    if (lovSucursales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevaVigenciaFormaPago.getSucursal().setNombre(auxFormaPagoSucursal);
+                if (lovSucursales != null) {
+                    for (int i = 0; i < lovSucursales.size(); i++) {
+                        if (lovSucursales.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaVigenciaFormaPago.setSucursal(lovSucursales.get(indiceUnicoElemento));
-                lovSucursales.clear();
-                getLovSucursales();
-                context.update("form:sucursalPagoModFormaPago");
+                if (coincidencias == 1) {
+                    nuevaVigenciaFormaPago.setSucursal(lovSucursales.get(indiceUnicoElemento));
+                    lovSucursales.clear();
+                    getLovSucursales();
+                    context.update("form:sucursalPagoModFormaPago");
+                } else {
+                    permitirIndexFormaPago = false;
+                    getInfoRegistroSucursalFormaPago();
+                    context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
+                    context.execute("SucursalFormaPagoDialogo.show()");
+                    context.update("form:sucursalPagoModFormaPago");
+                }
             } else {
-                permitirIndexFormaPago = false;
-                getInfoRegistroSucursalFormaPago();
-                context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
-                context.execute("SucursalFormaPagoDialogo.show()");
+                nuevaVigenciaFormaPago.setSucursal(new Sucursales());
                 context.update("form:sucursalPagoModFormaPago");
             }
         }
@@ -3669,25 +3689,30 @@ public class ControlPersonaIndividual implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("ESTADO")) {
-            nuevoEstadoCivil.getEstadocivil().setDescripcion(auxEstadoCivilEstado);
-            if (lovEstadosCiviles != null) {
-                for (int i = 0; i < lovEstadosCiviles.size(); i++) {
-                    if (lovEstadosCiviles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevoEstadoCivil.getEstadocivil().setDescripcion(auxEstadoCivilEstado);
+                if (lovEstadosCiviles != null) {
+                    for (int i = 0; i < lovEstadosCiviles.size(); i++) {
+                        if (lovEstadosCiviles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevoEstadoCivil.setEstadocivil(lovEstadosCiviles.get(indiceUnicoElemento));
-                lovEstadosCiviles.clear();
-                getLovEstadosCiviles();
-                context.update("form:estadoCivilModEstadoCivil");
+                if (coincidencias == 1) {
+                    nuevoEstadoCivil.setEstadocivil(lovEstadosCiviles.get(indiceUnicoElemento));
+                    lovEstadosCiviles.clear();
+                    getLovEstadosCiviles();
+                    context.update("form:estadoCivilModEstadoCivil");
+                } else {
+                    permitirIndexEstadoCivil = false;
+                    getInfoRegistroEstadoCivilEstadoCivil();
+                    context.update("formLovs:formDEstadoCivil:EstadoCivilEstadoCivilDialogo");
+                    context.execute("EstadoCivilEstadoCivilDialogo.show()");
+                    context.update("form:estadoCivilModEstadoCivil");
+                }
             } else {
-                permitirIndexEstadoCivil = false;
-                getInfoRegistroEstadoCivilEstadoCivil();
-                context.update("formLovs:formDEstadoCivil:EstadoCivilEstadoCivilDialogo");
-                context.execute("EstadoCivilEstadoCivilDialogo.show()");
+                nuevoEstadoCivil.setEstadocivil(new EstadosCiviles());
                 context.update("form:estadoCivilModEstadoCivil");
             }
         }
@@ -3699,25 +3724,30 @@ public class ControlPersonaIndividual implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
-            nuevaDireccion.getCiudad().setNombre(auxDireccionCiudad);
-            if (lovCiudades != null) {
-                for (int i = 0; i < lovCiudades.size(); i++) {
-                    if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevaDireccion.getCiudad().setNombre(auxDireccionCiudad);
+                if (lovCiudades != null) {
+                    for (int i = 0; i < lovCiudades.size(); i++) {
+                        if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevaDireccion.setCiudad(lovCiudades.get(indiceUnicoElemento));
-                lovCiudades.clear();
-                getLovCiudades();
-                context.update("form:ciudadModDireccion");
+                if (coincidencias == 1) {
+                    nuevaDireccion.setCiudad(lovCiudades.get(indiceUnicoElemento));
+                    lovCiudades.clear();
+                    getLovCiudades();
+                    context.update("form:ciudadModDireccion");
+                } else {
+                    permitirIndexDireccion = false;
+                    getInfoRegistroCiudadDireccion();
+                    context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
+                    context.execute("CiudadDireccionDialogo.show()");
+                    context.update("form:ciudadModDireccion");
+                }
             } else {
-                permitirIndexDireccion = false;
-                getInfoRegistroCiudadDireccion();
-                context.update("formLovs:formDDireccion:CiudadDireccionDialogo");
-                context.execute("CiudadDireccionDialogo.show()");
+                nuevaDireccion.setCiudad(new Ciudades());
                 context.update("form:ciudadModDireccion");
             }
         }
@@ -3729,48 +3759,58 @@ public class ControlPersonaIndividual implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
-            nuevoTelefono.getCiudad().setNombre(auxTelefonoCiudad);
-            if (lovCiudades != null) {
-                for (int i = 0; i < lovCiudades.size(); i++) {
-                    if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevoTelefono.getCiudad().setNombre(auxTelefonoCiudad);
+                if (lovCiudades != null) {
+                    for (int i = 0; i < lovCiudades.size(); i++) {
+                        if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevoTelefono.setCiudad(lovCiudades.get(indiceUnicoElemento));
-                lovCiudades.clear();
-                getLovCiudades();
-                context.update("form:ciudadModTelefono");
+                if (coincidencias == 1) {
+                    nuevoTelefono.setCiudad(lovCiudades.get(indiceUnicoElemento));
+                    lovCiudades.clear();
+                    getLovCiudades();
+                    context.update("form:ciudadModTelefono");
+                } else {
+                    permitirIndexTelefono = false;
+                    getInfoRegistroCiudadTelefono();
+                    context.update("formLovs:formDTelefono:CiudadTelefonoDialogo");
+                    context.execute("CiudadTelefonoDialogo.show()");
+                    context.update("form:ciudadModTelefono");
+                }
             } else {
-                permitirIndexTelefono = false;
-                getInfoRegistroCiudadTelefono();
-                context.update("formLovs:formDTelefono:CiudadTelefonoDialogo");
-                context.execute("CiudadTelefonoDialogo.show()");
+                nuevoTelefono.setCiudad(new Ciudades());
                 context.update("form:ciudadModTelefono");
             }
         }
         if (confirmarCambio.equalsIgnoreCase("TIPO")) {
-            nuevoTelefono.getTipotelefono().setNombre(auxTelefonoTipo);
-            if (lovTiposTelefonos != null) {
-                for (int i = 0; i < lovTiposTelefonos.size(); i++) {
-                    if (lovTiposTelefonos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                        indiceUnicoElemento = i;
-                        coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                nuevoTelefono.getTipotelefono().setNombre(auxTelefonoTipo);
+                if (lovTiposTelefonos != null) {
+                    for (int i = 0; i < lovTiposTelefonos.size(); i++) {
+                        if (lovTiposTelefonos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                            indiceUnicoElemento = i;
+                            coincidencias++;
+                        }
                     }
                 }
-            }
-            if (coincidencias == 1) {
-                nuevoTelefono.setTipotelefono(lovTiposTelefonos.get(indiceUnicoElemento));
-                lovTiposTelefonos.clear();
-                getLovTiposTelefonos();
-                context.update("form:tipoTelefonoModTelefono");
+                if (coincidencias == 1) {
+                    nuevoTelefono.setTipotelefono(lovTiposTelefonos.get(indiceUnicoElemento));
+                    lovTiposTelefonos.clear();
+                    getLovTiposTelefonos();
+                    context.update("form:tipoTelefonoModTelefono");
+                } else {
+                    permitirIndexTelefono = false;
+                    getInfoRegistroTipoTelefonoTelefono();
+                    context.update("formLovs:formDTelefono:TipoTelefonoTelefonoDialogo");
+                    context.execute("TipoTelefonoTelefonoDialogo.show()");
+                    context.update("form:tipoTelefonoModTelefono");
+                }
             } else {
-                permitirIndexTelefono = false;
-                getInfoRegistroTipoTelefonoTelefono();
-                context.update("formLovs:formDTelefono:TipoTelefonoTelefonoDialogo");
-                context.execute("TipoTelefonoTelefonoDialogo.show()");
+                nuevoTelefono.setTipotelefono(new TiposTelefonos());
                 context.update("form:tipoTelefonoModTelefono");
             }
         }
@@ -6117,7 +6157,5 @@ public class ControlPersonaIndividual implements Serializable {
     public void setMensajeErrorFechasEmpleado(String mensajeErrorFechasEmpleado) {
         this.mensajeErrorFechasEmpleado = mensajeErrorFechasEmpleado;
     }
-    
-    
 
 }
