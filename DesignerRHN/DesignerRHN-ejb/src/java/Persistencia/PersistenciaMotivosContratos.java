@@ -108,6 +108,7 @@ public class PersistenciaMotivosContratos implements PersistenciaMotivosContrato
     @Override
     public List<MotivosContratos> buscarMotivosContratos(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(MotivosContratos.class));
             return em.createQuery(cq).getResultList();

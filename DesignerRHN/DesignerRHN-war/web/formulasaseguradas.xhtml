@@ -164,12 +164,12 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroFormulas" value="#{controlFormulasAseguradas.infoRegistroFormulas}" style="position: relative; left: 5px"/>
+                            <h:outputText id="infoRegistroFormulas" value="#{controlFormulasAseguradas.infoRegistroFormulas}" style="position: relative; left: 5px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 120px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovFormulas.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarFormulas()}" update="lovFormulas, aceptarPer" process="@this">
+                            <p:commandButton id="aceptarPer" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}"  disabled="#{controlFormulasAseguradas.aceptar}" onclick="personasDialogo.hide(), lovFormulas.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarFormulas()}" update="lovFormulas, aceptarPer" process="@this">
                                 <p:resetInput target=":form:lovFormulas:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasPer"  icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 120px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioFormulas()}" onclick="personasDialogo.hide();
+                            <p:commandButton id="atrasPer"  icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioFormulas()}" onclick="personasDialogo.hide();
                                     lovFormulas.clearFilters();" update="lovFormulas" process="@this">
                                 <p:resetInput target=":form:lovFormulas:globalFilter"/>
                             </p:commandButton>
@@ -199,12 +199,12 @@
                                     <h:outputText value="#{procesosdi.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            <h:outputText id="infoRegistroProcesos" value="#{controlFormulasAseguradas.infoRegistroProcesos}" style="position: relative; left: 5px"/>
+                            <h:outputText id="infoRegistroProcesos" value="#{controlFormulasAseguradas.infoRegistroProcesos}" style="position: relative; left: 5px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarProce" icon="ui-icon-check" style="position: relative; left: 150px" value="#{msg['aceptar']}"  onclick="procesosDialogo.hide(), lovProcesos.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarProcesos()}" update="lovProcesos, aceptarProce" process="@this">
+                            <p:commandButton id="aceptarProce" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}"  onclick="procesosDialogo.hide(), lovProcesos.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarProcesos()}" update="lovProcesos, aceptarProce" process="@this">
                                 <p:resetInput target=":form:lovProcesos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasPRoce"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 150px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioProcesos()}" onclick="procesosDialogo.hide();
+                            <p:commandButton id="atrasPRoce"  icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioProcesos()}" onclick="procesosDialogo.hide();
                                     lovProcesos.clearFilters();" update="lovProcesos" process="@this">
                                 <p:resetInput target=":form:lovProcesos:globalFilter"/>
                             </p:commandButton>
@@ -237,12 +237,12 @@
                                     <h:outputText value="#{periodicidadesdia.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <h:outputText id="infoRegistroPeriocididades" value="#{controlFormulasAseguradas.infoRegistroPeriocididades}" style="position: relative; left: 5px"/>
+                            <h:outputText id="infoRegistroPeriocididades" value="#{controlFormulasAseguradas.infoRegistroPeriocididades}" style="position: relative; left: 5px;font-weight: bold"/>
 
-                            <p:commandButton id="aceptarPerio" icon="ui-icon-check" style="position: relative; left: 120px" value="#{msg['aceptar']}"  onclick="periodicidadesDialogo.hide(), lovPeriodicidades.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarPeriocidades()}" update="lovPeriodicidades, aceptarPerio" process="@this">
+                            <p:commandButton id="aceptarPerio" icon="ui-icon-check" style="position: relative; left: 100px" value="#{msg['aceptar']}" disabled="#{controlFormulasAseguradas.aceptar}"  onclick="periodicidadesDialogo.hide(), lovPeriodicidades.clearFilters();"  actionListener="#{controlFormulasAseguradas.actualizarPeriocidades()}" update="lovPeriodicidades, aceptarPerio" process="@this">
                                 <p:resetInput target=":form:lovPeriodicidades:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasPerio" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 120px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioPeriodicidades()}" onclick="periodicidadesDialogo.hide();
+                            <p:commandButton id="atrasPerio" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 100px" value="#{msg['atras']}"  actionListener="#{controlFormulasAseguradas.cancelarCambioPeriodicidades()}" onclick="periodicidadesDialogo.hide();
                                     lovPeriodicidades.clearFilters();" update="lovPeriodicidades" process="@this">
                                 <p:resetInput target=":form:lovPeriodicidades:globalFilter"/>
                             </p:commandButton>

@@ -180,6 +180,41 @@ public class ControlLesiones implements Serializable {
         context.update("form:ACEPTAR");
     }
 
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosLesiones:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosLesiones:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosLesiones");
+            bandera = 0;
+            filtrarLesiones = null;
+            tipoLista = 0;
+        }
+
+        borrarLesiones.clear();
+        crearLesiones.clear();
+        modificarLesiones.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listLesiones = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listLesiones == null || listLesiones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listLesiones.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosLesiones");
+        context.update("form:ACEPTAR");
+    }
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
@@ -617,7 +652,7 @@ public class ControlLesiones implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoLesiones.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoLesiones.getCodigo());
@@ -638,7 +673,7 @@ public class ControlLesiones implements Serializable {
             }
         }
         if (nuevoLesiones.getDescripcion() == null || nuevoLesiones.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -739,7 +774,7 @@ public class ControlLesiones implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarLesiones.getDescripcion());
 
         if (duplicarLesiones.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listLesiones.size(); x++) {
@@ -757,7 +792,7 @@ public class ControlLesiones implements Serializable {
             }
         }
         if (duplicarLesiones.getDescripcion() == null || duplicarLesiones.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -961,7 +996,7 @@ public class ControlLesiones implements Serializable {
         this.lesionSeleccionada = lesionSeleccionada;
     }
 
-   public String getInfoRegistro() {
+    public String getInfoRegistro() {
         return infoRegistro;
     }
 

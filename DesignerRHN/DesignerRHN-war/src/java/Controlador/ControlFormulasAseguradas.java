@@ -127,6 +127,7 @@ public class ControlFormulasAseguradas implements Serializable {
         formulaAseguradaSeleccionada = new FormulasAseguradas();
         mostrarTodos = true;
         buscarFormulas = false;
+        aceptar = true;
     }
 
     @PostConstruct

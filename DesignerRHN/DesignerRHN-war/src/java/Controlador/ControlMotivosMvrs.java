@@ -76,6 +76,7 @@ public class ControlMotivosMvrs implements Serializable {
         nuevoMotivoMvr = new Motivosmvrs();
         duplicarMotivosMvrs = new Motivosmvrs();
         tamano = 270;
+        guardado=true;
     }
 
     @PostConstruct
@@ -154,6 +155,40 @@ public class ControlMotivosMvrs implements Serializable {
     }
 
     public void cancelarModificacion() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivoMvr:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMotivoMvr");
+            bandera = 0;
+            filtrarMotivosMvrs = null;
+            tipoLista = 0;
+        }
+
+        borrarMotivoMvrs.clear();
+        crearMotivoMvrs.clear();
+        modificarMotivoMvrs.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMotivosMvrs = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosMvrs == null || listMotivosMvrs.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosMvrs.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosMotivoMvr");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
         if (bandera == 1) {
             FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO

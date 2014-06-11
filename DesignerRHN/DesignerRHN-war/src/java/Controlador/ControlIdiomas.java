@@ -179,6 +179,40 @@ public class ControlIdiomas implements Serializable {
         context.update("form:datosIdiomas");
         context.update("form:ACEPTAR");
     }
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosIdiomas:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosIdiomas:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosIdiomas");
+            bandera = 0;
+            filtrarIdiomas = null;
+            tipoLista = 0;
+        }
+
+        borrarIdiomas.clear();
+        crearIdiomas.clear();
+        modificarIdiomas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listIdiomas = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        getListIdiomas();
+        if (listIdiomas == null || listIdiomas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listIdiomas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosIdiomas");
+        context.update("form:ACEPTAR");
+    }
 
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
@@ -613,7 +647,7 @@ public class ControlIdiomas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoIdiomas.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoIdiomas.getCodigo());
@@ -735,7 +769,7 @@ public class ControlIdiomas implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarIdiomas.getNombre());
 
         if (duplicarIdiomas.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listIdiomas.size(); x++) {

@@ -63,8 +63,9 @@ public class ControlNormasLaborales implements Serializable {
     private BigInteger borradoVC;
     private String backUpDescripcion;
     private Integer backUpCodigo;
-private int tamano;
-private String paginaAnterior;
+    private int tamano;
+    private String paginaAnterior;
+
     public ControlNormasLaborales() {
         listNormasLaborales = null;
         crearNormaLaboral = new ArrayList<NormasLaborales>();
@@ -75,8 +76,9 @@ private String paginaAnterior;
         nuevoNormaLaboral = new NormasLaborales();
         duplicarNormaLaboral = new NormasLaborales();
         guardado = true;
-        tamano=270;
+        tamano = 270;
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -89,15 +91,15 @@ private String paginaAnterior;
         }
     }
 
-    
-    public void recibirPaginaEntrante(String pagina){
+    public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
-        }
-    
-    public String redirigir(){
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
-   public void eventoFiltrar() {
+
+    public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlNormasLaborales.eventoFiltrar \n");
             if (tipoLista == 0) {
@@ -168,7 +170,7 @@ private String paginaAnterior;
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-                    FacesContext c = FacesContext.getCurrentInstance();
+            FacesContext c = FacesContext.getCurrentInstance();
 
             codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -189,7 +191,50 @@ private String paginaAnterior;
         listNormasLaborales = null;
         guardado = true;
         permitirIndex = true;
+        getListNormasLaborales();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosNormaLaboral");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosNormaLaboral");
+            bandera = 0;
+            filtrarNormasLaborales = null;
+            tipoLista = 0;
+        }
+
+        borrarNormaLaboral.clear();
+        crearNormaLaboral.clear();
+        modificarNormaLaboral.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listNormasLaborales = null;
+        guardado = true;
+        permitirIndex = true;
+        getListNormasLaborales();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosNormaLaboral");
         context.update("form:ACEPTAR");
     }
@@ -197,7 +242,7 @@ private String paginaAnterior;
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano= 246;
+            tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
             codigo.setFilterStyle("width: 200px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:descripcion");
@@ -206,7 +251,7 @@ private String paginaAnterior;
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
-            tamano= 270;
+            tamano = 270;
             System.out.println("Desactivar");
             codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -472,6 +517,8 @@ private String paginaAnterior;
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosNormaLaboral");
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -608,10 +655,6 @@ private String paginaAnterior;
             mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (nuevoNormaLaboral.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
         } else {
             System.out.println("bandera");
             contador++;
@@ -647,6 +690,8 @@ private String paginaAnterior;
             nuevoNormaLaboral = new NormasLaborales();
 
             context.update("form:datosNormaLaboral");
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -710,7 +755,7 @@ private String paginaAnterior;
         System.err.println("ConfirmarDuplicar nombre " + duplicarNormaLaboral.getNombre());
 
         if (duplicarNormaLaboral.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listNormasLaborales.size(); x++) {
@@ -735,10 +780,6 @@ private String paginaAnterior;
             mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (duplicarNormaLaboral.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
         } else {
             System.out.println("bandera");
             contador++;
@@ -754,6 +795,8 @@ private String paginaAnterior;
             listNormasLaborales.add(duplicarNormaLaboral);
             crearNormaLaboral.add(duplicarNormaLaboral);
             context.update("form:datosNormaLaboral");
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -762,7 +805,7 @@ private String paginaAnterior;
             }
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                        FacesContext c = FacesContext.getCurrentInstance();
+                FacesContext c = FacesContext.getCurrentInstance();
 
                 codigo = (Column) c.getViewRoot().findComponent("form:datosNormaLaboral:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -840,11 +883,20 @@ private String paginaAnterior;
         index = -1;
     }
 
+    private String infoRegistro;
+
     //-------------------------------------------------------------------------- 
     public List<NormasLaborales> getListNormasLaborales() {
         if (listNormasLaborales == null) {
             listNormasLaborales = administrarNormasLaborales.consultarNormasLaborales();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listNormasLaborales == null || listNormasLaborales.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNormasLaborales.size();
+        }
+        context.update("form:informacionRegistro");
         return listNormasLaborales;
     }
 
@@ -930,6 +982,14 @@ private String paginaAnterior;
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

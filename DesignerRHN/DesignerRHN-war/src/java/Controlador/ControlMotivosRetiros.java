@@ -156,6 +156,7 @@ public class ControlMotivosRetiros implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -180,7 +181,49 @@ public class ControlMotivosRetiros implements Serializable {
         listMotivosRetiros = null;
         guardado = true;
         permitirIndex = true;
+        getListMotivosRetiros();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosRetiros == null || listMotivosRetiros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosRetiros.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosMotivosRetiros");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosMotivosRetiros:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosMotivosRetiros");
+            bandera = 0;
+            filtrarMotivosRetiros = null;
+            tipoLista = 0;
+        }
+
+        borrarMotivosRetiros.clear();
+        crearMotivosRetiros.clear();
+        modificarMotivosRetiros.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listMotivosRetiros = null;
+        guardado = true;
+        permitirIndex = true;
+        getListMotivosRetiros();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosRetiros == null || listMotivosRetiros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosRetiros.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosMotivosRetiros");
         context.update("form:ACEPTAR");
     }
@@ -481,6 +524,8 @@ public class ControlMotivosRetiros implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosMotivosRetiros");
+            infoRegistro = "Cantidad de registros: " + listMotivosRetiros.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
 
@@ -614,7 +659,7 @@ public class ControlMotivosRetiros implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoMotivosRetiros.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoMotivosRetiros.getCodigo());
@@ -634,8 +679,8 @@ public class ControlMotivosRetiros implements Serializable {
                 contador++;
             }
         }
-        if (nuevoMotivosRetiros.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoMotivosRetiros.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -671,6 +716,8 @@ public class ControlMotivosRetiros implements Serializable {
             listMotivosRetiros.add(nuevoMotivosRetiros);
             nuevoMotivosRetiros = new MotivosRetiros();
             context.update("form:datosMotivosRetiros");
+            infoRegistro = "Cantidad de registros: " + listMotivosRetiros.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -734,7 +781,7 @@ public class ControlMotivosRetiros implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarMotivosRetiros.getNombre());
 
         if (duplicarMotivosRetiros.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listMotivosRetiros.size(); x++) {
@@ -751,8 +798,8 @@ public class ControlMotivosRetiros implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarMotivosRetiros.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarMotivosRetiros.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -775,6 +822,8 @@ public class ControlMotivosRetiros implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listMotivosRetiros.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -859,6 +908,13 @@ public class ControlMotivosRetiros implements Serializable {
         if (listMotivosRetiros == null) {
             listMotivosRetiros = administrarMotivosRetiros.consultarMotivosRetiros();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listMotivosRetiros == null || listMotivosRetiros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listMotivosRetiros.size();
+        }
+        context.update("form:informacionRegistro");
         return listMotivosRetiros;
     }
 
@@ -944,6 +1000,14 @@ public class ControlMotivosRetiros implements Serializable {
 
     public void setMotivoRetiroSelecciodo(MotivosRetiros motivoRetiroSelecciodo) {
         this.motivoRetiroSelecciodo = motivoRetiroSelecciodo;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
