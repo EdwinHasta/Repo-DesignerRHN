@@ -60,7 +60,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             if (tx.isActive()) {
                 tx.rollback();
             }
-        }
+        } 
     }
 
     @Override

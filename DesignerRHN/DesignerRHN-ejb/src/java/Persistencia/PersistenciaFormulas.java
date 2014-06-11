@@ -136,7 +136,10 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
     @Override
     public void clonarFormulas(EntityManager em, String nombreCortoOrigen, String nombreCortoClon, String nombreLargoClon, String observacionClon) {
         int i = 0;
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call FORMULAS_PKG.CLONARFORMULA(?, ?, ?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, nombreCortoOrigen);
@@ -144,21 +147,32 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
             query.setParameter(3, nombreLargoClon);
             query.setParameter(4, observacionClon);
             i = query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error en clonarFormulas: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 
     @Override
     public void operandoFormulas(EntityManager em, BigInteger secFormula) {
         int i = 0;
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call UTL_FORMS.INSERTAROPERANDOFORMULA(?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secFormula);
             i = query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error en oprandoFormulas: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 }

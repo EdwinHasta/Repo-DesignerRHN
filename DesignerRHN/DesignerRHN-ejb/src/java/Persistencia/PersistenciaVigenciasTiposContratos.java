@@ -34,6 +34,7 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
      */
     @Override
     public void crear(EntityManager em, VigenciasTiposContratos vigenciasTiposContratos) {
+        em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -49,6 +50,7 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
 
     @Override
     public void editar(EntityManager em, VigenciasTiposContratos vigenciasTiposContratos) {
+        em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
@@ -64,6 +66,7 @@ public class PersistenciaVigenciasTiposContratos implements PersistenciaVigencia
 
     @Override
     public void borrar(EntityManager em, VigenciasTiposContratos vigenciasTiposContratos) {
+        em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();

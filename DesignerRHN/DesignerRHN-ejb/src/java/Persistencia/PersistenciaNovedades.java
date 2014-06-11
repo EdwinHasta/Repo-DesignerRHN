@@ -38,7 +38,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             em.merge(novedades);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaMotivosCambiosSueldos.crear: " + e);
+            System.out.println("Error PersistenciaNovedades.crear: " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -54,7 +54,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             em.merge(novedades);
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaMotivosCambiosSueldos.crear: " + e);
+            System.out.println("Error PersistenciaNovedades.editar: " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }
@@ -70,7 +70,7 @@ public class PersistenciaNovedades implements PersistenciaNovedadesInterface {
             em.remove(em.merge(novedades));
             tx.commit();
         } catch (Exception e) {
-            System.out.println("Error PersistenciaMotivosCambiosSueldos.crear: " + e);
+            System.out.println("Error PersistenciaNovedades.borrar: " + e);
             if (tx.isActive()) {
                 tx.rollback();
             }

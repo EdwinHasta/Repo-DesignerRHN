@@ -24,8 +24,6 @@ import javax.persistence.criteria.CriteriaQuery;
 @Stateless
 public class PersistenciaMetodosPagos implements PersistenciaMetodosPagosInterface {
 
-   
-    
     @Override
     public void crear(EntityManager em, MetodosPagos metodosPagos) {
         em.clear();

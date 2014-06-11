@@ -39,26 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Estructuras.findByOrganigrama", query = "SELECT e FROM Estructuras e where e.organigrama = :Organigrama")})
 
 public class Estructuras implements Serializable {
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructuras")
-    private List<VigenciasArps> vigenciasArpsList;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
-    private Collection<PlantasPersonales> plantasPersonalesCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructura")
-    private Collection<Pdgpoliticas> pdgpoliticasCollection;
-    @OneToMany(mappedBy = "localizacion")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-    @OneToMany(mappedBy = "estructura")
-    private Collection<Evalconvocatorias> evalconvocatoriasCollection;
-    @OneToMany(mappedBy = "estructura")
-    private Collection<Encargaturas> encargaturasCollection;
-    @OneToMany(mappedBy = "estructura")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(mappedBy = "localizacion")
-    private Collection<SolucionesNodos> solucionesnodosCollection1;
-    @OneToMany(mappedBy = "estructura")
-    private Collection<ParametrosEstructuras> parametrosestructurasCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -126,7 +107,7 @@ public class Estructuras implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = " ";
         }
         return nombre;
@@ -230,80 +211,12 @@ public class Estructuras implements Serializable {
         return true;
     }
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "estructuras")
+    private List<VigenciasArps> vigenciasArpsList;
+
     @Override
     public String toString() {
         return "Entidades.Estructuras[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<ParametrosEstructuras> getParametrosestructurasCollection() {
-        return parametrosestructurasCollection;
-    }
-
-    public void setParametrosestructurasCollection(Collection<ParametrosEstructuras> parametrosestructurasCollection) {
-        this.parametrosestructurasCollection = parametrosestructurasCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection1() {
-        return solucionesnodosCollection1;
-    }
-
-    public void setSolucionesnodosCollection1(Collection<SolucionesNodos> solucionesnodosCollection1) {
-        this.solucionesnodosCollection1 = solucionesnodosCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Encargaturas> getEncargaturasCollection() {
-        return encargaturasCollection;
-    }
-
-    public void setEncargaturasCollection(Collection<Encargaturas> encargaturasCollection) {
-        this.encargaturasCollection = encargaturasCollection;
-    }
-
-    public Collection<Evalconvocatorias> getEvalconvocatoriasCollection() {
-        return evalconvocatoriasCollection;
-    }
-
-    public void setEvalconvocatoriasCollection(Collection<Evalconvocatorias> evalconvocatoriasCollection) {
-        this.evalconvocatoriasCollection = evalconvocatoriasCollection;
-    }
-
-    @XmlTransient
-    public Collection<Pdgpoliticas> getPdgpoliticasCollection() {
-        return pdgpoliticasCollection;
-    }
-
-    public void setPdgpoliticasCollection(Collection<Pdgpoliticas> pdgpoliticasCollection) {
-        this.pdgpoliticasCollection = pdgpoliticasCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<PlantasPersonales> getPlantasPersonalesCollection() {
-        return plantasPersonalesCollection;
-    }
-
-    public void setPlantasPersonalesCollection(Collection<PlantasPersonales> plantasPersonalesCollection) {
-        this.plantasPersonalesCollection = plantasPersonalesCollection;
     }
 
     @XmlTransient
