@@ -126,6 +126,9 @@ public class Estructuras implements Serializable {
     }
 
     public String getNombre() {
+        if(nombre == null){
+            nombre = " ";
+        }
         return nombre;
     }
 
