@@ -109,7 +109,6 @@ public class ControlEmplAcumulados implements Serializable {
     }
 
     public void eventoFiltrar() {
-
         if (tipoLista == 0) {
             tipoLista = 1;
         }
