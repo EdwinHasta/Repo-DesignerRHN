@@ -1324,7 +1324,6 @@ public class ControlPersonaIndividual implements Serializable {
         nuevoEstadoCivil = new VigenciasEstadosCiviles();
         nuevoEstadoCivil.setEstadocivil(new EstadosCiviles());
         nuevaDireccion = new Direcciones();
-        nuevaDireccion.setDireccionalternativa(" ");
         nuevaDireccion.setCiudad(new Ciudades());
         nuevoTelefono = new Telefonos();
         nuevoTelefono.setCiudad(new Ciudades());
@@ -4091,9 +4090,9 @@ public class ControlPersonaIndividual implements Serializable {
         permitirIndexFormaPago = true;
         context.update("form:sucursalPagoModFormaPago");
         context.update("formLovs:formDFormaPago:SucursalFormaPagoDialogo");
-        context.update("formLovs:formDFormaPago:lovSucursalFormaPago");
+        context.update("formLovs:formDFormaPago:lovSucursalPagoFormaPago");
         context.update("formLovs:formDFormaPago:aceptarSFP");
-        context.reset("formLovs:formDFormaPago:lovSucursalFormaPago:globalFilter");
+        context.reset("formLovs:formDFormaPago:lovSucursalPagoFormaPago:globalFilter");
         context.execute("SucursalFormaPagoDialogo.hide()");
     }
 
@@ -4179,10 +4178,10 @@ public class ControlPersonaIndividual implements Serializable {
         aceptar = true;
         permitirIndexNormaLaboral = true;
         context.update("form:normaLaboralModNormaLaboral");
-        context.update("formLovs:formDINormaLaboral:NormaLaboralNormaLaboralDialogo");
-        context.update("formLovs:formDINormaLaboral:lovNormaLaboralNormaLaboral");
-        context.update("formLovs:formDINormaLaboral:aceptarNLNL");
-        context.reset("formLovs:formDINormaLaboral:lovNormaLaboralNormaLaboral:globalFilter");
+        context.update("formLovs:formDNormaLaboral:NormaLaboralNormaLaboralDialogo");
+        context.update("formLovs:formDNormaLaboral:lovNormaLaboralNormaLaboral");
+        context.update("formLovs:formDNormaLaboral:aceptarNLNL");
+        context.reset("formLovs:formDNormaLaboral:lovNormaLaboralNormaLaboral:globalFilter");
         context.execute("NormaLaboralNormaLaboralDialogo.hide()");
         validarTipoTrabajadorNormaLaboral();
     }
@@ -4203,9 +4202,9 @@ public class ControlPersonaIndividual implements Serializable {
         permitirIndexTipoContrato = true;
         context.update("form:motivoContratoModTipoContrato");
         context.update("formLovs:formDTipoContrato:MotivoContratoTipoContratoDialogo");
-        context.update("formLovs:formDTipoContrato:lovMotivoCambioSueldoSueldo");
+        context.update("formLovs:formDTipoContrato:lovMotivoContratoTipoContrato");
         context.update("formLovs:formDTipoContrato:aceptarMCTC");
-        context.reset("formLovs:formDTipoContrato:lovMotivoCambioSueldoSueldo:globalFilter");
+        context.reset("formLovs:formDTipoContrato:lovMotivoContratoTipoContrato:globalFilter");
         context.execute("MotivoContratoTipoContratoDialogo.hide()");
     }
 
@@ -4225,9 +4224,9 @@ public class ControlPersonaIndividual implements Serializable {
         permitirIndexTipoContrato = true;
         context.update("form:tipoContratoModTipoContrato");
         context.update("formLovs:formDTipoContrato:TipoContratoTipoContratoDialogo");
-        context.update("formLovs:formDTipoContrato:lovMotivoCambioSueldoSueldo");
+        context.update("formLovs:formDTipoContrato:lovTipoContratoTipoContrato");
         context.update("formLovs:formDTipoContrato:aceptarTCTC");
-        context.reset("formLovs:formDTipoContrato:lovMotivoCambioSueldoSueldo:globalFilter");
+        context.reset("formLovs:formDTipoContrato:lovTipoContratoTipoContrato:globalFilter");
         context.execute("TipoContratoTipoContratoDialogo.hide()");
         validarTipoTrabajadorTipoContrato();
     }
@@ -4394,7 +4393,7 @@ public class ControlPersonaIndividual implements Serializable {
         filtrarLovMotivosLocalizaciones = null;
         aceptar = true;
         permitirIndexCentroCosto = true;
-    }
+    } 
 
     public void actualizarParametroCargoCargoDesempeñado() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -4576,6 +4575,7 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void actualizarParametroCiudadDocumentoInformacionPersonal() {
+        System.out.println("actualizarParametroCiudadDocumentoInformacionPersonal");
         RequestContext context = RequestContext.getCurrentInstance();
         nuevaPersona.setCiudaddocumento(ciudadSeleccionada);
         ciudadSeleccionada = new Ciudades();
@@ -4588,6 +4588,7 @@ public class ControlPersonaIndividual implements Serializable {
         context.update("formLovs:formDInformacionPersonal:aceptarCDIP");
         context.reset("formLovs:formDInformacionPersonal:lovCiudadDocumentoInformacionPersonal:globalFilter");
         context.execute("CiudadDocumentoInformacionPersonalDialogo.hide()");
+        System.out.println("nuevaPersona Ciudad Documento : "+nuevaPersona.getCiudaddocumento().getSecuencia());
     }
 
     public void cancelarParametroCiudadDocumentoInformacionPersonal() {
