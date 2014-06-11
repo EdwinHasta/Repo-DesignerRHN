@@ -617,7 +617,45 @@
 
                     <h:form id="formDInformacionPersonal">
 
-                        <p:dialog header="#{msg['empresaM']}" visible="true" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
+                        <p:dialog header="#{msg['empresaM']}" visible="true" widgetVar="EmpresaInformacionPersonalDialogoVisible" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogoVisible"  
+                                  showEffect="fade" hideEffect="fade" width="410" modal="true" >
+                            <p:dataTable id="lovEmpresaInformacionPersonalVisible" style=" width: 370px" var="empresaIPV" value="#{controlPersonaIndividual.lovEmpresas}" rowKey="#{empresaIPV.secuencia}"
+                                         selection="#{controlPersonaIndividual.empresaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpresaInformacionPersonalVisible" scrollable="true" scrollHeight="250"
+                                         emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovEmpresas}"
+                                         >
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}"  process="@this" onstart="lovEmpresaInformacionPersonalVisible.clearFilters()" />
+                                <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDInformacionPersonal:aceptarEIPV"/>
+                                <f:facet name="header">  
+                                    <h:outputText value="#{msg['buscarEIP']}"  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <p:inputText id="globalFilter" onkeyup="lovEmpresaInformacionPersonalVisible.filter();" style="width:150px; position: relative; left: 40px;" />  
+                                </f:facet>
+                                <p:column filterBy="#{empresaIPV.nombre}" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="#{msg['nombreEmpresa']}" />
+                                    </f:facet>
+                                    <h:outputText  value="#{empresaIPV.nombre}" />
+                                </p:column>
+                                <p:column filterBy="#{empresaIPV.nit}" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msg['nitEmpresa']}" />
+                                    </f:facet>
+                                    <h:outputText value="#{empresaIPV.nit}" />
+                                </p:column>
+                            </p:dataTable>
+
+                            <h:outputText id="infoRegistroEmpresaInformacionPersonalV" value="#{controlPersonaIndividual.infoRegistroEmpresaInformacionPersonal}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="EmpresaInformacionPersonalDialogoVisible.hide();
+                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroEmpresaInformacionPersonalVisible()}" update="lovEmpresaInformacionPersonalVisible, aceptarEIPV" process="@this" icon="ui-icon-check">
+                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter"/>
+                            </p:commandButton>
+                            <p:commandButton id="atrasEIPV" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="EmpresaInformacionPersonalDialogoVisible.hide();
+                                    operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroEmpresaInformacionPersonalVisible()}" update="lovEmpresaInformacionPersonalVisible" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                                <p:resetInput target=":formLovs:formDInformacionPersonal:lovEmpresaInformacionPersonalVisible:globalFilter"/>
+                            </p:commandButton>
+                        </p:dialog>
+                        
+                        <p:dialog header="#{msg['empresaM']}" widgetVar="EmpresaInformacionPersonalDialogo" draggable="false" resizable="false" closable="false" id="EmpresaInformacionPersonalDialogo"  
                                   showEffect="fade" hideEffect="fade" width="410" modal="true" >
                             <p:dataTable id="lovEmpresaInformacionPersonal" style=" width: 370px" var="empresaIP" value="#{controlPersonaIndividual.lovEmpresas}" rowKey="#{empresaIP.secuencia}"
                                          selection="#{controlPersonaIndividual.empresaSeleccionada}" scrollWidth="388" selectionMode="single" widgetVar="lovEmpresaInformacionPersonal" scrollable="true" scrollHeight="250"
@@ -1229,7 +1267,7 @@
                                          selection="#{controlPersonaIndividual.tipoContratoSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTipoContratoTipoContrato" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTiposContratos}"
                                          >
-                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroMotivoContratoTipoContrato()}"  process="@this" onstart="lovTipoContratoTipoContrato.clearFilters()" />
+                                <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTipoContratoTipoContrato()}"  process="@this" onstart="lovTipoContratoTipoContrato.clearFilters()" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDTipoContrato:aceptarTCTC"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTCTC']}"  style="position: absolute; left: 27px; top: 14px"/>  
@@ -1533,16 +1571,16 @@
                     <h:form id="formDAfiliacion">
 
                         <p:dialog header="#{msg['terceroM']}" widgetVar="TerceroAfiliacionDialogo" draggable="false" resizable="false" closable="false" id="TerceroAfiliacionDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="410" modal="true" >
-                            <p:dataTable id="lovTerceroAfiliacion" style=" width: 370px" var="terceroSA" value="#{controlPersonaIndividual.lovTercerosSucursales}" rowKey="#{terceroSA.secuencia}"
-                                         selection="#{controlPersonaIndividual.terceroSucursalSeleccionado}" scrollWidth="388" selectionMode="single" widgetVar="lovTerceroAfiliacion" scrollable="true" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" width="510" modal="true" >
+                            <p:dataTable id="lovTerceroAfiliacion" style=" width: 470px" var="terceroSA" value="#{controlPersonaIndividual.lovTercerosSucursales}" rowKey="#{terceroSA.secuencia}"
+                                         selection="#{controlPersonaIndividual.terceroSucursalSeleccionado}" scrollWidth="488" selectionMode="single" widgetVar="lovTerceroAfiliacion" scrollable="true" scrollHeight="250"
                                          emptyMessage="#{msg['lovvacio']}" filteredValue="#{controlPersonaIndividual.filtrarLovTercerosSucursales}"
                                          >
                                 <p:ajax event="rowDblselect" listener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}"  process="@this" onstart="lovTerceroAfiliacion.clearFilters()" />
                                 <p:ajax event="rowSelect" process="@this" immediate="true"  listener="#{controlPersonaIndividual.activarAceptar()}" update=":formLovs:formDAfiliacion:aceptarTSA"/>
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarTA']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovTerceroAfiliacion.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                    <p:inputText id="globalFilter" onkeyup="lovTerceroAfiliacion.filter();" style="width:150px; position: relative; left: -20px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{terceroSA.descripcion}" filterMatchMode="contains" >
                                     <f:facet name="header">
@@ -1550,21 +1588,28 @@
                                     </f:facet>
                                     <h:outputText  value="#{terceroSA.descripcion}" />
                                 </p:column>
+                                <p:column filterBy="#{terceroSA.tercero.nit}" filterMatchMode="contains" >
+                                    <f:facet name="header">
+                                        <h:outputText style="text-align: center" value="#{msg['nit']}" />
+                                    </f:facet>
+                                    <h:outputText  value="#{terceroSA.tercero.nit}" />
+                                </p:column>
                                 <p:column filterBy="#{terceroSA.tercero.empresa.nombre}" filterMatchMode="contains" >
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="#{msg['empresa']}" />
+                                        <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                     </f:facet>
                                     <h:outputText  value="#{terceroSA.tercero.empresa.nombre}" />
                                 </p:column>
+                               
                             </p:dataTable>
                             
                             <h:outputText id="infoRegistroTerceroAfiliacion" value="#{controlPersonaIndividual.infoRegistroTerceroAfiliacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton id="aceptarTSA" style="position: relative; left: 220px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TerceroAfiliacionDialogo.hide();
+                            <p:commandButton id="aceptarTSA" style="position: relative; left: 320px; top: 5px" value="#{msg['aceptar']}" disabled="#{controlPersonaIndividual.aceptar}" onclick="TerceroAfiliacionDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.actualizarParametroTerceroAfiliacion()}" update="lovTerceroAfiliacion, aceptarTSA" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":formLovs:formDAfiliacion:lovTerceroAfiliacion:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTA" style="position: relative; left: 220px; top: 5px" value="#{msg['atras']}" onclick="TerceroAfiliacionDialogo.hide();
+                            <p:commandButton id="atrasTA" style="position: relative; left: 320px; top: 5px" value="#{msg['atras']}" onclick="TerceroAfiliacionDialogo.hide();
                                     operacionEnProceso.show()" oncomplete="operacionEnProceso.hide()" actionListener="#{controlPersonaIndividual.cancelarParametroTerceroAfiliacion()}" update="lovTerceroAfiliacion" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                                 <p:resetInput target=":formLovs:formDAfiliacion:lovTerceroAfiliacion:globalFilter"/>
                             </p:commandButton>
