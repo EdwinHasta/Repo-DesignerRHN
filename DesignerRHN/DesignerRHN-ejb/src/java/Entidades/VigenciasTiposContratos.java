@@ -177,7 +177,6 @@ public class VigenciasTiposContratos implements Serializable {
     public Ciudades getCiudad() {
         if(ciudad == null){
             ciudad = new Ciudades();
-            ciudad.setNombre(" ");
          return ciudad;
         }else{
         return ciudad;    

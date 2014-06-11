@@ -98,10 +98,6 @@
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['fecha']}" />
-                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['motivo']}" sortBy="#{info.motivocontrato.nombre}" filterBy="#{info.motivocontrato.nombre}" filterMatchMode="contains" id="vtcContrato" width="150" filterStyle="display: none; visibility: hidden;" >                                  
@@ -118,7 +114,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooContrato" action="motivocontrato" actionListener="#{controlMotivosContratos.recibirPaginaEntrante('emplvigenciatipocontrato')}" value="#{msg['motivo']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooContrato" action="motivocontrato" actionListener="#{controlMotivosContratos.recibirPaginaEntrante('emplvigenciatipocontrato')}" value=" "/>
                                     </f:facet>
                                 </p:column>  
 
@@ -138,7 +134,7 @@
 
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooMotivos" action="tipocontrato" actionListener="#{controlTipoContrato.recibirPaginaEntrante('emplvigenciatipocontrato')}" value="#{msg['tipo']}" />
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue;" id="fooMotivos" action="tipocontrato" actionListener="#{controlTipoContrato.recibirPaginaEntrante('emplvigenciatipocontrato')}" value=" "/>
                                     </f:facet>
                                 </p:column>
 
@@ -157,7 +153,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue;" id="fooCargos" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplvigenciatipocontrato')}" value="#{msg['ciudad']}"/>
+                                        <p:commandButton style="width: 120px; margin: -14px; height: 26px; border: none; color: blue;" id="fooCargos" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplvigenciatipocontrato')}" value=" "/>
                                     </f:facet>
                                 </p:column>  
 
@@ -173,15 +169,13 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <lnk:calendar id="editarFechaInicialSP" value="#{info.iniciosustitucion}" height="12">
-                                                <p:ajax event="dateSelect" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N',info.iniciosustitucion)}" update="@this" process="@this" />
-                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N',info.iniciosustitucion)}" update="@this" process="@this" />
+                                            <lnk:calendar id="editarFechaInicialSP" value="#{info.iniciosustitucion}" height="12" width="88">
+                                                <p:ajax event="dateSelect" listener="#{controlVigenciasTiposContratos.modificarFechasNoObligatorias(indice)}" update="@this" process="@this" />
+                                                <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarFechasNoObligatorias(indice)}" update="@this" process="@this" />
                                                 <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 4)}"/>
                                             </lnk:calendar>
                                         </f:facet> 
                                     </p:cellEditor>
-
-                                    <f:facet name="footer"><h:outputText value="#{msg['fispH']}" /></f:facet>
                                 </p:column>  
 
                                 <p:column sortBy="#{info.inicioflexibiliza}" filterBy="#{info.inicioflexibiliza}" filterMatchMode="contains" id="vtcInicioFlexibilizacion" width="68" filterStyle="display: none; visibility: hidden;" >                                                              
@@ -196,15 +190,13 @@
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <lnk:calendar id="editarFechaInicialFlexi" value="#{info.inicioflexibiliza}" height="12">
+                                            <lnk:calendar id="editarFechaInicialFlexi" value="#{info.inicioflexibiliza}" height="12" width="88">
                                                 <p:ajax event="dateSelect" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.inicioflexibiliza)}" update="@this" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlVigenciasTiposContratos.modificarVTC(indice, 'N', info.inicioflexibiliza)}" update="@this" process="@this" />
                                                 <p:ajax event="select" listener="#{controlVigenciasTiposContratos.cambiarIndice(indice, 5)}" />
                                             </lnk:calendar>
                                         </f:facet> 
                                     </p:cellEditor>
-
-                                    <f:facet name="footer"><h:outputText value="#{msg['fifH']}" /></f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['observaciones']}" sortBy="#{info.observaciones}" filterBy="#{info.observaciones}" filterMatchMode="contains" id="vtcObservacion" width="150" filterStyle="display: none; visibility: hidden;" >                                                              
@@ -219,22 +211,16 @@
                                             </p:inputText> 
                                         </f:facet>  
                                     </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="Observaciones" />
-                                    </f:facet>
                                 </p:column> 
 
                                 <p:column headerText="P" width="25" style="height: 16px; padding: 0px;" exportable="false">  
                                     <f:facet name="header"><h:outputText value="#{msg['p']}" /></f:facet>
-                                    <p:commandButton style="background-image: url(Imagenes/revertir.gif); width:23px; height: 21px; background-repeat: no-repeat; background-size: 100% 100%;"/>                                
-                                    <f:facet name="footer"><h:outputText value="#{msg['p']}" /></f:facet>
+                                    <p:commandButton style="background-image: url(Imagenes/revertir.gif); width:23px; height: 21px; background-repeat: no-repeat; background-size: 100% 100%;"/>
                                 </p:column>
 
                                 <p:column headerText="S" width="25" style="height: 16px;padding: 0px;" exportable="false">  
                                     <f:facet name="header"><h:outputText value="#{msg['s']}" /></f:facet>
                                     <p:commandButton  style="width: 23px; height: 21px;padding: 0px; padding: 0px; padding-bottom: 0px; padding-top: 0px" id="selectButton" />
-                                    <f:facet name="footer"><h:outputText value="#{msg['s']}" /></f:facet>
                                 </p:column>     
                             </p:dataTable> 
                         </fieldset>
@@ -303,6 +289,12 @@
                     <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
                     </p:dialog>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasTiposContratos.activarCtrlF11()}"/> 

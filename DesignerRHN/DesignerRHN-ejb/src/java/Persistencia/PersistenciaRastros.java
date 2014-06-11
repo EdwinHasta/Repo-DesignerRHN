@@ -114,7 +114,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
-            System.out.println("Exepcion en verificarRastroTabla " + e);
+            System.out.println("Excepción en verificarRastroRegistroTabla " + e);
             return false;
         }
     }
@@ -128,7 +128,7 @@ public class PersistenciaRastros implements PersistenciaRastrosInterface {
             Long resultado = (Long) query.getSingleResult();
             return resultado > 0;
         } catch (Exception e) {
-            System.out.println("Exepcion en verificarRastroTabla " + e);
+            System.out.println("Exepcion en verificarRastroHistoricoTabla " + e);
             return false;
         }
     }

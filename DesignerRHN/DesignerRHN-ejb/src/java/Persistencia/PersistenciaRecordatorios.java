@@ -110,7 +110,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
     @Override
     public List<Recordatorios> consultasInicio(EntityManager entity) {
         try {
-            String consulta = "SELECT R.* FROM RECORDATORIOS R WHERE R.TIPO='CONSULTA' "
+            String consulta = "SELECT * FROM RECORDATORIOS R WHERE R.TIPO='CONSULTA' "
                     + "AND (R.DIA=0 OR R.DIA=TO_NUMBER(TO_CHAR(SYSDATE,'DD'))) AND (R.MES=0 "
                     + "OR R.MES=TO_NUMBER(TO_CHAR(SYSDATE,'MM'))) AND (R.ANO=0 "
                     + "OR R.ANO=TO_NUMBER(TO_CHAR(SYSDATE,'YYYY'))) "
@@ -120,7 +120,7 @@ public class PersistenciaRecordatorios implements PersistenciaRecordatoriosInter
             List<Recordatorios> listaConsultas = query.getResultList();
             return listaConsultas;
         } catch (Exception e) {
-            System.out.println("Error: PersistenciaRecordatorios.consultasInicio");
+            System.out.println("Error: PersistenciaRecordatorios.consultasInicio. " + e);
             return null;
         }
     }

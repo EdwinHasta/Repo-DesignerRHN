@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -255,6 +256,19 @@ public class ControlVigenciasUbicaciones implements Serializable {
             }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
+    }
+
+    public void cambioIndiceReadOnly() {
+        if (permitirIndex == true) {
+            FacesContext contexto = FacesContext.getCurrentInstance();
+            RequestContext context = RequestContext.getCurrentInstance();
+            Map<String, String> map = contexto.getExternalContext().getRequestParameterMap();
+            String campo = map.get("INDEX");
+            index = Integer.parseInt(campo);
+            secRegistro = vigenciasUbicaciones.get(index).getSecuencia();
+            cualCelda = 2;
+            System.out.println("Index: " + index);
+        }
     }
 
     //AUTOCOMPLETAR NUEVO Y DUPLICADO
@@ -971,6 +985,5 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
     }
-    
-    
+
 }
