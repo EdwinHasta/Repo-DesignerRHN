@@ -123,10 +123,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDescansos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDescansos.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposDescansos.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlTiposDescansos.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlTiposDescansos.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlTiposDescansos.revisarDialogoGuardar()}" disabled="#{controlTiposDescansos.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -244,7 +252,7 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código : "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlTiposDescansos.nuevoTiposDescansos.codigo}" style=" width: 135px; position: absolute; left: 158px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlTiposDescansos.nuevoTiposDescansos.codigo}" style=" width: 135px; position: absolute; left: 158px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -256,12 +264,12 @@
                             <p:watermark for="nuevoNombre" value="Descripcion" />
 
                             <strong><h:outputText value="Dias Trabajados : "  style="left: 10px; position: absolute; top: 120px;" /></strong>
-                            <p:inputText  id="nuevoDiasTrabajados" value="#{controlTiposDescansos.nuevoTiposDescansos.diastrabajados}" style=" width: 135px; position: absolute; left: 158px; top: 115px;">
+                            <p:inputText  id="nuevoDiasTrabajados" value="#{controlTiposDescansos.nuevoTiposDescansos.diastrabajados}" style=" width: 135px; position: absolute; left: 158px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoDiasTrabajados" value="Dias Trabajados "  />
                             <strong><h:outputText value="Dias Descansados : "  style="left: 10px; position: absolute; top: 150px;" /></strong>
-                            <p:inputText  id="nuevoDiasDescansados" value="#{controlTiposDescansos.nuevoTiposDescansos.diasdescansados}" style=" width: 135px; position: absolute; left: 158px; top: 145px;">
+                            <p:inputText  id="nuevoDiasDescansados" value="#{controlTiposDescansos.nuevoTiposDescansos.diasdescansados}" style=" width: 135px; position: absolute; left: 158px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoDiasDescansados" value="Dias Descansados" />
@@ -278,13 +286,13 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*Código : "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlTiposDescansos.duplicarTiposDescansos.codigo}" style=" width: 135px; position: absolute; left: 158px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" value="#{controlTiposDescansos.duplicarTiposDescansos.codigo}" style=" width: 135px; position: absolute; left: 158px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción :"  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposDescansos.duplicarTiposDescansos.descripcion}"  style=" width: 135px; position: absolute; left: 158px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlTiposDescansos.duplicarTiposDescansos.descripcion}"  style=" width: 135px; position: absolute; left: 158px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
