@@ -65,6 +65,7 @@ public class ControlMotivosContratos implements Serializable {
     private Integer backUpCodigo;
     private String backUpDescripcion;
     private String infoRegistro;
+    public String paginaAnterior;
 
     public ControlMotivosContratos() {
 
@@ -102,6 +103,14 @@ public class ControlMotivosContratos implements Serializable {
         } catch (Exception e) {
             System.out.println("ERROR ControlMotiviosCambiosCargos eventoFiltrar ERROR===" + e.getMessage());
         }
+    }
+    
+    public void recibirPaginaEntrante(String pagina){
+        paginaAnterior = pagina;
+        }
+    
+    public String redirigir(){
+        return paginaAnterior;
     }
 
     public void cambiarIndice(int indice, int celda) {

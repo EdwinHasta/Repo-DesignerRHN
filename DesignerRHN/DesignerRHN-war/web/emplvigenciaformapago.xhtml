@@ -6,7 +6,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
-
     <h:head>
     </h:head>
     <h:body>
@@ -291,9 +290,7 @@
                                     </f:facet>
                                     <h:outputText value="#{metodospagos.descripcion}" />
                                 </p:column>
-
                             </p:dataTable>
-
 
                             <h:outputText id="infoRegistroMetodosPagos" value="#{controlVigenciasFormasPagos.infoRegistroMetodosPagos}" style="position: absolute; left: 15px; top: 275px; font-weight: bold"/>
 
@@ -405,8 +402,6 @@
                         </p:inputTextarea>
                     </p:dialog>
 
-
-
                     <p:dialog id="editCuenta" header="Cuenta" widgetVar="editCuenta" resizable="false" draggable="false" modal="true" height="55" width="240" style="">  
                         <p:inputTextarea value="#{controlVigenciasFormasPagos.editarVigenciaFormasPagoPorEmpleado.cuenta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
@@ -430,8 +425,6 @@
                     <p:dialog id="editMetodoPago" header="Metodo de Pago" widgetVar="editMetodoPago" resizable="false" draggable="false" modal="true" height="55" width="240" style="">  
                         <p:inputTextarea value="#{controlVigenciasFormasPagos.editarVigenciaFormasPagoPorEmpleado.metodopago.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
-
-
 
                     <p:dialog id="NuevoRegistroVigenciasFormasPagos" header="Nuevo Registro" widgetVar="NuevoRegistroVigenciasFormasPagos" closable="false" resizable="false"  draggable="false" modal="true" height="380" width="360" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Ingresar nueva información del empleado " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 

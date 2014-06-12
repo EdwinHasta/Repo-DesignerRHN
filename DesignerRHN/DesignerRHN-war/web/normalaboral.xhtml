@@ -104,8 +104,8 @@
                         </p:toolbar>
 
                         <h:outputText id="informacionRegistro" value="#{controlNormasLaborales.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlNormasLaborales.guardado}"  update="datosNormaLaboral"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="atrasNormaLaboral"   />
+                        <p:commandButton style=" position: absolute; left: 683px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlNormasLaborales.guardado}"  update="datosNormaLaboral"  process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 775px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="Atras" action="#{controlNormasLaborales.redirigir()}"   />
 
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
@@ -116,10 +116,6 @@
                             <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
                     </p:panel>
-
-
-
-
 
                     <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />

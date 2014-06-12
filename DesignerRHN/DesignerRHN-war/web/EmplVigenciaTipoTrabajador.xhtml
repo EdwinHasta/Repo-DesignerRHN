@@ -59,7 +59,7 @@
                                 <p:separator style="position: relative; top: -9px"/>
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
-                                
+
                                 <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.cancelarModificacion()}" process="@this"/>  
@@ -67,7 +67,7 @@
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlVigenciaTipoTrabajador.salir()}" action="nomina" process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
-                                
+
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
@@ -148,9 +148,9 @@
                                 </p:column> 
                             </p:dataTable>  
                         </fieldset>
-                        
+
                         <p:remoteCommand name="posicionTabla" actionListener="#{controlVigenciaTipoTrabajador.posicionTabla()}"/>
-                        
+
                         <p:panel id="panelPensionadosMensaje" header="#{msg['informacionP']}" style="position: absolute; left: 12px; top: 280px;  width: 410px; height: 195px; border-radius: 10px; text-align: left; visibility: visible">
                             <h:outputText value="#{msg['panelPensionadosMensaje']}" />
                         </p:panel>
@@ -619,7 +619,7 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="guardarCambiosRetiros.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>
 
-
+                    
                     <p:dialog id="informacionEliminarExtrabajador" header="#{msg['atencion']}" widgetVar="informacionEliminarExtrabajador"  resizable="false" draggable="false" modal="true" height="100" width="450px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['informacionEliminarExtrabajador']}" style="position: absolute; left: 100px; top: 20px; width: 340px;" />

@@ -2204,9 +2204,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<Personas> getListaPersonas() {
-
+        
         listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
-
+       
         return listaPersonas;
     }
 
@@ -2342,4 +2342,4 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void setFiltradoMotivosRetiros(List<MotivosRetiros> filtradoMotivosRetiros) {
         this.filtradoMotivosRetiros = filtradoMotivosRetiros;
     }
-}
+    }

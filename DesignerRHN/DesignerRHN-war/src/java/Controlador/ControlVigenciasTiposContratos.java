@@ -83,6 +83,8 @@ public class ControlVigenciasTiposContratos implements Serializable {
     private String altoTabla;
     public String infoRegistro;
     private Date fechaVigenciaBck;
+    public String infoRegistroCiudades;
+    public String infoRegistroTiposContratos;
 
     public ControlVigenciasTiposContratos() {
         permitirIndex = true;
@@ -1388,6 +1390,14 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public List<Ciudades> getListaCiudades() {
         listaCiudades = administrarVigenciasTiposContratos.ciudades();
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaCiudades == null || listaCiudades.isEmpty()) {
+            infoRegistroCiudades = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroCiudades = "Cantidad de registros: " + listaCiudades.size();
+        }
+        context.update("form:infoRegistroCiudades");
         return listaCiudades;
     }
 
@@ -1442,6 +1452,14 @@ public class ControlVigenciasTiposContratos implements Serializable {
 
     public List<TiposContratos> getListaTiposContratos() {
         listaTiposContratos = administrarVigenciasTiposContratos.tiposContratos();
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaTiposContratos == null || listaTiposContratos.isEmpty()) {
+            infoRegistroTiposContratos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroTiposContratos = "Cantidad de registros: " + listaTiposContratos.size();
+        }
+        context.update("form:infoRegistroTiposContratos");
         return listaTiposContratos;
     }
 
@@ -1484,5 +1502,23 @@ public class ControlVigenciasTiposContratos implements Serializable {
     public String getInfoRegistro() {
         return infoRegistro;
     }
+
+    public String getInfoRegistroCiudades() {
+        return infoRegistroCiudades;
+    }
+
+    public void setInfoRegistroCiudades(String infoRegistroCiudades) {
+        this.infoRegistroCiudades = infoRegistroCiudades;
+    }
+
+    public String getInfoRegistroTiposContratos() {
+        return infoRegistroTiposContratos;
+    }
+
+    public void setInfoRegistroTiposContratos(String infoRegistroTiposContratos) {
+        this.infoRegistroTiposContratos = infoRegistroTiposContratos;
+    }
+    
+    
 
 }
