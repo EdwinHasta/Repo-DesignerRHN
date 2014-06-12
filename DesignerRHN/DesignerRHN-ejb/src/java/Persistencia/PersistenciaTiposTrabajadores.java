@@ -60,7 +60,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             if (tx.isActive()) {
                 tx.rollback();
             }
-        }
+        } 
     }
 
     @Override
@@ -121,7 +121,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, reformaLaboral);
             String retorno = (String) query.getSingleResult();
             if (retorno == null) {
-                retorno = "N";
+                retorno = "S";
             }
             return retorno;
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, tipoSueldo);
             String retorno = (String) query.getSingleResult();
             if (retorno == null) {
-                retorno = "N";
+                retorno = "S";
             }
             return retorno;
         } catch (Exception e) {
@@ -157,7 +157,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, tipoContrato);
             String retorno = (String) query.getSingleResult();
             if (retorno == null) {
-                retorno = "N";
+                retorno = "S";
             }
             return retorno;
         } catch (Exception e) {
@@ -175,7 +175,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, contrato);
             String retorno = (String) query.getSingleResult();
             if (retorno == null) {
-                retorno = "N";
+                retorno = "S";
             }
             return retorno;
         } catch (Exception e) {
@@ -193,7 +193,7 @@ public class PersistenciaTiposTrabajadores implements PersistenciaTiposTrabajado
             query.setParameter(2, normaLaboral);
             String retorno = (String) query.getSingleResult();
             if (retorno == null) {
-                retorno = "N";
+                retorno = "S";
             }
             return retorno;
         } catch (Exception e) {

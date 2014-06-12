@@ -89,7 +89,6 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");
         List<TiposExamenes> listMotivosDemandas = query.getResultList();
         return listMotivosDemandas;
-
     }
 
     @Override

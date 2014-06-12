@@ -43,6 +43,7 @@ public class ControlCerrarLiquidacion implements Serializable {
         totalEmpleadosParaLiquidar = 0;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     }
+    
     @PostConstruct
     public void inicializarAdministrador() {
         try {

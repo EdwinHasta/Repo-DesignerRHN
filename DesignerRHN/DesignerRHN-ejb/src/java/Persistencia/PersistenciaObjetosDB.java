@@ -26,6 +26,7 @@ public class PersistenciaObjetosDB implements PersistenciaObjetosDBInterface{
     @Override
     public ObjetosDB obtenerObjetoTabla(EntityManager em, String nombreTabla) {
         try {
+            System.out.println("em: " + em);
             Query query = em.createQuery("SELECT COUNT(obj) FROM ObjetosDB obj WHERE obj.nombre = :nombreTabla");
             query.setParameter("nombreTabla", nombreTabla);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
@@ -41,7 +42,7 @@ public class PersistenciaObjetosDB implements PersistenciaObjetosDBInterface{
                 return null;
             }
         } catch (Exception e) {
-            System.out.println("Exepcion en verificarRastroTabla " + e);
+            System.out.println("Excepcion en verificarRastroTabla " + e);
             return null;
         }
     }

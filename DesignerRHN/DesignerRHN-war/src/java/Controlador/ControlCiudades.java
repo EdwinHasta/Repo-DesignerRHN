@@ -114,6 +114,7 @@ public class ControlCiudades implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCiudades.obtenerConexion(ses.getId());
             administrarDepartamentos.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
             System.out.println("Causa: " + e.getCause());

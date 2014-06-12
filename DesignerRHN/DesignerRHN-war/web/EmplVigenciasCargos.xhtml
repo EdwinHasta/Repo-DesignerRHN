@@ -235,7 +235,10 @@
                                 <p:column headerText="#{msg['empresaE']}" filterBy="#{estr.organigrama.empresa.nombre}" filterMatchMode="contains" >  
                                     <h:outputText value="#{estr.organigrama.empresa.nombre}" style="height: 12px;" />  
                                 </p:column>
-                            </p:dataTable>                         
+                            </p:dataTable>          
+
+                            <h:outputText id="infoRegistroEstructuras" value="#{controlVigenciasCargos.infoRegistroEstructuras}" style="position: relative; top: 15px; font-weight: bold"/>
+
                             <p:commandButton id="aceptarE" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 552px; " icon="ui-icon-check" onclick="estructurasLOV.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarEstructura()}" update="aceptarE" process="@this">
                                 <p:resetInput target=":form:lOVEstructuras:globalFilter"/>
                             </p:commandButton>
@@ -270,6 +273,9 @@
                                     <h:outputText value="#{mot.nombre}" />
                                 </p:column>
                             </p:dataTable>
+
+                            <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: relative; top: 15px; font-weight: bold"/>
+
                             <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check" onclick="datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" update="aceptarM" process="@this">
                                 <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
                             </p:commandButton>
@@ -309,7 +315,10 @@
                                     </f:facet>
                                     <h:outputText value="#{carg.empresa.nombre}" />  
                                 </p:column>
-                            </p:dataTable>                         
+                            </p:dataTable>       
+
+                            <h:outputText id="infoRegistroCargos" value="#{controlVigenciasCargos.infoRegistroCargos}" style="position: relative; top: 15px; font-weight: bold"/>
+
                             <p:commandButton id="aceptarC" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" style="position: absolute; top: 390px; left: 308px; " onclick="cargosLOV.clearFilters();" icon="ui-icon-check" actionListener="#{controlVigenciasCargos.actualizarCargo()}" update="aceptarC" process="@this">
                                 <p:resetInput target=":form:lOVCargos:globalFilter"/>
                             </p:commandButton>
@@ -408,7 +417,7 @@
                     <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px" update=":form:datosVCEmpleado" process="@this" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
@@ -460,7 +469,7 @@
                     <!-- Hotkey Ctrl + F11 -->
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasCargos.activarCtrlF11()}"/> 
                 </h:form>
-                
+
                 <h:form id="formularioDialogos">
 
                     <p:dialog id="NuevoRegistroVC" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVC" closable="false" resizable="false"  draggable="false" modal="true" height="330" width="300" style=" padding: 0px">  

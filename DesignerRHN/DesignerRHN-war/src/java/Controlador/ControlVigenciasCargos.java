@@ -113,6 +113,9 @@ public class ControlVigenciasCargos implements Serializable {
     private String infoRegistro;
     private String altoTabla;
     private String cantidadRegistrosLOV;
+    private String infoRegistroEstructuras;
+    private String infoRegistroMotivos;
+    private String infoRegistroCargos;
     //------------------------------------------------------------------------------------------
     //CONSTRUCTOR(ES)
     //------------------------------------------------------------------------------------------
@@ -176,6 +179,7 @@ public class ControlVigenciasCargos implements Serializable {
             administrarVigenciasCargos.obtenerConexion(ses.getId());
             administrarMotivosCambiosCargos.obtenerConexion(ses.getId());
             administrarEstructuras.obtenerConexion(ses.getId());
+            administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
             System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
             System.out.println("Causa: " + e.getCause());
@@ -264,8 +268,15 @@ public class ControlVigenciasCargos implements Serializable {
     //EstructurasLOV-----------------------------------------
 
     public List<Estructuras> getEstructurasLOV() {
-        return estructurasLOV = administrarEstructuras.consultarTodoEstructuras();
-
+        estructurasLOV = administrarEstructuras.consultarTodoEstructuras();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (estructurasLOV == null || estructurasLOV.isEmpty()) {
+            infoRegistroEstructuras = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroEstructuras = "Cantidad de registros: " + estructurasLOV.size();
+        }
+        context.update("form:infoRegistroEstructuras");
+        return estructurasLOV;
     }
 
     public void setEstructurasLOV(List<Estructuras> estructurasLOV) {
@@ -293,12 +304,30 @@ public class ControlVigenciasCargos implements Serializable {
     //MotivosCambiosCargos---------------------------------
 
     public List<MotivosCambiosCargos> getMotivosCambiosCargos() {
-        return motivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
+        motivosCambiosCargos = administrarMotivosCambiosCargos.consultarMotivosCambiosCargos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (motivosCambiosCargos == null || motivosCambiosCargos.isEmpty()) {
+            infoRegistroMotivos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroMotivos = "Cantidad de registros: " + motivosCambiosCargos.size();
+        }
+        context.update("form:infoRegistroEstructuras");
+        return motivosCambiosCargos;
     }
 
     public void setMotivosCambiosCargos(List<MotivosCambiosCargos> motivosCambiosCargos) {
         this.motivosCambiosCargos = motivosCambiosCargos;
     }
+
+    public String getInfoRegistroMotivos() {
+        return infoRegistroMotivos;
+    }
+
+    public void setInfoRegistroMotivos(String infoRegistroMotivos) {
+        this.infoRegistroMotivos = infoRegistroMotivos;
+    }
+    
+    
     //FilterMotivos---------------------------------------
 
     public List<MotivosCambiosCargos> getFilterMotivos() {
@@ -331,12 +360,29 @@ public class ControlVigenciasCargos implements Serializable {
     //Cargos------------------------------------------------
 
     public List<Cargos> getCargos() {
-        return cargos = administrarEstructuras.consultarTodoCargos();
+        cargos = administrarEstructuras.consultarTodoCargos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (cargos == null || cargos.isEmpty()) {
+            infoRegistroCargos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroCargos = "Cantidad de registros: " + cargos.size();
+        }
+        context.update("form:infoRegistroEstructuras");
+        return cargos;
     }
 
     public void setCargos(List<Cargos> cargos) {
         this.cargos = cargos;
     }
+
+    public String getInfoRegistroCargos() {
+        return infoRegistroCargos;
+    }
+
+    public void setInfoRegistroCargos(String infoRegistroCargos) {
+        this.infoRegistroCargos = infoRegistroCargos;
+    }
+    
     //CargosFilter------------------------------------------
 
     public List<Cargos> getCargosFilter() {
@@ -2151,6 +2197,14 @@ public class ControlVigenciasCargos implements Serializable {
 
     public void setCantidadRegistrosLOV(String cantidadRegistrosLOV) {
         this.cantidadRegistrosLOV = cantidadRegistrosLOV;
+    }
+
+    public String getInfoRegistroEstructuras() {
+        return infoRegistroEstructuras;
+    }
+
+    public void setInfoRegistroEstructuras(String infoRegistroEstructuras) {
+        this.infoRegistroEstructuras = infoRegistroEstructuras;
     }
 
 }

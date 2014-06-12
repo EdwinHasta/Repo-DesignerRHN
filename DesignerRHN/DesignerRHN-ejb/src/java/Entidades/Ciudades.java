@@ -32,15 +32,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Ciudades.findAll", query = "SELECT c FROM Ciudades c")})
 public class Ciudades implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
-    private Collection<Juzgados> juzgadosCollection;
-    @OneToMany(mappedBy = "ciudad")
-    private Collection<ParametrosInformes> parametrosInformesCollection;
-    @OneToMany(mappedBy = "ciudad")
-    private Collection<Telefonos> telefonosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ciudad")
-    private Collection<Direcciones> direccionesCollection;
-
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -223,41 +214,5 @@ public class Ciudades implements Serializable {
 
     public void setVigenciastiposcontratosCollection(Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection) {
         this.vigenciastiposcontratosCollection = vigenciastiposcontratosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Telefonos> getTelefonosCollection() {
-        return telefonosCollection;
-    }
-
-    public void setTelefonosCollection(Collection<Telefonos> telefonosCollection) {
-        this.telefonosCollection = telefonosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Direcciones> getDireccionesCollection() {
-        return direccionesCollection;
-    }
-
-    public void setDireccionesCollection(Collection<Direcciones> direccionesCollection) {
-        this.direccionesCollection = direccionesCollection;
-    }
-
-    @XmlTransient
-    public Collection<ParametrosInformes> getParametrosInformesCollection() {
-        return parametrosInformesCollection;
-    }
-
-    public void setParametrosInformesCollection(Collection<ParametrosInformes> parametrosInformesCollection) {
-        this.parametrosInformesCollection = parametrosInformesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Juzgados> getJuzgadosCollection() {
-        return juzgadosCollection;
-    }
-
-    public void setJuzgadosCollection(Collection<Juzgados> juzgadosCollection) {
-        this.juzgadosCollection = juzgadosCollection;
     }
 }

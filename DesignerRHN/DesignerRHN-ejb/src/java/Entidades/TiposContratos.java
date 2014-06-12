@@ -32,16 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposContratos.findAll", query = "SELECT t FROM TiposContratos t")})
 public class TiposContratos implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocontrato")
-    private Collection<DiasLaborables> diasLaborablesCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocontrato")
-    private Collection<VigenciasConceptosTC> vigenciasconceptostcCollection;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocontrato")
-    private Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection;
-    @OneToMany(mappedBy = "tipocontrato")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
+    
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -53,9 +44,6 @@ public class TiposContratos implements Serializable {
     @NotNull
     @Column(name = "CODIGO")
     private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "DURACIONPERIODOPRUEBA")
@@ -209,39 +197,5 @@ public class TiposContratos implements Serializable {
     @Override
     public String toString() {
         return "Entidades.Tiposcontratos[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    public Collection<VigenciasTiposContratos> getVigenciastiposcontratosCollection() {
-        return vigenciastiposcontratosCollection;
-    }
-
-    public void setVigenciastiposcontratosCollection(Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection) {
-        this.vigenciastiposcontratosCollection = vigenciastiposcontratosCollection;
-    }
-
-    public Collection<VigenciasConceptosTC> getVigenciasconceptostcCollection() {
-        return vigenciasconceptostcCollection;
-    }
-
-    public void setVigenciasconceptostcCollection(Collection<VigenciasConceptosTC> vigenciasconceptostcCollection) {
-        this.vigenciasconceptostcCollection = vigenciasconceptostcCollection;
-    }
-
-    @XmlTransient
-    public Collection<DiasLaborables> getDiasLaborablesCollection() {
-        return diasLaborablesCollection;
-    }
-
-    public void setDiasLaborablesCollection(Collection<DiasLaborables> diasLaborablesCollection) {
-        this.diasLaborablesCollection = diasLaborablesCollection;
     }
 }

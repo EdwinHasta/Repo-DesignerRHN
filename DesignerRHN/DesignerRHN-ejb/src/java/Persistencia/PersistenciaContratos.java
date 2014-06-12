@@ -112,22 +112,29 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
 
     @Override
     public void reproducirContrato(EntityManager em, Short codigoOrigen, Short codigoDestino) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
         try {
+            tx.begin();
             String sqlQuery = "call FORMULASCONTRATOS_PKG.CLONARLEGISLACION(?, ?)";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, codigoOrigen);
             query.setParameter(2, codigoDestino);
             query.executeUpdate();
+            tx.commit();
         } catch (Exception e) {
             System.out.println("Error en reproducirContrato: " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
-    
+
     ///@Override
-    public List<Contratos> buscarContratosPorUsuario(EntityManager em) {        
+    public List<Contratos> buscarContratosPorUsuario(EntityManager em) {
         try {
             String sqlQuery = "SELECT  c.* FROM CONTRATOS c where exists (select 'x' from usuarios u, usuarioscontratos uc where u.alias=user and u.secuencia=uc.usuario and uc.contrato=c.secuencia) ORDER BY c.DESCRIPCION";
-            Query query = em.createNativeQuery(sqlQuery,Contratos.class);
+            Query query = em.createNativeQuery(sqlQuery, Contratos.class);
             List<Contratos> lista = query.getResultList();
             return lista;
         } catch (Exception e) {

@@ -41,8 +41,6 @@ public class MotivosContratos implements Serializable {
     private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "motivocontrato")
-    private Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection;
 
     public MotivosContratos() {
     }
@@ -84,14 +82,6 @@ public class MotivosContratos implements Serializable {
         } else {
             this.nombre = nombre;
         }
-    }
-
-    public Collection<VigenciasTiposContratos> getVigenciastiposcontratosCollection() {
-        return vigenciastiposcontratosCollection;
-    }
-
-    public void setVigenciastiposcontratosCollection(Collection<VigenciasTiposContratos> vigenciastiposcontratosCollection) {
-        this.vigenciastiposcontratosCollection = vigenciastiposcontratosCollection;
     }
 
     @Override

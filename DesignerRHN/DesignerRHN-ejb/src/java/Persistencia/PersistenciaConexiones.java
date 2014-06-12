@@ -38,11 +38,9 @@ public class PersistenciaConexiones implements PersistenciaConexionesInterface {
     @Override
     public BigInteger buscarSID(EntityManager em) {
         try {
-            em.getTransaction().begin();
             String sqlQuery = "select sys_context('USERENV','SID') FROM DUAL";
             Query query = em.createNativeQuery(sqlQuery);
             String strSID = (String) query.getSingleResult();
-            em.getTransaction().commit();
             BigInteger SID = new BigInteger(strSID);
             return SID;
         } catch (Exception e) {
@@ -55,22 +53,18 @@ public class PersistenciaConexiones implements PersistenciaConexionesInterface {
     public void verificarSID(EntityManager em, Conexiones conexion) {
         try {
             BigInteger SID = buscarSID(em);
-            em.getTransaction().begin();
             Query query = em.createQuery("SELECT COUNT(c) FROM Conexiones c WHERE c.sid = :SID");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             query.setParameter("SID", SID);
             Long conteo = (Long) query.getSingleResult();
-            em.getTransaction().commit();
             conexion.setSid(SID);
             if (conteo == 0) {
                 crear_Modificar(conexion, em);
             } else {
-                em.getTransaction().begin();
                 query = em.createQuery("SELECT c.secuencia FROM Conexiones c WHERE c.sid = :SID");
                 query.setHint("javax.persistence.cache.storeMode", "REFRESH");
                 query.setParameter("SID", SID);
                 BigInteger secuenciaConexion = (BigInteger) query.getSingleResult();
-                em.getTransaction().commit();
                 conexion.setSecuencia(secuenciaConexion);
                 crear_Modificar(conexion, em);
             }
