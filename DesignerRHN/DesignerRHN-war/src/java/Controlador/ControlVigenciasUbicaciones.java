@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -75,6 +76,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public String infoRegistro;
     //RASTROS
     private BigInteger secRegistro;
+    //CONTROL FECHA
+    private Date fechaVigenciaBck;
 
     public ControlVigenciasUbicaciones() {
         vigenciasUbicaciones = null;
@@ -156,38 +159,77 @@ public class ControlVigenciasUbicaciones implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            if (tipoLista == 0) {
-                if (!listVUCrear.contains(vigenciasUbicaciones.get(indice))) {
+            System.out.println("valor Confirmar: " + valorConfirmar);
+            if (!valorConfirmar.isEmpty()) {
+                int control = 0;
+                if (tipoLista == 0) {
+                    for (int i = 0; i < vigenciasUbicaciones.size(); i++) {
+                        if (i == indice) {
+                            i++;
+                            if (i >= vigenciasUbicaciones.size()) {
+                                break;
+                            }
+                        }
+                        if (vigenciasUbicaciones.get(i).getFechavigencia().compareTo(vigenciasUbicaciones.get(indice).getFechavigencia()) == 0) {
+                            control++;
+                            vigenciasUbicaciones.get(indice).setFechavigencia(fechaVigenciaBck);
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < filtrarVU.size(); i++) {
+                        if (i == indice) {
+                            i++;
+                            if (i >= filtrarVU.size()) {
+                                break;
+                            }
+                        }
+                        if (filtrarVU.get(i).getFechavigencia().compareTo(filtrarVU.get(indice).getFechavigencia()) == 0) {
+                            control++;
+                            filtrarVU.get(indice).setFechavigencia(fechaVigenciaBck);
+                        }
+                    }
+                }
+                if (control == 0) {
+                    if (tipoLista == 0) {
+                        if (!listVUCrear.contains(vigenciasUbicaciones.get(indice))) {
 
-                    if (listVUModificar.isEmpty()) {
-                        listVUModificar.add(vigenciasUbicaciones.get(indice));
-                    } else if (!listVUModificar.contains(vigenciasUbicaciones.get(indice))) {
-                        listVUModificar.add(vigenciasUbicaciones.get(indice));
+                            if (listVUModificar.isEmpty()) {
+                                listVUModificar.add(vigenciasUbicaciones.get(indice));
+                            } else if (!listVUModificar.contains(vigenciasUbicaciones.get(indice))) {
+                                listVUModificar.add(vigenciasUbicaciones.get(indice));
+                            }
+                        }
+                        index = -1;
+                        secRegistro = null;
+                    } else {
+                        if (!listVUCrear.contains(filtrarVU.get(indice))) {
+
+                            if (listVUModificar.isEmpty()) {
+                                listVUModificar.add(filtrarVU.get(indice));
+                            } else if (!listVUModificar.contains(filtrarVU.get(indice))) {
+                                listVUModificar.add(filtrarVU.get(indice));
+                            }
+                        }
+                        index = -1;
+                        secRegistro = null;
                     }
                     if (guardado == true) {
                         guardado = false;
                         context.update("form:ACEPTAR");
                     }
+                } else {
+                    context.execute("validacionFechaDuplicada.show();");
                 }
-                index = -1;
-                secRegistro = null;
             } else {
-                if (!listVUCrear.contains(filtrarVU.get(indice))) {
-
-                    if (listVUModificar.isEmpty()) {
-                        listVUModificar.add(filtrarVU.get(indice));
-                    } else if (!listVUModificar.contains(filtrarVU.get(indice))) {
-                        listVUModificar.add(filtrarVU.get(indice));
-                    }
-                    if (guardado == true) {
-                        guardado = false;
-                        context.update("form:ACEPTAR");
-                    }
+                if (tipoLista == 0) {
+                    vigenciasUbicaciones.get(indice).setFechavigencia(fechaVigenciaBck);
+                } else {
+                    filtrarVU.get(indice).setFechavigencia(fechaVigenciaBck);
                 }
                 index = -1;
                 secRegistro = null;
+                context.execute("validacionFechaVacia.show();");
             }
-            context.update("form:datosVUEmpleado");
         } else if (confirmarCambio.equalsIgnoreCase("UBICACION")) {
             if (tipoLista == 0) {
                 vigenciasUbicaciones.get(indice).getUbicacion().setDescripcion(ubicacion);
@@ -251,11 +293,21 @@ public class ControlVigenciasUbicaciones implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = vigenciasUbicaciones.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    fechaVigenciaBck = vigenciasUbicaciones.get(index).getFechavigencia();
+                } else {
+                    fechaVigenciaBck = filtrarVU.get(index).getFechavigencia();
+                }
+            }
             if (cualCelda == 1) {
-                ubicacion = vigenciasUbicaciones.get(index).getUbicacion().getDescripcion();
+                if (tipoLista == 0) {
+                    ubicacion = vigenciasUbicaciones.get(index).getUbicacion().getDescripcion();
+                } else {
+                    ubicacion = filtrarVU.get(index).getUbicacion().getDescripcion();
+                }
             }
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     public void cambioIndiceReadOnly() {
