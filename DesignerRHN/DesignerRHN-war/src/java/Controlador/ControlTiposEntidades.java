@@ -67,6 +67,7 @@ public class ControlTiposEntidades implements Serializable {
     private BigInteger borradoFCE;
     private int registrosBorrados;
     private int tamano;
+    private String infoRegistro;
 
     public ControlTiposEntidades() {
         listTiposEntidades = null;
@@ -80,8 +81,9 @@ public class ControlTiposEntidades implements Serializable {
         nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
         guardado = true;
         tamano = 270;
+        aceptar = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -89,11 +91,11 @@ public class ControlTiposEntidades implements Serializable {
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTipoEntidad.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposEntidades.eventoFiltrar \n");
@@ -290,7 +292,7 @@ public class ControlTiposEntidades implements Serializable {
                         banderita = false;
                         listTiposEntidades.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (listTiposEntidades.get(indice).getNombre().equals(" ")) {
+                    if (listTiposEntidades.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listTiposEntidades.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
@@ -341,7 +343,7 @@ public class ControlTiposEntidades implements Serializable {
                         banderita = false;
                         listTiposEntidades.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (listTiposEntidades.get(indice).getNombre().equals(" ")) {
+                    if (listTiposEntidades.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listTiposEntidades.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
@@ -386,7 +388,7 @@ public class ControlTiposEntidades implements Serializable {
                         banderita = false;
                         filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (filtrarTiposEntidades.get(indice).getNombre().equals(" ")) {
+                    if (filtrarTiposEntidades.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
@@ -433,7 +435,7 @@ public class ControlTiposEntidades implements Serializable {
                         banderita = false;
                         filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
                     }
-                    if (filtrarTiposEntidades.get(indice).getNombre().equals(" ")) {
+                    if (filtrarTiposEntidades.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarTiposEntidades.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
@@ -607,7 +609,52 @@ public class ControlTiposEntidades implements Serializable {
         listTiposEntidades = null;
         guardado = true;
         permitirIndex = true;
+        getListTiposEntidades();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTipoEntidad");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            tamano = 270;
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:nombre");
+            nombre.setFilterStyle("display: none; visibility: hidden;");
+            grupoAsociado = (Column) c.getViewRoot().findComponent("form:datosTipoEntidad:grupoAsociado");
+            grupoAsociado.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoEntidad");
+            bandera = 0;
+            filtrarTiposEntidades = null;
+            tipoLista = 0;
+        }
+
+        borrarTiposEntidades.clear();
+        crearTiposEntidades.clear();
+        modificarTiposEntidades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposEntidades = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposEntidades();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosTipoEntidad");
         context.update("form:ACEPTAR");
     }
@@ -623,7 +670,7 @@ public class ControlTiposEntidades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTipoEntidad.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("tamaño lista de tipos de entidades en agregar  : " + listTiposEntidades.size());
@@ -644,8 +691,8 @@ public class ControlTiposEntidades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTipoEntidad.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener Un  Nombre \n";
+        if (nuevoTipoEntidad.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -654,7 +701,7 @@ public class ControlTiposEntidades implements Serializable {
 
         }
         if (nuevoTipoEntidad.getGrupo().getSecuencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Grupo Tipo Entidad \n";
+            mensajeValidacion = mensajeValidacion + "   *Grupo Tipo Entidad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -710,7 +757,8 @@ public class ControlTiposEntidades implements Serializable {
             listTiposEntidades.add(nuevoTipoEntidad);
             nuevoTipoEntidad = new TiposEntidades();
             nuevoTipoEntidad.setGrupo(new Grupostiposentidades());
-
+            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosTipoEntidad");
             if (guardado == true) {
                 guardado = false;
@@ -843,6 +891,12 @@ public class ControlTiposEntidades implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosTipoEntidad");
             index = -1;
             secRegistro = null;
@@ -889,12 +943,9 @@ public class ControlTiposEntidades implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Short a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarTipoEntidad.getCodigo());
-        System.err.println("ConfirmarDuplicar grupo " + duplicarTipoEntidad.getGrupo().getNombre());
-        System.err.println("ConfirmarDuplicar nombre " + duplicarTipoEntidad.getNombre());
 
         if (duplicarTipoEntidad.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposEntidades.size(); x++) {
@@ -911,8 +962,8 @@ public class ControlTiposEntidades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoEntidad.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+        if (duplicarTipoEntidad.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -920,7 +971,7 @@ public class ControlTiposEntidades implements Serializable {
             contador++;
         }
         if (duplicarTipoEntidad.getGrupo().getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Grupo Tipo Entidad \n";
+            mensajeValidacion = mensajeValidacion + "   *Grupo Tipo Entidad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             contador++;
@@ -937,6 +988,8 @@ public class ControlTiposEntidades implements Serializable {
             listTiposEntidades.add(duplicarTipoEntidad);
             crearTiposEntidades.add(duplicarTipoEntidad);
             context.update("form:datosTipoEntidad");
+            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -970,6 +1023,7 @@ public class ControlTiposEntidades implements Serializable {
 
     public void limpiarduplicarTiposEntidades() {
         duplicarTipoEntidad = new TiposEntidades();
+        duplicarTipoEntidad.setGrupo(new Grupostiposentidades());
     }
 
     public void guardarCambiosTiposEntidades() {
@@ -1067,6 +1121,13 @@ public class ControlTiposEntidades implements Serializable {
         if (listTiposEntidades == null) {
             listTiposEntidades = administrarTipoEntidad.consultarTiposEntidades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposEntidades == null || listTiposEntidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposEntidades.size();
+        }
+        context.update("form:informacionRegistro");
         return listTiposEntidades;
     }
 
@@ -1090,10 +1151,19 @@ public class ControlTiposEntidades implements Serializable {
         this.filtradoGruposTiposEntidades = filtradoGruposTiposEntidades;
     }
 
+    private String infoRegistroGruposTiposEntidades;
+
     public List<Grupostiposentidades> getListaGruposTiposEntidades() {
         if (listaGruposTiposEntidades == null) {
             listaGruposTiposEntidades = administrarTipoEntidad.consultarLOVGruposTiposEntidades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaGruposTiposEntidades == null || listaGruposTiposEntidades.isEmpty()) {
+            infoRegistroGruposTiposEntidades = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroGruposTiposEntidades = "Cantidad de registros: " + listaGruposTiposEntidades.size();
+        }
+        context.update("form:infoRegistroGruposTiposEntidades");
         return listaGruposTiposEntidades;
     }
 
@@ -1171,6 +1241,30 @@ public class ControlTiposEntidades implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroGruposTiposEntidades() {
+        return infoRegistroGruposTiposEntidades;
+    }
+
+    public void setInfoRegistroGruposTiposEntidades(String infoRegistroGruposTiposEntidades) {
+        this.infoRegistroGruposTiposEntidades = infoRegistroGruposTiposEntidades;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
     }
 
 }

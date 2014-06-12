@@ -170,6 +170,7 @@ public class AdministrarUbicacionesGeograficas implements AdministrarUbicaciones
 
     public List<SucursalesPila> lovSucursalesPilaPorEmpresa(BigInteger secEmpresa) {
         try {
+            System.out.println("AdministrarUbicacionesGeograficas lovSucursalesPilaPorEmpresa : "+secEmpresa);
             List<SucursalesPila> listaSucursalesPila = persistenciaSucursalesPila.consultarSucursalesPilaPorEmpresa(em, secEmpresa);
             return listaSucursalesPila;
         } catch (Exception e) {

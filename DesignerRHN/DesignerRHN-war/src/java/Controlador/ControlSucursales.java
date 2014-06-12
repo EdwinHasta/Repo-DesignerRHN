@@ -98,7 +98,7 @@ public class ControlSucursales implements Serializable {
         filtradoCiudades = null;
         guardado = true;
         tamano = 270;
-
+        aceptar = true;
     }
 
     @PostConstruct
@@ -260,6 +260,7 @@ public class ControlSucursales implements Serializable {
         context.update("form:datosSucursales");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
@@ -513,7 +514,7 @@ public class ControlSucursales implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
-                    } else if (listSucursales.get(indice).getNombre()==null) {
+                    } else if (listSucursales.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
@@ -572,7 +573,7 @@ public class ControlSucursales implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
-                    } else if (listSucursales.get(indice).getNombre()==null) {
+                    } else if (listSucursales.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listSucursales.get(indice).setNombre(backupDescripcion);
@@ -634,7 +635,7 @@ public class ControlSucursales implements Serializable {
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
                     }
-                    if (filtrarSucursales.get(indice).getNombre()==null) {
+                    if (filtrarSucursales.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
@@ -692,7 +693,7 @@ public class ControlSucursales implements Serializable {
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
                     }
-                    if (filtrarSucursales.get(indice).getNombre()==null) {
+                    if (filtrarSucursales.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarSucursales.get(indice).setNombre(backupDescripcion);
@@ -1337,7 +1338,7 @@ public class ControlSucursales implements Serializable {
                 contador++;//1
             }
         }
-        if (nuevoSucursales.getNombre()==null) {
+        if (nuevoSucursales.getNombre() == null) {
             mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1346,7 +1347,7 @@ public class ControlSucursales implements Serializable {
             contador++;//2
 
         }
-        if (nuevoSucursales.getBanco().getNombre()==null) {
+        if (nuevoSucursales.getBanco().getNombre() == null) {
             mensajeValidacion = mensajeValidacion + " *Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1356,7 +1357,7 @@ public class ControlSucursales implements Serializable {
 
         }
 
-        if (nuevoSucursales.getCiudad().getNombre()==null) {
+        if (nuevoSucursales.getCiudad().getNombre() == null) {
             mensajeValidacion = mensajeValidacion + " *Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1406,6 +1407,7 @@ public class ControlSucursales implements Serializable {
             }
 
             context.execute("nuevoRegistroSucursales.hide()");
+            context.update("nuevoRegistroSucursales.hide()");
             index = -1;
             secRegistro = null;
 
@@ -1500,7 +1502,7 @@ public class ControlSucursales implements Serializable {
             }
         }
 
-        if (duplicarSucursales.getNombre()==null) {
+        if (duplicarSucursales.getNombre() == null) {
             mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1508,7 +1510,7 @@ public class ControlSucursales implements Serializable {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarSucursales.getBanco().getNombre()==null) {
+        if (duplicarSucursales.getBanco().getNombre() == null) {
             mensajeValidacion = mensajeValidacion + "   *Banco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1516,7 +1518,7 @@ public class ControlSucursales implements Serializable {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (duplicarSucursales.getCiudad().getNombre()==null) {
+        if (duplicarSucursales.getCiudad().getNombre() == null) {
             mensajeValidacion = mensajeValidacion + "   *Ciudad \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -1570,6 +1572,7 @@ public class ControlSucursales implements Serializable {
             duplicarSucursales.setBanco(new Bancos());
 
             RequestContext.getCurrentInstance().execute("duplicarRegistroSucursales.hide()");
+            RequestContext.getCurrentInstance().update("duplicarRegistroSucursales.hide()");
 
         } else {
             contador = 0;

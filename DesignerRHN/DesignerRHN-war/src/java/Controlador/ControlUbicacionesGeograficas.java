@@ -99,6 +99,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
     private UbicacionesGeograficas UbicacionesGeograficasPorEmpresaSeleccionado;
     private boolean banderaSeleccionUbicacionesGeograficasPorEmpresa;
     private int tamano;
+    private String infoRegistro;
 
     public ControlUbicacionesGeograficas() {
         permitirIndex = true;
@@ -122,7 +123,6 @@ public class ControlUbicacionesGeograficas implements Serializable {
         listaSucursalesPilas = null;
         tamano = 270;
     }
-
 
     @PostConstruct
     public void inicializarAdministrador() {
@@ -242,7 +242,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listUbicacionesGeograficasPorEmpresa.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
-                    } else if (listUbicacionesGeograficasPorEmpresa.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listUbicacionesGeograficasPorEmpresa.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listUbicacionesGeograficasPorEmpresa.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
@@ -295,7 +295,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listUbicacionesGeograficasPorEmpresa.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
-                    } else if (listUbicacionesGeograficasPorEmpresa.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listUbicacionesGeograficasPorEmpresa.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listUbicacionesGeograficasPorEmpresa.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
@@ -354,7 +354,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
                         banderita1 = false;
                         filtrarUbicacionesGeograficas.get(indice).setDescripcion(backUpDescripcion);
                     }
-                    if (filtrarUbicacionesGeograficas.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarUbicacionesGeograficas.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarUbicacionesGeograficas.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
@@ -412,7 +412,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
                         banderita1 = false;
                         filtrarUbicacionesGeograficas.get(indice).setDescripcion(backUpDescripcion);
                     }
-                    if (filtrarUbicacionesGeograficas.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarUbicacionesGeograficas.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarUbicacionesGeograficas.get(indice).setDescripcion(backUpDescripcion);
                         banderita1 = false;
@@ -637,7 +637,75 @@ public class ControlUbicacionesGeograficas implements Serializable {
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
             }
+            getListUbicacionesGeograficasPorEmpresa();
             context.update("form:datosUbicacionesGeograficas");
+            if (listUbicacionesGeograficasPorEmpresa == null || listUbicacionesGeograficasPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listUbicacionesGeograficasPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
+            context.update("form:ACEPTAR");
+        } catch (Exception E) {
+            System.out.println("ERROR CONTROLUBICACIONESGEOGRAFICAS.ModificarModificacion ERROR====================" + E.getMessage());
+        }
+    }
+
+    public void salir() {
+        try {
+            FacesContext c = FacesContext.getCurrentInstance();
+            System.out.println("entre a CONTROLUBICACIONESGEOGRAFICAS.cancelarModificacion");
+            if (bandera == 1) {
+                //CERRAR FILTRADO
+                //0
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoCC");
+                codigoCC.setFilterStyle("display: none; visibility: hidden;");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:nombreCentroCosto");
+                nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:tipoCentroCosto");
+                tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoCTT");
+                codigoCTT.setFilterStyle("display: none; visibility: hidden;");
+                telefono = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:telefono");
+                telefono.setFilterStyle("display: none; visibility: hidden;");
+                fax = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:fax");
+                fax.setFilterStyle("display: none; visibility: hidden;");
+                observacion = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:observacion");
+                observacion.setFilterStyle("display: none; visibility: hidden;");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:manoDeObra");
+                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
+                actividadEconomica = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:actividadEconomica");
+                actividadEconomica.setFilterStyle("display: none; visibility: hidden;");
+                sucursalPila = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:sucursalPila");
+                sucursalPila.setFilterStyle("display: none; visibility: hidden;");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoAT");
+                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+                bandera = 0;
+                filtrarUbicacionesGeograficas = null;
+                tipoLista = 0;
+            }
+
+            borrarUbicacionesGeograficas.clear();
+            crearUbicacionesGeograficas.clear();
+            modificarUbicacionesGeograficas.clear();
+            index = -1;
+            k = 0;
+            listUbicacionesGeograficasPorEmpresa = null;
+            guardado = true;
+            permitirIndex = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            banderaModificacionEmpresa = 0;
+            if (banderaModificacionEmpresa == 0) {
+                cambiarEmpresa();
+            }
+            getListUbicacionesGeograficasPorEmpresa();
+            context.update("form:datosUbicacionesGeograficas");
+            if (listUbicacionesGeograficasPorEmpresa == null || listUbicacionesGeograficasPorEmpresa.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listUbicacionesGeograficasPorEmpresa.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
         } catch (Exception E) {
             System.out.println("ERROR CONTROLUBICACIONESGEOGRAFICAS.ModificarModificacion ERROR====================" + E.getMessage());
@@ -691,6 +759,9 @@ public class ControlUbicacionesGeograficas implements Serializable {
                 dig = -1;
             }
             if (dig == 9) {
+                System.out.println("Secuencia Empresa Seleccionada = " + empresaSeleccionada.getSecuencia());
+                listaSucursalesPilas = null;
+                getListaSucursalesPilas();
                 context.update("form:sucursalesPilaDialogo");
                 context.execute("sucursalesPilaDialogo.show()");
                 dig = -1;
@@ -740,6 +811,8 @@ public class ControlUbicacionesGeograficas implements Serializable {
                 context.update("formularioDialogos:duplicarTipoCentroCostos");
                 context.update("form:datosUbicacionesGeograficas");
                 context.execute("tiposCentrosCostosDialogo.hide()");
+                context.reset("formularioDialogos:lovTipoUbicacionesGeograficas:globalFilter");
+
             }
             filtradoCiudades = null;
             ciudadSeleccionada = null;
@@ -795,6 +868,8 @@ public class ControlUbicacionesGeograficas implements Serializable {
                 context.update("formularioDialogos:nuevaSucursal");
                 context.update("form:datosUbicacionesGeograficas");
                 context.execute("sucursalesPilaDialogo.hide()");
+                context.reset("formularioDialogos:lovSucursalesPila:globalFilter");
+
             } else if (tipoActualizacion == 2) {
                 duplicarUbicacionGeografica.setSucursalPila(sucursalesPilasSeleccionada);
                 context.update("formularioDialogos:duplicarTipoCentroCostos");
@@ -817,6 +892,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
             aceptar = true;
             index = -1;
             tipoActualizacion = -1;
+            listaSucursalesPilas = null;
 
         } catch (Exception e) {
             System.out.println("ERROR CONTROLUBICACIONESGEOGRAFICAS CANCELARCAMBIOCIUDAD ERROR : " + e);
@@ -1079,123 +1155,121 @@ public class ControlUbicacionesGeograficas implements Serializable {
 
     public void agregarNuevaUbicacionGeografica() {
         System.out.println("\n ENTRE A CONTROLUBICACIONESGEOGRAFICAS.agregarNuevaUbicacionGeograficas \n");
-        try {
-            int contador = 0;
-            mensajeValidacion = " ";
-            int duplicados = 0;
-            RequestContext context = RequestContext.getCurrentInstance();
+        int contador = 0;
+        mensajeValidacion = " ";
+        int duplicados = 0;
+        RequestContext context = RequestContext.getCurrentInstance();
 
-            banderaModificacionEmpresa = 1;
-            if (nuevaUbicacionGeografica.getCodigo() == null) {
-                mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
-                System.out.println("Mensaje validacion : " + mensajeValidacion);
+        banderaModificacionEmpresa = 1;
+        if (nuevaUbicacionGeografica.getCodigo() == null) {
+            mensajeValidacion = mensajeValidacion + "   * Un codigo \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-            } else {
-                System.out.println("codigo en Motivo Cambio Cargo: " + nuevaUbicacionGeografica.getCodigo());
+        } else {
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevaUbicacionGeografica.getCodigo());
 
-                for (int x = 0; x < listUbicacionesGeograficasPorEmpresa.size(); x++) {
-                    if (listUbicacionesGeograficasPorEmpresa.get(x).getCodigo().equals(nuevaUbicacionGeografica.getCodigo())) {
-                        duplicados++;
-                    }
-                }
-                System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
-
-                if (duplicados > 0) {
-                    mensajeValidacion = " *Que NO hayan codigos repetidos \n";
-                    System.out.println("Mensaje validacion : " + mensajeValidacion);
-                } else {
-                    System.out.println("bandera");
-                    contador++;
+            for (int x = 0; x < listUbicacionesGeograficasPorEmpresa.size(); x++) {
+                if (listUbicacionesGeograficasPorEmpresa.get(x).getCodigo().equals(nuevaUbicacionGeografica.getCodigo())) {
+                    duplicados++;
                 }
             }
-            if (nuevaUbicacionGeografica.getDescripcion().equals(" ")) {
-                mensajeValidacion = mensajeValidacion + "   *una Descripción \n";
+            System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
 
+            if (duplicados > 0) {
+                mensajeValidacion = " *Que NO hayan codigos repetidos \n";
+                System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
-                System.out.println("Bandera : ");
+                System.out.println("bandera");
                 contador++;
             }
-            if (nuevaUbicacionGeografica.getCiudad().getNombre().equals("") || nuevaUbicacionGeografica.getCiudad().getNombre().equals(" ")) {
-                nuevaUbicacionGeografica.setCiudad(new Ciudades());
-            }
-            if (nuevaUbicacionGeografica.getSucursalPila().getDescripcion().equals("") || nuevaUbicacionGeografica.getSucursalPila().getDescripcion().equals(" ")) {
-                nuevaUbicacionGeografica.setSucursalPila(new SucursalesPila());
-            }
-            if (contador == 2) {
-                k++;
-                l = BigInteger.valueOf(k);
-                nuevaUbicacionGeografica.setSecuencia(l);
-                nuevaUbicacionGeografica.setEmpresa(empresaSeleccionada);
-                if (crearUbicacionesGeograficas.contains(nuevaUbicacionGeografica)) {
-                    System.out.println("Ya lo contengo.");
-                } else {
-                    crearUbicacionesGeograficas.add(nuevaUbicacionGeografica);
+        }
+        if (nuevaUbicacionGeografica.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + "   *una Descripción \n";
 
-                }
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS secuencia : " + nuevaUbicacionGeografica.getSecuencia());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS empresa : " + nuevaUbicacionGeografica.getEmpresa());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS codigo : " + nuevaUbicacionGeografica.getCodigo());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS descripcion : " + nuevaUbicacionGeografica.getDescripcion());
-                //System.out.println("CONTROLUBICACIONESGEOGRAFICAS ciudad : " + nuevaUbicacionGeografica.getCiudad().getNombre());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS direccion : " + nuevaUbicacionGeografica.getDireccion());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS telefono : " + nuevaUbicacionGeografica.getTelefono());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS fax : " + nuevaUbicacionGeografica.getFax());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS observacion : " + nuevaUbicacionGeografica.getObservacion());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS zona : " + nuevaUbicacionGeografica.getZona());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS Actividad Economica : " + nuevaUbicacionGeografica.getActividadeconomica());
-                //System.out.println("CONTROLUBICACIONESGEOGRAFICAS sucursal : " + nuevaUbicacionGeografica.getSucursalPila().getDescripcion());
-                System.out.println("CONTROLUBICACIONESGEOGRAFICAS codigo alternativo : " + nuevaUbicacionGeografica.getCodigoalternativo());
-
-                listUbicacionesGeograficasPorEmpresa.add(nuevaUbicacionGeografica);
-                context.update("form:datosUbicacionesGeograficas");
-                nuevaUbicacionGeografica = new UbicacionesGeograficas();
-                // index = -1;
-                secRegistro = null;
-                if (guardado == true) {
-                    guardado = false;
-                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
-                }
-                if (bandera == 1) {
-                    FacesContext c = FacesContext.getCurrentInstance();
-                    codigoCC = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoCC");
-                    codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                    nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:nombreCentroCosto");
-                    nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:tipoCentroCosto");
-                    tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
-                    codigoCTT = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoCTT");
-                    codigoCTT.setFilterStyle("display: none; visibility: hidden;");
-                    telefono = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:telefono");
-                    telefono.setFilterStyle("display: none; visibility: hidden;");
-                    fax = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:fax");
-                    fax.setFilterStyle("display: none; visibility: hidden;");
-                    observacion = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:observacion");
-                    observacion.setFilterStyle("display: none; visibility: hidden;");
-                    manoDeObra = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:manoDeObra");
-                    manoDeObra.setFilterStyle("display: none; visibility: hidden;");
-                    actividadEconomica = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:actividadEconomica");
-                    actividadEconomica.setFilterStyle("display: none; visibility: hidden;");
-                    sucursalPila = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:sucursalPila");
-                    sucursalPila.setFilterStyle("display: none; visibility: hidden;");
-                    codigoAT = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoAT");
-                    codigoAT.setFilterStyle("display: none; visibility: hidden;");
-                    RequestContext.getCurrentInstance().update("form:datosUbicacionesGeograficas");
-
-                    bandera = 0;
-                    filtrarUbicacionesGeograficas = null;
-                    tipoLista = 0;
-                }
-                mensajeValidacion = " ";
-                RequestContext.getCurrentInstance().execute("NuevoRegistroCentroCostos.hide()");
-
+        } else {
+            System.out.println("Bandera : ");
+            contador++;
+        }
+        if (nuevaUbicacionGeografica.getCiudad().getNombre() == null) {
+            nuevaUbicacionGeografica.setCiudad(new Ciudades());
+        }
+        if (nuevaUbicacionGeografica.getSucursalPila().getDescripcion() == null) {
+            nuevaUbicacionGeografica.setSucursalPila(new SucursalesPila());
+        }
+        if (contador == 2) {
+            k++;
+            l = BigInteger.valueOf(k);
+            nuevaUbicacionGeografica.setSecuencia(l);
+            nuevaUbicacionGeografica.setEmpresa(empresaSeleccionada);
+            if (crearUbicacionesGeograficas.contains(nuevaUbicacionGeografica)) {
+                System.out.println("Ya lo contengo.");
             } else {
-                contador = 0;
-                context.update("form:validacionDuplicarVigencia");
-                context.execute("validacionDuplicarVigencia.show()");
-            }
+                crearUbicacionesGeograficas.add(nuevaUbicacionGeografica);
 
-        } catch (Exception e) {
-            System.out.println("ERROR CONTROLUBICACIONESGEOGRAFICAS.agregarNuevaUbicacionGeograficas ERROR===========================" + e);
+            }
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS secuencia : " + nuevaUbicacionGeografica.getSecuencia());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS empresa : " + nuevaUbicacionGeografica.getEmpresa());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS codigo : " + nuevaUbicacionGeografica.getCodigo());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS descripcion : " + nuevaUbicacionGeografica.getDescripcion());
+            //System.out.println("CONTROLUBICACIONESGEOGRAFICAS ciudad : " + nuevaUbicacionGeografica.getCiudad().getNombre());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS direccion : " + nuevaUbicacionGeografica.getDireccion());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS telefono : " + nuevaUbicacionGeografica.getTelefono());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS fax : " + nuevaUbicacionGeografica.getFax());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS observacion : " + nuevaUbicacionGeografica.getObservacion());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS zona : " + nuevaUbicacionGeografica.getZona());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS Actividad Economica : " + nuevaUbicacionGeografica.getActividadeconomica());
+            //System.out.println("CONTROLUBICACIONESGEOGRAFICAS sucursal : " + nuevaUbicacionGeografica.getSucursalPila().getDescripcion());
+            System.out.println("CONTROLUBICACIONESGEOGRAFICAS codigo alternativo : " + nuevaUbicacionGeografica.getCodigoalternativo());
+
+            listUbicacionesGeograficasPorEmpresa.add(nuevaUbicacionGeografica);
+            context.update("form:datosUbicacionesGeograficas");
+            infoRegistro = "Cantidad de registros: " + listUbicacionesGeograficasPorEmpresa.size();
+
+            context.update("form:informacionRegistro");
+            nuevaUbicacionGeografica = new UbicacionesGeograficas();
+            // index = -1;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoCC");
+                codigoCC.setFilterStyle("display: none; visibility: hidden;");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:nombreCentroCosto");
+                nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                tipoCentroCosto = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:tipoCentroCosto");
+                tipoCentroCosto.setFilterStyle("display: none; visibility: hidden;");
+                codigoCTT = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoCTT");
+                codigoCTT.setFilterStyle("display: none; visibility: hidden;");
+                telefono = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:telefono");
+                telefono.setFilterStyle("display: none; visibility: hidden;");
+                fax = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:fax");
+                fax.setFilterStyle("display: none; visibility: hidden;");
+                observacion = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:observacion");
+                observacion.setFilterStyle("display: none; visibility: hidden;");
+                manoDeObra = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:manoDeObra");
+                manoDeObra.setFilterStyle("display: none; visibility: hidden;");
+                actividadEconomica = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:actividadEconomica");
+                actividadEconomica.setFilterStyle("display: none; visibility: hidden;");
+                sucursalPila = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:sucursalPila");
+                sucursalPila.setFilterStyle("display: none; visibility: hidden;");
+                codigoAT = (Column) c.getViewRoot().findComponent("form:datosUbicacionesGeograficas:codigoAT");
+                codigoAT.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosUbicacionesGeograficas");
+
+                bandera = 0;
+                filtrarUbicacionesGeograficas = null;
+                tipoLista = 0;
+            }
+            mensajeValidacion = " ";
+            RequestContext.getCurrentInstance().execute("NuevoRegistroCentroCostos.hide()");
+
+        } else {
+            contador = 0;
+            context.update("form:validacionDuplicarVigencia");
+            context.execute("validacionDuplicarVigencia.show()");
         }
     }
 
@@ -1344,7 +1418,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
             mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (duplicarUbicacionGeografica.getDescripcion().equals(" ")) {
+        } else if (duplicarUbicacionGeografica.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
 
         } else {
@@ -1364,7 +1438,9 @@ public class ControlUbicacionesGeograficas implements Serializable {
             }
             crearUbicacionesGeograficas.add(duplicarUbicacionGeografica);
             context.update("form:datosUbicacionesGeograficas");
+            infoRegistro = "Cantidad de registros: " + listUbicacionesGeograficasPorEmpresa.size();
 
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -1540,12 +1616,11 @@ public class ControlUbicacionesGeograficas implements Serializable {
                     administrarUbicacionesGeograficas.crearUbicacionesGeograficas(crearUbicacionesGeograficas);
                     crearUbicacionesGeograficas.clear();
                 }
+                context.update("form:datosUbicacionesGeograficas");
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-
-            context.update("form:datosUbicacionesGeograficas");
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
 
             if (banderaModificacionEmpresa == 0) {
                 cambiarEmpresa();
@@ -1798,10 +1873,12 @@ public class ControlUbicacionesGeograficas implements Serializable {
         if (guardado == true) {
             context.update("form:nombreEmpresa");
             context.update("form:nitEmpresa");
+            listUbicacionesGeograficasPorEmpresa = null;
+            listaSucursalesPilas = null;
             getListUbicacionesGeograficasPorEmpresa();
             getListaSucursalesPilas();
             filtradoListaEmpresas = null;
-            listUbicacionesGeograficasPorEmpresa = null;
+
             aceptar = true;
             context.execute("EmpresasDialogo.hide()");
             context.reset("formularioDialogos:lovEmpresas:globalFilter");
@@ -1851,6 +1928,7 @@ public class ControlUbicacionesGeograficas implements Serializable {
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
     }
+    private String infoRegistroEmpresas;
 
     public List<Empresas> getListaEmpresas() {
         try {
@@ -1861,9 +1939,16 @@ public class ControlUbicacionesGeograficas implements Serializable {
                     backUpEmpresaActual = empresaSeleccionada;
                 }
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listaEmpresas == null || listaEmpresas.isEmpty()) {
+                infoRegistroEmpresas = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistroEmpresas = "Cantidad de registros: " + listaEmpresas.size();
+            }
+            context.update("form:infoRegistroEmpresas");
             return listaEmpresas;
         } catch (Exception e) {
-            System.out.println("ERRO LISTA EMPRESAS " + e);
+            System.out.println("ERROR LISTA EMPRESAS " + e);
             return null;
         }
     }
@@ -1909,9 +1994,15 @@ public class ControlUbicacionesGeograficas implements Serializable {
         } else if (listUbicacionesGeograficasPorEmpresa == null) {
             System.out.println("CONTROLUBICACIONESGEOGRAFICAS LA EMPRESA NO ES NULA");
             listUbicacionesGeograficasPorEmpresa = administrarUbicacionesGeograficas.consultarUbicacionesGeograficasPorEmpresa(empresaSeleccionada.getSecuencia());
-
+            getListaSucursalesPilas();
         }
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listUbicacionesGeograficasPorEmpresa == null || listUbicacionesGeograficasPorEmpresa.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listUbicacionesGeograficasPorEmpresa.size();
+        }
+        context.update("form:informacionRegistro");
         return listUbicacionesGeograficasPorEmpresa;
         // } catch (Exception e) {
         ///.out.println(" BETA  BETA ControlCentrosCosto: Error al recibir los UbicacionesGeograficas de la empresa seleccionada /n" + e);
@@ -1949,11 +2040,19 @@ public class ControlUbicacionesGeograficas implements Serializable {
     public void setDuplicarUbicacionGeografica(UbicacionesGeograficas duplicarUbicacionGeografica) {
         this.duplicarUbicacionGeografica = duplicarUbicacionGeografica;
     }
+    private String infoRegistroCiudades;
 
     public List<Ciudades> getListaCiudades() {
         if (listaCiudades == null) {
             listaCiudades = administrarUbicacionesGeograficas.lovCiudades();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaCiudades == null || listaCiudades.isEmpty()) {
+            infoRegistroCiudades = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroCiudades = "Cantidad de registros: " + listaCiudades.size();
+        }
+        context.update("form:infoRegistroCiudades");
         return listaCiudades;
     }
 
@@ -2016,9 +2115,19 @@ public class ControlUbicacionesGeograficas implements Serializable {
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
     }
+    private String infoRegistroSucursalesPila;
 
     public List<SucursalesPila> getListaSucursalesPilas() {
-        listaSucursalesPilas = administrarUbicacionesGeograficas.lovSucursalesPilaPorEmpresa(empresaSeleccionada.getSecuencia());
+        if (listaSucursalesPilas == null) {
+            listaSucursalesPilas = administrarUbicacionesGeograficas.lovSucursalesPilaPorEmpresa(empresaSeleccionada.getSecuencia());
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaSucursalesPilas == null || listaSucursalesPilas.isEmpty()) {
+            infoRegistroSucursalesPila = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroSucursalesPila = "Cantidad de registros: " + listaSucursalesPilas.size();
+        }
+        context.update("form:infoRegistroSucursalesPila");
         return listaSucursalesPilas;
     }
 
@@ -2064,6 +2173,38 @@ public class ControlUbicacionesGeograficas implements Serializable {
 
     public void setUbicacionGeograficaSeleccionada(UbicacionesGeograficas ubicacionGeograficaSeleccionada) {
         this.ubicacionGeograficaSeleccionada = ubicacionGeograficaSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroCiudades() {
+        return infoRegistroCiudades;
+    }
+
+    public void setInfoRegistroCiudades(String infoRegistroCiudades) {
+        this.infoRegistroCiudades = infoRegistroCiudades;
+    }
+
+    public String getInfoRegistroSucursalesPila() {
+        return infoRegistroSucursalesPila;
+    }
+
+    public void setInfoRegistroSucursalesPila(String infoRegistroSucursalesPila) {
+        this.infoRegistroSucursalesPila = infoRegistroSucursalesPila;
+    }
+
+    public String getInfoRegistroEmpresas() {
+        return infoRegistroEmpresas;
+    }
+
+    public void setInfoRegistroEmpresas(String infoRegistroEmpresas) {
+        this.infoRegistroEmpresas = infoRegistroEmpresas;
     }
 
 }

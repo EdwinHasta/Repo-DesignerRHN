@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposDescansos.findByDiastrabajados", query = "SELECT t FROM TiposDescansos t WHERE t.diastrabajados = :diastrabajados"),
     @NamedQuery(name = "TiposDescansos.findByDiasdescansados", query = "SELECT t FROM TiposDescansos t WHERE t.diasdescansados = :diasdescansados")})
 public class TiposDescansos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -75,14 +76,15 @@ public class TiposDescansos implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     public BigInteger getSecuencia() {
@@ -142,5 +144,5 @@ public class TiposDescansos implements Serializable {
     public String toString() {
         return "Entidades.Tiposdescansos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

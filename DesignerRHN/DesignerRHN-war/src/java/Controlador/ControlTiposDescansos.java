@@ -145,6 +145,7 @@ public class ControlTiposDescansos implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -174,6 +175,50 @@ public class ControlTiposDescansos implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDescansos == null || listTiposDescansos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDescansos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposDescansos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposDescansos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposDescansos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            diasTrabajados = (Column) c.getViewRoot().findComponent("form:datosTiposDescansos:diasTrabajados");
+            diasTrabajados.setFilterStyle("display: none; visibility: hidden;");
+            diasDescansados = (Column) c.getViewRoot().findComponent("form:datosTiposDescansos:diasDescansados");
+            diasDescansados.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposDescansos");
+            bandera = 0;
+            filtrarTiposDescansos = null;
+            tipoLista = 0;
+        }
+
+        borrarTiposDescansos.clear();
+        crearTiposDescansos.clear();
+        modificarTiposDescansos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposDescansos = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDescansos == null || listTiposDescansos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDescansos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosTiposDescansos");
         context.update("form:ACEPTAR");
     }
@@ -255,7 +300,7 @@ public class ControlTiposDescansos implements Serializable {
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (listTiposDescansos.get(indice).getDescripcion().equals(" ")) {
+                    if (listTiposDescansos.get(indice).getDescripcion()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -309,7 +354,7 @@ public class ControlTiposDescansos implements Serializable {
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (listTiposDescansos.get(indice).getDescripcion().equals(" ")) {
+                    if (listTiposDescansos.get(indice).getDescripcion()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         listTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -365,7 +410,7 @@ public class ControlTiposDescansos implements Serializable {
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (filtrarTiposDescansos.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarTiposDescansos.get(indice).getDescripcion()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -422,7 +467,7 @@ public class ControlTiposDescansos implements Serializable {
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
                     }
-                    if (filtrarTiposDescansos.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarTiposDescansos.get(indice).getDescripcion()==null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         filtrarTiposDescansos.get(indice).setDescripcion(backUpDescripcion);
                         banderita = false;
@@ -483,6 +528,12 @@ public class ControlTiposDescansos implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listTiposDescansos == null || listTiposDescansos.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listTiposDescansos.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosTiposDescansos");
             index = -1;
             secRegistro = null;
@@ -612,7 +663,7 @@ public class ControlTiposDescansos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTiposDescansos.getCodigo() == null) {
-            mensajeValidacion = " *debe tener un codigo\n";
+            mensajeValidacion = " *Codigo\n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int i = 0; i < listTiposDescansos.size(); i++) {
@@ -623,12 +674,12 @@ public class ControlTiposDescansos implements Serializable {
             if (duplicados == 0) {
                 contador++;
             } else {
-                mensajeValidacion = "codigo repetido";
+                mensajeValidacion = "Codigo Repetido";
             }
 
         }
-        if (nuevoTiposDescansos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *debe tener una Descripcion \n";
+        if (nuevoTiposDescansos.getDescripcion()==null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -668,6 +719,9 @@ public class ControlTiposDescansos implements Serializable {
             listTiposDescansos.add(nuevoTiposDescansos);
             nuevoTiposDescansos = new TiposDescansos();
             context.update("form:datosTiposDescansos");
+            infoRegistro = "Cantidad de registros: " + listTiposDescansos.size();
+
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -730,7 +784,7 @@ public class ControlTiposDescansos implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposDescansos.getDescripcion());
 
         if (duplicarTiposDescansos.getCodigo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int i = 0; i < listTiposDescansos.size(); i++) {
@@ -745,8 +799,8 @@ public class ControlTiposDescansos implements Serializable {
             }
 
         }
-        if (duplicarTiposDescansos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion  \n";
+        if (duplicarTiposDescansos.getDescripcion()==null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion  \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -762,6 +816,8 @@ public class ControlTiposDescansos implements Serializable {
             listTiposDescansos.add(duplicarTiposDescansos);
             crearTiposDescansos.add(duplicarTiposDescansos);
             context.update("form:datosTiposDescansos");
+            infoRegistro = "Cantidad de registros: " + listTiposDescansos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -856,6 +912,13 @@ public class ControlTiposDescansos implements Serializable {
         if (listTiposDescansos == null) {
             listTiposDescansos = administrarTiposDescansos.consultarTiposDescansos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDescansos == null || listTiposDescansos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDescansos.size();
+        }
+        context.update("form:informacionRegistro");
         return listTiposDescansos;
     }
 
@@ -941,6 +1004,14 @@ public class ControlTiposDescansos implements Serializable {
 
     public void setTipoDescansoSeleccionado(TiposDescansos tipoDescansoSeleccionado) {
         this.tipoDescansoSeleccionado = tipoDescansoSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
