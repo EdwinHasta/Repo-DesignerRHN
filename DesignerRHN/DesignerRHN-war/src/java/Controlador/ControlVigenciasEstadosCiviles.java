@@ -8,6 +8,7 @@ package Controlador;
 import Entidades.Empleados;
 import Entidades.VigenciasEstadosCiviles;
 import Entidades.EstadosCiviles;
+import Entidades.Personas;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarVigenciasEstadosCivilesInterface;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,17 +39,19 @@ import org.primefaces.context.RequestContext;
 public class ControlVigenciasEstadosCiviles implements Serializable {
 
     @EJB
-    AdministrarVigenciasEstadosCivilesInterface administrarVigenciasEstadosCiviles;
+    AdministrarVigenciasEstadosCivilesInterface administrarVigenciaEstadosCiviles;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    private List<VigenciasEstadosCiviles> listEmplVigenciasEstadosCivilesPorEmpleado;
-    private List<VigenciasEstadosCiviles> filtrarEmplVigenciasEstadosCivilesPorEmplado;
-    private List<VigenciasEstadosCiviles> crearEmplVigenciasEstadosCivilesPorEmplado;
-    private List<VigenciasEstadosCiviles> modificarEmplVigenciasEstadosCivilesPorEmplado;
-    private List<VigenciasEstadosCiviles> borrarEmplVigenciasEstadosCivilesPorEmplado;
-    private VigenciasEstadosCiviles nuevoEmplVigenciasEstadosCiviles;
-    private VigenciasEstadosCiviles duplicarEmplVigenciasEstadosCiviles;
-    private VigenciasEstadosCiviles editarEmplVigenciasEstadosCiviles;
+
+    private List<VigenciasEstadosCiviles> listVigenciaEstadoCivilPorEmpleado;
+    private List<VigenciasEstadosCiviles> filtrarVigenciaEstadoCivilPorEmplado;
+    private List<VigenciasEstadosCiviles> crearVigenciaEstadoCivilPorEmplado;
+    private List<VigenciasEstadosCiviles> modificarVigenciaEstadoCivilPorEmplado;
+    private List<VigenciasEstadosCiviles> borrarVigenciaEstadoCivilPorEmplado;
+    private VigenciasEstadosCiviles nuevoVigenciaEstadoCivil;
+    private VigenciasEstadosCiviles duplicarVigenciaEstadoCivil;
+    private VigenciasEstadosCiviles editarVigenciaEstadoCivil;
+    private VigenciasEstadosCiviles vigenciaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -64,55 +68,61 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 //Empleado
     private Empleados empleadoSeleccionado;
     //autocompletar
-    private String normaLaboral;
+    private String estadoCivil;
     private List<EstadosCiviles> listaEstadosCiviles;
     private List<EstadosCiviles> filtradoEstadosCiviles;
-    private EstadosCiviles normaLaboralSeleccionada;
-    private String nuevoYduplicarCompletarNormaLaboral;
+    private EstadosCiviles vigenciaEstadoCivilSeleccionada;
+    private String nuevoYduplicarCompletarEstadoCivil;
+    //ALTO TABLA
+    private String altoTabla;
 
     public ControlVigenciasEstadosCiviles() {
-        listEmplVigenciasEstadosCivilesPorEmpleado = null;
-        crearEmplVigenciasEstadosCivilesPorEmplado = new ArrayList<VigenciasEstadosCiviles>();
-        modificarEmplVigenciasEstadosCivilesPorEmplado = new ArrayList<VigenciasEstadosCiviles>();
-        borrarEmplVigenciasEstadosCivilesPorEmplado = new ArrayList<VigenciasEstadosCiviles>();
+        listVigenciaEstadoCivilPorEmpleado = null;
+        crearVigenciaEstadoCivilPorEmplado = new ArrayList<VigenciasEstadosCiviles>();
+        modificarVigenciaEstadoCivilPorEmplado = new ArrayList<VigenciasEstadosCiviles>();
+        borrarVigenciaEstadoCivilPorEmplado = new ArrayList<VigenciasEstadosCiviles>();
         permitirIndex = true;
-        editarEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
-        nuevoEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
-        nuevoEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
-        duplicarEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
+        editarVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+        nuevoVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+        nuevoVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
+        duplicarVigenciaEstadoCivil = new VigenciasEstadosCiviles();
         empleadoSeleccionado = null;
-        //secuenciaEmpleado = BigInteger.valueOf(10664356);
+        secuenciaEmpleado = null;
         listaEstadosCiviles = null;
         filtradoEstadosCiviles = null;
         guardado = true;
+        altoTabla = "270";
+        aceptar = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
-            administrarVigenciasEstadosCiviles.obtenerConexion(ses.getId());
+            administrarVigenciaEstadosCiviles.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct ControlVigenciasCargos: " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    public void recibirEmpleado(BigInteger sec) {
+    private BigInteger secuenciaPersona;
+
+    public void recibirEmpleado(BigInteger sec, BigInteger secPersona) {
         if (sec == null) {
             System.out.println("ERROR EN RECIVIR LA SECUENCIA DEL EMPLEADO EN CONTROLBETAEMPLVIGENCIANORMALABORAL");
         }
         secuenciaEmpleado = sec;
+        secuenciaPersona = secPersona;
         empleadoSeleccionado = null;
-        listEmplVigenciasEstadosCivilesPorEmpleado = null;
+        listVigenciaEstadoCivilPorEmpleado = null;
         getEmpleadoSeleccionado();
-        getListEmplVigenciasEstadosCivilesPorEmpleado();
+        getListVigenciaEstadoCivilPorEmpleado();
     }
 
     public void mostrarNuevo() {
-        System.err.println("NUEVA FECHA : " + nuevoEmplVigenciasEstadosCiviles.getFechavigencia());
+        System.err.println("NUEVA FECHA : " + nuevoVigenciaEstadoCivil.getFechavigencia());
     }
 
     public void mostrarInfo(int indice, int celda) {
@@ -124,15 +134,15 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (permitirIndex == true) {
             if (tipoLista == 0) {
-                secRegistro = listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getSecuencia();
-                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getFechavigencia());
-                if (listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getFechavigencia() == null) {
+                secRegistro = listVigenciaEstadoCivilPorEmpleado.get(index).getSecuencia();
+                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listVigenciaEstadoCivilPorEmpleado.get(indice).getFechavigencia());
+                if (listVigenciaEstadoCivilPorEmpleado.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
                 } else {
-                    for (int j = 0; j < listEmplVigenciasEstadosCivilesPorEmpleado.size(); j++) {
+                    for (int j = 0; j < listVigenciaEstadoCivilPorEmpleado.size(); j++) {
                         if (j != indice) {
-                            if (listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getFechavigencia().equals(listEmplVigenciasEstadosCivilesPorEmpleado.get(j).getFechavigencia())) {
+                            if (listVigenciaEstadoCivilPorEmpleado.get(indice).getFechavigencia().equals(listVigenciaEstadoCivilPorEmpleado.get(j).getFechavigencia())) {
                                 fechas++;
                             }
                         }
@@ -143,11 +153,11 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                     contador++;
                 }
                 if (contador == 0) {
-                    if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                        if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
-                        } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
+                    if (!crearVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                        if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
+                        } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -163,22 +173,22 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 }
             } else {
 
-                secRegistro = filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).getSecuencia();
-                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice).getFechavigencia());
-                if (filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice).getFechavigencia() == null) {
+                secRegistro = filtrarVigenciaEstadoCivilPorEmplado.get(index).getSecuencia();
+                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + filtrarVigenciaEstadoCivilPorEmplado.get(indice).getFechavigencia());
+                if (filtrarVigenciaEstadoCivilPorEmplado.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
                 } else {
-                    for (int j = 0; j < filtrarEmplVigenciasEstadosCivilesPorEmplado.size(); j++) {
+                    for (int j = 0; j < filtrarVigenciaEstadoCivilPorEmplado.size(); j++) {
                         if (j != indice) {
-                            if (filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice).getFechavigencia().equals(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(j).getFechavigencia())) {
+                            if (filtrarVigenciaEstadoCivilPorEmplado.get(indice).getFechavigencia().equals(filtrarVigenciaEstadoCivilPorEmplado.get(j).getFechavigencia())) {
                                 fechas++;
                             }
                         }
                     }
-                    for (int j = 0; j < listEmplVigenciasEstadosCivilesPorEmpleado.size(); j++) {
+                    for (int j = 0; j < listVigenciaEstadoCivilPorEmpleado.size(); j++) {
                         if (j != indice) {
-                            if (filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice).getFechavigencia().equals(listEmplVigenciasEstadosCivilesPorEmpleado.get(j).getFechavigencia())) {
+                            if (filtrarVigenciaEstadoCivilPorEmplado.get(indice).getFechavigencia().equals(listVigenciaEstadoCivilPorEmpleado.get(j).getFechavigencia())) {
                                 fechas++;
                             }
                         }
@@ -189,11 +199,11 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                     contador++;
                 }
                 if (contador == 0) {
-                    if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                        if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
-                        } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
+                    if (!crearVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                        if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
+                        } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -235,15 +245,15 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getSecuencia();
+            secRegistro = listVigenciaEstadoCivilPorEmpleado.get(index).getSecuencia();
             if (cualCelda == 1) {
                 if (tipoLista == 0) {
-                    normaLaboral = listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getEstadocivil().getDescripcion();
+                    estadoCivil = listVigenciaEstadoCivilPorEmpleado.get(index).getEstadocivil().getDescripcion();
                 } else {
-                    normaLaboral = listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getEstadocivil().getDescripcion();
+                    estadoCivil = listVigenciaEstadoCivilPorEmpleado.get(index).getEstadocivil().getDescripcion();
                 }
             }
-            System.out.println("NORMA LABORAL : " + normaLaboral);
+            System.out.println("ESTADO CIVIL : " + estadoCivil);
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -285,57 +295,107 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         }
     }
 
+    private String infoRegistro;
+
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
-            filtrarEmplVigenciasEstadosCivilesPorEmplado = null;
+            filtrarVigenciaEstadoCivilPorEmplado = null;
             tipoLista = 0;
         }
 
-        borrarEmplVigenciasEstadosCivilesPorEmplado.clear();
-        crearEmplVigenciasEstadosCivilesPorEmplado.clear();
-        modificarEmplVigenciasEstadosCivilesPorEmplado.clear();
+        borrarVigenciaEstadoCivilPorEmplado.clear();
+        crearVigenciaEstadoCivilPorEmplado.clear();
+        modificarVigenciaEstadoCivilPorEmplado.clear();
         index = -1;
         secRegistro = null;
         k = 0;
-        listEmplVigenciasEstadosCivilesPorEmpleado = null;
+        listVigenciaEstadoCivilPorEmpleado = null;
         guardado = true;
         permitirIndex = true;
+        getListVigenciaEstadoCivilPorEmpleado();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listVigenciaEstadoCivilPorEmpleado == null || listVigenciaEstadoCivilPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVigenciaEstadoCivilPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosHvEntrevista");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha.setFilterStyle("display: none; visibility: hidden;");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
+            RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
+            bandera = 0;
+            filtrarVigenciaEstadoCivilPorEmplado = null;
+            tipoLista = 0;
+        }
+
+        borrarVigenciaEstadoCivilPorEmplado.clear();
+        crearVigenciaEstadoCivilPorEmplado.clear();
+        modificarVigenciaEstadoCivilPorEmplado.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listVigenciaEstadoCivilPorEmpleado = null;
+        guardado = true;
+        permitirIndex = true;
+        getListVigenciaEstadoCivilPorEmpleado();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listVigenciaEstadoCivilPorEmpleado == null || listVigenciaEstadoCivilPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVigenciaEstadoCivilPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosHvEntrevista");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 60px");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("width: 600px");
+            altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
-            filtrarEmplVigenciasEstadosCivilesPorEmplado = null;
+            filtrarVigenciaEstadoCivilPorEmplado = null;
             tipoLista = 0;
         }
     }
 
-    public void modificandoEmplVigenciasEstadosCiviles(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR EMPL VIGENCIA NORMA LABORAL");
+    public void modificandoVigenciaEstadoCivil(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR EMPL VIGENCIA ESTADO CIVIL");
         index = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -348,14 +408,14 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPLVIGENCIANORMALABORAL, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
-                if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                    if (listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getFechavigencia() == null) {
+                if (!crearVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                    if (listVigenciaEstadoCivilPorEmpleado.get(indice).getFechavigencia() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listEmplVigenciasEstadosCivilesPorEmpleado.size(); j++) {
+                        for (int j = 0; j < listVigenciaEstadoCivilPorEmpleado.size(); j++) {
                             if (j != indice) {
-                                if (listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getFechavigencia().equals(listEmplVigenciasEstadosCivilesPorEmpleado.get(j).getFechavigencia())) {
+                                if (listVigenciaEstadoCivilPorEmpleado.get(indice).getFechavigencia().equals(listVigenciaEstadoCivilPorEmpleado.get(j).getFechavigencia())) {
                                     contador++;
                                 }
                             }
@@ -369,10 +429,10 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                     }
 
                     if (banderita == true) {
-                        if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
-                        } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
+                        if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
+                        } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -388,8 +448,8 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 }
             } else {
 
-                if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice))) {
-                    if (filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice).getFechavigencia() == null) {
+                if (!crearVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(indice))) {
+                    if (filtrarVigenciaEstadoCivilPorEmplado.get(indice).getFechavigencia() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
@@ -397,10 +457,10 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                     }
 
                     if (banderita == true) {
-                        if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice));
-                        } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice))) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice));
+                        if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(indice));
+                        } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(indice))) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -419,12 +479,12 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
             context.update("form:datosHvEntrevista");
             context.update("form:ACEPTAR");
         } else if (confirmarCambio.equalsIgnoreCase("NORMASLABORALES")) {
-            System.out.println("MODIFICANDO NORMA LABORAL : " + listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getEstadocivil().getDescripcion());
-            if (!listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getEstadocivil().getDescripcion().equals("")) {
+            System.out.println("MODIFICANDO ESTADO CIVIL : " + listVigenciaEstadoCivilPorEmpleado.get(indice).getEstadocivil().getDescripcion());
+            if (!listVigenciaEstadoCivilPorEmpleado.get(indice).getEstadocivil().getDescripcion().equals("")) {
                 if (tipoLista == 0) {
-                    listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getEstadocivil().setDescripcion(normaLaboral);
+                    listVigenciaEstadoCivilPorEmpleado.get(indice).getEstadocivil().setDescripcion(estadoCivil);
                 } else {
-                    listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).getEstadocivil().setDescripcion(normaLaboral);
+                    listVigenciaEstadoCivilPorEmpleado.get(indice).getEstadocivil().setDescripcion(estadoCivil);
                 }
 
                 for (int i = 0; i < listaEstadosCiviles.size(); i++) {
@@ -436,9 +496,9 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 
                 if (coincidencias == 1) {
                     if (tipoLista == 0) {
-                        listEmplVigenciasEstadosCivilesPorEmpleado.get(indice).setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
+                        listVigenciaEstadoCivilPorEmpleado.get(indice).setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
                     } else {
-                        filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice).setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
+                        filtrarVigenciaEstadoCivilPorEmplado.get(indice).setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
                     }
                     listaEstadosCiviles.clear();
                     listaEstadosCiviles = null;
@@ -452,9 +512,9 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 }
             } else {
                 if (tipoLista == 0) {
-                    listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getEstadocivil().setDescripcion(normaLaboral);
+                    listVigenciaEstadoCivilPorEmpleado.get(index).getEstadocivil().setDescripcion(estadoCivil);
                 } else {
-                    filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).getEstadocivil().setDescripcion(normaLaboral);
+                    filtrarVigenciaEstadoCivilPorEmplado.get(index).getEstadocivil().setDescripcion(estadoCivil);
                 }
                 context.update("form:sucursalesDialogo");
                 context.execute("sucursalesDialogo.show()");
@@ -462,12 +522,12 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 
             if (coincidencias == 1) {
                 if (tipoLista == 0) {
-                    if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
+                    if (!crearVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
 
-                        if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
-                        } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice))) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(indice));
+                        if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
+                        } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(indice))) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -476,12 +536,12 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                     index = -1;
                     secRegistro = null;
                 } else {
-                    if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice))) {
+                    if (!crearVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(indice))) {
 
-                        if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice));
-                        } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice))) {
-                            modificarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(indice));
+                        if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(indice));
+                        } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(indice))) {
+                            modificarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(indice));
                         }
                         if (guardado == true) {
                             guardado = false;
@@ -499,27 +559,27 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 
     }
 
-    public void actualizarNormaLaboral() {
+    public void actualizarEstadoCivil() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
-                listEmplVigenciasEstadosCivilesPorEmpleado.get(index).setEstadocivil(normaLaboralSeleccionada);
+                listVigenciaEstadoCivilPorEmpleado.get(index).setEstadocivil(vigenciaEstadoCivilSeleccionada);
 
-                if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(index))) {
-                    if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                        modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(index));
-                    } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(index))) {
-                        modificarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(index));
+                if (!crearVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(index))) {
+                    if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                        modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(index));
+                    } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(index))) {
+                        modificarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(index));
                     }
                 }
             } else {
-                filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).setEstadocivil(normaLaboralSeleccionada);
+                filtrarVigenciaEstadoCivilPorEmplado.get(index).setEstadocivil(vigenciaEstadoCivilSeleccionada);
 
-                if (!crearEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index))) {
-                    if (modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                        modificarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
-                    } else if (!modificarEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index))) {
-                        modificarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
+                if (!crearVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(index))) {
+                    if (modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                        modificarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(index));
+                    } else if (!modificarVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(index))) {
+                        modificarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(index));
                     }
                 }
             }
@@ -530,16 +590,16 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
             context.update("form:datosHvEntrevista");
             context.update("form:ACEPTAR");
         } else if (tipoActualizacion == 1) {
-            System.out.println("ACTUALIZARNORMA LABORAR NUEVA NORMA LABORAL: " + normaLaboralSeleccionada.getDescripcion());
-            nuevoEmplVigenciasEstadosCiviles.setEstadocivil(normaLaboralSeleccionada);
+            System.out.println("ACTUALIZARNORMA LABORAR NUEVA ESTADO CIVIL: " + vigenciaEstadoCivilSeleccionada.getDescripcion());
+            nuevoVigenciaEstadoCivil.setEstadocivil(vigenciaEstadoCivilSeleccionada);
             context.update("formularioDialogos:nuevoNombreSucursal");
         } else if (tipoActualizacion == 2) {
-            System.out.println("ACTUALIZARNORMA LABORAR DUPLICAR NORMA LABORAL: " + normaLaboralSeleccionada.getDescripcion());
-            duplicarEmplVigenciasEstadosCiviles.setEstadocivil(normaLaboralSeleccionada);
+            System.out.println("ACTUALIZARNORMA LABORAR DUPLICAR ESTADO CIVIL: " + vigenciaEstadoCivilSeleccionada.getDescripcion());
+            duplicarVigenciaEstadoCivil.setEstadocivil(vigenciaEstadoCivilSeleccionada);
             context.update("formularioDialogos:duplicarTipoCentroCostos");
         }
         filtradoEstadosCiviles = null;
-        normaLaboralSeleccionada = null;
+        vigenciaEstadoCivilSeleccionada = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -551,9 +611,9 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         //context.update("form:datosHvEntrevista");
     }
 
-    public void cancelarCambioNormaLaboral() {
+    public void cancelarCambioEstadoCivil() {
         filtradoEstadosCiviles = null;
-        normaLaboralSeleccionada = null;
+        vigenciaEstadoCivilSeleccionada = null;
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -564,11 +624,11 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
     public void valoresBackupAutocompletar(int tipoNuevo) {
         System.out.println("1...");
         if (tipoNuevo == 1) {
-            nuevoYduplicarCompletarNormaLaboral = nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion();
+            nuevoYduplicarCompletarEstadoCivil = nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion();
         } else if (tipoNuevo == 2) {
-            nuevoYduplicarCompletarNormaLaboral = duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion();
+            nuevoYduplicarCompletarEstadoCivil = duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion();
         }
-
+        System.out.println(" valoresBackupAutocompletar nuevoYduplicarCompletarEstadoCivil " + nuevoYduplicarCompletarEstadoCivil);
     }
 
     public void autocompletarNuevo(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
@@ -578,13 +638,13 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("NORMASLABORALES")) {
             System.out.println(" nueva Ciudad    Entro al if 'Centro costo'");
-            System.out.println("NOMBRE CENTRO COSTO: " + nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+            System.out.println("NOMBRE CENTRO COSTO: " + nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion());
 
-            if (!nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion().equals("")) {
+            if (!nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion().equals("")) {
                 System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("valorConfirmar: " + valorConfirmar);
-                System.out.println("nuevoYduplicarCiudadCompletar: " + nuevoYduplicarCompletarNormaLaboral);
-                nuevoEmplVigenciasEstadosCiviles.getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
+                System.out.println("nuevoYduplicarCiudadCompletar: " + nuevoYduplicarCompletarEstadoCivil);
+                nuevoVigenciaEstadoCivil.getEstadocivil().setDescripcion(nuevoYduplicarCompletarEstadoCivil);
                 getListaEstadosCiviles();
                 for (int i = 0; i < listaEstadosCiviles.size(); i++) {
                     if (listaEstadosCiviles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
@@ -594,21 +654,21 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 }
                 System.out.println("Coincidencias: " + coincidencias);
                 if (coincidencias == 1) {
-                    nuevoEmplVigenciasEstadosCiviles.setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
+                    nuevoVigenciaEstadoCivil.setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
                     listaEstadosCiviles = null;
                     getListaEstadosCiviles();
-                    System.err.println("NORMA LABORAL GUARDADA " + nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+                    System.err.println("ESTADO CIVIL GUARDADA " + nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion());
                 } else {
                     context.update("form:sucursalesDialogo");
                     context.execute("sucursalesDialogo.show()");
                     tipoActualizacion = tipoNuevo;
                 }
             } else {
-                nuevoEmplVigenciasEstadosCiviles.getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
+                nuevoVigenciaEstadoCivil.getEstadocivil().setDescripcion(nuevoYduplicarCompletarEstadoCivil);
                 System.out.println("valorConfirmar cuando es vacio: " + valorConfirmar);
-                nuevoEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
-                nuevoEmplVigenciasEstadosCiviles.getEstadocivil().setDescripcion(" ");
-                System.out.println("NUEVA NORMA LABORAL" + nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+                nuevoVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
+                nuevoVigenciaEstadoCivil.getEstadocivil().setDescripcion(" ");
+                System.out.println("NUEVA ESTADO CIVIL" + nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion());
             }
             context.update("formularioDialogos:nuevoNombreSucursal");
         }
@@ -627,14 +687,14 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         context.execute("sucursalesDialogo.show()");
     }
 
-    public void limpiarNuevaNormaLaboral() {
+    public void limpiarNuevoEstadoCivil() {
         try {
-            System.out.println("\n ENTRE A LIMPIAR NUEVO NORMA LABORAL \n");
-            nuevoEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
-            nuevoEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
+            System.out.println("\n ENTRE A LIMPIAR NUEVO ESTADO CIVIL  \n");
+            nuevoVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+            nuevoVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
             index = -1;
         } catch (Exception e) {
-            System.out.println("Error CONTROLBETAEMPLVIGENCIANORMALABORAL LIMPIAR NUEVO NORMA LABORAL ERROR :" + e.getMessage());
+            System.out.println("Error CONTROLBETAEMPLVIGENCIANORMALABORAL LIMPIAR NUEVO ESTADO CIVIL ERROR :" + e.getMessage());
         }
     }
 
@@ -659,13 +719,13 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("NORMASLABORALES")) {
             System.out.println("DUPLICAR valorConfirmar : " + valorConfirmar);
-            System.out.println("DUPLICAR CIUDAD bkp : " + nuevoYduplicarCompletarNormaLaboral);
+            System.out.println("DUPLICAR CIUDAD bkp : " + nuevoYduplicarCompletarEstadoCivil);
 
-            if (!duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion().equals("")) {
+            if (!duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion().equals("") || !duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion().isEmpty()) {
                 System.out.println("DUPLICAR ENTRO DONDE NO TENIA QUE ENTRAR");
                 System.out.println("DUPLICAR valorConfirmar: " + valorConfirmar);
-                System.out.println("DUPLICAR nuevoTipoCCAutoCompletar: " + nuevoYduplicarCompletarNormaLaboral);
-                duplicarEmplVigenciasEstadosCiviles.getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
+                System.out.println("DUPLICAR nuevoTipoCCAutoCompletar: " + nuevoYduplicarCompletarEstadoCivil);
+                duplicarVigenciaEstadoCivil.getEstadocivil().setDescripcion(nuevoYduplicarCompletarEstadoCivil);
                 for (int i = 0; i < listaEstadosCiviles.size(); i++) {
                     if (listaEstadosCiviles.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
                         indiceUnicoElemento = i;
@@ -674,7 +734,7 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 }
                 System.out.println("Coincidencias: " + coincidencias);
                 if (coincidencias == 1) {
-                    duplicarEmplVigenciasEstadosCiviles.setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
+                    duplicarVigenciaEstadoCivil.setEstadocivil(listaEstadosCiviles.get(indiceUnicoElemento));
                     listaEstadosCiviles = null;
                     getListaEstadosCiviles();
                 } else {
@@ -684,19 +744,19 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 }
             } else {
                 if (tipoNuevo == 2) {
-                    //duplicarEmplVigenciasEstadosCiviles.getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
+                    //duplicarVigenciaEstadoCivil.getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
                     System.out.println("DUPLICAR valorConfirmar cuando es vacio: " + valorConfirmar);
                     System.out.println("DUPLICAR INDEX : " + index);
-                    duplicarEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
-                    duplicarEmplVigenciasEstadosCiviles.getEstadocivil().setDescripcion(" ");
+                    duplicarVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
+                    duplicarVigenciaEstadoCivil.getEstadocivil().setDescripcion(" ");
 
-                    System.out.println("DUPLICAR Valor NORMA LABORAL : " + duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+                    System.out.println("DUPLICAR Valor ESTADO CIVIL : " + duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion());
                     if (tipoLista == 0) {
-                        listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
+                        listVigenciaEstadoCivilPorEmpleado.get(index).getEstadocivil().setDescripcion(nuevoYduplicarCompletarEstadoCivil);
                         System.err.println("tipo lista" + tipoLista);
-                        System.err.println("Secuencia Parentesco " + listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getEstadocivil().getSecuencia());
+                        System.err.println("Secuencia EstadoCivil " + listVigenciaEstadoCivilPorEmpleado.get(index).getEstadocivil().getSecuencia());
                     } else if (tipoLista == 1) {
-                        filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).getEstadocivil().setDescripcion(nuevoYduplicarCompletarNormaLaboral);
+                        filtrarVigenciaEstadoCivilPorEmplado.get(index).getEstadocivil().setDescripcion(nuevoYduplicarCompletarEstadoCivil);
                     }
 
                 }
@@ -711,33 +771,33 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         if (index >= 0) {
             if (tipoLista == 0) {
                 System.out.println("Entro a borrandoEvalCompetencias");
-                if (!modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty() && modificarEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(index))) {
-                    int modIndex = modificarEmplVigenciasEstadosCivilesPorEmplado.indexOf(listEmplVigenciasEstadosCivilesPorEmpleado.get(index));
-                    modificarEmplVigenciasEstadosCivilesPorEmplado.remove(modIndex);
-                    borrarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(index));
-                } else if (!crearEmplVigenciasEstadosCivilesPorEmplado.isEmpty() && crearEmplVigenciasEstadosCivilesPorEmplado.contains(listEmplVigenciasEstadosCivilesPorEmpleado.get(index))) {
-                    int crearIndex = crearEmplVigenciasEstadosCivilesPorEmplado.indexOf(listEmplVigenciasEstadosCivilesPorEmpleado.get(index));
-                    crearEmplVigenciasEstadosCivilesPorEmplado.remove(crearIndex);
+                if (!modificarVigenciaEstadoCivilPorEmplado.isEmpty() && modificarVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(index))) {
+                    int modIndex = modificarVigenciaEstadoCivilPorEmplado.indexOf(listVigenciaEstadoCivilPorEmpleado.get(index));
+                    modificarVigenciaEstadoCivilPorEmplado.remove(modIndex);
+                    borrarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(index));
+                } else if (!crearVigenciaEstadoCivilPorEmplado.isEmpty() && crearVigenciaEstadoCivilPorEmplado.contains(listVigenciaEstadoCivilPorEmpleado.get(index))) {
+                    int crearIndex = crearVigenciaEstadoCivilPorEmplado.indexOf(listVigenciaEstadoCivilPorEmpleado.get(index));
+                    crearVigenciaEstadoCivilPorEmplado.remove(crearIndex);
                 } else {
-                    borrarEmplVigenciasEstadosCivilesPorEmplado.add(listEmplVigenciasEstadosCivilesPorEmpleado.get(index));
+                    borrarVigenciaEstadoCivilPorEmplado.add(listVigenciaEstadoCivilPorEmpleado.get(index));
                 }
-                listEmplVigenciasEstadosCivilesPorEmpleado.remove(index);
+                listVigenciaEstadoCivilPorEmpleado.remove(index);
             }
             if (tipoLista == 1) {
                 System.out.println("borrandoEvalCompetencias ");
-                if (!modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty() && modificarEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index))) {
-                    int modIndex = modificarEmplVigenciasEstadosCivilesPorEmplado.indexOf(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
-                    modificarEmplVigenciasEstadosCivilesPorEmplado.remove(modIndex);
-                    borrarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
-                } else if (!crearEmplVigenciasEstadosCivilesPorEmplado.isEmpty() && crearEmplVigenciasEstadosCivilesPorEmplado.contains(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index))) {
-                    int crearIndex = crearEmplVigenciasEstadosCivilesPorEmplado.indexOf(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
-                    crearEmplVigenciasEstadosCivilesPorEmplado.remove(crearIndex);
+                if (!modificarVigenciaEstadoCivilPorEmplado.isEmpty() && modificarVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(index))) {
+                    int modIndex = modificarVigenciaEstadoCivilPorEmplado.indexOf(filtrarVigenciaEstadoCivilPorEmplado.get(index));
+                    modificarVigenciaEstadoCivilPorEmplado.remove(modIndex);
+                    borrarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(index));
+                } else if (!crearVigenciaEstadoCivilPorEmplado.isEmpty() && crearVigenciaEstadoCivilPorEmplado.contains(filtrarVigenciaEstadoCivilPorEmplado.get(index))) {
+                    int crearIndex = crearVigenciaEstadoCivilPorEmplado.indexOf(filtrarVigenciaEstadoCivilPorEmplado.get(index));
+                    crearVigenciaEstadoCivilPorEmplado.remove(crearIndex);
                 } else {
-                    borrarEmplVigenciasEstadosCivilesPorEmplado.add(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
+                    borrarVigenciaEstadoCivilPorEmplado.add(filtrarVigenciaEstadoCivilPorEmplado.get(index));
                 }
-                int VCIndex = listEmplVigenciasEstadosCivilesPorEmpleado.indexOf(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index));
-                listEmplVigenciasEstadosCivilesPorEmpleado.remove(VCIndex);
-                filtrarEmplVigenciasEstadosCivilesPorEmplado.remove(index);
+                int VCIndex = listVigenciaEstadoCivilPorEmpleado.indexOf(filtrarVigenciaEstadoCivilPorEmplado.get(index));
+                listVigenciaEstadoCivilPorEmpleado.remove(VCIndex);
+                filtrarVigenciaEstadoCivilPorEmplado.remove(index);
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
@@ -745,6 +805,8 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
                 guardado = false;
             }
             context.update("form:datosHvEntrevista");
+            infoRegistro = "Cantidad de registros: " + listVigenciaEstadoCivilPorEmpleado.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             index = -1;
             secRegistro = null;
@@ -779,7 +841,7 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
      }*/
     public void revisarDialogoGuardar() {
 
-        if (!borrarEmplVigenciasEstadosCivilesPorEmplado.isEmpty() || !crearEmplVigenciasEstadosCivilesPorEmplado.isEmpty() || !modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
+        if (!borrarVigenciaEstadoCivilPorEmplado.isEmpty() || !crearVigenciaEstadoCivilPorEmplado.isEmpty() || !modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -787,48 +849,49 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 
     }
 
-    public void guardarEmplVigenciasEstadosCiviles() {
+    public void guardarVigenciaEstadoCivil() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
             System.out.println("Realizando guardarEvalCompetencias");
-            if (!borrarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                for (int i = 0; i < borrarEmplVigenciasEstadosCivilesPorEmplado.size(); i++) {
+            if (!borrarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                for (int i = 0; i < borrarVigenciaEstadoCivilPorEmplado.size(); i++) {
                     System.out.println("Borrando...");
-                    administrarVigenciasEstadosCiviles.borrarVigenciasEstadosCiviles(borrarEmplVigenciasEstadosCivilesPorEmplado);
                 }
+                administrarVigenciaEstadosCiviles.borrarVigenciasEstadosCiviles(borrarVigenciaEstadoCivilPorEmplado);
                 //mostrarBorrados
-                registrosBorrados = borrarEmplVigenciasEstadosCivilesPorEmplado.size();
+                registrosBorrados = borrarVigenciaEstadoCivilPorEmplado.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-
-                borrarEmplVigenciasEstadosCivilesPorEmplado.clear();
+                borrarVigenciaEstadoCivilPorEmplado.clear();
             }
-            if (!modificarEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                System.out.println("Modificando...");
-                administrarVigenciasEstadosCiviles.modificarVigenciasEstadosCiviles(modificarEmplVigenciasEstadosCivilesPorEmplado);
-                modificarEmplVigenciasEstadosCivilesPorEmplado.clear();
-            }
-            if (!crearEmplVigenciasEstadosCivilesPorEmplado.isEmpty()) {
-                for (int i = 0; i < crearEmplVigenciasEstadosCivilesPorEmplado.size(); i++) {
+            if (!crearVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                for (int i = 0; i < crearVigenciaEstadoCivilPorEmplado.size(); i++) {
                     System.out.println("Creando...");
                     System.out.println("-----------------------------------------------");
-                    System.out.println("Empleado : " + crearEmplVigenciasEstadosCivilesPorEmplado.get(i).getPersona().getNombre());
-                    System.out.println("Fecha :" + crearEmplVigenciasEstadosCivilesPorEmplado.get(i).getFechavigencia());
-                    System.out.println("Norma Laboral : " + crearEmplVigenciasEstadosCivilesPorEmplado.get(i).getEstadocivil().getDescripcion());
+                    System.out.println("Secuencia : " + crearVigenciaEstadoCivilPorEmplado.get(i).getSecuencia());
+                    System.out.println("Empleado : " + crearVigenciaEstadoCivilPorEmplado.get(i).getPersona().getNombre());
+                    System.out.println("Fecha :" + crearVigenciaEstadoCivilPorEmplado.get(i).getFechavigencia());
+                    System.out.println("Estado Civil : " + crearVigenciaEstadoCivilPorEmplado.get(i).getEstadocivil().getDescripcion());
                     System.out.println("-----------------------------------------------");
 
                 }
-                administrarVigenciasEstadosCiviles.crearVigenciasEstadosCiviles(crearEmplVigenciasEstadosCivilesPorEmplado);
-                crearEmplVigenciasEstadosCivilesPorEmplado.clear();
+                administrarVigenciaEstadosCiviles.crearVigenciasEstadosCiviles(crearVigenciaEstadoCivilPorEmplado);
+                crearVigenciaEstadoCivilPorEmplado.clear();
+            }
+            if (!modificarVigenciaEstadoCivilPorEmplado.isEmpty()) {
+                System.out.println("Modificando...");
+                administrarVigenciaEstadosCiviles.modificarVigenciasEstadosCiviles(modificarVigenciaEstadoCivilPorEmplado);
+                modificarVigenciaEstadoCivilPorEmplado.clear();
             }
             System.out.println("Se guardaron los datos con exito");
-            listEmplVigenciasEstadosCivilesPorEmpleado = null;
+            listVigenciaEstadoCivilPorEmpleado = null;
             context.update("form:datosHvEntrevista");
             k = 0;
             guardado = true;
-            context.update("form:mostrarGuardar");
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -838,10 +901,10 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarEmplVigenciasEstadosCiviles = listEmplVigenciasEstadosCivilesPorEmpleado.get(index);
+                editarVigenciaEstadoCivil = listVigenciaEstadoCivilPorEmpleado.get(index);
             }
             if (tipoLista == 1) {
-                editarEmplVigenciasEstadosCiviles = filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index);
+                editarVigenciaEstadoCivil = filtrarVigenciaEstadoCivilPorEmplado.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -861,94 +924,82 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoEmplVigenciasEstadosCiviles() {
-        System.out.println("agregarNuevoEmplVigenciasEstadosCiviles");
+    public void agregarNuevoVigenciaEstadoCivil() {
+        System.out.println("agregarNuevoVigenciaEstadoCivil");
         int contador = 0;
-        //nuevoEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
+        //nuevoVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
         Short a = 0;
         a = null;
         int fechas = 0;
         mensajeValidacion = " ";
-        nuevoEmplVigenciasEstadosCiviles.setPersona(empleadoSeleccionado.getPersona());
+        nuevoVigenciaEstadoCivil.setPersona(empleadoSeleccionado.getPersona());
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Nueva Fecha : " + nuevoEmplVigenciasEstadosCiviles.getFechavigencia());
-        if (nuevoEmplVigenciasEstadosCiviles.getFechavigencia() == null) {
-            mensajeValidacion = " *Debe tener una fecha \n";
+        System.out.println("Nueva Fecha : " + nuevoVigenciaEstadoCivil.getFechavigencia());
+        if (nuevoVigenciaEstadoCivil.getFechavigencia() == null || nuevoVigenciaEstadoCivil.getFechavigencia().equals("")) {
+            mensajeValidacion = " *Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            if (listEmplVigenciasEstadosCivilesPorEmpleado != null) {
-                for (int i = 0; i < listEmplVigenciasEstadosCivilesPorEmpleado.size(); i++) {
-                    if (nuevoEmplVigenciasEstadosCiviles.getFechavigencia().equals(listEmplVigenciasEstadosCivilesPorEmpleado.get(i).getFechavigencia())) {
-                        fechas++;
-                    }
+            for (int i = 0; i < listVigenciaEstadoCivilPorEmpleado.size(); i++) {
+                if (nuevoVigenciaEstadoCivil.getFechavigencia().equals(listVigenciaEstadoCivilPorEmpleado.get(i).getFechavigencia())) {
+                    fechas++;
                 }
-                if (fechas > 0) {
-                    mensajeValidacion = "Fechas repetidas ";
-                } else {
-                    contador++;
-                }
+            }
+            if (fechas > 0) {
+                mensajeValidacion = "Fechas repetidas ";
             } else {
                 contador++;
             }
         }
-        if (nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getSecuencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   *Un Estado Civil\n";
+        if (nuevoVigenciaEstadoCivil.getEstadocivil().getSecuencia() == null || nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Estado Civil\n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-            System.out.println("NORMA LABORAL  : " + nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+            System.out.println("Estado Civil Guardado:::::::  : " + nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion());
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        /*if (nuevoHvEntrevista.getTipo() == (null)) {
-         mensajeValidacion = mensajeValidacion + " *Debe tener un tipo entrevista \n";
-         System.out.println("Mensaje validacion : " + mensajeValidacion);
-         } else {
-         System.out.println("bandera");
-         contador++;
-         }*/
+
         System.out.println("contador " + contador);
 
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
+                FacesContext c = FacesContext.getCurrentInstance();
                 System.out.println("Desactivar");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
                 parentesco.setFilterStyle("display: none; visibility: hidden;");
-
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
-                filtrarEmplVigenciasEstadosCivilesPorEmplado = null;
+                filtrarVigenciaEstadoCivilPorEmplado = null;
                 tipoLista = 0;
             }
             System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoEmplVigenciasEstadosCiviles.setSecuencia(l);
+            nuevoVigenciaEstadoCivil.setSecuencia(l);
             System.err.println("---------------AGREGAR REGISTRO----------------");
-            System.err.println("fecha " + nuevoEmplVigenciasEstadosCiviles.getFechavigencia());
-            System.err.println("nombre " + nuevoEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+            System.err.println("fecha " + nuevoVigenciaEstadoCivil.getFechavigencia());
+            System.err.println("nombre " + nuevoVigenciaEstadoCivil.getEstadocivil().getDescripcion());
             System.err.println("-----------------------------------------------");
 
-            crearEmplVigenciasEstadosCivilesPorEmplado.add(nuevoEmplVigenciasEstadosCiviles);
-            if (listEmplVigenciasEstadosCivilesPorEmpleado == null) {
-                listEmplVigenciasEstadosCivilesPorEmpleado = new ArrayList<VigenciasEstadosCiviles>();
-            }
-            listEmplVigenciasEstadosCivilesPorEmpleado.add(nuevoEmplVigenciasEstadosCiviles);
-            nuevoEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
-            nuevoEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
+            crearVigenciaEstadoCivilPorEmplado.add(nuevoVigenciaEstadoCivil);
+            listVigenciaEstadoCivilPorEmpleado.add(nuevoVigenciaEstadoCivil);
+            nuevoVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+            nuevoVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
             context.update("form:datosHvEntrevista");
+            infoRegistro = "Cantidad de registros: " + listVigenciaEstadoCivilPorEmpleado.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
 
             context.execute("nuevoRegistroEvalEmpresas.hide()");
-            context.update("form:datosHvEntrevista");
-
             index = -1;
             secRegistro = null;
 
@@ -959,34 +1010,36 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         }
     }
 
-    public void limpiarNuevoEmplVigenciasEstadosCiviles() {
-        System.out.println("limpiarNuevoEmplVigenciasEstadosCiviles");
-        nuevoEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
-        nuevoEmplVigenciasEstadosCiviles.setEstadocivil(new EstadosCiviles());
+    public void limpiarNuevoVigenciaEstadoCivil() {
+        System.out.println("limpiarNuevoVigenciaEstadoCivil");
+        nuevoVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+        nuevoVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoEmplVigenciasEstadosCiviles() {
+    public void duplicandoVigenciaEstadoCivil() {
         if (index >= 0) {
-            System.out.println("duplicandoEmplVigenciasEstadosCiviles");
-            duplicarEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
+            System.out.println("duplicandoVigenciaEstadoCivil");
+            duplicarVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+            duplicarVigenciaEstadoCivil.setPersona(new Personas());
+            duplicarVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarEmplVigenciasEstadosCiviles.setSecuencia(l);
-                duplicarEmplVigenciasEstadosCiviles.setPersona(listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getPersona());
-                duplicarEmplVigenciasEstadosCiviles.setFechavigencia(listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getFechavigencia());
-                duplicarEmplVigenciasEstadosCiviles.setEstadocivil(listEmplVigenciasEstadosCivilesPorEmpleado.get(index).getEstadocivil());
+                duplicarVigenciaEstadoCivil.setSecuencia(l);
+                duplicarVigenciaEstadoCivil.setPersona(listVigenciaEstadoCivilPorEmpleado.get(index).getPersona());
+                duplicarVigenciaEstadoCivil.setFechavigencia(listVigenciaEstadoCivilPorEmpleado.get(index).getFechavigencia());
+                duplicarVigenciaEstadoCivil.setEstadocivil(listVigenciaEstadoCivilPorEmpleado.get(index).getEstadocivil());
             }
             if (tipoLista == 1) {
-                duplicarEmplVigenciasEstadosCiviles.setSecuencia(l);
-                duplicarEmplVigenciasEstadosCiviles.setPersona(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).getPersona());
-                duplicarEmplVigenciasEstadosCiviles.setFechavigencia(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).getFechavigencia());
-                duplicarEmplVigenciasEstadosCiviles.setEstadocivil(filtrarEmplVigenciasEstadosCivilesPorEmplado.get(index).getEstadocivil());
+                duplicarVigenciaEstadoCivil.setSecuencia(l);
+                duplicarVigenciaEstadoCivil.setPersona(filtrarVigenciaEstadoCivilPorEmplado.get(index).getPersona());
+                duplicarVigenciaEstadoCivil.setFechavigencia(filtrarVigenciaEstadoCivilPorEmplado.get(index).getFechavigencia());
+                duplicarVigenciaEstadoCivil.setEstadocivil(filtrarVigenciaEstadoCivilPorEmplado.get(index).getEstadocivil());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -1005,16 +1058,16 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         Short a = 0;
         int fechas = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarEmplVigenciasEstadosCiviles.getFechavigencia());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarVigenciaEstadoCivil.getFechavigencia());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion());
 
-        if (duplicarEmplVigenciasEstadosCiviles.getFechavigencia() == null) {
+        if (duplicarVigenciaEstadoCivil.getFechavigencia() == null) {
             mensajeValidacion = mensajeValidacion + "   * Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
 
-            for (int j = 0; j < listEmplVigenciasEstadosCivilesPorEmpleado.size(); j++) {
-                if (duplicarEmplVigenciasEstadosCiviles.getFechavigencia().equals(listEmplVigenciasEstadosCivilesPorEmpleado.get(j).getFechavigencia())) {
+            for (int j = 0; j < listVigenciaEstadoCivilPorEmpleado.size(); j++) {
+                if (duplicarVigenciaEstadoCivil.getFechavigencia().equals(listVigenciaEstadoCivilPorEmpleado.get(j).getFechavigencia())) {
                     System.out.println("Se repiten");
                     fechas++;
                 }
@@ -1027,50 +1080,55 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
             }
 
         }
-        if (duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion() == null || duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion().isEmpty() || duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Norma Laboral \n";
+        if (duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion() == null || duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion().isEmpty() || duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion().equals(" ") || duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   * Estado Civil \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
             contador++;
 
         }
-        if (duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getSecuencia() == null) {
-            duplicarEmplVigenciasEstadosCiviles.setPersona(empleadoSeleccionado.getPersona());
+        if (duplicarVigenciaEstadoCivil.getPersona().getSecuencia() == null) {
+            duplicarVigenciaEstadoCivil.setPersona(empleadoSeleccionado.getPersona());
         }
         if (contador == 2) {
-
-            System.out.println("Datos Duplicando: " + duplicarEmplVigenciasEstadosCiviles.getSecuencia() + "  " + duplicarEmplVigenciasEstadosCiviles.getFechavigencia());
-            if (crearEmplVigenciasEstadosCivilesPorEmplado.contains(duplicarEmplVigenciasEstadosCiviles)) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarVigenciaEstadoCivil.setSecuencia(l);
+            System.out.println("Datos Duplicando: " + duplicarVigenciaEstadoCivil.getSecuencia() + "  " + duplicarVigenciaEstadoCivil.getFechavigencia());
+            if (crearVigenciaEstadoCivilPorEmplado.contains(duplicarVigenciaEstadoCivil)) {
                 System.out.println("Ya lo contengo.");
             }
-            listEmplVigenciasEstadosCivilesPorEmpleado.add(duplicarEmplVigenciasEstadosCiviles);
-            crearEmplVigenciasEstadosCivilesPorEmplado.add(duplicarEmplVigenciasEstadosCiviles);
+            listVigenciaEstadoCivilPorEmpleado.add(duplicarVigenciaEstadoCivil);
+            crearVigenciaEstadoCivilPorEmplado.add(duplicarVigenciaEstadoCivil);
             context.update("form:datosHvEntrevista");
             index = -1;
             secRegistro = null;
 
             System.err.println("---------------DUPLICAR REGISTRO----------------");
-            System.err.println("fecha " + duplicarEmplVigenciasEstadosCiviles.getFechavigencia());
-            System.err.println("NormaLaboral " + duplicarEmplVigenciasEstadosCiviles.getEstadocivil().getDescripcion());
-            System.err.println("Nombre Empleado " + duplicarEmplVigenciasEstadosCiviles.getPersona().getNombre());
+            System.err.println("fecha " + duplicarVigenciaEstadoCivil.getFechavigencia());
+            System.err.println("Estado Civil " + duplicarVigenciaEstadoCivil.getEstadocivil().getDescripcion());
+            System.err.println("Nombre Empleado " + duplicarVigenciaEstadoCivil.getPersona().getNombre());
             System.err.println("-----------------------------------------------");
             if (guardado == true) {
                 guardado = false;
             }
+            infoRegistro = "Cantidad de registros: " + listVigenciaEstadoCivilPorEmpleado.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                FacesContext c = FacesContext.getCurrentInstance();
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
                 parentesco.setFilterStyle("display: none; visibility: hidden;");
-
+                altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
                 bandera = 0;
-                filtrarEmplVigenciasEstadosCivilesPorEmplado = null;
+                filtrarVigenciaEstadoCivilPorEmplado = null;
                 tipoLista = 0;
             }
-            duplicarEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
+            duplicarVigenciaEstadoCivil = new VigenciasEstadosCiviles();
             RequestContext.getCurrentInstance().execute("duplicarRegistroEvalCompetencias.hide()");
 
         } else {
@@ -1082,15 +1140,17 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
-    public void limpiarDuplicarEmplVigenciasEstadosCiviles() {
-        duplicarEmplVigenciasEstadosCiviles = new VigenciasEstadosCiviles();
+    public void limpiarDuplicarVigenciaEstadoCivil() {
+        duplicarVigenciaEstadoCivil = new VigenciasEstadosCiviles();
+        duplicarVigenciaEstadoCivil.setPersona(new Personas());
+        duplicarVigenciaEstadoCivil.setEstadocivil(new EstadosCiviles());
     }
 
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosHvEntrevistaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "VIGENCIASESTADOSCIVILES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "VIGENCIASNORMASLABORALES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1100,7 +1160,7 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosHvEntrevistaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "VIGENCIASESTADOSCIVILES", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "VIGENCIASNORMASLABORALES", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -1109,7 +1169,7 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
         System.out.println("lol");
-        if (!listEmplVigenciasEstadosCivilesPorEmpleado.isEmpty()) {
+        if (!listVigenciaEstadoCivilPorEmpleado.isEmpty()) {
             if (secRegistro != null) {
                 System.out.println("lol 2");
                 int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASESTADOSCIVILES"); //En ENCARGATURAS lo cambia por el nombre de su tabla
@@ -1140,52 +1200,54 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
     }
 
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
-    public List<VigenciasEstadosCiviles> getListEmplVigenciasEstadosCivilesPorEmpleado() {
-        if (listEmplVigenciasEstadosCivilesPorEmpleado == null) {
-            if (secuenciaEmpleado == null) {
-                listEmplVigenciasEstadosCivilesPorEmpleado = administrarVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPorEmpleado();
-            } else {
-                listEmplVigenciasEstadosCivilesPorEmpleado = administrarVigenciasEstadosCiviles.consultarVigenciasEstadosCivilesPorEmpleado(empleadoSeleccionado.getPersona().getSecuencia());
-                System.out.println("NO ES NULA");
-            }
+    public List<VigenciasEstadosCiviles> getListVigenciaEstadoCivilPorEmpleado() {
+        if (listVigenciaEstadoCivilPorEmpleado == null) {
+            listVigenciaEstadoCivilPorEmpleado = administrarVigenciaEstadosCiviles.consultarVigenciasEstadosCivilesPorEmpleado(secuenciaPersona);
         }
-        return listEmplVigenciasEstadosCivilesPorEmpleado;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listVigenciaEstadoCivilPorEmpleado == null || listVigenciaEstadoCivilPorEmpleado.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVigenciaEstadoCivilPorEmpleado.size();
+        }
+        context.update("form:informacionRegistro");
+        return listVigenciaEstadoCivilPorEmpleado;
     }
 
-    public void setListEmplVigenciasEstadosCivilesPorEmpleado(List<VigenciasEstadosCiviles> listEmplVigenciasEstadosCivilesPorEmpleado) {
-        this.listEmplVigenciasEstadosCivilesPorEmpleado = listEmplVigenciasEstadosCivilesPorEmpleado;
+    public void setListVigenciaEstadoCivilPorEmpleado(List<VigenciasEstadosCiviles> listVigenciaEstadoCivilPorEmpleado) {
+        this.listVigenciaEstadoCivilPorEmpleado = listVigenciaEstadoCivilPorEmpleado;
     }
 
-    public List<VigenciasEstadosCiviles> getFiltrarEmplVigenciasEstadosCivilesPorEmplado() {
-        return filtrarEmplVigenciasEstadosCivilesPorEmplado;
+    public List<VigenciasEstadosCiviles> getFiltrarVigenciaEstadoCivilPorEmplado() {
+        return filtrarVigenciaEstadoCivilPorEmplado;
     }
 
-    public void setFiltrarEmplVigenciasEstadosCivilesPorEmplado(List<VigenciasEstadosCiviles> filtrarEmplVigenciasEstadosCivilesPorEmplado) {
-        this.filtrarEmplVigenciasEstadosCivilesPorEmplado = filtrarEmplVigenciasEstadosCivilesPorEmplado;
+    public void setFiltrarVigenciaEstadoCivilPorEmplado(List<VigenciasEstadosCiviles> filtrarVigenciaEstadoCivilPorEmplado) {
+        this.filtrarVigenciaEstadoCivilPorEmplado = filtrarVigenciaEstadoCivilPorEmplado;
     }
 
-    public VigenciasEstadosCiviles getNuevoEmplVigenciasEstadosCiviles() {
-        return nuevoEmplVigenciasEstadosCiviles;
+    public VigenciasEstadosCiviles getNuevoVigenciaEstadoCivil() {
+        return nuevoVigenciaEstadoCivil;
     }
 
-    public void setNuevoEmplVigenciasEstadosCiviles(VigenciasEstadosCiviles nuevoEmplVigenciasEstadosCiviles) {
-        this.nuevoEmplVigenciasEstadosCiviles = nuevoEmplVigenciasEstadosCiviles;
+    public void setNuevoVigenciaEstadoCivil(VigenciasEstadosCiviles nuevoVigenciaEstadoCivil) {
+        this.nuevoVigenciaEstadoCivil = nuevoVigenciaEstadoCivil;
     }
 
-    public VigenciasEstadosCiviles getDuplicarEmplVigenciasEstadosCiviles() {
-        return duplicarEmplVigenciasEstadosCiviles;
+    public VigenciasEstadosCiviles getDuplicarVigenciaEstadoCivil() {
+        return duplicarVigenciaEstadoCivil;
     }
 
-    public void setDuplicarEmplVigenciasEstadosCiviles(VigenciasEstadosCiviles duplicarEmplVigenciasEstadosCiviles) {
-        this.duplicarEmplVigenciasEstadosCiviles = duplicarEmplVigenciasEstadosCiviles;
+    public void setDuplicarVigenciaEstadoCivil(VigenciasEstadosCiviles duplicarVigenciaEstadoCivil) {
+        this.duplicarVigenciaEstadoCivil = duplicarVigenciaEstadoCivil;
     }
 
-    public VigenciasEstadosCiviles getEditarEmplVigenciasEstadosCiviles() {
-        return editarEmplVigenciasEstadosCiviles;
+    public VigenciasEstadosCiviles getEditarVigenciaEstadoCivil() {
+        return editarVigenciaEstadoCivil;
     }
 
-    public void setEditarEmplVigenciasEstadosCiviles(VigenciasEstadosCiviles editarEmplVigenciasEstadosCiviles) {
-        this.editarEmplVigenciasEstadosCiviles = editarEmplVigenciasEstadosCiviles;
+    public void setEditarVigenciaEstadoCivil(VigenciasEstadosCiviles editarVigenciaEstadoCivil) {
+        this.editarVigenciaEstadoCivil = editarVigenciaEstadoCivil;
     }
 
     public BigInteger getSecRegistro() {
@@ -1214,7 +1276,7 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 
     public Empleados getEmpleadoSeleccionado() {
         if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarVigenciasEstadosCiviles.consultarEmpleado(secuenciaEmpleado);
+            empleadoSeleccionado = administrarVigenciaEstadosCiviles.consultarEmpleado(secuenciaEmpleado);
         }
         return empleadoSeleccionado;
     }
@@ -1223,10 +1285,19 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         this.empleadoSeleccionado = empleadoSeleccionado;
     }
 
+    private String infoRecursoEstadosCiviles;
+
     public List<EstadosCiviles> getListaEstadosCiviles() {
         if (listaEstadosCiviles == null) {
-            listaEstadosCiviles = administrarVigenciasEstadosCiviles.lovEstadosCiviles();
+            listaEstadosCiviles = administrarVigenciaEstadosCiviles.lovEstadosCiviles();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaEstadosCiviles == null || listaEstadosCiviles.isEmpty()) {
+            infoRecursoEstadosCiviles = "Cantidad de registros: 0 ";
+        } else {
+            infoRecursoEstadosCiviles = "Cantidad de registros: " + listaEstadosCiviles.size();
+        }
+        context.update("form:infoRecursoEstadosCiviles");
         return listaEstadosCiviles;
     }
 
@@ -1242,12 +1313,20 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
         this.filtradoEstadosCiviles = filtradoEstadosCiviles;
     }
 
-    public EstadosCiviles getNormaLaboralSeleccionada() {
-        return normaLaboralSeleccionada;
+    public EstadosCiviles getVigenciaEstadoCivilSeleccionada() {
+        return vigenciaEstadoCivilSeleccionada;
     }
 
-    public void setNormaLaboralSeleccionada(EstadosCiviles normaLaboralSeleccionada) {
-        this.normaLaboralSeleccionada = normaLaboralSeleccionada;
+    public void setVigenciaEstadoCivilSeleccionada(EstadosCiviles vigenciaEstadoCivilSeleccionada) {
+        this.vigenciaEstadoCivilSeleccionada = vigenciaEstadoCivilSeleccionada;
+    }
+
+    public VigenciasEstadosCiviles getVigenciaSeleccionada() {
+        return vigenciaSeleccionada;
+    }
+
+    public void setVigenciaSeleccionada(VigenciasEstadosCiviles vigenciaSeleccionada) {
+        this.vigenciaSeleccionada = vigenciaSeleccionada;
     }
 
     public boolean isGuardado() {
@@ -1256,6 +1335,34 @@ public class ControlVigenciasEstadosCiviles implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    public String getInfoRecursoEstadosCiviles() {
+        return infoRecursoEstadosCiviles;
+    }
+
+    public void setInfoRecursoEstadosCiviles(String infoRecursoEstadosCiviles) {
+        this.infoRecursoEstadosCiviles = infoRecursoEstadosCiviles;
     }
 
 }

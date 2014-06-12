@@ -26,16 +26,13 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.codigo}" maxlength="4" id="editarCodigo" style="height: 12px;  border-radius: 0px; width: 99%; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlTiposEntidades.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlTiposEntidades.modificarTipoEntidad(indice, 'N', info.codigo)}" update="codigo"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Código"/>
-                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Nombre" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains" id="nombre" width="275" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -48,9 +45,6 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Nombre"/>
-                                    </f:facet>
                                 </p:column>
                                 <p:column headerText="Grupo Asociado" sortBy="#{info.grupo.nombre}" filterBy="#{info.grupo.nombre}" filterMatchMode="contains" id="grupoAsociado" width="275" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -65,7 +59,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 303px; margin: -14px; height: 26px; border: none; color: blue" id="fooGrupoAsociado" value="Grupo Asociado"/>
+                                        <p:commandButton style="width: 303px; margin: -14px; height: 20px; border: none; color: blue" id="fooGrupoAsociado" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -115,10 +109,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposEntidades.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR"  actionListener="#{controlTiposEntidades.cancelarModificacion()}" value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlTiposEntidades.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  onclick="confirmarGuardar.show();" disabled="#{controlTiposEntidades.guardado}" update="datosTipoEntidad"  process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -140,6 +142,7 @@
                         <p:dataTable id="lovGruposTiposEntidades" style="width: 370px" var="grupos" value="#{controlTiposEntidades.listaGruposTiposEntidades}" rowKey="#{grupos.secuencia}"
                                      selection="#{controlTiposEntidades.gruposTiposEntidadesSeleccionada}" selectionMode="single" widgetVar="lovGruposTiposEntidades" scrollable="true" scrollWidth="385" scrollHeight="250"
                                      filteredValue="#{controlTiposEntidades.filtradoGruposTiposEntidades}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                            <p:ajax event="rowDblselect" listener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" process="@this" onstart="lovGruposTiposEntidades.clearFilters()"/>
                             <p:ajax event="rowSelect" listener="#{controlTiposEntidades.activarAceptar()}" update=":form:aceptarGTE"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Grupo de Tipo Entidad : "  style="position: absolute; left: 27px; top: 14px"/>  
@@ -159,7 +162,10 @@
                             </p:column>
 
                         </p:dataTable>
-                        <p:commandButton id="aceptarGTE" icon="ui-icon-check" style="position: relative; left: 210px" value="Aceptar"  onclick="gruposTiposEntidadesDialogo.hide(), lovGruposTiposEntidades.clearFilters();" actionListener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" update="lovGruposTiposEntidades, aceptarGTE, datosTipoEntidad" process="@this">
+
+                        <h:outputText id="infoRegistroGruposTiposEntidades" value="#{controlTiposEntidades.infoRegistroGruposTiposEntidades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+
+                        <p:commandButton id="aceptarGTE" icon="ui-icon-check" style="position: relative; left: 210px" value="Aceptar" disabled="#{controlTiposEntidades.aceptar}" onclick="gruposTiposEntidadesDialogo.hide(), lovGruposTiposEntidades.clearFilters();" actionListener="#{controlTiposEntidades.actualizarGrupoTipoEntidad()}" update="lovGruposTiposEntidades, aceptarGTE, datosTipoEntidad" process="@this">
                             <p:resetInput target=":form:lovGruposTiposEntidades:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasGTE" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 210px" value="Atras" actionListener="#{controlTiposEntidades.cancelarCambioGrupoTipoEntidad()}" onclick="gruposTiposEntidadesDialogo.hide();
@@ -272,7 +278,7 @@
                         <p:panel id="nuevoTipoEntidad" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlTiposEntidades.nuevoTipoEntidad.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" maxlength="4" value="#{controlTiposEntidades.nuevoTipoEntidad.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px; text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
@@ -304,13 +310,13 @@
 
                         <p:panel id="duplicarTiposEntidades" style="border: none;">
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlTiposEntidades.duplicarTipoEntidad.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="duplicarCodigo" maxlength="4" value="#{controlTiposEntidades.duplicarTipoEntidad.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px; text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Codigo" />
 
                             <strong><h:outputText value="*Nombre:"  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposEntidades.duplicarTipoEntidad.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlTiposEntidades.duplicarTipoEntidad.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px; text-transform: uppercase" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />

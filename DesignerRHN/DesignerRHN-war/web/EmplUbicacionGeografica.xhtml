@@ -96,10 +96,6 @@
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
-
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['fecha']}" />
-                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['descripcion']}" sortBy="#{info.ubicacion.descripcion}" filterBy="#{info.ubicacion.descripcion}" filterMatchMode="contains" id="vuDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
@@ -115,7 +111,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooUbicacion" action="ubicaciongeografica" actionListener="#{controlUbicacionesGeograficas.recibirPaginaEntrante('emplubicaciongeografica')}" value="#{msg['descripcion']}"/>
+                                        <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooUbicacion" action="ubicaciongeografica" actionListener="#{controlUbicacionesGeograficas.recibirPaginaEntrante('emplubicaciongeografica')}" value=" "/>
                                     </f:facet>
                                 </p:column>  
 
@@ -128,7 +124,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooCiudad" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplubicaciongeografica')}" value="#{msg['ciudad']}" />
+                                        <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooCiudad" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplubicaciongeografica')}" value=" " />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable> 
@@ -243,6 +239,18 @@
                     <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+                    
+                    <p:dialog id="validacionFechaDuplicada" header="#{msg['atencion']}" widgetVar="validacionFechaDuplicada"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['fechaDuplicada']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaDuplicada.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
+                    </p:dialog>
+                    
+                    <p:dialog id="validacionFechaVacia" header="#{msg['atencion']}" widgetVar="validacionFechaVacia"  resizable="false" draggable="false" modal="true" height="95" width="440"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="60" style="position: absolute; left: 20px; top: 10px;"  />
+                        <h:outputText value="#{msg['fechaVacia']}" style="position: absolute; left: 110px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionFechaVacia.hide();" style="position: absolute; top: 60px; left: 300px"  process="@this" />
                     </p:dialog>
                     
                     <p:dialog id="NuevoRegistroVU" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistroVU" closable="false" resizable="false"  draggable="false" modal="true" height="240" width="320" style=" padding: 0px">  

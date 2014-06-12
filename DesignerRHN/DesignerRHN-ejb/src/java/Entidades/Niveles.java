@@ -34,8 +34,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Niveles.findByCodigo", query = "SELECT n FROM Niveles n WHERE n.codigo = :codigo"),
     @NamedQuery(name = "Niveles.findByDescripcion", query = "SELECT n FROM Niveles n WHERE n.descripcion = :descripcion")})
 public class Niveles implements Serializable {
-    @Basic(optional = false)
-    @NotNull
+
     @Column(name = "CODIGO")
     private Integer codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "nivel")

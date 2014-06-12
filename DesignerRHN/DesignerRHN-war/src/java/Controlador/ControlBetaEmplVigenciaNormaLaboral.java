@@ -854,8 +854,8 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
             if (!borrarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
                 for (int i = 0; i < borrarEmplVigenciaNormaLaboralPorEmplado.size(); i++) {
                     System.out.println("Borrando...");
-                    administrarVigenciaNormaLaboral.borrarVigenciaNormaLaboral(borrarEmplVigenciaNormaLaboralPorEmplado);
                 }
+                administrarVigenciaNormaLaboral.borrarVigenciaNormaLaboral(borrarEmplVigenciaNormaLaboralPorEmplado);
                 //mostrarBorrados
                 registrosBorrados = borrarEmplVigenciaNormaLaboralPorEmplado.size();
                 context.update("form:mostrarBorrados");
@@ -870,9 +870,9 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
                     System.out.println("Fecha :" + crearEmplVigenciaNormaLaboralPorEmplado.get(i).getFechavigencia());
                     System.out.println("Norma Laboral : " + crearEmplVigenciaNormaLaboralPorEmplado.get(i).getNormalaboral().getNombre());
                     System.out.println("-----------------------------------------------");
-                    administrarVigenciaNormaLaboral.crearVigenciaNormaLaboral(crearEmplVigenciaNormaLaboralPorEmplado);
 
                 }
+                administrarVigenciaNormaLaboral.crearVigenciaNormaLaboral(crearEmplVigenciaNormaLaboralPorEmplado);
                 crearEmplVigenciaNormaLaboralPorEmplado.clear();
             }
             if (!modificarEmplVigenciaNormaLaboralPorEmplado.isEmpty()) {
