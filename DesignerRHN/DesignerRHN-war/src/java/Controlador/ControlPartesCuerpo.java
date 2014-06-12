@@ -1,6 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controlador;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,14 +38,16 @@ public class ControlPartesCuerpo implements Serializable {
     AdministrarPartesCuerpoInterface administrarPartesCuerpo;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<PartesCuerpo> listPartesCuerpo;
     private List<PartesCuerpo> filtrarPartesCuerpo;
     private List<PartesCuerpo> crearPartesCuerpo;
     private List<PartesCuerpo> modificarPartesCuerpo;
     private List<PartesCuerpo> borrarPartesCuerpo;
-    private PartesCuerpo nuevaParteCuerpo;
-    private PartesCuerpo duplicarParteCuerpo;
-    private PartesCuerpo editarParteCuerpo;
+    private PartesCuerpo nuevoPartesCuerpo;
+    private PartesCuerpo duplicarPartesCuerpo;
+    private PartesCuerpo editarPartesCuerpo;
+    private PartesCuerpo parteCuerpoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,9 +60,10 @@ public class ControlPartesCuerpo implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigInteger verificarBorradoDetallesExamenes;
-    private BigInteger verificarBorradoSoDetallesRevisiones;
-    private BigInteger verificarSoAccidentesMedicos;
+    //filtrado table
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlPartesCuerpo() {
         listPartesCuerpo = null;
@@ -68,15 +71,18 @@ public class ControlPartesCuerpo implements Serializable {
         modificarPartesCuerpo = new ArrayList<PartesCuerpo>();
         borrarPartesCuerpo = new ArrayList<PartesCuerpo>();
         permitirIndex = true;
-        editarParteCuerpo = new PartesCuerpo();
-        nuevaParteCuerpo = new PartesCuerpo();
-        duplicarParteCuerpo = new PartesCuerpo();
+        editarPartesCuerpo = new PartesCuerpo();
+        nuevoPartesCuerpo = new PartesCuerpo();
+        duplicarPartesCuerpo = new PartesCuerpo();
         guardado = true;
+        tamano = 270;
+        System.out.println("controlPartesCuerpo Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlPartesCuerpo PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarPartesCuerpo.obtenerConexion(ses.getId());
@@ -89,12 +95,12 @@ public class ControlPartesCuerpo implements Serializable {
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n EVENTO FILTRAR \n");
+            System.out.println("\n ENTRE A ControlPartesCuerpo.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlPartesCuerpo eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -104,7 +110,27 @@ public class ControlPartesCuerpo implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listPartesCuerpo.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listPartesCuerpo.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listPartesCuerpo.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listPartesCuerpo.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarPartesCuerpo.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarPartesCuerpo.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarPartesCuerpo.get(index).getSecuencia();
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -112,7 +138,7 @@ public class ControlPartesCuerpo implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE CONTROLPARTESCUERPO  AsignarIndex \n");
+            System.out.println("\n ENTRE A ControlPartesCuerpo.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -124,7 +150,7 @@ public class ControlPartesCuerpo implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLPARTESCUERPO asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlPartesCuerpo.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -134,18 +160,57 @@ public class ControlPartesCuerpo implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosPartesCuerpo");
             bandera = 0;
             filtrarPartesCuerpo = null;
             tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarPartesCuerpo.clear();
+        crearPartesCuerpo.clear();
+        modificarPartesCuerpo.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listPartesCuerpo = null;
+        guardado = true;
+        permitirIndex = true;
+        getListPartesCuerpo();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listPartesCuerpo == null || listPartesCuerpo.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPartesCuerpo.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosPartesCuerpo");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosPartesCuerpo");
+            bandera = 0;
+            filtrarPartesCuerpo = null;
+            tipoLista = 0;
+            tamano = 270;
         }
 
         borrarPartesCuerpo.clear();
@@ -158,25 +223,27 @@ public class ControlPartesCuerpo implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         context.update("form:datosPartesCuerpo");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
-            codigo.setFilterStyle("width: 360px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosPartesCuerpo");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosPartesCuerpo");
             bandera = 0;
@@ -185,23 +252,24 @@ public class ControlPartesCuerpo implements Serializable {
         }
     }
 
-    public void modificandoParteCuerpo(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("MODIFICAR ELEMENTOS PARTE CUERPO");
+    public void modificarPartesCuerpo(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
         boolean banderita = false;
-        Short a;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("MODIFICANDO PARTE CUERPO  CONFIRMAR CAMBIO = N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearPartesCuerpo.contains(listPartesCuerpo.get(indice))) {
                     if (listPartesCuerpo.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listPartesCuerpo.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listPartesCuerpo.size(); j++) {
                             if (j != indice) {
@@ -212,6 +280,7 @@ public class ControlPartesCuerpo implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listPartesCuerpo.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -221,10 +290,12 @@ public class ControlPartesCuerpo implements Serializable {
                     if (listPartesCuerpo.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (listPartesCuerpo.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -240,7 +311,51 @@ public class ControlPartesCuerpo implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listPartesCuerpo.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listPartesCuerpo.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listPartesCuerpo.size(); j++) {
+                            if (j != indice) {
+                                if (listPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listPartesCuerpo.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listPartesCuerpo.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (listPartesCuerpo.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -250,13 +365,9 @@ public class ControlPartesCuerpo implements Serializable {
                 if (!crearPartesCuerpo.contains(filtrarPartesCuerpo.get(indice))) {
                     if (filtrarPartesCuerpo.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarPartesCuerpo.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listPartesCuerpo.size(); j++) {
-                            if (filtrarPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
-                                contador++;
-                            }
-                        }
 
                         for (int j = 0; j < filtrarPartesCuerpo.size(); j++) {
                             if (j != indice) {
@@ -267,6 +378,7 @@ public class ControlPartesCuerpo implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarPartesCuerpo.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -277,10 +389,12 @@ public class ControlPartesCuerpo implements Serializable {
                     if (filtrarPartesCuerpo.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarPartesCuerpo.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -296,7 +410,53 @@ public class ControlPartesCuerpo implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarPartesCuerpo.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarPartesCuerpo.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+
+                        for (int j = 0; j < listPartesCuerpo.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarPartesCuerpo.get(indice).getCodigo() == listPartesCuerpo.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarPartesCuerpo.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarPartesCuerpo.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarPartesCuerpo.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarPartesCuerpo.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -309,14 +469,11 @@ public class ControlPartesCuerpo implements Serializable {
 
     }
 
-    public void borrandoParteCuerpo() {
-
-        RequestContext context = RequestContext.getCurrentInstance();
+    public void borrandoPartesCuerpo() {
 
         if (index >= 0) {
-
             if (tipoLista == 0) {
-                System.out.println("borrandoParteCuerpo");
+                System.out.println("Entro a borrandoPartesCuerpo");
                 if (!modificarPartesCuerpo.isEmpty() && modificarPartesCuerpo.contains(listPartesCuerpo.get(index))) {
                     int modIndex = modificarPartesCuerpo.indexOf(listPartesCuerpo.get(index));
                     modificarPartesCuerpo.remove(modIndex);
@@ -330,7 +487,7 @@ public class ControlPartesCuerpo implements Serializable {
                 listPartesCuerpo.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoParteCuerpo");
+                System.out.println("borrandoPartesCuerpo ");
                 if (!modificarPartesCuerpo.isEmpty() && modificarPartesCuerpo.contains(filtrarPartesCuerpo.get(index))) {
                     int modIndex = modificarPartesCuerpo.indexOf(filtrarPartesCuerpo.get(index));
                     modificarPartesCuerpo.remove(modIndex);
@@ -346,7 +503,11 @@ public class ControlPartesCuerpo implements Serializable {
                 filtrarPartesCuerpo.remove(index);
 
             }
+            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosPartesCuerpo");
+            infoRegistro = "Cantidad de registros: " + listPartesCuerpo.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -359,14 +520,27 @@ public class ControlPartesCuerpo implements Serializable {
     }
 
     public void verificarBorrado() {
-        System.out.println("verificarBorrado");
+        System.out.println("Estoy en verificarBorrado");
+        BigInteger contarDetallesExamenesParteCuerpo;
+        BigInteger contarSoAccidentesMedicosParteCuerpo;
+        BigInteger contarSoDetallesRevisionesParteCuerpo;
+
         try {
-            verificarBorradoDetallesExamenes = administrarPartesCuerpo.contarDetallesExamenesParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
-            verificarBorradoSoDetallesRevisiones = administrarPartesCuerpo.contarSoDetallesRevisionesParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
-            verificarSoAccidentesMedicos = administrarPartesCuerpo.contarSoAccidentesMedicosParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
-            if (verificarBorradoDetallesExamenes.equals(0) && verificarBorradoSoDetallesRevisiones.equals(0) && verificarSoAccidentesMedicos.equals(0)) {
+            System.err.println("Control Secuencia de ControlPartesCuerpo ");
+            if (tipoLista == 0) {
+                contarDetallesExamenesParteCuerpo = administrarPartesCuerpo.contarDetallesExamenesParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
+                contarSoAccidentesMedicosParteCuerpo = administrarPartesCuerpo.contarSoAccidentesMedicosParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
+                contarSoDetallesRevisionesParteCuerpo = administrarPartesCuerpo.contarSoDetallesRevisionesParteCuerpo(listPartesCuerpo.get(index).getSecuencia());
+            } else {
+                contarDetallesExamenesParteCuerpo = administrarPartesCuerpo.contarDetallesExamenesParteCuerpo(filtrarPartesCuerpo.get(index).getSecuencia());
+                contarSoAccidentesMedicosParteCuerpo = administrarPartesCuerpo.contarSoAccidentesMedicosParteCuerpo(filtrarPartesCuerpo.get(index).getSecuencia());
+                contarSoDetallesRevisionesParteCuerpo = administrarPartesCuerpo.contarSoDetallesRevisionesParteCuerpo(filtrarPartesCuerpo.get(index).getSecuencia());
+            }
+            if (contarDetallesExamenesParteCuerpo.equals(new BigInteger("0"))
+                    && contarSoAccidentesMedicosParteCuerpo.equals(new BigInteger("0"))
+                    && contarSoDetallesRevisionesParteCuerpo.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
-                borrandoParteCuerpo();
+                borrandoPartesCuerpo();
             } else {
                 System.out.println("Borrado>0");
 
@@ -374,12 +548,13 @@ public class ControlPartesCuerpo implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                verificarBorradoDetallesExamenes = new BigInteger("-1");
-                verificarBorradoSoDetallesRevisiones = new BigInteger("-1");
-                verificarSoAccidentesMedicos = new BigInteger("-1");
+                contarDetallesExamenesParteCuerpo = new BigInteger("-1");
+                contarSoAccidentesMedicosParteCuerpo = new BigInteger("-1");
+                contarSoDetallesRevisionesParteCuerpo = new BigInteger("-1");
+
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlTiposCertificados verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlPartesCuerpo verificarBorrado ERROR " + e);
         }
     }
 
@@ -393,35 +568,35 @@ public class ControlPartesCuerpo implements Serializable {
 
     }
 
-    public void guardandoPartesCuerpo() {
+    public void guardarPartesCuerpo() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando PARTES CUERPO");
+            System.out.println("Realizando guardarPartesCuerpo");
             if (!borrarPartesCuerpo.isEmpty()) {
                 administrarPartesCuerpo.borrarPartesCuerpo(borrarPartesCuerpo);
-
                 //mostrarBorrados
                 registrosBorrados = borrarPartesCuerpo.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarPartesCuerpo.clear();
             }
-            if (!crearPartesCuerpo.isEmpty()) {
-                administrarPartesCuerpo.crearPartesCuerpo(crearPartesCuerpo);
-                crearPartesCuerpo.clear();
-            }
             if (!modificarPartesCuerpo.isEmpty()) {
                 administrarPartesCuerpo.modificarPartesCuerpo(modificarPartesCuerpo);
                 modificarPartesCuerpo.clear();
+            }
+            if (!crearPartesCuerpo.isEmpty()) {
+                administrarPartesCuerpo.crearPartesCuerpo(crearPartesCuerpo);
+                crearPartesCuerpo.clear();
             }
             System.out.println("Se guardaron los datos con exito");
             listPartesCuerpo = null;
             context.update("form:datosPartesCuerpo");
             k = 0;
-            if (guardado == false) {
-                guardado = true;
-            }
+            guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -431,10 +606,10 @@ public class ControlPartesCuerpo implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarParteCuerpo = listPartesCuerpo.get(index);
+                editarPartesCuerpo = listPartesCuerpo.get(index);
             }
             if (tipoLista == 1) {
-                editarParteCuerpo = filtrarPartesCuerpo.get(index);
+                editarPartesCuerpo = filtrarPartesCuerpo.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -454,23 +629,23 @@ public class ControlPartesCuerpo implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevaParteCuerpo() {
-        System.out.println("agregarNuevaParteCuerpo");
+    public void agregarNuevoPartesCuerpo() {
+        System.out.println("agregarNuevoPartesCuerpo");
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevaParteCuerpo.getCodigo() == a) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+        if (nuevoPartesCuerpo.getCodigo() == a) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevaParteCuerpo.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoPartesCuerpo.getCodigo());
 
             for (int x = 0; x < listPartesCuerpo.size(); x++) {
-                if (listPartesCuerpo.get(x).getCodigo() == nuevaParteCuerpo.getCodigo()) {
+                if (listPartesCuerpo.get(x).getCodigo() == nuevoPartesCuerpo.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -484,8 +659,12 @@ public class ControlPartesCuerpo implements Serializable {
                 contador++;
             }
         }
-        if (nuevaParteCuerpo.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una descripcion \n";
+        if (nuevoPartesCuerpo.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoPartesCuerpo.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -498,11 +677,12 @@ public class ControlPartesCuerpo implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosPartesCuerpo");
                 bandera = 0;
@@ -513,13 +693,16 @@ public class ControlPartesCuerpo implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevaParteCuerpo.setSecuencia(l);
+            nuevoPartesCuerpo.setSecuencia(l);
 
-            crearPartesCuerpo.add(nuevaParteCuerpo);
+            crearPartesCuerpo.add(nuevoPartesCuerpo);
 
-            listPartesCuerpo.add(nuevaParteCuerpo);
-            nuevaParteCuerpo = new PartesCuerpo();
+            listPartesCuerpo.add(nuevoPartesCuerpo);
+            nuevoPartesCuerpo = new PartesCuerpo();
             context.update("form:datosPartesCuerpo");
+            infoRegistro = "Cantidad de registros: " + listPartesCuerpo.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -536,35 +719,35 @@ public class ControlPartesCuerpo implements Serializable {
         }
     }
 
-    public void limpiarNuevaParteCuerpo() {
-        System.out.println("limpiarNuevaParteCuerpo");
-        nuevaParteCuerpo = new PartesCuerpo();
+    public void limpiarNuevoPartesCuerpo() {
+        System.out.println("limpiarNuevoPartesCuerpo");
+        nuevoPartesCuerpo = new PartesCuerpo();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoParteCuerpo() {
-        System.out.println("duplicandoParteCuerpo");
+    public void duplicandoPartesCuerpo() {
+        System.out.println("duplicandoPartesCuerpo");
         if (index >= 0) {
-            duplicarParteCuerpo = new PartesCuerpo();
+            duplicarPartesCuerpo = new PartesCuerpo();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarParteCuerpo.setSecuencia(l);
-                duplicarParteCuerpo.setCodigo(listPartesCuerpo.get(index).getCodigo());
-                duplicarParteCuerpo.setDescripcion(listPartesCuerpo.get(index).getDescripcion());
+                duplicarPartesCuerpo.setSecuencia(l);
+                duplicarPartesCuerpo.setCodigo(listPartesCuerpo.get(index).getCodigo());
+                duplicarPartesCuerpo.setDescripcion(listPartesCuerpo.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarParteCuerpo.setSecuencia(l);
-                duplicarParteCuerpo.setCodigo(filtrarPartesCuerpo.get(index).getCodigo());
-                duplicarParteCuerpo.setDescripcion(filtrarPartesCuerpo.get(index).getDescripcion());
+                duplicarPartesCuerpo.setSecuencia(l);
+                duplicarPartesCuerpo.setCodigo(filtrarPartesCuerpo.get(index).getCodigo());
+                duplicarPartesCuerpo.setDescripcion(filtrarPartesCuerpo.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarPC");
+            context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroPartesCuerpo.show()");
             index = -1;
             secRegistro = null;
@@ -572,22 +755,22 @@ public class ControlPartesCuerpo implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("CONFIRMAR DUPLICAR PARTE CUERPO");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarParteCuerpo.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarParteCuerpo.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarPartesCuerpo.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarPartesCuerpo.getDescripcion());
 
-        if (duplicarParteCuerpo.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+        if (duplicarPartesCuerpo.getCodigo() == a) {
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listPartesCuerpo.size(); x++) {
-                if (listPartesCuerpo.get(x).getCodigo() == duplicarParteCuerpo.getCodigo()) {
+                if (listPartesCuerpo.get(x).getCodigo() == duplicarPartesCuerpo.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -600,23 +783,28 @@ public class ControlPartesCuerpo implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarParteCuerpo.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+        if (duplicarPartesCuerpo.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarPartesCuerpo.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarParteCuerpo.getSecuencia() + "  " + duplicarParteCuerpo.getCodigo());
-            if (crearPartesCuerpo.contains(duplicarParteCuerpo)) {
+            System.out.println("Datos Duplicando: " + duplicarPartesCuerpo.getSecuencia() + "  " + duplicarPartesCuerpo.getCodigo());
+            if (crearPartesCuerpo.contains(duplicarPartesCuerpo)) {
                 System.out.println("Ya lo contengo.");
             }
-            listPartesCuerpo.add(duplicarParteCuerpo);
-            crearPartesCuerpo.add(duplicarParteCuerpo);
+            listPartesCuerpo.add(duplicarPartesCuerpo);
+            crearPartesCuerpo.add(duplicarPartesCuerpo);
             context.update("form:datosPartesCuerpo");
             index = -1;
             secRegistro = null;
@@ -624,18 +812,22 @@ public class ControlPartesCuerpo implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listPartesCuerpo.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosPartesCuerpo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosPartesCuerpo");
                 bandera = 0;
                 filtrarPartesCuerpo = null;
                 tipoLista = 0;
             }
-            duplicarParteCuerpo = new PartesCuerpo();
+            duplicarPartesCuerpo = new PartesCuerpo();
             RequestContext.getCurrentInstance().execute("duplicarRegistroPartesCuerpo.hide()");
 
         } else {
@@ -646,7 +838,7 @@ public class ControlPartesCuerpo implements Serializable {
     }
 
     public void limpiarDuplicarPartesCuerpo() {
-        duplicarParteCuerpo = new PartesCuerpo();
+        duplicarPartesCuerpo = new PartesCuerpo();
     }
 
     public void exportPDF() throws IOException {
@@ -702,10 +894,17 @@ public class ControlPartesCuerpo implements Serializable {
         index = -1;
     }
 
-    //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
+    //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<PartesCuerpo> getListPartesCuerpo() {
         if (listPartesCuerpo == null) {
+            System.out.println("ControlPartesCuerpo getListPartesCuerpo");
             listPartesCuerpo = administrarPartesCuerpo.consultarPartesCuerpo();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listPartesCuerpo == null || listPartesCuerpo.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPartesCuerpo.size();
         }
         return listPartesCuerpo;
     }
@@ -714,44 +913,36 @@ public class ControlPartesCuerpo implements Serializable {
         this.listPartesCuerpo = listPartesCuerpo;
     }
 
-    public List<PartesCuerpo> getModificarPartesCuerpo() {
-        return modificarPartesCuerpo;
+    public List<PartesCuerpo> getFiltrarPartesCuerpo() {
+        return filtrarPartesCuerpo;
     }
 
-    public void setModificarPartesCuerpo(List<PartesCuerpo> modificarPartesCuerpo) {
-        this.modificarPartesCuerpo = modificarPartesCuerpo;
+    public void setFiltrarPartesCuerpo(List<PartesCuerpo> filtrarPartesCuerpo) {
+        this.filtrarPartesCuerpo = filtrarPartesCuerpo;
     }
 
-    public PartesCuerpo getNuevaParteCuerpo() {
-        return nuevaParteCuerpo;
+    public PartesCuerpo getNuevoPartesCuerpo() {
+        return nuevoPartesCuerpo;
     }
 
-    public void setNuevaParteCuerpo(PartesCuerpo nuevaParteCuerpo) {
-        this.nuevaParteCuerpo = nuevaParteCuerpo;
+    public void setNuevoPartesCuerpo(PartesCuerpo nuevoPartesCuerpo) {
+        this.nuevoPartesCuerpo = nuevoPartesCuerpo;
     }
 
-    public PartesCuerpo getDuplicarParteCuerpo() {
-        return duplicarParteCuerpo;
+    public PartesCuerpo getDuplicarPartesCuerpo() {
+        return duplicarPartesCuerpo;
     }
 
-    public void setDuplicarParteCuerpo(PartesCuerpo duplicarParteCuerpo) {
-        this.duplicarParteCuerpo = duplicarParteCuerpo;
+    public void setDuplicarPartesCuerpo(PartesCuerpo duplicarPartesCuerpo) {
+        this.duplicarPartesCuerpo = duplicarPartesCuerpo;
     }
 
-    public PartesCuerpo getEditarParteCuerpo() {
-        return editarParteCuerpo;
+    public PartesCuerpo getEditarPartesCuerpo() {
+        return editarPartesCuerpo;
     }
 
-    public void setEditarParteCuerpo(PartesCuerpo editarParteCuerpo) {
-        this.editarParteCuerpo = editarParteCuerpo;
-    }
-
-    public boolean isGuardado() {
-        return guardado;
-    }
-
-    public void setGuardado(boolean guardado) {
-        this.guardado = guardado;
+    public void setEditarPartesCuerpo(PartesCuerpo editarPartesCuerpo) {
+        this.editarPartesCuerpo = editarPartesCuerpo;
     }
 
     public BigInteger getSecRegistro() {
@@ -778,12 +969,36 @@ public class ControlPartesCuerpo implements Serializable {
         this.mensajeValidacion = mensajeValidacion;
     }
 
-    public List<PartesCuerpo> getFiltrarPartesCuerpo() {
-        return filtrarPartesCuerpo;
+    public boolean isGuardado() {
+        return guardado;
     }
 
-    public void setFiltrarPartesCuerpo(List<PartesCuerpo> filtrarPartesCuerpo) {
-        this.filtrarPartesCuerpo = filtrarPartesCuerpo;
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public PartesCuerpo getParteCuerpoSeleccionado() {
+        return parteCuerpoSeleccionado;
+    }
+
+    public void setParteCuerpoSeleccionado(PartesCuerpo parteCuerpoSeleccionado) {
+        this.parteCuerpoSeleccionado = parteCuerpoSeleccionado;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

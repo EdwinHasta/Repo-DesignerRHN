@@ -38,7 +38,7 @@ public class PartesCuerpo implements Serializable {
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
 
     public PartesCuerpo() {
     }
@@ -68,11 +68,11 @@ public class PartesCuerpo implements Serializable {
         this.descripcion = descripcion.toUpperCase();
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 

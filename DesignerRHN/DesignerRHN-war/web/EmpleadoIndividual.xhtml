@@ -267,7 +267,7 @@
                                 <h:outputText value="#{msg['direcciones']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 60px" />
                                 <p:inputText id="direcciones" value="#{controlEmpleadoIndividual.direccionP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 75px" readonly="true"/>
 
-                                <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/estadocivil.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" process="@this"/>
+                                <p:commandButton id="btnEstadoCivil" value="" style="background-image: url(Imagenes/estadocivil.gif); background-size: 100% 100%; background-repeat: no-repeat; width: 35px; height: 38px; position: absolute; top: 105px;" actionListener="#{controlVigenciasEstadosCiviles.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia,controlEmpleadoIndividual.empleado.persona.secuencia)}" action="estadoCivil" process="@this"/>
                                 <h:outputText value="#{msg['estadocivil']}" style="position: absolute; left: 47px; font-weight: bold; color: #14388B; top: 105px" />
                                 <p:inputText id="estadoCivil" value="#{controlEmpleadoIndividual.estadoCivilP}" style="position: absolute; left: 45px; top: 30px; width: 140px; top: 120px" readonly="true"/>
 
