@@ -24,7 +24,7 @@
                         <p:separator id="separatorBtnsInferiores"  style="vertical-align: central;position: absolute;height: 25px;width: 3px;top: 497px;left: 435px "/>  
                         <p:commandButton style="position: absolute; left: 323px; top: 501px; " id="ESTIMACIONES" value="#{msg['estimaciones']}"   process="@this" />
                         <p:commandButton style="position: absolute; left: 145px; top: 501px; " id="ENVIOLOTE" value="#{msg['lote']}"   process="@this" />
-                        <p:tooltip  for="ENVIOLOTE" value="Envio de lotes para el envio de gestion documental." />
+                        <p:tooltip  for="ENVIOLOTE" value="#{msg['envioLote']}" />
                         <p:commandButton style="position: absolute; left: 10px; top: 501px; " id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteNomina.defaultPropiedadesParametrosReporte()}"/>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  

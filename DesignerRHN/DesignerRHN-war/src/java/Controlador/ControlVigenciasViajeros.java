@@ -73,6 +73,7 @@ public class ControlVigenciasViajeros implements Serializable {
     private String nuevoYduplicarCompletarNormaLaboral;
     private String altoTabla;
     public String infoRegistro;
+    public String infoRegistroTiposViajeros;
 
     public ControlVigenciasViajeros() {
         listVigenciasViajerosPorEmpleado = null;
@@ -106,9 +107,6 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public void recibirEmpleado(BigInteger sec) {
-        if (sec == null) {
-            System.out.println("ERROR EN RECIVIR LA SECUENCIA DEL EMPLEADO EN CONTROLBETAEMPLVIGENCIANORMALABORAL");
-        }
         secuenciaEmpleado = sec;
         empleadoSeleccionado = null;
         listVigenciasViajerosPorEmpleado = null;
@@ -134,11 +132,7 @@ public class ControlVigenciasViajeros implements Serializable {
         context.update("form:informacionRegistro");
 
     }
-
-    public void mostrarNuevo() {
-        System.err.println("NUEVA FECHA : " + nuevoVigenciasViajeros.getFechavigencia());
-    }
-
+    
     public void mostrarInfo(int indice, int celda) {
         int contador = 0;
         int fechas = 0;
@@ -149,7 +143,6 @@ public class ControlVigenciasViajeros implements Serializable {
         if (permitirIndex == true) {
             if (tipoLista == 0) {
                 secRegistro = listVigenciasViajerosPorEmpleado.get(index).getSecuencia();
-                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listVigenciasViajerosPorEmpleado.get(indice).getFechavigencia());
                 if (listVigenciasViajerosPorEmpleado.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
@@ -189,7 +182,6 @@ public class ControlVigenciasViajeros implements Serializable {
             } else {
 
                 secRegistro = filtrarVigenciasViajerosPorEmplado.get(index).getSecuencia();
-                System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + filtrarVigenciasViajerosPorEmplado.get(indice).getFechavigencia());
                 if (filtrarVigenciasViajerosPorEmplado.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
@@ -238,7 +230,6 @@ public class ControlVigenciasViajeros implements Serializable {
                 index = -1;
                 secRegistro = null;
             }
-            System.out.println("Indice: " + index + " Celda: " + cualCelda);
         }
     }
 
@@ -252,7 +243,6 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public void cambiarIndice(int indice, int celda) {
-        System.err.println("TIPO LISTA = " + tipoLista);
 
         if (permitirIndex == true) {
             index = indice;
@@ -265,21 +255,17 @@ public class ControlVigenciasViajeros implements Serializable {
                     normaLaboral = listVigenciasViajerosPorEmpleado.get(index).getTipoViajero().getNombre();
                 }
             }
-            System.out.println("NORMA LABORAL : " + normaLaboral);
         }
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("\n ENTRE A CONTROLBETAEMPLVIGENCIANORMALABORAL.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
             } else if (LND == 1) {
                 tipoActualizacion = 1;
-                System.out.println("Tipo Actualizacion: " + tipoActualizacion);
             } else if (LND == 2) {
                 tipoActualizacion = 2;
             }
@@ -353,10 +339,8 @@ public class ControlVigenciasViajeros implements Serializable {
             parentesco.setFilterStyle("width: 600px");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
-            System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
             fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
             parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
@@ -370,7 +354,6 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public void modificandoVigenciasViajeros(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR EMPL VIGENCIA NORMA LABORAL");
         index = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -379,9 +362,7 @@ public class ControlVigenciasViajeros implements Serializable {
         Short a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR EMPLVIGENCIANORMALABORAL, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(indice))) {
                     if (listVigenciasViajerosPorEmpleado.get(indice).getFechavigencia() == null) {
@@ -455,7 +436,6 @@ public class ControlVigenciasViajeros implements Serializable {
             }
             context.update("form:datosHvEntrevista");
         } else if (confirmarCambio.equalsIgnoreCase("VIGENCIASVIAJEROS")) {
-            System.out.println("MODIFICANDO VIGENCIAS VIAJEROS : " + listVigenciasViajerosPorEmpleado.get(indice).getTipoViajero().getNombre());
             if (!listVigenciasViajerosPorEmpleado.get(indice).getTipoViajero().getNombre().equals("")) {
                 if (tipoLista == 0) {
                     listVigenciasViajerosPorEmpleado.get(indice).getTipoViajero().setNombre(normaLaboral);
@@ -561,11 +541,9 @@ public class ControlVigenciasViajeros implements Serializable {
             permitirIndex = true;
             context.update("form:datosHvEntrevista");
         } else if (tipoActualizacion == 1) {
-            System.out.println("ACTUALIZARNORMA LABORAR NUEVA NORMA LABORAL: " + normaLaboralSeleccionada.getNombre());
             nuevoVigenciasViajeros.setTipoViajero(normaLaboralSeleccionada);
             context.update("formularioDialogos:nuevoNombreSucursal");
         } else if (tipoActualizacion == 2) {
-            System.out.println("ACTUALIZARNORMA LABORAR DUPLICAR NORMA LABORAL: " + normaLaboralSeleccionada.getNombre());
             duplicarVigenciasViajeros.setTipoViajero(normaLaboralSeleccionada);
             context.update("formularioDialogos:duplicarTipoCentroCostos");
         }
@@ -593,7 +571,6 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public void valoresBackupAutocompletar(int tipoNuevo) {
-        System.out.println("1...");
         if (tipoNuevo == 1) {
             nuevoYduplicarCompletarNormaLaboral = nuevoVigenciasViajeros.getTipoViajero().getNombre();
         } else if (tipoNuevo == 2) {
@@ -606,12 +583,8 @@ public class ControlVigenciasViajeros implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("VIGENCIASVIAJEROS")) {
-            System.out.println("NOMBRE CENTRO COSTO: " + nuevoVigenciasViajeros.getTipoViajero().getNombre());
 
             if (!nuevoVigenciasViajeros.getTipoViajero().getNombre().equals("")) {
-                System.out.println("ENTRO DONDE NO TENIA QUE ENTRAR");
-                System.out.println("valorConfirmar: " + valorConfirmar);
-                System.out.println("nuevoYduplicarCiudadCompletar: " + nuevoYduplicarCompletarNormaLaboral);
                 nuevoVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
                 getListaTiposviajeros();
                 for (int i = 0; i < listaTiposviajeros.size(); i++) {
@@ -620,12 +593,10 @@ public class ControlVigenciasViajeros implements Serializable {
                         coincidencias++;
                     }
                 }
-                System.out.println("Coincidencias: " + coincidencias);
                 if (coincidencias == 1) {
                     nuevoVigenciasViajeros.setTipoViajero(listaTiposviajeros.get(indiceUnicoElemento));
                     listaTiposviajeros = null;
                     getListaTiposviajeros();
-                    System.err.println("NORMA LABORAL GUARDADA " + nuevoVigenciasViajeros.getTipoViajero().getNombre());
                 } else {
                     context.update("form:sucursalesDialogo");
                     context.execute("sucursalesDialogo.show()");
@@ -633,10 +604,8 @@ public class ControlVigenciasViajeros implements Serializable {
                 }
             } else {
                 nuevoVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
-                System.out.println("valorConfirmar cuando es vacio: " + valorConfirmar);
                 nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
                 nuevoVigenciasViajeros.getTipoViajero().setNombre(" ");
-                System.out.println("NUEVA NORMA LABORAL" + nuevoVigenciasViajeros.getTipoViajero().getNombre());
             }
             context.update("formularioDialogos:nuevoNombreSucursal");
         }
@@ -656,7 +625,6 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void limpiarNuevaNormaLaboral() {
         try {
-            System.out.println("\n ENTRE A LIMPIAR NUEVO NORMA LABORAL \n");
             nuevoVigenciasViajeros = new VigenciasViajeros();
             nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
             index = -1;
@@ -680,18 +648,12 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public void autocompletarDuplicado(String confirmarCambio, String valorConfirmar, int tipoNuevo) {
-        System.out.println("DUPLICAR entrooooooooooooooooooooooooooooooooooooooooooooooooooooooo!!!");
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("VIGENCIASVIAJEROS")) {
-            System.out.println("DUPLICAR valorConfirmar : " + valorConfirmar);
-            System.out.println("DUPLICAR CIUDAD bkp : " + nuevoYduplicarCompletarNormaLaboral);
 
             if (!duplicarVigenciasViajeros.getTipoViajero().getNombre().equals("")) {
-                System.out.println("DUPLICAR ENTRO DONDE NO TENIA QUE ENTRAR");
-                System.out.println("DUPLICAR valorConfirmar: " + valorConfirmar);
-                System.out.println("DUPLICAR nuevoTipoCCAutoCompletar: " + nuevoYduplicarCompletarNormaLaboral);
                 duplicarVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
                 for (int i = 0; i < listaTiposviajeros.size(); i++) {
                     if (listaTiposviajeros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
@@ -699,7 +661,6 @@ public class ControlVigenciasViajeros implements Serializable {
                         coincidencias++;
                     }
                 }
-                System.out.println("Coincidencias: " + coincidencias);
                 if (coincidencias == 1) {
                     duplicarVigenciasViajeros.setTipoViajero(listaTiposviajeros.get(indiceUnicoElemento));
                     listaTiposviajeros = null;
@@ -712,16 +673,11 @@ public class ControlVigenciasViajeros implements Serializable {
             } else {
                 if (tipoNuevo == 2) {
                     //duplicarVigenciasViajeros.getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
-                    System.out.println("DUPLICAR valorConfirmar cuando es vacio: " + valorConfirmar);
-                    System.out.println("DUPLICAR INDEX : " + index);
                     duplicarVigenciasViajeros.setTipoViajero(new Tiposviajeros());
                     duplicarVigenciasViajeros.getTipoViajero().setNombre(" ");
 
-                    System.out.println("DUPLICAR Valor NORMA LABORAL : " + duplicarVigenciasViajeros.getTipoViajero().getNombre());
                     if (tipoLista == 0) {
                         listVigenciasViajerosPorEmpleado.get(index).getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
-                        System.err.println("tipo lista" + tipoLista);
-                        System.err.println("Secuencia Parentesco " + listVigenciasViajerosPorEmpleado.get(index).getTipoViajero().getSecuencia());
                     } else if (tipoLista == 1) {
                         filtrarVigenciasViajerosPorEmplado.get(index).getTipoViajero().setNombre(nuevoYduplicarCompletarNormaLaboral);
                     }
@@ -737,7 +693,6 @@ public class ControlVigenciasViajeros implements Serializable {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrandoEvalCompetencias");
                 if (!modificarVigenciasViajerosPorEmplado.isEmpty() && modificarVigenciasViajerosPorEmplado.contains(listVigenciasViajerosPorEmpleado.get(index))) {
                     int modIndex = modificarVigenciasViajerosPorEmplado.indexOf(listVigenciasViajerosPorEmpleado.get(index));
                     modificarVigenciasViajerosPorEmplado.remove(modIndex);
@@ -752,7 +707,6 @@ public class ControlVigenciasViajeros implements Serializable {
                 infoRegistro = "Cantidad de registros: " + listVigenciasViajerosPorEmpleado.size();
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoEvalCompetencias ");
                 if (!modificarVigenciasViajerosPorEmplado.isEmpty() && modificarVigenciasViajerosPorEmplado.contains(filtrarVigenciasViajerosPorEmplado.get(index))) {
                     int modIndex = modificarVigenciasViajerosPorEmplado.indexOf(filtrarVigenciasViajerosPorEmplado.get(index));
                     modificarVigenciasViajerosPorEmplado.remove(modIndex);
@@ -821,10 +775,8 @@ public class ControlVigenciasViajeros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando guardarEvalCompetencias");
             if (!borrarVigenciasViajerosPorEmplado.isEmpty()) {
                 for (int i = 0; i < borrarVigenciasViajerosPorEmplado.size(); i++) {
-                    System.out.println("Borrando...");
                     administrarVigenciasViajeros.borrarVigenciasViajeros(borrarVigenciasViajerosPorEmplado);
                 }
                 //mostrarBorrados
@@ -835,18 +787,15 @@ public class ControlVigenciasViajeros implements Serializable {
             }
             if (!crearVigenciasViajerosPorEmplado.isEmpty()) {
                 for (int i = 0; i < crearVigenciasViajerosPorEmplado.size(); i++) {
-                    System.out.println("Creando...");
                     administrarVigenciasViajeros.crearVigenciasViajeros(crearVigenciasViajerosPorEmplado);
 
                 }
                 crearVigenciasViajerosPorEmplado.clear();
             }
             if (!modificarVigenciasViajerosPorEmplado.isEmpty()) {
-                System.out.println("Modificando...");
                 administrarVigenciasViajeros.modificarVigenciasViajeros(modificarVigenciasViajerosPorEmplado);
                 modificarVigenciasViajerosPorEmplado.clear();
             }
-            System.out.println("Se guardaron los datos con exito");
             listVigenciasViajerosPorEmpleado = null;
             getListVigenciasViajerosPorEmpleado();
             if (listVigenciasViajerosPorEmpleado != null && !listVigenciasViajerosPorEmpleado.isEmpty()) {
@@ -877,7 +826,6 @@ public class ControlVigenciasViajeros implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
                 context.update("formularioDialogos:editarFecha");
                 context.execute("editarFecha.show()");
@@ -906,7 +854,6 @@ public class ControlVigenciasViajeros implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoVigenciasViajeros.getFechavigencia() == null || nuevoVigenciasViajeros.getFechavigencia().equals("")) {
             mensajeValidacion = " *Fecha\n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             if (listVigenciasViajerosPorEmpleado != null) {
                 for (int i = 0; i < listVigenciasViajerosPorEmpleado.size(); i++) {
@@ -937,12 +884,10 @@ public class ControlVigenciasViajeros implements Serializable {
          System.out.println("bandera");
          contador++;
          }*/
-        System.out.println("contador " + contador);
 
         if (contador == 2 && pasa == 0) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                System.out.println("Desactivar");
                 fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
                 parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
@@ -953,7 +898,6 @@ public class ControlVigenciasViajeros implements Serializable {
                 filtrarVigenciasViajerosPorEmplado = null;
                 tipoLista = 0;
             }
-            System.out.println("Despues de la bandera");
 
             k++;
             l = BigInteger.valueOf(k);
@@ -992,7 +936,6 @@ public class ControlVigenciasViajeros implements Serializable {
     }
 
     public void limpiarNuevoVigenciasViajeros() {
-        System.out.println("limpiarNuevoVigenciasViajeros");
         nuevoVigenciasViajeros = new VigenciasViajeros();
         nuevoVigenciasViajeros.setTipoViajero(new Tiposviajeros());
         secRegistro = null;
@@ -1003,7 +946,6 @@ public class ControlVigenciasViajeros implements Serializable {
     //------------------------------------------------------------------------------
     public void duplicandoVigenciasViajeros() {
         if (index >= 0) {
-            System.out.println("duplicandoVigenciasViajeros");
             duplicarVigenciasViajeros = new VigenciasViajeros();
             k++;
             l = BigInteger.valueOf(k);
@@ -1040,12 +982,10 @@ public class ControlVigenciasViajeros implements Serializable {
 
         if (duplicarVigenciasViajeros.getFechavigencia() == null) {
             mensajeValidacion = mensajeValidacion + "   * Fecha \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
 
             for (int j = 0; j < listVigenciasViajerosPorEmpleado.size(); j++) {
                 if (duplicarVigenciasViajeros.getFechavigencia().equals(listVigenciasViajerosPorEmpleado.get(j).getFechavigencia())) {
-                    System.out.println("Se repiten");
                     fechas++;
                 }
             }
@@ -1068,10 +1008,7 @@ public class ControlVigenciasViajeros implements Serializable {
         }
         if (contador == 2 && pasa == 0) {
 
-            System.out.println("Datos Duplicando: " + duplicarVigenciasViajeros.getSecuencia() + "  " + duplicarVigenciasViajeros.getFechavigencia());
-            if (crearVigenciasViajerosPorEmplado.contains(duplicarVigenciasViajeros)) {
-                System.out.println("Ya lo contengo.");
-            }
+           
             listVigenciasViajerosPorEmpleado.add(duplicarVigenciasViajeros);
             crearVigenciasViajerosPorEmplado.add(duplicarVigenciasViajeros);
             infoRegistro = "Cantidad de registros: " + listVigenciasViajerosPorEmpleado.size();
@@ -1135,12 +1072,9 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void verificarRastro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("lol");
         if (!listVigenciasViajerosPorEmpleado.isEmpty()) {
             if (secRegistro != null) {
-                System.out.println("lol 2");
                 int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASVIAJEROS"); //En ENCARGATURAS lo cambia por el nombre de su tabla
-                System.out.println("resultado: " + resultado);
                 if (resultado == 1) {
                     context.execute("errorObjetosDB.show()");
                 } else if (resultado == 2) {
@@ -1247,6 +1181,14 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public List<Tiposviajeros> getListaTiposviajeros() {
         listaTiposviajeros = administrarVigenciasViajeros.consultarLOVTiposViajeros();
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaTiposviajeros == null || listaTiposviajeros.isEmpty()) {
+            infoRegistroTiposViajeros = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroTiposViajeros = "Cantidad de registros: " + listaTiposviajeros.size();
+        }
+        context.update("form:infoRegistroTiposViajeros");
         return listaTiposviajeros;
     }
 
@@ -1301,5 +1243,15 @@ public class ControlVigenciasViajeros implements Serializable {
     public void setAceptar(boolean aceptar) {
         this.aceptar = aceptar;
     }
+
+    public String getInfoRegistroTiposViajeros() {
+        return infoRegistroTiposViajeros;
+    }
+
+    public void setInfoRegistroTiposViajeros(String infoRegistroTiposViajeros) {
+        this.infoRegistroTiposViajeros = infoRegistroTiposViajeros;
+    }
+    
+    
 
 }

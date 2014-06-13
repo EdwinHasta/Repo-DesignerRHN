@@ -79,7 +79,7 @@ public class Personas implements Serializable {
     private String nombre;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "PRIMERAPELLIDO")
     private String primerapellido;
     @Size(max = 20)

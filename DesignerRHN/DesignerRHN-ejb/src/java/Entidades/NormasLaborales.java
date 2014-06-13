@@ -46,7 +46,7 @@ public class NormasLaborales implements Serializable {
     private Integer codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 40)
+    @Size(max = 40)
     @Column(name = "NOMBRE")
     private String nombre;
 
@@ -80,9 +80,6 @@ public class NormasLaborales implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
-            nombre = " ";
-        }
         return nombre;
     }
 

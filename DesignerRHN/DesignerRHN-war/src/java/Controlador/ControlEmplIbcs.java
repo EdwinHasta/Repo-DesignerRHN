@@ -87,24 +87,18 @@ public class ControlEmplIbcs implements Serializable {
     public void recibirEmpleado(BigInteger sec) {
         RequestContext context = RequestContext.getCurrentInstance();
 
-        System.out.println("CONTROLEMPLIBCS RECIBIR EMPLEADO");
-        if (sec == null) {
-            System.out.println("ControlVigenciasFormasPagos.recibirEmpleado");
-        }
+       
         empleadoSeleccionado = null;
         secuenciaEmpleado = sec;
         listIbcsPorEmpleado = null;
         getListIbcsPorEmpleado();
         //INICIALIZAR BOTONES NAVEGACION
         if (listIbcsPorEmpleado != null && !listIbcsPorEmpleado.isEmpty()) {
-            System.out.println("Entra al primer IF");
             if (listIbcsPorEmpleado.size() == 1) {
                 //INFORMACION REGISTRO
                 ibcSeleccionado = listIbcsPorEmpleado.get(0);
                 //infoRegistro = "Registro 1 de 1";
-                infoRegistro = "Cantidad de registros: 1";
             } else if (listIbcsPorEmpleado.size() > 1) {
-                System.out.println("Else If");
                 //INFORMACION REGISTRO
                 ibcSeleccionado = listIbcsPorEmpleado.get(0);
                 //infoRegistro = "Registro 1 de " + vigenciasCargosEmpleado.size();
@@ -121,7 +115,6 @@ public class ControlEmplIbcs implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
-            System.out.println("CancelarModificacion");
             fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("display: none; visibility: hidden;");
             fechaFinal = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaFinal");
@@ -163,7 +156,6 @@ public class ControlEmplIbcs implements Serializable {
         index = indice;
         cualCelda = celda;
 //        secRegistro = listIbcsPorEmpleado.get(index).getSecuencia();
-        System.out.println("Indice: " + index + " Celda: " + cualCelda);
 
     }
 
@@ -185,10 +177,8 @@ public class ControlEmplIbcs implements Serializable {
             valor.setFilterStyle("width: 40px");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosIbcs");
-            System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
-            System.out.println("Desactivar");
 
             fechaInicial = (Column) c.getViewRoot().findComponent("form:datosIbcs:fechaInicial");
             fechaInicial.setFilterStyle("display: none; visibility: hidden;");
@@ -214,9 +204,7 @@ public class ControlEmplIbcs implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
-                System.err.println("EditarCelda cualcelda = " + cualCelda);
                 context.update("formularioDialogos:editFechaInicial");
                 context.execute("editFechaInicial.show()");
                 cualCelda = -1;
@@ -248,8 +236,6 @@ public class ControlEmplIbcs implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            System.out.println("Entro a dialogo");
-            //  System.err.println("EditarCelda cualcelda = " + cualCelda);
             context.update("formularioDialogos:dialogoIbcs");
             context.execute("dialogoIbcs.show()");
 

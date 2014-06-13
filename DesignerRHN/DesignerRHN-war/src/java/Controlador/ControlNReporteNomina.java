@@ -303,11 +303,6 @@ public class ControlNReporteNomina implements Serializable {
                     administrarNReportesNomina.modificarParametrosInformes(parametroModificacion);
                 }
                 if (!listaInfoReportesModificados.isEmpty()) {
-                    System.out.println("Entro a guardarCambiosInfoReportes");
-                    System.out.println("listaInfoReportesModificados : " + listaInfoReportesModificados.size());
-                    for (int i = 0; i < listaInfoReportesModificados.size(); i++) {
-                        System.out.println("Modificara InfoReporte : " + listaInfoReportesModificados.get(i).getSecuencia());
-                    }
                     administrarNReportesNomina.guardarCambiosInfoReportes(listaInfoReportesModificados);
                 }
                 cambiosReporte = true;
@@ -436,8 +431,6 @@ public class ControlNReporteNomina implements Serializable {
             casilla = -1;
         }
         if (casillaInforReporte >= 1) {
-            System.out.println("actualinforeporte : " + actualInfoReporteTabla.getCodigo());
-            System.out.println("actualinforeporte : " + actualInfoReporteTabla.getNombre());
             if (casillaInforReporte == 1) {
                 context.update("formParametros:infoReporteCodigoD");
                 context.execute("infoReporteCodigoD.show()");
@@ -1230,19 +1223,15 @@ public class ControlNReporteNomina implements Serializable {
 
     public void modificacionTipoReporte(int i) {
         cambiosReporte = false;
-        System.out.println("Modificacion Reporte A Generar");
         if (tipoLista == 0) {
             if (listaInfoReportesModificados.isEmpty()) {
-                System.out.println("Op..1");
                 listaInfoReportesModificados.add(listaIR.get(i));
             } else {
                 if ((!listaInfoReportesModificados.isEmpty()) && (!listaInfoReportesModificados.contains(listaIR.get(i)))) {
                     listaInfoReportesModificados.add(listaIR.get(i));
-                    System.out.println("Op..2");
                 } else {
                     int posicion = listaInfoReportesModificados.indexOf(listaIR.get(i));
                     listaInfoReportesModificados.set(posicion, listaIR.get(i));
-                    System.out.println("Op..3");
                 }
             }
         }
@@ -1449,9 +1438,7 @@ public class ControlNReporteNomina implements Serializable {
 
     public void generarReporte() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("cambiosReporte = " + cambiosReporte);
         // if (cambiosReporte == true) {
-        System.out.println("0");
         if (indice > 0) {
             if (tipoLista == 0) {
                 nombreReporte = listaIR.get(indice).getNombrereporte();
@@ -1463,17 +1450,13 @@ public class ControlNReporteNomina implements Serializable {
         } else {
             nombreReporte = actualInfoReporteTabla.getNombrereporte();
             tipoReporte = actualInfoReporteTabla.getTipo();
-            System.out.println("actualInfoReporteTabla: " + actualInfoReporteTabla);
-            System.out.println("tipoReporte: " + tipoReporte);
         }
 
         if (nombreReporte != null && tipoReporte != null) {
-            System.out.println("1");
             pathReporteGenerado = administarReportes.generarReporte(nombreReporte, tipoReporte);
         }
         if (pathReporteGenerado != null) {
             //context.execute("exportarReporte();");
-            System.out.println("2");
             context.execute("validarDescargaReporte();");
         }
         /* } else {
@@ -1527,7 +1510,6 @@ public class ControlNReporteNomina implements Serializable {
 
             @Override
             public void reportFinished(JasperPrint jp) {
-                System.out.println("Termino el llenado");
                 // System.out.println("Context listener: " + context);
                 try {
                     estadoReporte = true;
@@ -1546,14 +1528,12 @@ public class ControlNReporteNomina implements Serializable {
 
             @Override
             public void reportCancelled() {
-                System.out.println("Fue cancelado");
                 estadoReporte = true;
                 resultadoReporte = "Cancelación";
             }
 
             @Override
             public void reportFillError(Throwable e) {
-                System.out.println("Error llenando el reporte");
                 if (e.getCause() != null) {
                     pathReporteGenerado = "Error: " + e.toString() + "\n" + e.getCause().toString();
                 } else {
@@ -1569,28 +1549,20 @@ public class ControlNReporteNomina implements Serializable {
     }
 
     public void generarArchivoReporte(JasperPrint print) {
-        System.out.println("Hola pase... um0");
         if (print != null && tipoReporte != null) {
-            System.out.println("Hola pase... um1");
             pathReporteGenerado = administarReportes.crearArchivoReporte(print, tipoReporte);
-            System.out.println("Hola pase... um2");
             validarDescargaReporte();
-            System.out.println("Hola pase... um3");
         }
     }
 
     public void exportarReporte() throws IOException {
-        System.out.println("PUM");
         if (pathReporteGenerado != null) {
-            System.out.println("3");
-            System.out.println("Path (exportarReporte): " + pathReporteGenerado);
             File reporte = new File(pathReporteGenerado);
             FacesContext ctx = FacesContext.getCurrentInstance();
             FileInputStream fis = new FileInputStream(reporte);
             byte[] bytes = new byte[1024];
             int read;
             if (!ctx.getResponseComplete()) {
-                System.out.println("4");
                 String fileName = reporte.getName();
                 HttpServletResponse response = (HttpServletResponse) ctx.getExternalContext().getResponse();
                 response.setHeader("Content-Disposition", "attachment;filename=\"" + fileName + "\"");
@@ -1601,30 +1573,23 @@ public class ControlNReporteNomina implements Serializable {
                 }
                 out.flush();
                 out.close();
-                System.out.println("\nDescargado\n");
                 ctx.responseComplete();
             }
         }
     }
 
     public void validarDescargaReporte() {
-        System.out.println("5");
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("6");
         context.execute("generandoReporte.hide();");
-        System.out.println("7");
         if (pathReporteGenerado != null && !pathReporteGenerado.startsWith("Error:")) {
             if (!tipoReporte.equals("PDF")) {
-                System.out.println("8");
                 context.execute("descargarReporte.show();");
             } else {
                 FileInputStream fis;
                 try {
-                    System.out.println("Ruta: " + pathReporteGenerado);
                     fis = new FileInputStream(new File(pathReporteGenerado));
                     reporte = new DefaultStreamedContent(fis, "application/pdf");
                 } catch (FileNotFoundException ex) {
-                    System.out.println("Error leyendo archivo");
                     System.out.println(ex.getCause());
                     reporte = null;
                 }
@@ -1635,7 +1600,6 @@ public class ControlNReporteNomina implements Serializable {
                         cabezeraVisor = "Reporte - " + actualInfoReporteTabla.getNombre();
                     }
                     context.update("formDialogos:verReportePDF");
-                    System.out.println("9");
                     context.execute("verReportePDF.show();");
                 }
                 pathReporteGenerado = null;

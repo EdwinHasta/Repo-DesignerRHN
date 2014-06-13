@@ -96,6 +96,10 @@
                                             </lnk:calendar>
                                         </f:facet>   
                                     </p:cellEditor>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="" />
+                                    </f:facet>
                                 </p:column>
 
                                 <p:column headerText="#{msg['descripcion']}" sortBy="#{info.ubicacion.descripcion}" filterBy="#{info.ubicacion.descripcion}" filterMatchMode="contains" id="vuDescripcion" width="133" filterStyle="display: none; visibility: hidden;" >                                  
@@ -111,6 +115,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
+
                                         <p:commandButton style="width: 400px; margin: -14px; height: 26px; border: none; color: blue" id="fooUbicacion" action="ubicaciongeografica" actionListener="#{controlUbicacionesGeograficas.recibirPaginaEntrante('emplubicaciongeografica')}" value=" "/>
                                     </f:facet>
                                 </p:column>  
@@ -124,6 +129,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
+
                                         <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooCiudad" action="ciudad" actionListener="#{controlCiudades.recibirPaginaEntrante('emplubicaciongeografica')}" value=" " />
                                     </f:facet>
                                 </p:column>
@@ -131,7 +137,7 @@
                             
                             <p:remoteCommand name="cambioIndice" actionListener="#{controlVigenciasUbicaciones.cambioIndiceReadOnly()}" process="@this"/>
                         </fieldset>
-
+ 
                         <!-- DIALOGO L.O.V ESTATICO UBICACIONES -->
                         <p:dialog header="#{msg['ubicacionesU']}" widgetVar="UbicacionesGeograficasDialogo" draggable="false" resizable="false" closable="false" id="UbicacionesGeograficasDialogo"  
                                   showEffect="fade" hideEffect="fade" width="467" modal="true" >
@@ -163,6 +169,9 @@
                                     <h:outputText value="#{ubicaciones.ciudad.nombre}" />
                                 </p:column>
                             </p:dataTable>
+                            
+                            <h:outputText id="infoRegistroUbicacion" value="#{controlVigenciasUbicaciones.infoRegistroUbicacion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
                             <p:commandButton id="aceptarU" style="position: relative; left: 270px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlVigenciasUbicaciones.aceptar}" onclick="lovUbicaciones.clearFilters();" actionListener="#{controlVigenciasUbicaciones.actualizarUbicacion()}" update="aceptarU" process="@this">
                                 <p:resetInput target=":form:lovUbicaciones:globalFilter"/>
                             </p:commandButton>
@@ -187,7 +196,7 @@
                     <p:dialog id="validacioNuevaVigencia" header="#{msg['atencion']}" widgetVar="validacioNuevaVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
                         <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                         <h:outputText value="#{msg['validacionNuevo']} #{controlVigenciasUbicaciones.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacioNuevaVigencia.hide();" style="position: absolute; top: 55px; left: 290px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlVigenciasUbicaciones.activarCtrlF11()}"/> 
                 </h:form>
@@ -258,7 +267,7 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVU" style="border: none;">
-                            <strong><h:outputText value="#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="*#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
                             <div id="posicionFechaNuevoReg" style=" position: absolute; top: 80px; left: 130px">
                                 <lnk:calendar id="nuevaFecha" value="#{controlVigenciasUbicaciones.nuevaVigencia.fechavigencia}" >
                                     <p:ajax event="dateSelect" update="nuevaFecha" process="@this"/>
@@ -266,7 +275,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['descripcionN']}" style=" position: absolute; top: 118px" /></strong>
+                            <strong><h:outputText value="*#{msg['descripcionN']}" style=" position: absolute; top: 118px" /></strong>
                             <p:inputText id="nuevaDescripcion" value="#{controlVigenciasUbicaciones.nuevaVigencia.ubicacion.descripcion}" style=" width: 122px; position: absolute; left: 130px; top: 115px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlVigenciasUbicaciones.valoresBackupAutocompletar(1, 'UBICACION')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasUbicaciones.autocompletarNuevoyDuplicado('UBICACION', controlVigenciasUbicaciones.nuevaVigencia.ubicacion.descripcion, 1)}" />
@@ -290,7 +299,7 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVU" style="border: none;">
-                            <strong><h:outputText value="#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
+                            <strong><h:outputText value="*#{msg['fechaN']}" style=" position: absolute; top: 85px" /></strong>
                             <div id="posicionFechaDuplicarReg" style=" position: absolute; top: 80px; left: 130px">
                                 <lnk:calendar id="duplicarFecha" value="#{controlVigenciasUbicaciones.duplicarVU.fechavigencia}" >
                                     <p:ajax event="dateSelect" update="duplicarFecha" process="@this"/>
@@ -298,7 +307,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['descripcionN']}" style=" position: absolute; top: 118px" /></strong>
+                            <strong><h:outputText value="*#{msg['descripcionN']}" style=" position: absolute; top: 118px" /></strong>
                             <p:inputText id="duplicarDescripcion" value="#{controlVigenciasUbicaciones.duplicarVU.ubicacion.descripcion}" style=" width: 122px; position: absolute; left: 130px; top: 115px;">
                                 <p:ajax event="click" listener="#{controlVigenciasUbicaciones.valoresBackupAutocompletar(1, 'UBICACION')}" />
                                 <p:ajax event="change" listener="#{controlVigenciasUbicaciones.autocompletarNuevoyDuplicado('UBICACION', controlVigenciasUbicaciones.duplicarVU.ubicacion.descripcion, 2)}" />
@@ -360,4 +369,3 @@
         </ui:composition>
     </h:body>
 </html>
-

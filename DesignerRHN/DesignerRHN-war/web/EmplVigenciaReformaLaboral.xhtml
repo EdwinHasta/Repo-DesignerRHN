@@ -97,7 +97,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['fecha']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -114,7 +114,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 800px; left:-50px;margin: -14px; height: 26px; border: none; color: blue" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value="#{msg['reformalaboral']}"/>
+                                        <p:commandButton style="width: 800px; left:-50px;margin: -14px; height: 26px; border: none; color: blue" id="fooReformaLaboral" action="reformasLaborales" actionListener="#{controlReformaLaboral.inicializarPagina()}" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -146,6 +146,9 @@
                                     <h:outputText value="#{reformasLaborales.nombre}" />
                                 </p:column>
                             </p:dataTable>
+                            
+                            <h:outputText id="infoRegistroReformaLaboral" value="#{controlVigenciasReformasLaborales.infoRegistroReformaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
                             <p:commandButton id="aceptarRL" style="position: relative; left: 265px" value="#{msg['aceptar']}" disabled="#{controlVigenciasReformasLaborales.aceptar}" onclick="ReformasLaboralesDialogo.hide(), lovReformasLaborales.clearFilters();" actionListener="#{controlVigenciasReformasLaborales.actualizarReformaLaboral()}" update="lovReformasLaborales, aceptarRL, datosVRLEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovReformasLaborales:globalFilter"/>
                             </p:commandButton>

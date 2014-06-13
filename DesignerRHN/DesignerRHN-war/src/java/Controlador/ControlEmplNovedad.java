@@ -132,7 +132,6 @@ public class ControlEmplNovedad implements Serializable {
         Map<String, String> map = context.getExternalContext().getRequestParameterMap();
         String name = map.get("n"); // name attribute of node
         String type = map.get("t"); // type attribute of node
-        System.out.println("Celda : " + name + " / Indice : " + type);
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
         cambiarIndice(indice, columna);

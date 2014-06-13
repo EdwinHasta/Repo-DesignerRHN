@@ -85,7 +85,7 @@ public class Terceros implements Serializable {
     private Long codigoalternativo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(max = 30)
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "DIGITOVERIFICACION")
@@ -176,9 +176,6 @@ public class Terceros implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 

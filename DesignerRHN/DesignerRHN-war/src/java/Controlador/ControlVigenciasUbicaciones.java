@@ -76,6 +76,8 @@ public class ControlVigenciasUbicaciones implements Serializable {
     public String infoRegistro;
     //RASTROS
     private BigInteger secRegistro;
+    //
+    private String infoRegistroUbicacion;
     //CONTROL FECHA
     private Date fechaVigenciaBck;
 
@@ -252,6 +254,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
                 getListaUbicaciones();
             } else {
                 permitirIndex = false;
+                getInfoRegistroUbicacion();
                 context.update("form:UbicacionesGeograficasDialogo");
                 context.execute("UbicacionesGeograficasDialogo.show()");
                 tipoActualizacion = 0;
@@ -784,6 +787,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
             tipoActualizacion = 2;
             secRegistro = null;
         }
+        getInfoRegistroUbicacion();
         context.update("form:UbicacionesGeograficasDialogo");
         context.execute("UbicacionesGeograficasDialogo.show()");
     }
@@ -832,9 +836,11 @@ public class ControlVigenciasUbicaciones implements Serializable {
         tipoActualizacion = -1;
         cualCelda = -1;
         secRegistro = null;
-        context.execute("UbicacionesGeograficasDialogo.hide()");
-        context.reset("form:lovUbicaciones:globalFilter");
+        context.update("form:UbicacionesGeograficasDialogo");
         context.update("form:lovUbicaciones");
+        context.update("form:aceptarU");
+        context.reset("form:lovUbicaciones:globalFilter");
+        context.execute("UbicacionesGeograficasDialogo.hide()");
     }
 
     public void cancelarCambioUbicacion() {
@@ -853,6 +859,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 1) {
+                getInfoRegistroUbicacion();
                 context.update("form:UbicacionesGeograficasDialogo");
                 context.execute("UbicacionesGeograficasDialogo.show()");
                 tipoActualizacion = 0;
@@ -1036,6 +1043,20 @@ public class ControlVigenciasUbicaciones implements Serializable {
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public String getInfoRegistroUbicacion() {
+        getListaUbicaciones();
+        if(listaUbicaciones != null){
+            infoRegistroUbicacion = "Cantidad de registros : "+listaUbicaciones.size();
+        }else{
+        infoRegistroUbicacion = "Cantidad de registros : 0";
+        }
+        return infoRegistroUbicacion;
+    }
+
+    public void setInfoRegistroUbicacion(String infoRegistroUbicacion) {
+        this.infoRegistroUbicacion = infoRegistroUbicacion;
     }
 
 }
