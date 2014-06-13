@@ -68,7 +68,6 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     @Override
     public void modificarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
         for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
-            System.out.println("Modificando...");
             persistenciaVigenciasNormasEmpleados.editar(em, listaVigenciasNormasEmpleados.get(i));
         }
     }
@@ -76,7 +75,6 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     @Override
     public void borrarVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
         for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
-            System.out.println("borrar...");
             persistenciaVigenciasNormasEmpleados.borrar(em, listaVigenciasNormasEmpleados.get(i));
         }
     }
@@ -84,7 +82,6 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     @Override
     public void crearVigenciaNormaLaboral(List<VigenciasNormasEmpleados> listaVigenciasNormasEmpleados) {
         for (int i = 0; i < listaVigenciasNormasEmpleados.size(); i++) {
-            System.out.println("crear...");
             persistenciaVigenciasNormasEmpleados.crear(em, listaVigenciasNormasEmpleados.get(i));
         }
     }
@@ -105,9 +102,7 @@ public class AdministrarVigenciaNormaLaboral implements AdministrarVigenciaNorma
     public List<NormasLaborales> lovNormasLaborales() {
         List<NormasLaborales> normasLaborales;
         try {
-            System.out.println("1");
             normasLaborales = persistenciaNormasLaborales.consultarNormasLaborales(em);
-            System.out.println("2");
             return normasLaborales;
         } catch (Exception e) {
             System.err.println("ERROR EN AdministrarVigencianormaLaboral en NormasLabolares ERROR " + e);
