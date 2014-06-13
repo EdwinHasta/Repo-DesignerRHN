@@ -91,9 +91,6 @@ public class TiposContratos implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 

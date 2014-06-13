@@ -60,7 +60,7 @@ public class Proyectos implements Serializable {
     private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "NOMBREPROYECTO")
     private String nombreproyecto;
     @Size(max = 200)
@@ -118,12 +118,7 @@ public class Proyectos implements Serializable {
     }
 
     public String getNombreproyecto() {
-        if (nombreproyecto == null) {
-            nombreproyecto = " ";
             return nombreproyecto;
-        } else {
-            return nombreproyecto;
-        }
     }
 
     public void setNombreproyecto(String nombreproyecto) {

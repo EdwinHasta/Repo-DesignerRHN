@@ -101,7 +101,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['inicial']}"  id="fooFechaInicialVA"/>
+                                        <h:outputText value=""  id="fooFechaInicialVA"/>
                                     </f:facet>
                                 </p:column>
 
@@ -122,7 +122,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['final']}"  id="fooFechaFinalVA"/>
+                                        <h:outputText value=""  id="fooFechaFinalVA"/>
                                     </f:facet>
                                 </p:column>
 
@@ -139,7 +139,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEntidadVA" value="#{msg['tipoentidad']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEntidadVA" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -148,7 +148,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.tercerosucursal.tercero.nombre}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.tercerosucursal.tercero.nombre}" id="editarTerceroVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"> 
+                                            <p:inputText maxlength="30" value="#{info.tercerosucursal.tercero.nombre}" id="editarTerceroVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"> 
                                                 <p:ajax event="select" listener="#{controlEmplVigenciaAfiliacion3.cambiarIndiceVA(indiceVA,3)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indiceVA,1, 0)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.modificarVA(indiceVA, 'TERCEROS', info.tercerosucursal.tercero.nombre)}" process="@this" update="editarTerceroVA"/>                                                
@@ -156,7 +156,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px; border: none; color: blue" id="fooTerceroVA" value="#{msg['tercero']}"/>
+                                        <p:commandButton style="width: 220px; margin: -14px; height: 26px; border: none; color: blue" id="fooTerceroVA" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -172,7 +172,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText  id="fooNITTerceroVA" value="#{msg['terceronit']}"/>
+                                        <h:outputText  id="fooNITTerceroVA" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -188,7 +188,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText  id="fooCodigoVA" value="#{msg['codigo']}"/>
+                                        <h:outputText  id="fooCodigoVA" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -197,7 +197,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.estadoafiliacion.nombre}" style="width: 100px; "/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.estadoafiliacion.nombre}" id="editarEstadoAfiliacionVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"> 
+                                            <p:inputText maxlength="30" value="#{info.estadoafiliacion.nombre}" id="editarEstadoAfiliacionVA" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase; height: 12px;"> 
                                                 <p:ajax event="select" listener="#{controlEmplVigenciaAfiliacion3.cambiarIndiceVA(indiceVA,6)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indiceVA,2, 0)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.modificarVA(indiceVA, 'ESTADOAFILIACION', info.estadoafiliacion.nombre)}" process="@this" update="editarEstadoAfiliacionVA"/>                                                
@@ -205,7 +205,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooEstadoAfiliacionVA" value="#{msg['estado']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px; border: none; color: blue" id="fooEstadoAfiliacionVA" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -222,7 +222,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText  id="fooObservacionesVA" value="#{msg['observaciones']}"/>
+                                        <h:outputText  id="fooObservacionesVA" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -255,6 +255,9 @@
                                     <h:outputText value="#{tipoE.nombre}" />
                                 </p:column>
                             </p:dataTable>
+                            
+                            <h:outputText id="infoRegistroTipoEntidad" value="#{controlEmplVigenciaAfiliacion3.infoRegistroTipoEntidad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
                             <p:commandButton id="aceptarTE" style="position: relative; left: 225px" value="#{msg['aceptar']}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" onclick="TipoEntidadDialogo.hide(), lovTipoEntidad.clearFilters();" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarTipoEntidad()}" update="lovTipoEntidad, aceptarTE, datosVAVigencia" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTipoEntidad:globalFilter"/>
                             </p:commandButton>
@@ -295,6 +298,9 @@
                                     <h:outputText value="#{tercero.empresa.nombre}" />
                                 </p:column>
                             </p:dataTable>
+                            
+                            <h:outputText id="infoRegistroTercero" value="#{controlEmplVigenciaAfiliacion3.infoRegistroTercero}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
                             <p:commandButton id="aceptarT" style="position: relative; left: 550px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarTerceros()}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" onclick="TerceroDialogo.hide(), lovTercero.clearFilters();" update="lovTercero, aceptarT, datosVAVigencia" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTercero:globalFilter"/>
                             </p:commandButton>
@@ -328,6 +334,9 @@
                                     <h:outputText  value="#{estado.nombre}" />
                                 </p:column>
                             </p:dataTable>
+                            
+                            <h:outputText id="infoRegistroEstado" value="#{controlEmplVigenciaAfiliacion3.infoRegistroEstado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
                             <p:commandButton id="aceptarEA" style="position: relative; left: 210px" value="#{msg['aceptar']}" actionListener="#{controlEmplVigenciaAfiliacion3.actualizarEstadoAfiliacion()}" disabled="#{controlEmplVigenciaAfiliacion3.aceptar}" onclick="EstadoAfiliacionDialogo.hide(), lovEstadoAfiliacion.clearFilters();" update="lovEstadoAfiliacion, aceptarEA, datosVAVigencia" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovEstadoAfiliacion:globalFilter"/>
                             </p:commandButton>
@@ -445,7 +454,7 @@
 
 
                             <strong><h:outputText value="*#{msg['terceroN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="nuevaTerceroVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="30" id="nuevaTerceroVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(1, 'TERCERO')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.autocompletarNuevoyDuplicadoVA('TERCERO', controlEmplVigenciaAfiliacion3.nuevaVigenciaA.tercerosucursal.tercero.nombre, 1)}" process="@this" update="nuevaTerceroVA"/>
@@ -465,7 +474,7 @@
                             <p:watermark for="nuevaCodigoVA" value="#{msg['codigo']}" />
 
                             <strong><h:outputText value="#{msg['estadoN']}" style=" position: absolute; top: 255px; left: 50px" /></strong>
-                            <p:inputText id="nuevaEstadoAfiliacionVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.estadoafiliacion.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 250px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="30" id="nuevaEstadoAfiliacionVA" value="#{controlEmplVigenciaAfiliacion3.nuevaVigenciaA.estadoafiliacion.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 250px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(1, 'ESTADOAFILIACION')}" />
                                 <p:ajax event="change" process="@this" listener="#{controlEmplVigenciaAfiliacion3.autocompletarNuevoyDuplicadoVA('ESTADOAFILIACION', controlEmplVigenciaAfiliacion3.nuevaVigenciaA.estadoafiliacion.nombre, 1)}" update="nuevaEstadoAfiliacionVA"/>
@@ -517,7 +526,7 @@
                             <p:watermark for="duplicarTipoEntidadVA" value="#{msg['tipoentidad']}" />
 
                             <strong><h:outputText value="*#{msg['terceroN']}" style=" position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="duplicarTerceroVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="30" id="duplicarTerceroVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.tercerosucursal.tercero.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 160px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,1,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(2,'TERCERO')}" />
                                 <p:ajax event="change" listener="#{controlEmplVigenciaAfiliacion3.autocompletarNuevoyDuplicadoVA('TERCERO', controlEmplVigenciaAfiliacion3.duplicarVA.tercerosucursal.tercero.nombre,2)}" update="duplicarTerceroVA"/>
@@ -537,7 +546,7 @@
                             <p:watermark for="duplicarCodigoVA" value="#{msg['codigo']}" />
 
                             <strong><h:outputText value="#{msg['estadoN']}" style=" position: absolute; top: 255px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEstadoAfiliacionVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.estadoafiliacion.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 250px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="30" id="duplicarEstadoAfiliacionVA" value="#{controlEmplVigenciaAfiliacion3.duplicarVA.estadoafiliacion.nombre}" style=" width: 122px; position: absolute; left: 170px; top: 250px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplVigenciaAfiliacion3.asignarIndex(indice,2,2)}"/>
                                 <p:ajax event="click" listener="#{controlEmplVigenciaAfiliacion3.valoresBackupAutocompletarVA(2, 'ESTADOAFILIACION')}" />
                                 <p:ajax event="change" process="@this" listener="#{controlEmplVigenciaAfiliacion3.autocompletarNuevoyDuplicadoVA('ESTADOAFILIACION', controlEmplVigenciaAfiliacion3.duplicarVA.estadoafiliacion.nombre, 2)}" update="duplicarEstadoAfiliacionVA"/>

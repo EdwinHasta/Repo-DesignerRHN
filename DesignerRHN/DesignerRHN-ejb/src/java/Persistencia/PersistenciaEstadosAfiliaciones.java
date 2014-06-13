@@ -92,6 +92,7 @@ public class PersistenciaEstadosAfiliaciones implements PersistenciaEstadosAfili
     @Override
     public List<EstadosAfiliaciones> buscarEstadosAfiliaciones(EntityManager em) {
         try {
+            em.clear();
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
             cq.select(cq.from(EstadosAfiliaciones.class));
             return em.createQuery(cq).getResultList();

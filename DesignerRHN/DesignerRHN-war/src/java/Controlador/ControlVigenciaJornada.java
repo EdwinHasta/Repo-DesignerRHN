@@ -143,6 +143,8 @@ public class ControlVigenciaJornada implements Serializable {
 
     private boolean cambiosJornada, cambiosDinero, cambiosTiempo;
 
+    private String infoRegistroJornadaLaboral, infoRegistroTipoDescanso;
+
     public ControlVigenciaJornada() {
         cambiosJornada = false;
         cambiosDinero = false;
@@ -398,35 +400,55 @@ public class ControlVigenciaJornada implements Serializable {
                 getListJornadasLaborales();
             } else {
                 permitirIndex = false;
+                getInfoRegistroJornadaLaboral();
                 context.update("form:JornadaLaboralDialogo");
                 context.execute("JornadaLaboralDialogo.show()");
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("TIPODESCANSO")) {
-            if (tipoLista == 0) {
-                listVigenciasJornadas.get(indice).getTipodescanso().setDescripcion(tipoDescanso);
-            } else {
-                filtrarVigenciasJornadas.get(indice).getTipodescanso().setDescripcion(tipoDescanso);
-            }
-            for (int i = 0; i < listTiposDescansos.size(); i++) {
-                if (listTiposDescansos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listVigenciasJornadas.get(indice).setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
+                    listVigenciasJornadas.get(indice).getTipodescanso().setDescripcion(tipoDescanso);
                 } else {
-                    filtrarVigenciasJornadas.get(indice).setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
+                    filtrarVigenciasJornadas.get(indice).getTipodescanso().setDescripcion(tipoDescanso);
                 }
+                for (int i = 0; i < listTiposDescansos.size(); i++) {
+                    if (listTiposDescansos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listVigenciasJornadas.get(indice).setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarVigenciasJornadas.get(indice).setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
+                    }
+                    listTiposDescansos.clear();
+                    getListTiposDescansos();
+                } else {
+                    permitirIndex = false;
+                    getInfoRegistroTipoDescanso();
+                    context.update("form:TiposDescansosDialogo");
+                    context.execute("TiposDescansosDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
                 listTiposDescansos.clear();
                 getListTiposDescansos();
-            } else {
-                permitirIndex = false;
-                context.update("form:TiposDescansosDialogo");
-                context.execute("TiposDescansosDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listVigenciasJornadas.get(indice).setTipodescanso(new TiposDescansos());
+                } else {
+                    filtrarVigenciasJornadas.get(indice).setTipodescanso(new TiposDescansos());
+                }
+                cambiosJornada = true;
+
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                index = -1;
+                secRegistroVJ = null;
             }
         }
         if (coincidencias == 1) {
@@ -643,34 +665,46 @@ public class ControlVigenciaJornada implements Serializable {
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("TIPODESCANSO")) {
-            if (tipoNuevo == 1) {
-                nuevaVigencia.getTipodescanso().setDescripcion(tipoDescanso);
-            } else if (tipoNuevo == 2) {
-                duplicarVJ.getTipodescanso().setDescripcion(tipoDescanso);
-            }
-            for (int i = 0; i < listTiposDescansos.size(); i++) {
-                if (listTiposDescansos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaVigencia.setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaTipoDescanso");
+                    nuevaVigencia.getTipodescanso().setDescripcion(tipoDescanso);
                 } else if (tipoNuevo == 2) {
-                    duplicarVJ.setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarTipoDescanso");
+                    duplicarVJ.getTipodescanso().setDescripcion(tipoDescanso);
                 }
+                for (int i = 0; i < listTiposDescansos.size(); i++) {
+                    if (listTiposDescansos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaVigencia.setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaTipoDescanso");
+                    } else if (tipoNuevo == 2) {
+                        duplicarVJ.setTipodescanso(listTiposDescansos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarTipoDescanso");
+                    }
+                    listTiposDescansos.clear();
+                    getListTiposDescansos();
+                } else {
+                    context.update("form:TiposDescansosDialogo");
+                    context.execute("TiposDescansosDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaTipoDescanso");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarTipoDescanso");
+                    }
+                }
+            } else {
                 listTiposDescansos.clear();
                 getListTiposDescansos();
-            } else {
-                context.update("form:TiposDescansosDialogo");
-                context.execute("TiposDescansosDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaVigencia.setTipodescanso(new TiposDescansos());
                     context.update("formularioDialogos:nuevaTipoDescanso");
                 } else if (tipoNuevo == 2) {
+                    duplicarVJ.setTipodescanso(new TiposDescansos());
                     context.update("formularioDialogos:duplicarTipoDescanso");
                 }
             }
@@ -717,7 +751,6 @@ public class ControlVigenciaJornada implements Serializable {
                 context.execute("confirmarGuardarSinSalida.show()");
             }
 
-            System.out.println("index : " + index);
         }
         FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVCT == 1) {
@@ -2037,9 +2070,11 @@ public class ControlVigenciaJornada implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                getInfoRegistroJornadaLaboral();
                 context.update("form:JornadaLaboralDialogo");
                 context.execute("JornadaLaboralDialogo.show()");
             } else if (dlg == 1) {
+                getInfoRegistroTipoDescanso();
                 context.update("form:TiposDescansosDialogo");
                 context.execute("TiposDescansosDialogo.show()");
             }
@@ -2096,6 +2131,7 @@ public class ControlVigenciaJornada implements Serializable {
         context.update("form:JornadaLaboralDialogo");
         context.update("form:lovJornadaLaboral");
         context.update("form:aceptarJL");
+        context.reset("form:lovJornadaLaboral:globalFilter");
         context.execute("JornadaLaboralDialogo.hide()");
     }
 
@@ -2162,6 +2198,7 @@ public class ControlVigenciaJornada implements Serializable {
         context.update("form:TiposDescansosDialogo");
         context.update("form:lovTipoDescanso");
         context.update("form:aceptarTD");
+        context.reset("form:lovTipoDescanso:globalFilter");
         context.execute("TiposDescansosDialogo.hide()");
     }
 
@@ -2188,11 +2225,13 @@ public class ControlVigenciaJornada implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             if (cualCelda == 1) {
+                getInfoRegistroJornadaLaboral();
                 context.update("form:JornadaLaboralDialogo");
                 context.execute("JornadaLaboralDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCelda == 2) {
+                getInfoRegistroTipoDescanso();
                 context.update("form:TiposDescansosDialogo");
                 context.execute("TiposDescansosDialogo.show()");
                 tipoActualizacion = 0;
@@ -2206,13 +2245,7 @@ public class ControlVigenciaJornada implements Serializable {
      */
     public void validarNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("cambiosJornada : " + cambiosJornada);
-        System.out.println("cambiosTiempo : " + cambiosTiempo);
-        System.out.println("cambiosDinero : " + cambiosDinero);
         if (cambiosJornada == false && cambiosTiempo == false && cambiosDinero == false) {
-            System.out.println("index : " + index);
-            System.out.println("indexVCT : " + indexVCT);
-            System.out.println("indexVCD : " + indexVCD);
             if (index < 0 && indexVCT < 0 && indexVCD < 0) {
                 context.execute("seleccionarRegistro.show()");
             } else {
@@ -2228,9 +2261,6 @@ public class ControlVigenciaJornada implements Serializable {
                 if (listVigenciasCompensacionesTiempo != null) {
                     tam2 = listVigenciasCompensacionesTiempo.size();
                 }
-                System.out.println("tam : " + tam);
-                System.out.println("tam1 : " + tam1);
-                System.out.println("tam2 : " + tam2);
                 if ((tam == 0) || (tam1 == 0) || (tam2 == 0)) {
                     context.update("form:NuevoRegistroPagina");
                     context.execute("NuevoRegistroPagina.show()");
@@ -2704,8 +2734,10 @@ public class ControlVigenciaJornada implements Serializable {
                 if (listVigencia != null) {
                     for (int i = 0; i < listVigencia.size(); i++) {
                         if (listVigencia.get(i).getTipocompensacion().equalsIgnoreCase(variable)) {
-                            String aux = listVigencia.get(i).getComentario().toUpperCase();
-                            listVigencia.get(i).setComentario(aux);
+                            if (listVigencia.get(i).getComentario() != null) {
+                                String aux = listVigencia.get(i).getComentario().toUpperCase();
+                                listVigencia.get(i).setComentario(aux);
+                            }
                             listVigenciasCompensacionesTiempo.add(listVigencia.get(i));
 
                         }
@@ -2786,8 +2818,10 @@ public class ControlVigenciaJornada implements Serializable {
                 if (listVigencia != null) {
                     for (int i = 0; i < listVigencia.size(); i++) {
                         if (listVigencia.get(i).getTipocompensacion().equalsIgnoreCase(variable)) {
-                            String aux = listVigencia.get(i).getComentario().toUpperCase();
-                            listVigencia.get(i).setComentario(aux);
+                            if (listVigencia.get(i).getComentario() != null) {
+                                String aux = listVigencia.get(i).getComentario().toUpperCase();
+                                listVigencia.get(i).setComentario(aux);
+                            }
                             listVigenciasCompensacionesDinero.add(listVigencia.get(i));
 
                         }
@@ -3152,4 +3186,33 @@ public class ControlVigenciaJornada implements Serializable {
     public boolean isGuardado() {
         return guardado;
     }
+
+    public String getInfoRegistroJornadaLaboral() {
+        getListJornadasLaborales();
+        if (listJornadasLaborales != null) {
+            infoRegistroJornadaLaboral = "Cantidad de registros: " + listJornadasLaborales.size();
+        } else {
+            infoRegistroJornadaLaboral = "Cantidad de registros: 0";
+        }
+        return infoRegistroJornadaLaboral;
+    }
+
+    public void setInfoRegistroJornadaLaboral(String infoRegistroJornadaLaboral) {
+        this.infoRegistroJornadaLaboral = infoRegistroJornadaLaboral;
+    }
+
+    public String getInfoRegistroTipoDescanso() {
+        getListTiposDescansos();
+        if (listTiposDescansos != null) {
+            infoRegistroTipoDescanso = "Cantidad de registros : " + listTiposDescansos.size();
+        } else {
+            infoRegistroTipoDescanso = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoDescanso;
+    }
+
+    public void setInfoRegistroTipoDescanso(String infoRegistroTipoDescanso) {
+        this.infoRegistroTipoDescanso = infoRegistroTipoDescanso;
+    }
+
 }

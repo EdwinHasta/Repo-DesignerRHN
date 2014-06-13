@@ -96,6 +96,7 @@ public class PersistenciaTiposContratos implements PersistenciaTiposContratosInt
     @Override
     public List<TiposContratos> tiposContratos(EntityManager em) {
         try {
+            em.clear();
             Query query = em.createQuery("SELECT tc FROM TiposContratos tc ORDER BY tc.codigo");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<TiposContratos> tiposContratos = query.getResultList();

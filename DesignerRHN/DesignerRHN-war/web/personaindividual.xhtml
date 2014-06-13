@@ -37,14 +37,14 @@
 
 
                                     <h:outputText  value="#{msg['primerApellido']}*" style="position: absolute; top: 55px; left: 15px;font-weight: bold"/>
-                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.primerapellido}" id="primerApellidoModPersonal" style="position: absolute; top: 50px; left: 140px;width: 130px;text-transform: uppercase">
+                                    <p:inputText maxlength="20"  onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.primerapellido}" id="primerApellidoModPersonal" style="position: absolute; top: 50px; left: 140px;width: 130px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(1)}" process="@this"/>
                                         <p:ajax event="change" process="@this" update="@this"/>
                                     </p:inputText>
 
 
                                     <h:outputText  value="#{msg['segundoApellido']}" style="position: absolute; top: 85px; left: 15px;font-weight: bold"/>
-                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.segundoapellido}" id="segundoApellidoModPersonal" style="position: absolute; top: 80px; left: 140px;width: 130px;text-transform: uppercase">
+                                    <p:inputText maxlength="20" onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.segundoapellido}" id="segundoApellidoModPersonal" style="position: absolute; top: 80px; left: 140px;width: 130px;text-transform: uppercase">
                                         <p:ajax event="click" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(2)}" process="@this"/>
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(2)}" process="@this"/>
                                         <p:ajax event="change" process="@this" update="@this"/>
@@ -125,9 +125,9 @@
 
 
                                     <h:outputText  value="#{msg['correoElectronico']}" style="position: absolute; top: 85px; left: 580px;font-weight: bold"/>
-                                    <p:inputText onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.email}" id="correoModPersonal" style="position: absolute; top: 80px; left: 705px;width: 105px;">
+                                    <p:inputText maxlength="100"  onclick="select();" value="#{controlPersonaIndividual.nuevaPersona.email}" id="correoModPersonal" style="position: absolute; top: 80px; left: 705px;width: 105px;">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceInformacionPersonal(12)}" process="@this"/>
-                                        <p:ajax event="change" process="@this" update="correoModPersonal"/>
+                                        <p:ajax event="change" process="@this" listener="#{controlPersonaIndividual.validarEmailPersona(controlPersonaIndividual.nuevaPersona.email)}" update="correoModPersonal"/>
                                     </p:inputText>
 
 
@@ -380,7 +380,7 @@
                                     </p:inputText>
 
                                     <h:outputText  value="#{msg['cuentaPago']}" style="position: absolute; top: 55px; left: 65px;font-weight: bold"/>
-                                    <p:inputText id="cuentaPagoModFormaPago" onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaFormaPago.cuenta}" style="position: absolute; top: 50px; left: 230px;width: 170px;text-transform: uppercase">
+                                    <p:inputText id="cuentaPagoModFormaPago" maxlength="25"  onclick="select();" value="#{controlPersonaIndividual.nuevaVigenciaFormaPago.cuenta}" style="position: absolute; top: 50px; left: 230px;width: 170px;text-transform: uppercase">
                                         <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceFormaPago(1)}" process="@this"/>
                                         <p:ajax event="change" process="@this" update="cuentaPagoModFormaPago"/>
                                     </p:inputText>
@@ -505,7 +505,7 @@
                                         <h:outputText value="" style="position: absolute; background-image: url(Imagenes/direccion.gif); width: 50px; height: 50px; top: 25px; left: 5px; background-repeat: no-repeat; background-size: 100% 100%; border: outset; border-width: 2px; border-width: 2px;" />
 
                                         <h:outputText  value="#{msg['direccion']}" style="position: absolute; top: 25px; left: 65px;font-weight: bold"/>
-                                        <p:inputText id="direccionModDireccion" onclick="select();" value="#{controlPersonaIndividual.nuevaDireccion.direccionalternativa}" style="position: absolute; top: 20px; left: 230px;width: 130px;text-transform: uppercase">
+                                        <p:inputText maxlength="100"  id="direccionModDireccion" onclick="select();" value="#{controlPersonaIndividual.nuevaDireccion.direccionalternativa}" style="position: absolute; top: 20px; left: 230px;width: 130px;text-transform: uppercase">
                                             <p:ajax event="focus" listener="#{controlPersonaIndividual.cambiarIndiceDireccion(0)}" process="@this"/>
                                             <p:ajax event="change"  process="@this" update="direccionModDireccion"/>
                                         </p:inputText>
@@ -1588,13 +1588,13 @@
                                     </f:facet>
                                     <h:outputText  value="#{terceroSA.descripcion}" />
                                 </p:column>
-                                <p:column filterBy="#{terceroSA.tercero.nit}" filterMatchMode="contains" >
+                                <p:column filterBy="#{terceroSA.tercero.nit}" width="100" filterStyle="width: 80px" filterMatchMode="contains" >
                                     <f:facet name="header">
                                         <h:outputText style="text-align: center" value="#{msg['nit']}" />
                                     </f:facet>
                                     <h:outputText  value="#{terceroSA.tercero.nit}" />
                                 </p:column>
-                                <p:column filterBy="#{terceroSA.tercero.empresa.nombre}" filterMatchMode="contains" >
+                                <p:column filterBy="#{terceroSA.tercero.empresa.nombre}" width="200" filterMatchMode="contains" >
                                     <f:facet name="header">
                                         <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                     </f:facet>
@@ -1781,6 +1781,12 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="advertenciaFechaIngreso.hide();" style="position: absolute; top: 60px; left: 325px" process="@this" />
                     </p:dialog>
 
+                    <p:dialog id="errorEmailPersona" header="#{msg['atencion']}" widgetVar="errorEmailPersona"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorEmailPersona']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="errorEmailPersona.hide();" style="position: absolute; top: 50px; left: 205px" process="@this" />
+                    </p:dialog>
+                    
                     <p:dialog id="errorFechas" header="#{msg['atencion']}" widgetVar="errorFechas"  resizable="false" draggable="false" modal="true" height="80" width="300px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorFechas']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />

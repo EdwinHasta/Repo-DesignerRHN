@@ -51,7 +51,7 @@ public class Contratos implements Serializable {
     private Short codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Basic(optional = false)
@@ -112,9 +112,6 @@ public class Contratos implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 

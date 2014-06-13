@@ -122,6 +122,8 @@ public class ControlEmplMvr implements Serializable {
     //ALTO TABLA
     private String altoTabla1, altoTabla2;
     private boolean cambiosMvr, cambiosOtros;
+    //
+    private String infoRegistroMotivoMVR, infoRegistroCertificado;
 
     public ControlEmplMvr() {
         cambiosMvr = false;
@@ -252,7 +254,6 @@ public class ControlEmplMvr implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         if (i == 0) {
             Mvrs auxiliar = null;
@@ -317,7 +318,6 @@ public class ControlEmplMvr implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         if (i == 0) {
             OtrosCertificados auxiliar = null;
@@ -471,6 +471,7 @@ public class ControlEmplMvr implements Serializable {
                 getListMotivosMvrs();
             } else {
                 permitirIndexMvrs = false;
+                getInfoRegistroMotivoMVR();
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
                 tipoActualizacion = 0;
@@ -591,6 +592,7 @@ public class ControlEmplMvr implements Serializable {
                 getListTiposCertificados();
             } else {
                 permitirIndexOtrosCertificados = false;
+                getInfoRegistroCertificado();
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
                 tipoActualizacion = 0;
@@ -1708,6 +1710,7 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                getInfoRegistroMotivoMVR();
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
             }
@@ -1722,6 +1725,7 @@ public class ControlEmplMvr implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                getInfoRegistroCertificado();
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
             }
@@ -1778,6 +1782,7 @@ public class ControlEmplMvr implements Serializable {
         context.update("form:MotivoDialogo");
         context.update("form:lovMotivo");
         context.update("form:aceptarM");
+        context.reset("form:lovMotivo:globalFilter");
         context.execute("MotivoDialogo.hide()");
     }
 
@@ -1843,6 +1848,7 @@ public class ControlEmplMvr implements Serializable {
         context.update("form:CertificadosDialogo");
         context.update("form:lovCertificado");
         context.update("form:aceptarTC");
+        context.reset("form:lovCertificado:globalFilter");
         context.execute("CertificadosDialogo.hide()");
     }
 
@@ -1868,6 +1874,7 @@ public class ControlEmplMvr implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (indexAuxMvrs >= 0) {
             if (cualCeldaMvrs == 3) {
+                getInfoRegistroMotivoMVR();
                 context.update("form:MotivoDialogo");
                 context.execute("MotivoDialogo.show()");
                 tipoActualizacion = 0;
@@ -1876,6 +1883,7 @@ public class ControlEmplMvr implements Serializable {
         }
         if (indexAuxOC >= 0) {
             if (cualCeldaOtrosCertificados == 4) {
+                getInfoRegistroCertificado();
                 context.update("form:CertificadosDialogo");
                 context.execute("CertificadosDialogo.show()");
                 tipoActualizacion = 0;
@@ -2467,4 +2475,33 @@ public class ControlEmplMvr implements Serializable {
     public String getAltoTabla2() {
         return altoTabla2;
     }
+
+    public String getInfoRegistroMotivoMVR() {
+        getListMotivosMvrs();
+        if (listMotivosMvrs != null) {
+            infoRegistroMotivoMVR = "Cantidad de registros : " + listMotivosMvrs.size();
+        } else {
+            infoRegistroMotivoMVR = "Cantidad de registros : 0";
+        }
+        return infoRegistroMotivoMVR;
+    }
+
+    public void setInfoRegistroMotivoMVR(String infoRegistroMotivoMVR) {
+        this.infoRegistroMotivoMVR = infoRegistroMotivoMVR;
+    }
+
+    public String getInfoRegistroCertificado() {
+        getListTiposCertificados();
+        if (listTiposCertificados != null) {
+            infoRegistroCertificado = "Cantidad de registros : " + listTiposCertificados.size();
+        } else {
+            infoRegistroCertificado = "Cantidad de registros : 0";
+        }
+        return infoRegistroCertificado;
+    }
+
+    public void setInfoRegistroCertificado(String infoRegistroCertificado) {
+        this.infoRegistroCertificado = infoRegistroCertificado;
+    }
+
 }

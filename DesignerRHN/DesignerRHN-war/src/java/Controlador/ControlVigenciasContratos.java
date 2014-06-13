@@ -85,6 +85,8 @@ public class ControlVigenciasContratos implements Serializable {
     private Date fechaIni, fechaFin;
     private String altoTabla;
     public String infoRegistro;
+    //
+    private String infoRegistroContrato, infoRegistroTipoContrato;
 
     public ControlVigenciasContratos() {
         secRegistro = null;
@@ -345,35 +347,53 @@ public class ControlVigenciasContratos implements Serializable {
                 getListaContratos();
             } else {
                 permitirIndex = false;
+                getInfoRegistroContrato();
                 context.update("form:ContratosDialogo");
                 context.execute("ContratosDialogo.show()");
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("TIPOCONTRATO")) {
-            if (tipoLista == 0) {
-                vigenciasContratos.get(indice).getTipocontrato().setNombre(legislacionLaboral);
-            } else {
-                filtrarVC.get(indice).getTipocontrato().setNombre(legislacionLaboral);
-            }
-            for (int i = 0; i < listaTiposContratos.size(); i++) {
-                if (listaTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    vigenciasContratos.get(indice).setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
+                    vigenciasContratos.get(indice).getTipocontrato().setNombre(legislacionLaboral);
                 } else {
-                    filtrarVC.get(indice).setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
+                    filtrarVC.get(indice).getTipocontrato().setNombre(legislacionLaboral);
                 }
+                for (int i = 0; i < listaTiposContratos.size(); i++) {
+                    if (listaTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        vigenciasContratos.get(indice).setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarVC.get(indice).setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
+                    }
+                    listaTiposContratos.clear();
+                    getListaTiposContratos();
+                } else {
+                    permitirIndex = false;
+                    getInfoRegistroTipoContrato();
+                    context.update("form:TiposContratoDialogo");
+                    context.execute("TiposContratoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
                 listaTiposContratos.clear();
                 getListaTiposContratos();
-            } else {
-                permitirIndex = false;
-                context.update("form:TiposContratoDialogo");
-                context.execute("TiposContratoDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    vigenciasContratos.get(indice).setTipocontrato(new TiposContratos());
+                } else {
+                    filtrarVC.get(indice).setTipocontrato(new TiposContratos());
+                }
+                if (guardado == true) {
+                    guardado = false;
+                    context.update("form:ACEPTAR");
+                }
+                index = -1;
+                secRegistro = null;
             }
         }
         if (coincidencias == 1) {
@@ -472,36 +492,48 @@ public class ControlVigenciasContratos implements Serializable {
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("TIPOCONTRATO")) {
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoNuevo == 1) {
+                    nuevaVigencia.getTipocontrato().setNombre(tipoContrato);
+                } else if (tipoNuevo == 2) {
+                    duplicarVC.getTipocontrato().setNombre(tipoContrato);
+                }
+                for (int i = 0; i < listaTiposContratos.size(); i++) {
+                    if (listaTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaVigencia.setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoTipoContrato");
+                    } else if (tipoNuevo == 2) {
+                        duplicarVC.setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarTipoContrato");
+                    }
+                    listaTiposContratos.clear();
+                    getListaTiposContratos();
+                } else {
+                    context.update("form:TiposContratoDialogo");
+                    context.execute("TiposContratoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoTipoContrato");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarTipoContrato");
+                    }
+                }
+            }
+        } else {
+            listaTiposContratos.clear();
+            getListaTiposContratos();
             if (tipoNuevo == 1) {
-                nuevaVigencia.getTipocontrato().setNombre(tipoContrato);
+                nuevaVigencia.setTipocontrato(new TiposContratos());
+                context.update("formularioDialogos:nuevoTipoContrato");
             } else if (tipoNuevo == 2) {
-                duplicarVC.getTipocontrato().setNombre(tipoContrato);
-            }
-            for (int i = 0; i < listaTiposContratos.size(); i++) {
-                if (listaTiposContratos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoNuevo == 1) {
-                    nuevaVigencia.setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoTipoContrato");
-                } else if (tipoNuevo == 2) {
-                    duplicarVC.setTipocontrato(listaTiposContratos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarTipoContrato");
-                }
-                listaTiposContratos.clear();
-                getListaTiposContratos();
-            } else {
-                context.update("form:TiposContratoDialogo");
-                context.execute("TiposContratoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevoTipoContrato");
-                } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarTipoContrato");
-                }
+                duplicarVC.setTipocontrato(new TiposContratos());
+                context.update("formularioDialogos:duplicarTipoContrato");
             }
         }
     }
@@ -972,9 +1004,11 @@ public class ControlVigenciasContratos implements Serializable {
         }
 
         if (list == 0) {
+            getInfoRegistroContrato();
             context.update("form:ContratosDialogo");
             context.execute("ContratosDialogo.show()");
         } else if (list == 1) {
+            getInfoRegistroTipoContrato();
             context.update("form:TiposContratoDialogo");
             context.execute("TiposContratoDialogo.show()");
         }
@@ -1026,9 +1060,11 @@ public class ControlVigenciasContratos implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.execute("ContratosDialogo.hide()");
-        context.reset("form:lovContratos:globalFilter");
+        context.update("form:ContratosDialogo");
         context.update("form:lovContratos");
+        context.update("form:aceptarC");
+        context.reset("form:lovContratos:globalFilter");
+        context.execute("ContratosDialogo.hide()");
     }
 
     /**
@@ -1089,9 +1125,11 @@ public class ControlVigenciasContratos implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
-        context.execute("TiposContratoDialogo.hide()");
-        context.reset("form:lovTiposContratos:globalFilter");
+        context.update("form:TiposContratoDialogo");
         context.update("form:lovTiposContratos");
+        context.update("form:aceptarTC");
+        context.reset("form:lovTiposContratos:globalFilter");
+        context.execute("TiposContratoDialogo.hide()");
     }
 
     /**
@@ -1116,11 +1154,13 @@ public class ControlVigenciasContratos implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
+                getInfoRegistroContrato();
                 context.update("form:ContratosDialogo");
                 context.execute("ContratosDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCelda == 3) {
+                getInfoRegistroTipoContrato();
                 context.update("form:TiposContratoDialogo");
                 context.execute("TiposContratoDialogo.show()");
                 tipoActualizacion = 0;
@@ -1279,9 +1319,7 @@ public class ControlVigenciasContratos implements Serializable {
      * @return listTC Lista Tipos Contratos
      */
     public List<Contratos> getListaContratos() {
-        if (listaContratos.isEmpty()) {
-            listaContratos = administrarVigenciasContratos.contratos();
-        }
+        listaContratos = administrarVigenciasContratos.contratos();
         return listaContratos;
     }
 
@@ -1304,9 +1342,7 @@ public class ControlVigenciasContratos implements Serializable {
      * @return listTC Lista Tipos Contratos
      */
     public List<TiposContratos> getListaTiposContratos() {
-        if (listaTiposContratos.isEmpty()) {
-            listaTiposContratos = administrarVigenciasContratos.tiposContratos();
-        }
+        listaTiposContratos = administrarVigenciasContratos.tiposContratos();
         return listaTiposContratos;
     }
 
@@ -1388,6 +1424,34 @@ public class ControlVigenciasContratos implements Serializable {
 
     public String getInfoRegistro() {
         return infoRegistro;
+    }
+
+    public String getInfoRegistroContrato() {
+        getListaContratos();
+        if (listaContratos != null) {
+            infoRegistroContrato = "Cantidad de registros : " + listaContratos.size();
+        } else {
+            infoRegistroContrato = "Cantidad de registros : 0";
+        }
+        return infoRegistroContrato;
+    }
+
+    public void setInfoRegistroContrato(String infoRegistroContrato) {
+        this.infoRegistroContrato = infoRegistroContrato;
+    }
+
+    public String getInfoRegistroTipoContrato() {
+        getListaTiposContratos();
+        if (listaTiposContratos != null) {
+            infoRegistroTipoContrato = "Cantidad de registros : " + listaTiposContratos.size();
+        } else {
+            infoRegistroTipoContrato = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoContrato;
+    }
+
+    public void setInfoRegistroTipoContrato(String infoRegistroTipoContrato) {
+        this.infoRegistroTipoContrato = infoRegistroTipoContrato;
     }
 
 }

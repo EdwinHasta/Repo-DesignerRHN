@@ -102,13 +102,13 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     private List<Pensionados> listaPensionados;
     private Pensionados pensionVigencia;
     private Pensionados pensionadoSeleccionado;
-    
+
     private List<Personas> listaPersonas;
     private Personas personaSeleccionada;
-    
+
     private List<ClasesPensiones> clasesPensiones;
     private ClasesPensiones clasesPensionesSeleccionada;
-    
+
     private List<TiposPensionados> tiposPensionados;
     private TiposPensionados tiposPensionadosSeleccionada;
     private Pensionados pensionCopia;
@@ -134,6 +134,16 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     private Date fechaIni, fechaFin;
     private Date fechaVig;
     private String altoTabla;
+    //
+    private String infoRegistroTipoTrabajador;
+    private String infoRegistroMotivoRetiros;
+    private String infoRegistroClasePension;
+    private String infoRegistroTipoPension;
+    private String infoRegistroEmpleado;
+    private String infoRegistroPersona;
+
+    //
+    private boolean cambiosPagina;
 
     /**
      * Constructo del Controlador
@@ -204,6 +214,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         permitirIndex = true;
         secRegistro = null;
         altoTabla = "116";
+
+        cambiosPagina = true;
     }
 
     @PostConstruct
@@ -240,11 +252,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 } else if (!listVTTModificar.contains(vigenciasTiposTrabajadores.get(indice))) {
                     listVTTModificar.add(vigenciasTiposTrabajadores.get(indice));
                 }
-                if (guardado == true) {
-                    guardado = false;
+                if (cambiosPagina == true) {
+                    cambiosPagina = false;
                     context.update("form:ACEPTAR");
                 }
             }
+            guardado = false;
             index = -1;
             secRegistro = null;
         } else {
@@ -255,11 +268,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 } else if (!listVTTModificar.contains(filtrarVTT.get(indice))) {
                     listVTTModificar.add(filtrarVTT.get(indice));
                 }
-                if (guardado == true) {
-                    guardado = false;
+                if (cambiosPagina == true) {
+                    cambiosPagina = false;
                     context.update("form:ACEPTAR");
                 }
             }
+            guardado = false;
             index = -1;
             secRegistro = null;
         }
@@ -271,7 +285,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         if (i == 0) {
             VigenciasTiposTrabajadores auxiliar = null;
@@ -376,6 +389,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 getListaTiposTrabajadores();
             } else {
                 permitirIndex = false;
+                getInfoRegistroTipoTrabajador();
                 context.update("form:TipoTrabajadorDialogo");
                 context.execute("TipoTrabajadorDialogo.show()");
                 tipoActualizacion = 0;
@@ -390,11 +404,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                     } else if (!listVTTModificar.contains(vigenciasTiposTrabajadores.get(indice))) {
                         listVTTModificar.add(vigenciasTiposTrabajadores.get(indice));
                     }
-                    if (guardado == true) {
-                        guardado = false;
+                    if (cambiosPagina == true) {
+                        cambiosPagina = false;
                         context.update("form:ACEPTAR");
                     }
                 }
+                guardado = false;
                 index = -1;
                 secRegistro = null;
             } else {
@@ -405,11 +420,12 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                     } else if (!listVTTModificar.contains(filtrarVTT.get(indice))) {
                         listVTTModificar.add(filtrarVTT.get(indice));
                     }
-                    if (guardado == true) {
-                        guardado = false;
+                    if (cambiosPagina == true) {
+                        cambiosPagina = false;
                         context.update("form:ACEPTAR");
                     }
                 }
+                guardado = false;
                 index = -1;
                 secRegistro = null;
             }
@@ -470,6 +486,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         if (cambioPension == false) {
             cambioPension = true;
         }
+        cambiosPagina = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
     }
 
     public void posicionTabla() {
@@ -479,7 +498,6 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         String type = map.get("t"); // type attribute of node
         int indice = Integer.parseInt(type);
         int columna = Integer.parseInt(name);
-        System.out.println("indice : " + indice + " -- " + columna);
         cambiarIndice(indice, columna);
     }
 
@@ -581,8 +599,15 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             context.update("form:panelPensionadosMensaje");
             context.update("form:datosVTTEmpleado");
             guardado = true;
-            context.update("form:ACEPTAR");
             k = 0;
+
+            
+            cambiosPagina = true;
+            context.update("form:ACEPTAR");
+            
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
         index = -1;
         secRegistro = null;
@@ -616,6 +641,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         k = 0;
         vigenciasTiposTrabajadores = null;
+        cambiosPagina = true;
         guardado = true;
         almacenarRetirado = false;
         almacenarPensionado = false;
@@ -742,10 +768,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
 
                 context.update("form:datosVTTEmpleado");
                 context.execute("NuevoRegistroVTT.hide();");
-                if (guardado == true) {
-                    guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                if (cambiosPagina == true) {
+                    cambiosPagina = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
+                guardado = false;
                 index = -1;
                 secRegistro = null;
                 banderaEliminarRetiro = false;
@@ -849,10 +876,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 context.update("form:datosVTTEmpleado");
                 index = -1;
                 secRegistro = null;
-                if (guardado == true) {
-                    guardado = false;
+                if (cambiosPagina == true) {
+                    cambiosPagina = false;
                     context.update("form:ACEPTAR");
                 }
+                guardado = false;
                 if (bandera == 1) {
                     //CERRAR FILTRADO
                     vttFecha = (Column) c.getViewRoot().findComponent("form:datosVTTEmpleado:vttFecha");
@@ -931,10 +959,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosVTTEmpleado");
 
-                if (guardado == true) {
-                    guardado = false;
+                if (cambiosPagina == true) {
+                    cambiosPagina = false;
                     context.update("form:ACEPTAR");
                 }
+                guardado = false;
             } else {
                 if (index == indexRetiro) {
                     banderaEliminarRetiro = true;
@@ -976,10 +1005,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:datosVTTEmpleado");
 
-                        if (guardado == true) {
-                            guardado = false;
+                        if (cambiosPagina == true) {
+                            cambiosPagina = false;
                             context.update("form:ACEPTAR");
                         }
+                        guardado = false;
                     } else {
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.execute("informacionEliminarExtrabajador.show()");
@@ -1038,10 +1068,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                         RequestContext context = RequestContext.getCurrentInstance();
                         context.update("form:datosVTTEmpleado");
 
-                        if (guardado == true) {
-                            guardado = false;
+                        if (cambiosPagina == true) {
+                            cambiosPagina = false;
                             context.update("form:ACEPTAR");
                         }
+                        guardado = false;
                     } else {
                         RequestContext context = RequestContext.getCurrentInstance();
                         //Dialogo de aviso de limpiar registro adicional pensionados
@@ -1138,7 +1169,8 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         secRegistro = null;
         k = 0;
         vigenciasTiposTrabajadores = null;
-        guardado = true;
+        cambiosPagina = true;
+        guardado = false;
         cambioPension = false;
         cambioRetiros = false;
         context.update("form:ACEPTAR");
@@ -1161,6 +1193,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
+        getInfoRegistroTipoTrabajador();
         context.update("form:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
         context.execute("TipoTrabajadorDialogo.show()");
     }
@@ -1193,10 +1226,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
                     }
                 }
             }
-            if (guardado == true) {
-                guardado = false;
+            if (cambiosPagina == true) {
+                cambiosPagina = false;
                 context.update("form:ACEPTAR");
             }
+            guardado = false;
         } else if (tipoActualizacion == 1) {
             nuevaVigencia.setTipotrabajador(tipoTrabajadorSeleccionado);
             context.update("formularioDialogos:nuevaVTT");
@@ -1238,6 +1272,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 1) {
+                getInfoRegistroTipoTrabajador();
                 context.update("form:TipoTrabajadorDialogo"); //TiposTrabajadoresDialogo
                 context.execute("TipoTrabajadorDialogo.show()");
                 tipoActualizacion = 0;
@@ -1492,10 +1527,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             //  cargarRetiro();
             RequestContext context = RequestContext.getCurrentInstance();
 
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Retirados con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+
             context.update("form:panelRetiradosInput");
             context.update("form:panelRetiradosMensaje");
             context.update("form:panelPensionadosInput");
             context.update("form:panelPensionadosMensaje");
+
+            cambiosPagina = true;
+            context.update("form:ACEPTAR");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorRegRetiro.show()");
@@ -1599,6 +1641,13 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             banderaLimpiarPension = false;
 
             operacionPension = false;
+            
+            cambiosPagina = true;
+            context.update("form:ACEPTAR");
+
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos de Pensioandos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorRegPensionado.show()");
@@ -1644,6 +1693,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void dialogoRetiros() {
         RequestContext context = RequestContext.getCurrentInstance();
+        getInfoRegistroMotivoRetiros();
         context.reset("form:motivoRetiro");
         context.execute("RetirosDialogo.show()");
 
@@ -1656,15 +1706,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         banderaCambiosRetirados();
         retiroVigencia.setMotivoretiro(motivoRetiroSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update(":form:panelRetiradosInput");
+        context.update("form:panelRetiradosInput");
         aceptar = true;
         index = -1;
         secRegistro = null;
         motivoRetiroSeleccionado = null;
         filtradoMotivosRetiros = null;
+        getMotivosRetiros();
         context.update("form:RetirosDialogo");
         context.update("form:lovMotivosRetiros");
         context.update("form:aceptarMR");
+        context.reset("form:lovMotivosRetiros:globalFilter");
         context.execute("RetirosDialogo.hide()");
     }
 
@@ -1686,6 +1738,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void dialogoClasePension() {
         RequestContext context = RequestContext.getCurrentInstance();
+        getInfoRegistroClasePension();
         context.reset("form:clasePension");
         context.execute("clasePensionDialogo.show()");
     }
@@ -1697,15 +1750,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         banderaCambiosPensionados();
         pensionVigencia.setClase(clasesPensionesSeleccionada);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update(":form:panelPensionadosInput");
+        context.update("form:panelPensionadosInput");
         aceptar = true;
         index = -1;
         secRegistro = null;
         clasesPensionesFiltrado = null;
         clasesPensionesSeleccionada = null;
+        getClasesPensiones();
         context.update("form:clasePensionDialogo");
         context.update("form:lovClasePension");
         context.update("form:aceptarCP");
+        context.reset("form:lovClasePension:globalFilter");
         context.execute("clasePensionDialogo.hide()");
     }
 
@@ -1729,6 +1784,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void dialogoTipoPensionado() {
         RequestContext context = RequestContext.getCurrentInstance();
+        getInfoRegistroTipoPension();
         context.reset("form:tipoPensionado");
         context.execute("tipoPensionadoDialogo.show()");
     }
@@ -1740,15 +1796,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         banderaCambiosPensionados();
         pensionVigencia.setTipopensionado(tiposPensionadosSeleccionada);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update(":form:panelPensionadosInput");
+        context.update("form:panelPensionadosInput");
         aceptar = true;
         index = -1;
         secRegistro = null;
         tiposPensionadosSeleccionada = null;
         tiposPensionadosFiltrado = null;
+        getTiposPensionados();
         context.update("form:tipoPensionadoDialogo");
         context.update("form:lovTipoPensionado");
         context.update("form:aceptarTP");
+        context.reset("form:lovTipoPensionado:globalFilter");
         context.execute("tipoPensionadoDialogo.hide()");
     }
 
@@ -1772,6 +1830,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void dialogoCausaBiente() {
         RequestContext context = RequestContext.getCurrentInstance();
+        getInfoRegistroEmpleado();
         context.reset("form:causaBiente");
         context.execute("causaBientesDialogo.show()");
     }
@@ -1783,15 +1842,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         banderaCambiosPensionados();
         pensionVigencia.setCausabiente(pensionadoSeleccionado.getCausabiente());
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update(":form:panelPensionadosInput");
+        context.update("form:panelPensionadosInput");
         aceptar = true;
         index = -1;
         secRegistro = null;
         pensionadoSeleccionado = null;
         pensionadosFiltrado = null;
+        getListaPensionados();
         context.update("form:causaBientesDialogo");
         context.update("form:lovCausaBientes");
         context.update("form:aceptarCB");
+        context.reset("form:lovCausaBientes:globalFilter");
         context.execute("causaBientesDialogo.hide()");
     }
 
@@ -1815,6 +1876,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      */
     public void dialogoTutor() {
         RequestContext context = RequestContext.getCurrentInstance();
+        getInfoRegistroPersona();
         context.reset("form:tutorPension");
         context.execute("tutorDialogo.show()");
     }
@@ -1826,15 +1888,17 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
         banderaCambiosPensionados();
         pensionVigencia.setTutor(personaSeleccionada);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update(":form:panelPensionadosInput");
+        context.update("form:panelPensionadosInput");
         aceptar = true;
         index = -1;
         secRegistro = null;
         personasFiltrado = null;
         personaSeleccionada = null;
+        getListaPersonas();
         context.update("form:tutorDialogo");
         context.update("form:lovTutor");
         context.update("form:aceptarT");
+        context.reset("form:lovTutor:globalFilter");
         context.execute("tutorDialogo.hide()");
     }
 
@@ -1930,6 +1994,10 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             cambioRetiros = true;
             banderaEliminarRetiro = false;
         }
+        cambiosPagina = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+
     }
 
     /**
@@ -2034,16 +2102,20 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
      * Guardado general de la pagina
      */
     public void guardarGeneral() {
-        if ((almacenarRetirado == true) && (banderaEliminarRetiro == false)) {
-            guardarDatosRetiros();
+        if (cambiosPagina == false) {
+            if ((almacenarRetirado == true) && (banderaEliminarRetiro == false)) {
+                guardarDatosRetiros();
+
+            }
+            if ((almacenarPensionado == true) && (banderaEliminarPension == false)) {
+                guardarDatosPensiones();
+
+            }
+            if (guardado == false) {
+                guardarCambiosVTT();
+
+            }
         }
-        if ((almacenarPensionado == true) && (banderaEliminarPension == false)) {
-            guardarDatosPensiones();
-        }
-        guardarCambiosVTT();
-        FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        RequestContext.getCurrentInstance().update("form:growl");
     }
 
     public void verificarRastro() {
@@ -2342,4 +2414,97 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void setFiltradoMotivosRetiros(List<MotivosRetiros> filtradoMotivosRetiros) {
         this.filtradoMotivosRetiros = filtradoMotivosRetiros;
     }
+
+    public String getInfoRegistroTipoTrabajador() {
+        getListaTiposTrabajadores();
+        if (listaTiposTrabajadores != null) {
+            infoRegistroTipoTrabajador = "Cantidad de registros: " + listaTiposTrabajadores.size();
+        } else {
+            infoRegistroTipoTrabajador = "Cantidad de registros: 0";
+        }
+        return infoRegistroTipoTrabajador;
     }
+
+    public void setInfoRegistroTipoTrabajador(String infoRegistroTipoTrabajador) {
+        this.infoRegistroTipoTrabajador = infoRegistroTipoTrabajador;
+    }
+
+    public String getInfoRegistroMotivoRetiros() {
+        getMotivosRetiros();
+        if (motivosRetiros != null) {
+            infoRegistroMotivoRetiros = "Cantidad de registro : " + motivosRetiros.size();
+        } else {
+            infoRegistroMotivoRetiros = "Cantidad de registro : 0";
+        }
+        return infoRegistroMotivoRetiros;
+    }
+
+    public void setInfoRegistroMotivoRetiros(String infoRegistroMotivoRegistro) {
+        this.infoRegistroMotivoRetiros = infoRegistroMotivoRegistro;
+    }
+
+    public String getInfoRegistroClasePension() {
+        getClasesPensiones();
+        if (clasesPensiones != null) {
+            infoRegistroClasePension = "Cantidad de registros : " + clasesPensiones.size();
+        } else {
+            infoRegistroClasePension = "Cantidad de registros : 0";
+        }
+        return infoRegistroClasePension;
+    }
+
+    public void setInfoRegistroClasePension(String infoRegistroClasePension) {
+        this.infoRegistroClasePension = infoRegistroClasePension;
+    }
+
+    public String getInfoRegistroTipoPension() {
+        getListaPensionados();
+        if (tiposPensionados != null) {
+            infoRegistroTipoPension = "Cantidad de registros : " + tiposPensionados.size();
+        } else {
+            infoRegistroTipoPension = "Cantidad de registros: 0";
+        }
+        return infoRegistroTipoPension;
+    }
+
+    public void setInfoRegistroTipoPension(String infoRegistroTipoPension) {
+        this.infoRegistroTipoPension = infoRegistroTipoPension;
+    }
+
+    public String getInfoRegistroEmpleado() {
+        getListaPensionados();
+        if (listaPensionados != null) {
+            infoRegistroEmpleado = "Cantidad de registros : " + listaPensionados.size();
+        } else {
+            infoRegistroEmpleado = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleado;
+    }
+
+    public void setInfoRegistroEmpleado(String infoRegistroEmpleado) {
+        this.infoRegistroEmpleado = infoRegistroEmpleado;
+    }
+
+    public String getInfoRegistroPersona() {
+        getListaPersonas();
+        if (listaPersonas != null) {
+            infoRegistroPersona = "Cantidad de registros : " + listaPersonas.size();
+        } else {
+            infoRegistroPersona = "Cantidad de registros : 0";
+        }
+        return infoRegistroPersona;
+    }
+
+    public void setInfoRegistroPersona(String infoRegistroPersona) {
+        this.infoRegistroPersona = infoRegistroPersona;
+    }
+
+    public boolean isCambiosPagina() {
+        return cambiosPagina;
+    }
+
+    public void setCambiosPagina(boolean cambiosPagina) {
+        this.cambiosPagina = cambiosPagina;
+    }
+
+}
