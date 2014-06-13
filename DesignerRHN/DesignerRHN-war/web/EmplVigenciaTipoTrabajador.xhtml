@@ -202,8 +202,6 @@
                             </p:inputText>
                             <p:commandButton value="" process="@this" actionListener="#{controlVigenciaTipoTrabajador.dialogoTipoPensionado()}" icon="ui-icon-search" style="position: absolute; left: 388px; top: 84px; height: 23px; width: 23px"/>
 
-
-
                             <h:outputText value="#{msg['nombreP']}:" style="position: absolute; left: 5px; top: 112px"/>
                             <p:inputText onclick="select();" id="causaBiente" value="#{controlVigenciaTipoTrabajador.pensionVigencia.causabiente.persona.nombre}" style="position: absolute; left: 5px; top: 127px; width: 302px">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaTipoTrabajador.dialogoCausaBiente()}"  process="@this"/>
@@ -249,8 +247,6 @@
 
                             <p:commandButton value="#{msg['limpiar']}" id="LimpiarRetirado" style="position: absolute; left: 25px; top: 165px;" actionListener="#{controlVigenciaTipoTrabajador.limpiarRetiro()}" update="panelRetiradosInput" process="@this" icon="ui-icon-trash"/>
                         </p:panel>
-
-
 
                         <!-- DIALOGO L.O.V ESTATICO TIPOS TRABAJADORES -->
                         <p:dialog header="#{msg['tipotrabajadorT']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
