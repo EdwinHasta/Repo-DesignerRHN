@@ -32,6 +32,7 @@ public class PersistenciaVigenciasEstadosCiviles implements PersistenciaVigencia
      */
     @Override
     public void crear(EntityManager em, VigenciasEstadosCiviles vigenciasEstadosCiviles) {
+        System.out.println("PASOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {

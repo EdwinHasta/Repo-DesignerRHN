@@ -37,8 +37,6 @@ public class VigenciasUbicaciones implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "FECHAVIGENCIA")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechavigencia;

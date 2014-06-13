@@ -5,6 +5,7 @@
  */
 package Persistencia;
 
+import Entidades.CentrosCostos;
 import Entidades.SucursalesPila;
 import InterfacePersistencia.PersistenciaSucursalesPilaInterface;
 import java.math.BigInteger;
@@ -87,11 +88,15 @@ public class PersistenciaSucursalesPila implements PersistenciaSucursalesPilaInt
 
     public List<SucursalesPila> consultarSucursalesPilaPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
+            System.out.println("PersistenciaSucursalesPila consultarSucursalesPilaPorEmpresa secuenciaEmpresa : " + secEmpresa);
             Query query = em.createQuery("SELECT cce FROM SucursalesPila cce WHERE cce.empresa.secuencia = :secuenciaEmpr ORDER BY cce.codigo ASC");
             query.setParameter("secuenciaEmpr", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-            List<SucursalesPila> centrosCostos = query.getResultList();
-            return centrosCostos;
+            List<SucursalesPila> listaSucursalesPila = query.getResultList();
+            if (listaSucursalesPila != null) {
+                System.out.println("tamano lista retorno :" + listaSucursalesPila.size());
+            }
+            return listaSucursalesPila;
         } catch (Exception e) {
             System.out.println("Error en Persistencia PersistenciaSucursalesPila buscarSucursalesPilaPorEmpresa  ERROR : " + e);
             return null;

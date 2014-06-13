@@ -2276,9 +2276,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<Personas> getListaPersonas() {
-
+        
         listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
-
+       
         return listaPersonas;
     }
 

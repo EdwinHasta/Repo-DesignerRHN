@@ -198,8 +198,10 @@ public class ControlRemoto implements Serializable {
         estadoEmpleado = indice;
         int name = indice;
         trabajador = vwActualesTiposTrabajadoresesLista.get(name);
-        secuencia = trabajador.getEmpleado().getSecuencia();
-        identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
+        if (trabajador.getEmpleado() != null) {
+            secuencia = trabajador.getEmpleado().getSecuencia();
+            identificacion = trabajador.getEmpleado().getPersona().getNumerodocumento();
+        }
 
         try {
             vwActualesCargos = administrarCarpetaPersonal.consultarActualCargoEmpleado(secuencia);
@@ -910,14 +912,14 @@ public class ControlRemoto implements Serializable {
     public List<VWActualesTiposTrabajadores> getVwActualesTiposTrabajadoresesLista() {
         if (!vwActualesTiposTrabajadoresesLista.isEmpty()) {
             return vwActualesTiposTrabajadoresesLista;
-        } else if (vwActualesTiposTrabajadoresesLista.isEmpty()) {
+        } else {
             tipo = "ACTIVO";
             vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
+            if (vwActualesTiposTrabajadoresesLista != null && vwActualesTiposTrabajadoresesLista.isEmpty()) {
+                vwActualesTiposTrabajadoresesLista.add(new VWActualesTiposTrabajadores());
+            }
             return vwActualesTiposTrabajadoresesLista;
-        } else {
-            return vwActualesTiposTrabajadoresesLista = null;
         }
-
     }
 
     public String getMensaje() {

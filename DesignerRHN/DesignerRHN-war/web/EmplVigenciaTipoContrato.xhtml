@@ -327,6 +327,9 @@
                                 <h:outputText value="#{ItemCiudad.nombre}" />
                             </p:column>
                         </p:dataTable>
+
+                        <h:outputText id="infoRegistroCiudades" value="#{controlVigenciasTiposContratos.infoRegistroCiudades}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+
                         <p:commandButton id="aceptarC" style="position: relative; left: 283px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarCiudad()}" update="aceptarC" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":formularioDialogos:lovCiudades:globalFilter"/>
                         </p:commandButton>
@@ -360,12 +363,15 @@
                                 <h:outputText  value="#{TiposC.nombre}" />
                             </p:column>
                         </p:dataTable>
+
                         <p:commandButton id="aceptarTC" style="position: relative; left: 170px" value="#{msg['aceptar']}" disabled="#{controlVigenciasTiposContratos.aceptar}" actionListener="#{controlVigenciasTiposContratos.actualizarTipoContrato()}" update="aceptarTC" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":formularioDialogos:lovTiposContrato:globalFilter"/>
                         </p:commandButton>
                         <p:commandButton id="atrasTC" style="position: relative; left: 170px" value="#{msg['atras']}" onclick="TiposContratoDialogo.hide(), lovTiposContrato.clearFilters();" actionListener="#{controlVigenciasTiposContratos.cancelarTipoContrato()}" update="lovTiposContrato" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":formularioDialogos:lovTiposContrato:globalFilter"/>
                         </p:commandButton>
+                        
+                        <h:outputText id="infoRegistroTiposContratos" value="#{controlVigenciasTiposContratos.infoRegistroTiposContratos}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
                     </p:dialog>
                     <!-- DIALOGO L.O.V ESTATICO DE MOTIVOS CONTRATO -->
                     <p:dialog header="#{msg['motivosM']}" widgetVar="MotivosContratoDialogo" draggable="false" resizable="false" closable="false" id="MotivosContratoDialogo"  

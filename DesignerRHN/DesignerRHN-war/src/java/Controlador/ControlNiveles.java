@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,14 +38,16 @@ public class ControlNiveles implements Serializable {
     AdministrarNivelesInterface administrarNiveles;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<Niveles> listNiveles;
     private List<Niveles> filtrarNiveles;
     private List<Niveles> crearNiveles;
     private List<Niveles> modificarNiveles;
     private List<Niveles> borrarNiveles;
-    private Niveles nuevoNivel;
-    private Niveles duplicarNivel;
-    private Niveles editarNivel;
+    private Niveles nuevoNiveles;
+    private Niveles duplicarNiveles;
+    private Niveles editarNiveles;
+    private Niveles nivelSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -57,6 +60,10 @@ public class ControlNiveles implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    //filtrado table
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlNiveles() {
         listNiveles = null;
@@ -64,15 +71,18 @@ public class ControlNiveles implements Serializable {
         modificarNiveles = new ArrayList<Niveles>();
         borrarNiveles = new ArrayList<Niveles>();
         permitirIndex = true;
-        editarNivel = new Niveles();
-        nuevoNivel = new Niveles();
-        duplicarNivel = new Niveles();
+        editarNiveles = new Niveles();
+        nuevoNiveles = new Niveles();
+        duplicarNiveles = new Niveles();
         guardado = true;
+        tamano = 270;
+        System.out.println("controlNiveles Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlNiveles PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarNiveles.obtenerConexion(ses.getId());
@@ -100,7 +110,27 @@ public class ControlNiveles implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listNiveles.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listNiveles.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listNiveles.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listNiveles.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarNiveles.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarNiveles.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarNiveles.get(index).getSecuencia();
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -130,18 +160,57 @@ public class ControlNiveles implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNiveles:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNiveles:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosNivel");
+            RequestContext.getCurrentInstance().update("form:datosNiveles");
             bandera = 0;
             filtrarNiveles = null;
             tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarNiveles.clear();
+        crearNiveles.clear();
+        modificarNiveles.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listNiveles = null;
+        guardado = true;
+        permitirIndex = true;
+        getListNiveles();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listNiveles == null || listNiveles.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNiveles.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosNiveles");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNiveles:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNiveles:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosNiveles");
+            bandera = 0;
+            filtrarNiveles = null;
+            tipoLista = 0;
+            tamano = 270;
         }
 
         borrarNiveles.clear();
@@ -154,35 +223,37 @@ public class ControlNiveles implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosNivel");
+        context.update("form:datosNiveles");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNiveles:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNiveles:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosNivel");
+            RequestContext.getCurrentInstance().update("form:datosNiveles");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosNiveles:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosNiveles:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosNivel");
+            RequestContext.getCurrentInstance().update("form:datosNiveles");
             bandera = 0;
             filtrarNiveles = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarNivel(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR TIPO EMPRESA");
+    public void modificarNiveles(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
@@ -198,6 +269,7 @@ public class ControlNiveles implements Serializable {
                     if (listNiveles.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listNiveles.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listNiveles.size(); j++) {
                             if (j != indice) {
@@ -208,6 +280,7 @@ public class ControlNiveles implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listNiveles.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -217,10 +290,12 @@ public class ControlNiveles implements Serializable {
                     if (listNiveles.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listNiveles.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (listNiveles.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listNiveles.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -236,7 +311,51 @@ public class ControlNiveles implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listNiveles.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listNiveles.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listNiveles.size(); j++) {
+                            if (j != indice) {
+                                if (listNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listNiveles.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listNiveles.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listNiveles.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (listNiveles.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listNiveles.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -246,15 +365,10 @@ public class ControlNiveles implements Serializable {
                 if (!crearNiveles.contains(filtrarNiveles.get(indice))) {
                     if (filtrarNiveles.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarNiveles.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < filtrarNiveles.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         for (int j = 0; j < listNiveles.size(); j++) {
                             if (j != indice) {
                                 if (filtrarNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
@@ -264,6 +378,7 @@ public class ControlNiveles implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarNiveles.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -274,10 +389,12 @@ public class ControlNiveles implements Serializable {
                     if (filtrarNiveles.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarNiveles.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarNiveles.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarNiveles.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -293,14 +410,60 @@ public class ControlNiveles implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarNiveles.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarNiveles.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+
+                        for (int j = 0; j < listNiveles.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarNiveles.get(indice).getCodigo() == listNiveles.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarNiveles.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarNiveles.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarNiveles.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarNiveles.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarNiveles.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
-            context.update("form:datosNivel");
+            context.update("form:datosNiveles");
             context.update("form:ACEPTAR");
         }
 
@@ -341,7 +504,10 @@ public class ControlNiveles implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosNivel");
+            context.update("form:datosNiveles");
+            infoRegistro = "Cantidad de registros: " + listNiveles.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -355,22 +521,24 @@ public class ControlNiveles implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger contaEvalConvocatoriasNivel;
+        BigInteger contarEvalConvocatoriasNivel;
         BigInteger contarPlantasNivel;
         BigInteger contarPlantasPersonalesNivel;
 
         try {
             System.err.println("Control Secuencia de ControlNiveles ");
             if (tipoLista == 0) {
-                contaEvalConvocatoriasNivel = administrarNiveles.contarEvalConvocatoriasNivel(listNiveles.get(index).getSecuencia());
+                contarEvalConvocatoriasNivel = administrarNiveles.contarEvalConvocatoriasNivel(listNiveles.get(index).getSecuencia());
                 contarPlantasNivel = administrarNiveles.contarPlantasNivel(listNiveles.get(index).getSecuencia());
                 contarPlantasPersonalesNivel = administrarNiveles.contarPlantasPersonalesNivel(listNiveles.get(index).getSecuencia());
             } else {
-                contaEvalConvocatoriasNivel = administrarNiveles.contarEvalConvocatoriasNivel(filtrarNiveles.get(index).getSecuencia());
+                contarEvalConvocatoriasNivel = administrarNiveles.contarEvalConvocatoriasNivel(filtrarNiveles.get(index).getSecuencia());
                 contarPlantasNivel = administrarNiveles.contarPlantasNivel(filtrarNiveles.get(index).getSecuencia());
                 contarPlantasPersonalesNivel = administrarNiveles.contarPlantasPersonalesNivel(filtrarNiveles.get(index).getSecuencia());
             }
-            if (contaEvalConvocatoriasNivel.equals(new BigInteger("0")) && contarPlantasNivel.equals(new BigInteger("0")) && contarPlantasPersonalesNivel.equals(new BigInteger("0"))) {
+            if (contarEvalConvocatoriasNivel.equals(new BigInteger("0"))
+                    && contarPlantasNivel.equals(new BigInteger("0"))
+                    && contarPlantasPersonalesNivel.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoNiveles();
             } else {
@@ -380,7 +548,7 @@ public class ControlNiveles implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contaEvalConvocatoriasNivel = new BigInteger("-1");
+                contarEvalConvocatoriasNivel = new BigInteger("-1");
                 contarPlantasNivel = new BigInteger("-1");
                 contarPlantasPersonalesNivel = new BigInteger("-1");
 
@@ -407,26 +575,28 @@ public class ControlNiveles implements Serializable {
             System.out.println("Realizando guardarNiveles");
             if (!borrarNiveles.isEmpty()) {
                 administrarNiveles.borrarNiveles(borrarNiveles);
-
                 //mostrarBorrados
                 registrosBorrados = borrarNiveles.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarNiveles.clear();
             }
-            if (!crearNiveles.isEmpty()) {
-                administrarNiveles.crearNiveles(crearNiveles);
-                crearNiveles.clear();
-            }
             if (!modificarNiveles.isEmpty()) {
                 administrarNiveles.modificarNiveles(modificarNiveles);
                 modificarNiveles.clear();
             }
+            if (!crearNiveles.isEmpty()) {
+                administrarNiveles.crearNiveles(crearNiveles);
+                crearNiveles.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listNiveles = null;
-            context.update("form:datosNivel");
+            context.update("form:datosNiveles");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -436,10 +606,10 @@ public class ControlNiveles implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarNivel = listNiveles.get(index);
+                editarNiveles = listNiveles.get(index);
             }
             if (tipoLista == 1) {
-                editarNivel = filtrarNiveles.get(index);
+                editarNiveles = filtrarNiveles.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -468,14 +638,14 @@ public class ControlNiveles implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoNivel.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+        if (nuevoNiveles.getCodigo() == a) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoNivel.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoNiveles.getCodigo());
 
             for (int x = 0; x < listNiveles.size(); x++) {
-                if (listNiveles.get(x).getCodigo() == nuevoNivel.getCodigo()) {
+                if (listNiveles.get(x).getCodigo() == nuevoNiveles.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -489,8 +659,12 @@ public class ControlNiveles implements Serializable {
                 contador++;
             }
         }
-        if (nuevoNivel.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+        if (nuevoNiveles.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoNiveles.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -503,13 +677,14 @@ public class ControlNiveles implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosNiveles:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosNiveles:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosNivel");
+                RequestContext.getCurrentInstance().update("form:datosNiveles");
                 bandera = 0;
                 filtrarNiveles = null;
                 tipoLista = 0;
@@ -518,13 +693,16 @@ public class ControlNiveles implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoNivel.setSecuencia(l);
+            nuevoNiveles.setSecuencia(l);
 
-            crearNiveles.add(nuevoNivel);
+            crearNiveles.add(nuevoNiveles);
 
-            listNiveles.add(nuevoNivel);
-            nuevoNivel = new Niveles();
-            context.update("form:datosNivel");
+            listNiveles.add(nuevoNiveles);
+            nuevoNiveles = new Niveles();
+            context.update("form:datosNiveles");
+            infoRegistro = "Cantidad de registros: " + listNiveles.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -543,7 +721,7 @@ public class ControlNiveles implements Serializable {
 
     public void limpiarNuevoNiveles() {
         System.out.println("limpiarNuevoNiveles");
-        nuevoNivel = new Niveles();
+        nuevoNiveles = new Niveles();
         secRegistro = null;
         index = -1;
 
@@ -553,19 +731,19 @@ public class ControlNiveles implements Serializable {
     public void duplicandoNiveles() {
         System.out.println("duplicandoNiveles");
         if (index >= 0) {
-            duplicarNivel = new Niveles();
+            duplicarNiveles = new Niveles();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarNivel.setSecuencia(l);
-                duplicarNivel.setCodigo(listNiveles.get(index).getCodigo());
-                duplicarNivel.setDescripcion(listNiveles.get(index).getDescripcion());
+                duplicarNiveles.setSecuencia(l);
+                duplicarNiveles.setCodigo(listNiveles.get(index).getCodigo());
+                duplicarNiveles.setDescripcion(listNiveles.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarNivel.setSecuencia(l);
-                duplicarNivel.setCodigo(filtrarNiveles.get(index).getCodigo());
-                duplicarNivel.setDescripcion(filtrarNiveles.get(index).getDescripcion());
+                duplicarNiveles.setSecuencia(l);
+                duplicarNiveles.setCodigo(filtrarNiveles.get(index).getCodigo());
+                duplicarNiveles.setDescripcion(filtrarNiveles.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -584,15 +762,15 @@ public class ControlNiveles implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarNivel.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarNivel.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarNiveles.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarNiveles.getDescripcion());
 
-        if (duplicarNivel.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+        if (duplicarNiveles.getCodigo() == a) {
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listNiveles.size(); x++) {
-                if (listNiveles.get(x).getCodigo() == duplicarNivel.getCodigo()) {
+                if (listNiveles.get(x).getCodigo() == duplicarNiveles.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -605,42 +783,51 @@ public class ControlNiveles implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarNivel.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
+        if (duplicarNiveles.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarNiveles.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarNivel.getSecuencia() + "  " + duplicarNivel.getCodigo());
-            if (crearNiveles.contains(duplicarNivel)) {
+            System.out.println("Datos Duplicando: " + duplicarNiveles.getSecuencia() + "  " + duplicarNiveles.getCodigo());
+            if (crearNiveles.contains(duplicarNiveles)) {
                 System.out.println("Ya lo contengo.");
             }
-            listNiveles.add(duplicarNivel);
-            crearNiveles.add(duplicarNivel);
-            context.update("form:datosNivel");
+            listNiveles.add(duplicarNiveles);
+            crearNiveles.add(duplicarNiveles);
+            context.update("form:datosNiveles");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listNiveles.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosNiveles:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosNivel:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosNiveles:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosNivel");
+                RequestContext.getCurrentInstance().update("form:datosNiveles");
                 bandera = 0;
                 filtrarNiveles = null;
                 tipoLista = 0;
             }
-            duplicarNivel = new Niveles();
+            duplicarNiveles = new Niveles();
             RequestContext.getCurrentInstance().execute("duplicarRegistroNiveles.hide()");
 
         } else {
@@ -651,11 +838,11 @@ public class ControlNiveles implements Serializable {
     }
 
     public void limpiarDuplicarNiveles() {
-        duplicarNivel = new Niveles();
+        duplicarNiveles = new Niveles();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNivelExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNivelesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "NIVELES", false, false, "UTF-8", null, null);
@@ -665,7 +852,7 @@ public class ControlNiveles implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNivelExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosNivelesExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "NIVELES", false, false, "UTF-8", null, null);
@@ -710,7 +897,14 @@ public class ControlNiveles implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<Niveles> getListNiveles() {
         if (listNiveles == null) {
+            System.out.println("ControlNiveles getListNiveles");
             listNiveles = administrarNiveles.consultarNiveles();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listNiveles == null || listNiveles.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listNiveles.size();
         }
         return listNiveles;
     }
@@ -727,28 +921,28 @@ public class ControlNiveles implements Serializable {
         this.filtrarNiveles = filtrarNiveles;
     }
 
-    public Niveles getNuevoNivel() {
-        return nuevoNivel;
+    public Niveles getNuevoNiveles() {
+        return nuevoNiveles;
     }
 
-    public void setNuevoNivel(Niveles nuevoNivel) {
-        this.nuevoNivel = nuevoNivel;
+    public void setNuevoNiveles(Niveles nuevoNiveles) {
+        this.nuevoNiveles = nuevoNiveles;
     }
 
-    public Niveles getDuplicarNivel() {
-        return duplicarNivel;
+    public Niveles getDuplicarNiveles() {
+        return duplicarNiveles;
     }
 
-    public void setDuplicarNivel(Niveles duplicarNivel) {
-        this.duplicarNivel = duplicarNivel;
+    public void setDuplicarNiveles(Niveles duplicarNiveles) {
+        this.duplicarNiveles = duplicarNiveles;
     }
 
-    public Niveles getEditarNivel() {
-        return editarNivel;
+    public Niveles getEditarNiveles() {
+        return editarNiveles;
     }
 
-    public void setEditarNivel(Niveles editarNivel) {
-        this.editarNivel = editarNivel;
+    public void setEditarNiveles(Niveles editarNiveles) {
+        this.editarNiveles = editarNiveles;
     }
 
     public BigInteger getSecRegistro() {
@@ -781,6 +975,31 @@ public class ControlNiveles implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public Niveles getNivelSeleccionado() {
+        return nivelSeleccionado;
+    }
+
+    public void setNivelSeleccionado(Niveles nivelSeleccionado) {
+        this.nivelSeleccionado = nivelSeleccionado;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

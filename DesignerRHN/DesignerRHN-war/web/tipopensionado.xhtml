@@ -99,10 +99,18 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposPensionados.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposPensionados.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlTiposPensionados.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlTiposPensionados.cancelarModificacion()}"  value="Refrescar" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlTiposPensionados.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlTiposPensionados.revisarDialogoGuardar()}" disabled="#{controlTiposPensionados.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras"    />
 
@@ -215,16 +223,16 @@
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlTiposPensionados.nuevoTiposPensionados.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlTiposPensionados.nuevoTiposPensionados.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlTiposPensionados.nuevoTiposPensionados.descripcion}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlTiposPensionados.nuevoTiposPensionados.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:watermark for="nuevoNombre" value="Nombre" />
+                            <p:watermark for="nuevoNombre" value="Descripción" />
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposPensionados.limpiarNuevoTiposPensionados()}" update="nuevaTipoempresa" process="@this"/>
                             <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlTiposPensionados.agregarNuevoTiposPensionados()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroTiposPensionados.hide();"  actionListener="#{controlTiposPensionados.limpiarNuevoTiposPensionados()}"  process="@this"/>
@@ -237,14 +245,14 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Tipo Pensionado" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
-                            <strong><h:outputText value="*código:"  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlTiposPensionados.duplicarTiposPensionados.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Código:"  style=" position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlTiposPensionados.duplicarTiposPensionados.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlTiposPensionados.duplicarTiposPensionados.descripcion}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlTiposPensionados.duplicarTiposPensionados.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />

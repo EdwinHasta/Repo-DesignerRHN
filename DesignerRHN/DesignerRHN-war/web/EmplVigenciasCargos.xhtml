@@ -274,8 +274,6 @@
                                 </p:column>
                             </p:dataTable>
 
-                            <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: relative; top: 15px; font-weight: bold"/>
-
                             <p:commandButton id="aceptarM" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciasCargos.aceptar}" icon="ui-icon-check" onclick="datosMotivos.clearFilters();" actionListener="#{controlVigenciasCargos.actualizarMotivo()}" update="aceptarM" process="@this">
                                 <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
                             </p:commandButton>
@@ -283,7 +281,7 @@
                                 <p:resetInput target=":form:motivosCambCargo:globalFilter"/>
                             </p:commandButton>
 
-                            <h:outputText id="informacionLOVM" value="#{controlVigenciasCargos.cantidadRegistrosLOV}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
+                            <h:outputText id="infoRegistroMotivos" value="#{controlVigenciasCargos.infoRegistroMotivos}" style="position: absolute; top: 350px; left: 20px; font-weight: bold"/>
 
                         </p:dialog>                 
                         <!-- DIALOGO L.O.V DINAMICO PARA CARGOS-->

@@ -148,6 +148,9 @@
                                 </p:column>
 
                             </p:dataTable>
+
+                            <h:outputText id="infoRegistroTiposViajeros" value="#{controlVigenciasViajeros.infoRegistroTiposViajeros}" style="position: absolute; left: 15px; top: 350px; font-weight: bold"/>
+
                             <p:commandButton id="aceptarS" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlVigenciasViajeros.aceptar}"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlVigenciasViajeros.actualizarNormaLaboral()}" update="lovTiposFamiliares, aceptarS" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
@@ -248,8 +251,6 @@
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'VIGENCIASVIAJEROS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
-
-
 
                     <p:dialog id="editarFecha" header="Fecha " widgetVar="editarFecha" resizable="false" draggable="false" modal="true" height="55" width="240" style="position: absolute; top: 10px;  padding: 0px">  
                         <p:inputTextarea value="#{controlVigenciasViajeros.editarVigenciasViajeros.fechavigencia}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  

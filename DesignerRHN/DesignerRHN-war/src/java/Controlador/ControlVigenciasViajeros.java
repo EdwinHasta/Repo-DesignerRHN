@@ -73,6 +73,7 @@ public class ControlVigenciasViajeros implements Serializable {
     private String nuevoYduplicarCompletarNormaLaboral;
     private String altoTabla;
     public String infoRegistro;
+    public String infoRegistroTiposViajeros;
 
     public ControlVigenciasViajeros() {
         listVigenciasViajerosPorEmpleado = null;
@@ -1247,6 +1248,14 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public List<Tiposviajeros> getListaTiposviajeros() {
         listaTiposviajeros = administrarVigenciasViajeros.consultarLOVTiposViajeros();
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (listaTiposviajeros == null || listaTiposviajeros.isEmpty()) {
+            infoRegistroTiposViajeros = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroTiposViajeros = "Cantidad de registros: " + listaTiposviajeros.size();
+        }
+        context.update("form:infoRegistroTiposViajeros");
         return listaTiposviajeros;
     }
 
@@ -1301,5 +1310,15 @@ public class ControlVigenciasViajeros implements Serializable {
     public void setAceptar(boolean aceptar) {
         this.aceptar = aceptar;
     }
+
+    public String getInfoRegistroTiposViajeros() {
+        return infoRegistroTiposViajeros;
+    }
+
+    public void setInfoRegistroTiposViajeros(String infoRegistroTiposViajeros) {
+        this.infoRegistroTiposViajeros = infoRegistroTiposViajeros;
+    }
+    
+    
 
 }

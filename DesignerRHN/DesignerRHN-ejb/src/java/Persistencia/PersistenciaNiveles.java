@@ -80,6 +80,7 @@ public class PersistenciaNiveles implements PersistenciaNivelesInterface {
         }
     }
 
+    @Override
     public List<Niveles> consultarNiveles(EntityManager em) {
         Query query = em.createQuery("SELECT te FROM Niveles te ORDER BY te.codigo ASC ");
         query.setHint("javax.persistence.cache.storeMode", "REFRESH");

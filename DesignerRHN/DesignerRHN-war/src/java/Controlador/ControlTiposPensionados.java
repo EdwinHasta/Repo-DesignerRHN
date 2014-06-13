@@ -60,6 +60,7 @@ public class ControlTiposPensionados implements Serializable {
     private int tamano;
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    private String infoRegistro;
 
     public ControlTiposPensionados() {
         listTiposPensionados = null;
@@ -179,6 +180,47 @@ public class ControlTiposPensionados implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposPensionados == null || listTiposPensionados.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposPensionados.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposPensionados");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
+            //CERRAR FILTRADO
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposPensionados:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposPensionados:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposPensionados");
+            bandera = 0;
+            filtrarTiposPensionados = null;
+            tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarTiposPensionados.clear();
+        crearTiposPensionados.clear();
+        modificarTiposPensionados.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposPensionados = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposPensionados == null || listTiposPensionados.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposPensionados.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosTiposPensionados");
         context.update("form:ACEPTAR");
     }
@@ -248,7 +290,7 @@ public class ControlTiposPensionados implements Serializable {
                         banderita = false;
                         listTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
                     }
-                    if (listTiposPensionados.get(indice).getDescripcion().equals(" ")) {
+                    if (listTiposPensionados.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
@@ -297,7 +339,7 @@ public class ControlTiposPensionados implements Serializable {
                         banderita = false;
                         listTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
                     }
-                    if (listTiposPensionados.get(indice).getDescripcion().equals(" ")) {
+                    if (listTiposPensionados.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         listTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
@@ -354,7 +396,7 @@ public class ControlTiposPensionados implements Serializable {
                         banderita = false;
                         filtrarTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
                     }
-                    if (filtrarTiposPensionados.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarTiposPensionados.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
@@ -412,7 +454,7 @@ public class ControlTiposPensionados implements Serializable {
                         banderita = false;
                         filtrarTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
                     }
-                    if (filtrarTiposPensionados.get(indice).getDescripcion().equals(" ")) {
+                    if (filtrarTiposPensionados.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         filtrarTiposPensionados.get(indice).setDescripcion(backUpDescripcion);
@@ -473,6 +515,12 @@ public class ControlTiposPensionados implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listTiposPensionados == null || listTiposPensionados.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listTiposPensionados.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosTiposPensionados");
             index = -1;
             secRegistro = null;
@@ -595,7 +643,7 @@ public class ControlTiposPensionados implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTiposPensionados.getCodigo() == a) {
-            mensajeValidacion = " *Codigo \n";
+            mensajeValidacion = " *Codigo";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposPensionados.getCodigo());
@@ -615,7 +663,7 @@ public class ControlTiposPensionados implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTiposPensionados.getDescripcion().equals(" ")) {
+        if (nuevoTiposPensionados.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -652,6 +700,8 @@ public class ControlTiposPensionados implements Serializable {
             listTiposPensionados.add(nuevoTiposPensionados);
             nuevoTiposPensionados = new TiposPensionados();
             context.update("form:datosTiposPensionados");
+            infoRegistro = "Cantidad de registros: " + listTiposPensionados.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -732,7 +782,7 @@ public class ControlTiposPensionados implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTiposPensionados.getDescripcion().equals(" ")) {
+        if (duplicarTiposPensionados.getDescripcion() == null) {
             mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
@@ -756,6 +806,8 @@ public class ControlTiposPensionados implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listTiposPensionados.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -840,6 +892,13 @@ public class ControlTiposPensionados implements Serializable {
         if (listTiposPensionados == null) {
             listTiposPensionados = administrarTiposPensionados.consultarTiposPensionados();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposPensionados == null || listTiposPensionados.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposPensionados.size();
+        }
+        context.update("form:informacionRegistro");
         return listTiposPensionados;
     }
 
@@ -925,6 +984,22 @@ public class ControlTiposPensionados implements Serializable {
 
     public void setTipoPensionadoSeleccionado(TiposPensionados tipoPensionadoSeleccionado) {
         this.tipoPensionadoSeleccionado = tipoPensionadoSeleccionado;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

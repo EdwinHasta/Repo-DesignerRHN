@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -47,6 +49,7 @@ public class ControlHvEntrevistas implements Serializable {
     private HvEntrevistas nuevoHvEntrevista;
     private HvEntrevistas duplicarHvEntrevista;
     private HvEntrevistas editarHvEntrevista;
+    private HvEntrevistas hvEntrevistaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -65,6 +68,11 @@ public class ControlHvEntrevistas implements Serializable {
 //otros
     private HVHojasDeVida hvHojasDeVida;
     private List<HVHojasDeVida> listHVHojasDeVida;
+    private int tamano;
+    private Date backUpfecha;
+    private String backUpDescripcion;
+    private String backUpTipoEntrevista;
+    private BigInteger backUpPuntaje;
 
     public ControlHvEntrevistas() {
         listHvEntrevistas = null;
@@ -79,8 +87,9 @@ public class ControlHvEntrevistas implements Serializable {
         secuenciaEmpleado = BigInteger.valueOf(10661474);
         listHVHojasDeVida = new ArrayList<HVHojasDeVida>();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -124,6 +133,7 @@ public class ControlHvEntrevistas implements Serializable {
             if (listHvEntrevistas.get(indice).getFecha() == null) {
                 mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                 contador++;
+                listHvEntrevistas.get(indice).setFecha(backUpfecha);
             } else {
                 for (int j = 0; j < listHvEntrevistas.size(); j++) {
                     if (j != indice) {
@@ -136,6 +146,7 @@ public class ControlHvEntrevistas implements Serializable {
             if (fechas > 0) {
                 mensajeValidacion = "FECHAS REPETIDAS";
                 contador++;
+                listHvEntrevistas.get(indice).setFecha(backUpfecha);
             }
             if (contador == 0) {
                 if (!crearHvEntrevistas.contains(listHvEntrevistas.get(indice))) {
@@ -150,11 +161,16 @@ public class ControlHvEntrevistas implements Serializable {
                     }
                     context.update("form:datosHvEntrevista");
 
+                } else {
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
+                    context.update("form:datosHvEntrevista");
                 }
             } else {
                 context.update("form:validacionModificar");
                 context.execute("validacionModificar.show()");
-                cancelarModificacion();
             }
             index = -1;
             secRegistro = null;
@@ -181,6 +197,28 @@ public class ControlHvEntrevistas implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listHvEntrevistas.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpfecha = listHvEntrevistas.get(index).getFecha();
+                } else {
+                    backUpfecha = filtrarHvEntrevistas.get(index).getFecha();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listHvEntrevistas.get(index).getNombre();
+                } else {
+                    backUpDescripcion = filtrarHvEntrevistas.get(index).getNombre();
+                }
+            }
+
+            if (cualCelda == 3) {
+                if (tipoLista == 0) {
+                    backUpPuntaje = listHvEntrevistas.get(index).getPuntaje();
+                } else {
+                    backUpPuntaje = filtrarHvEntrevistas.get(index).getPuntaje();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -210,6 +248,7 @@ public class ControlHvEntrevistas implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -238,12 +277,56 @@ public class ControlHvEntrevistas implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listHvEntrevistas == null || listHvEntrevistas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listHvEntrevistas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosHvEntrevista");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha.setFilterStyle("display: none; visibility: hidden;");
+            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+            nombre.setFilterStyle("display: none; visibility: hidden;");
+            tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+            tipoPuntaje.setFilterStyle("display: none; visibility: hidden;");
+            puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+            puntaje.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
+            bandera = 0;
+            filtrarHvEntrevistas = null;
+            tipoLista = 0;
+        }
+
+        borrarHvEntrevistas.clear();
+        crearHvEntrevistas.clear();
+        modificarHvEntrevistas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listHvEntrevistas = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listHvEntrevistas == null || listHvEntrevistas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listHvEntrevistas.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosHvEntrevista");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
+            tamano = 246;
             fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 90px");
             nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
@@ -256,6 +339,7 @@ public class ControlHvEntrevistas implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
             fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
@@ -276,8 +360,7 @@ public class ControlHvEntrevistas implements Serializable {
         System.err.println("ENTRE A MODIFICAR HV ENTREVISTA");
         index = indice;
 
-        int contador = 0;
-        boolean banderita = false;
+        int contador = 0, pass = 0;
         Short a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -286,22 +369,18 @@ public class ControlHvEntrevistas implements Serializable {
             System.err.println("ENTRE A MODIFICAR EVALCOMPETENCIAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearHvEntrevistas.contains(listHvEntrevistas.get(indice))) {
-                    if (listHvEntrevistas.get(indice).getFecha() == null) {
+
+                    if (listHvEntrevistas.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listHvEntrevistas.get(indice).setNombre(backUpDescripcion);
+                    } else if (listHvEntrevistas.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listHvEntrevistas.get(indice).setNombre(backUpDescripcion);
                     } else {
-                        banderita = true;
-                    }
-                    if (listHvEntrevistas.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listHvEntrevistas.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 1) {
                         if (modificarHvEntrevistas.isEmpty()) {
                             modificarHvEntrevistas.add(listHvEntrevistas.get(indice));
                         } else if (!modificarHvEntrevistas.contains(listHvEntrevistas.get(indice))) {
@@ -314,7 +393,28 @@ public class ControlHvEntrevistas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listHvEntrevistas.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listHvEntrevistas.get(indice).setNombre(backUpDescripcion);
+                    } else if (listHvEntrevistas.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listHvEntrevistas.get(indice).setNombre(backUpDescripcion);
+                    } else {
+                        pass++;
+                    }
+
+                    if (pass == 1) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -322,23 +422,19 @@ public class ControlHvEntrevistas implements Serializable {
             } else {
 
                 if (!crearHvEntrevistas.contains(filtrarHvEntrevistas.get(indice))) {
-                    if (filtrarHvEntrevistas.get(indice).getFecha() == null) {
+
+                    if (filtrarHvEntrevistas.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+
+                        filtrarHvEntrevistas.get(indice).setNombre(backUpDescripcion);
+                    } else if (filtrarHvEntrevistas.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarHvEntrevistas.get(indice).setNombre(backUpDescripcion);
                     } else {
-                        banderita = true;
+                        pass++;
                     }
 
-                    if (filtrarHvEntrevistas.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarHvEntrevistas.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-
-                    if (banderita == true) {
+                    if (pass == 1) {
                         if (modificarHvEntrevistas.isEmpty()) {
                             modificarHvEntrevistas.add(filtrarHvEntrevistas.get(indice));
                         } else if (!modificarHvEntrevistas.contains(filtrarHvEntrevistas.get(indice))) {
@@ -351,7 +447,30 @@ public class ControlHvEntrevistas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarHvEntrevistas.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+
+                        filtrarHvEntrevistas.get(indice).setNombre(backUpDescripcion);
+                    } else if (filtrarHvEntrevistas.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarHvEntrevistas.get(indice).setNombre(backUpDescripcion);
+                    } else {
+                        pass++;
+                    }
+
+                    if (pass == 1) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -399,6 +518,12 @@ public class ControlHvEntrevistas implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listHvEntrevistas == null || listHvEntrevistas.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listHvEntrevistas.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosHvEntrevista");
             index = -1;
             secRegistro = null;
@@ -452,7 +577,7 @@ public class ControlHvEntrevistas implements Serializable {
             System.out.println("Realizando guardarEvalCompetencias");
             if (!borrarHvEntrevistas.isEmpty()) {
                 administrarHvEntrevistas.borrarHvEntrevistas(borrarHvEntrevistas);
-                 //mostrarBorrados
+                //mostrarBorrados
                 registrosBorrados = borrarHvEntrevistas.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
@@ -468,6 +593,10 @@ public class ControlHvEntrevistas implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listHvEntrevistas = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+
             context.update("form:datosHvEntrevista");
             k = 0;
         }
@@ -522,14 +651,14 @@ public class ControlHvEntrevistas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoHvEntrevista.getFecha() == null) {
-            mensajeValidacion = " *Debe tener una fecha \n";
+            mensajeValidacion = " *Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
             contador++;
         }
         if (nuevoHvEntrevista.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
@@ -596,6 +725,8 @@ public class ControlHvEntrevistas implements Serializable {
             listHvEntrevistas.add(nuevoHvEntrevista);
             nuevoHvEntrevista = new HvEntrevistas();
             context.update("form:datosHvEntrevista");
+            infoRegistro = "Cantidad de registros: " + listHvEntrevistas.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -664,18 +795,22 @@ public class ControlHvEntrevistas implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarHvEntrevista.getNombre());
 
         if (duplicarHvEntrevista.getFecha() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Fecha \n";
+            mensajeValidacion = mensajeValidacion + "   *Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
             contador++;
 
         }
-        if (duplicarHvEntrevista.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Una nombre \n";
+        if (duplicarHvEntrevista.getNombre()==null) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else {
+        } else if (duplicarHvEntrevista.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else{
             System.out.println("Bandera : ");
             contador++;
         }
@@ -706,7 +841,8 @@ public class ControlHvEntrevistas implements Serializable {
             context.update("form:datosHvEntrevista");
             index = -1;
             secRegistro = null;
-
+            infoRegistro = "Cantidad de registros: " + listHvEntrevistas.size();
+            context.update("form:informacionRegistro");
             System.err.println("---------------DUPLICAR REGISTRO----------------");
             System.err.println("fecha " + duplicarHvEntrevista.getFecha());
             System.err.println("nombre " + duplicarHvEntrevista.getNombre());
@@ -801,6 +937,13 @@ public class ControlHvEntrevistas implements Serializable {
         if (listHvEntrevistas == null) {
             listHvEntrevistas = administrarHvEntrevistas.consultarHvEntrevistasPorEmpleado(secuenciaEmpleado);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listHvEntrevistas == null || listHvEntrevistas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listHvEntrevistas.size();
+        }
+        context.update("form:informacionRegistro");
         return listHvEntrevistas;
     }
 
@@ -870,6 +1013,30 @@ public class ControlHvEntrevistas implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public HvEntrevistas getHvEntrevistaSeleccionada() {
+        return hvEntrevistaSeleccionada;
+    }
+
+    public void setHvEntrevistaSeleccionada(HvEntrevistas hvEntrevistaSeleccionada) {
+        this.hvEntrevistaSeleccionada = hvEntrevistaSeleccionada;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
