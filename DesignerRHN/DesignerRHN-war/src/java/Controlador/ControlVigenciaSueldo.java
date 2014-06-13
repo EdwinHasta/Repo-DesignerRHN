@@ -138,6 +138,10 @@ public class ControlVigenciaSueldo implements Serializable {
     private Date fechaParametro, fechaVig, fechaRetro, fechaIni, fechaFin;
     private String altoTabla1, altoTabla2;
 
+    //
+    private String infoRegistroTipoSueldo, infoRegistroMotivoCambioSueldo;
+    private String infoRegistroTercero, infoRegistroTipoEntidad;
+
     public ControlVigenciaSueldo() {
 
         nombreTablaRastro = "";
@@ -281,7 +285,6 @@ public class ControlVigenciaSueldo implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         if (i == 0) {
             VigenciasSueldos auxiliar = null;
@@ -394,6 +397,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 getListMotivosCambiosSueldos();
             } else {
                 permitirIndex = false;
+                getInfoRegistroMotivoCambioSueldo();
                 context.update("form:MotivoCambioSueldoDialogo");
                 context.execute("MotivoCambioSueldoDialogo.show()");
                 tipoActualizacion = 0;
@@ -421,6 +425,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 getListTiposSueldos();
             } else {
                 permitirIndex = false;
+                getInfoRegistroTipoSueldo();
                 context.update("form:TipoSueldoDialogo");
                 context.execute("TipoSueldoDialogo.show()");
                 tipoActualizacion = 0;
@@ -513,7 +518,7 @@ public class ControlVigenciaSueldo implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
+
         boolean retorno = true;
         if (i == 0) {
             VigenciasAfiliaciones auxiliar = null;
@@ -650,6 +655,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 getListTiposEntidades();
             } else {
                 permitirIndexVA = false;
+                getInfoRegistroTipoEntidad();
                 context.update("form:TipoEntidadDialogo");
                 context.execute("TipoEntidadDialogo.show()");
                 tipoActualizacion = 0;
@@ -678,6 +684,7 @@ public class ControlVigenciaSueldo implements Serializable {
                 getListTerceros();
             } else {
                 permitirIndexVA = false;
+                getInfoRegistroTercero();
                 context.update("form:TerceroDialogo");
                 context.execute("TerceroDialogo.show()");
                 tipoActualizacion = 0;
@@ -2017,9 +2024,11 @@ public class ControlVigenciaSueldo implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                getInfoRegistroMotivoCambioSueldo();
                 context.update("form:MotivoCambioSueldoDialogo");
                 context.execute("MotivoCambioSueldoDialogo.show()");
             } else if (dlg == 1) {
+                getInfoRegistroTipoSueldo();
                 context.update("form:TipoSueldoDialogo");
                 context.execute("TipoSueldoDialogo.show()");
             }
@@ -2034,9 +2043,11 @@ public class ControlVigenciaSueldo implements Serializable {
                 tipoActualizacion = 2;
             }
             if (dlg == 0) {
+                getInfoRegistroTercero();
                 context.update("form:TerceroDialogo");
                 context.execute("TerceroDialogo.show()");
             } else if (dlg == 1) {
+                getInfoRegistroTipoEntidad();
                 context.update("form:TipoEntidadDialogo");
                 context.execute("TipoEntidadDialogo.show()");
             }
@@ -2090,6 +2101,12 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
+
+        context.update("form:MotivoCambioSueldoDialogo");
+        context.update("form:lovMotivoCambioSueldo");
+        context.update("form:aceptarMCS");
+        context.reset("form:lovMotivoCambioSueldo:globalFilter");
+        context.execute("MotivoCambioSueldoDialogo.hide()");
     }
 
     /**
@@ -2152,6 +2169,12 @@ public class ControlVigenciaSueldo implements Serializable {
         indexVA = -1;
         secRegistroVA = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoEntidadDialogo");
+        context.update("form:lovTipoEntidad");
+        context.update("form:aceptarTE");
+        context.reset("form:lovTipoEntidad:globalFilter");
+        context.execute("TipoEntidadDialogo.hide()");
     }
 
     /**
@@ -2236,6 +2259,12 @@ public class ControlVigenciaSueldo implements Serializable {
         indexVA = -1;
         secRegistroVA = null;
         tipoActualizacion = -1;
+
+        context.update("form:TerceroDialogo");
+        context.update("form:lovTercero");
+        context.update("form:aceptarT");
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("TerceroDialogo.hide()");
     }
 
     /**
@@ -2297,6 +2326,12 @@ public class ControlVigenciaSueldo implements Serializable {
         index = -1;
         secRegistroVS = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoSueldoDialogo");
+        context.update("form:lovTipoSueldo");
+        context.update("form:aceptarTS");
+        context.reset("form:lovTipoSueldo:globalFilter");
+        context.execute("TipoSueldoDialogo.hide()");
     }
 
     /**
@@ -2320,11 +2355,13 @@ public class ControlVigenciaSueldo implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
             if (cualCelda == 1) {
+                getInfoRegistroMotivoCambioSueldo();
                 context.update("form:MotivoCambioSueldoDialogo");
                 context.execute("MotivoCambioSueldoDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCelda == 2) {
+                getInfoRegistroTipoSueldo();
                 context.update("form:TipoSueldoDialogo");
                 context.execute("TipoSueldoDialogo.show()");
                 tipoActualizacion = 0;
@@ -2332,11 +2369,13 @@ public class ControlVigenciaSueldo implements Serializable {
         }
         if (indexVA >= 0) {
             if (cualCeldaVA == 2) {
+                getInfoRegistroTercero();
                 context.update("form:TerceroDialogo");
                 context.execute("TerceroDialogo.show()");
                 tipoActualizacion = 0;
             }
             if (cualCeldaVA == 3) {
+                getInfoRegistroTipoEntidad();
                 context.update("form:TipoEntidadDialogo");
                 context.execute("TipoEntidadDialogo.show()");
                 tipoActualizacion = 0;
@@ -2563,23 +2602,17 @@ public class ControlVigenciaSueldo implements Serializable {
 
     public void verificarRastroTabla() {
         if (listVigenciasAfiliaciones == null || listVigenciasSueldos == null) {
-            System.out.println("Cero");
             //Dialogo para seleccionar el rato de la tabla deseada
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("verificarRastrosTablas.show()");
         }
 
         if ((listVigenciasAfiliaciones != null) && (listVigenciasSueldos != null)) {
-            System.out.println("Uno");
-            System.out.println("listVigenciasAfiliaciones : " + listVigenciasAfiliaciones);
-            System.out.println("listVigenciasSueldos : " + listVigenciasSueldos);
             if (index >= 0) {
-                System.out.println("Uno . Uno");
                 verificarRastroVigenciaSueldo();
                 index = -1;
             }
             if (indexVA >= 0) {
-                System.out.println("Uno . Dos");
                 //Metodo Rastro Vigencias Afiliaciones
                 verificarRastroVigenciaAfiliacion();
                 indexVA = -1;
@@ -3090,6 +3123,13 @@ public class ControlVigenciaSueldo implements Serializable {
     }
 
     public VigenciasSueldos getVigenciaSueldoSeleccionada() {
+        getListVigenciasSueldos();
+        if (listVigenciasSueldos != null) {
+            int tam = listVigenciasSueldos.size();
+            if (tam > 0) {
+                vigenciaSueldoSeleccionada = listVigenciasSueldos.get(0);
+            }
+        }
         return vigenciaSueldoSeleccionada;
     }
 
@@ -3098,11 +3138,74 @@ public class ControlVigenciaSueldo implements Serializable {
     }
 
     public VigenciasAfiliaciones getVigenciaAfiliacioneSeleccionada() {
+        getListVigenciasAfiliaciones();
+        if (listVigenciasAfiliaciones != null) {
+            int tam = listVigenciasAfiliaciones.size();
+            if (tam > 0) {
+                vigenciaAfiliacioneSeleccionada = listVigenciasAfiliaciones.get(0);
+            }
+        }
         return vigenciaAfiliacioneSeleccionada;
     }
 
     public void setVigenciaAfiliacioneSeleccionada(VigenciasAfiliaciones vigenciaAfiliacioneSeleccionada) {
         this.vigenciaAfiliacioneSeleccionada = vigenciaAfiliacioneSeleccionada;
+    }
+
+    public String getInfoRegistroTipoSueldo() {
+        getListTiposSueldos();
+        if (listTiposSueldos != null) {
+            infoRegistroTipoSueldo = "Cantidad de registros : " + listTiposSueldos.size();
+        } else {
+            infoRegistroTipoSueldo = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoSueldo;
+    }
+
+    public void setInfoRegistroTipoSueldo(String infoRegistroTipoSueldo) {
+        this.infoRegistroTipoSueldo = infoRegistroTipoSueldo;
+    }
+
+    public String getInfoRegistroMotivoCambioSueldo() {
+        getListMotivosCambiosSueldos();
+        if (listMotivosCambiosSueldos != null) {
+            infoRegistroMotivoCambioSueldo = "Cantidad de registros : " + listMotivosCambiosSueldos.size();
+        } else {
+            infoRegistroMotivoCambioSueldo = "Cantidad de registros : 0";
+        }
+        return infoRegistroMotivoCambioSueldo;
+    }
+
+    public void setInfoRegistroMotivoCambioSueldo(String infoRegistroMotivoCambioSueldo) {
+        this.infoRegistroMotivoCambioSueldo = infoRegistroMotivoCambioSueldo;
+    }
+
+    public String getInfoRegistroTercero() {
+        getListTerceros();
+        if (listTerceros != null) {
+            infoRegistroTercero = "Cantidad de registros : " + listTerceros.size();
+        } else {
+            infoRegistroTercero = "Cantidad de registros : 0";
+        }
+        return infoRegistroTercero;
+    }
+
+    public void setInfoRegistroTercero(String infoRegistroTercero) {
+        this.infoRegistroTercero = infoRegistroTercero;
+    }
+
+    public String getInfoRegistroTipoEntidad() {
+        getListTiposEntidades();
+        if (listTiposEntidades != null) {
+            infoRegistroTipoEntidad = "Cantidad de registros : " + listTiposEntidades.size();
+        } else {
+            infoRegistroTipoEntidad = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoEntidad;
+    }
+
+    public void setInfoRegistroTipoEntidad(String infoRegistroTipoEntidad) {
+        this.infoRegistroTipoEntidad = infoRegistroTipoEntidad;
     }
 
 }

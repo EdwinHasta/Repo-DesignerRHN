@@ -124,7 +124,6 @@ public class ControlEmplVacaPendiente implements Serializable {
         empleado = administrarVWVacaPendientesEmpleados.obtenerEmpleado(secuencia);
         if (empleado != null) {
             fechaFinalContratacion = administrarVWVacaPendientesEmpleados.obtenerFechaFinalContratacionEmpleado(empleado.getSecuencia());
-            System.out.println("fechaFinalContratacion: " + fechaFinalContratacion);
         }
     }
 
@@ -137,9 +136,6 @@ public class ControlEmplVacaPendiente implements Serializable {
                 int posicion = listVacaPendientes.indexOf(filtrarListVacaPendientes.get(indexVPendientes));
                 VWVacaPendientesEmpleados vacaPendiente = listVacaPendientes.get(posicion);
                 listModificacionesTablaPendientes.add(vacaPendiente);
-            }
-            for (int i = 0; i < listVacaPendientes.size(); i++) {
-                System.out.println("Dias pendientes : " + listVacaPendientes.get(i).getDiaspendientes());
             }
             totalDiasPendientes = BigInteger.valueOf(0);
             getTotalDiasPendientes();
@@ -173,7 +169,6 @@ public class ControlEmplVacaPendiente implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         if (i == 0) {
             VWVacaPendientesEmpleados auxiliar = null;
@@ -211,7 +206,6 @@ public class ControlEmplVacaPendiente implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         VWVacaPendientesEmpleados auxiliar = null;
         if (filtrarListaDisfrutadas == 0) {
@@ -1039,13 +1033,10 @@ public class ControlEmplVacaPendiente implements Serializable {
 
     public List<VWVacaPendientesEmpleados> getListVacaPendientes() {
         try {
-            if (empleado != null) {
+            if (empleado.getSecuencia() != null) {
                 if (listVacaPendientes == null) {
                     listVacaPendientes = administrarVWVacaPendientesEmpleados.vacaPendientesPendientes(empleado);
                 }
-            }
-            if (listVacaPendientes != null && !listVacaPendientes.isEmpty()) {
-                System.out.println("listVacaPendientes : " + listVacaPendientes.get(0).getSecuencia());
             }
             return listVacaPendientes;
         } catch (Exception e) {

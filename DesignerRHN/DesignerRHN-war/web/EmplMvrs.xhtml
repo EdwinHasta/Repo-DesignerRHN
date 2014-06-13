@@ -102,7 +102,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['inicial']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -124,7 +124,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['final']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -132,7 +132,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText id="valorText" value="#{infoMvr.valor}">
-                                                <f:convertNumber type="currency" for="valorText" currencySymbol="$"/>
+                                                <f:convertNumber type="currency" currencySymbol="$"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
@@ -143,7 +143,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['valormensual']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -160,7 +160,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 320px; margin: -14px; height: 26px;  border: none; color: blue" id="fooMotivo" value="#{msg['motivo']}"/>
+                                        <p:commandButton style="width: 320px; margin: -14px; height: 26px;  border: none; color: blue" id="fooMotivo" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -169,7 +169,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText id="originalText" value="#{infoMvr.valoranualoriginal}">
-                                                <f:convertNumber type="currency" for="originalText" currencySymbol="$"/>
+                                                <f:convertNumber type="currency" currencySymbol="$"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
@@ -180,7 +180,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['valoranual']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -212,7 +212,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['inicial']}"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -234,7 +234,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['final']}"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -255,7 +255,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['valor']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column> 
 
@@ -274,7 +274,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['estado']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column> 
 
@@ -293,7 +293,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 250px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCertificadosOC" value="#{msg['certificado']}"/>
+                                        <p:commandButton style="width: 250px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCertificadosOC" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -311,7 +311,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['dias']}"  />
+                                        <h:outputText value=""  />
                                     </f:facet>
                                 </p:column> 
 
@@ -331,7 +331,7 @@
                                 <p:ajax event="rowDblselect" listener="#{controlEmplMvr.actualizarMotivo()}"  process="@this" onstart="lovMotivo.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovMotivo.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                    <p:inputText id="globalFilter" onkeyup="lovMotivo.filter();" style="width:140px; position: relative; left: -5px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{motivo.codigo}" width="50" filterMatchMode="contains" >
                                     <f:facet name="header">
@@ -346,10 +346,13 @@
                                     <h:outputText value="#{motivo.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 230px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlEmplMvr.actualizarMotivo()}" update="lovMotivo, aceptarM, datosMvrEmpleado" process="@this">
+                            
+                            <h:outputText id="infoRegistroMotivoMVR" value="#{controlEmplMvr.infoRegistroMotivoMVR}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
+                            <p:commandButton id="aceptarM" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlEmplMvr.actualizarMotivo()}" update="lovMotivo, aceptarM, datosMvrEmpleado" process="@this">
                                 <p:resetInput target=":form:lovMotivo:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 230px;top: 5px" value="#{msg['atras']}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlEmplMvr.cancelarCambioMotivo()}" update="lovMotivo" process="@this">
+                            <p:commandButton id="atrasM" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" onclick="MotivoDialogo.hide(), lovMotivo.clearFilters();" actionListener="#{controlEmplMvr.cancelarCambioMotivo()}" update="lovMotivo" process="@this">
                                 <p:resetInput target=":form:lovMotivo:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
@@ -379,10 +382,13 @@
                                     <h:outputText value="#{tipoC.descripcion}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 250px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" onclick="CertificadosDialogo.hide(), lovCertificado.clearFilters();" actionListener="#{controlEmplMvr.actualizarTipo()}" update="lovCertificado, aceptarTC, datosOCEmpleado" process="@this">
+                            
+                            <h:outputText id="infoRegistroCertificado" value="#{controlEmplMvr.infoRegistroCertificado}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
+                            <p:commandButton id="aceptarTC" icon="ui-icon-check" style="position: relative; left: 260px;top: 5px" value="#{msg['aceptar']}" disabled="#{controlEmplMvr.aceptar}" onclick="CertificadosDialogo.hide(), lovCertificado.clearFilters();" actionListener="#{controlEmplMvr.actualizarTipo()}" update="lovCertificado, aceptarTC, datosOCEmpleado" process="@this">
                                 <p:resetInput target=":form:lovCertificado:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 250px;top: 5px" value="#{msg['atras']}" onclick="CertificadosDialogo.hide(), lovCertificado.clearFilters();" actionListener="#{controlEmplMvr.cancelarCambioTipo()}" update="lovCertificado" process="@this">
+                            <p:commandButton id="atrasTC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 260px;top: 5px" value="#{msg['atras']}" onclick="CertificadosDialogo.hide(), lovCertificado.clearFilters();" actionListener="#{controlEmplMvr.cancelarCambioTipo()}" update="lovCertificado" process="@this">
                                 <p:resetInput target=":form:lovCertificado:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
@@ -628,7 +634,7 @@
                             <p:watermark for="nuevaEstadoOC" value="#{msg['estado']}" />
 
                             <strong><h:outputText value="*#{msg['certificadoOC']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="nuevaCertificadoOC" value="#{controlEmplMvr.nuevaOtroCertificado.tipocertificado.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="50" id="nuevaCertificadoOC" value="#{controlEmplMvr.nuevaOtroCertificado.tipocertificado.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplMvr.asignarIndex(indice,0,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplMvr.valoresBackupAutocompletarOtrosCertificados(1, 'CERTIFICADOS')}" />
                                 <p:ajax event="change" listener="#{controlEmplMvr.autocompletarNuevoyDuplicadoOtrosCertificados('CERTIFICADOS', controlEmplMvr.nuevaOtroCertificado.tipocertificado.descripcion, 1)}" />
@@ -686,7 +692,7 @@
                             <p:watermark for="duplicarEstadoOC" value="#{msg['estado']}" />
 
                             <strong><h:outputText value="*#{msg['certificadoOC']}" style=" position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCertificadoOC" value="#{controlEmplMvr.duplicarOtrosCertificados.tipocertificado.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="50" id="duplicarCertificadoOC" value="#{controlEmplMvr.duplicarOtrosCertificados.tipocertificado.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 190px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlEmplMvr.asignarIndex(indice,0,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlEmplMvr.valoresBackupAutocompletarOtrosCertificados(2, 'CERTIFICADOS')}" />
                                 <p:ajax event="change" listener="#{controlEmplMvr.autocompletarNuevoyDuplicadoOtrosCertificados('CERTIFICADOS', controlEmplMvr.duplicarOtrosCertificados.tipocertificado.descripcion, 2)}" />

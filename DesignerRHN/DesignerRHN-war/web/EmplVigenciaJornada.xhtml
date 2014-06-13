@@ -99,7 +99,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['fecha']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -107,7 +107,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{infoVJ.jornadatrabajo.descripcion}"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoVJ.jornadatrabajo.descripcion}"  id="editarNombreJornada" style=" border-radius: 0px; width: 98.5%;text-transform: uppercase; height: 12px"> 
+                                            <p:inputText maxlength="30" value="#{infoVJ.jornadatrabajo.descripcion}"  id="editarNombreJornada" style=" border-radius: 0px; width: 98.5%;text-transform: uppercase; height: 12px"> 
                                                 <p:ajax event="change" listener="#{controlVigenciaJornada.modificarVJ(indice, 'NOMBREJORNADA', infoVJ.jornadatrabajo.descripcion)}" update="editarNombreJornada"/>
                                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,0,0)}"/>
                                                 <p:ajax event="select" listener="#{controlVigenciaJornada.cambiarIndice(indice,1)}" process="@this"/>
@@ -115,7 +115,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooNombreJornada" value="#{msg['nombrejornada']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooNombreJornada" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -131,7 +131,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTIpoDescanso" value="#{msg['tipodescanso']}"/>
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 26px;  border: none; color: blue" id="fooTIpoDescanso" value=""/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
@@ -161,7 +161,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['fechainicial']}"  id="fooFechaInicialVCT"/>
+                                        <h:outputText value=""  id="fooFechaInicialVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -181,7 +181,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['fechafinal']}" id="fooFechaFinalVCT"/>
+                                        <h:outputText value="" id="fooFechaFinalVCT"/>
                                     </f:facet>
                                 </p:column>
 
@@ -196,7 +196,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['comentario']}" id="fooComentarioVCT"/>
+                                        <h:outputText value="" id="fooComentarioVCT"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -227,7 +227,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['fechainicial']}"  id="fooFechaInicialVCD"/>
+                                        <h:outputText value=""  id="fooFechaInicialVCD"/>
                                     </f:facet>
                                 </p:column>
 
@@ -247,7 +247,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['fechafinal']}" id="fooFechaFinalVCD"/>
+                                        <h:outputText value="" id="fooFechaFinalVCD"/>
                                     </f:facet>
                                 </p:column>
 
@@ -264,7 +264,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['comentario']}"  id="fooComentarioVCD"/>
+                                        <h:outputText value=""  id="fooComentarioVCD"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -272,15 +272,15 @@
 
                         <!-- Dialogo Jornadas Laborales -->
                         <p:dialog header="#{msg['jornadaJ']}" widgetVar="JornadaLaboralDialogo" draggable="false" resizable="false" closable="false" id="JornadaLaboralDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="340" modal="true" >
-                            <p:dataTable id="lovJornadaLaboral" style=" width: 290px" var="jLaboral" value="#{controlVigenciaJornada.listJornadasLaborales}" rowKey="#{jLaboral.secuencia}"
-                                         selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="308" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" width="400" modal="true" >
+                            <p:dataTable id="lovJornadaLaboral" style=" width: 365px" var="jLaboral" value="#{controlVigenciaJornada.listJornadasLaborales}" rowKey="#{jLaboral.secuencia}"
+                                         selection="#{controlVigenciaJornada.jornadaLaboralSeleccionada}" selectionMode="single" widgetVar="lovJornadaLaboral" scrollable="true" scrollWidth="383" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtrarJornadasLaborales}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarJL"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarJornadaLaboral()}"  process="@this" onstart="lovJornadaLaboral.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarJ']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:100px; position: relative; left: 80px;" />  
+                                    <p:inputText id="globalFilter" onkeyup="lovJornadaLaboral.filter();" style="width:130px; position: relative; left: 55px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{jLaboral.descripcion}" width="200" filterMatchMode="contains">
                                     <f:facet name="header">
@@ -295,25 +295,28 @@
                                     <h:outputText value="#{jLaboral.codigo}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarJL" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this" icon="ui-icon-check">
+                            
+                            <h:outputText id="infoRegistroJornadaLaboral" value="#{controlVigenciaJornada.infoRegistroJornadaLaboral}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
+                            <p:commandButton id="aceptarJL" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarJornadaLaboral()}" update="lovJornadaLaboral, aceptarJL, datosVJEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasJL" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" update="lovJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
+                            <p:commandButton id="atrasJL" style="position: relative; left: 210px" value="#{msg['atras']}" onclick="JornadaLaboralDialogo.hide(), lovJornadaLaboral.clearFilters();" actionListener="#{controlVigenciaJornada.cancelarCambioJornadaLaboral()}" update="lovJornadaLaboral" process="@this" icon="ui-icon-arrowreturnthick-1-w" >
                                 <p:resetInput target=":form:lovJornadaLaboral:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
                         <!-- Dialogo Tipo Descanso-->
                         <p:dialog header="#{msg['descripcionD']}" widgetVar="TiposDescansosDialogo" draggable="false" resizable="false" closable="false" id="TiposDescansosDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="340" modal="true" >
-                            <p:dataTable id="lovTipoDescanso" style=" width: 290px" var="tDescanso" value="#{controlVigenciaJornada.listTiposDescansos}" rowKey="#{tDescanso.secuencia}"
-                                         selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="308" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" width="400" modal="true" >
+                            <p:dataTable id="lovTipoDescanso" style=" width: 365px" var="tDescanso" value="#{controlVigenciaJornada.listTiposDescansos}" rowKey="#{tDescanso.secuencia}"
+                                         selection="#{controlVigenciaJornada.tipoDescansoSeleccionado}" selectionMode="single" widgetVar="lovTipoDescanso" scrollable="true" scrollWidth="383" scrollHeight="250"
                                          filteredValue="#{controlVigenciaJornada.filtradoTiposDescansos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlVigenciaJornada.activarAceptar()}" update=":form:aceptarTD"/>
                                 <p:ajax event="rowDblselect" listener="#{controlVigenciaJornada.actualizarTipoDescanso()}"  process="@this" onstart="lovTipoDescanso.clearFilters()" />
                                 <f:facet name="header">  
                                     <h:outputText value="#{msg['buscarD']}:"  style="position: absolute; left: 27px; top: 14px"/>  
-                                    <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:100px; position: relative; left: 70px;" />  
+                                    <p:inputText id="globalFilter" onkeyup="lovTipoDescanso.filter();" style="width:110px; position: relative; left: 45px;" />  
                                 </f:facet>
                                 <p:column filterBy="#{tDescanso.descripcion}" width="200" filterMatchMode="contains" >
                                     <f:facet name="header">
@@ -328,10 +331,13 @@
                                     <h:outputText value="#{tDescanso.codigo}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarTD" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this" icon="ui-icon-check">
+                            
+                            <h:outputText id="infoRegistroTipoDescanso" value="#{controlVigenciaJornada.infoRegistroTipoDescanso}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                            
+                            <p:commandButton id="aceptarTD" style="position: relative; left: 210px" value="#{msg['aceptar']}" disabled="#{controlVigenciaJornada.aceptar}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters();" actionListener="#{controlVigenciaJornada.actualizarTipoDescanso()}" update="lovTipoDescanso, aceptarTD, datosVJEmpleado" process="@this" icon="ui-icon-check">
                                 <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTD" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters()" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}" update="lovTipoDescanso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
+                            <p:commandButton id="atrasTD" style="position: relative; left: 210px" value="#{msg['atras']}" onclick="TiposDescansosDialogo.hide(), lovTipoDescanso.clearFilters()" actionListener="#{controlVigenciaJornada.cancelarCambioTipoDescanso()}" update="lovTipoDescanso" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                                 <p:resetInput target=":form:lovTipoDescanso:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
@@ -458,7 +464,7 @@
                             </div>
 
                             <strong><h:outputText value="*#{msg['nombrejornadavj']}" style=" position: absolute; top: 125px;" /></strong>
-                            <p:inputText id="nuevaJornadaLaboral" value="#{controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion}" style=" width: 110px; position: absolute; left: 150px; top: 120px; text-transform: uppercase" onclick="select();" >
+                            <p:inputText maxlength="30" id="nuevaJornadaLaboral" value="#{controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion}" style=" width: 110px; position: absolute; left: 150px; top: 120px; text-transform: uppercase" onclick="select();" >
                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,1,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar(1, 'NOMBREJORNADA')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaJornada.autocompletarNuevoyDuplicado('NOMBREJORNADA', controlVigenciaJornada.nuevaVigencia.jornadatrabajo.descripcion, 1)}" />
@@ -494,7 +500,7 @@
                                 </lnk:calendar>
                             </div>
                             <strong><h:outputText value="*#{msg['nombrejornadavj']}" style=" position: absolute; top: 125px;" /></strong>
-                            <p:inputText id="duplicarJornadaLaboral" value="#{controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion}" style=" width: 110px; position: absolute; left: 150px; top: 120px;">
+                            <p:inputText maxlength="30" id="duplicarJornadaLaboral" value="#{controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion}" style=" width: 110px; position: absolute; left: 150px; top: 120px;">
                                 <p:ajax event="dblclick" listener="#{controlVigenciaJornada.asignarIndex(indice,0,2,0)}"/>
                                 <p:ajax event="click" listener="#{controlVigenciaJornada.valoresBackupAutocompletar(2, 'NOMBREJORNADA')}" />
                                 <p:ajax event="change" listener="#{controlVigenciaJornada.autocompletarNuevoyDuplicado('NOMBREJORNADA', controlVigenciaJornada.duplicarVJ.jornadatrabajo.descripcion, 2)}" />
@@ -524,7 +530,7 @@
                         <p:panel id="nuevaVCT" style="border: none;">
 
 
-                            <strong><h:outputText value="#{msg['fechainicialtt']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechainicialtt']}*" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniNuevoRegVCT" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="nuevaFechaInicialVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechainicial}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialVCT" process="@this"/>
@@ -532,7 +538,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['fechafinaltt']}" style=" position: absolute; top: 105px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechafinaltt']}*" style=" position: absolute; top: 105px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaFinNuevoRegVCT" style=" position: absolute; top: 100px; left: 170px">
                                 <lnk:calendar id="nuevaFechaFinalVCT" value="#{controlVigenciaJornada.nuevaVigenciaCT.fechafinal}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaFinalVCT" process="@this"/>
@@ -559,14 +565,14 @@
 
                         <p:panel id="duplicadoVCT" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['fechainicialtt']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechainicialtt']}*" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniDupliRegVCT" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="duplicarFechaInicialVCT" value="#{controlVigenciaJornada.duplicarVCT.fechainicial}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaInicialVCT" process="@this"/>
                                     <p:ajax event="change" update="duplicarFechaInicialVCT" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            <strong><h:outputText value="#{msg['fechafinaltt']}" style=" position: absolute; top: 105px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechafinaltt']}*" style=" position: absolute; top: 105px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaFinDupliRegVCT" style=" position: absolute; top: 100px; left: 170px">
                                 <lnk:calendar id="duplicarFechaFinalVCT" value="#{controlVigenciaJornada.duplicarVCT.fechafinal}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaFinalVCT" process="@this"/>
@@ -590,7 +596,7 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevotd']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaVCD" style="border: none;">
-                            <strong><h:outputText value="#{msg['fechainicialtd']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechainicialtd']}*" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniNuevoRegVCD" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="nuevaFechaInicialVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechainicial}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaInicialVCD" process="@this"/>
@@ -598,7 +604,7 @@
                                 </lnk:calendar>
                             </div>
 
-                            <strong><h:outputText value="#{msg['fechafinaltd']}" style=" position: absolute; top: 105px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechafinaltd']}*" style=" position: absolute; top: 105px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaFinNuevoRegVCD" style=" position: absolute; top: 100px; left: 170px">
                                 <lnk:calendar id="nuevaFechaFinalVCD" value="#{controlVigenciaJornada.nuevaVigenciaCD.fechafinal}" >
                                     <p:ajax event="dateSelect" update="nuevaFechaFinalVCD" process="@this"/>
@@ -623,14 +629,14 @@
                         <center><strong><h:outputText value="#{msg['ingresarnuevotd']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarVCD" style="border: none;">
-                            <strong><h:outputText value="#{msg['fechainicialtd']}" style=" position: absolute; top: 75px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechainicialtd']}*" style=" position: absolute; top: 75px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaIniDupliRegVCD" style=" position: absolute; top: 70px; left: 170px">
                                 <lnk:calendar id="duplicarFechaInicialVCD" value="#{controlVigenciaJornada.duplicarVCD.fechainicial}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaInicialVCD" process="@this"/>
                                     <p:ajax event="change" update="duplicarFechaInicialVCD" process="@this"/>
                                 </lnk:calendar>
                             </div>
-                            <strong><h:outputText value="#{msg['fechafinaltd']}" style=" position: absolute; top: 105px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechafinaltd']}*" style=" position: absolute; top: 105px; left: 50px;" /></strong>
                             <div id="posicionFormulaFechaFinDupliRegVCD" style=" position: absolute; top: 100px; left: 170px">
                                 <lnk:calendar id="duplicarFechaFinalVCD" value="#{controlVigenciaJornada.duplicarVCD.fechafinal}" >
                                     <p:ajax event="dateSelect" update="duplicarFechaFinalVCD" process="@this"/>

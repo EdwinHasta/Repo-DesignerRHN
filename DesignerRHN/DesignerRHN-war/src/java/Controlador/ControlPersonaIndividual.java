@@ -1,5 +1,7 @@
 package Controlador;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import Entidades.Cargos;
 import Entidades.CentrosCostos;
 import Entidades.Ciudades;
@@ -316,6 +318,9 @@ public class ControlPersonaIndividual implements Serializable {
     private String infoRegistroTipoTelefonoTelefono;
     //
     private String mensajeErrorFechasEmpleado;
+    //
+    private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+            + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public ControlPersonaIndividual() {
         nuevoEmpleado = new Empleados();
@@ -511,7 +516,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void listaValoresInformacionPersonal() {
-        System.out.println("listaValoresInformacionPersonal indexInformacionPersonal : " + indexInformacionPersonal);
         RequestContext context = RequestContext.getCurrentInstance();
         if (indexInformacionPersonal == 0) {
             getInfoRegistroEmpresaInformacionPersonal();
@@ -1962,7 +1966,6 @@ public class ControlPersonaIndividual implements Serializable {
             auxFechaCorte = fechaCorte;
             auxFechaIngreso = fechaIngreso;
             auxFechaNacimiento = nuevaPersona.getFechanacimiento();
-            System.out.println("fechaIngreso : " + fechaIngreso);
             if (indexInformacionPersonal == 0) {
                 if (nuevoEmpleado.getEmpresa().getSecuencia() != null) {
                     auxInformacionPersonaEmpresal = nuevoEmpleado.getEmpresa().getNombre();
@@ -2992,6 +2995,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:papelModCargoDesempeñado");
                 }
             } else {
+                lovPapeles.clear();
+                getLovPapeles();
                 nuevaVigenciaCargo.setPapel(new Papeles());
                 context.update("form:papelModCargoDesempeñado");
             }
@@ -3020,6 +3025,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:empleadoJefeModCargoDesempeñado");
                 }
             } else {
+                lovEmpleados.clear();
+                getLovEmpleados();
                 nuevaVigenciaCargo.setEmpleadojefe(new Empleados());
                 nuevaVigenciaCargo.getEmpleadojefe().setPersona(new Personas());
                 context.update("form:papelModCargoDesempeñado");
@@ -3450,6 +3457,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:sucursalPagoModFormaPago");
                 }
             } else {
+                lovSucursales.clear();
+                getLovSucursales();
                 nuevaVigenciaFormaPago.setSucursal(new Sucursales());
                 context.update("form:sucursalPagoModFormaPago");
             }
@@ -3510,6 +3519,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:fondoCensantiasModAfiliaciones");
                 }
             } else {
+                lovTercerosSucursales.clear();
+                getLovTercerosSucursales();
                 nuevaVigenciaAfiliacionFondo.setTercerosucursal(new TercerosSucursales());
                 context.update("form:fondoCensantiasModAfiliaciones");
             }
@@ -3580,6 +3591,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:cajaCompensacionModAfiliaciones");
                 }
             } else {
+                lovTercerosSucursales.clear();
+                getLovTercerosSucursales();
                 nuevaVigenciaAfiliacionCaja.setTercerosucursal(new TercerosSucursales());
                 context.update("form:cajaCompensacionModAfiliaciones");
             }
@@ -3651,6 +3664,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:afpModAfiliaciones");
                 }
             } else {
+                lovTercerosSucursales.clear();
+                getLovTercerosSucursales();
                 nuevaVigenciaAfiliacionAFP.setTercerosucursal(new TercerosSucursales());
                 context.update("form:afpModAfiliaciones");
             }
@@ -3686,6 +3701,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:estadoCivilModEstadoCivil");
                 }
             } else {
+                lovEstadosCiviles.clear();
+                getLovEstadosCiviles();
                 nuevoEstadoCivil.setEstadocivil(new EstadosCiviles());
                 context.update("form:estadoCivilModEstadoCivil");
             }
@@ -3756,6 +3773,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:ciudadModTelefono");
                 }
             } else {
+                lovCiudades.clear();
+                getLovCiudades();
                 nuevoTelefono.setCiudad(new Ciudades());
                 context.update("form:ciudadModTelefono");
             }
@@ -3784,6 +3803,8 @@ public class ControlPersonaIndividual implements Serializable {
                     context.update("form:tipoTelefonoModTelefono");
                 }
             } else {
+                lovTiposTelefonos.clear();
+                getLovTiposTelefonos();
                 nuevoTelefono.setTipotelefono(new TiposTelefonos());
                 context.update("form:tipoTelefonoModTelefono");
             }
@@ -4393,7 +4414,7 @@ public class ControlPersonaIndividual implements Serializable {
         filtrarLovMotivosLocalizaciones = null;
         aceptar = true;
         permitirIndexCentroCosto = true;
-    } 
+    }
 
     public void actualizarParametroCargoCargoDesempeñado() {
         RequestContext context = RequestContext.getCurrentInstance();
@@ -4504,7 +4525,7 @@ public class ControlPersonaIndividual implements Serializable {
         permitirIndexCargoDesempeñado = true;
         aceptar = true;
     }
-    
+
     public void actualizarParametroEmpresaInformacionPersonalVisible() {
         RequestContext context = RequestContext.getCurrentInstance();
         nuevoEmpleado.setEmpresa(empresaSeleccionada);
@@ -4575,7 +4596,6 @@ public class ControlPersonaIndividual implements Serializable {
     }
 
     public void actualizarParametroCiudadDocumentoInformacionPersonal() {
-        System.out.println("actualizarParametroCiudadDocumentoInformacionPersonal");
         RequestContext context = RequestContext.getCurrentInstance();
         nuevaPersona.setCiudaddocumento(ciudadSeleccionada);
         ciudadSeleccionada = new Ciudades();
@@ -4588,7 +4608,6 @@ public class ControlPersonaIndividual implements Serializable {
         context.update("formLovs:formDInformacionPersonal:aceptarCDIP");
         context.reset("formLovs:formDInformacionPersonal:lovCiudadDocumentoInformacionPersonal:globalFilter");
         context.execute("CiudadDocumentoInformacionPersonalDialogo.hide()");
-        System.out.println("nuevaPersona Ciudad Documento : "+nuevaPersona.getCiudaddocumento().getSecuencia());
     }
 
     public void cancelarParametroCiudadDocumentoInformacionPersonal() {
@@ -4803,6 +4822,25 @@ public class ControlPersonaIndividual implements Serializable {
                 context.execute("aletarTiposTrabajadoresC.show()");
             }
         }
+    }
+
+    public void validarEmailPersona(String email) {
+        boolean esEmail = isEmail(email);
+        if (esEmail == false) {
+            nuevaPersona.setEmail(null);
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:correoModPersonal");
+            context.execute("errorEmailPersona.show()");
+        }
+    }
+
+    public boolean isEmail(String email) {
+        // Compiles the given regular expression into a pattern.
+        Pattern pattern = Pattern.compile(PATTERN_EMAIL);
+        // Match the given input against this pattern
+        Matcher matcher = pattern.matcher(email);
+        boolean valor = matcher.matches();
+        return valor;
     }
 
     public void activarAceptar() {
