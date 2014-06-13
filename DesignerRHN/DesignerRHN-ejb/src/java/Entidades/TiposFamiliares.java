@@ -72,14 +72,15 @@ public class TiposFamiliares implements Serializable {
     }
 
     public String getTipo() {
-        if (tipo == null) {
-            tipo = " ";
-        }
         return tipo;
     }
 
     public void setTipo(String tipo) {
-        this.tipo = tipo;
+        if (tipo != null) {
+            this.tipo = tipo.toUpperCase();
+        } else {
+            this.tipo = tipo;
+        }
     }
 
     public Integer getCodigo() {

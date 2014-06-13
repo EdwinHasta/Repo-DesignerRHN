@@ -9,10 +9,11 @@ import InterfaceAdministrar.AdministrarHvReferenciasInterface;
 import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
+import Entidades.Personas;
 import Entidades.TiposFamiliares;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaHvReferenciasInterface;
-import InterfacePersistencia.PersistenciaEmpleadoInterface;
+import InterfacePersistencia.PersistenciaPersonasInterface;
 import InterfacePersistencia.PersistenciaTiposFamiliaresInterface;
 import java.math.BigInteger;
 import java.util.List;
@@ -32,12 +33,10 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
     @EJB
     PersistenciaTiposFamiliaresInterface persistenciaTiposFamiliares;
     @EJB
-    PersistenciaEmpleadoInterface persistenciaEmpleados;
-    List<HvReferencias> listHvReferencias;
+    PersistenciaPersonasInterface persistenciaPersonas;
     HvReferencias hvReferencias;
-    Empleados empleado;
     List<HVHojasDeVida> hvHojasDeVida;
-        /**
+    /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
      * está usando el aplicativo.
@@ -77,9 +76,13 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
     }
 
     @Override
-    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado) {
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorPersona(BigInteger secEmpleado) {
+        List<HvReferencias> listHvReferencias;
         try {
-            listHvReferencias = persistenciaHvReferencias.consultarHvReferenciasPersonalesPorEmpleado(em, secEmpleado);
+            listHvReferencias = persistenciaHvReferencias.consultarHvReferenciasPersonalesPorPersona(em, secEmpleado);
+            if (listHvReferencias != null) {
+                System.out.println("AdministrarHvReferencias Tamaño listHvReferencias : " + listHvReferencias.size());
+            }
         } catch (Exception e) {
             System.out.println("Error en AdministrarHvReferencias hvEntrevistasPorEmplado");
             listHvReferencias = null;
@@ -88,9 +91,10 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
     }
 
     @Override
-    public List<HvReferencias> consultarHvReferenciasFamiliaresPorEmpleado(BigInteger secEmpleado) {
+    public List<HvReferencias> consultarHvReferenciasFamiliaresPorPersona(BigInteger secEmpleado) {
+        List<HvReferencias> listHvReferencias;
         try {
-            listHvReferencias = persistenciaHvReferencias.consultarHvReferenciasFamiliarPorEmpleado(em, secEmpleado);
+            listHvReferencias = persistenciaHvReferencias.consultarHvReferenciasFamiliarPorPersona(em, secEmpleado);
         } catch (Exception e) {
             System.out.println("Error en AdministrarHvReferencias hvEntrevistasPorEmplado");
             listHvReferencias = null;
@@ -104,22 +108,22 @@ public class AdministrarHvReferencias implements AdministrarHvReferenciasInterfa
         return hvReferencias;
     }
 
-    @Override
-    public Empleados consultarEmpleado(BigInteger secuencia) {
+    public Personas consultarPersonas(BigInteger secuencia) {
+        Personas persona;
         try {
-            empleado = persistenciaEmpleados.buscarEmpleadoSecuencia(em, secuencia);
-            return empleado;
+            persona = persistenciaPersonas.buscarPersona(em, secuencia);
+            return persona;
         } catch (Exception e) {
-            empleado = null;
-            System.out.println("ERROR AdministrarHvReferencias  buscarEmpleado ERROR =====" + e);
-            return empleado;
+            persona = null;
+            System.out.println("ERROR AdministrarHvReferencias  consultarPersonas ERROR =====" + e);
+            return persona;
         }
     }
 
     @Override
     public List<HVHojasDeVida> consultarHvHojasDeVida(BigInteger secuencia) {
         try {
-            hvHojasDeVida = persistenciaHvReferencias.consultarHvHojaDeVidaPorEmpleado(em, secuencia);
+            hvHojasDeVida = persistenciaHvReferencias.consultarHvHojaDeVidaPorPersona(em, secuencia);
             return hvHojasDeVida;
         } catch (Exception e) {
             hvHojasDeVida = null;

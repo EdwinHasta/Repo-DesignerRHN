@@ -5,9 +5,9 @@
  */
 package InterfaceAdministrar;
 
-import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
+import Entidades.Personas;
 import Entidades.TiposFamiliares;
 import java.math.BigInteger;
 import java.util.List;
@@ -54,7 +54,7 @@ public interface AdministrarHvReferenciasInterface {
      * @param secEmpleado Secuencia del Empleado.
      * @return Lista de HvReferencias.
      */
-    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorPersona(BigInteger secEmpleado);
 
     /**
      * Método encargado de recuperar un HvEntrevista dada su secuencia.
@@ -72,7 +72,7 @@ public interface AdministrarHvReferenciasInterface {
      * @param secEmpleado Secuencia del Empleado.
      * @return Lista de HvReferencias.
      */
-    public List<HvReferencias> consultarHvReferenciasFamiliaresPorEmpleado(BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasFamiliaresPorPersona(BigInteger secEmpleado);
 
     /**
      * Metodo encargado de traer las HVHojasDeVida de un empleado especifico
@@ -97,5 +97,5 @@ public interface AdministrarHvReferenciasInterface {
      * @param secEmpleado Secuencia del Empleado
      * @return Empleado.
      */
-    public Empleados consultarEmpleado(BigInteger secEmpleado);
+    public Personas consultarPersonas(BigInteger secEmpleado);
 }
