@@ -17,8 +17,12 @@
                             <legend style="font-size: 14px; color: blue"><strong>Clase Pensión</strong></legend>
 
                             <p:dataTable id="datosClasesPensiones" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
-                                         value="#{controlClasesPensiones.listClasesPensiones}" scrollable="true" scrollHeight="#{controlClasesPensiones.tamano}"  scrollWidth="830"
-                                         filteredValue="#{controlClasesPensiones.filtrarClasesPensiones}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         value="#{controlClasesPensiones.listClasesPensiones}" 
+                                         scrollable="true"
+                                         scrollHeight="#{controlClasesPensiones.tamano}"
+                                         scrollWidth="830"
+                                         filteredValue="#{controlClasesPensiones.filtrarClasesPensiones}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="false" 
                                          selection="#{controlClasesPensiones.clasesPensionesSeleccionado}"
                                          selectionMode="single"

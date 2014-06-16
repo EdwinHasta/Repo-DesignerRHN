@@ -11,12 +11,12 @@ import InterfaceAdministrar.AdministrarPryClientesInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +46,7 @@ public class ControlPryClientes implements Serializable {
     private PryClientes nuevoPryCliente;
     private PryClientes duplicarPryCliente;
     private PryClientes editarPryCliente;
+    private PryClientes pryClienteSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +60,9 @@ public class ControlPryClientes implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
 
+    private String infoRegistro;
+    private int tamano;
+
     public ControlPryClientes() {
         listPryClientes = null;
         crearPryClientes = new ArrayList<PryClientes>();
@@ -69,6 +73,7 @@ public class ControlPryClientes implements Serializable {
         nuevoPryCliente = new PryClientes();
         duplicarPryCliente = new PryClientes();
         guardado = true;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -83,7 +88,7 @@ public class ControlPryClientes implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlPryClientes.eventoFiltrar \n");
@@ -95,6 +100,11 @@ public class ControlPryClientes implements Serializable {
         }
     }
 
+    private String backUpDescripcion;
+    private String backUpDireccion;
+    private String backUpTelefono;
+    private String backUpNombreContacto;
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
@@ -102,6 +112,34 @@ public class ControlPryClientes implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listPryClientes.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listPryClientes.get(index).getNombre();
+                } else {
+                    backUpDescripcion = filtrarPryClientes.get(index).getNombre();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDireccion = listPryClientes.get(index).getDireccion();
+                } else {
+                    backUpDireccion = filtrarPryClientes.get(index).getDireccion();
+                }
+            }
+            if (cualCelda == 2) {
+                if (tipoLista == 0) {
+                    backUpTelefono = listPryClientes.get(index).getTelefono();
+                } else {
+                    backUpTelefono = filtrarPryClientes.get(index).getTelefono();
+                }
+            }
+            if (cualCelda == 3) {
+                if (tipoLista == 0) {
+                    backUpNombreContacto = listPryClientes.get(index).getContacto();
+                } else {
+                    backUpNombreContacto = filtrarPryClientes.get(index).getContacto();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -158,13 +196,59 @@ public class ControlPryClientes implements Serializable {
         listPryClientes = null;
         guardado = true;
         permitirIndex = true;
+        getListPryClientes();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listPryClientes == null || listPryClientes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPryClientes.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosPryCliente");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+            nombre.setFilterStyle("display: none; visibility: hidden;");
+            direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+            direccion.setFilterStyle("display: none; visibility: hidden;");
+            telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+            telefono.setFilterStyle("display: none; visibility: hidden;");
+            contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+            contacto.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosPryCliente");
+            bandera = 0;
+            filtrarPryClientes = null;
+            tipoLista = 0;
+        }
+
+        borrarPryClientes.clear();
+        crearPryClientes.clear();
+        modificarPryClientes.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listPryClientes = null;
+        guardado = true;
+        permitirIndex = true;
+        getListPryClientes();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listPryClientes == null || listPryClientes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPryClientes.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosPryCliente");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
+            tamano = 246;
             nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
             nombre.setFilterStyle("width: 215px");
             direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
@@ -177,6 +261,7 @@ public class ControlPryClientes implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
             nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
@@ -209,14 +294,16 @@ public class ControlPryClientes implements Serializable {
             if (tipoLista == 0) {
                 if (!crearPryClientes.contains(listPryClientes.get(indice))) {
 
-                    if (listPryClientes.get(indice).getNombre().isEmpty()) {
+                    if (listPryClientes.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         System.err.println("nombre");
-                    } else if (listPryClientes.get(indice).getNombre().equals(" ")) {
+                        listPryClientes.get(indice).setNombre(backUpDescripcion);
+                    } else if (listPryClientes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                         System.err.println("nombre");
+                        listPryClientes.get(indice).setNombre(backUpDescripcion);
                     } else {
                         banderita = true;
                     }
@@ -235,8 +322,35 @@ public class ControlPryClientes implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
 
+                    if (listPryClientes.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        System.err.println("nombre");
+                        listPryClientes.get(indice).setNombre(backUpDescripcion);
+                    } else if (listPryClientes.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        System.err.println("nombre");
+                        listPryClientes.get(indice).setNombre(backUpDescripcion);
+                    } else {
+                        banderita = true;
+                    }
+
+                    System.err.println("VALIDACION BANDERITA == " + banderita);
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -245,13 +359,18 @@ public class ControlPryClientes implements Serializable {
 
                 if (!crearPryClientes.contains(filtrarPryClientes.get(indice))) {
 
-                    if (filtrarPryClientes.get(indice).getNombre().isEmpty()) {
+                    if (filtrarPryClientes.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                    }
-                    if (filtrarPryClientes.get(indice).getNombre().equals(" ")) {
+                        filtrarPryClientes.get(indice).setNombre(backUpDescripcion);
+                        System.err.println("nombre");
+                    } else if (filtrarPryClientes.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarPryClientes.get(indice).setNombre(backUpDescripcion);
                         banderita = false;
+                        System.err.println("nombre");
+                    } else {
+                        banderita = true;
                     }
 
                     if (banderita == true) {
@@ -267,7 +386,34 @@ public class ControlPryClientes implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+
+                    if (filtrarPryClientes.get(indice).getNombre() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarPryClientes.get(indice).setNombre(backUpDescripcion);
+                        System.err.println("nombre");
+                    } else if (filtrarPryClientes.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarPryClientes.get(indice).setNombre(backUpDescripcion);
+                        banderita = false;
+                        System.err.println("nombre");
+                    } else {
+                        banderita = true;
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -315,6 +461,12 @@ public class ControlPryClientes implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listPryClientes == null || listPryClientes.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listPryClientes.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosPryCliente");
             index = -1;
             secRegistro = null;
@@ -372,8 +524,8 @@ public class ControlPryClientes implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarPryCliente");
             if (!borrarPryClientes.isEmpty()) {
-            administrarPryClientes.borrarPryClientes(borrarPryClientes);
-                
+                administrarPryClientes.borrarPryClientes(borrarPryClientes);
+
                 //mostrarBorrados
                 registrosBorrados = borrarPryClientes.size();
                 context.update("form:mostrarBorrados");
@@ -381,9 +533,8 @@ public class ControlPryClientes implements Serializable {
                 borrarPryClientes.clear();
             }
             if (!crearPryClientes.isEmpty()) {
-             administrarPryClientes.crearPryClientes(crearPryClientes);
+                administrarPryClientes.crearPryClientes(crearPryClientes);
 
-                
                 crearPryClientes.clear();
             }
             if (!modificarPryClientes.isEmpty()) {
@@ -392,6 +543,9 @@ public class ControlPryClientes implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listPryClientes = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosPryCliente");
             k = 0;
             guardado = true;
@@ -447,8 +601,8 @@ public class ControlPryClientes implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevoPryCliente.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
+        if (nuevoPryCliente.getNombre() == null || nuevoPryCliente.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -487,6 +641,9 @@ public class ControlPryClientes implements Serializable {
             listPryClientes.add(nuevoPryCliente);
             nuevoPryCliente = new PryClientes();
             context.update("form:datosPryCliente");
+
+            infoRegistro = "Cantidad de registros: " + listPryClientes.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -552,8 +709,8 @@ public class ControlPryClientes implements Serializable {
         System.err.println("ConfirmarDuplicar nombre " + duplicarPryCliente.getNombre());
         System.err.println("ConfirmarDuplicar direccion " + duplicarPryCliente.getDireccion());
 
-        if (duplicarPryCliente.getNombre().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+        if (duplicarPryCliente.getNombre() == null || duplicarPryCliente.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -561,7 +718,9 @@ public class ControlPryClientes implements Serializable {
             contador++;
         }
         if (contador == 1) {
-
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarPryCliente.setSecuencia(l);
             System.out.println("Datos Duplicando: " + duplicarPryCliente.getSecuencia() + "  " + duplicarPryCliente.getNombre());
             if (crearPryClientes.contains(duplicarPryCliente)) {
                 System.out.println("Ya lo contengo.");
@@ -569,6 +728,8 @@ public class ControlPryClientes implements Serializable {
             listPryClientes.add(duplicarPryCliente);
             crearPryClientes.add(duplicarPryCliente);
             context.update("form:datosPryCliente");
+            infoRegistro = "Cantidad de registros: " + listPryClientes.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -663,6 +824,13 @@ public class ControlPryClientes implements Serializable {
         if (listPryClientes == null) {
             listPryClientes = administrarPryClientes.consultarPryClientes();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listPryClientes == null || listPryClientes.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPryClientes.size();
+        }
+        context.update("form:informacionRegistro");
         return listPryClientes;
     }
 
@@ -732,6 +900,30 @@ public class ControlPryClientes implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public PryClientes getPryClienteSeleccionado() {
+        return pryClienteSeleccionado;
+    }
+
+    public void setPryClienteSeleccionado(PryClientes pryClienteSeleccionado) {
+        this.pryClienteSeleccionado = pryClienteSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

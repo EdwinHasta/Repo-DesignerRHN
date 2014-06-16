@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
     private SectoresEvaluaciones nuevoSectoresEvaluaciones;
     private SectoresEvaluaciones duplicarSectoresEvaluaciones;
     private SectoresEvaluaciones editarSectoresEvaluaciones;
+    private SectoresEvaluaciones sectoresEvaluacionesSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +61,9 @@ public class ControlSectoresEvaluaciones implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private String backUpDescripcion;
+    private String infoRegistro;
+    private Integer backUpCodigo;
 
     public ControlSectoresEvaluaciones() {
         listSectoresEvaluaciones = null;
@@ -70,7 +75,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         nuevoSectoresEvaluaciones = new SectoresEvaluaciones();
         duplicarSectoresEvaluaciones = new SectoresEvaluaciones();
         guardado = true;
-        tamano = 307;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -81,11 +86,11 @@ public class ControlSectoresEvaluaciones implements Serializable {
             administrarSectoresEvaluaciones.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlSectoresEvaluaciones.eventoFiltrar \n");
@@ -104,6 +109,20 @@ public class ControlSectoresEvaluaciones implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listSectoresEvaluaciones.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listSectoresEvaluaciones.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarSectoresEvaluaciones.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listSectoresEvaluaciones.get(index).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarSectoresEvaluaciones.get(index).getDescripcion();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -156,14 +175,55 @@ public class ControlSectoresEvaluaciones implements Serializable {
         listSectoresEvaluaciones = null;
         guardado = true;
         permitirIndex = true;
+        getListSectoresEvaluaciones();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listSectoresEvaluaciones == null || listSectoresEvaluaciones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosSectoresEvaluaciones");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
+            bandera = 0;
+            filtrarSectoresEvaluaciones = null;
+            tipoLista = 0;
+        }
+
+        borrarSectoresEvaluaciones.clear();
+        crearSectoresEvaluaciones.clear();
+        modificarSectoresEvaluaciones.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listSectoresEvaluaciones = null;
+        guardado = true;
+        permitirIndex = true;
+        getListSectoresEvaluaciones();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSectoresEvaluaciones == null || listSectoresEvaluaciones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosSectoresEvaluaciones");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 285;
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("width: 220px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
@@ -173,7 +233,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 307;
+            tamano = 270;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
@@ -189,8 +249,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
-        int contador = 0;
-        boolean banderita;
+        int contador = 0, pass = 0;
         Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -201,7 +260,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
                 if (!crearSectoresEvaluaciones.contains(listSectoresEvaluaciones.get(indice))) {
                     if (listSectoresEvaluaciones.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listSectoresEvaluaciones.size(); j++) {
                             if (j != indice) {
@@ -212,22 +271,23 @@ public class ControlSectoresEvaluaciones implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            listSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
-                    if (listSectoresEvaluaciones.get(indice).getDescripcion().isEmpty()) {
+                    if (listSectoresEvaluaciones.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listSectoresEvaluaciones.get(indice).getDescripcion().equals(" ")) {
+                        listSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+                    } else if (listSectoresEvaluaciones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
+                        listSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
 
-                    if (banderita == true) {
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
                         if (modificarSectoresEvaluaciones.isEmpty()) {
                             modificarSectoresEvaluaciones.add(listSectoresEvaluaciones.get(indice));
                         } else if (!modificarSectoresEvaluaciones.contains(listSectoresEvaluaciones.get(indice))) {
@@ -240,7 +300,48 @@ public class ControlSectoresEvaluaciones implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listSectoresEvaluaciones.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listSectoresEvaluaciones.size(); j++) {
+                            if (j != indice) {
+                                if (listSectoresEvaluaciones.get(indice).getCodigo() == listSectoresEvaluaciones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            pass++;
+                        }
+
+                    }
+                    if (listSectoresEvaluaciones.get(indice).getDescripcion() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+                    } else if (listSectoresEvaluaciones.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -250,7 +351,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
                 if (!crearSectoresEvaluaciones.contains(filtrarSectoresEvaluaciones.get(indice))) {
                     if (filtrarSectoresEvaluaciones.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < filtrarSectoresEvaluaciones.size(); j++) {
                             if (j != indice) {
@@ -268,23 +369,24 @@ public class ControlSectoresEvaluaciones implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            filtrarSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
 
-                    if (filtrarSectoresEvaluaciones.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarSectoresEvaluaciones.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarSectoresEvaluaciones.get(indice).getDescripcion().equals(" ")) {
+                        filtrarSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+                    } else if (filtrarSectoresEvaluaciones.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarSectoresEvaluaciones.isEmpty()) {
                             modificarSectoresEvaluaciones.add(filtrarSectoresEvaluaciones.get(indice));
                         } else if (!modificarSectoresEvaluaciones.contains(filtrarSectoresEvaluaciones.get(indice))) {
@@ -297,10 +399,61 @@ public class ControlSectoresEvaluaciones implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
+                } else {
+
+                    if (filtrarSectoresEvaluaciones.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarSectoresEvaluaciones.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSectoresEvaluaciones.get(indice).getCodigo() == filtrarSectoresEvaluaciones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listSectoresEvaluaciones.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSectoresEvaluaciones.get(indice).getCodigo() == listSectoresEvaluaciones.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarSectoresEvaluaciones.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            pass++;
+                        }
+
+                    }
+
+                    if (filtrarSectoresEvaluaciones.get(indice).getDescripcion() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+                    } else if (filtrarSectoresEvaluaciones.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSectoresEvaluaciones.get(indice).setDescripcion(backUpDescripcion);
+                    } else {
+                        pass++;
+                    }
+
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+
                 }
 
             }
@@ -345,6 +498,12 @@ public class ControlSectoresEvaluaciones implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listSectoresEvaluaciones == null || listSectoresEvaluaciones.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosSectoresEvaluaciones");
             index = -1;
             secRegistro = null;
@@ -390,6 +549,9 @@ public class ControlSectoresEvaluaciones implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listSectoresEvaluaciones = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosSectoresEvaluaciones");
             k = 0;
             guardado = true;
@@ -434,7 +596,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoSectoresEvaluaciones.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Código \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoSectoresEvaluaciones.getCodigo());
@@ -455,7 +617,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
             }
         }
         if (nuevoSectoresEvaluaciones.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -490,6 +652,9 @@ public class ControlSectoresEvaluaciones implements Serializable {
             listSectoresEvaluaciones.add(nuevoSectoresEvaluaciones);
             nuevoSectoresEvaluaciones = new SectoresEvaluaciones();
             context.update("form:datosSectoresEvaluaciones");
+
+            infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -552,7 +717,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarSectoresEvaluaciones.getDescripcion());
 
         if (duplicarSectoresEvaluaciones.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listSectoresEvaluaciones.size(); x++) {
@@ -569,7 +734,7 @@ public class ControlSectoresEvaluaciones implements Serializable {
             }
         }
         if (duplicarSectoresEvaluaciones.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -591,6 +756,8 @@ public class ControlSectoresEvaluaciones implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -674,6 +841,13 @@ public class ControlSectoresEvaluaciones implements Serializable {
         if (listSectoresEvaluaciones == null) {
             listSectoresEvaluaciones = administrarSectoresEvaluaciones.consultarSectoresEvaluaciones();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSectoresEvaluaciones == null || listSectoresEvaluaciones.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
+        }
+        context.update("form:informacionRegistro");
         return listSectoresEvaluaciones;
     }
 
@@ -753,4 +927,22 @@ public class ControlSectoresEvaluaciones implements Serializable {
         this.tamano = tamano;
     }
 
+    public SectoresEvaluaciones getSectoresEvaluacionesSeleccionada() {
+        return sectoresEvaluacionesSeleccionada;
+    }
+
+    public void setSectoresEvaluacionesSeleccionada(SectoresEvaluaciones sectoresEvaluacionesSeleccionada) {
+        this.sectoresEvaluacionesSeleccionada = sectoresEvaluacionesSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    
+    
 }

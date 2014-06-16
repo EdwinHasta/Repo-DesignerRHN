@@ -107,7 +107,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
             String sqlQuery = "SELECT COUNT(*)FROM inspecciones ins WHERE ins.factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador CONTADORINSPECCIONES persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
             String sqlQuery = "SELECT COUNT(*)FROM soaccidentesmedicos soa WHERE soa.factorriesgo = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador CONTADORSOACCIDENTESMEDICOS persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -139,7 +139,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , sodetallespanoramas sop WHERE st.secuencia = sop.condiciontrabajo and sop.secuencia =?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador CONTADORSODETALLESPANORAMAS persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -155,7 +155,7 @@ public class PersistenciaSoCondicionesTrabajos implements PersistenciaSoCondicio
             String sqlQuery = "SELECT COUNT(*)FROM socondicionestrabajos st , soexposicionesfr  ser WHERE st.secuencia = ser.indicador and ser.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.out.println("Contador CONTADORSOEXPOSICIONESFR persistencia " + retorno);
             return retorno;
         } catch (Exception e) {

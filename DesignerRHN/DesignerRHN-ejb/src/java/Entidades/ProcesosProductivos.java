@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ProcesosProductivos.findAll", query = "SELECT p FROM ProcesosProductivos p")})
 public class ProcesosProductivos implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -74,16 +75,16 @@ public class ProcesosProductivos implements Serializable {
         this.secuencia = secuencia;
     }
 
-
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion == null) {
+            this.descripcion = descripcion;
+        } else {
+            this.descripcion = descripcion.toUpperCase();
+        }
     }
 
     @XmlTransient

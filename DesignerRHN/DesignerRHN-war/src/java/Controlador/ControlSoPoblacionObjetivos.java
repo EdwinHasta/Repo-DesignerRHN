@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
     private SoPoblacionObjetivos nuevoSoPoblacionObjetivos;
     private SoPoblacionObjetivos duplicarSoPoblacionObjetivos;
     private SoPoblacionObjetivos editarSoPoblacionObjetivos;
+    private SoPoblacionObjetivos soPoblacionObjetivoSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -62,6 +64,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
     private Integer backupCodigo;
     private String backupDescripcion;
     private String backupPais;
+    private String infoRegistro;
 
     public ControlSoPoblacionObjetivos() {
         listSoPoblacionObjetivos = null;
@@ -73,7 +76,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         nuevoSoPoblacionObjetivos = new SoPoblacionObjetivos();
         duplicarSoPoblacionObjetivos = new SoPoblacionObjetivos();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
     }
 
     @PostConstruct
@@ -84,11 +87,11 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             administrarSoPoblacionObjetivos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlSoPoblacionObjetivos.eventoFiltrar \n");
@@ -192,14 +195,54 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         listSoPoblacionObjetivos = null;
         guardado = true;
         permitirIndex = true;
+        getListSoPoblacionObjetivos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoPoblacionObjetivos == null || listSoPoblacionObjetivos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoPoblacionObjetivos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosSoPoblacionObjetivos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
+            bandera = 0;
+            filtrarSoPoblacionObjetivos = null;
+            tipoLista = 0;
+        }
+
+        borrarSoPoblacionObjetivos.clear();
+        crearSoPoblacionObjetivos.clear();
+        modificarSoPoblacionObjetivos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listSoPoblacionObjetivos = null;
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoPoblacionObjetivos == null || listSoPoblacionObjetivos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoPoblacionObjetivos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosSoPoblacionObjetivos");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 280;
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
             codigo.setFilterStyle("width: 20px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
@@ -209,7 +252,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
+            tamano = 270;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
@@ -360,14 +403,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarSoPoblacionObjetivos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarSoPoblacionObjetivos.get(indice).getCodigo() == listSoPoblacionObjetivos.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        for (int j = 0; j < listSoPoblacionObjetivos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarSoPoblacionObjetivos.get(indice).getCodigo() == listSoPoblacionObjetivos.get(j).getCodigo()) {
+                                if (filtrarSoPoblacionObjetivos.get(indice).getCodigo() == filtrarSoPoblacionObjetivos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
@@ -418,18 +454,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
                     } else {
                         for (int j = 0; j < filtrarSoPoblacionObjetivos.size(); j++) {
                             if (j != indice) {
-                                if (filtrarSoPoblacionObjetivos.get(indice).getCodigo() == listSoPoblacionObjetivos.get(j).getCodigo()) {
+                                if (filtrarSoPoblacionObjetivos.get(indice).getCodigo() == filtrarSoPoblacionObjetivos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
-                        for (int j = 0; j < listSoPoblacionObjetivos.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarSoPoblacionObjetivos.get(indice).getCodigo() == listSoPoblacionObjetivos.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
@@ -507,6 +537,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listSoPoblacionObjetivos == null || listSoPoblacionObjetivos.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listSoPoblacionObjetivos.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosSoPoblacionObjetivos");
             index = -1;
             secRegistro = null;
@@ -596,7 +632,9 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listSoPoblacionObjetivos = null;
-            context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosSoPoblacionObjetivos");
             k = 0;
             guardado = true;
@@ -650,7 +688,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoSoPoblacionObjetivos.getCodigo() == null) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoSoPoblacionObjetivos.getCodigo());
@@ -670,8 +708,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
                 contador++;//1
             }
         }
-        if (nuevoSoPoblacionObjetivos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoSoPoblacionObjetivos.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoSoPoblacionObjetivos.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -704,6 +746,9 @@ public class ControlSoPoblacionObjetivos implements Serializable {
 
             listSoPoblacionObjetivos.add(nuevoSoPoblacionObjetivos);
             nuevoSoPoblacionObjetivos = new SoPoblacionObjetivos();
+
+            infoRegistro = "Cantidad de registros: " + listSoPoblacionObjetivos.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosSoPoblacionObjetivos");
             if (guardado == true) {
                 guardado = false;
@@ -777,7 +822,7 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         System.err.println("ConfirmarDuplicar codigo " + duplicarSoPoblacionObjetivos.getCodigo());
 
         if (duplicarSoPoblacionObjetivos.getCodigo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listSoPoblacionObjetivos.size(); x++) {
@@ -795,8 +840,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             }
         }
 
-        if (duplicarSoPoblacionObjetivos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion \n";
+        if (duplicarSoPoblacionObjetivos.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarSoPoblacionObjetivos.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -805,7 +854,9 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         }
 
         if (contador == 2) {
-
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarSoPoblacionObjetivos.setSecuencia(l);
             System.out.println("Datos Duplicando: " + duplicarSoPoblacionObjetivos.getSecuencia() + "  " + duplicarSoPoblacionObjetivos.getCodigo());
             if (crearSoPoblacionObjetivos.contains(duplicarSoPoblacionObjetivos)) {
                 System.out.println("Ya lo contengo.");
@@ -823,6 +874,10 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+
+            infoRegistro = "Cantidad de registros: " + listSoPoblacionObjetivos.size();
+
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -908,6 +963,13 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         if (listSoPoblacionObjetivos == null) {
             listSoPoblacionObjetivos = administrarSoPoblacionObjetivos.consultarSoPoblacionObjetivos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoPoblacionObjetivos == null || listSoPoblacionObjetivos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoPoblacionObjetivos.size();
+        }
+        context.update("form:informacionRegistro");
         return listSoPoblacionObjetivos;
     }
 
@@ -986,4 +1048,21 @@ public class ControlSoPoblacionObjetivos implements Serializable {
     public void setTamano(int tamano) {
         this.tamano = tamano;
     }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public SoPoblacionObjetivos getSoPoblacionObjetivoSeleccionado() {
+        return soPoblacionObjetivoSeleccionado;
+    }
+
+    public void setSoPoblacionObjetivoSeleccionado(SoPoblacionObjetivos soPoblacionObjetivoSeleccionado) {
+        this.soPoblacionObjetivoSeleccionado = soPoblacionObjetivoSeleccionado;
+    }
+
 }
