@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +46,7 @@ public class ControlPryPlataformas implements Serializable {
     private PryPlataformas nuevoPryPlataforma;
     private PryPlataformas duplicarPryPlataforma;
     private PryPlataformas editarPryPlataforma;
+    private PryPlataformas pryPlataformaSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,6 +60,11 @@ public class ControlPryPlataformas implements Serializable {
     private int registrosBorrados;
     private String mensajeValidacion;
 
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+    private String infoRegistro;
+
     public ControlPryPlataformas() {
         listPryPlataformas = null;
         crearPryPlataformas = new ArrayList<PryPlataformas>();
@@ -68,8 +75,9 @@ public class ControlPryPlataformas implements Serializable {
         nuevoPryPlataforma = new PryPlataformas();
         duplicarPryPlataforma = new PryPlataformas();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -101,6 +109,20 @@ public class ControlPryPlataformas implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listPryPlataformas.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listPryPlataformas.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarPryPlataformas.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listPryPlataformas.get(index).getDescripcion();
+                } else {
+                    backUpDescripcion = filtrarPryPlataformas.get(index).getDescripcion();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -155,14 +177,57 @@ public class ControlPryPlataformas implements Serializable {
         listPryPlataformas = null;
         guardado = true;
         permitirIndex = true;
+        getListPryPlataformas();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listPryPlataformas == null || listPryPlataformas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosPrtPlataforma");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            observacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:observacion");
+            observacion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosPrtPlataforma");
+            bandera = 0;
+            filtrarPryPlataformas = null;
+            tipoLista = 0;
+        }
+
+        borrarPryPlataformas.clear();
+        crearPryPlataformas.clear();
+        modificarPryPlataformas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        infoRegistro = null;
+        guardado = true;
+        permitirIndex = true;
+        getListPryPlataformas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listPryPlataformas == null || listPryPlataformas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosPrtPlataforma");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
             codigo.setFilterStyle("width: 200px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:descripcion");
@@ -174,6 +239,7 @@ public class ControlPryPlataformas implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
+            tamano = 270;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:descripcion");
@@ -191,8 +257,7 @@ public class ControlPryPlataformas implements Serializable {
         System.err.println("ENTRE A MODIFICAR PRY PLATAFORMAS");
         index = indice;
 
-        int contador = 0;
-        boolean banderita = false;
+        int contador = 0, pass = 0;
         Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -203,7 +268,7 @@ public class ControlPryPlataformas implements Serializable {
                 if (!crearPryPlataformas.contains(listPryPlataformas.get(indice))) {
                     if (listPryPlataformas.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listPryPlataformas.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listPryPlataformas.size(); j++) {
                             if (j != indice) {
@@ -214,22 +279,20 @@ public class ControlPryPlataformas implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            listPryPlataformas.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
-                    if (listPryPlataformas.get(indice).getDescripcion().isEmpty()) {
+                    if (listPryPlataformas.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listPryPlataformas.get(indice).getDescripcion().equals(" ")) {
+                    } else if (listPryPlataformas.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                    } else {
+                        pass++;
                     }
-
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarPryPlataformas.isEmpty()) {
                             modificarPryPlataformas.add(listPryPlataformas.get(indice));
                         } else if (!modificarPryPlataformas.contains(listPryPlataformas.get(indice))) {
@@ -242,7 +305,44 @@ public class ControlPryPlataformas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listPryPlataformas.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listPryPlataformas.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listPryPlataformas.size(); j++) {
+                            if (j != indice) {
+                                if (listPryPlataformas.get(indice).getCodigo() == listPryPlataformas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listPryPlataformas.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            pass++;
+                        }
+
+                    }
+                    if (listPryPlataformas.get(indice).getDescripcion() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    } else if (listPryPlataformas.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -252,7 +352,7 @@ public class ControlPryPlataformas implements Serializable {
                 if (!crearPryPlataformas.contains(filtrarPryPlataformas.get(indice))) {
                     if (filtrarPryPlataformas.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarPryPlataformas.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listPryPlataformas.size(); j++) {
                             if (j != indice) {
@@ -269,24 +369,22 @@ public class ControlPryPlataformas implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            filtrarPryPlataformas.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
 
-                    if (filtrarPryPlataformas.get(indice).getDescripcion().isEmpty()) {
+                    if (filtrarPryPlataformas.get(indice).getDescripcion() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarPryPlataformas.get(indice).getDescripcion().equals(" ")) {
+                    } else if (filtrarPryPlataformas.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                    } else {
+                        pass++;
                     }
-
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarPryPlataformas.isEmpty()) {
                             modificarPryPlataformas.add(filtrarPryPlataformas.get(indice));
                         } else if (!modificarPryPlataformas.contains(filtrarPryPlataformas.get(indice))) {
@@ -299,7 +397,53 @@ public class ControlPryPlataformas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarPryPlataformas.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarPryPlataformas.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listPryPlataformas.size(); j++) {
+                            if (j != indice) {
+                                if (listPryPlataformas.get(indice).getCodigo() == listPryPlataformas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < filtrarPryPlataformas.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarPryPlataformas.get(indice).getCodigo() == filtrarPryPlataformas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            filtrarPryPlataformas.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                        } else {
+                            pass++;
+                        }
+
+                    }
+
+                    if (filtrarPryPlataformas.get(indice).getDescripcion() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    } else if (filtrarPryPlataformas.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -349,6 +493,11 @@ public class ControlPryPlataformas implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosPrtPlataforma");
             index = -1;
+            if (listPryPlataformas == null || listPryPlataformas.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
+            }
             secRegistro = null;
 
             if (guardado == true) {
@@ -403,8 +552,8 @@ public class ControlPryPlataformas implements Serializable {
         if (guardado == false) {
             System.out.println("Realizando guardarPryPlataformas");
             if (!borrarPryPlataformas.isEmpty()) {
-              administrarPryPlataformas.borrarPryPlataformas(borrarPryPlataformas);
-                
+                administrarPryPlataformas.borrarPryPlataformas(borrarPryPlataformas);
+
                 //mostrarBorrados
                 registrosBorrados = borrarPryPlataformas.size();
                 context.update("form:mostrarBorrados");
@@ -412,7 +561,7 @@ public class ControlPryPlataformas implements Serializable {
                 borrarPryPlataformas.clear();
             }
             if (!crearPryPlataformas.isEmpty()) {
-                administrarPryPlataformas.crearPryPlataformas(crearPryPlataformas);              
+                administrarPryPlataformas.crearPryPlataformas(crearPryPlataformas);
                 crearPryPlataformas.clear();
             }
             if (!modificarPryPlataformas.isEmpty()) {
@@ -422,6 +571,10 @@ public class ControlPryPlataformas implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listPryPlataformas = null;
             context.update("form:datosPrtPlataforma");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            context.update("form:datosPryCliente");
             k = 0;
             guardado = true;
         }
@@ -471,7 +624,7 @@ public class ControlPryPlataformas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoPryPlataforma.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoPryPlataforma.getCodigo());
@@ -492,7 +645,7 @@ public class ControlPryPlataformas implements Serializable {
             }
         }
         if (nuevoPryPlataforma.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -529,6 +682,8 @@ public class ControlPryPlataformas implements Serializable {
             listPryPlataformas.add(nuevoPryPlataforma);
             nuevoPryPlataforma = new PryPlataformas();
             context.update("form:datosPrtPlataforma");
+            infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -594,7 +749,7 @@ public class ControlPryPlataformas implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarPryPlataforma.getDescripcion());
 
         if (duplicarPryPlataforma.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listPryPlataformas.size(); x++) {
@@ -612,7 +767,7 @@ public class ControlPryPlataformas implements Serializable {
             }
         }
         if (duplicarPryPlataforma.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -634,6 +789,10 @@ public class ControlPryPlataformas implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+
+            infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
@@ -719,6 +878,13 @@ public class ControlPryPlataformas implements Serializable {
         if (listPryPlataformas == null) {
             listPryPlataformas = administrarPryPlataformas.mostrarPryPlataformas();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listPryPlataformas == null || listPryPlataformas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
+        }
+        context.update("form:informacionRegistro");
         return listPryPlataformas;
     }
 
@@ -788,6 +954,30 @@ public class ControlPryPlataformas implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public PryPlataformas getPryPlataformaSeleccionada() {
+        return pryPlataformaSeleccionada;
+    }
+
+    public void setPryPlataformaSeleccionada(PryPlataformas pryPlataformaSeleccionada) {
+        this.pryPlataformaSeleccionada = pryPlataformaSeleccionada;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

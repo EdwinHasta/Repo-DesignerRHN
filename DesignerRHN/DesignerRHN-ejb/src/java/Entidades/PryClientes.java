@@ -69,14 +69,16 @@ public class PryClientes implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre == null) {
+            this.nombre = nombre;
+
+        } else {
+            this.nombre = nombre.toUpperCase();
+        }
     }
 
     public String getDireccion() {
@@ -85,7 +87,7 @@ public class PryClientes implements Serializable {
 
     public void setDireccion(String direccion) {
         if (direccion == null) {
-            this.direccion = " ";
+            this.direccion = direccion;
         } else {
             this.direccion = direccion.toUpperCase();
         }
@@ -96,7 +98,11 @@ public class PryClientes implements Serializable {
     }
 
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
+        if (telefono == null) {
+            this.telefono = telefono;
+        } else {
+            this.telefono = telefono.toUpperCase();
+        }
     }
 
     public String getContacto() {

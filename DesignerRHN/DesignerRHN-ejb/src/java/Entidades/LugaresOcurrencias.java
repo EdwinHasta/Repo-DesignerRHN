@@ -3,11 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -30,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "LugaresOcurrencias.findAll", query = "SELECT l FROM LugaresOcurrencias l")})
 public class LugaresOcurrencias implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -37,11 +36,8 @@ public class LugaresOcurrencias implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Size(max = 100)
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
@@ -52,7 +48,7 @@ public class LugaresOcurrencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public LugaresOcurrencias(BigInteger secuencia, short codigo) {
+    public LugaresOcurrencias(BigInteger secuencia, Integer codigo) {
         this.secuencia = secuencia;
         this.codigo = codigo;
     }
@@ -65,11 +61,11 @@ public class LugaresOcurrencias implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -78,10 +74,14 @@ public class LugaresOcurrencias implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
+
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -89,7 +89,6 @@ public class LugaresOcurrencias implements Serializable {
         return hash;
     }
 
-    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -103,10 +102,9 @@ public class LugaresOcurrencias implements Serializable {
         return true;
     }
 
-    
     @Override
     public String toString() {
         return "Entidades.LugaresOcurrencias[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
