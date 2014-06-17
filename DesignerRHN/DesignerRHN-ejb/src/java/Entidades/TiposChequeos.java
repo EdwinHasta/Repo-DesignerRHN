@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -28,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TiposChequeos.findAll", query = "SELECT t FROM TiposChequeos t")})
 public class TiposChequeos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -36,7 +36,7 @@ public class TiposChequeos implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
@@ -47,7 +47,7 @@ public class TiposChequeos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public TiposChequeos(BigInteger secuencia, Short codigo, String descripcion) {
+    public TiposChequeos(BigInteger secuencia, Integer codigo, String descripcion) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.descripcion = descripcion;
@@ -61,11 +61,11 @@ public class TiposChequeos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -74,7 +74,11 @@ public class TiposChequeos implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion.toUpperCase();
+        }
     }
 
     @Override
@@ -101,5 +105,5 @@ public class TiposChequeos implements Serializable {
     public String toString() {
         return "Entidades.Tiposchequeos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

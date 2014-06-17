@@ -101,7 +101,7 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
             String sqlQuery = "SELECT COUNT(*) FROM soaccidentesmedicos WHERE tipoaccidente = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("TIPOSACCIDENTES CONTADORSOACCIDENTESMEDICOS  " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -114,10 +114,10 @@ public class PersistenciaTiposAccidentes implements PersistenciaTiposAccidentesI
     public BigInteger contadorAccidentes(EntityManager em, BigInteger secuencia) {
         BigInteger retorno = new BigInteger("-1");
         try {
-            String sqlQuery = "SELECT COUNT(*) FROM accidentes WHERE se.tipoaccidente = ?";
+            String sqlQuery = "SELECT COUNT(*) FROM accidentes WHERE tipoaccidente = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = new BigInteger(query.getSingleResult().toString());
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("TIPOSACCIDENTES CONTADOR DETALLES EXAMENES  " + retorno);
             return retorno;
         } catch (Exception e) {

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -41,6 +42,7 @@ public class ControlTiposDocumentos implements Serializable {
     private TiposDocumentos nuevoTiposDocumentos;
     private TiposDocumentos duplicarTiposDocumentos;
     private TiposDocumentos editarTiposDocumentos;
+    private TiposDocumentos tiposDocumentosSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -55,6 +57,8 @@ public class ControlTiposDocumentos implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private String infoRecurso;
+    private String backUpNombreLargo;
 
     public ControlTiposDocumentos() {
         listTiposDocumentos = null;
@@ -66,9 +70,9 @@ public class ControlTiposDocumentos implements Serializable {
         nuevoTiposDocumentos = new TiposDocumentos();
         duplicarTiposDocumentos = new TiposDocumentos();
         guardado = true;
-        tamano = 307;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -77,11 +81,11 @@ public class ControlTiposDocumentos implements Serializable {
             administrarTiposDocumentos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposDocumentos.eventoFiltrar \n");
@@ -100,7 +104,13 @@ public class ControlTiposDocumentos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listTiposDocumentos.get(index).getSecuencia();
-
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpNombreLargo = listTiposDocumentos.get(index).getNombrelargo();
+                } else {
+                    backUpNombreLargo = filtrarTiposDocumentos.get(index).getNombrelargo();
+                }
+            }
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -129,6 +139,7 @@ public class ControlTiposDocumentos implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
@@ -152,14 +163,55 @@ public class ControlTiposDocumentos implements Serializable {
         listTiposDocumentos = null;
         guardado = true;
         permitirIndex = true;
+        getListTiposDocumentos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDocumentos == null || listTiposDocumentos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDocumentos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposDocumentos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposDocumentos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposDocumentos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposDocumentos");
+            bandera = 0;
+            filtrarTiposDocumentos = null;
+            tipoLista = 0;
+        }
+
+        borrarTiposDocumentos.clear();
+        crearTiposDocumentos.clear();
+        modificarTiposDocumentos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposDocumentos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposDocumentos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDocumentos == null || listTiposDocumentos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDocumentos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosTiposDocumentos");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-            tamano = 285;
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposDocumentos:codigo");
             codigo.setFilterStyle("width: 220px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposDocumentos:descripcion");
@@ -169,7 +221,7 @@ public class ControlTiposDocumentos implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 307;
+            tamano = 270;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposDocumentos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposDocumentos:descripcion");
@@ -185,8 +237,7 @@ public class ControlTiposDocumentos implements Serializable {
         System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
-        int contador = 0;
-        boolean banderita = false;
+        int contador = 0, pass = 0;
 
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -194,13 +245,9 @@ public class ControlTiposDocumentos implements Serializable {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposDocumentos.contains(listTiposDocumentos.get(indice))) {
-                    if (listTiposDocumentos.get(indice).getNombrecorto() == null) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
+                    if (listTiposDocumentos.get(indice).getNombrecorto() != null) {
                         if (listTiposDocumentos.get(indice).getNombrecorto().length() > 3) {
                             mensajeValidacion = "EL NOMBRE CORTO MAXIMO DEBE TENER 3 CARACTERES";
-                            banderita = false;
                         } else {
                             for (int j = 0; j < listTiposDocumentos.size(); j++) {
                                 if (j != indice) {
@@ -211,22 +258,24 @@ public class ControlTiposDocumentos implements Serializable {
                             }
                             if (contador > 0) {
                                 mensajeValidacion = "NOMBRES CORTOS REPETIDOS";
-                                banderita = false;
                             } else {
-                                banderita = true;
+                                pass++;
                             }
                         }
+                    } else {
+                        pass++;
                     }
-                    if (listTiposDocumentos.get(indice).getNombrelargo().isEmpty()) {
+                    if (listTiposDocumentos.get(indice).getNombrelargo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listTiposDocumentos.get(indice).getNombrelargo().equals(" ")) {
+                        listTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+                    } else if (listTiposDocumentos.get(indice).getNombrelargo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarTiposDocumentos.isEmpty()) {
                             modificarTiposDocumentos.add(listTiposDocumentos.get(indice));
                         } else if (!modificarTiposDocumentos.contains(listTiposDocumentos.get(indice))) {
@@ -239,7 +288,49 @@ public class ControlTiposDocumentos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposDocumentos.get(indice).getNombrecorto() != null) {
+                        if (listTiposDocumentos.get(indice).getNombrecorto().length() > 3) {
+                            mensajeValidacion = "EL NOMBRE CORTO MAXIMO DEBE TENER 3 CARACTERES";
+                        } else {
+                            for (int j = 0; j < listTiposDocumentos.size(); j++) {
+                                if (j != indice) {
+                                    if (listTiposDocumentos.get(indice).getNombrecorto().equals(listTiposDocumentos.get(j).getNombrecorto())) {
+                                        contador++;
+                                    }
+                                }
+                            }
+                            if (contador > 0) {
+                                mensajeValidacion = "NOMBRES CORTOS REPETIDOS";
+                            } else {
+                                pass++;
+                            }
+                        }
+                    } else {
+                        pass++;
+                    }
+                    if (listTiposDocumentos.get(indice).getNombrelargo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+                    } else if (listTiposDocumentos.get(indice).getNombrelargo().isEmpty()) {
+                        listTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    } else {
+                        pass++;
+                    }
+
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -247,47 +338,38 @@ public class ControlTiposDocumentos implements Serializable {
             } else {
 
                 if (!crearTiposDocumentos.contains(filtrarTiposDocumentos.get(indice))) {
-                    if (filtrarTiposDocumentos.get(indice).getNombrecorto() == null) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
+                    if (filtrarTiposDocumentos.get(indice).getNombrecorto() != null) {
                         if (filtrarTiposDocumentos.get(indice).getNombrecorto().length() > 3) {
                             mensajeValidacion = "EL NOMBRE CORTO MAXIMO DEBE TENER 3 CARACTERES";
-                            banderita = false;
                         } else {
                             for (int j = 0; j < filtrarTiposDocumentos.size(); j++) {
                                 if (j != indice) {
-                                    if (filtrarTiposDocumentos.get(indice).getNombrecorto().equals(listTiposDocumentos.get(j).getNombrecorto())) {
-                                        contador++;
-                                    }
-                                }
-                            }
-                            for (int j = 0; j < listTiposDocumentos.size(); j++) {
-                                if (j != indice) {
-                                    if (filtrarTiposDocumentos.get(indice).getNombrecorto().equals(listTiposDocumentos.get(j).getNombrecorto())) {
+                                    if (filtrarTiposDocumentos.get(indice).getNombrecorto().equals(filtrarTiposDocumentos.get(j).getNombrecorto())) {
                                         contador++;
                                     }
                                 }
                             }
                             if (contador > 0) {
-                                mensajeValidacion = "CODIGOS CORTOS REPETIDOS";
-                                banderita = false;
+                                mensajeValidacion = "NOMBRES CORTOS REPETIDOS";
                             } else {
-                                banderita = true;
+                                pass++;
                             }
                         }
-                    }
-
-                    if (filtrarTiposDocumentos.get(indice).getNombrelargo().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                    } else {
+                        pass++;
                     }
                     if (filtrarTiposDocumentos.get(indice).getNombrelargo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+
+                    } else if (filtrarTiposDocumentos.get(indice).getNombrelargo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarTiposDocumentos.isEmpty()) {
                             modificarTiposDocumentos.add(filtrarTiposDocumentos.get(indice));
                         } else if (!modificarTiposDocumentos.contains(filtrarTiposDocumentos.get(indice))) {
@@ -300,7 +382,50 @@ public class ControlTiposDocumentos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposDocumentos.get(indice).getNombrecorto() != null) {
+                        if (filtrarTiposDocumentos.get(indice).getNombrecorto().length() > 3) {
+                            mensajeValidacion = "EL NOMBRE CORTO MAXIMO DEBE TENER 3 CARACTERES";
+                        } else {
+                            for (int j = 0; j < filtrarTiposDocumentos.size(); j++) {
+                                if (j != indice) {
+                                    if (filtrarTiposDocumentos.get(indice).getNombrecorto().equals(filtrarTiposDocumentos.get(j).getNombrecorto())) {
+                                        contador++;
+                                    }
+                                }
+                            }
+                            if (contador > 0) {
+                                mensajeValidacion = "NOMBRES CORTOS REPETIDOS";
+                            } else {
+                                pass++;
+                            }
+                        }
+                    } else {
+                        pass++;
+                    }
+                    if (filtrarTiposDocumentos.get(indice).getNombrelargo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+
+                    } else if (filtrarTiposDocumentos.get(indice).getNombrelargo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposDocumentos.get(indice).setNombrelargo(backUpNombreLargo);
+                    } else {
+                        pass++;
+                    }
+
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -348,6 +473,12 @@ public class ControlTiposDocumentos implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listTiposDocumentos == null || listTiposDocumentos.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listTiposDocumentos.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosTiposDocumentos");
             index = -1;
             secRegistro = null;
@@ -427,7 +558,9 @@ public class ControlTiposDocumentos implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listTiposDocumentos = null;
             context.update("form:datosTiposDocumentos");
-                context.execute("mostrarGuardar.show()");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             k = 0;
             guardado = true;
         }
@@ -469,29 +602,23 @@ public class ControlTiposDocumentos implements Serializable {
 
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoTiposDocumentos.getNombrecorto() == null) {
-            mensajeValidacion = " *debe tener un nombre corto\n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-        } else {
-            System.out.println("nuevo nombre corto  " + nuevoTiposDocumentos.getNombrecorto());
-            if (nuevoTiposDocumentos.getNombrecorto().length() > 3) {
-                mensajeValidacion = " *el nombre corto maximo debe tener 3 caracteres \n";
-                System.out.println("Mensaje validacion : " + mensajeValidacion);
-            } else {
-                for (int i = 0; i < listTiposDocumentos.size(); i++) {
-                    if (nuevoTiposDocumentos.getNombrecorto().equals(listTiposDocumentos.get(i).getNombrecorto())) {
-                        duplicados++;
-                    }
-                }
-                if (duplicados == 0) {
-                    contador++;
-                } else {
-                    mensajeValidacion = "Nombre Corto repetido";
+        if (nuevoTiposDocumentos.getNombrecorto() != null) {
+            for (int i = 0; i < listTiposDocumentos.size(); i++) {
+                if (nuevoTiposDocumentos.getNombrecorto().equals(listTiposDocumentos.get(i).getNombrecorto())) {
+                    duplicados++;
                 }
             }
+            if (duplicados == 0) {
+                contador++;
+            } else {
+                mensajeValidacion = "Nombre Corto repetido";
+            }
+        } else {
+            contador++;
         }
+
         if (nuevoTiposDocumentos.getNombrelargo() == null) {
-            mensajeValidacion = mensajeValidacion + " *debe tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -526,6 +653,9 @@ public class ControlTiposDocumentos implements Serializable {
             listTiposDocumentos.add(nuevoTiposDocumentos);
             nuevoTiposDocumentos = new TiposDocumentos();
             context.update("form:datosTiposDocumentos");
+
+            infoRegistro = "Cantidad de registros: " + listTiposDocumentos.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -586,29 +716,23 @@ public class ControlTiposDocumentos implements Serializable {
 
         System.err.println("ConfirmarDuplicar Nombre Corto " + duplicarTiposDocumentos.getNombrecorto());
         System.err.println("ConfirmarDuplicar Nombre Largo " + duplicarTiposDocumentos.getNombrelargo());
-
-        if (duplicarTiposDocumentos.getNombrecorto() == null) {
-            mensajeValidacion = mensajeValidacion + "   * nombre corto \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-        } else {
-            if (duplicarTiposDocumentos.getNombrecorto().length() > 3) {
-                mensajeValidacion = " *El nombre corto debe tener maximo 3 caracteres \n";
-                System.out.println("Mensaje validacion : " + mensajeValidacion);
-            } else {
-                for (int i = 0; i < listTiposDocumentos.size(); i++) {
-                    if (duplicarTiposDocumentos.getNombrecorto().equals(listTiposDocumentos.get(i).getNombrecorto())) {
-                        duplicados++;
-                    }
-                }
-                if (duplicados == 0) {
-                    contador++;
-                } else {
-                    mensajeValidacion = "Nombre Corto repetido";
+        if (duplicarTiposDocumentos.getNombrecorto() != null) {
+            for (int i = 0; i < listTiposDocumentos.size(); i++) {
+                if (duplicarTiposDocumentos.getNombrecorto().equals(listTiposDocumentos.get(i).getNombrecorto())) {
+                    duplicados++;
                 }
             }
+            if (duplicados == 0) {
+                contador++;
+            } else {
+                mensajeValidacion = "Nombre Corto repetido";
+            }
+        } else {
+            contador++;
         }
+
         if (duplicarTiposDocumentos.getNombrelargo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripcion  \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion  \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -617,7 +741,9 @@ public class ControlTiposDocumentos implements Serializable {
         }
 
         if (contador == 2) {
-
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarTiposDocumentos.setSecuencia(l);
             if (crearTiposDocumentos.contains(duplicarTiposDocumentos)) {
                 System.out.println("Ya lo contengo.");
             }
@@ -629,6 +755,9 @@ public class ControlTiposDocumentos implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+
+            infoRegistro = "Cantidad de registros: " + listTiposDocumentos.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -713,6 +842,13 @@ public class ControlTiposDocumentos implements Serializable {
         if (listTiposDocumentos == null) {
             listTiposDocumentos = administrarTiposDocumentos.consultarTiposDocumentos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposDocumentos == null || listTiposDocumentos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposDocumentos.size();
+        }
+        context.update("form:informacionRegistro");
         return listTiposDocumentos;
     }
 
@@ -790,6 +926,22 @@ public class ControlTiposDocumentos implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public TiposDocumentos getTiposDocumentosSeleccionado() {
+        return tiposDocumentosSeleccionado;
+    }
+
+    public void setTiposDocumentosSeleccionado(TiposDocumentos tiposDocumentosSeleccionado) {
+        this.tiposDocumentosSeleccionado = tiposDocumentosSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

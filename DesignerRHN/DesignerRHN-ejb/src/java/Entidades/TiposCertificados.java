@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class TiposCertificados implements Serializable {
 
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipocertificado")
     private Collection<OtrosCertificados> otroscertificadosCollection;
     private static final long serialVersionUID = 1L;
@@ -67,7 +67,11 @@ public class TiposCertificados implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     @Override
@@ -104,11 +108,11 @@ public class TiposCertificados implements Serializable {
         this.otroscertificadosCollection = otroscertificadosCollection;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 }

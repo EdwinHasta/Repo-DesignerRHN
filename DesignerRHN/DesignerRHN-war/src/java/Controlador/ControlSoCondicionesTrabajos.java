@@ -667,6 +667,11 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            nuevoSoCondicionesTrabajos.setFuente(" ");
+            nuevoSoCondicionesTrabajos.setEfectoagudo(" ");
+            nuevoSoCondicionesTrabajos.setEfectocronico(" ");
+            nuevoSoCondicionesTrabajos.setObservacion(" ");
+            nuevoSoCondicionesTrabajos.setRecomendacion(" ");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -781,7 +786,11 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         }
 
         if (contador == 2) {
-
+            duplicarSoCondicionesTrabajos.setFuente(" ");
+            duplicarSoCondicionesTrabajos.setEfectoagudo(" ");
+            duplicarSoCondicionesTrabajos.setEfectocronico(" ");
+            duplicarSoCondicionesTrabajos.setObservacion(" ");
+            duplicarSoCondicionesTrabajos.setRecomendacion(" ");
             System.out.println("Datos Duplicando: " + duplicarSoCondicionesTrabajos.getSecuencia() + "  " + duplicarSoCondicionesTrabajos.getCodigo());
             if (crearSoCondicionesTrabajos.contains(duplicarSoCondicionesTrabajos)) {
                 System.out.println("Ya lo contengo.");

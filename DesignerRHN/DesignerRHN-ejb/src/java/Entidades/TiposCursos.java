@@ -75,14 +75,15 @@ public class TiposCursos implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion == null) {
+            this.descripcion = descripcion;
+        } else {
+            this.descripcion = descripcion.toUpperCase();
+        }
     }
 
     @XmlTransient
