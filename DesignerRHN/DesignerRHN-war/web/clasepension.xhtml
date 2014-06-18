@@ -17,8 +17,12 @@
                             <legend style="font-size: 14px; color: blue"><strong>Clase Pensión</strong></legend>
 
                             <p:dataTable id="datosClasesPensiones" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
-                                         value="#{controlClasesPensiones.listClasesPensiones}" scrollable="true" scrollHeight="#{controlClasesPensiones.tamano}"  scrollWidth="830"
-                                         filteredValue="#{controlClasesPensiones.filtrarClasesPensiones}" emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         value="#{controlClasesPensiones.listClasesPensiones}" 
+                                         scrollable="true"
+                                         scrollHeight="#{controlClasesPensiones.tamano}"
+                                         scrollWidth="830"
+                                         filteredValue="#{controlClasesPensiones.filtrarClasesPensiones}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
                                          editable="true" editMode="cell" paginator="false" 
                                          selection="#{controlClasesPensiones.clasesPensionesSeleccionado}"
                                          selectionMode="single"
@@ -243,7 +247,7 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Clase Pension" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
-                            <strong><h:outputText value="*código: "  style=" position: absolute; top: 60px;" /></strong>
+                            <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
                             <p:inputText id="duplicarCodigo" value="#{controlClasesPensiones.duplicarClasesPensiones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>

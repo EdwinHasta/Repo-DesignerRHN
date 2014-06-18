@@ -5,9 +5,9 @@
  */
 package Controlador;
 
-import Entidades.Empleados;
 import Entidades.HVHojasDeVida;
 import Entidades.HvReferencias;
+import Entidades.Personas;
 import Entidades.TiposFamiliares;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -49,6 +50,7 @@ public class ControlHvReferencias1 implements Serializable {
     private HvReferencias nuevoHvReferencia1;
     private HvReferencias duplicarHvReferencia1;
     private HvReferencias editarHvReferencia1;
+    private HvReferencias hvReferencia1Seleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -61,9 +63,9 @@ public class ControlHvReferencias1 implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigInteger secuenciaEmpleado;
+    private BigInteger secuenciaPersona;
 //Empleado
-    private Empleados empleadoSeleccionado;
+    private Personas personaSeleccionada;
 //otros
     private HVHojasDeVida hvHojasDeVida;
     private List<HVHojasDeVida> listHvHojasDeVida;
@@ -73,6 +75,11 @@ public class ControlHvReferencias1 implements Serializable {
     private List<TiposFamiliares> filtradoTiposFamiliares;
     private TiposFamiliares tipoFamiliarSeleccionado;
     private String nuevoParentesco;
+    private String infoRegistro;
+    private String infoRegistroParentesco;
+    private int tamano;
+    private String backUpNombre;
+    private Long backUpTelefono;
 
     public ControlHvReferencias1() {
         listHvReferencias1 = null;
@@ -84,15 +91,17 @@ public class ControlHvReferencias1 implements Serializable {
         editarHvReferencia1 = new HvReferencias();
         nuevoHvReferencia1 = new HvReferencias();
         duplicarHvReferencia1 = new HvReferencias();
-        empleadoSeleccionado = null;
-        secuenciaEmpleado = null;
+        personaSeleccionada = null;
+        secuenciaPersona = null;
         listHvHojasDeVida = new ArrayList<HVHojasDeVida>();
         listaTiposFamiliares = null;
         filtradoTiposFamiliares = null;
         tipoLista = 0;
+        tamano = 270;
+        aceptar = true;
 
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -112,10 +121,10 @@ public class ControlHvReferencias1 implements Serializable {
             System.out.println("ERROR EN RECIVIR LA SECUENCIA DEL EMPLEADO EN ControlHvReferencias");
             //  sec = BigInteger.valueOf(10661039);
         }
-        secuenciaEmpleado = sec;
+        secuenciaPersona = sec;
         listHvReferencias1 = null;
-        empleadoSeleccionado = null;
-        getEmpleadoSeleccionado();
+        personaSeleccionada = null;
+        getPersonaSeleccionada();
         getListHvReferencias1();
     }
 
@@ -165,6 +174,21 @@ public class ControlHvReferencias1 implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listHvReferencias1.get(index).getSecuencia();
+
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpNombre = listHvReferencias1.get(index).getNombrepersona();
+                } else {
+                    backUpNombre = filtrarHvReferencias1.get(index).getNombrepersona();
+                }
+            }
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpTelefono = listHvReferencias1.get(index).getTelefono();
+                } else {
+                    backUpTelefono = filtrarHvReferencias1.get(index).getTelefono();
+                }
+            }
 
             if (cualCelda == 4) {
                 if (tipoLista == 0) {
@@ -249,13 +273,61 @@ public class ControlHvReferencias1 implements Serializable {
         listHvReferencias1 = null;
         guardado = true;
         permitirIndex = true;
+        getListHvReferencias1();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listHvReferencias1 == null || listHvReferencias1.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosHvReferencia");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+            nombre.setFilterStyle("display: none; visibility: hidden;");
+            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+            cargo.setFilterStyle("display: none; visibility: hidden;");
+            numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+            numTelefono.setFilterStyle("display: none; visibility: hidden;");
+            numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+            numCelular.setFilterStyle("display: none; visibility: hidden;");
+            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:parentesco");
+            parentesco.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosHvReferencia");
+            bandera = 0;
+            filtrarHvReferencias1 = null;
+            tipoLista = 0;
+        }
+
+        borrarHvReferencias1.clear();
+        crearHvReferencias1.clear();
+        modificarHvReferencias1.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listHvReferencias1 = null;
+        guardado = true;
+        permitirIndex = true;
+        getListHvReferencias1();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listHvReferencias1 == null || listHvReferencias1.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosHvReferencia");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
+            tamano = 246;
             nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
             nombre.setFilterStyle("width: 200px");
             cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
@@ -270,6 +342,7 @@ public class ControlHvReferencias1 implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
             System.out.println("Desactivar");
             nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
@@ -377,8 +450,7 @@ public class ControlHvReferencias1 implements Serializable {
     public void modificarHvrReferencia1(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
         int coincidencias = 0;
-        int indiceUnicoElemento = 0;
-        boolean banderita = false;
+        int indiceUnicoElemento = 0, pass = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("N")) {
@@ -386,17 +458,22 @@ public class ControlHvReferencias1 implements Serializable {
             if (tipoLista == 0) {
                 if (!crearHvReferencias1.contains(listHvReferencias1.get(indice))) {
 
-                    if (listHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
+                    if (listHvReferencias1.get(indice).getNombrepersona() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (listHvReferencias1.get(indice).getNombrepersona().equals(" ")) {
+                        listHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else if (listHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listHvReferencias1.get(indice).setNombrepersona(backUpNombre);
                     } else {
-                        banderita = true;
+                        pass++;
                     }
-
-                    if (banderita == true) {
+                    if (listHvReferencias1.get(indice).getTelefono() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listHvReferencias1.get(indice).setTelefono(backUpTelefono);
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
                         if (modificarHvReferencias1.isEmpty()) {
                             modificarHvReferencias1.add(listHvReferencias1.get(indice));
                         } else if (!modificarHvReferencias1.contains(listHvReferencias1.get(indice))) {
@@ -409,7 +486,34 @@ public class ControlHvReferencias1 implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listHvReferencias1.get(indice).getNombrepersona() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else if (listHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else {
+                        pass++;
+                    }
+                    if (listHvReferencias1.get(indice).getTelefono() == null) {
+                        listHvReferencias1.get(indice).setTelefono(backUpTelefono);
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -417,16 +521,22 @@ public class ControlHvReferencias1 implements Serializable {
             } else {
 
                 if (!crearHvReferencias1.contains(filtrarHvReferencias1.get(indice))) {
-                    if (filtrarHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
+                    if (filtrarHvReferencias1.get(indice).getNombrepersona() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarHvReferencias1.get(indice).getNombrepersona().equals(" ")) {
+                        filtrarHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else if (filtrarHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else {
+                        pass++;
                     }
-
-                    if (banderita == true) {
+                    if (filtrarHvReferencias1.get(indice).getTelefono() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarHvReferencias1.get(indice).setTelefono(backUpTelefono);
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
                         if (modificarHvReferencias1.isEmpty()) {
                             modificarHvReferencias1.add(filtrarHvReferencias1.get(indice));
                         } else if (!modificarHvReferencias1.contains(filtrarHvReferencias1.get(indice))) {
@@ -439,7 +549,36 @@ public class ControlHvReferencias1 implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarHvReferencias1.get(indice).getNombrepersona() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else if (filtrarHvReferencias1.get(indice).getNombrepersona().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarHvReferencias1.get(indice).setNombrepersona(backUpNombre);
+                    } else {
+                        pass++;
+                    }
+                    if (filtrarHvReferencias1.get(indice).getTelefono() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarHvReferencias1.get(indice).setTelefono(backUpTelefono);
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+
                     }
                     index = -1;
                     secRegistro = null;
@@ -622,6 +761,12 @@ public class ControlHvReferencias1 implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listHvReferencias1 == null || listHvReferencias1.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosHvReferencia");
             index = -1;
             secRegistro = null;
@@ -710,6 +855,10 @@ public class ControlHvReferencias1 implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listHvReferencias1 = null;
             context.update("form:datosHvReferencia");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+
             k = 0;
         }
         index = -1;
@@ -853,9 +1002,11 @@ public class ControlHvReferencias1 implements Serializable {
                     duplicarHvReferencia1.setParentesco(new TiposFamiliares());
                     System.out.println("NUEVO PARENTESCO " + nuevoParentesco);
                     if (tipoLista == 0) {
-                        listHvReferencias1.get(index).getParentesco().setTipo(nuevoParentesco);
-                        System.err.println("tipo lista" + tipoLista);
-                        System.err.println("Secuencia Parentesco " + listHvReferencias1.get(index).getParentesco().getSecuencia());
+                        if (index >= 0) {
+                            listHvReferencias1.get(index).getParentesco().setTipo(nuevoParentesco);
+                            System.err.println("tipo lista" + tipoLista);
+                            System.err.println("Secuencia Parentesco " + listHvReferencias1.get(index).getParentesco().getSecuencia());
+                        }
                     } else if (tipoLista == 1) {
                         filtrarHvReferencias1.get(index).getParentesco().setTipo(nuevoParentesco);
                     }
@@ -890,21 +1041,21 @@ public class ControlHvReferencias1 implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (nuevoHvReferencia1.getNombrepersona() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("bandera");
             contador++;
         }
-        /*if (nuevoHvEntrevista.getTipo() == (null)) {
-         mensajeValidacion = mensajeValidacion + " *Debe tener un tipo entrevista \n";
-         System.out.println("Mensaje validacion : " + mensajeValidacion);
-         } else {
-         System.out.println("bandera");
-         contador++;
-         }*/
+        if (nuevoHvReferencia1.getTelefono() == (null)) {
+            mensajeValidacion = mensajeValidacion + " *Telefono \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+        } else {
+            System.out.println("bandera");
+            contador++;
+        }
 
-        listHvHojasDeVida = administrarHvReferencias1.consultarHvHojasDeVida(secuenciaEmpleado);
+        listHvHojasDeVida = administrarHvReferencias1.consultarHvHojasDeVida(secuenciaPersona);
         if (listHvHojasDeVida == null) {
             System.err.println("ERROR NULO HVHOJASDEVIDA");
         } else {
@@ -918,7 +1069,7 @@ public class ControlHvReferencias1 implements Serializable {
         System.err.println("agregar tipo entrevista " + nuevoHvReferencia1.getTipo());
         System.out.println("contador " + contador);
 
-        if (contador == 1) {
+        if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -955,6 +1106,8 @@ public class ControlHvReferencias1 implements Serializable {
             nuevoHvReferencia1 = new HvReferencias();
             nuevoHvReferencia1.setParentesco(new TiposFamiliares());
             context.update("form:datosHvReferencia");
+            infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1022,15 +1175,23 @@ public class ControlHvReferencias1 implements Serializable {
         int contador = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (duplicarHvReferencia1.getNombrepersona().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un nombre \n";
+        if (duplicarHvReferencia1.getNombrepersona() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
             System.out.println("Bandera : ");
             contador++;
         }
-        if (contador == 1) {
+        if (duplicarHvReferencia1.getTelefono() == null) {
+            mensajeValidacion = mensajeValidacion + "*Telefono \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else {
+            System.out.println("Bandera : ");
+            contador++;
+        }
+        if (contador == 2) {
 
             if (crearHvReferencias1.contains(duplicarHvReferencia1)) {
                 System.out.println("Ya lo contengo.");
@@ -1053,6 +1214,8 @@ public class ControlHvReferencias1 implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
+            context.update("form:informacionRegistro");
 
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -1142,8 +1305,15 @@ public class ControlHvReferencias1 implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<HvReferencias> getListHvReferencias1() {
         if (listHvReferencias1 == null) {
-            listHvReferencias1 = administrarHvReferencias1.consultarHvReferenciasFamiliaresPorEmpleado(secuenciaEmpleado);
+            listHvReferencias1 = administrarHvReferencias1.consultarHvReferenciasFamiliaresPorPersona(secuenciaPersona);
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listHvReferencias1 == null || listHvReferencias1.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
+        }
+        context.update("form:informacionRegistro");
         return listHvReferencias1;
     }
 
@@ -1199,21 +1369,25 @@ public class ControlHvReferencias1 implements Serializable {
         this.registrosBorrados = registrosBorrados;
     }
 
-    public Empleados getEmpleadoSeleccionado() {
-        if (empleadoSeleccionado == null) {
-            empleadoSeleccionado = administrarHvReferencias1.consultarEmpleado(secuenciaEmpleado);
-        }
-        return empleadoSeleccionado;
+    public BigInteger getSecuenciaPersona() {
+        return secuenciaPersona;
     }
 
-    public void setEmpleadoSeleccionado(Empleados empleadoSeleccionado) {
-        this.empleadoSeleccionado = empleadoSeleccionado;
+    public void setSecuenciaPersona(BigInteger secuenciaPersona) {
+        this.secuenciaPersona = secuenciaPersona;
     }
 
     public List<TiposFamiliares> getListaTiposFamiliares() {
         if (listaTiposFamiliares == null) {
             listaTiposFamiliares = administrarHvReferencias1.consultarLOVTiposFamiliares();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaTiposFamiliares == null || listaTiposFamiliares.isEmpty()) {
+            infoRegistroParentesco = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroParentesco = "Cantidad de registros: " + listaTiposFamiliares.size();
+        }
+        context.update("form:infoRegistroParentesco");
         return listaTiposFamiliares;
     }
 
@@ -1257,8 +1431,59 @@ public class ControlHvReferencias1 implements Serializable {
         return guardado;
     }
 
+    public Personas getPersonaSeleccionada() {
+        if (personaSeleccionada == null) {
+            personaSeleccionada = administrarHvReferencias1.consultarPersonas(secuenciaPersona);
+        }
+        return personaSeleccionada;
+    }
+
+    public void setPersonaSeleccionada(Personas personaSeleccionada) {
+        this.personaSeleccionada = personaSeleccionada;
+    }
+
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public HvReferencias getHvReferencia1Seleccionada() {
+        return hvReferencia1Seleccionada;
+    }
+
+    public void setHvReferencia1Seleccionada(HvReferencias hvReferencia1Seleccionada) {
+        this.hvReferencia1Seleccionada = hvReferencia1Seleccionada;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroParentesco() {
+        return infoRegistroParentesco;
+    }
+
+    public void setInfoRegistroParentesco(String infoRegistroParentesco) {
+        this.infoRegistroParentesco = infoRegistroParentesco;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

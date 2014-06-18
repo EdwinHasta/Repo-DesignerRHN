@@ -34,23 +34,19 @@
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['codigo']}"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="#{msg['descripcion']}" sortBy="#{info.descripcion}" filterBy="#{info.descripcion}" filterMatchMode="contains" id="descripcion" width="250" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.descripcion}" id="editarNombre" style="  border-radius: 0px; width: 99%; text-transform: uppercase;height: 12px;"  > 
+                                            <p:inputText value="#{info.descripcion}" maxlength="100" id="editarNombre" style="  border-radius: 0px; width: 99%; text-transform: uppercase;height: 12px;"  > 
                                                 <p:ajax event="select" listener="#{controlProcesosProductivos.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlProcesosProductivos.modificarProcesosProductivos(indice, 'N', info.descripcion)}" update="descripcion"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                    <f:facet name="footer">
-                                        <h:outputText value="#{msg['descripcion']}"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="#{msg['centroCosto']}" sortBy="#{info.centrocosto.nombre}" filterBy="#{info.centrocosto.nombre}" filterMatchMode="contains" id="personafir" width="250" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
@@ -64,7 +60,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 340px; margin: -14px; height: 26px;  border: none; color: blue" id="fooCiudad"  value="#{msg['centroCosto']}"/>
+                                        <p:commandButton value="" style="width: 780px; margin: -14px; height: 20px; border: none; color: blue;" id="fooCiudad" />
                                     </f:facet>
                                 </p:column>
 
@@ -115,10 +111,16 @@
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlProcesosProductivos.verificarRastro()}" process="@this"/>  
                                 <p:tooltip style="" for="rastro" value="#{msg['rastro']}"/>
 
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlProcesosProductivos.cancelarModificacion()}"  process="@this"/>  
+                                <p:tooltip  for="refrescar" value="Refrescar"/>
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlProcesosProductivos.salir()}" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
+
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 470px; " icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlProcesosProductivos.cancelarModificacion()}"  value="#{msg['refrescar']}" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlProcesosProductivos.infoRegistro}" style="position: absolute; left: 15px; top: 485px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlProcesosProductivos.revisarDialogoGuardar()}" disabled="#{controlProcesosProductivos.guardado}"    process="@this"   />
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}"    />
 
@@ -150,8 +152,11 @@
                                     <h:outputText value="#{centrosCostosD.nombre}" />
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovCentrosCostos.clearFilters();"  actionListener="#{controlProcesosProductivos.actualizarCentrosCostos()}" update="lovCentrosCostos, aceptarPer" process="@this" icon="ui-icon-arrowreturnthick-1-w"
-                                             >
+
+
+                            <h:outputText id="infoRegistroCentroCostos" value="#{controlProcesosProductivos.infoRegistroCentroCostos}" style="position: absolute; left: 15px; top: 380px; font-weight: bold"/>
+
+                            <p:commandButton id="aceptarPer" style="position: relative; left: 283px" value="#{msg['aceptar']}"  onclick="personasDialogo.hide(), lovCentrosCostos.clearFilters();" disabled="#{controlProcesosProductivos.aceptar}" actionListener="#{controlProcesosProductivos.actualizarCentrosCostos()}" update="lovCentrosCostos, aceptarPer" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                                 <p:resetInput target=":form:lovCentrosCostos:globalFilter"/>
                             </p:commandButton>
                             <p:commandButton id="atrasPer" style="position: relative; left: 283px" value="#{msg['atras']}"  actionListener="#{controlProcesosProductivos.cancelarCambioCentrosCostos()}" onclick="personasDialogo.hide();
@@ -165,7 +170,7 @@
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlProcesosProductivos.guardarProcesosProductivos()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlProcesosProductivos.guardarProcesosProductivos()}"  style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlProcesosProductivos.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
@@ -275,26 +280,27 @@
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute;left: 10px; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlProcesosProductivos.nuevoProcesosProductivos.codigo}" style=" width: 135px; position: absolute; left: 125px; top: 55px;">
+                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute;left: 10px; top: 60px" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlProcesosProductivos.nuevoProcesosProductivos.codigo}" style=" width: 135px; position: absolute; left: 125px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="#{msg['codigoNN']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']}"  style=" position: absolute;left: 10px; top: 90px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlProcesosProductivos.nuevoProcesosProductivos.descripcion}" style=" width: 135px; position: absolute; left: 125px; top: 85px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['descripcionN']}"  style=" position: absolute;left: 10px; top: 90px" /></strong>
+                            <p:inputText  id="nuevoNombre"  maxlength="100"  value="#{controlProcesosProductivos.nuevoProcesosProductivos.descripcion}" style=" width: 135px; position: absolute; left: 125px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
+                            <p:watermark for="nuevoNombre" value="#{msg['descripcionNN']}" />
 
-                            <strong><h:outputText value="#{msg['centroCostoN']}"  style=" position: absolute;left: 10px; top: 120px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="#{msg['centroCostoN']}"  style=" position: absolute;left: 10px; top: 120px" /></strong>
                             <p:inputText  id="nuevoPersona" value="#{controlProcesosProductivos.nuevoProcesosProductivos.centrocosto.nombre}" style=" width: 135px; position: absolute; left: 125px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlProcesosProductivos.valoresBackupAutocompletar(1,'PERSONA')}" />
                                 <p:ajax event="change" listener="#{controlProcesosProductivos.autocompletarNuevo('PERSONA',controlProcesosProductivos.nuevoProcesosProductivos.centrocosto.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlProcesosProductivos.asignarVariableCentrosCostos(0)}" />
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 270px; top: 115px;  " id="btnnuevoPersonaFirma" icon="ui-icon-search" process="@this"  actionListener="#{controlProcesosProductivos.asignarVariableCentrosCostos(0)}"/>   
-                            <p:watermark for="nuevoPersona" value="#{msg['descripcionNN']}" />
- 
+                            <p:watermark for="nuevoPersona" value="#{msg['centroCostoNN']}" />
+
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 10px; top: 160px;"  actionListener="#{controlProcesosProductivos.limpiarNuevoProcesosProductivos()}" update="nuevaTipoempresa" process="@this" icon="ui-icon-trash"/>
                             <p:commandButton id="agregarTE" value="#{msg['agregar']}" style=" position: absolute; left: 120px; top: 160px;" actionListener="#{controlProcesosProductivos.agregarNuevoProcesosProductivos()}" process="@this" icon="ui-icon-circle-check"/>
                             <p:commandButton id="cancelarTE" value="#{msg['cancelar']}" style=" position: absolute; left: 210px; top: 160px;"  update="nuevaTipoempresa" onclick="nuevoRegistroProcesosProductivos.hide();"  actionListener="#{controlProcesosProductivos.limpiarNuevoProcesosProductivos()}"  process="@this" icon="ui-icon-circle-close"/>
@@ -308,20 +314,20 @@
 
                         <p:panel id="duplicarTE" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute;left: 10px; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlProcesosProductivos.duplicarProcesosProductivos.codigo}" style=" width: 135px; position: absolute; left: 125px; top: 55px;">
+                            <strong><h:outputText value="#{msg['codigoN']}"  style=" position: absolute;left: 10px; top: 60px" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlProcesosProductivos.duplicarProcesosProductivos.codigo}" style=" width: 135px; position: absolute; left: 125px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="#{msg['codigoNN']}" />
 
-                            <strong><h:outputText value="#{msg['descripcionN']} "  style=" position: absolute;left: 10px; top: 90px;text-transform: uppercase" /></strong>
+                            <strong><h:outputText value="#{msg['descripcionN']} "  style=" position: absolute;left: 10px; top: 90px" /></strong>
                             <p:inputText  id="duplicarNombre" value="#{controlProcesosProductivos.duplicarProcesosProductivos.descripcion}" style=" width: 135px; position: absolute; left: 125px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="#{msg['descripcionNN']}" />
 
-                            <strong><h:outputText value="#{msg['centroCostoN']}"  style=" position: absolute;left: 10px; top: 120px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarPersona" value="#{controlProcesosProductivos.duplicarProcesosProductivos.centrocosto.nombre}"  style=" width: 135px; position: absolute; left: 125px; top: 115px;" >
+                            <strong><h:outputText value="#{msg['centroCostoN']}"  style=" position: absolute;left: 10px; top: 120px" /></strong>
+                            <p:inputText id="duplicarPersona" maxlength="100"  value="#{controlProcesosProductivos.duplicarProcesosProductivos.centrocosto.nombre}"  style=" width: 135px; position: absolute; left: 125px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlProcesosProductivos.valoresBackupAutocompletar(2,'PERSONA')}" />
                                 <p:ajax event="change" listener="#{controlProcesosProductivos.autocompletarDuplicado('PERSONA', controlProcesosProductivos.duplicarProcesosProductivos.centrocosto.nombre , 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlProcesosProductivos.asignarVariableCentrosCostos(1)}" />

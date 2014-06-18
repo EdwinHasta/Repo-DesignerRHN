@@ -1,16 +1,14 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Controlador;
 
 import Entidades.SoCondicionesTrabajos;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarSoCondicionesTrabajosInterface;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -18,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -44,9 +43,10 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     private List<SoCondicionesTrabajos> crearSoCondicionesTrabajos;
     private List<SoCondicionesTrabajos> modificarSoCondicionesTrabajos;
     private List<SoCondicionesTrabajos> borrarSoCondicionesTrabajos;
-    private SoCondicionesTrabajos nuevaSoCondicionTrabajo;
-    private SoCondicionesTrabajos duplicarSoCondicionTrabajo;
-    private SoCondicionesTrabajos editarSoCondicionTrabajo;
+    private SoCondicionesTrabajos nuevoSoCondicionesTrabajos;
+    private SoCondicionesTrabajos duplicarSoCondicionesTrabajos;
+    private SoCondicionesTrabajos editarSoCondicionesTrabajos;
+    private SoCondicionesTrabajos condicionTrabajoSeleccionada;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -55,14 +55,15 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column codigo, factorriesgo;
+    private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigInteger verificarSoAccidentesMedicos;
-    private BigInteger verificarSoExposicionesFr;
-    private BigInteger verificarSoDetallesPanoramas;
-    private BigInteger verificarInspecciones;
+    //filtrado table
+    private int tamano;
+    private String backUpDescripcion;
+    private String infoRegistro;
+    private Integer backUpCodigo;
 
     public ControlSoCondicionesTrabajos() {
         listSoCondicionesTrabajos = null;
@@ -70,11 +71,13 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         modificarSoCondicionesTrabajos = new ArrayList<SoCondicionesTrabajos>();
         borrarSoCondicionesTrabajos = new ArrayList<SoCondicionesTrabajos>();
         permitirIndex = true;
-        editarSoCondicionTrabajo = new SoCondicionesTrabajos();
-        nuevaSoCondicionTrabajo = new SoCondicionesTrabajos();
-        duplicarSoCondicionTrabajo = new SoCondicionesTrabajos();
+        editarSoCondicionesTrabajos = new SoCondicionesTrabajos();
+        nuevoSoCondicionesTrabajos = new SoCondicionesTrabajos();
+        duplicarSoCondicionesTrabajos = new SoCondicionesTrabajos();
+        guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -83,19 +86,19 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             administrarSoCondicionesTrabajos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
 
     public void eventoFiltrar() {
         try {
-            System.out.println("\n EVENTO FILTRAR \n");
+            System.out.println("\n ENTRE A ControlSoCondicionesTrabajos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlSoCondicionesTrabajos eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -106,6 +109,20 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listSoCondicionesTrabajos.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listSoCondicionesTrabajos.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarSoCondicionesTrabajos.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listSoCondicionesTrabajos.get(index).getFactorriesgo();
+                } else {
+                    backUpDescripcion = filtrarSoCondicionesTrabajos.get(index).getFactorriesgo();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -113,7 +130,7 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE CONTROLSOCONDICIONESTRABAJOS  AsignarIndex \n");
+            System.out.println("\n ENTRE A ControlSoCondicionesTrabajos.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -125,7 +142,7 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR CONTROLSOCONDICIONESTRABAJOS asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlSoCondicionesTrabajos.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -141,8 +158,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             //CERRAR FILTRADO
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            factorriesgo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:factorriesgo");
-            factorriesgo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesTrabajos");
             bandera = 0;
             filtrarSoCondicionesTrabajos = null;
@@ -158,27 +175,69 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         listSoCondicionesTrabajos = null;
         guardado = true;
         permitirIndex = true;
+        getListSoCondicionesTrabajos();
         RequestContext context = RequestContext.getCurrentInstance();
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        if (listSoCondicionesTrabajos == null || listSoCondicionesTrabajos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosSoCondicionesTrabajos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosSoCondicionesTrabajos");
+            bandera = 0;
+            filtrarSoCondicionesTrabajos = null;
+            tipoLista = 0;
+        }
+
+        borrarSoCondicionesTrabajos.clear();
+        crearSoCondicionesTrabajos.clear();
+        modificarSoCondicionesTrabajos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listSoCondicionesTrabajos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListSoCondicionesTrabajos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoCondicionesTrabajos == null || listSoCondicionesTrabajos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosSoCondicionesTrabajos");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
-            codigo.setFilterStyle("width: 120px");
-            factorriesgo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:factorriesgo");
-            factorriesgo.setFilterStyle("width: 600px");
+            codigo.setFilterStyle("width: 220px");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:descripcion");
+            descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesTrabajos");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
+            tamano = 270;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            factorriesgo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:factorriesgo");
-            factorriesgo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoCondicionesTrabajos");
             bandera = 0;
             filtrarSoCondicionesTrabajos = null;
@@ -186,49 +245,49 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         }
     }
 
-    public void modificandoSoCondicionesTrabajos(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("MODIFICAR  SO ACTOS INSEGUROS");
+    public void modificarSoCondicionesTrabajos(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
-        int contador = 0;
-        boolean banderita = false;
-        Short a;
+        int contador = 0, pass = 0;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("MODIFICANDO SO ACTO INSEGURO CONFIRMAR CAMBIO = N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearSoCondicionesTrabajos.contains(listSoCondicionesTrabajos.get(indice))) {
-                    if (listSoCondicionesTrabajos.get(indice).getCodigo() == null) {
+                    if (listSoCondicionesTrabajos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listSoCondicionesTrabajos.size(); j++) {
                             if (j != indice) {
-                                if (listSoCondicionesTrabajos.get(indice).getCodigo().equals(listSoCondicionesTrabajos.get(j).getCodigo())) {
+                                if (listSoCondicionesTrabajos.get(indice).getCodigo() == listSoCondicionesTrabajos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            listSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
-                    if (listSoCondicionesTrabajos.get(indice).getFactorriesgo().isEmpty()) {
+                    if (listSoCondicionesTrabajos.get(indice).getFactorriesgo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (listSoCondicionesTrabajos.get(indice).getFactorriesgo().equals(" ")) {
+                        listSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+                    } else if (listSoCondicionesTrabajos.get(indice).getFactorriesgo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
+                        listSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
 
-                    if (banderita == true) {
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
                         if (modificarSoCondicionesTrabajos.isEmpty()) {
                             modificarSoCondicionesTrabajos.add(listSoCondicionesTrabajos.get(indice));
                         } else if (!modificarSoCondicionesTrabajos.contains(listSoCondicionesTrabajos.get(indice))) {
@@ -241,7 +300,48 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listSoCondicionesTrabajos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listSoCondicionesTrabajos.size(); j++) {
+                            if (j != indice) {
+                                if (listSoCondicionesTrabajos.get(indice).getCodigo() == listSoCondicionesTrabajos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            pass++;
+                        }
+
+                    }
+                    if (listSoCondicionesTrabajos.get(indice).getFactorriesgo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+                    } else if (listSoCondicionesTrabajos.get(indice).getFactorriesgo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+
+                    } else {
+                        pass++;
+                    }
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -249,46 +349,44 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             } else {
 
                 if (!crearSoCondicionesTrabajos.contains(filtrarSoCondicionesTrabajos.get(indice))) {
-                    if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == null) {
+                    if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarSoCondicionesTrabajos.get(indice).getCodigo().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
                     } else {
-                        for (int j = 0; j < listSoCondicionesTrabajos.size(); j++) {
-                            if (filtrarSoCondicionesTrabajos.get(indice).getCodigo().equals(listSoCondicionesTrabajos.get(j).getCodigo())) {
-                                contador++;
+                        for (int j = 0; j < filtrarSoCondicionesTrabajos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == filtrarSoCondicionesTrabajos.get(j).getCodigo()) {
+                                    contador++;
+                                }
                             }
                         }
-
-                        for (int j = 0; j < filtrarSoCondicionesTrabajos.size(); j++) {
-                            if (j == indice) {
-                                if (filtrarSoCondicionesTrabajos.get(indice).getCodigo().equals(filtrarSoCondicionesTrabajos.get(j).getCodigo())) {
+                        for (int j = 0; j < listSoCondicionesTrabajos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == listSoCondicionesTrabajos.get(j).getCodigo()) {
                                     contador++;
                                 }
                             }
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            filtrarSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
                         } else {
-                            banderita = true;
+                            pass++;
                         }
 
                     }
 
-                    if (filtrarSoCondicionesTrabajos.get(indice).getFactorriesgo().isEmpty()) {
+                    if (filtrarSoCondicionesTrabajos.get(indice).getFactorriesgo() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    }
-                    if (filtrarSoCondicionesTrabajos.get(indice).getFactorriesgo().equals(" ")) {
+                        filtrarSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+                    } else if (filtrarSoCondicionesTrabajos.get(indice).getFactorriesgo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        filtrarSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+                    } else {
+                        pass++;
                     }
 
-                    if (banderita == true) {
+                    if (pass == 2) {
                         if (modificarSoCondicionesTrabajos.isEmpty()) {
                             modificarSoCondicionesTrabajos.add(filtrarSoCondicionesTrabajos.get(indice));
                         } else if (!modificarSoCondicionesTrabajos.contains(filtrarSoCondicionesTrabajos.get(indice))) {
@@ -301,26 +399,75 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
                     }
                     index = -1;
                     secRegistro = null;
+                } else {
+
+                    if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < filtrarSoCondicionesTrabajos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == filtrarSoCondicionesTrabajos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        for (int j = 0; j < listSoCondicionesTrabajos.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarSoCondicionesTrabajos.get(indice).getCodigo() == listSoCondicionesTrabajos.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarSoCondicionesTrabajos.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            pass++;
+                        }
+
+                    }
+
+                    if (filtrarSoCondicionesTrabajos.get(indice).getFactorriesgo() == null) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+                    } else if (filtrarSoCondicionesTrabajos.get(indice).getFactorriesgo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarSoCondicionesTrabajos.get(indice).setFactorriesgo(backUpDescripcion);
+                    } else {
+                        pass++;
+                    }
+
+                    if (pass == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
+                    }
+                    index = -1;
+                    secRegistro = null;
+
                 }
 
             }
             context.update("form:datosSoCondicionesTrabajos");
+            context.update("form:ACEPTAR");
         }
 
     }
 
     public void borrandoSoCondicionesTrabajos() {
 
-        RequestContext context = RequestContext.getCurrentInstance();
-
         if (index >= 0) {
-
             if (tipoLista == 0) {
-                System.out.println("borrandoSoCondicionesTrabajos");
+                System.out.println("Entro a borrandoSoCondicionesTrabajos");
                 if (!modificarSoCondicionesTrabajos.isEmpty() && modificarSoCondicionesTrabajos.contains(listSoCondicionesTrabajos.get(index))) {
                     int modIndex = modificarSoCondicionesTrabajos.indexOf(listSoCondicionesTrabajos.get(index));
                     modificarSoCondicionesTrabajos.remove(modIndex);
@@ -334,7 +481,7 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                 listSoCondicionesTrabajos.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoSoCondicionesTrabajos");
+                System.out.println("borrandoSoCondicionesTrabajos ");
                 if (!modificarSoCondicionesTrabajos.isEmpty() && modificarSoCondicionesTrabajos.contains(filtrarSoCondicionesTrabajos.get(index))) {
                     int modIndex = modificarSoCondicionesTrabajos.indexOf(filtrarSoCondicionesTrabajos.get(index));
                     modificarSoCondicionesTrabajos.remove(modIndex);
@@ -350,6 +497,13 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                 filtrarSoCondicionesTrabajos.remove(index);
 
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            if (listSoCondicionesTrabajos == null || listSoCondicionesTrabajos.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosSoCondicionesTrabajos");
             index = -1;
             secRegistro = null;
@@ -362,34 +516,6 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 
     }
 
-    public void verificarBorrado() {
-        System.out.println("verificarBorrado");
-        try {
-            verificarInspecciones = administrarSoCondicionesTrabajos.contarInspeccionesSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
-            verificarSoDetallesPanoramas = administrarSoCondicionesTrabajos.contarSoDetallesPanoramasSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
-            verificarSoExposicionesFr = administrarSoCondicionesTrabajos.contarSoExposicionesFrSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
-            verificarSoAccidentesMedicos = administrarSoCondicionesTrabajos.contarSoAccidentesMedicosSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
-            if (verificarSoAccidentesMedicos.equals(0) && verificarSoExposicionesFr.equals(0)
-                    && verificarSoDetallesPanoramas.equals(0) && verificarInspecciones.equals(0)) {
-                System.out.println("Borrado==0");
-                borrandoSoCondicionesTrabajos();
-            } else {
-                System.out.println("Borrado>0");
-
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.update("form:validacionBorrar");
-                context.execute("validacionBorrar.show()");
-                index = -1;
-                verificarSoAccidentesMedicos = new BigInteger("-1");
-                verificarSoExposicionesFr = new BigInteger("-1");
-                verificarSoDetallesPanoramas = new BigInteger("-1");
-                verificarInspecciones = new BigInteger("-1");
-            }
-        } catch (Exception e) {
-            System.err.println("ERROR CLASES ACCIDENTES verificarBorrado ERROR " + e);
-        }
-    }
-
     public void revisarDialogoGuardar() {
 
         if (!borrarSoCondicionesTrabajos.isEmpty() || !crearSoCondicionesTrabajos.isEmpty() || !modificarSoCondicionesTrabajos.isEmpty()) {
@@ -400,34 +526,73 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 
     }
 
-    public void guardandoSoCondicionesTrabajos() {
+    public void verificarBorrado() {
+        System.out.println("verificarBorrado");
+        BigInteger contarInspeccionesSoCondicionTrabajo;
+        BigInteger contarSoAccidentesMedicosSoCondicionTrabajo;
+        BigInteger contarSoDetallesPanoramasSoCondicionTrabajo;
+        BigInteger contarSoExposicionesFrSoCondicionTrabajo;
+
+        try {
+            if (tipoLista == 0) {
+                contarInspeccionesSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarInspeccionesSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+                contarSoAccidentesMedicosSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarSoAccidentesMedicosSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+                contarSoDetallesPanoramasSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarSoDetallesPanoramasSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+                contarSoExposicionesFrSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarSoExposicionesFrSoCondicionTrabajo(listSoCondicionesTrabajos.get(index).getSecuencia());
+            } else {
+                contarInspeccionesSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarInspeccionesSoCondicionTrabajo(filtrarSoCondicionesTrabajos.get(index).getSecuencia());
+                contarSoAccidentesMedicosSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarSoAccidentesMedicosSoCondicionTrabajo(filtrarSoCondicionesTrabajos.get(index).getSecuencia());
+                contarSoDetallesPanoramasSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarSoDetallesPanoramasSoCondicionTrabajo(filtrarSoCondicionesTrabajos.get(index).getSecuencia());
+                contarSoExposicionesFrSoCondicionTrabajo = administrarSoCondicionesTrabajos.contarSoExposicionesFrSoCondicionTrabajo(filtrarSoCondicionesTrabajos.get(index).getSecuencia());
+            }
+            if (contarInspeccionesSoCondicionTrabajo.equals(new BigInteger("0"))
+                    && contarSoAccidentesMedicosSoCondicionTrabajo.equals(new BigInteger("0"))
+                    && contarSoDetallesPanoramasSoCondicionTrabajo.equals(new BigInteger("0"))
+                    && contarSoExposicionesFrSoCondicionTrabajo.equals(new BigInteger("0"))) {
+                System.out.println("Borrado==0");
+                borrandoSoCondicionesTrabajos();
+            } else {
+                System.out.println("Borrado>0");
+
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:validacionBorrar");
+                context.execute("validacionBorrar.show()");
+                index = -1;
+            }
+        } catch (Exception e) {
+            System.err.println("ERROR ControlTiposCertificados verificarBorrado ERROR " + e);
+        }
+    }
+
+    public void guardarSoCondicionesTrabajos() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
+            System.out.println("Realizando guardarSoCondicionesTrabajos");
             if (!borrarSoCondicionesTrabajos.isEmpty()) {
-             administrarSoCondicionesTrabajos.borrarSoCondicionesTrabajos(borrarSoCondicionesTrabajos);
-              
+                administrarSoCondicionesTrabajos.borrarSoCondicionesTrabajos(borrarSoCondicionesTrabajos);
                 //mostrarBorrados
                 registrosBorrados = borrarSoCondicionesTrabajos.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarSoCondicionesTrabajos.clear();
             }
-            if (!crearSoCondicionesTrabajos.isEmpty()) {
-                administrarSoCondicionesTrabajos.crearSoCondicionesTrabajos(crearSoCondicionesTrabajos);
-   crearSoCondicionesTrabajos.clear();
-            }
             if (!modificarSoCondicionesTrabajos.isEmpty()) {
                 administrarSoCondicionesTrabajos.modificarSoCondicionesTrabajos(modificarSoCondicionesTrabajos);
                 modificarSoCondicionesTrabajos.clear();
             }
+            if (!crearSoCondicionesTrabajos.isEmpty()) {
+                administrarSoCondicionesTrabajos.crearSoCondicionesTrabajos(crearSoCondicionesTrabajos);
+                crearSoCondicionesTrabajos.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listSoCondicionesTrabajos = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosSoCondicionesTrabajos");
             k = 0;
-            if (guardado == false) {
-                guardado = true;
-            }
+            guardado = true;
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -437,10 +602,10 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarSoCondicionTrabajo = listSoCondicionesTrabajos.get(index);
+                editarSoCondicionesTrabajos = listSoCondicionesTrabajos.get(index);
             }
             if (tipoLista == 1) {
-                editarSoCondicionTrabajo = filtrarSoCondicionesTrabajos.get(index);
+                editarSoCondicionesTrabajos = filtrarSoCondicionesTrabajos.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -450,8 +615,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                 context.execute("editCodigo.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editFactorRiesgo");
-                context.execute("editFactorRiesgo.show()");
+                context.update("formularioDialogos:editDescripcion");
+                context.execute("editDescripcion.show()");
                 cualCelda = -1;
             }
 
@@ -464,19 +629,18 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         System.out.println("agregarNuevoSoCondicionesTrabajos");
         int contador = 0;
         int duplicados = 0;
-
-        Short a = 0;
+        Integer a;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevaSoCondicionTrabajo.getCodigo() == null) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+        if (nuevoSoCondicionesTrabajos.getCodigo() == a) {
+            mensajeValidacion = " *Código \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevaSoCondicionTrabajo.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoSoCondicionesTrabajos.getCodigo());
 
             for (int x = 0; x < listSoCondicionesTrabajos.size(); x++) {
-                if (listSoCondicionesTrabajos.get(x).getCodigo().equals(nuevaSoCondicionTrabajo.getCodigo())) {
+                if (listSoCondicionesTrabajos.get(x).getCodigo() == nuevoSoCondicionesTrabajos.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -490,8 +654,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
                 contador++;
             }
         }
-        if (nuevaSoCondicionTrabajo.getFactorriesgo() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener un factor de riesgo \n";
+        if (nuevoSoCondicionesTrabajos.getFactorriesgo() == null) {
+            mensajeValidacion = mensajeValidacion + " *Factor Riesgo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -503,13 +667,18 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
+            nuevoSoCondicionesTrabajos.setFuente(" ");
+            nuevoSoCondicionesTrabajos.setEfectoagudo(" ");
+            nuevoSoCondicionesTrabajos.setEfectocronico(" ");
+            nuevoSoCondicionesTrabajos.setObservacion(" ");
+            nuevoSoCondicionesTrabajos.setRecomendacion(" ");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                factorriesgo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:factorriesgo");
-                factorriesgo.setFilterStyle("display: none; visibility: hidden;");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSoCondicionesTrabajos");
                 bandera = 0;
                 filtrarSoCondicionesTrabajos = null;
@@ -519,18 +688,16 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            /*      nuevaSoCondicionTrabajo.setSecuencia(l);
-             nuevaSoCondicionTrabajo.setEfectocronico(" ");
-             nuevaSoCondicionTrabajo.setEfectoagudo(" ");
-             nuevaSoCondicionTrabajo.setFuente(" ");
-             nuevaSoCondicionTrabajo.setObservacion(" ");
-             nuevaSoCondicionTrabajo.setReportar(" ");
-             nuevaSoCondicionTrabajo.setRecomendacion(" ");
-             */ crearSoCondicionesTrabajos.add(nuevaSoCondicionTrabajo);
+            nuevoSoCondicionesTrabajos.setSecuencia(l);
 
-            listSoCondicionesTrabajos.add(nuevaSoCondicionTrabajo);
-            nuevaSoCondicionTrabajo = new SoCondicionesTrabajos();
+            crearSoCondicionesTrabajos.add(nuevoSoCondicionesTrabajos);
+
+            listSoCondicionesTrabajos.add(nuevoSoCondicionesTrabajos);
+            nuevoSoCondicionesTrabajos = new SoCondicionesTrabajos();
             context.update("form:datosSoCondicionesTrabajos");
+
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -543,77 +710,61 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         } else {
             context.update("form:validacionNuevaCentroCosto");
             context.execute("validacionNuevaCentroCosto.show()");
-            contador = 0;
         }
     }
 
     public void limpiarNuevoSoCondicionesTrabajos() {
         System.out.println("limpiarNuevoSoCondicionesTrabajos");
-        nuevaSoCondicionTrabajo = new SoCondicionesTrabajos();
+        nuevoSoCondicionesTrabajos = new SoCondicionesTrabajos();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoSoActoInseguro() {
-        System.out.println("duplicandoSoActoInseguro");
+    public void duplicandoSoCondicionesTrabajos() {
+        System.out.println("duplicandoSoCondicionesTrabajos");
         if (index >= 0) {
-            duplicarSoCondicionTrabajo = new SoCondicionesTrabajos();
+            duplicarSoCondicionesTrabajos = new SoCondicionesTrabajos();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarSoCondicionTrabajo.setSecuencia(l);
-                duplicarSoCondicionTrabajo.setCodigo(listSoCondicionesTrabajos.get(index).getCodigo());
-                duplicarSoCondicionTrabajo.setFactorriesgo(listSoCondicionesTrabajos.get(index).getFactorriesgo());
-                /*/ duplicarSoCondicionTrabajo.setEfectocronico(listSoCondicionesTrabajos.get(index).getEfectocronico());
-                 duplicarSoCondicionTrabajo.setEfectoagudo(listSoCondicionesTrabajos.get(index).getEfectoagudo());
-                 duplicarSoCondicionTrabajo.setFuente(listSoCondicionesTrabajos.get(index).getFuente());
-                 duplicarSoCondicionTrabajo.setObservacion(listSoCondicionesTrabajos.get(index).getObservacion());
-                 duplicarSoCondicionTrabajo.setReportar(listSoCondicionesTrabajos.get(index).getReportar());
-                 duplicarSoCondicionTrabajo.setRecomendacion(listSoCondicionesTrabajos.get(index).getRecomendacion());
-                 */
+                duplicarSoCondicionesTrabajos.setSecuencia(l);
+                duplicarSoCondicionesTrabajos.setCodigo(listSoCondicionesTrabajos.get(index).getCodigo());
+                duplicarSoCondicionesTrabajos.setFactorriesgo(listSoCondicionesTrabajos.get(index).getFactorriesgo());
             }
             if (tipoLista == 1) {
-                duplicarSoCondicionTrabajo.setSecuencia(l);
-                duplicarSoCondicionTrabajo.setCodigo(filtrarSoCondicionesTrabajos.get(index).getCodigo());
-                duplicarSoCondicionTrabajo.setFactorriesgo(filtrarSoCondicionesTrabajos.get(index).getFactorriesgo());
-                /*  duplicarSoCondicionTrabajo.setEfectocronico(filtrarSoCondicionesTrabajos.get(index).getEfectocronico());
-                 duplicarSoCondicionTrabajo.setEfectoagudo(filtrarSoCondicionesTrabajos.get(index).getEfectoagudo());
-                 duplicarSoCondicionTrabajo.setFuente(filtrarSoCondicionesTrabajos.get(index).getFuente());
-                 duplicarSoCondicionTrabajo.setObservacion(filtrarSoCondicionesTrabajos.get(index).getObservacion());
-                 duplicarSoCondicionTrabajo.setReportar(filtrarSoCondicionesTrabajos.get(index).getReportar());
-                 duplicarSoCondicionTrabajo.setRecomendacion(filtrarSoCondicionesTrabajos.get(index).getRecomendacion());
-                 */
+                duplicarSoCondicionesTrabajos.setSecuencia(l);
+                duplicarSoCondicionesTrabajos.setCodigo(filtrarSoCondicionesTrabajos.get(index).getCodigo());
+                duplicarSoCondicionesTrabajos.setFactorriesgo(filtrarSoCondicionesTrabajos.get(index).getFactorriesgo());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarRCT");
-            context.execute("duplicarRegistroSoCondicionesTrabajo.show()");
+            context.update("formularioDialogos:duplicarTE");
+            context.execute("duplicarRegistroSoCondicionesTrabajos.show()");
             index = -1;
             secRegistro = null;
         }
     }
 
     public void confirmarDuplicar() {
-        System.err.println("CONFIRMAR DUPLICAR SO ACTOS INSEGUROS");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarSoCondicionTrabajo.getCodigo());
-        System.err.println("ConfirmarDuplicar factorriesgo " + duplicarSoCondicionTrabajo.getFactorriesgo());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarSoCondicionesTrabajos.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarSoCondicionesTrabajos.getFactorriesgo());
 
-        if (duplicarSoCondicionTrabajo.getCodigo() == null || duplicarSoCondicionTrabajo.getCodigo().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Un Codigo \n";
+        if (duplicarSoCondicionesTrabajos.getCodigo() == a) {
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-
         } else {
             for (int x = 0; x < listSoCondicionesTrabajos.size(); x++) {
-                if (listSoCondicionesTrabajos.get(x).getCodigo().equals(duplicarSoCondicionTrabajo.getCodigo())) {
+                if (listSoCondicionesTrabajos.get(x).getCodigo() == duplicarSoCondicionesTrabajos.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -623,11 +774,10 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             } else {
                 System.out.println("bandera");
                 contador++;
-                duplicados = 0;
             }
         }
-        if (duplicarSoCondicionTrabajo.getFactorriesgo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un factor de riesgo \n";
+        if (duplicarSoCondicionesTrabajos.getFactorriesgo() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Factor Riesgo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -636,50 +786,55 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         }
 
         if (contador == 2) {
-
-            System.out.println("Datos Duplicando: " + duplicarSoCondicionTrabajo.getSecuencia() + "  " + duplicarSoCondicionTrabajo.getCodigo());
-            if (crearSoCondicionesTrabajos.contains(duplicarSoCondicionTrabajo)) {
+            duplicarSoCondicionesTrabajos.setFuente(" ");
+            duplicarSoCondicionesTrabajos.setEfectoagudo(" ");
+            duplicarSoCondicionesTrabajos.setEfectocronico(" ");
+            duplicarSoCondicionesTrabajos.setObservacion(" ");
+            duplicarSoCondicionesTrabajos.setRecomendacion(" ");
+            System.out.println("Datos Duplicando: " + duplicarSoCondicionesTrabajos.getSecuencia() + "  " + duplicarSoCondicionesTrabajos.getCodigo());
+            if (crearSoCondicionesTrabajos.contains(duplicarSoCondicionesTrabajos)) {
                 System.out.println("Ya lo contengo.");
             }
-            listSoCondicionesTrabajos.add(duplicarSoCondicionTrabajo);
-            crearSoCondicionesTrabajos.add(duplicarSoCondicionTrabajo);
+            listSoCondicionesTrabajos.add(duplicarSoCondicionesTrabajos);
+            crearSoCondicionesTrabajos.add(duplicarSoCondicionesTrabajos);
             context.update("form:datosSoCondicionesTrabajos");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                factorriesgo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:factorriesgo");
-                factorriesgo.setFilterStyle("display: none; visibility: hidden;");
+                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoCondicionesTrabajos:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSoCondicionesTrabajos");
                 bandera = 0;
                 filtrarSoCondicionesTrabajos = null;
                 tipoLista = 0;
             }
-            duplicarSoCondicionTrabajo = new SoCondicionesTrabajos();
-            RequestContext.getCurrentInstance().execute("duplicarRegistroSoCondicionesTrabajo.hide()");
+            duplicarSoCondicionesTrabajos = new SoCondicionesTrabajos();
+            RequestContext.getCurrentInstance().execute("duplicarRegistroSoCondicionesTrabajos.hide()");
 
         } else {
-            contador = 0;
             context.update("form:validacionDuplicarVigencia");
             context.execute("validacionDuplicarVigencia.show()");
         }
     }
 
     public void limpiarDuplicarSoCondicionesTrabajos() {
-        duplicarSoCondicionTrabajo = new SoCondicionesTrabajos();
+        duplicarSoCondicionesTrabajos = new SoCondicionesTrabajos();
     }
 
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosSoCondicionesTrabajosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
-        exporter.export(context, tabla, "CONDICIONESTRABAJOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "SOCONDICIONESTRABAJOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -689,7 +844,7 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosSoCondicionesTrabajosExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
-        exporter.export(context, tabla, "CONDICIONESTRABAJOS", false, false, "UTF-8", null, null);
+        exporter.export(context, tabla, "SOCONDICIONESTRABAJOS", false, false, "UTF-8", null, null);
         context.responseComplete();
         index = -1;
         secRegistro = null;
@@ -728,11 +883,18 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         index = -1;
     }
 
-//*****
+    //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<SoCondicionesTrabajos> getListSoCondicionesTrabajos() {
         if (listSoCondicionesTrabajos == null) {
             listSoCondicionesTrabajos = administrarSoCondicionesTrabajos.consultarSoCondicionesTrabajos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listSoCondicionesTrabajos == null || listSoCondicionesTrabajos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
+        }
+        context.update("form:informacionRegistro");
         return listSoCondicionesTrabajos;
     }
 
@@ -748,36 +910,28 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         this.filtrarSoCondicionesTrabajos = filtrarSoCondicionesTrabajos;
     }
 
-    public SoCondicionesTrabajos getNuevaSoCondicionTrabajo() {
-        return nuevaSoCondicionTrabajo;
+    public SoCondicionesTrabajos getNuevoSoCondicionesTrabajos() {
+        return nuevoSoCondicionesTrabajos;
     }
 
-    public void setNuevaSoCondicionTrabajo(SoCondicionesTrabajos nuevaSoCondicionTrabajo) {
-        this.nuevaSoCondicionTrabajo = nuevaSoCondicionTrabajo;
+    public void setNuevoSoCondicionesTrabajos(SoCondicionesTrabajos nuevoSoCondicionesTrabajos) {
+        this.nuevoSoCondicionesTrabajos = nuevoSoCondicionesTrabajos;
     }
 
-    public SoCondicionesTrabajos getDuplicarSoCondicionTrabajo() {
-        return duplicarSoCondicionTrabajo;
+    public SoCondicionesTrabajos getDuplicarSoCondicionesTrabajos() {
+        return duplicarSoCondicionesTrabajos;
     }
 
-    public void setDuplicarSoCondicionTrabajo(SoCondicionesTrabajos duplicarSoCondicionTrabajo) {
-        this.duplicarSoCondicionTrabajo = duplicarSoCondicionTrabajo;
+    public void setDuplicarSoCondicionesTrabajos(SoCondicionesTrabajos duplicarSoCondicionesTrabajos) {
+        this.duplicarSoCondicionesTrabajos = duplicarSoCondicionesTrabajos;
     }
 
-    public SoCondicionesTrabajos getEditarSoCondicionTrabajo() {
-        return editarSoCondicionTrabajo;
+    public SoCondicionesTrabajos getEditarSoCondicionesTrabajos() {
+        return editarSoCondicionesTrabajos;
     }
 
-    public void setEditarSoCondicionTrabajo(SoCondicionesTrabajos editarSoCondicionTrabajo) {
-        this.editarSoCondicionTrabajo = editarSoCondicionTrabajo;
-    }
-
-    public boolean isGuardado() {
-        return guardado;
-    }
-
-    public void setGuardado(boolean guardado) {
-        this.guardado = guardado;
+    public void setEditarSoCondicionesTrabajos(SoCondicionesTrabajos editarSoCondicionesTrabajos) {
+        this.editarSoCondicionesTrabajos = editarSoCondicionesTrabajos;
     }
 
     public BigInteger getSecRegistro() {
@@ -802,6 +956,38 @@ public class ControlSoCondicionesTrabajos implements Serializable {
 
     public void setMensajeValidacion(String mensajeValidacion) {
         this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public SoCondicionesTrabajos getCondicionTrabajoSeleccionada() {
+        return condicionTrabajoSeleccionada;
+    }
+
+    public void setCondicionTrabajoSeleccionada(SoCondicionesTrabajos condicionTrabajoSeleccionada) {
+        this.condicionTrabajoSeleccionada = condicionTrabajoSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

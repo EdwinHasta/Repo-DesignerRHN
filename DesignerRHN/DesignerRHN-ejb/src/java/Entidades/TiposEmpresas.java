@@ -6,7 +6,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -33,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "TiposEmpresas.findByCodigo", query = "SELECT t FROM TiposEmpresas t WHERE t.codigo = :codigo"),
     @NamedQuery(name = "TiposEmpresas.findByDescripcion", query = "SELECT t FROM TiposEmpresas t WHERE t.descripcion = :descripcion")})
 public class TiposEmpresas implements Serializable {
+
     @Column(name = "CODIGO")
     private Integer codigo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tipoempresa")
@@ -68,7 +68,12 @@ public class TiposEmpresas implements Serializable {
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion != null) {
+
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     @Override

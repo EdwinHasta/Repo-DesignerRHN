@@ -101,7 +101,7 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
             String sqlQuery = " SELECT COUNT(*)FROM  elementos e WHERE e.tipotalla = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador contadorElementos persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -117,7 +117,7 @@ public class PersistenciaTiposTallas implements PersistenciaTiposTallasInterface
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciastallas vt WHERE vt.tipotalla = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador PersistenciaTiposTallas contadorVigenciasTallas persistencia " + retorno);
             return retorno;
         } catch (Exception e) {

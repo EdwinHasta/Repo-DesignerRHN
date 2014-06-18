@@ -73,6 +73,8 @@ public class ControlProcesosProductivos implements Serializable {
     private String nuevoYduplicarCompletarPersona;
     //--------------------------------------
     private String backupBanco;
+    private String infoRegistro;
+    private String infoRegistroCentroCostos;
 
     public ControlProcesosProductivos() {
         listProcesosProductivos = null;
@@ -89,8 +91,9 @@ public class ControlProcesosProductivos implements Serializable {
         filtradoCentrosCostos = null;
         guardado = true;
         tamano = 270;
+        aceptar = true;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -216,7 +219,50 @@ public class ControlProcesosProductivos implements Serializable {
         listProcesosProductivos = null;
         guardado = true;
         permitirIndex = true;
+        getListProcesosProductivos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listProcesosProductivos == null || listProcesosProductivos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listProcesosProductivos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosProcesosProductivos");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+            personafir.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosProcesosProductivos");
+            bandera = 0;
+            filtrarProcesosProductivos = null;
+            tipoLista = 0;
+        }
+
+        borrarProcesosProductivos.clear();
+        crearProcesosProductivos.clear();
+        modificarProcesosProductivos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listProcesosProductivos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListProcesosProductivos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listProcesosProductivos == null || listProcesosProductivos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listProcesosProductivos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosProcesosProductivos");
         context.update("form:ACEPTAR");
     }
@@ -723,6 +769,12 @@ public class ControlProcesosProductivos implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listProcesosProductivos == null || listProcesosProductivos.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listProcesosProductivos.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosProcesosProductivos");
             index = -1;
             secRegistro = null;
@@ -999,7 +1051,7 @@ public class ControlProcesosProductivos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoProcesosProductivos.getCodigo() == null) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoProcesosProductivos.getCodigo());
@@ -1019,8 +1071,8 @@ public class ControlProcesosProductivos implements Serializable {
                 contador++;//1
             }
         }
-        if (nuevoProcesosProductivos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+        if (nuevoProcesosProductivos.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1029,8 +1081,8 @@ public class ControlProcesosProductivos implements Serializable {
 
         }
 
-        if (nuevoProcesosProductivos.getCentrocosto().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Ciudad \n";
+        if (nuevoProcesosProductivos.getCentrocosto().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Centro Costo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1069,6 +1121,10 @@ public class ControlProcesosProductivos implements Serializable {
             nuevoProcesosProductivos = new ProcesosProductivos();
             nuevoProcesosProductivos.setCentrocosto(new CentrosCostos());
             context.update("form:datosProcesosProductivos");
+
+            infoRegistro = "Cantidad de registros: " + listProcesosProductivos.size();
+
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -1145,7 +1201,7 @@ public class ControlProcesosProductivos implements Serializable {
         System.err.println("ConfirmarDuplicar codigo " + duplicarProcesosProductivos.getCodigo());
 
         if (duplicarProcesosProductivos.getCodigo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listProcesosProductivos.size(); x++) {
@@ -1163,8 +1219,8 @@ public class ControlProcesosProductivos implements Serializable {
             }
         }
 
-        if (duplicarProcesosProductivos.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * un Descripcion \n";
+        if (duplicarProcesosProductivos.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1172,8 +1228,8 @@ public class ControlProcesosProductivos implements Serializable {
             contador++;
         }
 
-        if (duplicarProcesosProductivos.getCentrocosto().getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * una Centro Costo \n";
+        if (duplicarProcesosProductivos.getCentrocosto().getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Centro Costo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -1202,6 +1258,9 @@ public class ControlProcesosProductivos implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+
+            infoRegistro = "Cantidad de registros: " + listProcesosProductivos.size();
+            context.update("form:informacionRegistro");
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
 
@@ -1292,6 +1351,13 @@ public class ControlProcesosProductivos implements Serializable {
         if (listProcesosProductivos == null) {
             listProcesosProductivos = administrarProcesosProductivos.consultarProcesosProductivos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listProcesosProductivos == null || listProcesosProductivos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listProcesosProductivos.size();
+        }
+        context.update("form:informacionRegistro");
         return listProcesosProductivos;
     }
 
@@ -1375,6 +1441,13 @@ public class ControlProcesosProductivos implements Serializable {
         if (listaCentrosCostos == null) {
             listaCentrosCostos = administrarProcesosProductivos.consultarLOVCentrosCostos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listaCentrosCostos == null || listaCentrosCostos.isEmpty()) {
+            infoRegistroCentroCostos = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistroCentroCostos = "Cantidad de registros: " + listaCentrosCostos.size();
+        }
+        context.update("form:infoRegistroCentroCostos");
         return listaCentrosCostos;
     }
 
@@ -1405,4 +1478,29 @@ public class ControlProcesosProductivos implements Serializable {
     public void setProcesoProductivoSeleccionado(ProcesosProductivos procesoProductivoSeleccionado) {
         this.procesoProductivoSeleccionado = procesoProductivoSeleccionado;
     }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroCentroCostos() {
+        return infoRegistroCentroCostos;
+    }
+
+    public void setInfoRegistroCentroCostos(String infoRegistroCentroCostos) {
+        this.infoRegistroCentroCostos = infoRegistroCentroCostos;
+    }
+
+    public boolean isAceptar() {
+        return aceptar;
+    }
+
+    public void setAceptar(boolean aceptar) {
+        this.aceptar = aceptar;
+    }
+
 }

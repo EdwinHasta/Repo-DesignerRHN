@@ -46,8 +46,6 @@ public class UbicacionesGeograficas implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "CODIGO")
     private Integer codigo;
     @Column(name = "DESCRIPCION")

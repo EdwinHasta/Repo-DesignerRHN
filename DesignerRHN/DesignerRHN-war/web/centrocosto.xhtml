@@ -24,10 +24,14 @@
                             <!-- TABLA EMPLVIGENCIACARGO -->
 
                             <p:dataTable id="datosCentrosCostos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                      
-                                         value="#{controlBetaCentrosCostos.listCentrosCostosPorEmpresa}" scrollHeight="#{controlBetaCentrosCostos.tamano}" 
-                                         filteredValue="#{controlBetaCentrosCostos.filtrarCentrosCostos}" emptyMessage="#{msg['vacio']}"
-                                         selection="#{controlBetaCentrosCostos.centroCostoBetaSeleccionado}" selectionMode="single"
-                                         editable="true" editMode="cell" scrollable="true" liveScroll="true" scrollRows="50"  scrollWidth="830" >
+                                         value="#{controlBetaCentrosCostos.listCentrosCostosPorEmpresa}"
+                                         scrollHeight="#{controlBetaCentrosCostos.tamano}"
+                                         filteredValue="#{controlBetaCentrosCostos.filtrarCentrosCostos}"
+                                         emptyMessage="#{msg['vacio']}"
+                                         selection="#{controlBetaCentrosCostos.centroCostoBetaSeleccionado}"
+                                         selectionMode="single"
+                                         editable="true" editMode="cell" scrollable="true"
+                                         liveScroll="true" scrollRows="50"  scrollWidth="830" >
 
                                 <p:ajax event="filter" listener="#{controlBetaCentrosCostos.eventoFiltrar()}"/>
 

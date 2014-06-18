@@ -10,17 +10,24 @@
     <h:body>
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
-                <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Referencias Familiares" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; left: 300px; top: 100px;text-align: left" >  
-                        <h:outputText style="position: absolute; left: 580px; top: 50px; position: absolute; color: red; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlHvReferencias1.empleadoSeleccionado.persona.primerapellido} #{controlHvReferencias1.empleadoSeleccionado.persona.segundoapellido} #{controlHvReferencias1.empleadoSeleccionado.persona.nombre}"/>
-                        <fieldset style="position: absolute; left: 10px; top: 90px; font-size: 10px; width: 835px; height: 375px; border-radius: 10px; ">
+                <h:form id="form">                    
+                    <p:growl id="growl" showDetail="true"/> 
+                    <p:panel  id="PanelTotal" header="Referencias Familiares" style="position: absolute; width: 874px; height: 510px; text-align: left">  
+                        <h:outputText style="position: absolute; left: 580px; top: 50px; position: absolute; color: #BF1A1A; font-weight: bold; width: 285px; text-align: right; " id="nombreEmpleado" value="#{controlHvReferencias1.personaSeleccionada.primerapellido} #{controlHvReferencias1.personaSeleccionada.segundoapellido} #{controlHvReferencias1.personaSeleccionada.nombre}"/>
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Referencias Familiares</strong></legend>
 
-                            <p:dataTable id="datosHvReferencia" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ;font-size: 10px; border: 1px;"                           
-                                         value="#{controlHvReferencias1.listHvReferencias1}" scrollable="true" scrollHeight="235"  scrollWidth="830"
-                                         filteredValue="#{controlHvReferencias1.filtrarHvReferencias1}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         editable="true" editMode="cell" paginator="true" rows="9"  
-                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:dataTable id="datosHvReferencia" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
+                                         value="#{controlHvReferencias1.listHvReferencias1}" scrollable="true" 
+                                         scrollHeight="#{controlHvReferencias1.tamano}"
+                                         scrollWidth="830" 
+                                         filteredValue="#{controlHvReferencias1.filtrarHvReferencias1}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         editable="true"
+                                         editMode="cell"
+                                         selection="#{controlHvReferencias1.hvReferencia1Seleccionada}"
+                                         selectionMode="single" >
+
                                 <p:ajax event="filter" listener="#{controlHvReferencias1.eventoFiltrar()}"/>
 
 
@@ -28,16 +35,14 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.nombrepersona}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.nombrepersona}" id="editarNombre" style=" font-size: 10px; border-radius: 0px;width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.nombrepersona}" maxlength="100" id="editarNombre" style="height: 12px;  border-radius: 0px;width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlHvReferencias1.cambiarIndice(indice, 0)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlHvReferencias1.modificarHvrReferencia1(indice, 'N', info.nombrepersona)}" update="nombre"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Nombre"/>
-                                    </f:facet>
+
                                 </p:column>
 
 
@@ -45,48 +50,41 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.cargo}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.cargo}" id="editarCargo" style="font-size: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.cargo}" maxlength="50" id="editarCargo" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlHvReferencias1.cambiarIndice(indice, 1)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlHvReferencias1.modificarHvrReferencia1(indice, 'N', info.cargo)}" update="cargo"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Cargo"/>
-                                    </f:facet>
+
                                 </p:column>
 
                                 <p:column headerText="Número de Telefono" sortBy="#{info.telefono}" filterBy="#{info.telefono}" filterMatchMode="contains" id="numTelefono" width="135" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.telefono}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.telefono}" id="editarTelefono" style="font-size: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.telefono}" maxlength="12" id="editarTelefono" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlHvReferencias1.cambiarIndice(indice, 2)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlHvReferencias1.modificarHvrReferencia1(indice, 'N', info.telefono)}" update="numTelefono"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Número de Telefono"/>
-                                    </f:facet>
+
                                 </p:column>
                                 <p:column headerText="Número de Celular" sortBy="#{info.celular}" filterBy="#{info.celular}" filterMatchMode="contains" id="numCelular" width="135" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.celular}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.celular}" id="editarPuntaje" style="font-size: 10px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.celular}" maxlength="12" id="editarPuntaje" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlHvReferencias1.cambiarIndice(indice, 3)}" process="@this"/> 
-                                                <p:ajax event="click" listener="#{controlHvReferencias1.cambiarIndice(indice, 3)}" process="@this"/> 
                                                 <p:ajax event="change"  listener="#{controlHvReferencias1.modificarHvrReferencia1(indice, 'N', info.celular)}" update="numCelular"/>
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <h:outputText value="Número de Celular"/>
-                                    </f:facet>
+
                                 </p:column>
 
 
@@ -94,7 +92,7 @@
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.parentesco.tipo}" /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.parentesco.tipo}" id="editarparentesco" style=" font-size: 10px; border-radius: 0px; width: 210px; text-transform: uppercase"  > 
+                                            <p:inputText value="#{info.parentesco.tipo}" maxlength="50" id="editarparentesco" style="height: 12px;  border-radius: 0px; width: 210px; text-transform: uppercase"  > 
                                                 <p:ajax event="select" listener="#{controlHvReferencias1.cambiarIndice(indice, 4)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlHvReferencias1.asignarIndex(indice, 0,4)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlHvReferencias1.modificarHvrReferencia1(indice, 'TIPOSFAMILIARES', info.parentesco.tipo)}"/>
@@ -103,8 +101,8 @@
                                         </f:facet>  
                                     </p:cellEditor>
 
-                                    <f:facet name="footer">
-                                        <p:commandButton action="Parentesco" style="width: 100%; height: 16px; font-size: 9px; border: none; color: blue" id="fooparentesco" value="Parentesco"/>
+                                    <f:facet name="footer" >
+                                        <p:commandButton style="width: 170px; margin: -14px; height: 20px; border: none; color: blue" id="fooparentesco" value=""/>
                                     </f:facet>
                                 </p:column>
 
@@ -114,61 +112,69 @@
 
                         </fieldset>
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 40px; left: 20px;">  
+                        <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlHvReferencias1.guardarHvReferencia()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="Guardar" />
+                                <p:tooltip style="" for="guardarRapido" value="Guardar" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.editarCelda()}"  process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="Editar" />
+                                <p:tooltip style="" for="editar" value="Editar" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.listaValoresBoton()}"   process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="Lista de Valores" />
+                                <p:tooltip style="" for="listaValores" value="Lista de Valores" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.activarCtrlF11()}"  process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="Activar filtrado" />
+                                <p:tooltip style="" for="filtrar" value="Activar filtrado" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.exportXLS()}"  ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip style="" for="exportarXLS" value="Exportar a XLS" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.limpiarNuevoHvReferencias()}"  ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosHvReferenciaExportar" fileName="REFERENCIASFAMILIARES" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip style="" for="exportarXML" value="Exportar a XML" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.exportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip style="" for="exportarPDF" value="Exportar a PDF" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg);  background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  oncomplete="nuevoRegistroHvReferencias.show()" update=":formularioDialogos:nuevooHvReferenciaLab" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="Nueva Referencia Familiar" />
+                                <p:tooltip style="" for="insertar" value="Nueva Referencia Familiar" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  actionListener="#{controlHvReferencias1.borrandoHvReferencias()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="Eliminar Referencia Familiar" />
+                                <p:tooltip style="" for="eliminar" value="Eliminar Referencia Familiar" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.duplicandoHvEntrevistas()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="Duplicar Referencia Familiar" />
-                                <p:separator /> 
+                                <p:tooltip style="" for="duplicar" value="Duplicar Referencia Familiar" />
+                                <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="Rastro"/>
+                                <p:tooltip style="" for="rastro" value="Rastro"/>
+
+                                <p:separator style="position: relative; top: -9px"/>
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.cancelarModificacion()}" process="@this"/>  
+                                <p:tooltip  for="refrescar" value="refrescar"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlHvReferencias1.salir()}"   action="perReferenciaLaboral1Atras" process="@this"/>  
+                                <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:commandButton style=" position: absolute; left: 15px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-refresh" id="REFRESCAR" actionListener="#{controlHvReferencias1.cancelarModificacion()}"  value="Refrescar" process="@this" />
-                        <p:commandButton style=" position: absolute; left: 730px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" disabled="#{controlHvReferencias1.guardado}" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlHvReferencias1.revisarDialogoGuardar()}"   process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 807px; top: 487px; font-size: 10px; font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="perReferenciaLaboral1Atras"    />
+                        <h:outputText id="informacionRegistro" value="#{controlHvReferencias1.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
+                        <p:commandButton style=" position: absolute; left: 688px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" disabled="#{controlHvReferencias1.guardado}" icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlHvReferencias1.revisarDialogoGuardar()}"   process="@this"   />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="Atras" action="perReferenciaLaboral1Atras"    />
 
 
                         <p:dialog header="Parentesco" widgetVar="sucursalesDialogo" draggable="false" resizable="false" closable="false" id="sucursalesDialogo"  
-                                  showEffect="fade" hideEffect="fade" width="457" modal="true" style="font-size: 11px;">
-                            <p:dataTable id="lovTiposFamiliares" style="font-size: 11px; width: 430px" var="tipofamiliar" value="#{controlHvReferencias1.listaTiposFamiliares}" rowKey="#{tipofamiliar.secuencia}"
-                                         selection="#{controlHvReferencias1.tipoFamiliarSeleccionado}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="445" scrollHeight="250"
+                                  showEffect="fade" hideEffect="fade" width="470" modal="true" style="">
+                            <p:dataTable id="lovTiposFamiliares" style=" width: 430px" var="tipofamiliar" value="#{controlHvReferencias1.listaTiposFamiliares}" rowKey="#{tipofamiliar.secuencia}"
+                                         selection="#{controlHvReferencias1.tipoFamiliarSeleccionado}" selectionMode="single" widgetVar="lovTiposFamiliares" scrollable="true" scrollWidth="450" scrollHeight="250"
                                          filteredValue="#{controlHvReferencias1.filtradoTiposFamiliares}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                                 <p:ajax event="rowSelect" listener="#{controlHvReferencias1.activarAceptar()}" update=":form:aceptarS"/>
                                 <p:ajax event="rowDblselect" listener="#{controlHvReferencias1.actualizarTipoFamiliar()}" process="@this" onstart="lovTiposFamiliares.clearFilters()"/>
@@ -190,100 +196,102 @@
                                 </p:column>
 
                             </p:dataTable>
-                            <p:commandButton id="aceptarS" style="position: relative; left: 303px" value="Aceptar"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlHvReferencias1.actualizarTipoFamiliar()}" update="lovTiposFamiliares, aceptarS, datosHvReferencia" process="@this">
+                            <h:outputText id="infoRegistroParentesco" value="#{controlHvReferencias1.infoRegistroParentesco}" style="position: absolute;  top: 355px; font-weight: bold"/>
+                            <p:commandButton id="aceptarS" icon="ui-icon-check" style="position: relative; left: 275px" value="Aceptar" disabled="#{controlHvReferencias1.aceptar}"  onclick="sucursalesDialogo.hide(), lovTiposFamiliares.clearFilters();"  actionListener="#{controlHvReferencias1.actualizarTipoFamiliar()}" update="lovTiposFamiliares, aceptarS, datosHvReferencia" process="@this">
                                 <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasS" style="position: relative; left: 303px" value="Atras"  actionListener="#{controlHvReferencias1.cancelarCambioTiposFamiliares()}" onclick="sucursalesDialogo.hide();
+                            <p:commandButton id="atrasS" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="Atras"  actionListener="#{controlHvReferencias1.cancelarCambioTiposFamiliares()}" onclick="sucursalesDialogo.hide();
                                     lovTiposFamiliares.clearFilters();" update="lovTiposFamiliares" process="@this">
                                 <p:resetInput target=":form:lovTiposFamiliares:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
 
-                        <p:dialog header="ATENCIÓN...!" widgetVar="confirmarGuardar" draggable="false" resizable="false" closable="false" id="confirmarGuardar"  
-                                  showEffect="fade" hideEffect="fade" width="400" height="110" modal="true" style="font-size: 12px;">
-                            <h:graphicImage value="Imagenes/alerta.jpg" width="100" height="90" style="position: absolute; left: 30px; top: 20px;"  />
-                            <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 30px; width: 280px; font-weight:bold" />
-                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlHvReferencias1.guardarHvReferencia()}" style="position: absolute; top: 70px; left: 215px " process="@this" />
-                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" style="position: absolute; top: 70px; left: 255px" process="@this" />
-                            <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 70px; left: 300px" process="@this" />
+                        <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
+                            <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
+                            <h:outputText value="¿Desea guardar los cambios realizados?" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
+                            <p:commandButton value="Si" onclick="confirmarGuardar.hide();" actionListener="#{controlHvReferencias1.guardarHvReferencia()}"  action="perReferenciaLaboral1Atras"  style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="No" onclick="confirmarGuardar.hide();" actionListener="#{controlHvReferencias1.cancelarModificacion()}"  action="perReferenciaLaboral1Atras" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="Cancelar" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
-
                     </p:panel>
 
+                    <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Necesita : #{controlHvReferencias1.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
+                    </p:dialog>
 
-                    <p:dialog id="validacionDuplicarVigencia" header="ATENCIÓN...!" widgetVar="validacionDuplicarVigencia"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="Necesita : #{controlHvReferencias1.mensajeValidacion}" style="position: absolute; left: 80px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionDuplicarVigencia.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="77" width="330px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="60" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value=" #{controlHvReferencias1.mensajeValidacion}" style="position: absolute; left: 80px; top: 15px; width: 250px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 40px; left: 230px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="validacionModificar" header="ATENCIÓN...!" widgetVar="validacionModificar"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 30px; top: 20px;"  />
-                        <h:outputText value=" #{controlHvReferencias1.mensajeValidacion}" style="position: absolute; left: 100px; top: 25px; width: 250px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionModificar.hide();" style="position: absolute; top: 60px; left: 250px" process="@this" />
+
+                    <p:dialog id="validacionBorrar" header="ATENCIÓN...!" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="77" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/error.png" width="60" height="60" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="No se puede borrar este elemento porque esta relacionado con otra tabla" style="position: absolute; left: 80px; top: 15px; width: 300px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionBorrar.hide();" style="position: absolute; top: 40px; left: 300px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="validacionBorrar" header="ATENCIÓN...!" widgetVar="validacionBorrar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 25px; top: 10px;"  />
-                        <h:outputText value="No se puede borrar este elemento porque esta relacionado con otra tabla" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionBorrar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+
+                    <p:dialog id="mostrarBorrados" header="ATENCIÓN...!" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="87" width="280px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="Se han borrado #{controlHvReferencias1.registrosBorrados}  Registros" style="position: absolute; left: 90px; top: 15px; width: 180px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 50px; left: 180px" process="@this" />
                     </p:dialog>
-                    <p:dialog id="mostrarBorrados" header="ATENCIÓN...!" widgetVar="mostrarBorrados"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="80" height="70" style="position: absolute; left: 50px; top: 10px;"  />
-                        <h:outputText value="Se han borrado #{controlHvReferencias1.registrosBorrados}  Registros" style="position: absolute; left: 150px; top: 20px; width: 100px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="mostrarBorrados.hide();" style="position: absolute; top: 60px; left: 200px" process="@this" />
-                    </p:dialog>
-                    <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="450px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="Para agregar es necesario adicionar: #{controlHvReferencias1.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px; font-weight:bold" />
-                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+
+                    <p:dialog id="validacionNuevaCentroCosto" header="ATENCIÓN...!" widgetVar="validacionNuevaCentroCosto"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="70" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="Para agregar es necesario adicionar: #{controlHvReferencias1.mensajeValidacion}" style="position: absolute; left: 90px; top: 20px; width: 280px; font-weight:bold" />
+                        <p:commandButton value="Aceptar" onclick="validacionNuevaCentroCosto.hide();" style="position: absolute; top: 50px; left: 300px" process="@this" />
                     </p:dialog>
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlHvReferencias1.activarCtrlF11()}"/> 
                 </h:form>
 
                 <h:form id="formularioDialogos">
 
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'TIPOSCERTIFICADOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlHvReferencias1.secRegistro,'HvReferencias', 'perreferencialaboral')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla ENCARGATURAS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('HvReferencias', 'perreferencialaboral')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
                         <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlHvReferencias1.secRegistro,'HvReferencias', 'perreferencialaboral')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px" style="" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="font-size: 12px" closable="true">  
+                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px" style="" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'ENCARGATURAS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
@@ -291,122 +299,117 @@
 
 
 
-                    <p:dialog id="editNombre" header="Editar Nombre" widgetVar="editNombre" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editNombre" header="Nombre" widgetVar="editNombre" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlHvReferencias1.editarHvReferencia1.nombrepersona}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarNombre" value="Atras" onclick="editNombre.hide();" style="position: absolute; top: 60px; left: 170px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editCargo" header="Editar Cargo" widgetVar="editCargo" resizable="false" draggable="false" modal="true" height="93" width="260" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editCargo" header="Cargo" widgetVar="editCargo" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlHvReferencias1.editarHvReferencia1.cargo}" style="overflow: auto; width: 225px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCargo" value="Atras" onclick="editCargo.hide();" style="position: absolute; top: 60px; left: 185px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editTelefono" header="Editar Telefono" widgetVar="editTelefono" resizable="false" draggable="false" modal="true" height="93" width="260" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editTelefono" header="Telefono" widgetVar="editTelefono" resizable="false" draggable="false" modal="true" height="55" width="260" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlHvReferencias1.editarHvReferencia1.telefono}" style="overflow: auto; width: 225px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTelefono" value="Atras" onclick="editTelefono.hide();" style="position: absolute; top: 60px; left: 185px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editCelular" header="Editar Celular" widgetVar="editCelular" resizable="false" draggable="false" modal="true" height="93" width="260" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editCelular" header="Celular" widgetVar="editCelular" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlHvReferencias1.editarHvReferencia1.celular}" style="overflow: auto; width: 225px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCelular" value="Atras" onclick="editCelular.hide();" style="position: absolute; top: 60px; left: 185px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editParentesco" header="Editar Parentesco" widgetVar="editParentesco" resizable="false" draggable="false" modal="true" height="93" width="260" style="font-size: 12px;text-transform: uppercase">  
+                    <p:dialog id="editParentesco" header="Parentesco" widgetVar="editParentesco" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlHvReferencias1.editarHvReferencia1.parentesco.tipo}" style="overflow: auto; width: 225px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarParentesco" value="Atras" onclick="editParentesco.hide();" style="position: absolute; top: 60px; left: 185px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
 
 
-                    <p:dialog id="nuevoRegistroHvReferencias" header="Nuevo Registro" widgetVar="nuevoRegistroHvReferencias" closable="false" resizable="false"  draggable="false" modal="true" height="380" width="350" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="nuevoRegistroHvReferencias" header="Nuevo Registro" widgetVar="nuevoRegistroHvReferencias" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="360" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Ingresar Nuevo Referencia Familiar" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevooHvReferenciaLab" style="border: none;">
 
 
-                            <strong><h:outputText value="Nombre :"  style="font-size: 12px; position: absolute; top: 70px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlHvReferencias1.nuevoHvReferencia1.nombrepersona}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 65px;text-transform: uppercase">
+                            <strong><h:outputText value="*Nombre :"  style=" position: absolute; top: 60px" /></strong>
+                            <p:inputText  id="nuevoNombre" maxlength="100" value="#{controlHvReferencias1.nuevoHvReferencia1.nombrepersona}" style=" width: 140px; position: absolute; left: 175px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Nombre" />
-                            <strong><h:outputText value="Cargo :"  style="font-size: 12px; position: absolute; top: 120px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="nuevoCargo" value="#{controlHvReferencias1.nuevoHvReferencia1.cargo}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 115px;text-transform: uppercase">
+                            <strong><h:outputText value="Cargo :"  style=" position: absolute; top: 90px" /></strong>
+                            <p:inputText  id="nuevoCargo" maxlength="50" value="#{controlHvReferencias1.nuevoHvReferencia1.cargo}" style=" width: 140px; position: absolute; left: 175px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCargo" value="Cargo" />
-                            <strong><h:outputText value="Número de Telefono :"  style="font-size: 12px; position: absolute; top: 170px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="newTelefono" value="#{controlHvReferencias1.nuevoHvReferencia1.telefono}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 165px;text-transform: uppercase">
+                            <strong><h:outputText value="*Número de Telefono :"  style=" position: absolute; top: 120px" /></strong>
+                            <p:inputText  id="newTelefono" maxlength="12" value="#{controlHvReferencias1.nuevoHvReferencia1.telefono}" style=" width: 140px; position: absolute; left: 175px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="newTelefono" value="Telefono" />
 
 
-                            <strong><h:outputText value="Número de Celular :"  style="font-size: 12px; position: absolute; top: 220px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="newCelular" value="#{controlHvReferencias1.nuevoHvReferencia1.celular}" style="width: 127px;font-size: 12px;position: absolute; left: 175px; top: 215px;text-transform: uppercase">
+                            <strong><h:outputText value="Número de Celular :"  style=" position: absolute; top: 150px" /></strong>
+                            <p:inputText  id="newCelular" maxlength="12" value="#{controlHvReferencias1.nuevoHvReferencia1.celular}" style="width: 140px;position: absolute; left: 175px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="newCelular" value="Celular" />
 
 
-                            <strong><h:outputText value="PARENTESCO : " style="font-size: 12px; position: absolute; top: 270px" /></strong>
-                            <p:inputText id="nuevoNombreSucursal" value="#{controlHvReferencias1.nuevoHvReferencia1.parentesco.tipo}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 265px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="Parentesco : " style=" position: absolute; top: 180px" /></strong>
+                            <p:inputText id="nuevoNombreSucursal" value="#{controlHvReferencias1.nuevoHvReferencia1.parentesco.tipo}" style=" width: 140px; position: absolute; left: 175px; top: 175px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlHvReferencias1.valoresBackupAutocompletar(1, 'TIPOSFAMILIARES')}" />
                                 <p:ajax event="change" listener="#{controlHvReferencias1.autocompletarNuevoyDuplicado('TIPOSFAMILIARES', controlHvReferencias1.nuevoHvReferencia1.parentesco.tipo, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlHvReferencias1.asignarVariableTiposFamiliaresNuevo(0)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 265px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlHvReferencias1.asignarVariableTiposFamiliaresNuevo(0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 325px; top: 175px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlHvReferencias1.asignarVariableTiposFamiliaresNuevo(0)}"/>   
                             <p:watermark for="nuevoNombreSucursal" value="Parentesco" />
 
 
 
-                            <p:commandButton id="limpiar" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 335px;"  actionListener="#{controlHvReferencias1.limpiarNuevoHvReferencias()}" update="nuevooHvReferenciaLab" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 335px;" actionListener="#{controlHvReferencias1.agregarNuevoHvRefencias()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 335px;"  update="nuevooHvReferenciaLab" onclick="nuevoRegistroHvReferencias.hide();"  actionListener="#{controlHvReferencias1.limpiarNuevoHvReferencias()}"  process="@this"/>
+                            <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 210px;"  actionListener="#{controlHvReferencias1.limpiarNuevoHvReferencias()}" update="nuevooHvReferenciaLab" process="@this"/>
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 165px; top: 210px;" actionListener="#{controlHvReferencias1.agregarNuevoHvRefencias()}" process="@this" />
+                            <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 255px; top: 210px;"  update="nuevooHvReferenciaLab" onclick="nuevoRegistroHvReferencias.hide();"  actionListener="#{controlHvReferencias1.limpiarNuevoHvReferencias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroHvReferencias" header="duplicar Registro" widgetVar="duplicarRegistroHvReferencias" closable="false" resizable="false"  draggable="false" modal="true" height="380" width="350" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="duplicarRegistroHvReferencias" header="duplicar Registro" widgetVar="duplicarRegistroHvReferencias" closable="false" resizable="false"  draggable="false" modal="true" height="250" width="360" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Referencia Familiar" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarRRL" style="border: none;">
 
 
-                            <strong><h:outputText value="Nombre :"  style="font-size: 12px; position: absolute; top: 70px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="duplicarNombre" value="#{controlHvReferencias1.duplicarHvReferencia1.nombrepersona}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 65px;text-transform: uppercase">
+                            <strong><h:outputText value="*Nombre :"  style=" position: absolute; top: 60px" /></strong>
+                            <p:inputText  id="duplicarNombre" maxlength="100" value="#{controlHvReferencias1.duplicarHvReferencia1.nombrepersona}" style=" width: 140px; position: absolute; left: 175px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />
-                            <strong><h:outputText value="Cargo :"  style="font-size: 12px; position: absolute; top: 120px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="duplicarCargo" value="#{controlHvReferencias1.duplicarHvReferencia1.cargo}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 115px;text-transform: uppercase">
+                            <strong><h:outputText value="Cargo :"  style=" position: absolute; top: 90px" /></strong>
+                            <p:inputText  id="duplicarCargo" maxlength="50" value="#{controlHvReferencias1.duplicarHvReferencia1.cargo}" style=" width: 140px; position: absolute; left: 175px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCargo" value="Cargo" />
-                            <strong><h:outputText value="Número de Telefono :"  style="font-size: 12px; position: absolute; top: 170px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="duplicarTelefono" value="#{controlHvReferencias1.duplicarHvReferencia1.telefono}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 165px;text-transform: uppercase">
+                            <strong><h:outputText value="*Número de Telefono :"  style=" position: absolute; top: 120px" /></strong>
+                            <p:inputText  id="duplicarTelefono" maxlength="12" value="#{controlHvReferencias1.duplicarHvReferencia1.telefono}" style=" width: 140px; position: absolute; left: 175px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarTelefono" value="Telefono" />
 
 
-                            <strong><h:outputText value="Número de Celular :"  style="font-size: 12px; position: absolute; top: 220px;text-transform: uppercase" /></strong>
-                            <p:inputText  id="duplicarCelular" value="#{controlHvReferencias1.duplicarHvReferencia1.celular}" style="width: 127px;font-size: 12px;position: absolute; left: 175px; top: 215px;text-transform: uppercase">
+                            <strong><h:outputText value="Número de Celular :"  style=" position: absolute; top: 150px" /></strong>
+                            <p:inputText  id="duplicarCelular" maxlength="12" value="#{controlHvReferencias1.duplicarHvReferencia1.celular}" style="width: 140px;position: absolute; left: 175px; top: 145px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCelular" value="Celular" />
 
-                            <strong><h:outputText value="PARENTESCO : " style="font-size: 12px; position: absolute; top: 270px" /></strong>
-                            <p:inputText id="duplicarNombreSucursal" value="#{controlHvReferencias1.duplicarHvReferencia1.parentesco.tipo}" style="font-size: 12px; width: 127px; position: absolute; left: 175px; top: 265px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="PARENTESCO : " style=" position: absolute; top: 180px" /></strong>
+                            <p:inputText id="duplicarNombreSucursal" value="#{controlHvReferencias1.duplicarHvReferencia1.parentesco.tipo}" style=" width: 140px; position: absolute; left: 175px; top: 175px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlHvReferencias1.valoresBackupAutocompletar(2, 'TIPOSFAMILIARES')}" />
                                 <p:ajax event="change" listener="#{controlHvReferencias1.autocompletarDuplicado('TIPOSFAMILIARES', controlHvReferencias1.duplicarHvReferencia1.parentesco.tipo, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlHvReferencias1.asignarVariableTiposFamiliaresNuevo(1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 310px; top: 265px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlHvReferencias1.asignarVariableTiposFamiliaresNuevo(1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 325px; top: 175px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlHvReferencias1.asignarVariableTiposFamiliaresNuevo(1)}"/>   
                             <p:watermark for="duplicarNombreSucursal" value="Parentesco" />
 
 
 
 
-                            <p:commandButton id="limpiarD" value="Limpiar" style=" font-size: 11px ;position: absolute; left: 20px; top: 335px;"  actionListener="#{controlHvReferencias1.limpiarDuplicarHvReferencias()}" update="duplicarRRL"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style="font-size: 11px; position: absolute; left: 180px; top: 335px;" actionListener="#{controlHvReferencias1.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style="font-size: 11px; position: absolute; left: 250px; top: 335px;"  update="duplicarRRL" onclick="duplicarRegistroHvReferencias.hide();" actionListener="#{controlHvReferencias1.limpiarDuplicarHvReferencias()}"  process="@this"/>
+                            <p:commandButton id="limpiarD" icon="ui-icon-trash"  value="Limpiar" style=" position: absolute; left: 20px; top: 210px;"  actionListener="#{controlHvReferencias1.limpiarDuplicarHvReferencias()}" update="duplicarRRL"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 165px; top: 210px;" actionListener="#{controlHvReferencias1.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 255px; top: 210px;"  update="duplicarRRL" onclick="duplicarRegistroHvReferencias.hide();" actionListener="#{controlHvReferencias1.limpiarDuplicarHvReferencias()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

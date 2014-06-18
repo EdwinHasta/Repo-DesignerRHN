@@ -56,8 +56,8 @@ public class AdministrarTiposExamenes implements AdministrarTiposExamenesInterfa
 
     public void crearTiposExamenes(List<TiposExamenes> listaTiposExamenes) {
         for (int i = 0; i < listaTiposExamenes.size(); i++) {
-            System.out.println("Administrar Borrando...");
-            persistenciaTiposExamenes.borrar(em, listaTiposExamenes.get(i));
+            System.out.println("Administrar crear...");
+            persistenciaTiposExamenes.crear(em, listaTiposExamenes.get(i));
         }
     }
 

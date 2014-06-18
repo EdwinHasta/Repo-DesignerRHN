@@ -44,7 +44,7 @@ public class AdministrarLugaresOcurrencias implements AdministrarLugaresOcurrenc
     }
     
   @Override
-    public void modificarLesiones(List<LugaresOcurrencias> listaLugaresOcurrencias) {
+    public void modificarLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias) {
         for (int i = 0; i < listaLugaresOcurrencias.size(); i++) {
             System.out.println("Administrar Modificando...");
             persistenciaLugaresOcurrencias.editar(em, listaLugaresOcurrencias.get(i));

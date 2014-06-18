@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Entidades;
 
 import java.io.Serializable;
@@ -28,6 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "TiposExamenes.findAll", query = "SELECT t FROM TiposExamenes t")})
 public class TiposExamenes implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -36,7 +36,7 @@ public class TiposExamenes implements Serializable {
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
     @Column(name = "CODIGO")
-    private Short codigo;
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @Column(name = "MEDIDA")
@@ -55,7 +55,7 @@ public class TiposExamenes implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public TiposExamenes(BigInteger secuencia, Short codigo, String nombre) {
+    public TiposExamenes(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -69,11 +69,11 @@ public class TiposExamenes implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public Short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
@@ -82,7 +82,11 @@ public class TiposExamenes implements Serializable {
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     public String getMedida() {
@@ -141,5 +145,5 @@ public class TiposExamenes implements Serializable {
     public String toString() {
         return "Entidades.Tiposexamenes[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

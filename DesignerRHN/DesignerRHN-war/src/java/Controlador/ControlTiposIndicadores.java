@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,14 +38,16 @@ public class ControlTiposIndicadores implements Serializable {
     AdministrarTiposIndicadoresInterface administrarTiposIndicadores;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<TiposIndicadores> listTiposIndicadores;
     private List<TiposIndicadores> filtrarTiposIndicadores;
     private List<TiposIndicadores> crearTiposIndicadores;
     private List<TiposIndicadores> modificarTiposIndicadores;
     private List<TiposIndicadores> borrarTiposIndicadores;
-    private TiposIndicadores nuevoTipoIndicador;
-    private TiposIndicadores duplicarTipoIndicador;
-    private TiposIndicadores editarTipoIndicador;
+    private TiposIndicadores nuevoTiposIndicadores;
+    private TiposIndicadores duplicarTiposIndicadores;
+    private TiposIndicadores editarTiposIndicadores;
+    private TiposIndicadores tiposindicadoresSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -57,6 +60,10 @@ public class ControlTiposIndicadores implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    //filtrado table
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlTiposIndicadores() {
         listTiposIndicadores = null;
@@ -64,33 +71,36 @@ public class ControlTiposIndicadores implements Serializable {
         modificarTiposIndicadores = new ArrayList<TiposIndicadores>();
         borrarTiposIndicadores = new ArrayList<TiposIndicadores>();
         permitirIndex = true;
-        editarTipoIndicador = new TiposIndicadores();
-        nuevoTipoIndicador = new TiposIndicadores();
-        duplicarTipoIndicador = new TiposIndicadores();
+        editarTiposIndicadores = new TiposIndicadores();
+        nuevoTiposIndicadores = new TiposIndicadores();
+        duplicarTiposIndicadores = new TiposIndicadores();
         guardado = true;
+        tamano = 270;
+        System.out.println("controlTiposIndicadores Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlTiposIndicadores PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposIndicadores.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
-            System.out.println("\n ENTRE A ControlTiposCertificados.eventoFiltrar \n");
+            System.out.println("\n ENTRE A ControlTiposIndicadores.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
         } catch (Exception e) {
-            System.out.println("ERROR ControlTiposCertificados eventoFiltrar ERROR===" + e.getMessage());
+            System.out.println("ERROR ControlTiposIndicadores eventoFiltrar ERROR===" + e.getMessage());
         }
     }
 
@@ -100,7 +110,27 @@ public class ControlTiposIndicadores implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listTiposIndicadores.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listTiposIndicadores.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listTiposIndicadores.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listTiposIndicadores.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarTiposIndicadores.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarTiposIndicadores.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarTiposIndicadores.get(index).getSecuencia();
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -108,7 +138,7 @@ public class ControlTiposIndicadores implements Serializable {
 
     public void asignarIndex(Integer indice, int LND, int dig) {
         try {
-            System.out.println("\n ENTRE A ControlTiposCertificados.asignarIndex \n");
+            System.out.println("\n ENTRE A ControlTiposIndicadores.asignarIndex \n");
             index = indice;
             if (LND == 0) {
                 tipoActualizacion = 0;
@@ -120,7 +150,7 @@ public class ControlTiposIndicadores implements Serializable {
             }
 
         } catch (Exception e) {
-            System.out.println("ERROR ControlTiposCertificados.asignarIndex ERROR======" + e.getMessage());
+            System.out.println("ERROR ControlTiposIndicadores.asignarIndex ERROR======" + e.getMessage());
         }
     }
 
@@ -130,18 +160,57 @@ public class ControlTiposIndicadores implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoIndicador");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndicadores");
             bandera = 0;
             filtrarTiposIndicadores = null;
             tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarTiposIndicadores.clear();
+        crearTiposIndicadores.clear();
+        modificarTiposIndicadores.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposIndicadores = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposIndicadores();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposIndicadores == null || listTiposIndicadores.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposIndicadores.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposIndicadores");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndicadores");
+            bandera = 0;
+            filtrarTiposIndicadores = null;
+            tipoLista = 0;
+            tamano = 270;
         }
 
         borrarTiposIndicadores.clear();
@@ -154,35 +223,37 @@ public class ControlTiposIndicadores implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTipoIndicador");
+        context.update("form:datosTiposIndicadores");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosTipoIndicador");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndicadores");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoIndicador");
+            RequestContext.getCurrentInstance().update("form:datosTiposIndicadores");
             bandera = 0;
             filtrarTiposIndicadores = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarTipoCertificado(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR TIPOSCERTIFICADOS");
+    public void modificarTiposIndicadores(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
@@ -192,12 +263,13 @@ public class ControlTiposIndicadores implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR MOTIVODEMANDA, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposIndicadores.contains(listTiposIndicadores.get(indice))) {
                     if (listTiposIndicadores.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposIndicadores.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposIndicadores.size(); j++) {
                             if (j != indice) {
@@ -208,6 +280,7 @@ public class ControlTiposIndicadores implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposIndicadores.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -217,10 +290,12 @@ public class ControlTiposIndicadores implements Serializable {
                     if (listTiposIndicadores.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (listTiposIndicadores.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -236,7 +311,51 @@ public class ControlTiposIndicadores implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposIndicadores.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposIndicadores.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposIndicadores.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposIndicadores.get(indice).getCodigo() == listTiposIndicadores.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposIndicadores.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listTiposIndicadores.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (listTiposIndicadores.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -246,8 +365,10 @@ public class ControlTiposIndicadores implements Serializable {
                 if (!crearTiposIndicadores.contains(filtrarTiposIndicadores.get(indice))) {
                     if (filtrarTiposIndicadores.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposIndicadores.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
+
                         for (int j = 0; j < listTiposIndicadores.size(); j++) {
                             if (j != indice) {
                                 if (filtrarTiposIndicadores.get(indice).getCodigo() == listTiposIndicadores.get(j).getCodigo()) {
@@ -255,15 +376,9 @@ public class ControlTiposIndicadores implements Serializable {
                                 }
                             }
                         }
-                        for (int j = 0; j < filtrarTiposIndicadores.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposIndicadores.get(indice).getCodigo() == filtrarTiposIndicadores.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposIndicadores.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -274,10 +389,12 @@ public class ControlTiposIndicadores implements Serializable {
                     if (filtrarTiposIndicadores.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarTiposIndicadores.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -293,24 +410,70 @@ public class ControlTiposIndicadores implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposIndicadores.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposIndicadores.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+
+                        for (int j = 0; j < listTiposIndicadores.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposIndicadores.get(indice).getCodigo() == listTiposIndicadores.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposIndicadores.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarTiposIndicadores.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarTiposIndicadores.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposIndicadores.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
-            context.update("form:datosTipoIndicador");
+            context.update("form:datosTiposIndicadores");
             context.update("form:ACEPTAR");
         }
 
     }
 
-    public void borrandoTiposCertificados() {
+    public void borrandoTiposIndicadores() {
 
         if (index >= 0) {
             if (tipoLista == 0) {
-                System.out.println("Entro a borrarandoTiposCertificados");
+                System.out.println("Entro a borrandoTiposIndicadores");
                 if (!modificarTiposIndicadores.isEmpty() && modificarTiposIndicadores.contains(listTiposIndicadores.get(index))) {
                     int modIndex = modificarTiposIndicadores.indexOf(listTiposIndicadores.get(index));
                     modificarTiposIndicadores.remove(modIndex);
@@ -324,7 +487,7 @@ public class ControlTiposIndicadores implements Serializable {
                 listTiposIndicadores.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrarandoTiposCertificados ");
+                System.out.println("borrandoTiposIndicadores ");
                 if (!modificarTiposIndicadores.isEmpty() && modificarTiposIndicadores.contains(filtrarTiposIndicadores.get(index))) {
                     int modIndex = modificarTiposIndicadores.indexOf(filtrarTiposIndicadores.get(index));
                     modificarTiposIndicadores.remove(modIndex);
@@ -341,7 +504,10 @@ public class ControlTiposIndicadores implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTipoIndicador");
+            context.update("form:datosTiposIndicadores");
+            infoRegistro = "Cantidad de registros: " + listTiposIndicadores.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -355,18 +521,18 @@ public class ControlTiposIndicadores implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger vigenciasIndicadores;
+        BigInteger contarVigenciasIndicadoresTipoIndicador;
 
         try {
-            System.err.println("Control Secuencia de MotivosDemandas a borrar");
+            System.err.println("Control Secuencia de ControlTiposIndicadores ");
             if (tipoLista == 0) {
-                vigenciasIndicadores = administrarTiposIndicadores.contarVigenciasIndicadoresTipoIndicador(listTiposIndicadores.get(index).getSecuencia());
+                contarVigenciasIndicadoresTipoIndicador = administrarTiposIndicadores.contarVigenciasIndicadoresTipoIndicador(listTiposIndicadores.get(index).getSecuencia());
             } else {
-                vigenciasIndicadores = administrarTiposIndicadores.contarVigenciasIndicadoresTipoIndicador(filtrarTiposIndicadores.get(index).getSecuencia());
+                contarVigenciasIndicadoresTipoIndicador = administrarTiposIndicadores.contarVigenciasIndicadoresTipoIndicador(filtrarTiposIndicadores.get(index).getSecuencia());
             }
-            if (vigenciasIndicadores.equals(new BigInteger("0"))) {
+            if (contarVigenciasIndicadoresTipoIndicador.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
-                borrandoTiposCertificados();
+                borrandoTiposIndicadores();
             } else {
                 System.out.println("Borrado>0");
 
@@ -374,12 +540,11 @@ public class ControlTiposIndicadores implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-
-                vigenciasIndicadores = new BigInteger("-1");
+                contarVigenciasIndicadoresTipoIndicador = new BigInteger("-1");
 
             }
         } catch (Exception e) {
-            System.err.println("ERROR ControlTiposCertificados verificarBorrado ERROR " + e);
+            System.err.println("ERROR ControlTiposIndicadores verificarBorrado ERROR " + e);
         }
     }
 
@@ -393,11 +558,11 @@ public class ControlTiposIndicadores implements Serializable {
 
     }
 
-    public void guardarTipoCertificado() {
+    public void guardarTiposIndicadores() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando TipoCertificados");
+            System.out.println("Realizando guardarTiposIndicadores");
             if (!borrarTiposIndicadores.isEmpty()) {
                 administrarTiposIndicadores.borrarTiposIndicadores(borrarTiposIndicadores);
                 //mostrarBorrados
@@ -406,19 +571,22 @@ public class ControlTiposIndicadores implements Serializable {
                 context.execute("mostrarBorrados.show()");
                 borrarTiposIndicadores.clear();
             }
-            if (!crearTiposIndicadores.isEmpty()) {
-                administrarTiposIndicadores.crearTiposIndicadores(crearTiposIndicadores);
-                crearTiposIndicadores.clear();
-            }
             if (!modificarTiposIndicadores.isEmpty()) {
                 administrarTiposIndicadores.modificarTiposIndicadores(modificarTiposIndicadores);
                 modificarTiposIndicadores.clear();
             }
+            if (!crearTiposIndicadores.isEmpty()) {
+                administrarTiposIndicadores.crearTiposIndicadores(crearTiposIndicadores);
+                crearTiposIndicadores.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listTiposIndicadores = null;
-            context.update("form:datosTipoIndicador");
+            context.update("form:datosTiposIndicadores");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -428,10 +596,10 @@ public class ControlTiposIndicadores implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarTipoIndicador = listTiposIndicadores.get(index);
+                editarTiposIndicadores = listTiposIndicadores.get(index);
             }
             if (tipoLista == 1) {
-                editarTipoIndicador = filtrarTiposIndicadores.get(index);
+                editarTiposIndicadores = filtrarTiposIndicadores.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -451,8 +619,8 @@ public class ControlTiposIndicadores implements Serializable {
         secRegistro = null;
     }
 
-    public void agregarNuevoTiposCertificados() {
-        System.out.println("agregarNuevoTiposCertificados");
+    public void agregarNuevoTiposIndicadores() {
+        System.out.println("agregarNuevoTiposIndicadores");
         int contador = 0;
         int duplicados = 0;
 
@@ -460,14 +628,14 @@ public class ControlTiposIndicadores implements Serializable {
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoTipoIndicador.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+        if (nuevoTiposIndicadores.getCodigo() == a) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTipoIndicador.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposIndicadores.getCodigo());
 
             for (int x = 0; x < listTiposIndicadores.size(); x++) {
-                if (listTiposIndicadores.get(x).getCodigo() == nuevoTipoIndicador.getCodigo()) {
+                if (listTiposIndicadores.get(x).getCodigo() == nuevoTiposIndicadores.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -481,8 +649,12 @@ public class ControlTiposIndicadores implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTipoIndicador.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Descripcion \n";
+        if (nuevoTiposIndicadores.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoTiposIndicadores.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -495,13 +667,14 @@ public class ControlTiposIndicadores implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoIndicador");
+                RequestContext.getCurrentInstance().update("form:datosTiposIndicadores");
                 bandera = 0;
                 filtrarTiposIndicadores = null;
                 tipoLista = 0;
@@ -510,13 +683,16 @@ public class ControlTiposIndicadores implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoTipoIndicador.setSecuencia(l);
+            nuevoTiposIndicadores.setSecuencia(l);
 
-            crearTiposIndicadores.add(nuevoTipoIndicador);
+            crearTiposIndicadores.add(nuevoTiposIndicadores);
 
-            listTiposIndicadores.add(nuevoTipoIndicador);
-            nuevoTipoIndicador = new TiposIndicadores();
-            context.update("form:datosTipoIndicador");
+            listTiposIndicadores.add(nuevoTiposIndicadores);
+            nuevoTiposIndicadores = new TiposIndicadores();
+            context.update("form:datosTiposIndicadores");
+            infoRegistro = "Cantidad de registros: " + listTiposIndicadores.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -533,35 +709,35 @@ public class ControlTiposIndicadores implements Serializable {
         }
     }
 
-    public void limpiarNuevoTiposCertificados() {
-        System.out.println("limpiarNuevoTiposCertificados");
-        nuevoTipoIndicador = new TiposIndicadores();
+    public void limpiarNuevoTiposIndicadores() {
+        System.out.println("limpiarNuevoTiposIndicadores");
+        nuevoTiposIndicadores = new TiposIndicadores();
         secRegistro = null;
         index = -1;
 
     }
 
     //------------------------------------------------------------------------------
-    public void duplicandoTiposCertificados() {
-        System.out.println("duplicandoTiposCertificados");
+    public void duplicandoTiposIndicadores() {
+        System.out.println("duplicandoTiposIndicadores");
         if (index >= 0) {
-            duplicarTipoIndicador = new TiposIndicadores();
+            duplicarTiposIndicadores = new TiposIndicadores();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarTipoIndicador.setSecuencia(l);
-                duplicarTipoIndicador.setCodigo(listTiposIndicadores.get(index).getCodigo());
-                duplicarTipoIndicador.setDescripcion(listTiposIndicadores.get(index).getDescripcion());
+                duplicarTiposIndicadores.setSecuencia(l);
+                duplicarTiposIndicadores.setCodigo(listTiposIndicadores.get(index).getCodigo());
+                duplicarTiposIndicadores.setDescripcion(listTiposIndicadores.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarTipoIndicador.setSecuencia(l);
-                duplicarTipoIndicador.setCodigo(filtrarTiposIndicadores.get(index).getCodigo());
-                duplicarTipoIndicador.setDescripcion(filtrarTiposIndicadores.get(index).getDescripcion());
+                duplicarTiposIndicadores.setSecuencia(l);
+                duplicarTiposIndicadores.setCodigo(filtrarTiposIndicadores.get(index).getCodigo());
+                duplicarTiposIndicadores.setDescripcion(filtrarTiposIndicadores.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarTI");
+            context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroTiposIndicadores.show()");
             index = -1;
             secRegistro = null;
@@ -569,22 +745,22 @@ public class ControlTiposIndicadores implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOSINDICADORES");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarTipoIndicador.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTipoIndicador.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarTiposIndicadores.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposIndicadores.getDescripcion());
 
-        if (duplicarTipoIndicador.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+        if (duplicarTiposIndicadores.getCodigo() == a) {
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposIndicadores.size(); x++) {
-                if (listTiposIndicadores.get(x).getCodigo() == duplicarTipoIndicador.getCodigo()) {
+                if (listTiposIndicadores.get(x).getCodigo() == duplicarTiposIndicadores.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -597,42 +773,51 @@ public class ControlTiposIndicadores implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoIndicador.getDescripcion().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+        if (duplicarTiposIndicadores.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarTiposIndicadores.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarTipoIndicador.getSecuencia() + "  " + duplicarTipoIndicador.getCodigo());
-            if (crearTiposIndicadores.contains(duplicarTipoIndicador)) {
+            System.out.println("Datos Duplicando: " + duplicarTiposIndicadores.getSecuencia() + "  " + duplicarTiposIndicadores.getCodigo());
+            if (crearTiposIndicadores.contains(duplicarTiposIndicadores)) {
                 System.out.println("Ya lo contengo.");
             }
-            listTiposIndicadores.add(duplicarTipoIndicador);
-            crearTiposIndicadores.add(duplicarTipoIndicador);
-            context.update("form:datosTipoIndicador");
+            listTiposIndicadores.add(duplicarTiposIndicadores);
+            crearTiposIndicadores.add(duplicarTiposIndicadores);
+            context.update("form:datosTiposIndicadores");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listTiposIndicadores.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoIndicador:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposIndicadores:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoIndicador");
+                RequestContext.getCurrentInstance().update("form:datosTiposIndicadores");
                 bandera = 0;
                 filtrarTiposIndicadores = null;
                 tipoLista = 0;
             }
-            duplicarTipoIndicador = new TiposIndicadores();
+            duplicarTiposIndicadores = new TiposIndicadores();
             RequestContext.getCurrentInstance().execute("duplicarRegistroTiposIndicadores.hide()");
 
         } else {
@@ -642,12 +827,12 @@ public class ControlTiposIndicadores implements Serializable {
         }
     }
 
-    public void limpiarDuplicarTiposCertificados() {
-        duplicarTipoIndicador = new TiposIndicadores();
+    public void limpiarDuplicarTiposIndicadores() {
+        duplicarTiposIndicadores = new TiposIndicadores();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoIndicadorExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposIndicadoresExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TIPOSINDICADORES", false, false, "UTF-8", null, null);
@@ -657,7 +842,7 @@ public class ControlTiposIndicadores implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoIndicadorExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposIndicadoresExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TIPOSINDICADORES", false, false, "UTF-8", null, null);
@@ -699,10 +884,17 @@ public class ControlTiposIndicadores implements Serializable {
         index = -1;
     }
 
-    //--------///////////////////////---------------------*****//*/*/*/*/*/-****----
+    //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposIndicadores> getListTiposIndicadores() {
         if (listTiposIndicadores == null) {
+            System.out.println("ControlTiposIndicadores getListTiposIndicadores");
             listTiposIndicadores = administrarTiposIndicadores.consultarTiposIndicadores();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposIndicadores == null || listTiposIndicadores.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposIndicadores.size();
         }
         return listTiposIndicadores;
     }
@@ -719,28 +911,28 @@ public class ControlTiposIndicadores implements Serializable {
         this.filtrarTiposIndicadores = filtrarTiposIndicadores;
     }
 
-    public TiposIndicadores getNuevoTipoIndicador() {
-        return nuevoTipoIndicador;
+    public TiposIndicadores getNuevoTiposIndicadores() {
+        return nuevoTiposIndicadores;
     }
 
-    public void setNuevoTipoIndicador(TiposIndicadores nuevoTipoIndicador) {
-        this.nuevoTipoIndicador = nuevoTipoIndicador;
+    public void setNuevoTiposIndicadores(TiposIndicadores nuevoTiposIndicadores) {
+        this.nuevoTiposIndicadores = nuevoTiposIndicadores;
     }
 
-    public TiposIndicadores getDuplicarTipoIndicador() {
-        return duplicarTipoIndicador;
+    public TiposIndicadores getDuplicarTiposIndicadores() {
+        return duplicarTiposIndicadores;
     }
 
-    public void setDuplicarTipoIndicador(TiposIndicadores duplicarTipoIndicador) {
-        this.duplicarTipoIndicador = duplicarTipoIndicador;
+    public void setDuplicarTiposIndicadores(TiposIndicadores duplicarTiposIndicadores) {
+        this.duplicarTiposIndicadores = duplicarTiposIndicadores;
     }
 
-    public TiposIndicadores getEditarTipoIndicador() {
-        return editarTipoIndicador;
+    public TiposIndicadores getEditarTiposIndicadores() {
+        return editarTiposIndicadores;
     }
 
-    public void setEditarTipoIndicador(TiposIndicadores editarTipoIndicador) {
-        this.editarTipoIndicador = editarTipoIndicador;
+    public void setEditarTiposIndicadores(TiposIndicadores editarTiposIndicadores) {
+        this.editarTiposIndicadores = editarTiposIndicadores;
     }
 
     public BigInteger getSecRegistro() {
@@ -773,6 +965,30 @@ public class ControlTiposIndicadores implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public TiposIndicadores getTiposIndicadoresSeleccionado() {
+        return tiposindicadoresSeleccionado;
+    }
+
+    public void setTiposIndicadoresSeleccionado(TiposIndicadores clasesPensionesSeleccionado) {
+        this.tiposindicadoresSeleccionado = clasesPensionesSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

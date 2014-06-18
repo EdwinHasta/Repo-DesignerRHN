@@ -37,8 +37,6 @@ public class ValoresConceptos implements Serializable {
     @NotNull
     @Column(name = "SECUENCIA")
     private BigInteger secuencia;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "VALORUNITARIO")
     private Integer valorunitario;
     @JoinColumn(name = "CONCEPTO", referencedColumnName = "SECUENCIA")

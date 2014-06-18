@@ -28,7 +28,7 @@ public interface AdministrarLugaresOcurrenciasInterface {
      * @param listaLugaresOcurrencias Lista LugaresOcurrencias que se van a
      * modificar.
      */
-    public void modificarLesiones(List<LugaresOcurrencias> listaLugaresOcurrencias);
+    public void modificarLugarOcurrencia(List<LugaresOcurrencias> listaLugaresOcurrencias);
 
     /**
      * Método encargado de borrar LugaresOcurrencias.

@@ -13,9 +13,11 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -45,6 +47,7 @@ public class ControlVigenciasPlantas implements Serializable {
     private VigenciasPlantas nuevoVigenciaPlanta;
     private VigenciasPlantas duplicarVigenciaPlanta;
     private VigenciasPlantas editarVigenciaPlanta;
+    private VigenciasPlantas vigenciasPlantasSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -57,6 +60,8 @@ public class ControlVigenciasPlantas implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    private String infoRegistro;
+    private int tamano;
 
     public ControlVigenciasPlantas() {
         listVigenciasPlantas = null;
@@ -68,8 +73,9 @@ public class ControlVigenciasPlantas implements Serializable {
         nuevoVigenciaPlanta = new VigenciasPlantas();
         duplicarVigenciaPlanta = new VigenciasPlantas();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -82,7 +88,7 @@ public class ControlVigenciasPlantas implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlVigenciasPlantas.eventoFiltrar \n");
@@ -94,6 +100,9 @@ public class ControlVigenciasPlantas implements Serializable {
         }
     }
 
+    private Integer backUpCodigo;
+    private Date backUpFecha;
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
@@ -101,6 +110,21 @@ public class ControlVigenciasPlantas implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listVigenciasPlantas.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listVigenciasPlantas.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarVigenciasPlantas.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpFecha = listVigenciasPlantas.get(index).getFechavigencia();
+                } else {
+                    backUpFecha = filtrarVigenciasPlantas.get(index).getFechavigencia();
+                }
+                System.out.println("ControlVigenciasPlantas indice " + index + " backUpFecha " + backUpFecha);
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -153,14 +177,55 @@ public class ControlVigenciasPlantas implements Serializable {
         listVigenciasPlantas = null;
         guardado = true;
         permitirIndex = true;
+        getListVigenciasPlantas();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listVigenciasPlantas == null || listVigenciasPlantas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVigenciasPlantas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosVigenciaPlanta");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+            fecha.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
+            bandera = 0;
+            filtrarVigenciasPlantas = null;
+            tipoLista = 0;
+        }
+
+        borrarVigenciasPlantas.clear();
+        crearVigenciasPlantas.clear();
+        modificarVigenciasPlantas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listVigenciasPlantas = null;
+        guardado = true;
+        permitirIndex = true;
+        getListVigenciasPlantas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listVigenciasPlantas == null || listVigenciasPlantas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVigenciasPlantas.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosVigenciaPlanta");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("width: 370px");
             fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
@@ -170,6 +235,7 @@ public class ControlVigenciasPlantas implements Serializable {
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
+            tamano = 270;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
             fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
@@ -184,18 +250,22 @@ public class ControlVigenciasPlantas implements Serializable {
     public void mostrarInfo(int indice, int celda) {
         int contador = 0;
         int fechas = 0;
+        System.out.println("ControlVigenciasPlantas mostrar info indice : " + indice + "  permitirInxes : " + permitirIndex);
         if (permitirIndex == true) {
             RequestContext context = RequestContext.getCurrentInstance();
 
             mensajeValidacion = " ";
             index = indice;
             cualCelda = celda;
+            System.out.println("ControlVigenciasPlantas mostrarInfo INDICE : " + index + " cualCelda : " + cualCelda);
             if (tipoLista == 0) {
-                secRegistro = listVigenciasPlantas.get(index).getSecuencia();
+                secRegistro = listVigenciasPlantas.get(indice).getSecuencia();
                 System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listVigenciasPlantas.get(indice).getFechavigencia());
                 if (listVigenciasPlantas.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
+                    listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
+                    System.out.println("ControlVigenciasPlantas despues de mostrar el error fechaAsignada : " + listVigenciasPlantas.get(indice).getFechavigencia());
                 } else {
                     for (int j = 0; j < listVigenciasPlantas.size(); j++) {
                         if (j != indice) {
@@ -206,6 +276,7 @@ public class ControlVigenciasPlantas implements Serializable {
                     }
                 }
                 if (fechas > 0) {
+                    listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
                     mensajeValidacion = "FECHAS REPETIDAS";
                     contador++;
                 }
@@ -220,20 +291,27 @@ public class ControlVigenciasPlantas implements Serializable {
                             guardado = false;
                             RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
-                        context.update("form:datosHvEntrevista");
+                        context.update("form:datosVigenciaPlanta");
 
+                    } else {
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
+                        context.update("form:datosVigenciaPlanta");
                     }
                 } else {
                     context.update("form:validacionModificar");
                     context.execute("validacionModificar.show()");
-                    cancelarModificacion();
                 }
             } else {
-                secRegistro = filtrarVigenciasPlantas.get(index).getSecuencia();
+                secRegistro = filtrarVigenciasPlantas.get(indice).getSecuencia();
                 System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + filtrarVigenciasPlantas.get(indice).getFechavigencia());
                 if (filtrarVigenciasPlantas.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                     contador++;
+                    listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
+
                 } else {
                     for (int j = 0; j < filtrarVigenciasPlantas.size(); j++) {
                         if (j != indice) {
@@ -242,17 +320,13 @@ public class ControlVigenciasPlantas implements Serializable {
                             }
                         }
                     }
-                    for (int j = 0; j < listVigenciasPlantas.size(); j++) {
-                        if (j != indice) {
-                            if (filtrarVigenciasPlantas.get(indice).getFechavigencia().equals(listVigenciasPlantas.get(j).getFechavigencia())) {
-                                fechas++;
-                            }
-                        }
-                    }
+
                 }
                 if (fechas > 0) {
                     mensajeValidacion = "FECHAS REPETIDAS";
                     contador++;
+                    listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
+
                 }
                 if (contador == 0) {
                     if (!crearVigenciasPlantas.contains(filtrarVigenciasPlantas.get(indice))) {
@@ -265,13 +339,18 @@ public class ControlVigenciasPlantas implements Serializable {
                             guardado = false;
                             RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
-                        context.update("form:datosHvEntrevista");
+                        context.update("form:datosVigenciaPlanta");
 
+                    } else {
+                        if (guardado == true) {
+                            guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                        }
+                        context.update("form:datosVigenciaPlanta");
                     }
                 } else {
                     context.update("form:validacionModificar");
                     context.execute("validacionModificar.show()");
-                    cancelarModificacion();
                 }
             }
 
@@ -299,6 +378,7 @@ public class ControlVigenciasPlantas implements Serializable {
                     if (listVigenciasPlantas.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listVigenciasPlantas.size(); j++) {
                             if (j != indice) {
@@ -308,6 +388,7 @@ public class ControlVigenciasPlantas implements Serializable {
                             }
                         }
                         if (contador > 0) {
+                            listVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
                         } else {
@@ -328,7 +409,40 @@ public class ControlVigenciasPlantas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listVigenciasPlantas.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listVigenciasPlantas.size(); j++) {
+                            if (j != indice) {
+                                if (listVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            listVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -339,6 +453,8 @@ public class ControlVigenciasPlantas implements Serializable {
                     if (filtrarVigenciasPlantas.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
+
                     } else {
                         for (int j = 0; j < filtrarVigenciasPlantas.size(); j++) {
                             if (j != indice) {
@@ -347,16 +463,12 @@ public class ControlVigenciasPlantas implements Serializable {
                                 }
                             }
                         }
-                        for (int j = 0; j < listVigenciasPlantas.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
                             banderita = false;
+                            filtrarVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
+
                         } else {
                             banderita = true;
                         }
@@ -375,7 +487,43 @@ public class ControlVigenciasPlantas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarVigenciasPlantas.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
+
+                    } else {
+                        for (int j = 0; j < filtrarVigenciasPlantas.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarVigenciasPlantas.get(indice).getCodigo() == listVigenciasPlantas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                            filtrarVigenciasPlantas.get(indice).setCodigo(backUpCodigo);
+
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -499,6 +647,9 @@ public class ControlVigenciasPlantas implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listVigenciasPlantas = null;
             context.update("form:datosVigenciaPlanta");
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             k = 0;
             guardado = true;
         }
@@ -598,6 +749,10 @@ public class ControlVigenciasPlantas implements Serializable {
             listVigenciasPlantas.add(nuevoVigenciaPlanta);
             nuevoVigenciaPlanta = new VigenciasPlantas();
             context.update("form:datosVigenciaPlanta");
+
+            infoRegistro = "Cantidad de registros: " + listVigenciasPlantas.size();
+
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -701,6 +856,10 @@ public class ControlVigenciasPlantas implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+
+            infoRegistro = "Cantidad de registros: " + listVigenciasPlantas.size();
+
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             if (bandera == 1) {
                 //CERRAR FILTRADO
@@ -785,6 +944,13 @@ public class ControlVigenciasPlantas implements Serializable {
         if (listVigenciasPlantas == null) {
             listVigenciasPlantas = administrarVigenciasPlantas.consultarVigenciasPlantas();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listVigenciasPlantas == null || listVigenciasPlantas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listVigenciasPlantas.size();
+        }
+        context.update("form:informacionRegistro");
         return listVigenciasPlantas;
     }
 
@@ -854,6 +1020,30 @@ public class ControlVigenciasPlantas implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public VigenciasPlantas getVigenciasPlantasSeleccionado() {
+        return vigenciasPlantasSeleccionado;
+    }
+
+    public void setVigenciasPlantasSeleccionado(VigenciasPlantas vigenciasPlantasSeleccionado) {
+        this.vigenciasPlantasSeleccionado = vigenciasPlantasSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
     }
 
 }

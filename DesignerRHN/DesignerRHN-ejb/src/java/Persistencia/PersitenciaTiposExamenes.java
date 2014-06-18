@@ -98,7 +98,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
             String sqlQuery = "SELECT COUNT(*)FROM  tiposexamenescargos tec , tiposexamenes te WHERE tec.tipoexamen=te.secuencia AND te.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador contadorTiposExamenesCargos persistencia " + retorno);
             return retorno;
         } catch (Exception e) {
@@ -114,7 +114,7 @@ public class PersitenciaTiposExamenes implements PersistenciaTiposExamenesInterf
             String sqlQuery = "SELECT COUNT(*)FROM  vigenciasexamenesmedicos vem , tiposexamenes te WHERE vem.tipoexamen=te.secuencia  AND te.secuencia = ?";
             Query query = em.createNativeQuery(sqlQuery);
             query.setParameter(1, secuencia);
-            retorno = (BigInteger) query.getSingleResult();
+            retorno = (BigInteger) new BigInteger(query.getSingleResult().toString());
             System.err.println("Contador PersistenciaTiposExamenes  contadorVigenciasExamenesMedicos  " + retorno);
             return retorno;
         } catch (Exception e) {

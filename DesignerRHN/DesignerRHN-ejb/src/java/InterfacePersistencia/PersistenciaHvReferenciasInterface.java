@@ -87,7 +87,7 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Lista de Referencias Por empleado
      */
-    public List<HvReferencias> consultarHvReferenciasPersonalesPorEmpleado(EntityManager em,BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasPersonalesPorPersona(EntityManager em,BigInteger secEmpleado);
 
 
     /**
@@ -98,7 +98,7 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Lista de Referencias Por empleado
      */
-    public List<HvReferencias> consultarHvReferenciasFamiliarPorEmpleado(EntityManager em,BigInteger secEmpleado);
+    public List<HvReferencias> consultarHvReferenciasFamiliarPorPersona(EntityManager em,BigInteger secEmpleado);
     /**
      * Metodo encargado de traer las hojas de vida del empleado relacionadas con
      * HvReferencias
@@ -106,5 +106,5 @@ public interface PersistenciaHvReferenciasInterface {
      * @param secEmpleado Secuencia del empleado
      * @return Retorna una lista De HVHojasDeVida
      */
-    public List<HVHojasDeVida> consultarHvHojaDeVidaPorEmpleado(EntityManager em,BigInteger secEmpleado);
+    public List<HVHojasDeVida> consultarHvHojaDeVidaPorPersona(EntityManager em,BigInteger secEmpleado);
 }

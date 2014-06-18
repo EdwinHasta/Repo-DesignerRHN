@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,6 +38,7 @@ public class ControlTiposViajeros implements Serializable {
     AdministrarTiposViajerosInterface administrarTiposViajeros;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<Tiposviajeros> listTiposViajeros;
     private List<Tiposviajeros> filtrarTiposViajeros;
     private List<Tiposviajeros> crearTiposViajeros;
@@ -45,6 +47,7 @@ public class ControlTiposViajeros implements Serializable {
     private Tiposviajeros nuevoTiposViajeros;
     private Tiposviajeros duplicarTiposViajeros;
     private Tiposviajeros editarTiposViajeros;
+    private Tiposviajeros tiposUnidadesSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,6 +62,8 @@ public class ControlTiposViajeros implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlTiposViajeros() {
         listTiposViajeros = null;
@@ -70,22 +75,24 @@ public class ControlTiposViajeros implements Serializable {
         nuevoTiposViajeros = new Tiposviajeros();
         duplicarTiposViajeros = new Tiposviajeros();
         guardado = true;
-        tamano = 300;
+        tamano = 270;
+        System.out.println("controlTiposViajeros Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlTiposViajeros PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposViajeros.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposViajeros.eventoFiltrar \n");
@@ -103,7 +110,27 @@ public class ControlTiposViajeros implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listTiposViajeros.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listTiposViajeros.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listTiposViajeros.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listTiposViajeros.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarTiposViajeros.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarTiposViajeros.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarTiposViajeros.get(index).getSecuencia();
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -133,18 +160,57 @@ public class ControlTiposViajeros implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
             bandera = 0;
             filtrarTiposViajeros = null;
             tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarTiposViajeros.clear();
+        crearTiposViajeros.clear();
+        modificarTiposViajeros.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposViajeros = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposViajeros();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposViajeros == null || listTiposViajeros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposViajeros");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
+            bandera = 0;
+            filtrarTiposViajeros = null;
+            tipoLista = 0;
+            tamano = 270;
         }
 
         borrarTiposViajeros.clear();
@@ -162,21 +228,22 @@ public class ControlTiposViajeros implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:codigo");
-            codigo.setFilterStyle("width: 370px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 300;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
             bandera = 0;
@@ -202,6 +269,7 @@ public class ControlTiposViajeros implements Serializable {
                     if (listTiposViajeros.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposViajeros.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposViajeros.size(); j++) {
                             if (j != indice) {
@@ -212,6 +280,7 @@ public class ControlTiposViajeros implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposViajeros.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -221,10 +290,12 @@ public class ControlTiposViajeros implements Serializable {
                     if (listTiposViajeros.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposViajeros.get(indice).setNombre(backUpDescripcion);
                     }
                     if (listTiposViajeros.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposViajeros.get(indice).setNombre(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -240,7 +311,51 @@ public class ControlTiposViajeros implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposViajeros.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposViajeros.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposViajeros.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposViajeros.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listTiposViajeros.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposViajeros.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listTiposViajeros.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposViajeros.get(indice).setNombre(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -250,15 +365,10 @@ public class ControlTiposViajeros implements Serializable {
                 if (!crearTiposViajeros.contains(filtrarTiposViajeros.get(indice))) {
                     if (filtrarTiposViajeros.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposViajeros.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < filtrarTiposViajeros.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         for (int j = 0; j < listTiposViajeros.size(); j++) {
                             if (j != indice) {
                                 if (filtrarTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
@@ -268,6 +378,7 @@ public class ControlTiposViajeros implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposViajeros.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -278,10 +389,12 @@ public class ControlTiposViajeros implements Serializable {
                     if (filtrarTiposViajeros.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposViajeros.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarTiposViajeros.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposViajeros.get(indice).setNombre(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -297,7 +410,53 @@ public class ControlTiposViajeros implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposViajeros.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposViajeros.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+
+                        for (int j = 0; j < listTiposViajeros.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposViajeros.get(indice).getCodigo() == listTiposViajeros.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposViajeros.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarTiposViajeros.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposViajeros.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (filtrarTiposViajeros.get(indice).getNombre().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposViajeros.get(indice).setNombre(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -346,6 +505,9 @@ public class ControlTiposViajeros implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTiposViajeros");
+            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -371,7 +533,8 @@ public class ControlTiposViajeros implements Serializable {
                 contarTiposLegalizaciones = administrarTiposViajeros.contarTiposLegalizaciones(filtrarTiposViajeros.get(index).getSecuencia());
                 contarVigenciasViajeros = administrarTiposViajeros.contarVigenciasViajeros(filtrarTiposViajeros.get(index).getSecuencia());
             }
-            if (contarTiposLegalizaciones.equals(new BigInteger("0")) && contarVigenciasViajeros.equals(new BigInteger("0"))) {
+            if (contarTiposLegalizaciones.equals(new BigInteger("0"))
+                    && contarVigenciasViajeros.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoTiposViajeros();
             } else {
@@ -382,7 +545,6 @@ public class ControlTiposViajeros implements Serializable {
                 context.execute("validacionBorrar.show()");
                 index = -1;
                 contarTiposLegalizaciones = new BigInteger("-1");
-                contarVigenciasViajeros = new BigInteger("-1");
 
             }
         } catch (Exception e) {
@@ -426,6 +588,9 @@ public class ControlTiposViajeros implements Serializable {
             context.update("form:datosTiposViajeros");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -468,7 +633,7 @@ public class ControlTiposViajeros implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTiposViajeros.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposViajeros.getCodigo());
@@ -489,7 +654,11 @@ public class ControlTiposViajeros implements Serializable {
             }
         }
         if (nuevoTiposViajeros.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoTiposViajeros.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -502,11 +671,12 @@ public class ControlTiposViajeros implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
                 bandera = 0;
@@ -524,6 +694,9 @@ public class ControlTiposViajeros implements Serializable {
             listTiposViajeros.add(nuevoTiposViajeros);
             nuevoTiposViajeros = new Tiposviajeros();
             context.update("form:datosTiposViajeros");
+            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -587,7 +760,7 @@ public class ControlTiposViajeros implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposViajeros.getNombre());
 
         if (duplicarTiposViajeros.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposViajeros.size(); x++) {
@@ -605,12 +778,17 @@ public class ControlTiposViajeros implements Serializable {
             }
         }
         if (duplicarTiposViajeros.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * un nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarTiposViajeros.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
@@ -628,11 +806,15 @@ public class ControlTiposViajeros implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposViajeros:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposViajeros");
                 bandera = 0;
@@ -709,7 +891,14 @@ public class ControlTiposViajeros implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<Tiposviajeros> getListTiposViajeros() {
         if (listTiposViajeros == null) {
+            System.out.println("ControlTiposViajeros getListTiposViajeros");
             listTiposViajeros = administrarTiposViajeros.consultarTiposViajeros();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposViajeros == null || listTiposViajeros.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposViajeros.size();
         }
         return listTiposViajeros;
     }
@@ -788,6 +977,22 @@ public class ControlTiposViajeros implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public Tiposviajeros getTiposViajerosSeleccionado() {
+        return tiposUnidadesSeleccionado;
+    }
+
+    public void setTiposViajerosSeleccionado(Tiposviajeros clasesPensionesSeleccionado) {
+        this.tiposUnidadesSeleccionado = clasesPensionesSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

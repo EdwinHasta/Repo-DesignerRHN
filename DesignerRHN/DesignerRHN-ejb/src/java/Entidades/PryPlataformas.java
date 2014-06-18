@@ -75,28 +75,27 @@ public class PryPlataformas implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = (" ");
-            return descripcion;
-        }
-
-        return descripcion.toUpperCase();
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     public String getObservacion() {
-        if (observacion == null) {
-            observacion = (" ");
-            return observacion;
-        }
         return observacion;
     }
 
     public void setObservacion(String observacion) {
-        this.observacion = observacion.toUpperCase();
+        if (observacion != null) {
+            this.observacion = observacion.toUpperCase();
+        } else {
+            this.observacion = observacion;
+        }
     }
 
     @XmlTransient

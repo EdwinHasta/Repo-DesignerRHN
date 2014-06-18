@@ -1,6 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controlador;
@@ -8,8 +7,8 @@ package Controlador;
 import Entidades.TiposFamiliares;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposFamiliaresInterface;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,14 +38,16 @@ public class ControlTiposFamiliares implements Serializable {
     AdministrarTiposFamiliaresInterface administrarTiposFamiliares;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<TiposFamiliares> listTiposFamiliares;
     private List<TiposFamiliares> filtrarTiposFamiliares;
     private List<TiposFamiliares> crearTiposFamiliares;
     private List<TiposFamiliares> modificarTiposFamiliares;
     private List<TiposFamiliares> borrarTiposFamiliares;
-    private TiposFamiliares nuevoTipoFamiliar;
-    private TiposFamiliares duplicarTipoFamiliar;
-    private TiposFamiliares editarTipoFamiliar;
+    private TiposFamiliares nuevoTiposFamiliares;
+    private TiposFamiliares duplicarTiposFamiliares;
+    private TiposFamiliares editarTiposFamiliares;
+    private TiposFamiliares tiposFamiliaresSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -54,10 +56,14 @@ public class ControlTiposFamiliares implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column codigo, parentesco;
+    private Column codigo, descripcion;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
+    //filtrado table
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlTiposFamiliares() {
         listTiposFamiliares = null;
@@ -65,25 +71,28 @@ public class ControlTiposFamiliares implements Serializable {
         modificarTiposFamiliares = new ArrayList<TiposFamiliares>();
         borrarTiposFamiliares = new ArrayList<TiposFamiliares>();
         permitirIndex = true;
-        editarTipoFamiliar = new TiposFamiliares();
-        nuevoTipoFamiliar = new TiposFamiliares();
-        duplicarTipoFamiliar = new TiposFamiliares();
+        editarTiposFamiliares = new TiposFamiliares();
+        nuevoTiposFamiliares = new TiposFamiliares();
+        duplicarTiposFamiliares = new TiposFamiliares();
         guardado = true;
+        tamano = 270;
+        System.out.println("controlTiposFamiliares Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlTiposFamiliares PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposFamiliares.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposFamiliares.eventoFiltrar \n");
@@ -101,7 +110,27 @@ public class ControlTiposFamiliares implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listTiposFamiliares.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listTiposFamiliares.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listTiposFamiliares.get(index).getTipo();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listTiposFamiliares.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarTiposFamiliares.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarTiposFamiliares.get(index).getTipo();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarTiposFamiliares.get(index).getSecuencia();
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -131,19 +160,57 @@ public class ControlTiposFamiliares implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:parentesco");
-            parentesco.setFilterStyle("display: none; visibility: hidden;");
-
-            RequestContext.getCurrentInstance().update("form:datosTipoFamiliar");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
             bandera = 0;
             filtrarTiposFamiliares = null;
             tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarTiposFamiliares.clear();
+        crearTiposFamiliares.clear();
+        modificarTiposFamiliares.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposFamiliares = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposFamiliares();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposFamiliares == null || listTiposFamiliares.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposFamiliares");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
+            bandera = 0;
+            filtrarTiposFamiliares = null;
+            tipoLista = 0;
+            tamano = 270;
         }
 
         borrarTiposFamiliares.clear();
@@ -156,34 +223,37 @@ public class ControlTiposFamiliares implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTipoFamiliar");
-        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        context.update("form:datosTiposFamiliares");
+        context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:codigo");
-            codigo.setFilterStyle("width: 270px");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:parentesco");
-            parentesco.setFilterStyle("width: 450px");
-            RequestContext.getCurrentInstance().update("form:datosTipoFamiliar");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
+            descripcion.setFilterStyle("width: 400px");
+            RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:parentesco");
-            parentesco.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoFamiliar");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
             bandera = 0;
             filtrarTiposFamiliares = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarTipoFamiliar(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR TIPO FAMILIARES");
+    public void modificarTiposFamiliares(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
@@ -193,12 +263,13 @@ public class ControlTiposFamiliares implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR EXAMEN, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposFamiliares.contains(listTiposFamiliares.get(indice))) {
                     if (listTiposFamiliares.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
                             if (j != indice) {
@@ -209,6 +280,7 @@ public class ControlTiposFamiliares implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -218,10 +290,12 @@ public class ControlTiposFamiliares implements Serializable {
                     if (listTiposFamiliares.get(indice).getTipo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
                     }
                     if (listTiposFamiliares.get(indice).getTipo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -233,12 +307,55 @@ public class ControlTiposFamiliares implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposFamiliares.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposFamiliares.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listTiposFamiliares.get(indice).getTipo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                    }
+                    if (listTiposFamiliares.get(indice).getTipo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -248,8 +365,10 @@ public class ControlTiposFamiliares implements Serializable {
                 if (!crearTiposFamiliares.contains(filtrarTiposFamiliares.get(indice))) {
                     if (filtrarTiposFamiliares.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
+
                         for (int j = 0; j < listTiposFamiliares.size(); j++) {
                             if (j != indice) {
                                 if (filtrarTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
@@ -257,15 +376,9 @@ public class ControlTiposFamiliares implements Serializable {
                                 }
                             }
                         }
-                        for (int j = 0; j < filtrarTiposFamiliares.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposFamiliares.get(indice).getCodigo() == filtrarTiposFamiliares.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -276,10 +389,12 @@ public class ControlTiposFamiliares implements Serializable {
                     if (filtrarTiposFamiliares.get(indice).getTipo().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
                     }
                     if (filtrarTiposFamiliares.get(indice).getTipo().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -291,19 +406,65 @@ public class ControlTiposFamiliares implements Serializable {
                         if (guardado == true) {
                             guardado = false;
                         }
-                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposFamiliares.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+
+                        for (int j = 0; j < listTiposFamiliares.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposFamiliares.get(indice).getCodigo() == listTiposFamiliares.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposFamiliares.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarTiposFamiliares.get(indice).getTipo().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                    }
+                    if (filtrarTiposFamiliares.get(indice).getTipo().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposFamiliares.get(indice).setTipo(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
-            context.update("form:datosTipoFamiliar");
+            context.update("form:datosTiposFamiliares");
+            context.update("form:ACEPTAR");
         }
 
     }
@@ -326,7 +487,7 @@ public class ControlTiposFamiliares implements Serializable {
                 listTiposFamiliares.remove(index);
             }
             if (tipoLista == 1) {
-                System.out.println("borrandoTiposFamiliares");
+                System.out.println("borrandoTiposFamiliares ");
                 if (!modificarTiposFamiliares.isEmpty() && modificarTiposFamiliares.contains(filtrarTiposFamiliares.get(index))) {
                     int modIndex = modificarTiposFamiliares.indexOf(filtrarTiposFamiliares.get(index));
                     modificarTiposFamiliares.remove(modIndex);
@@ -343,31 +504,33 @@ public class ControlTiposFamiliares implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosTipoFamiliar");
+            context.update("form:datosTiposFamiliares");
+            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:ACEPTAR");
-
             }
+            context.update("form:ACEPTAR");
         }
 
     }
 
     public void verificarBorrado() {
-        BigInteger hvReferencias;
-
         System.out.println("Estoy en verificarBorrado");
+        BigInteger contarHvReferenciasTipoFamiliar;
+
         try {
             System.err.println("Control Secuencia de ControlTiposFamiliares ");
             if (tipoLista == 0) {
-                hvReferencias = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(listTiposFamiliares.get(index).getSecuencia());
+                contarHvReferenciasTipoFamiliar = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(listTiposFamiliares.get(index).getSecuencia());
             } else {
-                hvReferencias = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(listTiposFamiliares.get(index).getSecuencia());
+                contarHvReferenciasTipoFamiliar = administrarTiposFamiliares.contarHvReferenciasTipoFamiliar(filtrarTiposFamiliares.get(index).getSecuencia());
             }
-            if (hvReferencias.equals(new BigInteger("0"))) {
+            if (contarHvReferenciasTipoFamiliar.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoTiposFamiliares();
             } else {
@@ -377,8 +540,7 @@ public class ControlTiposFamiliares implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-
-                hvReferencias = new BigInteger("-1");
+                contarHvReferenciasTipoFamiliar = new BigInteger("-1");
 
             }
         } catch (Exception e) {
@@ -396,36 +558,37 @@ public class ControlTiposFamiliares implements Serializable {
 
     }
 
-    public void guardarTipoFamiliar() {
+    public void guardarTiposFamiliares() {
         RequestContext context = RequestContext.getCurrentInstance();
 
         if (guardado == false) {
-            System.out.println("Realizando ControlTiposFamiliares");
+            System.out.println("Realizando guardarTiposFamiliares");
             if (!borrarTiposFamiliares.isEmpty()) {
-              administrarTiposFamiliares.borrarTiposFamiliares(borrarTiposFamiliares);
-                
+                administrarTiposFamiliares.borrarTiposFamiliares(borrarTiposFamiliares);
                 //mostrarBorrados
                 registrosBorrados = borrarTiposFamiliares.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
                 borrarTiposFamiliares.clear();
             }
-            if (!crearTiposFamiliares.isEmpty()) {
-                administrarTiposFamiliares.crearTiposFamiliares(crearTiposFamiliares);
-
-                crearTiposFamiliares.clear();
-            }
             if (!modificarTiposFamiliares.isEmpty()) {
                 administrarTiposFamiliares.modificarTiposFamiliares(modificarTiposFamiliares);
                 modificarTiposFamiliares.clear();
             }
+            if (!crearTiposFamiliares.isEmpty()) {
+                administrarTiposFamiliares.crearTiposFamiliares(crearTiposFamiliares);
+                crearTiposFamiliares.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listTiposFamiliares = null;
-            context.update("form:datosTipoFamiliar");
+            context.update("form:datosTiposFamiliares");
             k = 0;
+            guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
-        guardado = true;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
@@ -433,10 +596,10 @@ public class ControlTiposFamiliares implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarTipoFamiliar = listTiposFamiliares.get(index);
+                editarTiposFamiliares = listTiposFamiliares.get(index);
             }
             if (tipoLista == 1) {
-                editarTipoFamiliar = filtrarTiposFamiliares.get(index);
+                editarTiposFamiliares = filtrarTiposFamiliares.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -446,8 +609,8 @@ public class ControlTiposFamiliares implements Serializable {
                 context.execute("editCodigo.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editParentesco");
-                context.execute("editParentesco.show()");
+                context.update("formularioDialogos:editDescripcion");
+                context.execute("editDescripcion.show()");
                 cualCelda = -1;
             }
 
@@ -456,49 +619,42 @@ public class ControlTiposFamiliares implements Serializable {
         secRegistro = null;
     }
 
-    public void mostrarDialogoNuevoTiposFamiliares() {
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("formularioDialogos:nuevaTipoFamiliar");
-        context.execute("nuevoRegistroTiposFamiliar.show()");
-    }
-
     public void agregarNuevoTiposFamiliares() {
         System.out.println("agregarNuevoTiposFamiliares");
-        RequestContext context = RequestContext.getCurrentInstance();
-
         int contador = 0;
         int duplicados = 0;
 
         Integer a = 0;
         a = null;
         mensajeValidacion = " ";
-        if (nuevoTipoFamiliar.getCodigo() == a) {
-            mensajeValidacion = " *debe tener un codigo \n";
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (nuevoTiposFamiliares.getCodigo() == a) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTipoFamiliar.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposFamiliares.getCodigo());
 
             for (int x = 0; x < listTiposFamiliares.size(); x++) {
-                if (listTiposFamiliares.get(x).getCodigo() == nuevoTipoFamiliar.getCodigo()) {
+                if (listTiposFamiliares.get(x).getCodigo() == nuevoTiposFamiliares.getCodigo()) {
                     duplicados++;
                 }
             }
             System.out.println("Antes del if Duplicados eses igual  : " + duplicados);
 
             if (duplicados > 0) {
-                mensajeValidacion = " *Que NO hayan codigos repetidos \n";
+                mensajeValidacion = " *Que NO Hayan Codigos Repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
                 contador++;
             }
         }
-        if (nuevoTipoFamiliar.getTipo().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener un parentesco \n";
+        if (nuevoTiposFamiliares.getTipo() == null) {
+            mensajeValidacion = mensajeValidacion + " *Parentesco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
-        } else if (nuevoTipoFamiliar.getTipo().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener un parentesco  \n";
+        } else if (nuevoTiposFamiliares.getTipo().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Parentesco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -511,13 +667,14 @@ public class ControlTiposFamiliares implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:parentesco");
-                parentesco.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoFamiliar");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
                 bandera = 0;
                 filtrarTiposFamiliares = null;
                 tipoLista = 0;
@@ -526,19 +683,22 @@ public class ControlTiposFamiliares implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoTipoFamiliar.setSecuencia(l);
+            nuevoTiposFamiliares.setSecuencia(l);
 
-            crearTiposFamiliares.add(nuevoTipoFamiliar);
+            crearTiposFamiliares.add(nuevoTiposFamiliares);
 
-            listTiposFamiliares.add(nuevoTipoFamiliar);
-            nuevoTipoFamiliar = new TiposFamiliares();
-            context.update("form:datosTipoFamiliar");
+            listTiposFamiliares.add(nuevoTiposFamiliares);
+            nuevoTiposFamiliares = new TiposFamiliares();
+            context.update("form:datosTiposFamiliares");
+            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
-            context.execute("nuevoRegistroTiposFamiliar.hide()");
+            context.execute("nuevoRegistroTiposFamiliares.hide()");
             index = -1;
             secRegistro = null;
 
@@ -551,7 +711,7 @@ public class ControlTiposFamiliares implements Serializable {
 
     public void limpiarNuevoTiposFamiliares() {
         System.out.println("limpiarNuevoTiposFamiliares");
-        nuevoTipoFamiliar = new TiposFamiliares();
+        nuevoTiposFamiliares = new TiposFamiliares();
         secRegistro = null;
         index = -1;
 
@@ -559,25 +719,25 @@ public class ControlTiposFamiliares implements Serializable {
 
     //------------------------------------------------------------------------------
     public void duplicandoTiposFamiliares() {
-        System.out.println("duplicandoTiposExamenes");
+        System.out.println("duplicandoTiposFamiliares");
         if (index >= 0) {
-            duplicarTipoFamiliar = new TiposFamiliares();
+            duplicarTiposFamiliares = new TiposFamiliares();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarTipoFamiliar.setSecuencia(l);
-                duplicarTipoFamiliar.setCodigo(listTiposFamiliares.get(index).getCodigo());
-                duplicarTipoFamiliar.setTipo(listTiposFamiliares.get(index).getTipo());
+                duplicarTiposFamiliares.setSecuencia(l);
+                duplicarTiposFamiliares.setCodigo(listTiposFamiliares.get(index).getCodigo());
+                duplicarTiposFamiliares.setTipo(listTiposFamiliares.get(index).getTipo());
             }
             if (tipoLista == 1) {
-                duplicarTipoFamiliar.setSecuencia(l);
-                duplicarTipoFamiliar.setCodigo(filtrarTiposFamiliares.get(index).getCodigo());
-                duplicarTipoFamiliar.setTipo(filtrarTiposFamiliares.get(index).getTipo());
+                duplicarTiposFamiliares.setSecuencia(l);
+                duplicarTiposFamiliares.setCodigo(filtrarTiposFamiliares.get(index).getCodigo());
+                duplicarTiposFamiliares.setTipo(filtrarTiposFamiliares.get(index).getTipo());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarTF");
+            context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroTiposFamiliares.show()");
             index = -1;
             secRegistro = null;
@@ -585,27 +745,27 @@ public class ControlTiposFamiliares implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EXAMENES");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarTipoFamiliar.getCodigo());
-        System.err.println("ConfirmarDuplicar parentesco " + duplicarTipoFamiliar.getTipo());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarTiposFamiliares.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposFamiliares.getTipo());
 
-        if (duplicarTipoFamiliar.getCodigo() == a) {
+        if (duplicarTiposFamiliares.getCodigo() == a) {
             mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposFamiliares.size(); x++) {
-                if (listTiposFamiliares.get(x).getCodigo() == duplicarTipoFamiliar.getCodigo()) {
+                if (listTiposFamiliares.get(x).getCodigo() == duplicarTiposFamiliares.getCodigo()) {
                     duplicados++;
                 }
             }
             if (duplicados > 0) {
-                mensajeValidacion = " *que NO existan codigo repetidos \n";
+                mensajeValidacion = " *Que NO Existan Codigo Repetidos \n";
                 System.out.println("Mensaje validacion : " + mensajeValidacion);
             } else {
                 System.out.println("bandera");
@@ -613,43 +773,51 @@ public class ControlTiposFamiliares implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoFamiliar.getTipo().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un parentesco \n";
+        if (duplicarTiposFamiliares.getTipo() == null) {
+            mensajeValidacion = mensajeValidacion + " *Parentesco \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarTiposFamiliares.getTipo().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Parentesco \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarTipoFamiliar.getSecuencia() + "  " + duplicarTipoFamiliar.getCodigo());
-            if (crearTiposFamiliares.contains(duplicarTipoFamiliar)) {
+            System.out.println("Datos Duplicando: " + duplicarTiposFamiliares.getSecuencia() + "  " + duplicarTiposFamiliares.getCodigo());
+            if (crearTiposFamiliares.contains(duplicarTiposFamiliares)) {
                 System.out.println("Ya lo contengo.");
             }
-            listTiposFamiliares.add(duplicarTipoFamiliar);
-            crearTiposFamiliares.add(duplicarTipoFamiliar);
-            context.update("form:datosTipoFamiliar");
+            listTiposFamiliares.add(duplicarTiposFamiliares);
+            crearTiposFamiliares.add(duplicarTiposFamiliares);
+            context.update("form:datosTiposFamiliares");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
-            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
+            context.update("form:informacionRegistro");
 
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoFamiliar:parentesco");
-                parentesco.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoFamiliar");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposFamiliares:descripcion");
+                descripcion.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTiposFamiliares");
                 bandera = 0;
                 filtrarTiposFamiliares = null;
                 tipoLista = 0;
             }
-            duplicarTipoFamiliar = new TiposFamiliares();
+            duplicarTiposFamiliares = new TiposFamiliares();
             RequestContext.getCurrentInstance().execute("duplicarRegistroTiposFamiliares.hide()");
 
         } else {
@@ -660,11 +828,11 @@ public class ControlTiposFamiliares implements Serializable {
     }
 
     public void limpiarDuplicarTiposFamiliares() {
-        duplicarTipoFamiliar = new TiposFamiliares();
+        duplicarTiposFamiliares = new TiposFamiliares();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoFamiliarExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposFamiliaresExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TIPOSFAMILIARES", false, false, "UTF-8", null, null);
@@ -674,7 +842,7 @@ public class ControlTiposFamiliares implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoFamiliarExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposFamiliaresExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TIPOSFAMILIARES", false, false, "UTF-8", null, null);
@@ -719,8 +887,14 @@ public class ControlTiposFamiliares implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposFamiliares> getListTiposFamiliares() {
         if (listTiposFamiliares == null) {
+            System.out.println("ControlTiposFamiliares getListTiposFamiliares");
             listTiposFamiliares = administrarTiposFamiliares.consultarTiposFamiliares();
-
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposFamiliares == null || listTiposFamiliares.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposFamiliares.size();
         }
         return listTiposFamiliares;
     }
@@ -737,28 +911,28 @@ public class ControlTiposFamiliares implements Serializable {
         this.filtrarTiposFamiliares = filtrarTiposFamiliares;
     }
 
-    public TiposFamiliares getNuevoTipoFamiliar() {
-        return nuevoTipoFamiliar;
+    public TiposFamiliares getNuevoTiposFamiliares() {
+        return nuevoTiposFamiliares;
     }
 
-    public void setNuevoTipoFamiliar(TiposFamiliares nuevoTipoFamiliar) {
-        this.nuevoTipoFamiliar = nuevoTipoFamiliar;
+    public void setNuevoTiposFamiliares(TiposFamiliares nuevoTiposFamiliares) {
+        this.nuevoTiposFamiliares = nuevoTiposFamiliares;
     }
 
-    public TiposFamiliares getDuplicarTipoFamiliar() {
-        return duplicarTipoFamiliar;
+    public TiposFamiliares getDuplicarTiposFamiliares() {
+        return duplicarTiposFamiliares;
     }
 
-    public void setDuplicarTipoFamiliar(TiposFamiliares duplicarTipoFamiliar) {
-        this.duplicarTipoFamiliar = duplicarTipoFamiliar;
+    public void setDuplicarTiposFamiliares(TiposFamiliares duplicarTiposFamiliares) {
+        this.duplicarTiposFamiliares = duplicarTiposFamiliares;
     }
 
-    public TiposFamiliares getEditarTipoFamiliar() {
-        return editarTipoFamiliar;
+    public TiposFamiliares getEditarTiposFamiliares() {
+        return editarTiposFamiliares;
     }
 
-    public void setEditarTipoFamiliar(TiposFamiliares editarTipoFamiliar) {
-        this.editarTipoFamiliar = editarTipoFamiliar;
+    public void setEditarTiposFamiliares(TiposFamiliares editarTiposFamiliares) {
+        this.editarTiposFamiliares = editarTiposFamiliares;
     }
 
     public BigInteger getSecRegistro() {
@@ -791,6 +965,30 @@ public class ControlTiposFamiliares implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public TiposFamiliares getTiposFamiliaresSeleccionado() {
+        return tiposFamiliaresSeleccionado;
+    }
+
+    public void setTiposFamiliaresSeleccionado(TiposFamiliares clasesPensionesSeleccionado) {
+        this.tiposFamiliaresSeleccionado = clasesPensionesSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
