@@ -1,6 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
+ * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
 package Controlador;
@@ -8,8 +7,8 @@ package Controlador;
 import Entidades.TiposTallas;
 import Exportar.ExportarPDF;
 import Exportar.ExportarXLS;
-import InterfaceAdministrar.AdministrarRastrosInterface;
 import InterfaceAdministrar.AdministrarTiposTallasInterface;
+import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -38,14 +38,16 @@ public class ControlTiposTallas implements Serializable {
     AdministrarTiposTallasInterface administrarTiposTallas;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<TiposTallas> listTiposTallas;
     private List<TiposTallas> filtrarTiposTallas;
     private List<TiposTallas> crearTiposTallas;
     private List<TiposTallas> modificarTiposTallas;
-    private List<TiposTallas> borrarTiposTalas;
-    private TiposTallas nuevoTipoTalla;
-    private TiposTallas duplicarTipoTalla;
-    private TiposTallas editarTipoTalla;
+    private List<TiposTallas> borrarTiposTallas;
+    private TiposTallas nuevoTiposTallas;
+    private TiposTallas duplicarTiposTallas;
+    private TiposTallas editarTiposTallas;
+    private TiposTallas tiposTallasSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -58,34 +60,39 @@ public class ControlTiposTallas implements Serializable {
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
-    private BigInteger elementos;
-    private BigInteger vigenciasTallas;
+    //filtrado table
+    private int tamano;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlTiposTallas() {
         listTiposTallas = null;
         crearTiposTallas = new ArrayList<TiposTallas>();
         modificarTiposTallas = new ArrayList<TiposTallas>();
-        borrarTiposTalas = new ArrayList<TiposTallas>();
+        borrarTiposTallas = new ArrayList<TiposTallas>();
         permitirIndex = true;
-        editarTipoTalla = new TiposTallas();
-        nuevoTipoTalla = new TiposTallas();
-        duplicarTipoTalla = new TiposTallas();
+        editarTiposTallas = new TiposTallas();
+        nuevoTiposTallas = new TiposTallas();
+        duplicarTiposTallas = new TiposTallas();
         guardado = true;
+        tamano = 270;
+        System.out.println("controlTiposTallas Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlTiposTallas PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposTallas.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposTallas.eventoFiltrar \n");
@@ -103,7 +110,27 @@ public class ControlTiposTallas implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listTiposTallas.get(index).getSecuencia();
+            if (tipoLista == 0) {
+                if (cualCelda == 0) {
+                    backUpCodigo = listTiposTallas.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listTiposTallas.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listTiposTallas.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarTiposTallas.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarTiposTallas.get(index).getDescripcion();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarTiposTallas.get(index).getSecuencia();
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -133,21 +160,60 @@ public class ControlTiposTallas implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoTalla");
+            RequestContext.getCurrentInstance().update("form:datosTiposTallas");
             bandera = 0;
             filtrarTiposTallas = null;
             tipoLista = 0;
+            tamano = 270;
         }
 
-        borrarTiposTalas.clear();
+        borrarTiposTallas.clear();
+        crearTiposTallas.clear();
+        modificarTiposTallas.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposTallas = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposTallas();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposTallas == null || listTiposTallas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposTallas.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposTallas");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposTallas");
+            bandera = 0;
+            filtrarTiposTallas = null;
+            tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarTiposTallas.clear();
         crearTiposTallas.clear();
         modificarTiposTallas.clear();
         index = -1;
@@ -157,50 +223,53 @@ public class ControlTiposTallas implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTipoTalla");
+        context.update("form:datosTiposTallas");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:codigo");
-            codigo.setFilterStyle("width: 300px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:descripcion");
             descripcion.setFilterStyle("width: 400px");
-            RequestContext.getCurrentInstance().update("form:datosTipoTalla");
+            RequestContext.getCurrentInstance().update("form:datosTiposTallas");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosTipoTalla");
+            RequestContext.getCurrentInstance().update("form:datosTiposTallas");
             bandera = 0;
             filtrarTiposTallas = null;
             tipoLista = 0;
         }
     }
 
-    public void modificarTipoTalla(int indice, String confirmarCambio, String valorConfirmar) {
-        System.err.println("ENTRE A MODIFICAR TIPO TALLA");
+    public void modificarTiposTallas(int indice, String confirmarCambio, String valorConfirmar) {
+        System.err.println("ENTRE A MODIFICAR SUB CATEGORIA");
         index = indice;
 
         int contador = 0;
         boolean banderita = false;
-        Short a;
+        Integer a;
         a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
-            System.err.println("ENTRE A MODIFICAR TALLA, CONFIRMAR CAMBIO ES N");
+            System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposTallas.contains(listTiposTallas.get(indice))) {
                     if (listTiposTallas.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposTallas.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposTallas.size(); j++) {
                             if (j != indice) {
@@ -211,6 +280,7 @@ public class ControlTiposTallas implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposTallas.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -220,10 +290,12 @@ public class ControlTiposTallas implements Serializable {
                     if (listTiposTallas.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposTallas.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (listTiposTallas.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        listTiposTallas.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -239,7 +311,51 @@ public class ControlTiposTallas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposTallas.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposTallas.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposTallas.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposTallas.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+                    if (listTiposTallas.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposTallas.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (listTiposTallas.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposTallas.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -249,25 +365,20 @@ public class ControlTiposTallas implements Serializable {
                 if (!crearTiposTallas.contains(filtrarTiposTallas.get(indice))) {
                     if (filtrarTiposTallas.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposTallas.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listTiposTallas.size(); j++) {
-                            if (j == indice) {
-                                if (listTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
-                        for (int j = 0; j < filtrarTiposTallas.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposTallas.get(indice).getCodigo().equals(filtrarTiposTallas.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
 
+                        for (int j = 0; j < listTiposTallas.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposTallas.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
                         } else {
                             banderita = true;
@@ -278,10 +389,12 @@ public class ControlTiposTallas implements Serializable {
                     if (filtrarTiposTallas.get(indice).getDescripcion().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposTallas.get(indice).setDescripcion(backUpDescripcion);
                     }
                     if (filtrarTiposTallas.get(indice).getDescripcion().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
+                        filtrarTiposTallas.get(indice).setDescripcion(backUpDescripcion);
                     }
 
                     if (banderita == true) {
@@ -297,14 +410,60 @@ public class ControlTiposTallas implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposTallas.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposTallas.get(indice).setCodigo(backUpCodigo);
+                        banderita = false;
+                    } else {
+
+                        for (int j = 0; j < listTiposTallas.size(); j++) {
+                            if (j != indice) {
+                                if (filtrarTiposTallas.get(indice).getCodigo() == listTiposTallas.get(j).getCodigo()) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposTallas.get(indice).setCodigo(backUpCodigo);
+                            banderita = false;
+                        } else {
+                            banderita = true;
+                        }
+
+                    }
+
+                    if (filtrarTiposTallas.get(indice).getDescripcion().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposTallas.get(indice).setDescripcion(backUpDescripcion);
+                    }
+                    if (filtrarTiposTallas.get(indice).getDescripcion().equals(" ")) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        filtrarTiposTallas.get(indice).setDescripcion(backUpDescripcion);
+                    }
+
+                    if (banderita == true) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
                 }
 
             }
-            context.update("form:datosTipoTalla");
+            context.update("form:datosTiposTallas");
             context.update("form:ACEPTAR");
         }
 
@@ -318,12 +477,12 @@ public class ControlTiposTallas implements Serializable {
                 if (!modificarTiposTallas.isEmpty() && modificarTiposTallas.contains(listTiposTallas.get(index))) {
                     int modIndex = modificarTiposTallas.indexOf(listTiposTallas.get(index));
                     modificarTiposTallas.remove(modIndex);
-                    borrarTiposTalas.add(listTiposTallas.get(index));
+                    borrarTiposTallas.add(listTiposTallas.get(index));
                 } else if (!crearTiposTallas.isEmpty() && crearTiposTallas.contains(listTiposTallas.get(index))) {
                     int crearIndex = crearTiposTallas.indexOf(listTiposTallas.get(index));
                     crearTiposTallas.remove(crearIndex);
                 } else {
-                    borrarTiposTalas.add(listTiposTallas.get(index));
+                    borrarTiposTallas.add(listTiposTallas.get(index));
                 }
                 listTiposTallas.remove(index);
             }
@@ -332,12 +491,12 @@ public class ControlTiposTallas implements Serializable {
                 if (!modificarTiposTallas.isEmpty() && modificarTiposTallas.contains(filtrarTiposTallas.get(index))) {
                     int modIndex = modificarTiposTallas.indexOf(filtrarTiposTallas.get(index));
                     modificarTiposTallas.remove(modIndex);
-                    borrarTiposTalas.add(filtrarTiposTallas.get(index));
+                    borrarTiposTallas.add(filtrarTiposTallas.get(index));
                 } else if (!crearTiposTallas.isEmpty() && crearTiposTallas.contains(filtrarTiposTallas.get(index))) {
                     int crearIndex = crearTiposTallas.indexOf(filtrarTiposTallas.get(index));
                     crearTiposTallas.remove(crearIndex);
                 } else {
-                    borrarTiposTalas.add(filtrarTiposTallas.get(index));
+                    borrarTiposTallas.add(filtrarTiposTallas.get(index));
                 }
                 int VCIndex = listTiposTallas.indexOf(filtrarTiposTallas.get(index));
                 listTiposTallas.remove(VCIndex);
@@ -345,13 +504,16 @@ public class ControlTiposTallas implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosTiposTallas");
+            infoRegistro = "Cantidad de registros: " + listTiposTallas.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
             }
-            context.update("form:datosTipoTalla");
             context.update("form:ACEPTAR");
         }
 
@@ -359,16 +521,20 @@ public class ControlTiposTallas implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
+        BigInteger contarElementosTipoTalla;
+        BigInteger contarVigenciasTallasTipoTalla;
+
         try {
             System.err.println("Control Secuencia de ControlTiposTallas ");
             if (tipoLista == 0) {
-                elementos = administrarTiposTallas.contarElementosTipoTalla(listTiposTallas.get(index).getSecuencia());
-                vigenciasTallas = administrarTiposTallas.contarVigenciasTallasTipoTalla(listTiposTallas.get(index).getSecuencia());
+                contarElementosTipoTalla = administrarTiposTallas.contarElementosTipoTalla(listTiposTallas.get(index).getSecuencia());
+                contarVigenciasTallasTipoTalla = administrarTiposTallas.contarVigenciasTallasTipoTalla(listTiposTallas.get(index).getSecuencia());
             } else {
-                elementos = administrarTiposTallas.contarElementosTipoTalla(filtrarTiposTallas.get(index).getSecuencia());
-                vigenciasTallas = administrarTiposTallas.contarVigenciasTallasTipoTalla(filtrarTiposTallas.get(index).getSecuencia());
+                contarElementosTipoTalla = administrarTiposTallas.contarElementosTipoTalla(filtrarTiposTallas.get(index).getSecuencia());
+                contarVigenciasTallasTipoTalla = administrarTiposTallas.contarVigenciasTallasTipoTalla(filtrarTiposTallas.get(index).getSecuencia());
             }
-            if (elementos.equals(0) && vigenciasTallas.equals(0)) {
+            if (contarElementosTipoTalla.equals(new BigInteger("0"))
+                    && contarVigenciasTallasTipoTalla.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoTiposTallas();
             } else {
@@ -378,8 +544,7 @@ public class ControlTiposTallas implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-
-                elementos = new BigInteger("-1");
+                contarElementosTipoTalla = new BigInteger("-1");
 
             }
         } catch (Exception e) {
@@ -389,7 +554,7 @@ public class ControlTiposTallas implements Serializable {
 
     public void revisarDialogoGuardar() {
 
-        if (!borrarTiposTalas.isEmpty() || !crearTiposTallas.isEmpty() || !modificarTiposTallas.isEmpty()) {
+        if (!borrarTiposTallas.isEmpty() || !crearTiposTallas.isEmpty() || !modificarTiposTallas.isEmpty()) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:confirmarGuardar");
             context.execute("confirmarGuardar.show()");
@@ -402,29 +567,30 @@ public class ControlTiposTallas implements Serializable {
 
         if (guardado == false) {
             System.out.println("Realizando guardarTiposTallas");
-            if (!borrarTiposTalas.isEmpty()) {
-                 administrarTiposTallas.borrarTiposTallas(borrarTiposTalas);
-               
+            if (!borrarTiposTallas.isEmpty()) {
+                administrarTiposTallas.borrarTiposTallas(borrarTiposTallas);
                 //mostrarBorrados
-                registrosBorrados = borrarTiposTalas.size();
+                registrosBorrados = borrarTiposTallas.size();
                 context.update("form:mostrarBorrados");
                 context.execute("mostrarBorrados.show()");
-                borrarTiposTalas.clear();
-            }
-            if (!crearTiposTallas.isEmpty()) {
-             administrarTiposTallas.crearTiposTallas(crearTiposTallas);
-
-                crearTiposTallas.clear();
+                borrarTiposTallas.clear();
             }
             if (!modificarTiposTallas.isEmpty()) {
                 administrarTiposTallas.modificarTiposTallas(modificarTiposTallas);
                 modificarTiposTallas.clear();
             }
+            if (!crearTiposTallas.isEmpty()) {
+                administrarTiposTallas.crearTiposTallas(crearTiposTallas);
+                crearTiposTallas.clear();
+            }
             System.out.println("Se guardaron los datos con exito");
             listTiposTallas = null;
-            context.update("form:datosTipoTalla");
+            context.update("form:datosTiposTallas");
             k = 0;
-            guardado=true;
+            guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -434,10 +600,10 @@ public class ControlTiposTallas implements Serializable {
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
-                editarTipoTalla = listTiposTallas.get(index);
+                editarTiposTallas = listTiposTallas.get(index);
             }
             if (tipoLista == 1) {
-                editarTipoTalla = filtrarTiposTallas.get(index);
+                editarTiposTallas = filtrarTiposTallas.get(index);
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -462,18 +628,18 @@ public class ControlTiposTallas implements Serializable {
         int contador = 0;
         int duplicados = 0;
 
-        Short a = 0;
+        Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
-        if (nuevoTipoTalla.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+        if (nuevoTiposTallas.getCodigo() == a) {
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTipoTalla.getCodigo());
+            System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposTallas.getCodigo());
 
             for (int x = 0; x < listTiposTallas.size(); x++) {
-                if (listTiposTallas.get(x).getCodigo() == nuevoTipoTalla.getCodigo()) {
+                if (listTiposTallas.get(x).getCodigo() == nuevoTiposTallas.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -487,8 +653,12 @@ public class ControlTiposTallas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTipoTalla.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+        if (nuevoTiposTallas.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoTiposTallas.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -501,13 +671,14 @@ public class ControlTiposTallas implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoTalla");
+                RequestContext.getCurrentInstance().update("form:datosTiposTallas");
                 bandera = 0;
                 filtrarTiposTallas = null;
                 tipoLista = 0;
@@ -516,13 +687,16 @@ public class ControlTiposTallas implements Serializable {
 
             k++;
             l = BigInteger.valueOf(k);
-            nuevoTipoTalla.setSecuencia(l);
+            nuevoTiposTallas.setSecuencia(l);
 
-            crearTiposTallas.add(nuevoTipoTalla);
+            crearTiposTallas.add(nuevoTiposTallas);
 
-            listTiposTallas.add(nuevoTipoTalla);
-            nuevoTipoTalla = new TiposTallas();
-            context.update("form:datosTipoTalla");
+            listTiposTallas.add(nuevoTiposTallas);
+            nuevoTiposTallas = new TiposTallas();
+            context.update("form:datosTiposTallas");
+            infoRegistro = "Cantidad de registros: " + listTiposTallas.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -541,7 +715,7 @@ public class ControlTiposTallas implements Serializable {
 
     public void limpiarNuevoTiposTallas() {
         System.out.println("limpiarNuevoTiposTallas");
-        nuevoTipoTalla = new TiposTallas();
+        nuevoTiposTallas = new TiposTallas();
         secRegistro = null;
         index = -1;
 
@@ -551,23 +725,23 @@ public class ControlTiposTallas implements Serializable {
     public void duplicandoTiposTallas() {
         System.out.println("duplicandoTiposTallas");
         if (index >= 0) {
-            duplicarTipoTalla = new TiposTallas();
+            duplicarTiposTallas = new TiposTallas();
             k++;
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarTipoTalla.setSecuencia(l);
-                duplicarTipoTalla.setCodigo(listTiposTallas.get(index).getCodigo());
-                duplicarTipoTalla.setDescripcion(listTiposTallas.get(index).getDescripcion());
+                duplicarTiposTallas.setSecuencia(l);
+                duplicarTiposTallas.setCodigo(listTiposTallas.get(index).getCodigo());
+                duplicarTiposTallas.setDescripcion(listTiposTallas.get(index).getDescripcion());
             }
             if (tipoLista == 1) {
-                duplicarTipoTalla.setSecuencia(l);
-                duplicarTipoTalla.setCodigo(filtrarTiposTallas.get(index).getCodigo());
-                duplicarTipoTalla.setDescripcion(filtrarTiposTallas.get(index).getDescripcion());
+                duplicarTiposTallas.setSecuencia(l);
+                duplicarTiposTallas.setCodigo(filtrarTiposTallas.get(index).getCodigo());
+                duplicarTiposTallas.setDescripcion(filtrarTiposTallas.get(index).getDescripcion());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
-            context.update("formularioDialogos:duplicarTT");
+            context.update("formularioDialogos:duplicarTE");
             context.execute("duplicarRegistroTiposTallas.show()");
             index = -1;
             secRegistro = null;
@@ -575,22 +749,22 @@ public class ControlTiposTallas implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS TALLAS");
+        System.err.println("ESTOY EN CONFIRMAR DUPLICAR TIPOS EMPRESAS");
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        Short a = 0;
+        Integer a = 0;
         a = null;
-        System.err.println("ConfirmarDuplicar codigo " + duplicarTipoTalla.getCodigo());
-        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTipoTalla.getDescripcion());
+        System.err.println("ConfirmarDuplicar codigo " + duplicarTiposTallas.getCodigo());
+        System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposTallas.getDescripcion());
 
-        if (duplicarTipoTalla.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+        if (duplicarTiposTallas.getCodigo() == a) {
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposTallas.size(); x++) {
-                if (listTiposTallas.get(x).getCodigo() == duplicarTipoTalla.getCodigo()) {
+                if (listTiposTallas.get(x).getCodigo() == duplicarTiposTallas.getCodigo()) {
                     duplicados++;
                 }
             }
@@ -603,42 +777,51 @@ public class ControlTiposTallas implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoTalla.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Una Descripcion \n";
+        if (duplicarTiposTallas.getDescripcion() == null) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarTiposTallas.getDescripcion().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
 
-            System.out.println("Datos Duplicando: " + duplicarTipoTalla.getSecuencia() + "  " + duplicarTipoTalla.getCodigo());
-            if (crearTiposTallas.contains(duplicarTipoTalla)) {
+            System.out.println("Datos Duplicando: " + duplicarTiposTallas.getSecuencia() + "  " + duplicarTiposTallas.getCodigo());
+            if (crearTiposTallas.contains(duplicarTiposTallas)) {
                 System.out.println("Ya lo contengo.");
             }
-            listTiposTallas.add(duplicarTipoTalla);
-            crearTiposTallas.add(duplicarTipoTalla);
-            context.update("form:datosTipoTalla");
+            listTiposTallas.add(duplicarTiposTallas);
+            crearTiposTallas.add(duplicarTiposTallas);
+            context.update("form:datosTiposTallas");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listTiposTallas.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoTalla:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposTallas:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosTipoTalla");
+                RequestContext.getCurrentInstance().update("form:datosTiposTallas");
                 bandera = 0;
                 filtrarTiposTallas = null;
                 tipoLista = 0;
             }
-            duplicarTipoTalla = new TiposTallas();
+            duplicarTiposTallas = new TiposTallas();
             RequestContext.getCurrentInstance().execute("duplicarRegistroTiposTallas.hide()");
 
         } else {
@@ -649,11 +832,11 @@ public class ControlTiposTallas implements Serializable {
     }
 
     public void limpiarDuplicarTiposTallas() {
-        duplicarTipoTalla = new TiposTallas();
+        duplicarTiposTallas = new TiposTallas();
     }
 
     public void exportPDF() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoTallaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposTallasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarPDF();
         exporter.export(context, tabla, "TIPOSTALLAS", false, false, "UTF-8", null, null);
@@ -663,7 +846,7 @@ public class ControlTiposTallas implements Serializable {
     }
 
     public void exportXLS() throws IOException {
-        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTipoTallaExportar");
+        DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosTiposTallasExportar");
         FacesContext context = FacesContext.getCurrentInstance();
         Exporter exporter = new ExportarXLS();
         exporter.export(context, tabla, "TIPOSTALLAS", false, false, "UTF-8", null, null);
@@ -708,9 +891,15 @@ public class ControlTiposTallas implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposTallas> getListTiposTallas() {
         if (listTiposTallas == null) {
+            System.out.println("ControlTiposTallas getListTiposTallas");
             listTiposTallas = administrarTiposTallas.consultarTiposTallas();
         }
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposTallas == null || listTiposTallas.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposTallas.size();
+        }
         return listTiposTallas;
     }
 
@@ -726,28 +915,28 @@ public class ControlTiposTallas implements Serializable {
         this.filtrarTiposTallas = filtrarTiposTallas;
     }
 
-    public TiposTallas getNuevoTipoTalla() {
-        return nuevoTipoTalla;
+    public TiposTallas getNuevoTiposTallas() {
+        return nuevoTiposTallas;
     }
 
-    public void setNuevoTipoTalla(TiposTallas nuevoTipoTalla) {
-        this.nuevoTipoTalla = nuevoTipoTalla;
+    public void setNuevoTiposTallas(TiposTallas nuevoTiposTallas) {
+        this.nuevoTiposTallas = nuevoTiposTallas;
     }
 
-    public TiposTallas getDuplicarTipoTalla() {
-        return duplicarTipoTalla;
+    public TiposTallas getDuplicarTiposTallas() {
+        return duplicarTiposTallas;
     }
 
-    public void setDuplicarTipoTalla(TiposTallas duplicarTipoTalla) {
-        this.duplicarTipoTalla = duplicarTipoTalla;
+    public void setDuplicarTiposTallas(TiposTallas duplicarTiposTallas) {
+        this.duplicarTiposTallas = duplicarTiposTallas;
     }
 
-    public TiposTallas getEditarTipoTalla() {
-        return editarTipoTalla;
+    public TiposTallas getEditarTiposTallas() {
+        return editarTiposTallas;
     }
 
-    public void setEditarTipoTalla(TiposTallas editarTipoTalla) {
-        this.editarTipoTalla = editarTipoTalla;
+    public void setEditarTiposTallas(TiposTallas editarTiposTallas) {
+        this.editarTiposTallas = editarTiposTallas;
     }
 
     public BigInteger getSecRegistro() {
@@ -780,6 +969,30 @@ public class ControlTiposTallas implements Serializable {
 
     public void setGuardado(boolean guardado) {
         this.guardado = guardado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public TiposTallas getTiposTallasSeleccionado() {
+        return tiposTallasSeleccionado;
+    }
+
+    public void setTiposTallasSeleccionado(TiposTallas clasesPensionesSeleccionado) {
+        this.tiposTallasSeleccionado = clasesPensionesSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

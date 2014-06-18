@@ -66,7 +66,7 @@ public class PersistenciaTiposReemplazos implements PersistenciaTiposReemplazosI
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(tiposReemplazos);
+            em.remove(em.merge(tiposReemplazos));
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposReemplazos.borrar: " + e);

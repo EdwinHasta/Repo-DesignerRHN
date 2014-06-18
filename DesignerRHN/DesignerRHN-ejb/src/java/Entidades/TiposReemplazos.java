@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposReemplazos.findAll", query = "SELECT t FROM TiposReemplazos t")})
 public class TiposReemplazos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -78,14 +79,15 @@ public class TiposReemplazos implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
-            nombre = (" ");
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     public BigDecimal getFactorreemplazado() {
@@ -129,5 +131,5 @@ public class TiposReemplazos implements Serializable {
     public String toString() {
         return "Entidades.TiposReemplazos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

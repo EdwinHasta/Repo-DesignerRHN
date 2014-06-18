@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "TiposUnidades.findAll", query = "SELECT t FROM TiposUnidades t")})
 public class TiposUnidades implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -69,14 +70,15 @@ public class TiposUnidades implements Serializable {
     }
 
     public String getNombre() {
-        if (nombre == null) {
-            nombre = " ";
-        }
         return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre.toUpperCase();
+        if (nombre == null) {
+            this.nombre = nombre;
+        } else {
+            this.nombre = nombre.toUpperCase();
+        }
     }
 
     @XmlTransient

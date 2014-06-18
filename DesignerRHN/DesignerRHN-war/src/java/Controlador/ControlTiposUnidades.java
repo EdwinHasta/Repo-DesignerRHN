@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,6 +38,7 @@ public class ControlTiposUnidades implements Serializable {
     AdministrarTiposUnidadesInterface administrarTiposUnidades;
     @EJB
     AdministrarRastrosInterface administrarRastros;
+
     private List<TiposUnidades> listTiposUnidades;
     private List<TiposUnidades> filtrarTiposUnidades;
     private List<TiposUnidades> crearTiposUnidades;
@@ -45,6 +47,7 @@ public class ControlTiposUnidades implements Serializable {
     private TiposUnidades nuevoTiposUnidades;
     private TiposUnidades duplicarTiposUnidades;
     private TiposUnidades editarTiposUnidades;
+    private TiposUnidades tiposUnidadesSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -59,8 +62,8 @@ public class ControlTiposUnidades implements Serializable {
     private String mensajeValidacion;
     //filtrado table
     private int tamano;
-    private Integer backupCodigo;
-    private String backupDescripcion;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
 
     public ControlTiposUnidades() {
         listTiposUnidades = null;
@@ -72,22 +75,24 @@ public class ControlTiposUnidades implements Serializable {
         nuevoTiposUnidades = new TiposUnidades();
         duplicarTiposUnidades = new TiposUnidades();
         guardado = true;
-        tamano = 302;
+        tamano = 270;
+        System.out.println("controlTiposUnidades Constructor");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
+            System.out.println("ControlTiposUnidades PostConstruct ");
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarTiposUnidades.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void eventoFiltrar() {
         try {
             System.out.println("\n ENTRE A ControlTiposUnidades.eventoFiltrar \n");
@@ -105,14 +110,28 @@ public class ControlTiposUnidades implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listTiposUnidades.get(index).getSecuencia();
             if (tipoLista == 0) {
-                backupCodigo = listTiposUnidades.get(index).getCodigo();
-                backupDescripcion = listTiposUnidades.get(index).getNombre();
-            } else if (tipoLista == 1) {
-                backupCodigo = filtrarTiposUnidades.get(index).getCodigo();
-                backupDescripcion = filtrarTiposUnidades.get(index).getNombre();
+                if (cualCelda == 0) {
+                    backUpCodigo = listTiposUnidades.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = listTiposUnidades.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+                }
+                secRegistro = listTiposUnidades.get(index).getSecuencia();
+            } else {
+                if (cualCelda == 0) {
+                    backUpCodigo = filtrarTiposUnidades.get(index).getCodigo();
+                    System.out.println(" backUpCodigo : " + backUpCodigo);
+
+                } else if (cualCelda == 1) {
+                    backUpDescripcion = filtrarTiposUnidades.get(index).getNombre();
+                    System.out.println(" backUpDescripcion : " + backUpDescripcion);
+
+                }
+                secRegistro = filtrarTiposUnidades.get(index).getSecuencia();
             }
+
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
     }
@@ -141,18 +160,57 @@ public class ControlTiposUnidades implements Serializable {
 
     public void listaValoresBoton() {
     }
+    private String infoRegistro;
 
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:codigo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposUnidades");
             bandera = 0;
             filtrarTiposUnidades = null;
             tipoLista = 0;
+            tamano = 270;
+        }
+
+        borrarTiposUnidades.clear();
+        crearTiposUnidades.clear();
+        modificarTiposUnidades.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposUnidades = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposUnidades();
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposUnidades == null || listTiposUnidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposUnidades.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTiposUnidades");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTiposUnidades");
+            bandera = 0;
+            filtrarTiposUnidades = null;
+            tipoLista = 0;
+            tamano = 270;
         }
 
         borrarTiposUnidades.clear();
@@ -170,21 +228,22 @@ public class ControlTiposUnidades implements Serializable {
     }
 
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tamano = 280;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:codigo");
-            codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
+            tamano = 246;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:codigo");
+            codigo.setFilterStyle("width: 170px");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosTiposUnidades");
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
-            tamano = 302;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:codigo");
+            tamano = 270;
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTiposUnidades");
             bandera = 0;
@@ -199,23 +258,18 @@ public class ControlTiposUnidades implements Serializable {
 
         int contador = 0;
         boolean banderita = false;
-        boolean banderita1 = false;
-
+        Integer a;
+        a = null;
         RequestContext context = RequestContext.getCurrentInstance();
         System.err.println("TIPO LISTA = " + tipoLista);
         if (confirmarCambio.equalsIgnoreCase("N")) {
             System.err.println("ENTRE A MODIFICAR EMPRESAS, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposUnidades.contains(listTiposUnidades.get(indice))) {
-
-                    System.out.println("backupCodigo : " + backupCodigo);
-                    System.out.println("backupDescripcion : " + backupDescripcion);
-
-                    if (listTiposUnidades.get(indice).getCodigo() == null) {
+                    if (listTiposUnidades.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposUnidades.get(indice).setCodigo(backupCodigo);
-
+                        listTiposUnidades.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposUnidades.size(); j++) {
                             if (j != indice) {
@@ -224,11 +278,10 @@ public class ControlTiposUnidades implements Serializable {
                                 }
                             }
                         }
-
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposUnidades.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
-                            listTiposUnidades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -236,18 +289,16 @@ public class ControlTiposUnidades implements Serializable {
                     }
                     if (listTiposUnidades.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        listTiposUnidades.get(indice).setNombre(backupDescripcion);
-                    } else if (listTiposUnidades.get(indice).getNombre().equals(" ")) {
+                        banderita = false;
+                        listTiposUnidades.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listTiposUnidades.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        listTiposUnidades.get(indice).setNombre(backupDescripcion);
-
-                    } else {
-                        banderita1 = true;
+                        banderita = false;
+                        listTiposUnidades.get(indice).setNombre(backUpDescripcion);
                     }
 
-                    if (banderita == true && banderita1 == true) {
+                    if (banderita == true) {
                         if (modificarTiposUnidades.isEmpty()) {
                             modificarTiposUnidades.add(listTiposUnidades.get(indice));
                         } else if (!modificarTiposUnidades.contains(listTiposUnidades.get(indice))) {
@@ -260,21 +311,14 @@ public class ControlTiposUnidades implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-
                     }
                     index = -1;
                     secRegistro = null;
-                    context.update("form:datosTiposUnidades");
-                    context.update("form:ACEPTAR");
                 } else {
-
-                    System.out.println("backupCodigo : " + backupCodigo);
-                    System.out.println("backupDescripcion : " + backupDescripcion);
-
-                    if (listTiposUnidades.get(indice).getCodigo() == null) {
+                    if (listTiposUnidades.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                        listTiposUnidades.get(indice).setCodigo(backupCodigo);
+                        listTiposUnidades.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposUnidades.size(); j++) {
                             if (j != indice) {
@@ -283,11 +327,10 @@ public class ControlTiposUnidades implements Serializable {
                                 }
                             }
                         }
-
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposUnidades.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
-                            listTiposUnidades.get(indice).setCodigo(backupCodigo);
                         } else {
                             banderita = true;
                         }
@@ -295,47 +338,37 @@ public class ControlTiposUnidades implements Serializable {
                     }
                     if (listTiposUnidades.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        listTiposUnidades.get(indice).setNombre(backupDescripcion);
-                    } else if (listTiposUnidades.get(indice).getNombre().equals(" ")) {
+                        banderita = false;
+                        listTiposUnidades.get(indice).setNombre(backUpDescripcion);
+                    }
+                    if (listTiposUnidades.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        listTiposUnidades.get(indice).setNombre(backupDescripcion);
-
-                    } else {
-                        banderita1 = true;
+                        banderita = false;
+                        listTiposUnidades.get(indice).setNombre(backUpDescripcion);
                     }
 
-                    if (banderita == true && banderita1 == true) {
+                    if (banderita == true) {
+
                         if (guardado == true) {
                             guardado = false;
                         }
+
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-
                     }
                     index = -1;
                     secRegistro = null;
-                    context.update("form:datosTiposUnidades");
-                    context.update("form:ACEPTAR");
-
                 }
             } else {
 
                 if (!crearTiposUnidades.contains(filtrarTiposUnidades.get(indice))) {
-                    if (filtrarTiposUnidades.get(indice).getCodigo() == null) {
+                    if (filtrarTiposUnidades.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposUnidades.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
-                        filtrarTiposUnidades.get(indice).setCodigo(backupCodigo);
                     } else {
-                        for (int j = 0; j < filtrarTiposUnidades.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         for (int j = 0; j < listTiposUnidades.size(); j++) {
                             if (j != indice) {
                                 if (filtrarTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
@@ -345,9 +378,8 @@ public class ControlTiposUnidades implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposUnidades.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
-                            filtrarTiposUnidades.get(indice).setCodigo(backupCodigo);
-
                         } else {
                             banderita = true;
                         }
@@ -356,16 +388,16 @@ public class ControlTiposUnidades implements Serializable {
 
                     if (filtrarTiposUnidades.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        filtrarTiposUnidades.get(indice).setNombre(backupDescripcion);
+                        banderita = false;
+                        filtrarTiposUnidades.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarTiposUnidades.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        filtrarTiposUnidades.get(indice).setNombre(backupDescripcion);
+                        banderita = false;
+                        filtrarTiposUnidades.get(indice).setNombre(backUpDescripcion);
                     }
 
-                    if (banderita == true && banderita1 == true) {
+                    if (banderita == true) {
                         if (modificarTiposUnidades.isEmpty()) {
                             modificarTiposUnidades.add(filtrarTiposUnidades.get(indice));
                         } else if (!modificarTiposUnidades.contains(filtrarTiposUnidades.get(indice))) {
@@ -382,18 +414,12 @@ public class ControlTiposUnidades implements Serializable {
                     index = -1;
                     secRegistro = null;
                 } else {
-                    if (filtrarTiposUnidades.get(indice).getCodigo() == null) {
+                    if (filtrarTiposUnidades.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        filtrarTiposUnidades.get(indice).setCodigo(backUpCodigo);
                         banderita = false;
-                        filtrarTiposUnidades.get(indice).setCodigo(backupCodigo);
                     } else {
-                        for (int j = 0; j < filtrarTiposUnidades.size(); j++) {
-                            if (j != indice) {
-                                if (filtrarTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
-                                    contador++;
-                                }
-                            }
-                        }
+
                         for (int j = 0; j < listTiposUnidades.size(); j++) {
                             if (j != indice) {
                                 if (filtrarTiposUnidades.get(indice).getCodigo() == listTiposUnidades.get(j).getCodigo()) {
@@ -403,9 +429,8 @@ public class ControlTiposUnidades implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
+                            filtrarTiposUnidades.get(indice).setCodigo(backUpCodigo);
                             banderita = false;
-                            filtrarTiposUnidades.get(indice).setCodigo(backupCodigo);
-
                         } else {
                             banderita = true;
                         }
@@ -414,16 +439,17 @@ public class ControlTiposUnidades implements Serializable {
 
                     if (filtrarTiposUnidades.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        filtrarTiposUnidades.get(indice).setNombre(backupDescripcion);
+                        banderita = false;
+                        filtrarTiposUnidades.get(indice).setNombre(backUpDescripcion);
                     }
                     if (filtrarTiposUnidades.get(indice).getNombre().equals(" ")) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita1 = false;
-                        filtrarTiposUnidades.get(indice).setNombre(backupDescripcion);
+                        banderita = false;
+                        filtrarTiposUnidades.get(indice).setNombre(backUpDescripcion);
                     }
 
-                    if (banderita == true && banderita1 == true) {
+                    if (banderita == true) {
+
                         if (guardado == true) {
                             guardado = false;
                         }
@@ -479,6 +505,9 @@ public class ControlTiposUnidades implements Serializable {
             }
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosTiposUnidades");
+            infoRegistro = "Cantidad de registros: " + listTiposUnidades.size();
+            context.update("form:informacionRegistro");
+
             index = -1;
             secRegistro = null;
 
@@ -492,16 +521,16 @@ public class ControlTiposUnidades implements Serializable {
 
     public void verificarBorrado() {
         System.out.println("Estoy en verificarBorrado");
-        BigInteger contarIndicesTipoIndice;
+        BigInteger contarUnidadesTipoUnidad;
 
         try {
             System.err.println("Control Secuencia de ControlTiposUnidades ");
             if (tipoLista == 0) {
-                contarIndicesTipoIndice = administrarTiposUnidades.contarUnidadesTipoUnidad(listTiposUnidades.get(index).getSecuencia());
+                contarUnidadesTipoUnidad = administrarTiposUnidades.contarUnidadesTipoUnidad(listTiposUnidades.get(index).getSecuencia());
             } else {
-                contarIndicesTipoIndice = administrarTiposUnidades.contarUnidadesTipoUnidad(filtrarTiposUnidades.get(index).getSecuencia());
+                contarUnidadesTipoUnidad = administrarTiposUnidades.contarUnidadesTipoUnidad(filtrarTiposUnidades.get(index).getSecuencia());
             }
-            if (contarIndicesTipoIndice.equals(new BigInteger("0"))) {
+            if (contarUnidadesTipoUnidad.equals(new BigInteger("0"))) {
                 System.out.println("Borrado==0");
                 borrandoTiposUnidades();
             } else {
@@ -511,7 +540,7 @@ public class ControlTiposUnidades implements Serializable {
                 context.update("form:validacionBorrar");
                 context.execute("validacionBorrar.show()");
                 index = -1;
-                contarIndicesTipoIndice = new BigInteger("-1");
+                contarUnidadesTipoUnidad = new BigInteger("-1");
 
             }
         } catch (Exception e) {
@@ -552,10 +581,12 @@ public class ControlTiposUnidades implements Serializable {
             }
             System.out.println("Se guardaron los datos con exito");
             listTiposUnidades = null;
-            context.execute("mostrarGuardar.show()");
             context.update("form:datosTiposUnidades");
             k = 0;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
         index = -1;
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -598,7 +629,7 @@ public class ControlTiposUnidades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTiposUnidades.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTiposUnidades.getCodigo());
@@ -618,8 +649,12 @@ public class ControlTiposUnidades implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTiposUnidades.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener un Nombre \n";
+        if (nuevoTiposUnidades.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (nuevoTiposUnidades.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -632,11 +667,12 @@ public class ControlTiposUnidades implements Serializable {
 
         if (contador == 2) {
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposUnidades");
                 bandera = 0;
@@ -654,6 +690,9 @@ public class ControlTiposUnidades implements Serializable {
             listTiposUnidades.add(nuevoTiposUnidades);
             nuevoTiposUnidades = new TiposUnidades();
             context.update("form:datosTiposUnidades");
+            infoRegistro = "Cantidad de registros: " + listTiposUnidades.size();
+            context.update("form:informacionRegistro");
+
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -717,7 +756,7 @@ public class ControlTiposUnidades implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarTiposUnidades.getNombre());
 
         if (duplicarTiposUnidades.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposUnidades.size(); x++) {
@@ -734,13 +773,18 @@ public class ControlTiposUnidades implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTiposUnidades.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * un Nombre \n";
+        if (duplicarTiposUnidades.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
+            System.out.println("Mensaje validacion : " + mensajeValidacion);
+
+        } else if (duplicarTiposUnidades.getNombre().isEmpty()) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
-            System.out.println("Bandera : ");
+            System.out.println("bandera");
             contador++;
+
         }
 
         if (contador == 2) {
@@ -758,11 +802,15 @@ public class ControlTiposUnidades implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
+            infoRegistro = "Cantidad de registros: " + listTiposUnidades.size();
+            context.update("form:informacionRegistro");
+
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTiposUnidades:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTiposUnidades");
                 bandera = 0;
@@ -839,7 +887,14 @@ public class ControlTiposUnidades implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<TiposUnidades> getListTiposUnidades() {
         if (listTiposUnidades == null) {
+            System.out.println("ControlTiposUnidades getListTiposUnidades");
             listTiposUnidades = administrarTiposUnidades.consultarTiposUnidades();
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposUnidades == null || listTiposUnidades.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposUnidades.size();
         }
         return listTiposUnidades;
     }
@@ -918,6 +973,22 @@ public class ControlTiposUnidades implements Serializable {
 
     public void setTamano(int tamano) {
         this.tamano = tamano;
+    }
+
+    public TiposUnidades getTiposUnidadesSeleccionado() {
+        return tiposUnidadesSeleccionado;
+    }
+
+    public void setTiposUnidadesSeleccionado(TiposUnidades clasesPensionesSeleccionado) {
+        this.tiposUnidadesSeleccionado = clasesPensionesSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }

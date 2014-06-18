@@ -15,7 +15,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -38,7 +37,6 @@ public class TiposIndices implements Serializable {
     private BigInteger secuencia;
     @Column(name = "CODIGO")
     private Integer codigo;
-    @Size(max = 20)
     @Column(name = "DESCRIPCION")
     private String descripcion;
 
@@ -66,14 +64,15 @@ public class TiposIndices implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion.toUpperCase();
+        if (descripcion != null) {
+            this.descripcion = descripcion.toUpperCase();
+        } else {
+            this.descripcion = descripcion;
+        }
     }
 
     @Override

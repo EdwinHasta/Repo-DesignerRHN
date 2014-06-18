@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -47,6 +48,7 @@ public class ControlTiposReemplazos implements Serializable {
     private TiposReemplazos nuevoTipoReemplazo;
     private TiposReemplazos duplicarTipoReemplazo;
     private TiposReemplazos editarTipoReemplazo;
+    private TiposReemplazos tiposReemplazosSeleccionado;
     //otros
     private int cualCelda, tipoLista, index, tipoActualizacion, k, bandera;
     private BigInteger l;
@@ -64,6 +66,7 @@ public class ControlTiposReemplazos implements Serializable {
     BigDecimal verificarBorradoReemplazos;
     //Redireccionamiento de pantallas
     private String paginaAnterior;
+    private int tamano;
 
     public ControlTiposReemplazos() {
         listTiposReemplazos = null;
@@ -75,8 +78,9 @@ public class ControlTiposReemplazos implements Serializable {
         nuevoTipoReemplazo = new TiposReemplazos();
         duplicarTipoReemplazo = new TiposReemplazos();
         guardado = true;
+        tamano = 270;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -85,16 +89,16 @@ public class ControlTiposReemplazos implements Serializable {
             administrarTiposReemplazos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    public void recibirPaginaEntrante(String pagina){
-        paginaAnterior = pagina;  
-        }
-    
-    public String redirigir(){
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
 
@@ -109,6 +113,10 @@ public class ControlTiposReemplazos implements Serializable {
         }
     }
 
+    private String infoRegistro;
+    private Integer backUpCodigo;
+    private String backUpDescripcion;
+
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
 
@@ -116,6 +124,20 @@ public class ControlTiposReemplazos implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listTiposReemplazos.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpCodigo = listTiposReemplazos.get(index).getCodigo();
+                } else {
+                    backUpCodigo = filtrarTiposReemplazos.get(index).getCodigo();
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpDescripcion = listTiposReemplazos.get(index).getNombre();
+                } else {
+                    backUpDescripcion = filtrarTiposReemplazos.get(index).getNombre();
+                }
+            }
 
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
@@ -170,14 +192,58 @@ public class ControlTiposReemplazos implements Serializable {
         listTiposReemplazos = null;
         guardado = true;
         permitirIndex = true;
+        getListTiposReemplazos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposReemplazos == null || listTiposReemplazos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposReemplazos.size();
+        }
+        context.update("form:informacionRegistro");
+        context.update("form:datosTipoReemplazo");
+        context.update("form:ACEPTAR");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo.setFilterStyle("display: none; visibility: hidden;");
+            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+            factorReemplazado.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
+            bandera = 0;
+            filtrarTiposReemplazos = null;
+            tipoLista = 0;
+        }
+
+        borrarTiposReemplazos.clear();
+        crearTiposReemplazos.clear();
+        modificarTiposReemplazos.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listTiposReemplazos = null;
+        guardado = true;
+        permitirIndex = true;
+        getListTiposReemplazos();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosClasesPensiones");
+        if (listTiposReemplazos == null || listTiposReemplazos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposReemplazos.size();
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosTipoReemplazo");
         context.update("form:ACEPTAR");
     }
 
     public void activarCtrlF11() {
         if (bandera == 0) {
-
+            tamano = 246;
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("width: 195px");
             descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
@@ -188,6 +254,8 @@ public class ControlTiposReemplazos implements Serializable {
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
+            tamano = 270;
+
             System.out.println("Desactivar");
             codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -217,9 +285,9 @@ public class ControlTiposReemplazos implements Serializable {
             System.err.println("ENTRE A MODIFICAR TIPO REEMPLAZO, CONFIRMAR CAMBIO ES N");
             if (tipoLista == 0) {
                 if (!crearTiposReemplazos.contains(listTiposReemplazos.get(indice))) {
-                    if (listTiposReemplazos.get(indice).getCodigo() == a || listTiposReemplazos.get(indice).getCodigo().equals(null)) {
+                    if (listTiposReemplazos.get(indice).getCodigo() == a) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listTiposReemplazos.get(indice).setCodigo(backUpCodigo);
                     } else {
                         for (int j = 0; j < listTiposReemplazos.size(); j++) {
                             if (j != indice) {
@@ -230,31 +298,21 @@ public class ControlTiposReemplazos implements Serializable {
                         }
                         if (contador > 0) {
                             mensajeValidacion = "CODIGOS REPETIDOS";
-                            banderita = false;
+                            listTiposReemplazos.get(indice).setCodigo(backUpCodigo);
                         } else {
                             contadorGuardar++;
                         }
 
                     }
-                    if (listTiposReemplazos.get(indice).getNombre().isEmpty()) {
+                    if (listTiposReemplazos.get(indice).getNombre() == null || listTiposReemplazos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
-                    } else if (listTiposReemplazos.get(indice).getNombre().equals(" ")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
+                        listTiposReemplazos.get(indice).setNombre(backUpDescripcion);
                     } else {
                         contadorGuardar++;
                     }
-                    if (listTiposReemplazos.get(indice).getFactorreemplazado() == null) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (listTiposReemplazos.get(indice).getFactorreemplazado().equals("")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        contadorGuardar++;
-                    }
-                    if (contadorGuardar == 3) {
+
+                    if (contadorGuardar == 2) {
                         if (modificarTiposReemplazos.isEmpty()) {
                             modificarTiposReemplazos.add(listTiposReemplazos.get(indice));
                         } else if (!modificarTiposReemplazos.contains(listTiposReemplazos.get(indice))) {
@@ -267,7 +325,46 @@ public class ControlTiposReemplazos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (listTiposReemplazos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        listTiposReemplazos.get(indice).setCodigo(backUpCodigo);
+                    } else {
+                        for (int j = 0; j < listTiposReemplazos.size(); j++) {
+                            if (j != indice) {
+                                if (listTiposReemplazos.get(indice).getCodigo().equals(listTiposReemplazos.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            listTiposReemplazos.get(indice).setCodigo(backUpCodigo);
+                        } else {
+                            contadorGuardar++;
+                        }
+
+                    }
+                    if (listTiposReemplazos.get(indice).getNombre() == null || listTiposReemplazos.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                        listTiposReemplazos.get(indice).setNombre(backUpDescripcion);
+                    } else {
+                        contadorGuardar++;
+                    }
+
+                    if (contadorGuardar == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -279,15 +376,6 @@ public class ControlTiposReemplazos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
-                        for (int j = 0; j < listTiposReemplazos.size(); j++) {
-                            System.err.println("indice lista  indice : " + listTiposReemplazos.get(j).getCodigo());
-                            if (j != indice) {
-                                if (filtrarTiposReemplazos.get(indice).getCodigo().equals(listTiposReemplazos.get(j).getCodigo())) {
-                                    contador++;
-                                }
-                            }
-                        }
-
                         for (int j = 0; j < filtrarTiposReemplazos.size(); j++) {
                             System.err.println("indice filtrar indice : " + filtrarTiposReemplazos.get(j).getCodigo());
                             if (j != indice) {
@@ -305,25 +393,14 @@ public class ControlTiposReemplazos implements Serializable {
 
                     }
 
-                    if (filtrarTiposReemplazos.get(indice).getNombre().isEmpty()) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (filtrarTiposReemplazos.get(indice).getNombre().equals(" ")) {
+                    if (filtrarTiposReemplazos.get(indice).getNombre() == null || filtrarTiposReemplazos.get(indice).getNombre().isEmpty()) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita = false;
                     } else {
                         contadorGuardar++;
                     }
-                    if (filtrarTiposReemplazos.get(indice).getFactorreemplazado() == null) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else if (filtrarTiposReemplazos.get(indice).getFactorreemplazado().equals("")) {
-                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                        banderita = false;
-                    } else {
-                        contadorGuardar++;
-                    }
-                    if (contadorGuardar == 3) {
+
+                    if (contadorGuardar == 2) {
                         if (modificarTiposReemplazos.isEmpty()) {
                             modificarTiposReemplazos.add(filtrarTiposReemplazos.get(indice));
                         } else if (!modificarTiposReemplazos.contains(filtrarTiposReemplazos.get(indice))) {
@@ -336,7 +413,47 @@ public class ControlTiposReemplazos implements Serializable {
                     } else {
                         context.update("form:validacionModificar");
                         context.execute("validacionModificar.show()");
-                        cancelarModificacion();
+                    }
+                    index = -1;
+                    secRegistro = null;
+                } else {
+                    if (filtrarTiposReemplazos.get(indice).getCodigo() == a) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    } else {
+                        for (int j = 0; j < filtrarTiposReemplazos.size(); j++) {
+                            System.err.println("indice filtrar indice : " + filtrarTiposReemplazos.get(j).getCodigo());
+                            if (j != indice) {
+                                if (filtrarTiposReemplazos.get(indice).getCodigo().equals(filtrarTiposReemplazos.get(j).getCodigo())) {
+                                    contador++;
+                                }
+                            }
+                        }
+                        if (contador > 0) {
+                            mensajeValidacion = "CODIGOS REPETIDOS";
+                            banderita = false;
+                        } else {
+                            contadorGuardar++;
+                        }
+
+                    }
+
+                    if (filtrarTiposReemplazos.get(indice).getNombre() == null || filtrarTiposReemplazos.get(indice).getNombre().isEmpty()) {
+                        mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
+                        banderita = false;
+                    } else {
+                        contadorGuardar++;
+                    }
+
+                    if (contadorGuardar == 2) {
+
+                        if (guardado == true) {
+                            guardado = false;
+                        }
+
+                    } else {
+                        context.update("form:validacionModificar");
+                        context.execute("validacionModificar.show()");
                     }
                     index = -1;
                     secRegistro = null;
@@ -384,6 +501,12 @@ public class ControlTiposReemplazos implements Serializable {
 
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            if (listTiposReemplazos == null || listTiposReemplazos.isEmpty()) {
+                infoRegistro = "Cantidad de registros: 0 ";
+            } else {
+                infoRegistro = "Cantidad de registros: " + listTiposReemplazos.size();
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosTipoReemplazo");
             index = -1;
             secRegistro = null;
@@ -467,7 +590,11 @@ public class ControlTiposReemplazos implements Serializable {
             System.out.println("Se guardaron los datos con exito");
             listTiposReemplazos = null;
             guardado = true;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
             context.update("form:datosTipoReemplazo");
+
             k = 0;
         }
         index = -1;
@@ -516,7 +643,7 @@ public class ControlTiposReemplazos implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoTipoReemplazo.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoTipoReemplazo.getCodigo());
@@ -536,17 +663,8 @@ public class ControlTiposReemplazos implements Serializable {
                 contador++;
             }
         }
-        if (nuevoTipoReemplazo.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener un nombre \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-        } else {
-            System.out.println("bandera");
-            contador++;
-
-        }
-        if (nuevoTipoReemplazo.getFactorreemplazado() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener un factor \n";
+        if (nuevoTipoReemplazo.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -557,7 +675,7 @@ public class ControlTiposReemplazos implements Serializable {
 
         System.out.println("contador " + contador);
 
-        if (contador == 3) {
+        if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -583,6 +701,9 @@ public class ControlTiposReemplazos implements Serializable {
             listTiposReemplazos.add(nuevoTipoReemplazo);
             nuevoTipoReemplazo = new TiposReemplazos();
             context.update("form:datosTipoReemplazo");
+
+            infoRegistro = "Cantidad de registros: " + listTiposReemplazos.size();
+            context.update("form:informacionRegistro");
             if (guardado == true) {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
@@ -646,7 +767,7 @@ public class ControlTiposReemplazos implements Serializable {
         a = null;
 
         if (duplicarTipoReemplazo.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listTiposReemplazos.size(); x++) {
@@ -663,16 +784,8 @@ public class ControlTiposReemplazos implements Serializable {
                 duplicados = 0;
             }
         }
-        if (duplicarTipoReemplazo.getNombre().equals(" ")) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
-            System.out.println("Mensaje validacion : " + mensajeValidacion);
-
-        } else {
-            System.out.println("Bandera : ");
-            contador++;
-        }
-        if (duplicarTipoReemplazo.getFactorreemplazado() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un factor \n";
+        if (duplicarTipoReemplazo.getNombre() == null) {
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -680,8 +793,10 @@ public class ControlTiposReemplazos implements Serializable {
             contador++;
         }
 
-        if (contador == 3) {
-
+        if (contador == 2) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarTipoReemplazo.setSecuencia(l);
             System.out.println("Datos Duplicando: " + duplicarTipoReemplazo.getSecuencia() + "  " + duplicarTipoReemplazo.getCodigo());
             if (crearTiposReemplazos.contains(duplicarTipoReemplazo)) {
                 System.out.println("Ya lo contengo.");
@@ -689,6 +804,8 @@ public class ControlTiposReemplazos implements Serializable {
             listTiposReemplazos.add(duplicarTipoReemplazo);
             crearTiposReemplazos.add(duplicarTipoReemplazo);
             context.update("form:datosTipoReemplazo");
+            infoRegistro = "Cantidad de registros: " + listTiposReemplazos.size();
+            context.update("form:informacionRegistro");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
@@ -780,6 +897,13 @@ public class ControlTiposReemplazos implements Serializable {
         if (listTiposReemplazos == null) {
             listTiposReemplazos = administrarTiposReemplazos.consultarTiposReemplazos();
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (listTiposReemplazos == null || listTiposReemplazos.isEmpty()) {
+            infoRegistro = "Cantidad de registros: 0 ";
+        } else {
+            infoRegistro = "Cantidad de registros: " + listTiposReemplazos.size();
+        }
+        context.update("form:informacionRegistro");
         return listTiposReemplazos;
     }
 
@@ -849,6 +973,30 @@ public class ControlTiposReemplazos implements Serializable {
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public TiposReemplazos getTiposReemplazosSeleccionado() {
+        return tiposReemplazosSeleccionado;
+    }
+
+    public void setTiposReemplazosSeleccionado(TiposReemplazos tiposReemplazosSeleccionado) {
+        this.tiposReemplazosSeleccionado = tiposReemplazosSeleccionado;
+    }
+
+    public int getTamano() {
+        return tamano;
+    }
+
+    public void setTamano(int tamano) {
+        this.tamano = tamano;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
