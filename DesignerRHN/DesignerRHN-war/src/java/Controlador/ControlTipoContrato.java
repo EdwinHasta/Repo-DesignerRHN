@@ -39,9 +39,11 @@ public class ControlTipoContrato implements Serializable {
     //
     private List<TiposContratos> listaTiposContratos;
     private List<TiposContratos> filtrarListaTiposContratos;
+    private TiposContratos tipoContratoTablaSeleccionado;
     ///////
     private List<DiasLaborables> listaDiasLaborables;
     private List<DiasLaborables> filtrarListaDiasLaborables;
+    private DiasLaborables diaLaborableTablaSeleccionado;
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaDiasLab;
     //Columnas Tabla VC
@@ -49,7 +51,7 @@ public class ControlTipoContrato implements Serializable {
     private Column diasLabTipoDia, diasLabDia, diasLabHL;
     //Otros
     private boolean aceptar;
-    private int index, indexDias, indexAux, indexAuxDias;
+    private int index, indexDias, indexAux;
     //modificar
     private List<TiposContratos> listTiposContratosModificar;
     private List<DiasLaborables> listDiasLaborablesModificar;
@@ -105,13 +107,15 @@ public class ControlTipoContrato implements Serializable {
     private String auxNombreClonar;
     private short auxCodigoClonar;
     private String paginaAnterior;
+    //
+    private String infoRegistroTipoDia, infoRegistoTipoContrato;
 
     public ControlTipoContrato() {
         tipoContratoAClonar = new TiposContratos();
         tipoContratoSeleccionado = new TiposContratos();
         lovTiposContratos = null;
-        altoTablaTiposC = "137";
-        altoTablaDiasLab = "120";
+        altoTablaTiposC = "187";
+        altoTablaDiasLab = "140";
         cambiosPagina = true;
         permitirIndexDias = true;
         tipoActualizacion = -1;
@@ -155,7 +159,7 @@ public class ControlTipoContrato implements Serializable {
         bandera = 0;
         banderaDiasLab = 0;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -164,19 +168,19 @@ public class ControlTipoContrato implements Serializable {
             administrarTipoContrato.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    public void recibirPaginaEntrante(String pagina){
+
+    public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
-        }
-    
-    public String redirigir(){
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
-    
+
     public void inicializarPagina() {
         listaDiasLaborables = null;
         listaTiposContratos = null;
@@ -198,18 +202,36 @@ public class ControlTipoContrato implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListaTiposContratos.get(index);
             }
-            if (aux.getCodigo() >= 0 || aux.getNombre().isEmpty()) {
+            if (aux.getCodigo() < 0) {
+            }
+            if (aux.getNombre() == null) {
                 retorno = false;
+            } else {
+                if (aux.getNombre().isEmpty()) {
+                    retorno = false;
+                }
             }
         }
         if (i == 1) {
-            if (nuevoTipoContrato.getCodigo() >= 0 || nuevoTipoContrato.getNombre().isEmpty()) {
+            if (nuevoTipoContrato.getCodigo() < 0) {
+            }
+            if (nuevoTipoContrato.getNombre() == null) {
                 retorno = false;
+            } else {
+                if (nuevoTipoContrato.getNombre().isEmpty()) {
+                    retorno = false;
+                }
             }
         }
         if (i == 2) {
-            if (duplicarTipoContrato.getCodigo() >= 0 || duplicarTipoContrato.getNombre().isEmpty()) {
+            if (duplicarTipoContrato.getCodigo() < 0) {
+            }
+            if (duplicarTipoContrato.getNombre() == null) {
                 retorno = false;
+            } else {
+                if (duplicarTipoContrato.getNombre().isEmpty()) {
+                    retorno = false;
+                }
             }
         }
         return retorno;
@@ -431,7 +453,7 @@ public class ControlTipoContrato implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDiasLaborables");
             if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "120";
+                altoTablaDiasLab = "140";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -454,7 +476,6 @@ public class ControlTipoContrato implements Serializable {
         if (permitirIndexDias == true) {
             indexDias = indice;
             index = -1;
-            indexAuxDias = indice;
             cualCeldaDias = celda;
             if (tipoListaDias == 0) {
                 secRegistroDias = listaDiasLaborables.get(indexDias).getSecuencia();
@@ -465,7 +486,7 @@ public class ControlTipoContrato implements Serializable {
                 tipoDia = filtrarListaDiasLaborables.get(indexDias).getTipodia().getDescripcion();
             }
             if (bandera == 1) {
-                altoTablaTiposC = "137";
+                altoTablaTiposC = "187";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                 tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -503,9 +524,6 @@ public class ControlTipoContrato implements Serializable {
             if (guardadoDias == false) {
                 guardarCambiosDiasLaborables();
             }
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            RequestContext.getCurrentInstance().update("form:growl");
             cambiosPagina = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
@@ -513,57 +531,75 @@ public class ControlTipoContrato implements Serializable {
     }
 
     public void guardarCambiosTipoContrato() {
-
-        if (!listTiposContratosBorrar.isEmpty()) {
+        try {
+            if (!listTiposContratosBorrar.isEmpty()) {
                 administrarTipoContrato.borrarTiposContratos(listTiposContratosBorrar);
-            
-            listTiposContratosBorrar.clear();
-        }
-        if (!listTiposContratosCrear.isEmpty()) {
+
+                listTiposContratosBorrar.clear();
+            }
+            if (!listTiposContratosCrear.isEmpty()) {
                 administrarTipoContrato.crearTiposContratos(listTiposContratosCrear);
-            
-            listTiposContratosCrear.clear();
-        }
-        if (!listTiposContratosModificar.isEmpty()) {
-            administrarTipoContrato.editarTiposContratos(listTiposContratosModificar);
-            listTiposContratosModificar.clear();
-        }
-        listaTiposContratos = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTipoContrato");
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
 
-        index = -1;
-        secRegistro = null;
+                listTiposContratosCrear.clear();
+            }
+            if (!listTiposContratosModificar.isEmpty()) {
+                administrarTipoContrato.editarTiposContratos(listTiposContratosModificar);
+                listTiposContratosModificar.clear();
+            }
+            listaTiposContratos = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosTipoContrato");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
 
+            index = -1;
+            secRegistro = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Tipo Contrato se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosTipoContrato : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Tipo Contrato, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
     }
 
     public void guardarCambiosDiasLaborables() {
-        if (!listDiasLaborablesBorrar.isEmpty()) {
+        try {
+            if (!listDiasLaborablesBorrar.isEmpty()) {
                 administrarTipoContrato.borrarDiasLaborables(listDiasLaborablesBorrar);
-            
-            listDiasLaborablesBorrar.clear();
-        }
-        if (!listDiasLaborablesCrear.isEmpty()) {
-                administrarTipoContrato.crearDiasLaborables(listDiasLaborablesCrear);
-            
-            listDiasLaborablesCrear.clear();
-        }
-        if (!listDiasLaborablesModificar.isEmpty()) {
-            administrarTipoContrato.editarDiasLaborables(listDiasLaborablesModificar);
-            listDiasLaborablesModificar.clear();
-        }
-        listaDiasLaborables = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosDiasLaborables");
-        guardadoDias = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
 
-        indexDias = -1;
-        secRegistroDias = null;
+                listDiasLaborablesBorrar.clear();
+            }
+            if (!listDiasLaborablesCrear.isEmpty()) {
+                administrarTipoContrato.crearDiasLaborables(listDiasLaborablesCrear);
+
+                listDiasLaborablesCrear.clear();
+            }
+            if (!listDiasLaborablesModificar.isEmpty()) {
+                administrarTipoContrato.editarDiasLaborables(listDiasLaborablesModificar);
+                listDiasLaborablesModificar.clear();
+            }
+            listaDiasLaborables = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosDiasLaborables");
+            guardadoDias = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+
+            indexDias = -1;
+            secRegistroDias = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Dias Laborables se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosDiasLaborables : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Dias Laborables, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
     }
     //CANCELAR MODIFICACIONES
 
@@ -589,7 +625,7 @@ public class ControlTipoContrato implements Serializable {
 
     public void cancelarProcesoClonado() {
         codigoTipoCClonar = 0;
-        nombreTipoCColnar = " ";
+        nombreTipoCColnar = "";
         tipoContratoAClonar = new TiposContratos();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:codigoTipoCClonar");
@@ -600,7 +636,7 @@ public class ControlTipoContrato implements Serializable {
 
     public void cancelarModificacionTipoContrato() {
         if (bandera == 1) {
-            altoTablaTiposC = "137";
+            altoTablaTiposC = "187";
             tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
             tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
             tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -630,7 +666,7 @@ public class ControlTipoContrato implements Serializable {
 
     public void cancelarModificacionDiaLaborable() {
         if (banderaDiasLab == 1) {
-            altoTablaDiasLab = "120";
+            altoTablaDiasLab = "140";
             diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
             diasLabDia.setFilterStyle("display: none; visibility: hidden;");
             diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -738,7 +774,7 @@ public class ControlTipoContrato implements Serializable {
             tamDes = nuevoTipoContrato.getNombre().length();
             if (tamDes >= 1 && tamDes <= 30) {
                 if (bandera == 1) {
-                    altoTablaTiposC = "137";
+                    altoTablaTiposC = "187";
                     tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                     tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                     tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -788,7 +824,7 @@ public class ControlTipoContrato implements Serializable {
         boolean respueta = validarCamposNulosDiaLaborable(1);
         if (respueta == true) {
             if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "120";
+                altoTablaDiasLab = "140";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -814,8 +850,6 @@ public class ControlTipoContrato implements Serializable {
             }
             listDiasLaborablesCrear.add(nuevoDiaLaborable);
             listaDiasLaborables.add(nuevoDiaLaborable);
-            System.out.println("nuevoDiaLaborable : " + nuevoDiaLaborable.getTipodia().getDescripcion());
-            System.out.println("listaDiasLaborables : " + listaDiasLaborables.size());
             cambiosPagina = false;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
@@ -943,7 +977,7 @@ public class ControlTipoContrato implements Serializable {
                     //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
                 if (bandera == 1) {
-                    altoTablaTiposC = "137";
+                    altoTablaTiposC = "187";
                     tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                     tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                     tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -993,7 +1027,7 @@ public class ControlTipoContrato implements Serializable {
                 //RequestContext.getCurrentInstance().update("form:aceptar");
             }
             if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "120";
+                altoTablaDiasLab = "140";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -1145,11 +1179,9 @@ public class ControlTipoContrato implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
-        System.out.println("Index : " + index);
-        System.out.println("IndexDia : " + indexDias);
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaTiposC = "115";
+                altoTablaTiposC = "165";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                 tipoCCodigo.setFilterStyle("width: 65px");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -1163,7 +1195,7 @@ public class ControlTipoContrato implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosTipoContrato");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaTiposC = "137";
+                altoTablaTiposC = "187";
                 tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
                 tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
                 tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -1182,7 +1214,7 @@ public class ControlTipoContrato implements Serializable {
         }
         if (indexDias >= 0) {
             if (banderaDiasLab == 0) {
-                altoTablaDiasLab = "98";
+                altoTablaDiasLab = "118";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("width: 80px");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -1192,7 +1224,7 @@ public class ControlTipoContrato implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosDiasLaborables");
                 banderaDiasLab = 1;
             } else if (banderaDiasLab == 1) {
-                altoTablaDiasLab = "120";
+                altoTablaDiasLab = "140";
                 diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
                 diasLabDia.setFilterStyle("display: none; visibility: hidden;");
                 diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -1213,7 +1245,7 @@ public class ControlTipoContrato implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaTiposC = "137";
+            altoTablaTiposC = "187";
             tipoCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCCodigo");
             tipoCCodigo.setFilterStyle("display: none; visibility: hidden;");
             tipoCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoContrato:tipoCNombre");
@@ -1230,7 +1262,7 @@ public class ControlTipoContrato implements Serializable {
             tipoLista = 0;
         }
         if (banderaDiasLab == 1) {
-            altoTablaDiasLab = "120";
+            altoTablaDiasLab = "140";
             diasLabDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabDia");
             diasLabDia.setFilterStyle("display: none; visibility: hidden;");
             diasLabTipoDia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDiasLaborables:diasLabTipoDia");
@@ -1251,7 +1283,6 @@ public class ControlTipoContrato implements Serializable {
         listDiasLaborablesModificar.clear();
         index = -1;
         indexAux = -1;
-        indexAuxDias = -1;
         indexDias = -1;
         secRegistroDias = null;
         secRegistro = null;
@@ -1389,6 +1420,7 @@ public class ControlTipoContrato implements Serializable {
         context.update("form:TipoDiaDialogo");
         context.update("form:lovTipoDia");
         context.update("form:aceptarTD");
+        context.reset("form:lovTipoDia:globalFilter");
         context.execute("TipoDiaDialogo.hide()");
     }
 
@@ -1658,6 +1690,7 @@ public class ControlTipoContrato implements Serializable {
         context.update("form:TipoContratoDialogo");
         context.update("form:lovTipoContrato");
         context.update("form:aceptarTC");
+        context.reset("form:lovTipoContrato:globalFilter");
         context.execute("TipoContratoDialogo.hide()");
     }
 
@@ -1788,14 +1821,14 @@ public class ControlTipoContrato implements Serializable {
     public List<DiasLaborables> getListaDiasLaborables() {
         if (listaDiasLaborables == null) {
             listaDiasLaborables = new ArrayList<DiasLaborables>();
-            if (index == -1) {
-                index = indexAux;
-            }
-            if (tipoLista == 0) {
-                listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(listaTiposContratos.get(index).getSecuencia());
-            }
-            if (tipoLista == 1) {
-                listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(filtrarListaTiposContratos.get(index).getSecuencia());
+            if (index >= 0) {
+
+                if (tipoLista == 0) {
+                    listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(listaTiposContratos.get(index).getSecuencia());
+                }
+                if (tipoLista == 1) {
+                    listaDiasLaborables = administrarTipoContrato.listaDiasLaborablesParaTipoContrato(filtrarListaTiposContratos.get(index).getSecuencia());
+                }
             }
         }
         return listaDiasLaborables;
@@ -1950,9 +1983,8 @@ public class ControlTipoContrato implements Serializable {
     }
 
     public List<TiposDias> getLovTiposDias() {
-        if (lovTiposDias == null) {
-            lovTiposDias = administrarTipoContrato.lovTiposDias();
-        }
+        lovTiposDias = administrarTipoContrato.lovTiposDias();
+
         return lovTiposDias;
     }
 
@@ -2047,6 +2079,64 @@ public class ControlTipoContrato implements Serializable {
 
     public void setTipoContratoAClonar(TiposContratos tipoContratoAClonar) {
         this.tipoContratoAClonar = tipoContratoAClonar;
+    }
+
+    public TiposContratos getTipoContratoTablaSeleccionado() {
+        getListaTiposContratos();
+        if (listaTiposContratos != null) {
+            int tam = listaTiposContratos.size();
+            if (tam > 0) {
+                tipoContratoTablaSeleccionado = listaTiposContratos.get(0);
+            }
+        }
+        return tipoContratoTablaSeleccionado;
+    }
+
+    public void setTipoContratoTablaSeleccionado(TiposContratos tipoContratoTablaSeleccionado) {
+        this.tipoContratoTablaSeleccionado = tipoContratoTablaSeleccionado;
+    }
+
+    public DiasLaborables getDiaLaborableTablaSeleccionado() {
+        getListaDiasLaborables();
+        if (listaDiasLaborables != null) {
+            int tam = listaDiasLaborables.size();
+            if (tam > 0) {
+                diaLaborableTablaSeleccionado = listaDiasLaborables.get(0);
+            }
+        }
+        return diaLaborableTablaSeleccionado;
+    }
+
+    public void setDiaLaborableTablaSeleccionado(DiasLaborables diaLaborableTablaSeleccionado) {
+        this.diaLaborableTablaSeleccionado = diaLaborableTablaSeleccionado;
+    }
+
+    public String getInfoRegistroTipoDia() {
+        getLovTiposDias();
+        if (lovTiposDias != null) {
+            infoRegistroTipoDia = "Cantidad de registros : " + lovTiposDias.size();
+        } else {
+            infoRegistroTipoDia = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoDia;
+    }
+
+    public void setInfoRegistroTipoDia(String infoRegistroTipoDia) {
+        this.infoRegistroTipoDia = infoRegistroTipoDia;
+    }
+
+    public String getInfoRegistoTipoContrato() {
+        getLovTiposContratos();
+        if (lovTiposContratos != null) {
+            infoRegistoTipoContrato = "Cantidad de registros : " + lovTiposContratos.size();
+        } else {
+            infoRegistoTipoContrato = "Cantidad de registros : 0";
+        }
+        return infoRegistoTipoContrato;
+    }
+
+    public void setInfoRegistoTipoContrato(String infoRegistoTripoContrato) {
+        this.infoRegistoTipoContrato = infoRegistoTripoContrato;
     }
 
 }

@@ -94,6 +94,9 @@ public class ControlNReporteBienestar implements Serializable {
     //
     private boolean activoMostrarTodos, activoBuscarReporte;
 
+    //
+    private String infoRegistroActividad, infoRegistroEmpleadoDesde, infoRegistroEmpleadoHasta, infoRegistroReportes;
+
     public ControlNReporteBienestar() {
         activoMostrarTodos = true;
         activoBuscarReporte = false;
@@ -124,7 +127,7 @@ public class ControlNReporteBienestar implements Serializable {
         listActividades = null;
         actividadSeleccionada = new Actividades();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -333,6 +336,11 @@ public class ControlNReporteBienestar implements Serializable {
         try {
             if (cambiosReporte == true) {
                 listaIR = administrarNReporteBienestar.listInforeportesUsuario();
+                if (listaIR != null) {
+                    infoRegistroReportes = "Cantidad de registros : " + listaIR.size();
+                } else {
+                    infoRegistroReportes = "Cantidad de registros : 0";
+                }
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ReportesDialogo");
                 context.execute("ReportesDialogo.show()");
@@ -514,6 +522,7 @@ public class ControlNReporteBienestar implements Serializable {
         context.update("form:ActividadDialogo");
         context.update("form:lovActividad");
         context.update("form:aceptarAct");
+        context.reset("form:lovActividad:globalFilter");
         context.execute("ActividadDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:actividadParametroL");
@@ -538,6 +547,7 @@ public class ControlNReporteBienestar implements Serializable {
         context.update("form:EmpleadoDesdeDialogo");
         context.update("form:lovEmpleadoDesde");
         context.update("form:aceptarED");
+        context.reset("form:lovEmpleadoDesde:globalFilter");
         context.execute("EmpleadoDesdeDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoDesdeParametroL");
@@ -562,6 +572,7 @@ public class ControlNReporteBienestar implements Serializable {
         context.update("form:EmpleadoHastaDialogo");
         context.update("form:lovEmpleadoHasta");
         context.update("form:aceptarEH");
+        context.reset("form:lovEmpleadoHasta:globalFilter");
         context.execute("EmpleadoHastaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoHastaParametroL");
@@ -1073,6 +1084,56 @@ public class ControlNReporteBienestar implements Serializable {
 
     public void setActivoBuscarReporte(boolean activoBuscarReporte) {
         this.activoBuscarReporte = activoBuscarReporte;
+    }
+
+    public String getInfoRegistroActividad() {
+        getListActividades();
+        if (listActividades != null) {
+            infoRegistroActividad = "Cantidad de registros : " + listActividades.size();
+        } else {
+            infoRegistroActividad = "Cantidad de registros : 0";
+        }
+        return infoRegistroActividad;
+    }
+
+    public void setInfoRegistroActividad(String infoRegistroActividad) {
+        this.infoRegistroActividad = infoRegistroActividad;
+    }
+
+    public String getInfoRegistroEmpleadoDesde() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoDesde;
+    }
+
+    public void setInfoRegistroEmpleadoDesde(String infoRegistroEmpleadoDesde) {
+        this.infoRegistroEmpleadoDesde = infoRegistroEmpleadoDesde;
+    }
+
+    public String getInfoRegistroEmpleadoHasta() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoHasta;
+    }
+
+    public void setInfoRegistroEmpleadoHasta(String infoRegistroEmpleadoHasta) {
+        this.infoRegistroEmpleadoHasta = infoRegistroEmpleadoHasta;
+    }
+
+    public String getInfoRegistroReportes() {
+        return infoRegistroReportes;
+    }
+
+    public void setInfoRegistroReportes(String infoRegistroReportes) {
+        this.infoRegistroReportes = infoRegistroReportes;
     }
 
 }

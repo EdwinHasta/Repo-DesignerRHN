@@ -108,6 +108,8 @@ public class ControlReportesBancos implements Serializable {
     //
     private Date fechaDesde, fechaHasta;
     private BigInteger emplDesde, emplHasta;
+    //
+    private String infoRegistroEmpleadoDesde, infoRegistroEmpleadoHasta, infoRegistroEmpresa, infoRegistroTipoTrabajador, infoRegistroProceso, infoRegistroBanco, infoRegistroCiudad;
 
     public ControlReportesBancos() {
         color = "black";
@@ -153,10 +155,11 @@ public class ControlReportesBancos implements Serializable {
             administrarReportesBancos.obtenerConexion(ses.getId());
             administarReportes.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
+
     public void iniciarPagina() {
         listaIR = null;
         getListaIR();
@@ -615,6 +618,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:EmpleadoDesdeDialogo");
         context.update("form:lovEmpleadoDesde");
         context.update("form:aceptarED");
+        context.reset("form:lovEmpleadoDesde:globalFilter");
         context.execute("EmpleadoDesdeDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoDesdeParametro");
@@ -640,6 +644,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:EmpleadoHastaDialogo");
         context.update("form:lovEmpleadoHasta");
         context.update("form:aceptarEH");
+        context.reset("form:lovEmpleadoHasta:globalFilter");
         context.execute("EmpleadoHastaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoHastaParametro");
@@ -664,6 +669,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:EmpresaDialogo");
         context.update("form:lovEmpresa");
         context.update("form:aceptarEmp");
+        context.reset("form:lovEmpresa:globalFilter");
         context.execute("EmpresaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empresaParametro");
@@ -688,6 +694,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:TipoTrabajadorDialogo");
         context.update("form:lovTipoTrabajador");
         context.update("form:aceptarTT");
+        context.reset("form:lovTipoTrabajador:globalFilter");
         context.execute("TipoTrabajadorDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:tipoTrabajadorParametro");
@@ -714,6 +721,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:ProcesoDialogo");
         context.update("form:lovProceso");
         context.update("form:aceptarPro");
+        context.reset("form:lovProceso:globalFilter");
         context.execute("ProcesoDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:procesoParametro");
@@ -739,6 +747,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:BancoDialogo");
         context.update("form:lovBancos");
         context.update("form:aceptarBan");
+        context.reset("form:lovBancos:globalFilter");
         context.execute("BancoDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:bancoParametro");
@@ -764,6 +773,7 @@ public class ControlReportesBancos implements Serializable {
         context.update("form:CiudadDialogo");
         context.update("form:lovCiudades");
         context.update("form:aceptarCiu");
+        context.reset("form:lovCiudades:globalFilter");
         context.execute("CiudadDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:ciudadParametro");
@@ -1466,4 +1476,103 @@ public class ControlReportesBancos implements Serializable {
     public void setDecoracion2(String decoracion) {
         this.decoracion2 = decoracion;
     }
+
+    public String getInfoRegistroEmpleadoDesde() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoDesde;
+    }
+
+    public void setInfoRegistroEmpleadoDesde(String infoRegistroEmpleadoDesde) {
+        this.infoRegistroEmpleadoDesde = infoRegistroEmpleadoDesde;
+    }
+
+    public String getInfoRegistroEmpleadoHasta() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoHasta;
+    }
+
+    public void setInfoRegistroEmpleadoHasta(String infoRegistroEmpleadoHasta) {
+        this.infoRegistroEmpleadoHasta = infoRegistroEmpleadoHasta;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getListEmpresas();
+        if (listEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public String getInfoRegistroProceso() {
+        getListProcesos();
+        if (listProcesos != null) {
+            infoRegistroProceso = "Cantidad de registros : " + listProcesos.size();
+        } else {
+            infoRegistroProceso = "Cantidad de registros : 0";
+        }
+        return infoRegistroProceso;
+    }
+
+    public void setInfoRegistroProceso(String infoRegistroProceso) {
+        this.infoRegistroProceso = infoRegistroProceso;
+    }
+
+    public String getInfoRegistroBanco() {
+        getListBancos();
+        if (listBancos != null) {
+            infoRegistroBanco = "Cantidad de registros : " + listBancos.size();
+        } else {
+            infoRegistroBanco = "Cantidad de registros : 0";
+        }
+        return infoRegistroBanco;
+    }
+
+    public void setInfoRegistroBanco(String infoRegistroBanco) {
+        this.infoRegistroBanco = infoRegistroBanco;
+    }
+
+    public String getInfoRegistroCiudad() {
+        getListCiudades();
+        if (listCiudades != null) {
+            infoRegistroCiudad = "Cantidad de registros : " + listCiudades.size();
+        } else {
+            infoRegistroCiudad = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudad;
+    }
+
+    public void setInfoRegistroCiudad(String infoRegistroCiudad) {
+        this.infoRegistroCiudad = infoRegistroCiudad;
+    }
+
+    public String getInfoRegistroTipoTrabajador() {
+        getListTiposTrabajadores();
+        if (listTiposTrabajadores != null) {
+            infoRegistroTipoTrabajador = "Cantidad de registros : " + listTiposTrabajadores.size();
+        } else {
+            infoRegistroTipoTrabajador = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoTrabajador;
+    }
+
+    public void setInfoRegistroTipoTrabajador(String infoRegistroTipoTrabajador) {
+        this.infoRegistroTipoTrabajador = infoRegistroTipoTrabajador;
+    }
+
 }

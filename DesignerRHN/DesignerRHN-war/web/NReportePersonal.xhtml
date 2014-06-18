@@ -18,8 +18,6 @@
 
                         <p:commandButton style="position: absolute; left: 785px; top: 518px;" icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="individual" actionListener="#{controlNReportePersonal.salir()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 690px; top: 518px;" icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReportePersonal.dispararDialogoGuardarCambios()}" disabled="#{controlNReportePersonal.cambiosReporte}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 170px; top: 518px;" icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNReportePersonal.cancelarModificaciones()}" process="@this" />
-                        <p:separator id="separatorBtnsInferiores"  style="vertical-align: central;position: absolute;height: 25px;width: 3px;top: 515px;left: 155px "/>  
                         <p:commandButton style="position: absolute; left: 10px; top: 518px;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReportePersonal.defaultPropiedadesParametrosReporte()}"/>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
@@ -29,7 +27,7 @@
                             <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" action="individual" actionListener="#{controlNReportePersonal.cancelarYSalir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
-                        
+
                         <p:dialog id="confirmarGuardarSinSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSinSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
@@ -51,7 +49,7 @@
                                          editable="true" editMode="cell" selection="#{controlNReportePersonal.actualInfoReporteTabla}" liveScroll="true" scrollRows="8">
                                 <p:ajax event="rowSelect" listener="#{controlNReportePersonal.seleccionRegistro()}" process="@this" />
                                 <p:ajax event="rowDblselect" listener="#{controlNReportePersonal.requisitosParaReporte()}" process="@this" />
-                                
+
                                 <p:column style="padding: 0px; text-align: center; width: 50px;" id="codigoIR" headerText="#{msg['codigo']}" width="50" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains"  filterStyle="display: none; visibility: hidden;"  >  
                                     <h:outputText value="#{info.codigo}"/>
                                 </p:column>
@@ -74,11 +72,11 @@
                             </p:dataTable>
 
                             <p:commandButton style="position: absolute; left: 585px; top: 200px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReportePersonal.mostrarTodos()}" disabled="#{controlNReportePersonal.activoMostrarTodos}"  update=":form:reportesPersonal"/>
-                            <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="Mostrar todos los reportes." />
+                            <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
                             <p:commandButton style="position: absolute; left: 460px; top: 200px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReportePersonal.mostrarDialogoBuscarReporte()}" disabled="#{controlNReportePersonal.activoBuscarReporte}" />
-                            <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="Buscar Reportes." />
+                            <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
                             <p:commandButton style="position: absolute; left: 10px; top: 200px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReportePersonal.generarReporte()}"/>
-                            <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="Generar Reporte." />
+                            <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="#{msg['generarReporte']}" />
 
                         </fieldset>
 
@@ -100,25 +98,37 @@
 
                                 <p:separator />
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />
+                                <p:commandButton id="exportarXLS" disabled="true" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />
                                 <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " >
+                                <p:commandButton id="exportarXML" disabled="true" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " >
                                 </p:commandButton> 
                                 <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xmle']}" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
+                                <p:commandButton id="exportarPDF" disabled="true" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />
                                 <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator /> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   /> 
+                                <p:commandButton id="insertar" disabled="true" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "   /> 
                                 <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />  
+                                <p:commandButton id="eliminar" disabled="true" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  />  
                                 <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
+                                <p:commandButton id="duplicar" disabled="true" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
                                 <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
+
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" disabled="true" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReportePersonal.cancelarModificaciones()}"   process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReportePersonal.salir()}" action="individual"  process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
 
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -128,15 +138,15 @@
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlNReportePersonal.activarCtrlF11()}" process="@this"/> 
 
                     <p:dialog header="#{msg['reportesR']}" widgetVar="ReportesDialogo" draggable="false" resizable="false" closable="false" id="ReportesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovReportesDialogo" style="font-size: 11px; width: 430px" var="reportes" value="#{controlNReportePersonal.listaIR}" rowKey="#{reportes.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovReportesDialogo" style="width: 430px" var="reportes" value="#{controlNReportePersonal.listaIR}" rowKey="#{reportes.secuencia}"
                                      selection="#{controlNReportePersonal.inforreporteSeleccionado}" selectionMode="single" widgetVar="lovReportesDialogo" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListInforeportesUsuario}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarR"/>
                             <p:ajax event="rowDblselect" listener="#{controlNReportePersonal.actualizarSeleccionInforeporte()}"  process="@this" onstart="lovReportesDialogo.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: -5px;" />  
                             </f:facet>
                             <p:column  filterBy="#{reportes.codigo}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
                                 <f:facet name="header">
@@ -159,10 +169,11 @@
                                 <h:outputText value="#{reportes.tipo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarR" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReportePersonal.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesPersonal" process="@this">
+                        <h:outputText id="infoRegistroReportes" value="#{controlNReportePersonal.infoRegistroReportes}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarR" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReportePersonal.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesPersonal" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasR" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReportePersonal.cancelarSeleccionInforeporte()}" process="@this">
+                        <p:commandButton id="atrasR" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReportePersonal.cancelarSeleccionInforeporte()}" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -192,8 +203,8 @@
                     </p:dialog>
 
                     <p:dialog header="#{msg['codigoEMP']}" widgetVar="EmpleadoDesdeDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoDesdeDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEmpleadoDesde" style="font-size: 11px; width: 430px" var="empleadoDesde" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{empleadoDesde.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true">
+                        <p:dataTable id="lovEmpleadoDesde" style="width: 430px" var="empleadoDesde" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{empleadoDesde.secuencia}"
                                      selection="#{controlNReportePersonal.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoDesde" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarED"/>
@@ -215,17 +226,18 @@
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarED" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
+                        <h:outputText id="infoRegistroEmpleadoDesde" value="#{controlNReportePersonal.infoRegistroEmpleadoDesde}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarED" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmplDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasED" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this">
+                        <p:commandButton id="atrasED" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCambioEmplDesde()}" update="lovEmpleadoDesde" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['codigoEMPH']}" widgetVar="EmpleadoHastaDialogo" draggable="false" resizable="false" closable="false" id="EmpleadoHastaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEmpleadoHasta" style="font-size: 11px; width: 430px" var="empleadoHasta" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{empleadoHasta.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovEmpleadoHasta" style="width: 430px" var="empleadoHasta" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{empleadoHasta.secuencia}"
                                      selection="#{controlNReportePersonal.empleadoSeleccionado}" selectionMode="single" widgetVar="lovEmpleadoHasta" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEH"/>
@@ -247,17 +259,18 @@
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEH" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
+                        <h:outputText id="infoRegistroEmpleadoHasta" value="#{controlNReportePersonal.infoRegistroEmpleadoHasta}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarEH" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmplHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEH" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this">
+                        <p:commandButton id="atrasEH" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCambioEmplHasta()}" update="lovEmpleadoHasta" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['empresaE']}" widgetVar="EmpresaDialogo" draggable="false" resizable="false" closable="false" id="EmpresaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEmpresa" style="font-size: 11px; width: 430px" var="empresa" value="#{controlNReportePersonal.listEmpresas}" rowKey="#{empresa.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovEmpresa" style="width: 430px" var="empresa" value="#{controlNReportePersonal.listEmpresas}" rowKey="#{empresa.secuencia}"
                                      selection="#{controlNReportePersonal.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresa" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEmp"/>
@@ -279,18 +292,19 @@
                                 <h:outputText value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEmp" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmpresa()}" update="lovEmpresa, aceptarEmp" process="@this">
+                        <h:outputText id="infoRegistroEmpresa" value="#{controlNReportePersonal.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarEmp" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEmpresa()}" update="lovEmpresa, aceptarEmp" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEmpresa:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEmp" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEmpresa()}" update="lovEmpresa" process="@this">
+                        <p:commandButton id="atrasEmp" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEmpresa()}" update="lovEmpresa" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEmpresa:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
 
                     <p:dialog header="#{msg['estructurasES']}" widgetVar="EstructuraDialogo" draggable="false" resizable="false" closable="false" id="EstructuraDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEstructura" style="font-size: 11px; width: 430px" var="estructura" value="#{controlNReportePersonal.listEstructuras}" rowKey="#{estructura.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovEstructura" style="width: 430px" var="estructura" value="#{controlNReportePersonal.listEstructuras}" rowKey="#{estructura.secuencia}"
                                      selection="#{controlNReportePersonal.estructuraSeleccionada}" selectionMode="single" widgetVar="lovEstructura" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListEstructuras}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEST"/>
@@ -318,17 +332,18 @@
                                 <h:outputText value="#{estructura.centrocosto.empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEST" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEstructura()}" update="lovEstructura, aceptarEST" process="@this">
+                        <h:outputText id="infoRegistroEstructura" value="#{controlNReportePersonal.infoRegistroEstructura}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarEST" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEstructura()}" update="lovEstructura, aceptarEST" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEstructura:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEST" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEstructura()}" update="lovEstructura" process="@this">
+                        <p:commandButton id="atrasEST" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EstructuraDialogo.hide(), lovEstructura.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEstructura()}" update="lovEstructura" process="@this"  icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEstructura:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipotrabajadorTT']}" widgetVar="TipoTrabajadorDialogo" draggable="false" resizable="false" closable="false" id="TipoTrabajadorDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovTipoTrabajador" style="font-size: 11px; width: 430px" var="tipo" value="#{controlNReportePersonal.listTiposTrabajadores}" rowKey="#{tipo.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovTipoTrabajador" style="width: 430px" var="tipo" value="#{controlNReportePersonal.listTiposTrabajadores}" rowKey="#{tipo.secuencia}"
                                      selection="#{controlNReportePersonal.tipoTSeleccionado}" selectionMode="single" widgetVar="lovTipoTrabajador" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListTiposTrabajadores}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarTT"/>
@@ -356,17 +371,18 @@
                                 <h:outputText value="#{tipo.tipo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTT" style="position: relative; left: 300px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT" process="@this">
+                        <h:outputText id="infoRegistroTipoTrabajador" value="#{controlNReportePersonal.infoRegistroTipoTrabajador}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarTT" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTrabajador()}" update="lovTipoTrabajador, aceptarTT" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTT" style="position: relative; left: 300px" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTrabajador()}" update="lovTipoTrabajador" process="@this">
+                        <p:commandButton id="atrasTT" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="TipoTrabajadorDialogo.hide(), lovTipoTrabajador.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTrabajador()}" update="lovTipoTrabajador" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovTipoTrabajador:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['estadocivilEC']}" widgetVar="EstadoCivilDialogo" draggable="false" resizable="false" closable="false" id="EstadoCivilDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEstadoCivil" style="font-size: 11px; width: 430px" var="estado" value="#{controlNReportePersonal.listEstadosCiviles}" rowKey="#{estado.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovEstadoCivil" style="width: 430px" var="estado" value="#{controlNReportePersonal.listEstadosCiviles}" rowKey="#{estado.secuencia}"
                                      selection="#{controlNReportePersonal.estadoCivilSeleccionado}" selectionMode="single" widgetVar="lovEstadoCivil" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListEstadosCiviles}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarEC"/>
@@ -382,17 +398,18 @@
                                 <h:outputText value="#{estado.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEC" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EstadoCivilDialogo.hide(), lovEstadoCivil.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEstadoCivil()}" update="lovEstadoCivil, aceptarEC" process="@this">
+                        <h:outputText id="infoRegistroEstadoCivil" value="#{controlNReportePersonal.infoRegistroEstadoCivil}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarEC" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="EstadoCivilDialogo.hide(), lovEstadoCivil.clearFilters();" actionListener="#{controlNReportePersonal.actualizarEstadoCivil()}" update="lovEstadoCivil, aceptarEC" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEstadoCivil:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEC" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EstadoCivilDialogo.hide(), lovEstadoCivil.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEstadoCivil()}" update="lovEstadoCivil" process="@this">
+                        <p:commandButton id="atrasEC" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="EstadoCivilDialogo.hide(), lovEstadoCivil.clearFilters();" actionListener="#{controlNReportePersonal.cancelarEstadoCivil()}" update="lovEstadoCivil" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEstadoCivil:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipotelefonoTTE']}" widgetVar="TipoTelefonoDialogo" draggable="false" resizable="false" closable="false" id="TipoTelefonoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovTipoTelefono" style="font-size: 11px; width: 430px" var="telefono" value="#{controlNReportePersonal.listTiposTelefonos}" rowKey="#{telefono.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovTipoTelefono" style="width: 430px" var="telefono" value="#{controlNReportePersonal.listTiposTelefonos}" rowKey="#{telefono.secuencia}"
                                      selection="#{controlNReportePersonal.tipoTelefonoSeleccionado}" selectionMode="single" widgetVar="lovTipoTelefono" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListTiposTelefonos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarTTEL"/>
@@ -408,17 +425,18 @@
                                 <h:outputText value="#{telefono.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTTEL" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="TipoTelefonoDialogo.hide(), lovTipoTelefono.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTelefono()}" update="lovTipoTelefono, aceptarTTEL" process="@this">
+                        <h:outputText id="infoRegistroTipoTelefono" value="#{controlNReportePersonal.infoRegistroTipoTelefono}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarTTEL" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="TipoTelefonoDialogo.hide(), lovTipoTelefono.clearFilters();" actionListener="#{controlNReportePersonal.actualizarTipoTelefono()}" update="lovTipoTelefono, aceptarTTEL" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovTipoTelefono:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTTEL" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="TipoTelefonoDialogo.hide(), lovTipoTelefono.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTelefono()}" update="lovTipoTelefono" process="@this">
+                        <p:commandButton id="atrasTTEL" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="TipoTelefonoDialogo.hide(), lovTipoTelefono.clearFilters();" actionListener="#{controlNReportePersonal.cancelarTipoTelefono()}" update="lovTipoTelefono" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovTipoTelefono:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['ciudadesC']}" widgetVar="CiudadDialogo" draggable="false" resizable="false" closable="false" id="CiudadDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovCiudades" style="font-size: 11px; width: 430px" var="ciudad" value="#{controlNReportePersonal.listCiudades}" rowKey="#{ciudad.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovCiudades" style="width: 430px" var="ciudad" value="#{controlNReportePersonal.listCiudades}" rowKey="#{ciudad.secuencia}"
                                      selection="#{controlNReportePersonal.ciudadSeleccionada}" selectionMode="single" widgetVar="lovCiudades" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListCiudades}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarCiu"/>
@@ -434,17 +452,18 @@
                                 <h:outputText  value="#{ciudad.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarCiu" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="CiudadDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlNReportePersonal.actualizarCiudad()}" update="lovCiudades, aceptarCiu" process="@this">
+                        <h:outputText id="infoRegistroCiudad" value="#{controlNReportePersonal.infoRegistroCiudad}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarCiu" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="CiudadDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlNReportePersonal.actualizarCiudad()}" update="lovCiudades, aceptarCiu" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovCiudades:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasCiu" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="CiudadDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCiudad()}" update="lovCiudades" process="@this">
+                        <p:commandButton id="atrasCiu" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="CiudadDialogo.hide(), lovCiudades.clearFilters();" actionListener="#{controlNReportePersonal.cancelarCiudad()}" update="lovCiudades" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovCiudades:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['deportesD']}" widgetVar="DeportesDialogo" draggable="false" resizable="false" closable="false" id="DeportesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovDeportes" style="font-size: 11px; width: 430px" var="deporte" value="#{controlNReportePersonal.listDeportes}" rowKey="#{deporte.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true">
+                        <p:dataTable id="lovDeportes" style="width: 430px" var="deporte" value="#{controlNReportePersonal.listDeportes}" rowKey="#{deporte.secuencia}"
                                      selection="#{controlNReportePersonal.deporteSeleccionado}" selectionMode="single" widgetVar="lovDeportes" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListDeportes}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarDep"/>
@@ -460,17 +479,18 @@
                                 <h:outputText  value="#{deporte.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarDep" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlNReportePersonal.actualizarDeporte()}" update="lovDeportes, aceptarDep" process="@this">
+                        <h:outputText id="infoRegistroDeporte" value="#{controlNReportePersonal.infoRegistroDeporte}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarDep" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlNReportePersonal.actualizarDeporte()}" update="lovDeportes, aceptarDep" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovDeportes:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasDep" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlNReportePersonal.cancelarDeporte()}" update="lovDeportes" process="@this">
+                        <p:commandButton id="atrasDep" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="DeportesDialogo.hide(), lovDeportes.clearFilters();" actionListener="#{controlNReportePersonal.cancelarDeporte()}" update="lovDeportes" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovDeportes:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['aficionesA']}" widgetVar="AficionesDialogo" draggable="false" resizable="false" closable="false" id="AficionesDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovAficiones" style="font-size: 11px; width: 430px" var="aficion" value="#{controlNReportePersonal.listAficiones}" rowKey="#{aficion.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovAficiones" style="width: 430px" var="aficion" value="#{controlNReportePersonal.listAficiones}" rowKey="#{aficion.secuencia}"
                                      selection="#{controlNReportePersonal.aficionSeleccionada}" selectionMode="single" widgetVar="lovAficiones" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListAficiones}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarAfi"/>
@@ -486,17 +506,18 @@
                                 <h:outputText  value="#{aficion.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarAfi" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlNReportePersonal.actualizarAficion()}" update="lovAficiones, aceptarAfi" process="@this">
+                        <h:outputText id="infoRegistroAficion" value="#{controlNReportePersonal.infoRegistroAficion}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarAfi" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlNReportePersonal.actualizarAficion()}" update="lovAficiones, aceptarAfi" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovAficiones:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasAfi" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlNReportePersonal.cancelarAficion()}" update="lovAficiones" process="@this">
+                        <p:commandButton id="atrasAfi" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="AficionesDialogo.hide(), lovAficiones.clearFilters();" actionListener="#{controlNReportePersonal.cancelarAficion()}" update="lovAficiones" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovAficiones:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['idiomasI']}" widgetVar="IdiomasDialogo" draggable="false" resizable="false" closable="false" id="IdiomasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovIdiomas" style="font-size: 11px; width: 430px" var="idioma" value="#{controlNReportePersonal.listIdiomas}" rowKey="#{idioma.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovIdiomas" style="width: 430px" var="idioma" value="#{controlNReportePersonal.listIdiomas}" rowKey="#{idioma.secuencia}"
                                      selection="#{controlNReportePersonal.idiomaSeleccionado}" selectionMode="single" widgetVar="lovIdiomas" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListIdiomas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarId"/>
@@ -512,17 +533,18 @@
                                 <h:outputText  value="#{idioma.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarId" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlNReportePersonal.actualizarIdioma()}" update="lovIdiomas, aceptarId" process="@this">
+                        <h:outputText id="infoRegistroIdioma" value="#{controlNReportePersonal.infoRegistroIdioma}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarId" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlNReportePersonal.actualizarIdioma()}" update="lovIdiomas, aceptarId" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovIdiomas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasId" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlNReportePersonal.cancelarIdioma()}" update="lovIdiomas" process="@this">
+                        <p:commandButton id="atrasId" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="IdiomasDialogo.hide(), lovIdiomas.clearFilters();" actionListener="#{controlNReportePersonal.cancelarIdioma()}" update="lovIdiomas" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovIdiomas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['jefedivisionJ']}" widgetVar="JefeDivisionDialogo" draggable="false" resizable="false" closable="false" id="JefeDivisionDialogo"  
-                              showEffect="fade" hideEffect="fade" width="460" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovJefeD" style="font-size: 11px; width: 430px" var="jefe" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{jefe.secuencia}"
+                              showEffect="fade" hideEffect="fade" width="460" modal="true" >
+                        <p:dataTable id="lovJefeD" style="width: 430px" var="jefe" value="#{controlNReportePersonal.listEmpleados}" rowKey="#{jefe.secuencia}"
                                      selection="#{controlNReportePersonal.empleadoSeleccionado}" selectionMode="single" widgetVar="lovJefeD" scrollable="true" scrollWidth="445" scrollHeight="250"
                                      filteredValue="#{controlNReportePersonal.filtrarListEmpleados}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlNReportePersonal.activarAceptar()}" update=":form:aceptarJD"/>
@@ -544,14 +566,15 @@
                                 <h:outputText  value="#{jefe.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarJD" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.actualizarJefeDivision()}" update="lovJefeD, aceptarJD" process="@this">
+                        <h:outputText id="infoRegistroJefe" value="#{controlNReportePersonal.infoRegistroJefe}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarJD" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReportePersonal.aceptar}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.actualizarJefeDivision()}" update="lovJefeD, aceptarJD" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovJefeD:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasJD" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.cancelarJefeDivision()}" update="lovJefeD" process="@this">
+                        <p:commandButton id="atrasJD" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="JefeDivisionDialogo.hide(), lovJefeD.clearFilters();" actionListener="#{controlNReportePersonal.cancelarJefeDivision()}" update="lovJefeD" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovJefeD:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
-                    
+
                     <p:dialog id="errorRegNew" header="#{msg['atencion']}" widgetVar="errorRegNew"  resizable="false" draggable="false" modal="true" height="80" width="275px" style="font-size: 12px" closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="#{msg['errorRegNew']}" style="position: absolute; left: 70px; top: 15px; width: 185px; font-weight:bold;" />
@@ -570,57 +593,57 @@
                         <legend style="font-size: 11px; color: blue;text-align:left"><strong>#{msg['parametros']}</strong></legend>
 
                         <h:outputText value="#{msg['fechadesde']}:" style="position: absolute; top: 15px; left: 10px;font-size: 11px;"/>
-                         <div id="posicionFechaDesdeParametro" style="position: absolute; top: 7px; left: 90px;">
-                             <lnk:calendar value="#{controlNReportePersonal.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" color="#{controlNReportePersonal.color}" decoration="#{controlNReportePersonal.decoracion}"   width="70">
+                        <div id="posicionFechaDesdeParametro" style="position: absolute; top: 7px; left: 90px;">
+                            <lnk:calendar value="#{controlNReportePersonal.parametroDeInforme.fechadesde}" id="fechaDesdeParametroL" color="#{controlNReportePersonal.color}" decoration="#{controlNReportePersonal.decoracion}"   width="70">
                                 <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(1)}" process="@this"/>
                                 <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
                                 <p:ajax event="dateSelect" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this" update="fechaDesdeParametroL"/>
                             </lnk:calendar> 
                         </div>
-                       
+
 
                         <h:outputText value="#{msg['empleadodesde']}:" style="position: absolute; top: 38px; left: 10px;font-size: 11px;"/>
-                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametro" style="position: absolute; top: 33px; left: 90px;height: 10px;width: 90px;" onclick="select();">
+                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.codigoempleadodesde}" id="empleadoDesdeParametro" style="position: absolute; top: 33px; left: 110px;height: 10px;width: 70px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(2)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="empleadoDesdeParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(2)}" process="@this"/>
                         </p:inputText>
 
                         <h:outputText value="#{msg['solicitud']}:" style="position: absolute; top: 60px; left: 10px;font-size: 11px;"/>
-                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.observaciones}" id="solicitudParametro" style="position: absolute; top: 54px; left: 90px;height: 10px;width: 270px;text-transform: uppercase" onclick="select();">
+                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.observaciones}" id="solicitudParametro" style="position: absolute; top: 54px; left: 110px;height: 10px;width: 250px;text-transform: uppercase" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(3)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="solicitudParametro" process="@this"/>
                         </p:inputText>
 
                         <h:outputText value="#{msg['estadocivil']}:" style="position: absolute; top: 82px; left: 10px;font-size: 11px;"/>
-                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.estadocivil.descripcion}" id="estadoCivilParametro" style="position: absolute; top: 75px; left: 90px;height: 10px;width: 120px;" onclick="select();">
+                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.estadocivil.descripcion}" id="estadoCivilParametro" style="position: absolute; top: 75px; left: 110px;height: 10px;width: 120px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(4)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('ESTADOCIVIL', controlNReportePersonal.parametroDeInforme.estadocivil.descripcion)}" update="estadoCivilParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(4)}" process="@this"/>
                         </p:inputText>
 
                         <h:outputText value="#{msg['tipotelefono']}:" style="position: absolute; top: 102px; left: 10px;font-size: 11px;"/>
-                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.tipotelefono.nombre}" id="tipoTelefonoParametro" style="position: absolute; top: 96px; left: 90px;height: 10px;width: 120px;" onclick="select();">
+                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.tipotelefono.nombre}" id="tipoTelefonoParametro" style="position: absolute; top: 96px; left: 110px;height: 10px;width: 120px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(5)}" process="@this"/> 
                             <p:ajax event="change" update="tipoTelefonoParametro" listener="#{controlNReportePersonal.autocompletarGeneral('TIPOTELEFONO',controlNReportePersonal.parametroDeInforme.tipotelefono.nombre)}" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(5)}" process="@this"/>
                         </p:inputText>
 
                         <h:outputText value="#{msg['jefedivisionrh']}:" style="position: absolute; top: 124px; left: 10px;font-size: 11px;"/>
-                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto}" id="jefeDivisionParametro" style="position: absolute; top: 117px; left: 90px;height: 10px;width: 270px;" onclick="select();">
+                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto}" id="jefeDivisionParametro" style="position: absolute; top: 117px; left: 110px;height: 10px;width: 250px;" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(6)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReportePersonal.autocompletarGeneral('JEFEDIV', controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto)}" update="jefeDivisionParametro" process="@this"/>
                             <p:ajax event="dblclick" listener="#{controlNReportePersonal.listasValores(6)}" process="@this"/>
                         </p:inputText>
 
                         <h:outputText value="#{msg['rodamiento']}:" style="position: absolute; top: 144px; left: 10px;font-size: 11px;"/>
-                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" id="rodamientoParametro" style="position: absolute; top: 138px; left: 90px;height: 10px;width: 270px;text-transform: uppercase" onclick="select();">
+                        <p:inputText value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" id="rodamientoParametro" style="position: absolute; top: 138px; left: 110px;height: 10px;width: 250px;text-transform: uppercase" onclick="select();">
                             <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(7)}" process="@this"/> 
                             <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" update="rodamientoParametro" process="@this"/>
                         </p:inputText>
 
                         <h:outputText value="#{msg['fondo']}:" style="position: absolute; top: 165px; left: 10px;font-size: 11px;"/>
-                        <p:selectOneMenu value="#{controlNReportePersonal.parametroDeInforme.fondocumpleanos}" id="fondoCumpleParametro" style="position: absolute; top: 159px; left: 105px;width: 265px;">  
+                        <p:selectOneMenu value="#{controlNReportePersonal.parametroDeInforme.fondocumpleanos}" id="fondoCumpleParametro" style="position: absolute; top: 159px; left: 120px;width: 250px;">  
                             <f:selectItem itemLabel="" itemValue="null" />  
                             <f:selectItem itemLabel="#{msg['cumple']}" itemValue="cumple" />  
                             <f:selectItem itemLabel="#{msg['cumple2']}" itemValue="cumple2" />  
@@ -643,7 +666,7 @@
                                 <p:ajax event="click" listener="#{controlNReportePersonal.posicionCelda(8)}" process="@this"/> 
                                 <p:ajax event="change" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
                                 <p:ajax event="dateSelect" listener="#{controlNReportePersonal.modificarParametroInforme()}" process="@this" update="fechaHastaParametroL"/>
-                                </lnk:calendar> 
+                            </lnk:calendar> 
                         </div>
 
                         <h:outputText value="#{msg['hasta']}:" style="position: absolute; top: 35px; left: 210px;font-size: 11px;"/>
@@ -715,7 +738,7 @@
                         </p:inputText>
 
                     </fieldset> 
-                    
+
                     <p:dialog id="infoReporteCodigoD" header="#{msg['infoReporteCodigoD']}" widgetVar="infoReporteCodigoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlNReportePersonal.actualInfoReporteTabla.codigo}" style="overflow: auto; width: 200px; height: 50px" readonly="true"/>
                     </p:dialog>
@@ -724,95 +747,78 @@
                         <p:inputTextarea value="#{controlNReportePersonal.actualInfoReporteTabla.nombre}" style="overflow: auto; width: 200px; height: 50px" readonly="true"/>
                     </p:dialog>
 
-                    
-                    
+
+
                 </h:form>
 
                 <h:form id="formDialogos">
 
-                    <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReportePersonal.parametroDeInforme.fechadesde}" id="editFechaDesdeCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaDesde" value="#{msg['atras']}" onclick="editarFechaDesde.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.fechadesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="empleadoDesde" header="#{msg['empleadoDesde']}" widgetVar="empleadoDesde" resizable="false" draggable="false" modal="true" height="93" width="250" style="font-size: 12px">  
+                    <p:dialog id="empleadoDesde" header="#{msg['empleadoDesde']}" widgetVar="empleadoDesde" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.codigoempleadodesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEmpleadoDesde" value="#{msg['atras']}" onclick="empleadoDesde.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-
-                    <p:dialog id="editarFechaHasta" header="#{msg['editarFechaHasta']}" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="30" width="240" style="font-size: 12px; padding: 0px">  
-                        <p:calendar  style="font-size: 10px; left: 4px; top: 4px; position: absolute" value="#{controlNReportePersonal.parametroDeInforme.fechahasta}" id="editFechaHastaCelda"  styleClass="ui-datepicker, myClass"  
-                                     navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
-                        </p:calendar>
-                        <p:commandButton id="cancelarFechaHasta" value="#{msg['atras']}" onclick="editarFechaHasta.hide();" style="position: absolute; top: 5px; left: 148px; font-size: 11px" process="@this" />
+                    <p:dialog id="editarFechaHasta" header="#{msg['editarFechaHasta']}" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.fechahasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="empleadoHasta" header="#{msg['empleadoHasta']}" widgetVar="empleadoHasta" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="empleadoHasta" header="#{msg['empleadoHasta']}" widgetVar="empleadoHasta" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.codigoempleadohasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEmpleadoHasta" value="#{msg['atras']}" onclick="empleadoHasta.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="empresa" header="#{msg['empresaa']}" widgetVar="empresa" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="empresa" header="#{msg['empresaa']}" widgetVar="empresa" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.empresa.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEmpresa" value="#{msg['atras']}" onclick="empresa.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="estructura" header="#{msg['estructuraa']}" widgetVar="estructura" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="estructura" header="#{msg['estructuraa']}" widgetVar="estructura" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.localizacion.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEstructura" value="Atras" onclick="estructura.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="tipoTrabajador" header="Tipo Trabajador Parametrización" widgetVar="tipoTrabajador" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="tipoTrabajador" header="#{msg['tipoTrabajador']}" widgetVar="tipoTrabajador" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.tipotrabajador.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoTrabajador" value="#{msg['atras']}" onclick="tipoTrabajador.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="tipoTelefono" header="#{msg['tipoTelefono']}" widgetVar="tipoTelefono" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="tipoTelefono" header="#{msg['tipoTelefono']}" widgetVar="tipoTelefono" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.tipotelefono.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoTelefono" value="#{msg['atras']}" onclick="tipoTelefono.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="jefeDivision" header="#{msg['jefeDivision']}" widgetVar="jefeDivision" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="jefeDivision" header="#{msg['jefeDivision']}" widgetVar="jefeDivision" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.nombregerente.persona.nombreCompleto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarJefeDivision" value="#{msg['atras']}" onclick="jefeDivision.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="estadoCivil" header="#{msg['estadoCivil']}" widgetVar="estadoCivil" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="estadoCivil" header="#{msg['estadoCivil']}" widgetVar="estadoCivil" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.estadocivil.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEstadoCivil" value="#{msg['atras']}" onclick="estadoCivil.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="ciudad" header="#{msg['ciudaad']}" widgetVar="ciudad" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="ciudad" header="#{msg['ciudaad']}" widgetVar="ciudad" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.ciudad.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCiudad" value="#{msg['atras']}" onclick="ciudad.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="deporte" header="#{msg['deportee']}" widgetVar="deporte" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="deporte" header="#{msg['deportee']}" widgetVar="deporte" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.deporte.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarDeporte" value="#{msg['atras']}" onclick="deporte.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="aficion" header="#{msg['aficioon']}" widgetVar="aficion" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="aficion" header="#{msg['aficioon']}" widgetVar="aficion" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.aficion.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarAficion" value="#{msg['atras']}" onclick="aficion.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="idioma" header="#{msg['idiomaa']}" widgetVar="idioma" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="idioma" header="#{msg['idiomaa']}" widgetVar="idioma" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.idioma.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarIdioma" value="#{msg['atras']}" onclick="idioma.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="rodamiento" header="#{msg['rodamientoo']}" widgetVar="rodamiento" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="rodamiento" header="#{msg['rodamientoo']}" widgetVar="rodamiento" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.rodamineto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarRodamiento" value="#{msg['atras']}" onclick="rodamiento.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="solicitud" header="#{msg['solicituud']}" widgetVar="solicitud" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="solicitud" header="#{msg['solicituud']}" widgetVar="solicitud" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlNReportePersonal.parametroDeInforme.observaciones}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarSolicitud" value="#{msg['atras']}" onclick="solicitud.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <p:dialog id="reporteAGenerar" header="#{msg['reporteAGenerar']}" widgetVar="reporteAGenerar" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  

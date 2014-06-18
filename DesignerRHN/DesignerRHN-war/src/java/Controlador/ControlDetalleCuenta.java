@@ -34,7 +34,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlDetalleCuenta implements Serializable {
 
-    
     @EJB
     AdministrarDetalleCuentaInterface administrarDetalleCuenta;
     @EJB
@@ -42,9 +41,11 @@ public class ControlDetalleCuenta implements Serializable {
     //Vigencias Cuentas Credito
     private List<VigenciasCuentas> listCuentasCredito;
     private List<VigenciasCuentas> filtrarListCuentasCredito;
+    private VigenciasCuentas cuentaCreditoTablaSeleccionada;
     //Vigencias Cuentas Debito
     private List<VigenciasCuentas> listCuentasDebito;
     private List<VigenciasCuentas> filtrarListCuentasDebito;
+    private VigenciasCuentas cuentaDebitoTablaSeleccionada;
     //Cuentas
     private Cuentas cuentaActual;
     //Activo/Desactivo Crtl + F11
@@ -74,9 +75,12 @@ public class ControlDetalleCuenta implements Serializable {
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private BigInteger backUp;
     private String nombreTablaRastro;
-    
+    //
+    private String altoTablaCredito, altoTablaDebito;
 
     public ControlDetalleCuenta() {
+        altoTablaDebito = "105";
+        altoTablaCredito = "152";
         nombreTablaRastro = "";
         backUp = null;
         listCuentasDebito = null;
@@ -107,7 +111,7 @@ public class ControlDetalleCuenta implements Serializable {
         nombreTabla = ":formExportarCredito:datosCreditoExportar";
         nombreXML = "CuentrasCreditoXML";
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -116,7 +120,7 @@ public class ControlDetalleCuenta implements Serializable {
             administrarDetalleCuenta.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -265,10 +269,14 @@ public class ControlDetalleCuenta implements Serializable {
      */
     public void activarCtrlF11() {
         // if (indexMvrs >= 0) {
-        filtradoCredito();
+        if (indexCredito >= 0) {
+            filtradoCredito();
+        }
         // }
         //  if (indexOtrosCertificados >= 0) {
-        filtradoDebito();
+        if (indexDebito >= 0) {
+            filtradoDebito();
+        }
         //  }
     }
 
@@ -277,6 +285,7 @@ public class ControlDetalleCuenta implements Serializable {
      */
     public void filtradoCredito() {
         if (banderaCredito == 0) {
+            altoTablaCredito = "130";
             creditoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaInicial");
             creditoFechaInicial.setFilterStyle("width: 60px");
             creditoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaFinal");
@@ -294,6 +303,7 @@ public class ControlDetalleCuenta implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosCuentaCredito");
             banderaCredito = 1;
         } else if (banderaCredito == 1) {
+            altoTablaCredito = "152";
             creditoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaInicial");
             creditoFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             creditoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaFinal");
@@ -321,7 +331,8 @@ public class ControlDetalleCuenta implements Serializable {
      */
     public void filtradoDebito() {
         if (banderaDebito == 0) {
-            //Columnas Tabla VPP
+
+            altoTablaDebito = "83";
             debitoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaDebito:debitoFechaInicial");
             debitoFechaInicial.setFilterStyle("width: 60px");
             debitoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaDebito:debitoFechaFinal");
@@ -339,7 +350,7 @@ public class ControlDetalleCuenta implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosCuentaDebito");
             banderaDebito = 1;
         } else if (banderaDebito == 1) {
-
+            altoTablaDebito = "105";
             debitoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaDebito:debitoFechaInicial");
             debitoFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             debitoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaDebito:debitoFechaFinal");
@@ -367,6 +378,7 @@ public class ControlDetalleCuenta implements Serializable {
      */
     public void salir() {
         if (banderaCredito == 1) {
+            altoTablaCredito = "152";
             creditoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaInicial");
             creditoFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             creditoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaCredito:creditoFechaFinal");
@@ -387,7 +399,7 @@ public class ControlDetalleCuenta implements Serializable {
             tipoListaCredito = 0;
         }
         if (banderaDebito == 1) {
-
+            altoTablaDebito = "105";
             debitoFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaDebito:debitoFechaInicial");
             debitoFechaInicial.setFilterStyle("display: none; visibility: hidden;");
             debitoFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCuentaDebito:debitoFechaFinal");
@@ -655,7 +667,9 @@ public class ControlDetalleCuenta implements Serializable {
     public List<VigenciasCuentas> getListCuentasCredito() {
         try {
             if (listCuentasCredito == null) {
-                listCuentasCredito = administrarDetalleCuenta.consultarListaVigenciasCuentasCredito(cuentaActual.getSecuencia());
+                if (cuentaActual.getSecuencia() != null) {
+                    listCuentasCredito = administrarDetalleCuenta.consultarListaVigenciasCuentasCredito(cuentaActual.getSecuencia());
+                }
             }
             return listCuentasCredito;
         } catch (Exception e) {
@@ -679,7 +693,9 @@ public class ControlDetalleCuenta implements Serializable {
     public List<VigenciasCuentas> getListCuentasDebito() {
         try {
             if (listCuentasDebito == null) {
-                listCuentasDebito = administrarDetalleCuenta.consultarListaVigenciasCuentasDebito(cuentaActual.getSecuencia());
+                if (cuentaActual.getSecuencia() != null) {
+                    listCuentasDebito = administrarDetalleCuenta.consultarListaVigenciasCuentasDebito(cuentaActual.getSecuencia());
+                }
             }
             return listCuentasDebito;
         } catch (Exception e) {
@@ -787,4 +803,51 @@ public class ControlDetalleCuenta implements Serializable {
     public void setBackUpSecRegistroCredito(BigInteger backUpSecRegistroCredito) {
         this.backUpSecRegistroCredito = backUpSecRegistroCredito;
     }
+
+    public VigenciasCuentas getCuentaCreditoTablaSeleccionada() {
+        getListCuentasCredito();
+        if (listCuentasCredito != null) {
+            int tam = listCuentasCredito.size();
+            if (tam > 0) {
+                cuentaCreditoTablaSeleccionada = listCuentasCredito.get(0);
+            }
+        }
+        return cuentaCreditoTablaSeleccionada;
+    }
+
+    public void setCuentaCreditoTablaSeleccionada(VigenciasCuentas cuentaCreditoTablaSeleccionada) {
+        this.cuentaCreditoTablaSeleccionada = cuentaCreditoTablaSeleccionada;
+    }
+
+    public VigenciasCuentas getCuentaDebitoTablaSeleccionada() {
+        getListCuentasDebito();
+        if (listCuentasDebito != null) {
+            int tam = listCuentasDebito.size();
+            if (tam > 0) {
+                cuentaDebitoTablaSeleccionada = listCuentasDebito.get(0);
+            }
+        }
+        return cuentaDebitoTablaSeleccionada;
+    }
+
+    public void setCuentaDebitoTablaSeleccionada(VigenciasCuentas cuentaDebitoTablaSeleccionada) {
+        this.cuentaDebitoTablaSeleccionada = cuentaDebitoTablaSeleccionada;
+    }
+
+    public String getAltoTablaCredito() {
+        return altoTablaCredito;
+    }
+
+    public void setAltoTablaCredito(String altoTablaCredito) {
+        this.altoTablaCredito = altoTablaCredito;
+    }
+
+    public String getAltoTablaDebito() {
+        return altoTablaDebito;
+    }
+
+    public void setAltoTablaDebito(String altoTablaDebito) {
+        this.altoTablaDebito = altoTablaDebito;
+    }
+
 }

@@ -41,10 +41,11 @@ public class ControlConceptoJuridico implements Serializable {
     AdministrarConceptoJuridicoInterface administrarConceptoJuridico;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //
     private List<ConceptosJuridicos> listConceptosJuridicos;
     private List<ConceptosJuridicos> filtrarListConceptosJuridicos;
+    private ConceptosJuridicos conceptoTablaSeleccionado;
     //
     private List<Empresas> listEmpresas;
     private List<Empresas> filtrarListEmpresas;
@@ -81,9 +82,15 @@ public class ControlConceptoJuridico implements Serializable {
     private String textoNormativo, textoNormaAux;
     private String auxExpPor, auxQuien;
     private Date auxFecha;
+    //
+    private String infoRegistro;
+    //
+    private String altoTabla;
+    //
+    private String infoRegistroEmpresa;
 
     public ControlConceptoJuridico() {
-
+        altoTabla = "180";
         cambioTextNormativo = true;
         indexAux = 0;
         backUpEmpresaActual = new Empresas();
@@ -122,6 +129,7 @@ public class ControlConceptoJuridico implements Serializable {
         duplicarConcepto = new ConceptosJuridicos();
         cambiosConceptos = false;
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -130,7 +138,7 @@ public class ControlConceptoJuridico implements Serializable {
             administrarConceptoJuridico.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -163,6 +171,7 @@ public class ControlConceptoJuridico implements Serializable {
     public void modificarConcepto(int indice) {
         boolean retorno = validarNuevosDatosRegistro(0);
         if (retorno == true) {
+            RequestContext context = RequestContext.getCurrentInstance();
             if (tipoLista == 0) {
                 listConceptosJuridicos.get(indice).setTexto(textoNormativo);
                 if (!listConceptosJuridicosCrear.contains(listConceptosJuridicos.get(indice))) {
@@ -192,7 +201,7 @@ public class ControlConceptoJuridico implements Serializable {
                 index = -1;
                 secRegistroConcepto = null;
             }
-            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:ACEPTAR");
             context.update("form:datosConcepto");
             cambiosConceptos = true;
         } else {
@@ -239,6 +248,7 @@ public class ControlConceptoJuridico implements Serializable {
             index = -1;
         }
     }
+
     //GUARDAR
     /**
      * Metodo de guardado general para la pagina
@@ -247,8 +257,15 @@ public class ControlConceptoJuridico implements Serializable {
         if (cambiosConceptos == true) {
             guardarCambiosConcepto();
         }
+        getListConceptosJuridicos();
+        if (listConceptosJuridicos != null) {
+            infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
         guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     /**
@@ -256,46 +273,53 @@ public class ControlConceptoJuridico implements Serializable {
      * VigenciasLocalizaciones
      */
     public void guardarCambiosConcepto() {
-        if (guardado == false) {
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listConceptosJuridicosBorrar.isEmpty()) {
+                    administrarConceptoJuridico.borrarConceptosJuridicos(listConceptosJuridicosBorrar);
+                    listConceptosJuridicosBorrar.clear();
+                }
+                if (!listConceptosJuridicosCrear.isEmpty()) {
+                    administrarConceptoJuridico.crearConceptosJuridicos(listConceptosJuridicosCrear);
+                    listConceptosJuridicosCrear.clear();
+                }
+                if (!listConceptosJuridicosModificar.isEmpty()) {
+                    administrarConceptoJuridico.editarConceptosJuridicos(listConceptosJuridicosModificar);
+                    listConceptosJuridicosModificar.clear();
+                }
+                listConceptosJuridicos = null;
+                context.update("form:datosConcepto");
+                FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
+                k = 0;
+            }
+            cambioTextNormativo = true;
+            index = -1;
+            secRegistroConcepto = null;
+            cambiosConceptos = false;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosConcepto : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Un error se presento en el guardado, por favor intente nuevamente.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            if (!listConceptosJuridicosBorrar.isEmpty()) {
-                administrarConceptoJuridico.borrarConceptosJuridicos(listConceptosJuridicosBorrar);
-                listConceptosJuridicosBorrar.clear();
-            }
-            if (!listConceptosJuridicosCrear.isEmpty()) {
-                administrarConceptoJuridico.crearConceptosJuridicos(listConceptosJuridicosCrear);
-                listConceptosJuridicosCrear.clear();
-            }
-            if (!listConceptosJuridicosModificar.isEmpty()) {
-                administrarConceptoJuridico.editarConceptosJuridicos(listConceptosJuridicosModificar);
-                listConceptosJuridicosModificar.clear();
-            }
-            listConceptosJuridicos = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosConcepto");
             context.update("form:growl");
-            k = 0;
         }
-        cambioTextNormativo = true;
-        index = -1;
-        secRegistroConcepto = null;
-        cambiosConceptos = false;
     }
     //CANCELAR MODIFICACIONES
 
     /**
      * Cancela las modificaciones realizas en la pagina
      */
-    
-    public void refrescarTexto(){
+    public void refrescarTexto() {
         textoNormaAux = listConceptosJuridicos.get(indexAux).getTexto();
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formTexto:editarTexto");
     }
-    
+
     public void cancelarModificacion() {
         if (bandera == 1) {
+            altoTabla = "180";
             conceptoFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoFecha");
             conceptoFecha.setFilterStyle("display: none; visibility: hidden;");
             conceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoNombre");
@@ -317,9 +341,17 @@ public class ControlConceptoJuridico implements Serializable {
         k = 0;
         listConceptosJuridicos = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         cambiosConceptos = false;
         getListConceptosJuridicos();
         textoNormativo = "";
+        getListConceptosJuridicos();
+        if (listConceptosJuridicos != null) {
+            infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosConcepto");
         context.update("formTexto:editarTexto");
@@ -431,6 +463,7 @@ public class ControlConceptoJuridico implements Serializable {
         boolean resp = validarNuevosDatosRegistro(1);
         if (resp == true) {
             if (bandera == 1) {
+                altoTabla = "180";
                 conceptoFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoFecha");
                 conceptoFecha.setFilterStyle("display: none; visibility: hidden;");
                 conceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoNombre");
@@ -464,13 +497,17 @@ public class ControlConceptoJuridico implements Serializable {
             ////------////
             nuevoConcepto = new ConceptosJuridicos();
             ////-----////
+
+            infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+
+            RequestContext.getCurrentInstance().update("form:informacionRegistro");
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("NuevoRegistroConcepto.hide()");
             context.update("form:datosConcepto");
             context.update("formularioDialogos:NuevoRegistroConcepto");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             cambiosConceptos = true;
             index = -1;
@@ -524,6 +561,7 @@ public class ControlConceptoJuridico implements Serializable {
             }
             if (index >= 0) {
                 if (bandera == 1) {
+                    altoTabla = "180";
                     conceptoFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoFecha");
                     conceptoFecha.setFilterStyle("display: none; visibility: hidden;");
                     conceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoNombre");
@@ -557,11 +595,15 @@ public class ControlConceptoJuridico implements Serializable {
                 listConceptosJuridicosCrear.add(duplicarConcepto);
                 listConceptosJuridicos.add(duplicarConcepto);
                 duplicarConcepto = new ConceptosJuridicos();
+
+                infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+
+                RequestContext.getCurrentInstance().update("form:informacionRegistro");
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosConcepto");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 context.execute("DuplicarRegistroConcepto.hide()");
                 cambiosConceptos = true;
@@ -618,6 +660,12 @@ public class ControlConceptoJuridico implements Serializable {
                 filtrarListConceptosJuridicos.remove(index);
             }
             textoNormativo = "";
+            if (listConceptosJuridicos != null) {
+                infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
+            RequestContext.getCurrentInstance().update("form:informacionRegistro");
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosConcepto");
             context.update("formTexto:editarTexto");
@@ -627,6 +675,7 @@ public class ControlConceptoJuridico implements Serializable {
             if (guardado == true) {
                 guardado = false;
             }
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
     }
 
@@ -644,6 +693,7 @@ public class ControlConceptoJuridico implements Serializable {
      */
     public void filtradoConcepto() {
         if (bandera == 0) {
+            altoTabla = "158";
             conceptoFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoFecha");
             conceptoFecha.setFilterStyle("width: 60px");
             conceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoNombre");
@@ -653,6 +703,7 @@ public class ControlConceptoJuridico implements Serializable {
             RequestContext.getCurrentInstance().update("form:datosConcepto");
             bandera = 1;
         } else if (bandera == 1) {
+            altoTabla = "180";
             conceptoFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoFecha");
             conceptoFecha.setFilterStyle("display: none; visibility: hidden;");
             conceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoNombre");
@@ -672,6 +723,7 @@ public class ControlConceptoJuridico implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
+            altoTabla = "180";
             conceptoFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoFecha");
             conceptoFecha.setFilterStyle("display: none; visibility: hidden;");
             conceptoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosConcepto:conceptoNombre");
@@ -704,6 +756,7 @@ public class ControlConceptoJuridico implements Serializable {
         cambioTextNormativo = true;
         nuevoConcepto = new ConceptosJuridicos();
         duplicarConcepto = new ConceptosJuridicos();
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
 
@@ -784,6 +837,8 @@ public class ControlConceptoJuridico implements Serializable {
                 tipoLista = 1;
             }
         }
+        infoRegistro = "Cantidad de registros : " + filtrarListConceptosJuridicos.size();
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
 
     //METODO RASTROS PARA LAS TABLAS EN EMPLVIGENCIASUELDOS
@@ -837,7 +892,10 @@ public class ControlConceptoJuridico implements Serializable {
         indexAux = -1;
         secRegistroConcepto = null;
         cualCelda = -1;
-        RequestContext.getCurrentInstance().execute("EmpresasDialogo.show()");
+        aceptar = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:EmpresasDialogo");
+        context.execute("EmpresasDialogo.show()");
     }
 
     public void actualizarEmpresa() {
@@ -857,10 +915,19 @@ public class ControlConceptoJuridico implements Serializable {
             context.update("formTexto:editarTexto");
             filtrarListEmpresas = null;
             aceptar = true;
-            context.execute("EmpresasDialogo.hide()");
-            context.reset("form:lovEmpresas:globalFilter");
+            context.update("form:EmpresasDialogo");
             context.update("form:lovEmpresas");
+            context.update("form:aceptarE");
+            context.reset("form:lovEmpresas:globalFilter");
+            context.execute("EmpresasDialogo.hide()");
             backUpEmpresaActual = empresaActual;
+            getListConceptosJuridicos();
+            if (listConceptosJuridicos != null) {
+                infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
+            RequestContext.getCurrentInstance().update("form:informacionRegistro");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
@@ -883,8 +950,9 @@ public class ControlConceptoJuridico implements Serializable {
     public List<ConceptosJuridicos> getListConceptosJuridicos() {
         try {
             if (listConceptosJuridicos == null) {
-                listConceptosJuridicos = new ArrayList<ConceptosJuridicos>();
-                listConceptosJuridicos = administrarConceptoJuridico.consultarConceptosJuridicosEmpresa(empresaActual.getSecuencia());
+                if (empresaActual.getSecuencia() != null) {
+                    listConceptosJuridicos = administrarConceptoJuridico.consultarConceptosJuridicosEmpresa(empresaActual.getSecuencia());
+                }
             }
             return listConceptosJuridicos;
         } catch (Exception e) {
@@ -1037,8 +1105,11 @@ public class ControlConceptoJuridico implements Serializable {
     public List<Empresas> getListEmpresas() {
         if (listEmpresas == null) {
             listEmpresas = administrarConceptoJuridico.consultarEmpresas();
-            if (!listEmpresas.isEmpty()) {
-                empresaActual = listEmpresas.get(0);
+            if (listEmpresas != null) {
+                int tam = listEmpresas.size();
+                if (tam > 0) {
+                    empresaActual = listEmpresas.get(0);
+                }
                 backUpEmpresaActual = empresaActual;
             }
         }
@@ -1095,6 +1166,65 @@ public class ControlConceptoJuridico implements Serializable {
 
     public void setReadOnlyTexto(boolean readOnlyTexto) {
         this.readOnlyTexto = readOnlyTexto;
+    }
+
+    public ConceptosJuridicos getConceptoTablaSeleccionado() {
+        getListConceptosJuridicos();
+        if (listConceptosJuridicos != null) {
+            int tam = listConceptosJuridicos.size();
+            if (tam > 0) {
+                conceptoTablaSeleccionado = listConceptosJuridicos.get(0);
+            }
+        }
+        return conceptoTablaSeleccionado;
+    }
+
+    public void setConceptoTablaSeleccionado(ConceptosJuridicos conceptoTablaSeleccionado) {
+        this.conceptoTablaSeleccionado = conceptoTablaSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        getListConceptosJuridicos();
+        if (listConceptosJuridicos != null) {
+            infoRegistro = "Cantidad de registros : " + listConceptosJuridicos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getListEmpresas();
+        if (listEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
     }
 
 }

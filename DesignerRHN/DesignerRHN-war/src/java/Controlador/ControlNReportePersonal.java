@@ -129,6 +129,10 @@ public class ControlNReportePersonal implements Serializable {
     //
     private boolean activoMostrarTodos, activoBuscarReporte;
 
+    private String infoRegistroEmpleadoDesde, infoRegistroEmpleadoHasta, infoRegistroEmpresa, infoRegistroEstructura, infoRegistroTipoTrabajador, infoRegistroEstadoCivil, infoRegistroTipoTelefono, infoRegistroCiudad, infoRegistroDeporte, infoRegistroAficion, infoRegistroIdioma, infoRegistroJefe;
+
+    private String infoRegistroReportes;
+
     public ControlNReportePersonal() {
         activoMostrarTodos = true;
         activoBuscarReporte = false;
@@ -189,7 +193,7 @@ public class ControlNReportePersonal implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void iniciarPagina() {
         activoMostrarTodos = true;
         activoBuscarReporte = false;
@@ -199,7 +203,7 @@ public class ControlNReportePersonal implements Serializable {
             actualInfoReporteTabla = listaIR.get(0);
         }
     }
-    
+
     public void requisitosParaReporte() {
         int indiceSeleccion = 0;
         if (tipoLista == 0) {
@@ -1155,7 +1159,7 @@ public class ControlNReportePersonal implements Serializable {
         getParametroDeInforme();
         getListaIR();
         refrescarParametros();
-         activoMostrarTodos = true;
+        activoMostrarTodos = true;
         activoBuscarReporte = false;
         if (listaIR.size() > 0) {
             actualInfoReporteTabla = listaIR.get(0);
@@ -1259,13 +1263,17 @@ public class ControlNReportePersonal implements Serializable {
 
     public void mostrarDialogoBuscarReporte() {
         try {
+            RequestContext context = RequestContext.getCurrentInstance();
             if (cambiosReporte == true) {
                 listaIR = administrarNReportePersonal.listInforeportesUsuario();
-                RequestContext context = RequestContext.getCurrentInstance();
+                if (listaIR != null) {
+                    infoRegistroReportes = "Cantidad de registros : " + listaIR.size();
+                } else {
+                    infoRegistroReportes = "Cantidad de registros : 0";
+                }
                 context.update("form:ReportesDialogo");
                 context.execute("ReportesDialogo.show()");
             } else {
-                RequestContext context = RequestContext.getCurrentInstance();
                 context.execute("confirmarGuardarSinSalida.show()");
             }
         } catch (Exception e) {
@@ -1337,8 +1345,9 @@ public class ControlNReportePersonal implements Serializable {
         context.update("form:ReportesDialogo");
         context.update("form:lovReportesDialogo");
         context.update("form:aceptarR");
+        context.reset("form:lovReportesDialogo:globalFilter");
         context.execute("ReportesDialogo.hide()");
-        context.update(":form:reportesPersonal");
+        context.update("form:reportesPersonal");
     }
 
     public void cancelarSeleccionInforeporte() {
@@ -2129,6 +2138,182 @@ public class ControlNReportePersonal implements Serializable {
 
     public void setActivoBuscarReporte(boolean activoBuscarReporte) {
         this.activoBuscarReporte = activoBuscarReporte;
+    }
+
+    public String getInfoRegistroEmpleadoDesde() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoDesde;
+    }
+
+    public void setInfoRegistroEmpleadoDesde(String infoRegistroEmpleadoDesde) {
+        this.infoRegistroEmpleadoDesde = infoRegistroEmpleadoDesde;
+    }
+
+    public String getInfoRegistroEmpleadoHasta() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoHasta;
+    }
+
+    public void setInfoRegistroEmpleadoHasta(String infoRegistroEmpleadoHasta) {
+        this.infoRegistroEmpleadoHasta = infoRegistroEmpleadoHasta;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getListEmpresas();
+        if (listEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public String getInfoRegistroEstructura() {
+        getListEstructuras();
+        if (listEstructuras != null) {
+            infoRegistroEstructura = "Cantidad de registros : " + listEstructuras.size();
+        } else {
+            infoRegistroEstructura = "Cantidad de registros : 0";
+        }
+        return infoRegistroEstructura;
+    }
+
+    public void setInfoRegistroEstructura(String infoRegistroEstructura) {
+        this.infoRegistroEstructura = infoRegistroEstructura;
+    }
+
+    public String getInfoRegistroTipoTrabajador() {
+        getListTiposTrabajadores();
+        if (listTiposTrabajadores != null) {
+            infoRegistroTipoTrabajador = "Cantidad de registros : " + listTiposTrabajadores.size();
+        } else {
+            infoRegistroTipoTrabajador = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoTrabajador;
+    }
+
+    public void setInfoRegistroTipoTrabajador(String infoRegistroTipoTrabajador) {
+        this.infoRegistroTipoTrabajador = infoRegistroTipoTrabajador;
+    }
+
+    public String getInfoRegistroEstadoCivil() {
+        getListEstadosCiviles();
+        if (listEstadosCiviles != null) {
+            infoRegistroEstadoCivil = "Cantidad de registros : " + listEstadosCiviles.size();
+        } else {
+            infoRegistroEstadoCivil = "Cantidad de registros : 0";
+        }
+        return infoRegistroEstadoCivil;
+    }
+
+    public void setInfoRegistroEstadoCivil(String infoRegistroEstadoCivil) {
+        this.infoRegistroEstadoCivil = infoRegistroEstadoCivil;
+    }
+
+    public String getInfoRegistroTipoTelefono() {
+        getListTiposTelefonos();
+        if (listTiposTelefonos != null) {
+            infoRegistroTipoTelefono = "Cantidad de registros : " + listTiposTelefonos.size();
+        } else {
+            infoRegistroTipoTelefono = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoTelefono;
+    }
+
+    public void setInfoRegistroTipoTelefono(String infoRegistroTipoTelefono) {
+        this.infoRegistroTipoTelefono = infoRegistroTipoTelefono;
+    }
+
+    public String getInfoRegistroCiudad() {
+        getListCiudades();
+        if (listCiudades != null) {
+            infoRegistroCiudad = "Cantidad de registros : " + listCiudades.size();
+        } else {
+            infoRegistroCiudad = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudad;
+    }
+
+    public void setInfoRegistroCiudad(String infoRegistroCiudad) {
+        this.infoRegistroCiudad = infoRegistroCiudad;
+    }
+
+    public String getInfoRegistroDeporte() {
+        getListDeportes();
+        if (listDeportes != null) {
+            infoRegistroDeporte = "Cantidad de registros : " + listDeportes.size();
+        } else {
+            infoRegistroDeporte = "Cantidad de registros : 0";
+        }
+        return infoRegistroDeporte;
+    }
+
+    public void setInfoRegistroDeporte(String infoRegistroDeporte) {
+        this.infoRegistroDeporte = infoRegistroDeporte;
+    }
+
+    public String getInfoRegistroAficion() {
+        getListAficiones();
+        if (listAficiones != null) {
+            infoRegistroAficion = "Cantidad de registros : " + listAficiones.size();
+        } else {
+            infoRegistroAficion = "Cantidad de registros : 0";
+        }
+        return infoRegistroAficion;
+    }
+
+    public void setInfoRegistroAficion(String infoRegistroAficion) {
+        this.infoRegistroAficion = infoRegistroAficion;
+    }
+
+    public String getInfoRegistroIdioma() {
+        getListIdiomas();
+        if (listIdiomas != null) {
+            infoRegistroIdioma = "Cantidad de registros : " + listIdiomas.size();
+        } else {
+            infoRegistroIdioma = "Cantidad de registros : 0";
+        }
+        return infoRegistroIdioma;
+    }
+
+    public void setInfoRegistroIdioma(String infoRegistroIdioma) {
+        this.infoRegistroIdioma = infoRegistroIdioma;
+    }
+
+    public String getInfoRegistroJefe() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroJefe = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroJefe = "Cantidad de registros : 0";
+        }
+        return infoRegistroJefe;
+    }
+
+    public void setInfoRegistroJefe(String infoRegistroJefe) {
+        this.infoRegistroJefe = infoRegistroJefe;
+    }
+
+    public String getInfoRegistroReportes() {
+        return infoRegistroReportes;
+    }
+
+    public void setInfoRegistroReportes(String infoRegistroReportes) {
+        this.infoRegistroReportes = infoRegistroReportes;
     }
 
 }

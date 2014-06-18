@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -43,6 +44,8 @@ public class ControlVigenciaAficion implements Serializable {
     ////
     private List<VigenciasAficiones> listVigenciasAficiones;
     private List<VigenciasAficiones> filtrarListVigenciasAficiones;
+    private VigenciasAficiones vigenciaTablaSeleccionada;
+
     private List<Aficiones> listAficiones;
     private Aficiones aficionSeleccionada;
     private List<Aficiones> filtrarListAficiones;
@@ -76,6 +79,9 @@ public class ControlVigenciaAficion implements Serializable {
     private Empleados empleado;
     private Date fechaParametro;
     private Date fechaIni, fechaFin;
+    //
+    private String infoRegistroAficion;
+    private String infoRegistro;
 
     public ControlVigenciaAficion() {
         listVigenciasAficiones = null;
@@ -103,7 +109,7 @@ public class ControlVigenciaAficion implements Serializable {
         backUpSecRegistro = null;
         empleado = new Empleados();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -112,15 +118,21 @@ public class ControlVigenciaAficion implements Serializable {
             administrarVigenciaAficion.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirEmpleado(BigInteger secuencia) {
         listVigenciasAficiones = null;
         listAficiones = null;
         empleado = administrarVigenciaAficion.empleadoActual(secuencia);
+        getListVigenciasAficiones();
+        if (listVigenciasAficiones != null) {
+            infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
     }
 
     public void modificarVigenciaAficion(int indice) {
@@ -133,6 +145,7 @@ public class ControlVigenciaAficion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -147,6 +160,7 @@ public class ControlVigenciaAficion implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -291,6 +305,7 @@ public class ControlVigenciaAficion implements Serializable {
                 getListAficiones();
             } else {
                 permitirIndex = false;
+                getInfoRegistroAficion();
                 context.update("form:AficionesDialogo");
                 context.execute("AficionesDialogo.show()");
                 tipoActualizacion = 0;
@@ -307,6 +322,7 @@ public class ControlVigenciaAficion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -321,6 +337,7 @@ public class ControlVigenciaAficion implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -401,30 +418,57 @@ public class ControlVigenciaAficion implements Serializable {
             }
         }
     }
+    
+    public void guardarSalir(){
+        guardarCambios();
+        salir();
+    }
+    
+    public void cancelarSalir(){
+        cancelarModificacion();
+        salir();
+    }
 
     public void guardarCambios() {
-        if (guardado == false) {
-            if (!listVigenciaAficionBorrar.isEmpty()) {
-                administrarVigenciaAficion.borrarVigenciasAficiones(listVigenciaAficionBorrar);
-                listVigenciaAficionBorrar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listVigenciaAficionBorrar.isEmpty()) {
+                    administrarVigenciaAficion.borrarVigenciasAficiones(listVigenciaAficionBorrar);
+                    listVigenciaAficionBorrar.clear();
+                }
+                if (!listVigenciaAficionCrear.isEmpty()) {
+                    administrarVigenciaAficion.crearVigenciasAficiones(listVigenciaAficionCrear);
+                    listVigenciaAficionCrear.clear();
+                }
+                if (!listVigenciaAficionModificar.isEmpty()) {
+                    administrarVigenciaAficion.editarVigenciasAficiones(listVigenciaAficionModificar);
+                    listVigenciaAficionModificar.clear();
+                }
+                listVigenciasAficiones = null;
+                getListVigenciasAficiones();
+                if (listVigenciasAficiones != null) {
+                    infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:datosVigenciasAficiones");
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                k = 0;
             }
-            if (!listVigenciaAficionCrear.isEmpty()) {
-                administrarVigenciaAficion.crearVigenciasAficiones(listVigenciaAficionCrear);
-                listVigenciaAficionCrear.clear();
-            }
-            if (!listVigenciaAficionModificar.isEmpty()) {
-                administrarVigenciaAficion.editarVigenciasAficiones(listVigenciaAficionModificar);
-                listVigenciaAficionModificar.clear();
-            }
-            listVigenciasAficiones = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosVigenciasAficiones");
-            guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
+            index = -1;
+            secRegistro = null;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con Éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        index = -1;
-        secRegistro = null;
     }
     //CANCELAR MODIFICACIONES
 
@@ -462,8 +506,16 @@ public class ControlVigenciaAficion implements Serializable {
         k = 0;
         listVigenciasAficiones = null;
         guardado = true;
+        getListVigenciasAficiones();
+        if (listVigenciasAficiones != null) {
+            infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
         context.update("form:datosVigenciasAficiones");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     //MOSTRAR DATOS CELDA
@@ -520,7 +572,7 @@ public class ControlVigenciaAficion implements Serializable {
      * Metodo que se encarga de agregar un nueva VigenciaReformaLaboral
      */
     public void agregarNuevaVigenciaAficion() {
-        if (nuevaVigenciaAficion.getFechainicial() != null && nuevaVigenciaAficion.getAficion() != null ) {
+        if (nuevaVigenciaAficion.getFechainicial() != null && nuevaVigenciaAficion.getAficion() != null) {
             if (validarFechasRegistro(1) == true) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
@@ -555,12 +607,16 @@ public class ControlVigenciaAficion implements Serializable {
                 listVigenciasAficiones.add(nuevaVigenciaAficion);
                 nuevaVigenciaAficion = new VigenciasAficiones();
                 nuevaVigenciaAficion.setAficion(new Aficiones());
+
+                infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();
+
                 RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:informacionRegistro");
                 context.update("form:datosVigenciasAficiones");
                 context.execute("NuevoRegistroVigencias.hide()");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -644,14 +700,16 @@ public class ControlVigenciaAficion implements Serializable {
                 }
                 listVigenciasAficiones.add(duplicarVigenciaAficion);
                 listVigenciaAficionCrear.add(duplicarVigenciaAficion);
+                infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();
                 RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:informacionRegistro");
                 context.update("form:datosVigenciasAficiones");
                 context.execute("DuplicarRegistroVigencias.hide()");
                 index = -1;
                 secRegistro = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
@@ -699,7 +757,6 @@ public class ControlVigenciaAficion implements Serializable {
      * Metodo que borra las vigencias seleccionadas
      */
     public void borrarVigenciaAficion() {
-
         if (index >= 0) {
             if (tipoLista == 0) {
                 if (!listVigenciaAficionModificar.isEmpty() && listVigenciaAficionModificar.contains(listVigenciasAficiones.get(index))) {
@@ -730,14 +787,21 @@ public class ControlVigenciaAficion implements Serializable {
                 filtrarListVigenciasAficiones.remove(index);
             }
 
+            getListVigenciasAficiones();
+            if (listVigenciasAficiones != null) {
+                infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             context.update("form:datosVigenciasAficiones");
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -822,6 +886,7 @@ public class ControlVigenciaAficion implements Serializable {
         k = 0;
         listVigenciasAficiones = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
     }
     //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
@@ -843,6 +908,7 @@ public class ControlVigenciaAficion implements Serializable {
         } else if (LND == 2) {
             tipoActualizacion = 2;
         }
+        getInfoRegistroAficion();
         context.update("form:AficionesDialogo");
         context.execute("AficionesDialogo.show()");
     }
@@ -853,6 +919,7 @@ public class ControlVigenciaAficion implements Serializable {
      * Metodo que actualiza la reforma laboral seleccionada
      */
     public void actualizarAficion() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listVigenciasAficiones.get(index).setAficion(aficionSeleccionada);
@@ -875,18 +942,15 @@ public class ControlVigenciaAficion implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosVigenciasAficiones");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaAficion.setAficion(aficionSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVigencias");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaAficion.setAficion(aficionSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVigencias");
         }
         filtrarListAficiones = null;
@@ -895,6 +959,13 @@ public class ControlVigenciaAficion implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+
+        context.update("form:AficionesDialogo");
+        context.update("form:lovAficiones");
+        context.update("form:aceptarA");
+        context.reset("form:lovAficiones:globalFilter");
+        context.execute("AficionesDialogo.hide()");
+
     }
 
     /**
@@ -919,6 +990,7 @@ public class ControlVigenciaAficion implements Serializable {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             if (cualCelda == 2) {
+                getInfoRegistroAficion();
                 context.update("form:AficionesDialogo");
                 context.execute("AficionesDialogo.show()");
                 tipoActualizacion = 0;
@@ -972,6 +1044,9 @@ public class ControlVigenciaAficion implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        infoRegistro = "Cantidad de registros : " + filtrarListVigenciasAficiones.size();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -1011,12 +1086,12 @@ public class ControlVigenciaAficion implements Serializable {
     public List<VigenciasAficiones> getListVigenciasAficiones() {
         try {
             if (listVigenciasAficiones == null) {
-                listVigenciasAficiones = new ArrayList<VigenciasAficiones>();
-                listVigenciasAficiones = administrarVigenciaAficion.listVigenciasAficionesPersona(empleado.getPersona().getSecuencia());
-                return listVigenciasAficiones;
-            } else {
-                return listVigenciasAficiones;
+                if (empleado.getPersona().getSecuencia() != null) {
+                    listVigenciasAficiones = administrarVigenciaAficion.listVigenciasAficionesPersona(empleado.getPersona().getSecuencia());
+                }
             }
+            return listVigenciasAficiones;
+
         } catch (Exception e) {
             System.out.println("Error...!! getListVigenciasAficiones : " + e.toString());
             return null;
@@ -1048,10 +1123,7 @@ public class ControlVigenciaAficion implements Serializable {
     }
 
     public List<Aficiones> getListAficiones() {
-        if (listAficiones == null) {
-            listAficiones = new ArrayList<Aficiones>();
-            listAficiones = administrarVigenciaAficion.listAficiones();
-        }
+        listAficiones = administrarVigenciaAficion.listAficiones();
         return listAficiones;
     }
 
@@ -1110,4 +1182,50 @@ public class ControlVigenciaAficion implements Serializable {
     public Empleados getEmpleado() {
         return empleado;
     }
+
+    public String getInfoRegistroAficion() {
+        getListAficiones();
+        if (listAficiones != null) {
+            infoRegistroAficion = "Cantidad de registros : " + listAficiones.size();
+        } else {
+            infoRegistroAficion = "Cantidad de registros : 0";
+        }
+        return infoRegistroAficion;
+    }
+
+    public void setInfoRegistroAficion(String infoRegistroAficion) {
+        this.infoRegistroAficion = infoRegistroAficion;
+    }
+
+    public VigenciasAficiones getVigenciaTablaSeleccionada() {
+        getListVigenciasAficiones();
+        if (listVigenciasAficiones != null) {
+            int tam = listVigenciasAficiones.size();
+            if (tam > 0) {
+                vigenciaTablaSeleccionada = listVigenciasAficiones.get(0);
+            }
+        }
+        return vigenciaTablaSeleccionada;
+    }
+
+    public void setVigenciaTablaSeleccionada(VigenciasAficiones vigenciaTablaSeleccionada) {
+        this.vigenciaTablaSeleccionada = vigenciaTablaSeleccionada;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }
