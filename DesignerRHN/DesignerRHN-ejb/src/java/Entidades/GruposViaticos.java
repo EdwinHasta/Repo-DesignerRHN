@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "GruposViaticos.findAll", query = "SELECT g FROM GruposViaticos g")})
 public class GruposViaticos implements Serializable {
+
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
@@ -71,7 +72,7 @@ public class GruposViaticos implements Serializable {
     }
 
     public String getDescripcion() {
-    return descripcion;
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {

@@ -36,7 +36,7 @@ public class PersistenciaTSGruposTiposEntidades implements PersistenciaTSGruposT
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(tSGruposTiposEntidades);
+            em.persist(tSGruposTiposEntidades);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTSGruposTiposEntidades.crear: " + e);

@@ -35,7 +35,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(competenciascargos);
+            em.persist(competenciascargos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaCompetenciasCargos.crear: " + e);
@@ -51,7 +51,7 @@ public class PersistenciaCompetenciasCargos implements PersistenciaCompetenciasC
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(competenciascargos);
+            em.persist(competenciascargos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaCompetenciasCargos.editar: " + e);

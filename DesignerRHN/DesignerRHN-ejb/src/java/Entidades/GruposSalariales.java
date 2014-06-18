@@ -48,7 +48,7 @@ public class GruposSalariales implements Serializable {
     private Short codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 30)
+    @Size(max = 30)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Column(name = "SALARIO")
@@ -88,9 +88,6 @@ public class GruposSalariales implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 

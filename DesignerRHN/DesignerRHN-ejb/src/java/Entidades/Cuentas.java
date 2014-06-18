@@ -1,5 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package Entidades;
@@ -9,7 +10,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -27,35 +27,37 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Administrator
+ * @author Administrador
  */
 @Entity
 @Table(name = "CUENTAS")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c")})
+    @NamedQuery(name = "Cuentas.findAll", query = "SELECT c FROM Cuentas c"),
+    @NamedQuery(name = "Cuentas.findBySecuencia", query = "SELECT c FROM Cuentas c WHERE c.secuencia = :secuencia"),
+    @NamedQuery(name = "Cuentas.findByCodigo", query = "SELECT c FROM Cuentas c WHERE c.codigo = :codigo"),
+    @NamedQuery(name = "Cuentas.findByDescripcion", query = "SELECT c FROM Cuentas c WHERE c.descripcion = :descripcion"),
+    @NamedQuery(name = "Cuentas.findByManejanit", query = "SELECT c FROM Cuentas c WHERE c.manejanit = :manejanit"),
+    @NamedQuery(name = "Cuentas.findByProrrateo", query = "SELECT c FROM Cuentas c WHERE c.prorrateo = :prorrateo"),
+    @NamedQuery(name = "Cuentas.findByManejanitempleado", query = "SELECT c FROM Cuentas c WHERE c.manejanitempleado = :manejanitempleado"),
+    @NamedQuery(name = "Cuentas.findByCentrocostoc", query = "SELECT c FROM Cuentas c WHERE c.centrocostoc = :centrocostoc"),
+    @NamedQuery(name = "Cuentas.findByCentrocostog", query = "SELECT c FROM Cuentas c WHERE c.centrocostog = :centrocostog"),
+    @NamedQuery(name = "Cuentas.findByTerceroasociado", query = "SELECT c FROM Cuentas c WHERE c.terceroasociado = :terceroasociado"),
+    @NamedQuery(name = "Cuentas.findByTerceroalternativo", query = "SELECT c FROM Cuentas c WHERE c.terceroalternativo = :terceroalternativo"),
+    @NamedQuery(name = "Cuentas.findByNaturaleza", query = "SELECT c FROM Cuentas c WHERE c.naturaleza = :naturaleza"),
+    @NamedQuery(name = "Cuentas.findByTipo", query = "SELECT c FROM Cuentas c WHERE c.tipo = :tipo"),
+    @NamedQuery(name = "Cuentas.findByCambianaturaleza", query = "SELECT c FROM Cuentas c WHERE c.cambianaturaleza = :cambianaturaleza"),
+    @NamedQuery(name = "Cuentas.findByManejacentrocosto", query = "SELECT c FROM Cuentas c WHERE c.manejacentrocosto = :manejacentrocosto"),
+    @NamedQuery(name = "Cuentas.findByIncluyecentrocostocodigocuenta", query = "SELECT c FROM Cuentas c WHERE c.incluyecentrocostocodigocuenta = :incluyecentrocostocodigocuenta"),
+    @NamedQuery(name = "Cuentas.findByCodigoalternativo", query = "SELECT c FROM Cuentas c WHERE c.codigoalternativo = :codigoalternativo"),
+    @NamedQuery(name = "Cuentas.findByConsolidanitempresa", query = "SELECT c FROM Cuentas c WHERE c.consolidanitempresa = :consolidanitempresa"),
+    @NamedQuery(name = "Cuentas.findByIncluyeshortnamesapbo", query = "SELECT c FROM Cuentas c WHERE c.incluyeshortnamesapbo = :incluyeshortnamesapbo"),
+    @NamedQuery(name = "Cuentas.findByIdentificaretencion", query = "SELECT c FROM Cuentas c WHERE c.identificaretencion = :identificaretencion"),
+    @NamedQuery(name = "Cuentas.findByCuentaasociadasap", query = "SELECT c FROM Cuentas c WHERE c.cuentaasociadasap = :cuentaasociadasap"),
+    @NamedQuery(name = "Cuentas.findByCodigoespecial", query = "SELECT c FROM Cuentas c WHERE c.codigoespecial = :codigoespecial"),
+    @NamedQuery(name = "Cuentas.findByManejasubcuenta", query = "SELECT c FROM Cuentas c WHERE c.manejasubcuenta = :manejasubcuenta")})
 public class Cuentas implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
-    private Collection<VigenciasCuentas> vigenciasCuentasCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
-    private Collection<VigenciasCuentas> vigenciasCuentasCollection1;
-
-    @OneToMany(mappedBy = "cuentaconsolidacion")
-    private Collection<GruposProvisiones> gruposProvisionesCollection;
-    @Size(max = 1)
-    @Column(name = "MANEJASUBCUENTA")
-    private String manejasubcuenta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentad")
-    private Collection<SolucionesNodos> solucionesnodosCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cuentac")
-    private Collection<SolucionesNodos> solucionesnodosCollection1;
-    @OneToMany(mappedBy = "cuentad")
-    private Collection<Novedades> novedadesCollection;
-    @OneToMany(mappedBy = "cuentac")
-    private Collection<Novedades> novedadesCollection1;
-    @OneToMany(mappedBy = "cuentaneto")
-    private Collection<Procesos> procesosCollection;
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -65,12 +67,12 @@ public class Cuentas implements Serializable {
     private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "CODIGO")
     private String codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 1)
@@ -127,6 +129,11 @@ public class Cuentas implements Serializable {
     @Size(max = 20)
     @Column(name = "CODIGOESPECIAL")
     private String codigoespecial;
+    @Size(max = 1)
+    @Column(name = "MANEJASUBCUENTA")
+    private String manejasubcuenta;
+    @OneToMany(mappedBy = "cuenta")
+    private Collection<Rubrospresupuestales> rubrospresupuestalesCollection;
     @JoinColumn(name = "RUBROPRESUPUESTAL", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Rubrospresupuestales rubropresupuestal;
@@ -138,8 +145,6 @@ public class Cuentas implements Serializable {
     @JoinColumn(name = "CONTRACUENTATESORERIA", referencedColumnName = "SECUENCIA")
     @ManyToOne
     private Cuentas contracuentatesoreria;
-    @OneToMany(mappedBy = "cuenta")
-    private Collection<Rubrospresupuestales> rubrospresupuestalesCollection;
     @Transient
     private boolean checkManejaNit;
     @Transient
@@ -177,9 +182,6 @@ public class Cuentas implements Serializable {
     }
 
     public String getCodigo() {
-        if (codigo == null) {
-            codigo = " ";
-        }
         return codigo;
     }
 
@@ -188,9 +190,6 @@ public class Cuentas implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
         return descripcion;
     }
 
@@ -360,6 +359,26 @@ public class Cuentas implements Serializable {
         this.codigoespecial = codigoespecial;
     }
 
+    public String getManejasubcuenta() {
+        if (manejasubcuenta == null) {
+            manejasubcuenta = "N";
+        }
+        return manejasubcuenta;
+    }
+
+    public void setManejasubcuenta(String manejasubcuenta) {
+        this.manejasubcuenta = manejasubcuenta;
+    }
+
+    @XmlTransient
+    public Collection<Rubrospresupuestales> getRubrospresupuestalesCollection() {
+        return rubrospresupuestalesCollection;
+    }
+
+    public void setRubrospresupuestalesCollection(Collection<Rubrospresupuestales> rubrospresupuestalesCollection) {
+        this.rubrospresupuestalesCollection = rubrospresupuestalesCollection;
+    }
+
     public Rubrospresupuestales getRubropresupuestal() {
         return rubropresupuestal;
     }
@@ -374,122 +393,6 @@ public class Cuentas implements Serializable {
 
     public void setEmpresa(Empresas empresa) {
         this.empresa = empresa;
-    }
-
-    @XmlTransient
-    public Collection<Cuentas> getCuentasCollection() {
-        return cuentasCollection;
-    }
-
-    public void setCuentasCollection(Collection<Cuentas> cuentasCollection) {
-        this.cuentasCollection = cuentasCollection;
-    }
-
-    public Cuentas getContracuentatesoreria() {
-        return contracuentatesoreria;
-    }
-
-    public void setContracuentatesoreria(Cuentas contracuentatesoreria) {
-        this.contracuentatesoreria = contracuentatesoreria;
-    }
-
-    @XmlTransient
-    public Collection<Rubrospresupuestales> getRubrospresupuestalesCollection() {
-        return rubrospresupuestalesCollection;
-    }
-
-    public void setRubrospresupuestalesCollection(Collection<Rubrospresupuestales> rubrospresupuestalesCollection) {
-        this.rubrospresupuestalesCollection = rubrospresupuestalesCollection;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (secuencia != null ? secuencia.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Cuentas)) {
-            return false;
-        }
-        Cuentas other = (Cuentas) object;
-        if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "Entidades.Cuentas[ secuencia=" + secuencia + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Procesos> getProcesosCollection() {
-        return procesosCollection;
-    }
-
-    public void setProcesosCollection(Collection<Procesos> procesosCollection) {
-        this.procesosCollection = procesosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection() {
-        return solucionesnodosCollection;
-    }
-
-    public void setSolucionesnodosCollection(Collection<SolucionesNodos> solucionesnodosCollection) {
-        this.solucionesnodosCollection = solucionesnodosCollection;
-    }
-
-    @XmlTransient
-    public Collection<SolucionesNodos> getSolucionesnodosCollection1() {
-        return solucionesnodosCollection1;
-    }
-
-    public void setSolucionesnodosCollection1(Collection<SolucionesNodos> solucionesnodosCollection1) {
-        this.solucionesnodosCollection1 = solucionesnodosCollection1;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection() {
-        return novedadesCollection;
-    }
-
-    public void setNovedadesCollection(Collection<Novedades> novedadesCollection) {
-        this.novedadesCollection = novedadesCollection;
-    }
-
-    @XmlTransient
-    public Collection<Novedades> getNovedadesCollection1() {
-        return novedadesCollection1;
-    }
-
-    public void setNovedadesCollection1(Collection<Novedades> novedadesCollection1) {
-        this.novedadesCollection1 = novedadesCollection1;
-    }
-
-    public String getManejasubcuenta() {
-        if (manejasubcuenta == null) {
-            manejasubcuenta = "N";
-        }
-        return manejasubcuenta;
-    }
-
-    public void setManejasubcuenta(String manejasubcuenta) {
-        this.manejasubcuenta = manejasubcuenta;
-    }
-
-    @XmlTransient
-    public Collection<GruposProvisiones> getGruposProvisionesCollection() {
-        return gruposProvisionesCollection;
-    }
-
-    public void setGruposProvisionesCollection(Collection<GruposProvisiones> gruposProvisionesCollection) {
-        this.gruposProvisionesCollection = gruposProvisionesCollection;
     }
 
     public boolean isCheckManejaNit() {
@@ -622,9 +525,10 @@ public class Cuentas implements Serializable {
         getManejasubcuenta();
         if (manejasubcuenta == null || manejasubcuenta.equalsIgnoreCase("N")) {
             checkSubCuenta = false;
-        }
-        if (manejasubcuenta.equalsIgnoreCase("S")) {
-            checkSubCuenta = true;
+        } else {
+            if (manejasubcuenta.equalsIgnoreCase("S")) {
+                checkSubCuenta = true;
+            }
         }
         return checkSubCuenta;
     }
@@ -640,20 +544,45 @@ public class Cuentas implements Serializable {
     }
 
     @XmlTransient
-    public Collection<VigenciasCuentas> getVigenciasCuentasCollection() {
-        return vigenciasCuentasCollection;
+    public Collection<Cuentas> getCuentasCollection() {
+        return cuentasCollection;
     }
 
-    public void setVigenciasCuentasCollection(Collection<VigenciasCuentas> vigenciasCuentasCollection) {
-        this.vigenciasCuentasCollection = vigenciasCuentasCollection;
+    public void setCuentasCollection(Collection<Cuentas> cuentasCollection) {
+        this.cuentasCollection = cuentasCollection;
     }
 
-    @XmlTransient
-    public Collection<VigenciasCuentas> getVigenciasCuentasCollection1() {
-        return vigenciasCuentasCollection1;
+    public Cuentas getContracuentatesoreria() {
+        return contracuentatesoreria;
     }
 
-    public void setVigenciasCuentasCollection1(Collection<VigenciasCuentas> vigenciasCuentasCollection1) {
-        this.vigenciasCuentasCollection1 = vigenciasCuentasCollection1;
+    public void setContracuentatesoreria(Cuentas contracuentatesoreria) {
+        this.contracuentatesoreria = contracuentatesoreria;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (secuencia != null ? secuencia.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Cuentas)) {
+            return false;
+        }
+        Cuentas other = (Cuentas) object;
+        if ((this.secuencia == null && other.secuencia != null) || (this.secuencia != null && !this.secuencia.equals(other.secuencia))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Entidades.Cuentas[ secuencia=" + secuencia + " ]";
+    }
+
 }

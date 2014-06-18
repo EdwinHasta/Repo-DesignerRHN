@@ -45,14 +45,14 @@ public class TiposAsociaciones implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "SECUENCIA")
-    private BigDecimal secuencia;
+    private BigDecimal secuencia; 
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
     private BigInteger codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @JoinColumn(name = "EMPRESA", referencedColumnName = "SECUENCIA")
@@ -89,9 +89,6 @@ public class TiposAsociaciones implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 

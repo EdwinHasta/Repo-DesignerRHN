@@ -42,7 +42,7 @@ public class TSFormulasConceptos implements Serializable {
     private BigInteger secuencia;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "ORIGEN")
     private String origen;
     @JoinColumn(name = "TIPOSUELDO", referencedColumnName = "SECUENCIA")

@@ -34,7 +34,7 @@ public class PersistenciaReformasLaborales implements PersistenciaReformasLabora
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(reformaLaboral);
+            em.persist(reformaLaboral);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaReformasLaborales.crear: " + e);

@@ -54,7 +54,7 @@ public class Asociaciones implements Serializable {
     private BigInteger codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 200)
+    @Size(max = 200)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     
@@ -90,9 +90,6 @@ public class Asociaciones implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 

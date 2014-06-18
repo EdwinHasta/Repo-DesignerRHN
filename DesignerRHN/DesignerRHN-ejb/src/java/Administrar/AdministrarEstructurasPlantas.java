@@ -88,7 +88,6 @@ public class AdministrarEstructurasPlantas implements AdministrarEstructurasPlan
     @Override
     public List<Organigramas> listaOrganigramas() {
         try {
-            System.out.println("lista org: " + em);
             List<Organigramas> lista = persistenciaOrganigramas.buscarOrganigramas(em);
             return lista;
         } catch (Exception e) {

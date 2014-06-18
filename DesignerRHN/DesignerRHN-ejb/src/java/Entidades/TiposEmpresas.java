@@ -64,9 +64,6 @@ public class TiposEmpresas implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 

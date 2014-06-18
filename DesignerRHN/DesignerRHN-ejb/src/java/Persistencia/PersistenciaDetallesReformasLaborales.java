@@ -35,7 +35,7 @@ public class PersistenciaDetallesReformasLaborales implements PersistenciaDetall
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(detallesReformasLaborales);
+            em.persist(detallesReformasLaborales);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaDetallesReformasLaborales.crear: " + e);

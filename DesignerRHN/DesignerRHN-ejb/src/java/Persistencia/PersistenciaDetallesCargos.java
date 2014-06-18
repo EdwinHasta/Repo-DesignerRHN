@@ -35,7 +35,7 @@ public class PersistenciaDetallesCargos implements PersistenciaDetallesCargosInt
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(detallesCargos);
+            em.persist(detallesCargos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);
