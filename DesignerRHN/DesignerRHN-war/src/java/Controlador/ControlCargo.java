@@ -46,7 +46,7 @@ public class ControlCargo implements Serializable {
     AdministrarCargosInterface administrarCargos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //
     private List<Cargos> listaCargos;
     private List<Cargos> filtrarListaCargos;
@@ -164,8 +164,19 @@ public class ControlCargo implements Serializable {
     private List<Cargos> filtrarLovCargos;
     private Cargos cargoSeleccionado;
     private String redirigirPantalla;
+    //
+    private Cargos cargoTablaSeleccionado;
+    private SueldosMercados sueldoMercadoTablaSeleccionado;
+    private Competenciascargos competenciaCargoTablaSeleccionado;
+    private TiposDetalles tipoDetalleTablaSeleccionado;
+    //
+    private String infoRegistroCargo, infoRegistroGrupoSalarial, infoRegistroGrupoViatico, infoRegistroProcesoProductivo, infoRegistroTipoEmpresa, infoRegistroEval, infoRegistroEnfoque, infoRegistroEmpresa;
 
     public ControlCargo() {
+        cargoTablaSeleccionado = new Cargos();
+        sueldoMercadoTablaSeleccionado = new SueldosMercados();
+        competenciaCargoTablaSeleccionado = new Competenciascargos();
+        tipoDetalleTablaSeleccionado = new TiposDetalles();
         lovCargos = null;
         cargoSeleccionado = new Cargos();
         activoDetalleCargo = true;
@@ -181,10 +192,10 @@ public class ControlCargo implements Serializable {
         activoTipoDetalle = true;
         paginaAnterior = "";
         //altos tablas
-        altoTablaCargo = "110";
-        altoTablaSueldoMercado = "58";
-        altoTablaCompetencia = "58";
-        altoTablaTipoDetalle = "58";
+        altoTablaCargo = "125";
+        altoTablaSueldoMercado = "68";
+        altoTablaCompetencia = "68";
+        altoTablaTipoDetalle = "68";
         //Permitir index
         permitirIndexSueldoMercado = true;
         permitirIndexTipoDetalle = true;
@@ -287,7 +298,7 @@ public class ControlCargo implements Serializable {
         banderaTipoDetalle = 0;
         banderaCompetencia = 0;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -296,7 +307,7 @@ public class ControlCargo implements Serializable {
             administrarCargos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -317,13 +328,32 @@ public class ControlCargo implements Serializable {
             getListaCargos();
             int tam2 = listaCargos.size();
             if (tam2 > 0) {
+                cargoTablaSeleccionado = listaCargos.get(0);
                 listaSueldosMercados = null;
                 getListaSueldosMercados();
+                if (listaSueldosMercados != null) {
+                    int tamSueldo = listaSueldosMercados.size();
+                    if (tamSueldo > 0) {
+                        sueldoMercadoTablaSeleccionado = listaSueldosMercados.get(0);
+                    }
+                }
                 listaCompetenciasCargos = null;
                 getListaCompetenciasCargos();
+                if (listaCompetenciasCargos != null) {
+                    int tanCompe = listaCompetenciasCargos.size();
+                    if (tanCompe > 0) {
+                        competenciaCargoTablaSeleccionado = listaCompetenciasCargos.get(0);
+                    }
+                }
             }
             listaTiposDetalles = null;
             getListaTiposDetalles();
+            if (listaTiposDetalles != null) {
+                int tamTipo = listaTiposDetalles.size();
+                if (tamTipo > 0) {
+                    tipoDetalleTablaSeleccionado = listaTiposDetalles.get(0);
+                }
+            }
         }
     }
 
@@ -337,31 +367,49 @@ public class ControlCargo implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListaCargos.get(index);
             }
-            if (aux.getCodigo() == null || aux.getNombre().isEmpty()) {
+            if (aux.getCodigo() == null) {
                 retorno = false;
-            }
-            if (aux.getCodigo() != null) {
+            } else {
                 if (aux.getCodigo() <= 0) {
+                    retorno = false;
+                }
+            }
+            if (aux.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (aux.getNombre().isEmpty()) {
                     retorno = false;
                 }
             }
         }
         if (i == 1) {
-            if (nuevoCargo.getCodigo() == null || nuevoCargo.getNombre().isEmpty()) {
+            if (nuevoCargo.getCodigo() == null) {
                 retorno = false;
-            }
-            if (nuevoCargo.getCodigo() != null) {
+            } else {
                 if (nuevoCargo.getCodigo() <= 0) {
+                    retorno = false;
+                }
+            }
+            if (nuevoCargo.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (nuevoCargo.getNombre().isEmpty()) {
                     retorno = false;
                 }
             }
         }
         if (i == 2) {
-            if (duplicarCargo.getCodigo() == null || duplicarCargo.getNombre().isEmpty()) {
+            if (duplicarCargo.getCodigo() == null) {
                 retorno = false;
-            }
-            if (duplicarCargo.getCodigo() != null) {
+            } else {
                 if (duplicarCargo.getCodigo() <= 0) {
+                    retorno = false;
+                }
+            }
+            if (duplicarCargo.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (duplicarCargo.getNombre().isEmpty()) {
                     retorno = false;
                 }
             }
@@ -394,31 +442,60 @@ public class ControlCargo implements Serializable {
             if (tipoListaTipoDetalle == 1) {
                 aux = filtrarListaTiposDetalles.get(indexTipoDetalle);
             }
-            if (aux.getCodigo() == null || aux.getDescripcion().isEmpty() || aux.getEnfoque().getSecuencia() == null) {
+            if (aux.getEnfoque().getSecuencia() == null) {
                 retorno = false;
             }
-            if (aux.getCodigo() != null) {
+            if (aux.getCodigo() == null) {
+                retorno = false;
+            } else {
                 if (aux.getCodigo().intValue() <= 0) {
+                    retorno = false;
+                }
+            }
+            if (aux.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (aux.getDescripcion().isEmpty()) {
                     retorno = false;
                 }
             }
         }
         if (i == 1) {
-            if (nuevoTipoDetalle.getCodigo() == null || nuevoTipoDetalle.getDescripcion().isEmpty() || nuevoTipoDetalle.getEnfoque().getSecuencia() == null) {
+
+            if (nuevoTipoDetalle.getEnfoque().getSecuencia() == null) {
                 retorno = false;
             }
-            if (nuevoTipoDetalle.getCodigo() != null) {
+            if (nuevoTipoDetalle.getCodigo() == null) {
+                retorno = false;
+            } else {
                 if (nuevoTipoDetalle.getCodigo().intValue() <= 0) {
+                    retorno = false;
+                }
+            }
+            if (nuevoTipoDetalle.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (nuevoTipoDetalle.getDescripcion().isEmpty()) {
                     retorno = false;
                 }
             }
         }
         if (i == 2) {
-            if (duplicarTipoDetalle.getCodigo() == null || duplicarTipoDetalle.getDescripcion().isEmpty() || duplicarTipoDetalle.getEnfoque().getSecuencia() == null) {
+
+            if (duplicarTipoDetalle.getEnfoque().getSecuencia() == null) {
                 retorno = false;
             }
-            if (duplicarTipoDetalle.getCodigo() != null) {
+            if (duplicarTipoDetalle.getCodigo() == null) {
+                retorno = false;
+            } else {
                 if (duplicarTipoDetalle.getCodigo().intValue() <= 0) {
+                    retorno = false;
+                }
+            }
+            if (duplicarTipoDetalle.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (duplicarTipoDetalle.getDescripcion().isEmpty()) {
                     retorno = false;
                 }
             }
@@ -521,91 +598,127 @@ public class ControlCargo implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("GRUPOSALARIAL")) {
-            if (tipoLista == 0) {
-                listaCargos.get(indice).getGruposalarial().setDescripcion(grupoSalarial);
-            } else {
-                filtrarListaCargos.get(indice).getGruposalarial().setDescripcion(grupoSalarial);
-            }
-            for (int i = 0; i < lovGruposSalariales.size(); i++) {
-                if (lovGruposSalariales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaCargos.get(indice).setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
+                    listaCargos.get(indice).getGruposalarial().setDescripcion(grupoSalarial);
                 } else {
-                    filtrarListaCargos.get(indice).setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
+                    filtrarListaCargos.get(indice).getGruposalarial().setDescripcion(grupoSalarial);
                 }
+                for (int i = 0; i < lovGruposSalariales.size(); i++) {
+                    if (lovGruposSalariales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaCargos.get(indice).setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaCargos.get(indice).setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
+                    }
+                    lovGruposSalariales = null;
+                    getLovGruposSalariales();
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndexCargo = false;
+                    context.update("form:GrupoSalarialDialogo");
+                    context.execute("GrupoSalarialDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
                 lovGruposSalariales = null;
                 getLovGruposSalariales();
+                if (tipoLista == 0) {
+                    listaCargos.get(indice).setGruposalarial(new GruposSalariales());
+                } else {
+                    filtrarListaCargos.get(indice).setGruposalarial(new GruposSalariales());
+                }
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
-            } else {
-                permitirIndexCargo = false;
-                context.update("form:GrupoSalarialDialogo");
-                context.execute("GrupoSalarialDialogo.show()");
-                tipoActualizacion = 0;
             }
         }
 
         if (confirmarCambio.equalsIgnoreCase("GRUPOVIATICO")) {
-            if (tipoLista == 0) {
-                listaCargos.get(indice).getGrupoviatico().setDescripcion(grupoViatico);
-            } else {
-                filtrarListaCargos.get(indice).getGrupoviatico().setDescripcion(grupoViatico);
-            }
-            for (int i = 0; i < lovGruposViaticos.size(); i++) {
-                if (lovGruposViaticos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaCargos.get(indice).setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
+                    listaCargos.get(indice).getGrupoviatico().setDescripcion(grupoViatico);
                 } else {
-                    filtrarListaCargos.get(indice).setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
+                    filtrarListaCargos.get(indice).getGrupoviatico().setDescripcion(grupoViatico);
+                }
+                for (int i = 0; i < lovGruposViaticos.size(); i++) {
+                    if (lovGruposViaticos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaCargos.get(indice).setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaCargos.get(indice).setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
+                    }
+                    lovGruposViaticos = null;
+                    getLovGruposViaticos();
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndexCargo = false;
+                    context.update("form:GrupoViaticoDialogo");
+                    context.execute("GrupoViaticoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                if (tipoLista == 0) {
+                    listaCargos.get(indice).setGrupoviatico(new GruposViaticos());
+                } else {
+                    filtrarListaCargos.get(indice).setGrupoviatico(new GruposViaticos());
                 }
                 lovGruposViaticos = null;
                 getLovGruposViaticos();
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
-            } else {
-                permitirIndexCargo = false;
-                context.update("form:GrupoViaticoDialogo");
-                context.execute("GrupoViaticoDialogo.show()");
-                tipoActualizacion = 0;
             }
         }
         if (confirmarCambio.equalsIgnoreCase("PROCESOPRODUCTIVO")) {
-            if (tipoLista == 0) {
-                listaCargos.get(indice).getProcesoproductivo().setDescripcion(procesoProductivo);
-            } else {
-                filtrarListaCargos.get(indice).getProcesoproductivo().setDescripcion(procesoProductivo);
-            }
-            for (int i = 0; i < lovProcesosProductivos.size(); i++) {
-                if (lovProcesosProductivos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaCargos.get(indice).setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
+                    listaCargos.get(indice).getProcesoproductivo().setDescripcion(procesoProductivo);
                 } else {
-                    filtrarListaCargos.get(indice).setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
+                    filtrarListaCargos.get(indice).getProcesoproductivo().setDescripcion(procesoProductivo);
+                }
+                for (int i = 0; i < lovProcesosProductivos.size(); i++) {
+                    if (lovProcesosProductivos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaCargos.get(indice).setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaCargos.get(indice).setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
+                    }
+                    lovProcesosProductivos = null;
+                    getLovProcesosProductivos();
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndexCargo = false;
+                    context.update("form:ProcesoProductivoDialogo");
+                    context.execute("ProcesoProductivoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                if (tipoLista == 0) {
+                    listaCargos.get(indice).setProcesoproductivo(new ProcesosProductivos());
+                } else {
+                    filtrarListaCargos.get(indice).setProcesoproductivo(new ProcesosProductivos());
                 }
                 lovProcesosProductivos = null;
                 getLovProcesosProductivos();
                 cambiosPagina = false;
                 context.update("form:ACEPTAR");
-            } else {
-                permitirIndexCargo = false;
-                context.update("form:ProcesoProductivoDialogo");
-                context.execute("ProcesoProductivoDialogo.show()");
-                tipoActualizacion = 0;
             }
         }
 
@@ -661,7 +774,6 @@ public class ControlCargo implements Serializable {
                 }
                 if (guardadoSueldoMercado == true) {
                     guardadoSueldoMercado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
             }
         }
@@ -1024,7 +1136,7 @@ public class ControlCargo implements Serializable {
                 getListaCompetenciasCargos();
                 context.update("form:datosCompetenciaCargo");
                 if (banderaSueldoMercado == 1) {
-                    altoTablaSueldoMercado = "58";
+                    altoTablaSueldoMercado = "68";
                     sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
                     sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
                     sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -1037,7 +1149,7 @@ public class ControlCargo implements Serializable {
                     tipoListaSueldoMercado = 0;
                 }
                 if (banderaCompetencia == 1) {
-                    altoTablaCompetencia = "58";
+                    altoTablaCompetencia = "68";
                     competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
                     competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -1144,6 +1256,7 @@ public class ControlCargo implements Serializable {
                 }
                 detalleCargo = null;
                 getDetalleCargo();
+                activoDetalleCargo = false;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:legendDetalleCargo");
                 context.update("form:detalleCargo");
@@ -1182,12 +1295,9 @@ public class ControlCargo implements Serializable {
                 guardarCambiosTiposDetalles();
             }
             if (guardadoDetalleCargo == false) {
-                System.out.println("Entro a guardar el dato : " + detalleCargo.getDescripcion());
                 if (borrarDetalleCargo == false) {
-                    System.out.println("Editar");
                     administrarCargos.editarDetalleCargo(detalleCargo);
                 } else {
-                    System.out.println("Borrar");
                     administrarCargos.borrarDetalleCargo(detalleCargo);
                 }
                 guardadoDetalleCargo = true;
@@ -1197,110 +1307,146 @@ public class ControlCargo implements Serializable {
                 context.update("form:legendDetalleCargo");
                 context.update("form:detalleCargo");
             }
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            RequestContext.getCurrentInstance().update("form:growl");
             cambiosPagina = true;
             context.update("form:ACEPTAR");
         }
     }
 
     public void guardarCambiosCargos() {
-
-        if (!listCargosBorrar.isEmpty()) {
-            for (int i = 0; i < listCargosBorrar.size(); i++) {
-                administrarCargos.borrarCargos(listCargosBorrar);
+        try {
+            if (!listCargosBorrar.isEmpty()) {
+                for (int i = 0; i < listCargosBorrar.size(); i++) {
+                    administrarCargos.borrarCargos(listCargosBorrar);
+                }
+                listCargosBorrar.clear();
             }
-            listCargosBorrar.clear();
-        }
-        if (!listCargosCrear.isEmpty()) {
-            for (int i = 0; i < listCargosCrear.size(); i++) {
-                administrarCargos.crearCargos(listCargosCrear);
+            if (!listCargosCrear.isEmpty()) {
+                for (int i = 0; i < listCargosCrear.size(); i++) {
+                    administrarCargos.crearCargos(listCargosCrear);
+                }
+                listCargosCrear.clear();
             }
-            listCargosCrear.clear();
+            if (!listCargosModificar.isEmpty()) {
+                administrarCargos.editarCargos(listCargosModificar);
+                listCargosModificar.clear();
+            }
+            listaCargos = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosCargo");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            index = -1;
+            secRegistro = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Cargos se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosCargos : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Cargos, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listCargosModificar.isEmpty()) {
-            administrarCargos.editarCargos(listCargosModificar);
-            listCargosModificar.clear();
-        }
-        listaCargos = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosCargo");
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        index = -1;
-        secRegistro = null;
 
     }
 
     public void guardarCambiosSueldosMercados() {
-        if (!listSueldosMercadosBorrar.isEmpty()) {
-            administrarCargos.borrarSueldosMercados(listSueldosMercadosBorrar);
-            listSueldosMercadosBorrar.clear();
+        try {
+            if (!listSueldosMercadosBorrar.isEmpty()) {
+                administrarCargos.borrarSueldosMercados(listSueldosMercadosBorrar);
+                listSueldosMercadosBorrar.clear();
+            }
+            if (!listSueldosMercadosCrear.isEmpty()) {
+                administrarCargos.crearSueldosMercados(listSueldosMercadosCrear);
+                listSueldosMercadosCrear.clear();
+            }
+            if (!listSueldosMercadosModificar.isEmpty()) {
+                administrarCargos.editarSueldosMercados(listSueldosMercadosModificar);
+                listSueldosMercadosModificar.clear();
+            }
+            listaSueldosMercados = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosSueldoMercado");
+            guardadoSueldoMercado = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            indexSueldoMercado = -1;
+            secRegistroSueldoMercado = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Sueldos Mercados se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosCargos : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Sueldos Mercados, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listSueldosMercadosCrear.isEmpty()) {
-            administrarCargos.crearSueldosMercados(listSueldosMercadosCrear);
-            listSueldosMercadosCrear.clear();
-        }
-        if (!listSueldosMercadosModificar.isEmpty()) {
-            administrarCargos.editarSueldosMercados(listSueldosMercadosModificar);
-            listSueldosMercadosModificar.clear();
-        }
-        listaSueldosMercados = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosSueldoMercado");
-        guardadoSueldoMercado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        indexSueldoMercado = -1;
-        secRegistroSueldoMercado = null;
     }
 
     public void guardarCambiosCompetenciasCargos() {
-        if (!listCompetenciasCargosBorrar.isEmpty()) {
-            administrarCargos.borrarCompetenciasCargos(listCompetenciasCargosBorrar);
-            listCompetenciasCargosBorrar.clear();
+        try {
+            if (!listCompetenciasCargosBorrar.isEmpty()) {
+                administrarCargos.borrarCompetenciasCargos(listCompetenciasCargosBorrar);
+                listCompetenciasCargosBorrar.clear();
+            }
+            if (!listCompetenciasCargosCrear.isEmpty()) {
+                administrarCargos.crearCompetenciasCargos(listCompetenciasCargosCrear);
+                listCompetenciasCargosCrear.clear();
+            }
+            if (!listCompetenciasCargosModificar.isEmpty()) {
+                administrarCargos.editarCompetenciasCargos(listCompetenciasCargosModificar);
+                listCompetenciasCargosModificar.clear();
+            }
+            listaCompetenciasCargos = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosCompetenciaCargo");
+            guardadoCompetencia = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            indexCompetenciaCargo = -1;
+            secRegistroCompetencia = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Competencias se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosCargos : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Competencias, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listCompetenciasCargosCrear.isEmpty()) {
-            administrarCargos.crearCompetenciasCargos(listCompetenciasCargosCrear);
-            listCompetenciasCargosCrear.clear();
-        }
-        if (!listCompetenciasCargosModificar.isEmpty()) {
-            administrarCargos.editarCompetenciasCargos(listCompetenciasCargosModificar);
-            listCompetenciasCargosModificar.clear();
-        }
-        listaCompetenciasCargos = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosCompetenciaCargo");
-        guardadoCompetencia = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        indexCompetenciaCargo = -1;
-        secRegistroCompetencia = null;
     }
 
     public void guardarCambiosTiposDetalles() {
-        if (!listTiposDetallesBorrar.isEmpty()) {
-            administrarCargos.borrarTiposDetalles(listTiposDetallesBorrar);
-            listTiposDetallesBorrar.clear();
+        try {
+            if (!listTiposDetallesBorrar.isEmpty()) {
+                administrarCargos.borrarTiposDetalles(listTiposDetallesBorrar);
+                listTiposDetallesBorrar.clear();
+            }
+            if (!listTiposDetallesCrear.isEmpty()) {
+                administrarCargos.crearTiposDetalles(listTiposDetallesCrear);
+                listTiposDetallesCrear.clear();
+            }
+            if (!listTiposDetallesModificar.isEmpty()) {
+                administrarCargos.editarTiposDetalles(listTiposDetallesModificar);
+                listTiposDetallesModificar.clear();
+            }
+            listaTiposDetalles = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosTipoDetalle");
+            guardadoTipoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            indexTipoDetalle = -1;
+            secRegistroTipoDetalle = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Propiedades Cargo se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosCargos : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Propiedades Cargo, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listTiposDetallesCrear.isEmpty()) {
-            administrarCargos.crearTiposDetalles(listTiposDetallesCrear);
-            listTiposDetallesCrear.clear();
-        }
-        if (!listTiposDetallesModificar.isEmpty()) {
-            administrarCargos.editarTiposDetalles(listTiposDetallesModificar);
-            listTiposDetallesModificar.clear();
-        }
-        listaTiposDetalles = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosTipoDetalle");
-        guardadoTipoDetalle = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        indexTipoDetalle = -1;
-        secRegistroTipoDetalle = null;
     }
     //CANCELAR MODIFICACIONES
 
@@ -1336,18 +1482,18 @@ public class ControlCargo implements Serializable {
         guardadoDetalleCargo = true;
 
     }
-    
-    public void recibirPaginaEntrante(String pagina){
-        paginaAnterior = pagina;  
-        }
-    
-    public String redirigir(){
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
 
     public void cancelarModificacionCargos() {
         if (bandera == 1) {
-            altoTablaCargo = "110";
+            altoTablaCargo = "125";
             cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
             cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
             cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -1389,7 +1535,7 @@ public class ControlCargo implements Serializable {
 
     public void cancelarModificacionSueldosMercados() {
         if (banderaSueldoMercado == 1) {
-            altoTablaSueldoMercado = "58";
+            altoTablaSueldoMercado = "68";
             sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
             sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
             sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -1416,7 +1562,7 @@ public class ControlCargo implements Serializable {
 
     public void cancelarModificacionCompetenciasCargos() {
         if (banderaCompetencia == 1) {
-            altoTablaCompetencia = "58";
+            altoTablaCompetencia = "68";
             competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
             competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -1439,7 +1585,7 @@ public class ControlCargo implements Serializable {
 
     public void cancelarModificacionTiposDetalles() {
         if (banderaTipoDetalle == 1) {
-            altoTablaTipoDetalle = "58";
+            altoTablaTipoDetalle = "68";
             tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
             tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
             tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
@@ -1682,7 +1828,7 @@ public class ControlCargo implements Serializable {
             tamDes = nuevoCargo.getNombre().length();
             if (tamDes >= 1 && tamDes <= 50) {
                 if (bandera == 1) {
-                    altoTablaCargo = "110";
+                    altoTablaCargo = "125";
                     cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                     cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
                     cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -1752,7 +1898,7 @@ public class ControlCargo implements Serializable {
         boolean respueta = validarCamposNulosSueldosMercados(1);
         if (respueta == true) {
             if (banderaSueldoMercado == 1) {
-                altoTablaSueldoMercado = "58";
+                altoTablaSueldoMercado = "68";
                 sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
                 sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
                 sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -1801,7 +1947,7 @@ public class ControlCargo implements Serializable {
     public void agregarNuevoCompetenciaCargo() {
         if (nuevoCompetenciaCargo.getEvalcompetencia().getSecuencia() != null) {
             if (banderaCompetencia == 1) {
-                altoTablaCompetencia = "58";
+                altoTablaCompetencia = "68";
                 competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
                 competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -1814,11 +1960,10 @@ public class ControlCargo implements Serializable {
             nuevoCompetenciaCargo.setSecuencia(l);
             if (tipoLista == 0) {
                 nuevoCompetenciaCargo.setCargo(listaCargos.get(indexAux));
-            }
-            if (tipoLista == 1) {
+            } else {
                 nuevoCompetenciaCargo.setCargo(filtrarListaCargos.get(indexAux));
             }
-            if (listaCompetenciasCargos.size() == 0) {
+            if (listaCompetenciasCargos == null) {
                 listaCompetenciasCargos = new ArrayList<Competenciascargos>();
             }
             listCompetenciasCargosCrear.add(nuevoCompetenciaCargo);
@@ -1833,7 +1978,6 @@ public class ControlCargo implements Serializable {
             nuevoCompetenciaCargo.setEvalcompetencia(new EvalCompetencias());
             if (guardadoCompetencia == true) {
                 guardadoCompetencia = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
             }
             indexCompetenciaCargo = -1;
             secRegistroCompetencia = null;
@@ -1848,7 +1992,7 @@ public class ControlCargo implements Serializable {
         if (respueta == true) {
             if (nuevoTipoDetalle.getDescripcion().length() >= 1 && nuevoTipoDetalle.getDescripcion().length() <= 40) {
                 if (banderaTipoDetalle == 1) {
-                    altoTablaTipoDetalle = "58";
+                    altoTablaTipoDetalle = "68";
                     tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
                     tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
@@ -2059,7 +2203,7 @@ public class ControlCargo implements Serializable {
             tamDes = nuevoCargo.getNombre().length();
             if (tamDes >= 1 && tamDes <= 50) {
                 if (bandera == 1) {
-                    altoTablaCargo = "110";
+                    altoTablaCargo = "125";
                     cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                     cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
                     cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2122,7 +2266,7 @@ public class ControlCargo implements Serializable {
         boolean respueta = validarCamposNulosSueldosMercados(2);
         if (respueta == true) {
             if (banderaSueldoMercado == 1) {
-                altoTablaSueldoMercado = "58";
+                altoTablaSueldoMercado = "68";
                 sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
                 sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
                 sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -2165,7 +2309,7 @@ public class ControlCargo implements Serializable {
     public void confirmarDuplicarCompetenciaCargo() {
         if (duplicarCompetenciaCargo.getEvalcompetencia().getSecuencia() != null) {
             if (banderaCompetencia == 1) {
-                altoTablaCompetencia = "58";
+                altoTablaCompetencia = "68";
                 competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
                 competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -2205,7 +2349,7 @@ public class ControlCargo implements Serializable {
         if (respueta == true) {
             if (duplicarTipoDetalle.getDescripcion().length() >= 1 && duplicarTipoDetalle.getDescripcion().length() <= 40) {
                 if (banderaTipoDetalle == 1) {
-                    altoTablaTipoDetalle = "58";
+                    altoTablaTipoDetalle = "68";
                     tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
                     tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
@@ -2527,7 +2671,7 @@ public class ControlCargo implements Serializable {
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaCargo = "88";
+                altoTablaCargo = "103";
                 cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                 cargoCodigo.setFilterStyle("width: 25px");
                 cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2543,9 +2687,9 @@ public class ControlCargo implements Serializable {
                 cargoGrupoViatico = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoGrupoViatico");
                 cargoGrupoViatico.setFilterStyle("width: 85px");
                 cargoCargoRotativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCargoRotativo");
-                cargoCargoRotativo.setFilterStyle("width: 13px");
+                cargoCargoRotativo.setFilterStyle("width: 9px");
                 cargoJefe = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoJefe");
-                cargoJefe.setFilterStyle("width: 13px");
+                cargoJefe.setFilterStyle("width: 9px");
                 cargoProcesoProductivo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoProcesoProductivo");
                 cargoProcesoProductivo.setFilterStyle("width: 85px");
                 cargoCodigoAlternativo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigoAlternativo");
@@ -2553,7 +2697,7 @@ public class ControlCargo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosCargo");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaCargo = "110";
+                altoTablaCargo = "125";
                 cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
                 cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
                 cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2584,7 +2728,7 @@ public class ControlCargo implements Serializable {
         }
         if (indexSueldoMercado >= 0) {
             if (banderaSueldoMercado == 0) {
-                altoTablaSueldoMercado = "36";
+                altoTablaSueldoMercado = "46";
                 sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
                 sueldoMercadoTipoEmpresa.setFilterStyle("width: 105px");
                 sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
@@ -2594,7 +2738,7 @@ public class ControlCargo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosSueldoMercado");
                 banderaSueldoMercado = 1;
             } else if (banderaSueldoMercado == 1) {
-                altoTablaSueldoMercado = "58";
+                altoTablaSueldoMercado = "68";
                 sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
                 sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
                 sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -2609,13 +2753,13 @@ public class ControlCargo implements Serializable {
         }
         if (indexCompetenciaCargo >= 0) {
             if (banderaCompetencia == 0) {
-                altoTablaCompetencia = "36";
+                altoTablaCompetencia = "46";
                 competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
                 competenciaCargoDescripcion.setFilterStyle("width: 115px");
                 RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
                 banderaCompetencia = 1;
             } else if (banderaCompetencia == 1) {
-                altoTablaCompetencia = "58";
+                altoTablaCompetencia = "68";
                 competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
                 competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -2626,7 +2770,7 @@ public class ControlCargo implements Serializable {
         }
         if (indexTipoDetalle >= 0) {
             if (banderaTipoDetalle == 0) {
-                altoTablaTipoDetalle = "36";
+                altoTablaTipoDetalle = "46";
 
                 tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
                 tipoDetalleDescripcion.setFilterStyle("width: 65px");
@@ -2637,7 +2781,7 @@ public class ControlCargo implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosTipoDetalle");
                 banderaTipoDetalle = 1;
             } else if (banderaTipoDetalle == 1) {
-                altoTablaTipoDetalle = "58";
+                altoTablaTipoDetalle = "68";
                 tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
                 tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
                 tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
@@ -2658,7 +2802,7 @@ public class ControlCargo implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaCargo = "110";
+            altoTablaCargo = "125";
             cargoCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoCodigo");
             cargoCodigo.setFilterStyle("display: none; visibility: hidden;");
             cargoNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCargo:cargoNombre");
@@ -2687,7 +2831,7 @@ public class ControlCargo implements Serializable {
             tipoLista = 0;
         }
         if (banderaSueldoMercado == 1) {
-            altoTablaSueldoMercado = "58";
+            altoTablaSueldoMercado = "68";
             sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
             sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
             sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -2700,7 +2844,7 @@ public class ControlCargo implements Serializable {
             tipoListaSueldoMercado = 0;
         }
         if (banderaCompetencia == 1) {
-            altoTablaCompetencia = "58";
+            altoTablaCompetencia = "68";
             competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
             competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -2709,7 +2853,7 @@ public class ControlCargo implements Serializable {
             tipoListaCompetencia = 0;
         }
         if (banderaTipoDetalle == 1) {
-            altoTablaTipoDetalle = "58";
+            altoTablaTipoDetalle = "68";
             tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
             tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
             tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
@@ -2920,102 +3064,138 @@ public class ControlCargo implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("GRUPOSALARIAL")) {
-            if (tipoNuevo == 1) {
-                nuevoCargo.getGruposalarial().setDescripcion(grupoSalarial);
-            } else if (tipoNuevo == 2) {
-                duplicarCargo.getGruposalarial().setDescripcion(grupoSalarial);
-            }
-            for (int i = 0; i < lovGruposSalariales.size(); i++) {
-                if (lovGruposSalariales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoCargo.setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoCargoGrupoSalarial");
-                    context.update("formularioDialogos:nuevoCargoSalario");
+                    nuevoCargo.getGruposalarial().setDescripcion(grupoSalarial);
                 } else if (tipoNuevo == 2) {
-                    duplicarCargo.setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarCargoGrupoSalarial");
-                    context.update("formularioDialogos:duplicarCargoSalario");
+                    duplicarCargo.getGruposalarial().setDescripcion(grupoSalarial);
                 }
+                for (int i = 0; i < lovGruposSalariales.size(); i++) {
+                    if (lovGruposSalariales.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoCargo.setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoCargoGrupoSalarial");
+                        context.update("formularioDialogos:nuevoCargoSalario");
+                    } else if (tipoNuevo == 2) {
+                        duplicarCargo.setGruposalarial(lovGruposSalariales.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarCargoGrupoSalarial");
+                        context.update("formularioDialogos:duplicarCargoSalario");
+                    }
+                    lovGruposSalariales = null;
+                    getLovGruposSalariales();
+                } else {
+                    context.update("form:GrupoSalarialDialogo");
+                    context.execute("GrupoSalarialDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoCargoGrupoSalarial");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarCargoGrupoSalarial");
+                    }
+                }
+            } else {
                 lovGruposSalariales = null;
                 getLovGruposSalariales();
-            } else {
-                context.update("form:GrupoSalarialDialogo");
-                context.execute("GrupoSalarialDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevoCargo.setGruposalarial(new GruposSalariales());
                     context.update("formularioDialogos:nuevoCargoGrupoSalarial");
                 } else if (tipoNuevo == 2) {
+                    duplicarCargo.setGruposalarial(new GruposSalariales());
                     context.update("formularioDialogos:duplicarCargoGrupoSalarial");
                 }
             }
         }
         if (confirmarCambio.equalsIgnoreCase("GRUPOVIATICO")) {
-            if (tipoNuevo == 1) {
-                nuevoCargo.getGrupoviatico().setDescripcion(grupoViatico);
-            } else if (tipoNuevo == 2) {
-                duplicarCargo.getGrupoviatico().setDescripcion(grupoViatico);
-            }
-            for (int i = 0; i < lovGruposViaticos.size(); i++) {
-                if (lovGruposViaticos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoCargo.setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoCargoGrupoViatico");
+                    nuevoCargo.getGrupoviatico().setDescripcion(grupoViatico);
                 } else if (tipoNuevo == 2) {
-                    duplicarCargo.setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarCargoGrupoViatico");
+                    duplicarCargo.getGrupoviatico().setDescripcion(grupoViatico);
                 }
-                lovGruposViaticos = null;
-                getLovGruposViaticos();
+                for (int i = 0; i < lovGruposViaticos.size(); i++) {
+                    if (lovGruposViaticos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoCargo.setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoCargoGrupoViatico");
+                    } else if (tipoNuevo == 2) {
+                        duplicarCargo.setGrupoviatico(lovGruposViaticos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarCargoGrupoViatico");
+                    }
+                    lovGruposViaticos = null;
+                    getLovGruposViaticos();
+                } else {
+                    context.update("form:GrupoViaticoDialogo");
+                    context.execute("GrupoViaticoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoCargoGrupoViatico");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarCargoGrupoViatico");
+                    }
+                }
             } else {
-                context.update("form:GrupoViaticoDialogo");
-                context.execute("GrupoViaticoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
+                lovGruposViaticos.clear();
+                getLovGruposViaticos();
                 if (tipoNuevo == 1) {
+                    nuevoCargo.setGrupoviatico(new GruposViaticos());
                     context.update("formularioDialogos:nuevoCargoGrupoViatico");
                 } else if (tipoNuevo == 2) {
+                    duplicarCargo.setGrupoviatico(new GruposViaticos());
                     context.update("formularioDialogos:duplicarCargoGrupoViatico");
                 }
             }
         }
         if (confirmarCambio.equalsIgnoreCase("PROCESOPRODUCTIVO")) {
-            if (tipoNuevo == 1) {
-                nuevoCargo.getProcesoproductivo().setDescripcion(procesoProductivo);
-            } else if (tipoNuevo == 2) {
-                duplicarCargo.getProcesoproductivo().setDescripcion(procesoProductivo);
-            }
-            for (int i = 0; i < lovProcesosProductivos.size(); i++) {
-                if (lovProcesosProductivos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoCargo.setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoCargoProcesoProductivo");
+                    nuevoCargo.getProcesoproductivo().setDescripcion(procesoProductivo);
                 } else if (tipoNuevo == 2) {
-                    duplicarCargo.setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarCargoProcesoProductivo");
+                    duplicarCargo.getProcesoproductivo().setDescripcion(procesoProductivo);
                 }
-                lovProcesosProductivos = null;
-                getLovProcesosProductivos();
+                for (int i = 0; i < lovProcesosProductivos.size(); i++) {
+                    if (lovProcesosProductivos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoCargo.setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoCargoProcesoProductivo");
+                    } else if (tipoNuevo == 2) {
+                        duplicarCargo.setProcesoproductivo(lovProcesosProductivos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarCargoProcesoProductivo");
+                    }
+                    lovProcesosProductivos = null;
+                    getLovProcesosProductivos();
+                } else {
+                    context.update("form:ProcesoProductivoDialogo");
+                    context.execute("ProcesoProductivoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoCargoProcesoProductivo");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarCargoProcesoProductivo");
+                    }
+                }
             } else {
-                context.update("form:ProcesoProductivoDialogo");
-                context.execute("ProcesoProductivoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
+                lovProcesosProductivos.clear();
+                getLovProcesosProductivos();
                 if (tipoNuevo == 1) {
+                    nuevoCargo.setProcesoproductivo(new ProcesosProductivos());
                     context.update("formularioDialogos:nuevoCargoProcesoProductivo");
                 } else if (tipoNuevo == 2) {
+                    duplicarCargo.setProcesoproductivo(new ProcesosProductivos());
                     context.update("formularioDialogos:duplicarCargoProcesoProductivo");
                 }
             }
@@ -3180,7 +3360,7 @@ public class ControlCargo implements Serializable {
             context.update("formularioDialogos:duplicarCargoSalario");
         }
         filtrarLovGruposSalariales = null;
-        grupoSalarialSeleccionado = null;
+        grupoSalarialSeleccionado = new GruposSalariales();
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -3189,6 +3369,7 @@ public class ControlCargo implements Serializable {
         context.update("form:GrupoSalarialDialogo");
         context.update("form:lovGrupoSalarial");
         context.update("form:aceptarGS");
+        context.reset("form:lovGrupoSalarial:globalFilter");
         context.execute("GrupoSalarialDialogo.hide()");
     }
 
@@ -3241,7 +3422,7 @@ public class ControlCargo implements Serializable {
             context.update("formularioDialogos:duplicarCargoGrupoViatico");
         }
         filtrarLovGruposViaticos = null;
-        grupoViaticoSeleccionado = null;
+        grupoViaticoSeleccionado = new GruposViaticos();
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -3250,6 +3431,7 @@ public class ControlCargo implements Serializable {
         context.update("form:GrupoViaticoDialogo");
         context.update("form:lovGrupoViatico");
         context.update("form:aceptarGV");
+        context.reset("form:lovGrupoViatico:globalFilter");
         context.execute("GrupoViaticoDialogo.hide()");
     }
 
@@ -3264,8 +3446,6 @@ public class ControlCargo implements Serializable {
     }
 
     public void actualizarProcesoProductivo() {
-        System.out.println("procesoProductivoSeleccionado : " + procesoProductivoSeleccionado.getDescripcion());
-        System.out.println("tipoActualizacion : " + tipoActualizacion);
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listaCargos.get(index).setProcesoproductivo(procesoProductivoSeleccionado);
@@ -3304,7 +3484,7 @@ public class ControlCargo implements Serializable {
             context.update("formularioDialogos:duplicarCargoProcesoProductivo");
         }
         filtrarLovProcesosProductivos = null;
-        procesoProductivoSeleccionado = null;
+        procesoProductivoSeleccionado = new ProcesosProductivos();
         aceptar = true;
         index = -1;
         secRegistro = null;
@@ -3313,6 +3493,7 @@ public class ControlCargo implements Serializable {
         context.update("form:ProcesoProductivoDialogo");
         context.update("form:lovProcesoProductivo");
         context.update("form:aceptarPP");
+        context.reset("form:lovProcesoProductivo:globalFilter");
         context.execute("ProcesoProductivoDialogo.hide()");
     }
 
@@ -3365,7 +3546,7 @@ public class ControlCargo implements Serializable {
             context.update("formularioDialogos:duplicarSueldoMercadoTipoEmpresa");
         }
         filtrarLovTiposEmpresas = null;
-        tipoEmpresaSeleccionado = null;
+        tipoEmpresaSeleccionado = new TiposEmpresas();
         aceptar = true;
         indexSueldoMercado = -1;
         secRegistroSueldoMercado = null;
@@ -3374,6 +3555,7 @@ public class ControlCargo implements Serializable {
         context.update("form:TipoEmpresaDialogo");
         context.update("form:lovTipoEmpresa");
         context.update("form:aceptarTT");
+        context.reset("form:lovTipoEmpresa:globalFilter");
         context.execute("TipoEmpresaDialogo.hide()");
     }
 
@@ -3426,7 +3608,7 @@ public class ControlCargo implements Serializable {
             context.update("formularioDialogos:duplicarCompetenciaCargoEval");
         }
         filtrarLovProcesosProductivos = null;
-        procesoProductivoSeleccionado = null;
+        procesoProductivoSeleccionado = new ProcesosProductivos();
         aceptar = true;
         indexCompetenciaCargo = -1;
         secRegistroCompetencia = null;
@@ -3435,6 +3617,7 @@ public class ControlCargo implements Serializable {
         context.update("form:EvalCompetenciaDialogo");
         context.update("form:lovEvalCompetencia");
         context.update("form:aceptarEC");
+        context.reset("form:lovEvalCompetencia:globalFilter");
         context.execute("EvalCompetenciaDialogo.hide()");
     }
 
@@ -3486,8 +3669,8 @@ public class ControlCargo implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTipoDetalleEnfoque");
         }
-        lovTiposEmpresas = null;
-        tipoEmpresaSeleccionado = null;
+        lovEnfoques = null;
+        enfoqueSeleccionado = new Enfoques();
         aceptar = true;
         indexTipoDetalle = -1;
         secRegistroTipoDetalle = null;
@@ -3496,6 +3679,7 @@ public class ControlCargo implements Serializable {
         context.update("form:EnfoqueDialogo");
         context.update("form:lovEnfoque");
         context.update("form:aceptarE");
+        context.reset("form:lovEnfoque:globalFilter");
         context.execute("EnfoqueDialogo.hide()");
     }
 
@@ -3866,6 +4050,7 @@ public class ControlCargo implements Serializable {
     }
 
     public void lovEmpresas() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (cambiosPagina == true) {
             index = -1;
             secRegistro = null;
@@ -3876,9 +4061,9 @@ public class ControlCargo implements Serializable {
             indexTipoDetalle = -1;
             secRegistroTipoDetalle = null;
             cualCelda = -1;
-            RequestContext.getCurrentInstance().execute("EmpresasDialogo.show()");
+            context.update("form:EmpresasDialogo.");
+            context.execute("EmpresasDialogo.show()");
         } else {
-            RequestContext context = RequestContext.getCurrentInstance();
             context.execute("confirmarGuardar.show()");
         }
     }
@@ -3891,26 +4076,44 @@ public class ControlCargo implements Serializable {
         context.update("form:nitEmpresa");
         filtrarListaEmpresas = null;
         aceptar = true;
-        context.execute("EmpresasDialogo.hide()");
-        context.reset("form:lovEmpresas:globalFilter");
+        context.update("form:EmpresasDialogo");
         context.update("form:lovEmpresas");
         context.update("form:aceptarEM");
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("EmpresasDialogo.hide()");
         empresaActual = empresaSeleccionada;
+        index = 0;
         listaCargos = null;
-        listaCompetenciasCargos = null;
-        listaSueldosMercados = null;
         getListaCargos();
         int tam2 = listaCargos.size();
         if (tam2 > 0) {
-            index = 0;
+            cargoTablaSeleccionado = listaCargos.get(0);
             listaSueldosMercados = null;
             getListaSueldosMercados();
+            if (listaSueldosMercados != null) {
+                int tamSueldo = listaSueldosMercados.size();
+                if (tamSueldo > 0) {
+                    sueldoMercadoTablaSeleccionado = listaSueldosMercados.get(0);
+                }
+            }
             listaCompetenciasCargos = null;
             getListaCompetenciasCargos();
+            if (listaCompetenciasCargos != null) {
+                int tanCompe = listaCompetenciasCargos.size();
+                if (tanCompe > 0) {
+                    competenciaCargoTablaSeleccionado = listaCompetenciasCargos.get(0);
+                }
+            }
         }
-        activoDetalleCargo = true;
         listaTiposDetalles = null;
         getListaTiposDetalles();
+        if (listaTiposDetalles != null) {
+            int tamTipo = listaTiposDetalles.size();
+            if (tamTipo > 0) {
+                tipoDetalleTablaSeleccionado = listaTiposDetalles.get(0);
+            }
+        }
+        activoDetalleCargo = true;
         detalleCargo = new DetallesCargos();
         legendDetalleCargo = "";
         context.update("form:legendDetalleCargo");
@@ -3973,13 +4176,16 @@ public class ControlCargo implements Serializable {
                 detalleCargo.setTipodetalle(filtrarListaTiposDetalles.get(indexAuxTipoDetalle));
             }
             administrarCargos.crearDetalleCargo(detalleCargo);
-            FacesMessage msg = new FacesMessage("Información", "El registro fue creado con Éxito.");
+            FacesMessage msg = new FacesMessage("Información", "El registro de Detalle fue creado con Éxito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
             detalleCargo = null;
             getDetalleCargo();
         } catch (Exception e) {
             System.out.println("Error crearDetalleCargo : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado de Detalle, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
     }
 
@@ -3989,6 +4195,7 @@ public class ControlCargo implements Serializable {
             lovCargos = administrarCargos.listaCargosParaEmpresa(empresaActual.getSecuencia());
             cargoSeleccionado = new Cargos();
             filtrarLovCargos = null;
+            aceptar = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:BuscarCargoDialogo");
             context.update("form:lovBuscarCargo");
@@ -4006,15 +4213,26 @@ public class ControlCargo implements Serializable {
     }
 
     public void actualizarCargo() {
-        listaCargos = null;
-        listaCargos = new ArrayList<Cargos>();
+        listaCargos.clear();
         listaCargos.add(cargoSeleccionado);
         cargoSeleccionado = new Cargos();
         filtrarLovCargos = null;
+        for (int i = 0; i < listaCargos.size(); i++) {
+            if (listaCargos.get(i).getGruposalarial() == null) {
+                listaCargos.get(i).setGruposalarial(new GruposSalariales());
+            }
+            if (listaCargos.get(i).getGrupoviatico() == null) {
+                listaCargos.get(i).setGrupoviatico(new GruposViaticos());
+            }
+            if (listaCargos.get(i).getProcesoproductivo() == null) {
+                listaCargos.get(i).setProcesoproductivo(new ProcesosProductivos());
+            }
+        }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:BuscarCargoDialogo");
         context.update("form:lovBuscarCargo");
         context.update("form:aceptarBC");
+        context.reset("form:lovBuscarCargo:globalFilter");
         context.execute("BuscarCargoDialogo.hide()");
         index = 0;
         indexAux = -1;
@@ -4022,15 +4240,36 @@ public class ControlCargo implements Serializable {
         indexCompetenciaCargo = -1;
         indexTipoDetalle = -1;
         indexDetalleCargo = -1;
-        listaSueldosMercados = null;
-        context.update("form:datosCargo");
-        getListaSueldosMercados();
-        context.update("form:datosSueldoMercado");
-        listaCompetenciasCargos = null;
-        getListaCompetenciasCargos();
-        context.update("form:datosCompetenciaCargo");
+        int tam2 = listaCargos.size();
+        if (tam2 > 0) {
+            cargoTablaSeleccionado = listaCargos.get(0);
+            listaSueldosMercados = null;
+            getListaSueldosMercados();
+            if (listaSueldosMercados != null) {
+                int tamSueldo = listaSueldosMercados.size();
+                if (tamSueldo > 0) {
+                    sueldoMercadoTablaSeleccionado = listaSueldosMercados.get(0);
+                }
+            }
+            listaCompetenciasCargos = null;
+            getListaCompetenciasCargos();
+            if (listaCompetenciasCargos != null) {
+                int tanCompe = listaCompetenciasCargos.size();
+                if (tanCompe > 0) {
+                    competenciaCargoTablaSeleccionado = listaCompetenciasCargos.get(0);
+                }
+            }
+        }
+        listaTiposDetalles = null;
+        getListaTiposDetalles();
+        if (listaTiposDetalles != null) {
+            int tamTipo = listaTiposDetalles.size();
+            if (tamTipo > 0) {
+                tipoDetalleTablaSeleccionado = listaTiposDetalles.get(0);
+            }
+        }
         if (banderaSueldoMercado == 1) {
-            altoTablaSueldoMercado = "58";
+            altoTablaSueldoMercado = "68";
             sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
             sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
             sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -4043,7 +4282,7 @@ public class ControlCargo implements Serializable {
             tipoListaSueldoMercado = 0;
         }
         if (banderaCompetencia == 1) {
-            altoTablaCompetencia = "58";
+            altoTablaCompetencia = "68";
             competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
             competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -4051,11 +4290,27 @@ public class ControlCargo implements Serializable {
             filtrarListaCompetenciasCargos = null;
             tipoListaCompetencia = 0;
         }
+        if (banderaTipoDetalle == 1) {
+            altoTablaTipoDetalle = "68";
+            tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
+            tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
+            tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
+            tipoDetalleCodigo.setFilterStyle("display: none; visibility: hidden;");
+            tipoDetalleEnfoque = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleEnfoque");
+            tipoDetalleEnfoque.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosTipoDetalle");
+            banderaTipoDetalle = 0;
+            filtrarListaTiposDetalles = null;
+            tipoListaTipoDetalle = 0;
+        }
         activoDetalleCargo = true;
         legendDetalleCargo = "";
         detalleCargo = new DetallesCargos();
         context.update("form:legendDetalleCargo");
         context.update("form:detalleCargo");
+        context.update("form:datosCargo");
+        context.update("form:datosSueldoMercado");
+        context.update("form:datosCompetenciaCargo");
     }
 
     public void cancelarSeleccionCargo() {
@@ -4079,15 +4334,36 @@ public class ControlCargo implements Serializable {
             indexCompetenciaCargo = -1;
             indexTipoDetalle = -1;
             indexDetalleCargo = -1;
-            listaSueldosMercados = null;
-            context.update("form:datosCargo");
-            getListaSueldosMercados();
-            context.update("form:datosSueldoMercado");
-            listaCompetenciasCargos = null;
-            getListaCompetenciasCargos();
-            context.update("form:datosCompetenciaCargo");
+            int tam2 = listaCargos.size();
+            if (tam2 > 0) {
+                cargoTablaSeleccionado = listaCargos.get(0);
+                listaSueldosMercados = null;
+                getListaSueldosMercados();
+                if (listaSueldosMercados != null) {
+                    int tamSueldo = listaSueldosMercados.size();
+                    if (tamSueldo > 0) {
+                        sueldoMercadoTablaSeleccionado = listaSueldosMercados.get(0);
+                    }
+                }
+                listaCompetenciasCargos = null;
+                getListaCompetenciasCargos();
+                if (listaCompetenciasCargos != null) {
+                    int tanCompe = listaCompetenciasCargos.size();
+                    if (tanCompe > 0) {
+                        competenciaCargoTablaSeleccionado = listaCompetenciasCargos.get(0);
+                    }
+                }
+            }
+            listaTiposDetalles = null;
+            getListaTiposDetalles();
+            if (listaTiposDetalles != null) {
+                int tamTipo = listaTiposDetalles.size();
+                if (tamTipo > 0) {
+                    tipoDetalleTablaSeleccionado = listaTiposDetalles.get(0);
+                }
+            }
             if (banderaSueldoMercado == 1) {
-                altoTablaSueldoMercado = "58";
+                altoTablaSueldoMercado = "68";
                 sueldoMercadoSueldoMinimo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoSueldoMinimo");
                 sueldoMercadoSueldoMinimo.setFilterStyle("display: none; visibility: hidden;");
                 sueldoMercadoTipoEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSueldoMercado:sueldoMercadoTipoEmpresa");
@@ -4100,7 +4376,7 @@ public class ControlCargo implements Serializable {
                 tipoListaSueldoMercado = 0;
             }
             if (banderaCompetencia == 1) {
-                altoTablaCompetencia = "58";
+                altoTablaCompetencia = "68";
                 competenciaCargoDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCompetenciaCargo:competenciaCargoDescripcion");
                 competenciaCargoDescripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosCompetenciaCargo");
@@ -4108,11 +4384,27 @@ public class ControlCargo implements Serializable {
                 filtrarListaCompetenciasCargos = null;
                 tipoListaCompetencia = 0;
             }
+            if (banderaTipoDetalle == 1) {
+                altoTablaTipoDetalle = "68";
+                tipoDetalleDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleDescripcion");
+                tipoDetalleDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                tipoDetalleCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleCodigo");
+                tipoDetalleCodigo.setFilterStyle("display: none; visibility: hidden;");
+                tipoDetalleEnfoque = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoDetalle:tipoDetalleEnfoque");
+                tipoDetalleEnfoque.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosTipoDetalle");
+                banderaTipoDetalle = 0;
+                filtrarListaTiposDetalles = null;
+                tipoListaTipoDetalle = 0;
+            }
             activoDetalleCargo = true;
             legendDetalleCargo = "";
             detalleCargo = new DetallesCargos();
             context.update("form:legendDetalleCargo");
             context.update("form:detalleCargo");
+            context.update("form:datosCargo");
+            context.update("form:datosSueldoMercado");
+            context.update("form:datosCompetenciaCargo");
 
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -4131,7 +4423,6 @@ public class ControlCargo implements Serializable {
         cambiosPagina = false;
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
-        System.out.println("Entro a modificar datos : " + detalleCargo.getDescripcion());
     }
 
     //GETTERS AND SETTERS
@@ -4222,23 +4513,22 @@ public class ControlCargo implements Serializable {
     public List<SueldosMercados> getListaSueldosMercados() {
         if (listaSueldosMercados == null) {
             listaSueldosMercados = new ArrayList<SueldosMercados>();
-            if (index == -1) {
-                index = indexAux;
-            }
-            if (tipoLista == 0) {
-                if (listaCargos.size() > 0) {
-                    listaSueldosMercados = administrarCargos.listaSueldosMercadosParaCargo(listaCargos.get(index).getSecuencia());
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    if (listaCargos.size() > 0) {
+                        listaSueldosMercados = administrarCargos.listaSueldosMercadosParaCargo(listaCargos.get(index).getSecuencia());
+                    }
                 }
-            }
-            if (tipoLista == 1) {
-                if (filtrarListaCargos.size() > 0) {
-                    listaSueldosMercados = administrarCargos.listaSueldosMercadosParaCargo(filtrarListaCargos.get(index).getSecuencia());
+                if (tipoLista == 1) {
+                    if (filtrarListaCargos.size() > 0) {
+                        listaSueldosMercados = administrarCargos.listaSueldosMercadosParaCargo(filtrarListaCargos.get(index).getSecuencia());
+                    }
                 }
-            }
-            if (listaSueldosMercados != null) {
-                for (int i = 0; i < listaSueldosMercados.size(); i++) {
-                    if (listaSueldosMercados.get(i).getTipoempresa() == null) {
-                        listaSueldosMercados.get(i).setTipoempresa(new TiposEmpresas());
+                if (listaSueldosMercados != null) {
+                    for (int i = 0; i < listaSueldosMercados.size(); i++) {
+                        if (listaSueldosMercados.get(i).getTipoempresa() == null) {
+                            listaSueldosMercados.get(i).setTipoempresa(new TiposEmpresas());
+                        }
                     }
                 }
             }
@@ -4395,9 +4685,7 @@ public class ControlCargo implements Serializable {
     }
 
     public List<GruposSalariales> getLovGruposSalariales() {
-        if (lovGruposSalariales == null) {
-            lovGruposSalariales = administrarCargos.lovGruposSalariales();
-        }
+        lovGruposSalariales = administrarCargos.lovGruposSalariales();
         return lovGruposSalariales;
     }
 
@@ -4446,9 +4734,8 @@ public class ControlCargo implements Serializable {
     }
 
     public List<GruposViaticos> getLovGruposViaticos() {
-        if (lovGruposViaticos == null) {
-            lovGruposViaticos = administrarCargos.lovGruposViaticos();
-        }
+        lovGruposViaticos = administrarCargos.lovGruposViaticos();
+
         return lovGruposViaticos;
     }
 
@@ -4475,23 +4762,22 @@ public class ControlCargo implements Serializable {
     public List<Competenciascargos> getListaCompetenciasCargos() {
         if (listaCompetenciasCargos == null) {
             listaCompetenciasCargos = new ArrayList<Competenciascargos>();
-            if (index == -1) {
-                index = indexAux;
-            }
-            if (tipoLista == 0) {
-                if (listaCargos.size() > 0) {
-                    listaCompetenciasCargos = administrarCargos.listaCompetenciasCargosParaCargo(listaCargos.get(index).getSecuencia());
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    if (listaCargos.size() > 0) {
+                        listaCompetenciasCargos = administrarCargos.listaCompetenciasCargosParaCargo(listaCargos.get(index).getSecuencia());
+                    }
                 }
-            }
-            if (tipoLista == 1) {
-                if (filtrarListaCargos.size() > 0) {
-                    listaCompetenciasCargos = administrarCargos.listaCompetenciasCargosParaCargo(filtrarListaCargos.get(index).getSecuencia());
+                if (tipoLista == 1) {
+                    if (filtrarListaCargos.size() > 0) {
+                        listaCompetenciasCargos = administrarCargos.listaCompetenciasCargosParaCargo(filtrarListaCargos.get(index).getSecuencia());
+                    }
                 }
-            }
-            if (listaCompetenciasCargos != null) {
-                for (int i = 0; i < listaCompetenciasCargos.size(); i++) {
-                    if (listaCompetenciasCargos.get(i).getEvalcompetencia() == null) {
-                        listaCompetenciasCargos.get(i).setEvalcompetencia(new EvalCompetencias());
+                if (listaCompetenciasCargos != null) {
+                    for (int i = 0; i < listaCompetenciasCargos.size(); i++) {
+                        if (listaCompetenciasCargos.get(i).getEvalcompetencia() == null) {
+                            listaCompetenciasCargos.get(i).setEvalcompetencia(new EvalCompetencias());
+                        }
                     }
                 }
             }
@@ -4576,9 +4862,8 @@ public class ControlCargo implements Serializable {
     }
 
     public List<ProcesosProductivos> getLovProcesosProductivos() {
-        if (lovProcesosProductivos == null) {
-            lovProcesosProductivos = administrarCargos.lovProcesosProductivos();
-        }
+        lovProcesosProductivos = administrarCargos.lovProcesosProductivos();
+
         return lovProcesosProductivos;
     }
 
@@ -4702,9 +4987,8 @@ public class ControlCargo implements Serializable {
     }
 
     public List<TiposEmpresas> getLovTiposEmpresas() {
-        if (lovTiposEmpresas == null) {
-            lovTiposEmpresas = administrarCargos.lovTiposEmpresas();
-        }
+        lovTiposEmpresas = administrarCargos.lovTiposEmpresas();
+
         return lovTiposEmpresas;
     }
 
@@ -4769,9 +5053,8 @@ public class ControlCargo implements Serializable {
     }
 
     public List<EvalCompetencias> getLovEvalCompetencias() {
-        if (lovEvalCompetencias == null) {
-            lovEvalCompetencias = administrarCargos.lovEvalCompetencias();
-        }
+        lovEvalCompetencias = administrarCargos.lovEvalCompetencias();
+
         return lovEvalCompetencias;
     }
 
@@ -4796,9 +5079,8 @@ public class ControlCargo implements Serializable {
     }
 
     public List<Enfoques> getLovEnfoques() {
-        if (lovEnfoques == null) {
-            lovEnfoques = administrarCargos.lovEnfoques();
-        }
+        lovEnfoques = administrarCargos.lovEnfoques();
+
         return lovEnfoques;
     }
 
@@ -4831,10 +5113,9 @@ public class ControlCargo implements Serializable {
     }
 
     public List<Empresas> getListaEmpresas() {
-        if (listaEmpresas == null) {
-            listaEmpresas = new ArrayList<Empresas>();
-            listaEmpresas = administrarCargos.listaEmpresas();
-        }
+
+        listaEmpresas = administrarCargos.listaEmpresas();
+
         return listaEmpresas;
     }
 
@@ -4928,6 +5209,178 @@ public class ControlCargo implements Serializable {
 
     public void setCargoSeleccionado(Cargos cargoSeleccionado) {
         this.cargoSeleccionado = cargoSeleccionado;
+    }
+
+    public Cargos getCargoTablaSeleccionado() {
+        getListaCargos();
+        if (listaCargos != null) {
+            int tam = listaCargos.size();
+            if (tam > 0) {
+                cargoTablaSeleccionado = listaCargos.get(0);
+            }
+        }
+        return cargoTablaSeleccionado;
+    }
+
+    public void setCargoTablaSeleccionado(Cargos cargoTablaSeleccionado) {
+        this.cargoTablaSeleccionado = cargoTablaSeleccionado;
+    }
+
+    public SueldosMercados getSueldoMercadoTablaSeleccionado() {
+        getListaSueldosMercados();
+        if (listaSueldosMercados != null) {
+            int tam = listaSueldosMercados.size();
+            if (tam > 0) {
+                sueldoMercadoTablaSeleccionado = listaSueldosMercados.get(0);
+            }
+        }
+        return sueldoMercadoTablaSeleccionado;
+    }
+
+    public void setSueldoMercadoTablaSeleccionado(SueldosMercados sueldoMercadoTablaSeleccionado) {
+        this.sueldoMercadoTablaSeleccionado = sueldoMercadoTablaSeleccionado;
+    }
+
+    public Competenciascargos getCompetenciaCargoTablaSeleccionado() {
+        getListaCompetenciasCargos();
+        if (listaCompetenciasCargos != null) {
+            int tam = listaCompetenciasCargos.size();
+            if (tam > 0) {
+                competenciaCargoTablaSeleccionado = listaCompetenciasCargos.get(0);
+            }
+        }
+        return competenciaCargoTablaSeleccionado;
+    }
+
+    public void setCompetenciaCargoTablaSeleccionado(Competenciascargos competenciaCargoTablaSeleccionado) {
+        this.competenciaCargoTablaSeleccionado = competenciaCargoTablaSeleccionado;
+    }
+
+    public TiposDetalles getTipoDetalleTablaSeleccionado() {
+        getListaTiposDetalles();
+        if (listaTiposDetalles != null) {
+            int tam = listaTiposDetalles.size();
+            if (tam > 0) {
+                tipoDetalleTablaSeleccionado = listaTiposDetalles.get(0);
+            }
+        }
+        return tipoDetalleTablaSeleccionado;
+    }
+
+    public void setTipoDetalleTablaSeleccionado(TiposDetalles tipoDetalleTablaSeleccionado) {
+        this.tipoDetalleTablaSeleccionado = tipoDetalleTablaSeleccionado;
+    }
+
+    public String getInfoRegistroCargo() {
+        getLovCargos();
+        if (lovCargos != null) {
+            infoRegistroCargo = "Cantidad de registros : " + lovCargos.size();
+        } else {
+            infoRegistroCargo = "Cantidad de registros : 0";
+        }
+        return infoRegistroCargo;
+    }
+
+    public void setInfoRegistroCargo(String infoRegistroCargo) {
+        this.infoRegistroCargo = infoRegistroCargo;
+    }
+
+    public String getInfoRegistroGrupoSalarial() {
+        getLovGruposSalariales();
+        if (lovGruposSalariales != null) {
+            infoRegistroGrupoSalarial = "Cantidad de registros : " + lovGruposSalariales.size();
+        } else {
+            infoRegistroGrupoSalarial = "Cantidad de registros : 0";
+        }
+        return infoRegistroGrupoSalarial;
+    }
+
+    public void setInfoRegistroGrupoSalarial(String infoRegistroGrupoSalarial) {
+        this.infoRegistroGrupoSalarial = infoRegistroGrupoSalarial;
+    }
+
+    public String getInfoRegistroGrupoViatico() {
+        getLovGruposViaticos();
+        if (lovGruposViaticos != null) {
+            infoRegistroGrupoViatico = "Cantidad de registros : " + lovGruposViaticos.size();
+        } else {
+            infoRegistroGrupoViatico = "Cantidad de registros : 0";
+        }
+        return infoRegistroGrupoViatico;
+    }
+
+    public void setInfoRegistroGrupoViatico(String infoRegistroGrupoViatico) {
+        this.infoRegistroGrupoViatico = infoRegistroGrupoViatico;
+    }
+
+    public String getInfoRegistroProcesoProductivo() {
+        getLovProcesosProductivos();
+        if (lovProcesosProductivos != null) {
+            infoRegistroProcesoProductivo = "Cantidad de registros : " + lovProcesosProductivos.size();
+        } else {
+            infoRegistroProcesoProductivo = "Cantidad de registros : 0";
+        }
+        return infoRegistroProcesoProductivo;
+    }
+
+    public void setInfoRegistroProcesoProductivo(String infoRegistroProcesoProductivo) {
+        this.infoRegistroProcesoProductivo = infoRegistroProcesoProductivo;
+    }
+
+    public String getInfoRegistroTipoEmpresa() {
+        getLovTiposEmpresas();
+        if (lovTiposEmpresas != null) {
+            infoRegistroTipoEmpresa = "Cantidad de registros : " + lovTiposEmpresas.size();
+        } else {
+            infoRegistroTipoEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoEmpresa;
+    }
+
+    public void setInfoRegistroTipoEmpresa(String infoRegistroTipoEmpresa) {
+        this.infoRegistroTipoEmpresa = infoRegistroTipoEmpresa;
+    }
+
+    public String getInfoRegistroEval() {
+        getLovEvalCompetencias();
+        if (lovEvalCompetencias != null) {
+            infoRegistroEval = "Cantidad de registros : " + lovEvalCompetencias.size();
+        } else {
+            infoRegistroEval = "Cantidad de registros : 0";
+        }
+        return infoRegistroEval;
+    }
+
+    public void setInfoRegistroEval(String infoRegistroEval) {
+        this.infoRegistroEval = infoRegistroEval;
+    }
+
+    public String getInfoRegistroEnfoque() {
+        getLovEnfoques();
+        if (lovEnfoques != null) {
+            infoRegistroEnfoque = "Cantidad de registros : " + lovEnfoques.size();
+        } else {
+            infoRegistroEnfoque = "Cantidad de registros : 0";
+        }
+        return infoRegistroEnfoque;
+    }
+
+    public void setInfoRegistroEnfoque(String infoRegistroEnfoque) {
+        this.infoRegistroEnfoque = infoRegistroEnfoque;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getListaEmpresas();
+        if (listaEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + listaEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
     }
 
 }

@@ -33,7 +33,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasAficiones);
+            em.persist(vigenciasAficiones);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasAficiones.crear: " + e);
@@ -65,7 +65,7 @@ public class PersistenciaVigenciasAficiones implements PersistenciaVigenciasAfic
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasAficiones);
+            em.remove(em.merge(vigenciasAficiones));
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasAficiones.borrar: " + e);

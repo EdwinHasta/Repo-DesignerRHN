@@ -19,34 +19,33 @@
                     <p:hotkey bind="alt+p" actionListener="#{controlCargo.lovEmpresas()}" process="@this"/> 
 
 
-                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 550px;  text-align: left" >  
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 543px;  text-align: left" >  
 
-                        <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 45px;left: 395px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nombreEmpresa" value="#{controlCargo.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 460px;"/>
-                        <h:outputText value="#{msg['nit']}" style="position: absolute; top: 45px;left: 730px;color: #14388B;font-weight: bold"/>
-                        <h:outputText id="nitEmpresa" value="#{controlCargo.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 45px;left: 770px;"/>
-
-
-                        <p:commandButton style="position: absolute; left: 20px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="BUSCARCARGO" value="#{msg['buscarCargo']}"  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 120px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}"  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
-                        <p:separator style="position: absolute; left: 230px; top: 520px; width: 3px; height: 23px" />
-                        <p:commandButton style="position: absolute; left: 235px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlCargo.cancelarModificacionGeneral()}"  process="@this" />
-                        <p:commandButton style="position: absolute; left: 710px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="ATRAS" value="#{msg['atras']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
+                        <h:outputText value="#{msg['empresa']}" style="position: absolute; top: 40px;left: 445px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nombreEmpresa" value="#{controlCargo.empresaActual.nombre}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 40px;left: 510px;"/>
+                        <h:outputText value="#{msg['nit']}" style="position: absolute; top: 40px;left: 750px;color: #14388B;font-weight: bold"/>
+                        <h:outputText id="nitEmpresa" value="#{controlCargo.empresaActual.nit}" style="font-weight: bold; color: #BF1A1A;position: absolute; top: 40px;left: 790px;"/>
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 65px; font-size: 10px; width: 830px; height: 180px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue"><strong>#{msg['cargos']}</strong></legend>
+                        <p:commandButton style="position: absolute; left: 20px; top: 515px;" id="BUSCARCARGO" value="#{msg['buscarCargo']}"  actionListener="#{controlCargo.dispararDialogoBuscarCargo()}"  process="@this" />
+                        <p:commandButton style="position: absolute; left: 120px; top: 515px;" id="MOSTRARTODOS" value="#{msg['mostrarTodos']}"  actionListener="#{controlCargo.mostrarTodos()}"  process="@this" />
 
-                            <p:dataTable id="datosCargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="font-size: 10px; border: 1px; text-align: left;width: 820px;position: relative"                           
+                        <p:commandButton style="position: absolute; left: 690px; top: 515px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlCargo.cambiosPagina}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 786px; top: 515px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlCargo.salir()}" action="#{controlCargo.redirigir()}" process="@this" />
+
+
+                        <fieldset style="position: absolute; left: 10px; top: 65px; width: 830px; height: 175px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>#{msg['cargos']}</strong></legend>
+
+                            <p:dataTable id="datosCargo" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" style="border: 1px; text-align: left;width: 820px;position: relative"                           
                                          value="#{controlCargo.listaCargos}" scrollable="true" scrollHeight="#{controlCargo.altoTablaCargo}"  scrollWidth="820"
-                                         filteredValue="#{controlCargo.filtrarListaCargos}"  emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell"  rows="4" liveScroll="true" scrollRows="4">
+                                         filteredValue="#{controlCargo.filtrarListaCargos}"  emptyMessage="#{msg['vacio']}" selection="#{controlCargo.cargoTablaSeleccionado}" selectionMode="single"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="6">
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px;" headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" 
-                                          id="cargoCodigo" width="35" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['codigo']}" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" 
+                                           id="cargoCodigo" width="45" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
                                         <f:facet name="input">
@@ -57,12 +56,12 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['codigo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px;" headerText="#{msg['nombre']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"
-                                          id="cargoNombre" width="110" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['nombre']}" sortBy="#{info.nombre}" filterBy="#{info.nombre}" filterMatchMode="contains"
+                                           id="cargoNombre" width="110" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.nombre}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
@@ -73,11 +72,11 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['nombre']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['grupoSalarial']}" sortBy="#{info.gruposalarial.descripcion}" filterBy="#{info.gruposalarial.descripcion}" filterMatchMode="contains" 
+                                <p:column headerText="#{msg['grupoSalarial']}" sortBy="#{info.gruposalarial.descripcion}" filterBy="#{info.gruposalarial.descripcion}" filterMatchMode="contains" 
                                           width="100" id="cargoGrupoSalarial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -93,11 +92,11 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooGrupoSalarial"  process="@this" value="#{msg['grupoSalarial']}"/>
+                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue" id="fooGrupoSalarial"  value=" "/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px;" headerText="#{msg['salario']}" sortBy="#{info.gruposalarial.salario}" filterBy="#{info.gruposalarial.salario}" filterMatchMode="contains"
+                                <p:column headerText="#{msg['salario']}" sortBy="#{info.gruposalarial.salario}" filterBy="#{info.gruposalarial.salario}" filterMatchMode="contains"
                                           id="cargoSalario" width="70" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText id="outSalario" value="#{info.gruposalarial.salario}" >
@@ -110,12 +109,12 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['salario']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px;" headerText="#{msg['sueldoMinimo']}" sortBy="#{info.sueldominimo}" filterBy="#{info.sueldominimo}" filterMatchMode="contains"
-                                          id="cargoSueldoMinimo" width="80" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['sueldoMinimo']}" sortBy="#{info.sueldominimo}" filterBy="#{info.sueldominimo}" filterMatchMode="contains"
+                                           id="cargoSueldoMinimo" width="95" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText id="outSueldoMin" value="#{info.sueldominimo}" >
                                                 <f:convertNumber currencySymbol="$" for="outSueldoMin" type="currency" />
@@ -124,17 +123,16 @@
                                             <p:inputText value="#{info.sueldominimo}" onclick="select();" id="editarSueldoMinimoCargo" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.modificarCargo(indice)}" update="editarSueldoMinimoCargo" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndice(indice, 4)}" process="@this"/>
-                                                <f:convertNumber currencySymbol="$" for="editarSueldoMinimoCargo" type="currency" />
-                                            </p:inputText>
+¿                                            </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['sueldoMinimo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px;" headerText="#{msg['sueldoMaximo']}" sortBy="#{info.sueldomaximo}" filterBy="#{info.sueldomaximo}" filterMatchMode="contains"
-                                          id="cargoSueldoMaximo" width="80" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column  headerText="#{msg['sueldoMaximo']}" sortBy="#{info.sueldomaximo}" filterBy="#{info.sueldomaximo}" filterMatchMode="contains"
+                                           id="cargoSueldoMaximo" width="95" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText id="outSueldoMax" value="#{info.sueldomaximo}" >
                                                 <f:convertNumber currencySymbol="$" for="outSueldoMax" type="currency" />
@@ -143,18 +141,17 @@
                                             <p:inputText value="#{info.sueldomaximo}" onclick="select();" id="editarSueldoMaximoCargo" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.modificarCargo(indice)}" update="editarSueldoMaximoCargo" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndice(indice, 5)}" process="@this"/>
-                                                <f:convertNumber currencySymbol="$" for="editarSueldoMaximoCargo" type="currency" />
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['sueldoMaximo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
 
-                                <p:column style="font-size: 11px" headerText="#{msg['grupoViatico']}" sortBy="#{info.grupoviatico.descripcion}" filterBy="#{info.grupoviatico.descripcion}" filterMatchMode="contains"  
-                                          width="100" id="cargoGrupoViatico" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['grupoViatico']}" sortBy="#{info.grupoviatico.descripcion}" filterBy="#{info.grupoviatico.descripcion}" filterMatchMode="contains"  
+                                           width="100" id="cargoGrupoViatico" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.grupoviatico.descripcion}" style="text-transform: uppercase" >
@@ -169,40 +166,40 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooGrupoViatico"  process="@this" value="#{msg['grupoViatico']}"/>
+                                        <p:commandButton style="width: 100px; margin: -14px; height: 26px; border: none; color: blue" id="fooGrupoViatico"  value=" "/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  style="font-size: 11px;padding: 0px;width: 25px;alignment-adjust: central;" headerText="TR" sortBy="#{info.strCargoRotativo}" filterBy="#{info.strCargoRotativo}" filterMatchMode="contains" 
+                                <p:column  style="padding: 0px;width: 20px;alignment-adjust: central;" headerText="TR" sortBy="#{info.strCargoRotativo}" filterBy="#{info.strCargoRotativo}" filterMatchMode="contains" 
                                            id="cargoCargoRotativo" filterStyle="display: none; visibility: hidden;" >     
                                     <f:facet name="header">
                                         <h:outputText id="headerTR" value="TR" />
-                                        <p:tooltip style="font-size: 12px" for="headerTR" value="#{msg['headerTR']}" />
+                                        <p:tooltip  for="headerTR" value="#{msg['headerTR']}" />
                                     </f:facet>
-                                    <p:selectBooleanCheckbox id="checkCargoRotativoCargo" value="#{info.checkCargoRotativo}" style="alignment-adjust: central">  
+                                    <p:selectBooleanCheckbox id="checkCargoRotativoCargo" value="#{info.checkCargoRotativo}" style="alignment-adjust: central;">  
                                         <p:ajax event="change" listener="#{controlCargo.modificarCargo(indice)}" process="@this"/>
                                     </p:selectBooleanCheckbox>  
                                     <f:facet name="footer">
-                                        <h:outputText value="TR" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column  style="font-size: 11px;padding: 0px;width: 25px;alignment-adjust: central;" headerText="..." sortBy="#{info.strCargoRotativo}" filterBy="#{info.strCargoRotativo}" filterMatchMode="contains" 
+                                <p:column  style="padding: 0px;width: 20px;alignment-adjust: central;" headerText="..." sortBy="#{info.strCargoRotativo}" filterBy="#{info.strCargoRotativo}" filterMatchMode="contains" 
                                            id="cargoJefe" filterStyle="display: none; visibility: hidden;" >     
                                     <f:facet name="header">
                                         <h:outputText id="headerJefe" value="..." />
-                                        <p:tooltip style="font-size: 12px" for="headerJefe" value="#{msg['headerJefe']}" />
+                                        <p:tooltip  for="headerJefe" value="#{msg['headerJefe']}" />
                                     </f:facet>
-                                    <p:selectBooleanCheckbox id="checkJefeCargo" value="#{info.chechJefe}" style="alignment-adjust: central">  
+                                    <p:selectBooleanCheckbox id="checkJefeCargo" value="#{info.chechJefe}" style="alignment-adjust: central;">  
                                         <p:ajax event="change" listener="#{controlCargo.modificarCargo(indice)}" process="@this"/>
                                     </p:selectBooleanCheckbox>  
                                     <f:facet name="footer">
-                                        <h:outputText value="..." />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['procesoProductivo']}" sortBy="#{info.procesoproductivo.descripcion}" filterBy="#{info.procesoproductivo.descripcion}" filterMatchMode="contains"  
-                                          width="110" id="cargoProcesoProductivo" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column headerText="#{msg['procesoProductivo']}" sortBy="#{info.procesoproductivo.descripcion}" filterBy="#{info.procesoproductivo.descripcion}" filterMatchMode="contains"  
+                                          width="125" id="cargoProcesoProductivo" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.procesoproductivo.descripcion}" style="text-transform: uppercase">
@@ -217,12 +214,12 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['procesoProductivo']}"/>
+                                        <h:outputText value=""/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px;" headerText="#{msg['codigoAlternativo']}" sortBy="#{info.codigoalternativo}" filterBy="#{info.codigoalternativo}" filterMatchMode="contains"
-                                          id="cargoCodigoAlternativo" width="100" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="#{msg['codigoAlternativo']}" sortBy="#{info.codigoalternativo}" filterBy="#{info.codigoalternativo}" filterMatchMode="contains"
+                                          id="cargoCodigoAlternativo" width="115" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output"><h:outputText value="#{info.codigoalternativo}" style="text-transform: uppercase" /></f:facet>  
                                         <f:facet name="input">
@@ -233,7 +230,7 @@
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['codigoAlternativo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -243,63 +240,74 @@
                         <p:remoteCommand name="posicionCargo" actionListener="#{controlCargo.posicionCargo()}"/>
 
 
-                        <p:toolbar style="font-size: 12px; position: absolute; top: 33px; left: 12px; height: 23px">  
+                        <p:toolbar style="position: absolute; top: 33px; left: 12px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlCargo.guardarGeneral()}" process="@this" />
-                                <p:tooltip style="font-size: 12px" for="guardarRapido" value="#{msg['guardar']}" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.editarCelda()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="editar" value="#{msg['editar']}" />
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.listaValoresBoton()}"  process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="listaValores" value="#{msg['lista']}" />
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip style="font-size: 12px" for="filtrar" value="#{msg['filtrar']}" />
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
-                                <p:separator />
+                                <p:separator style="position: relative; top: -9px"/> 
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlCargo.validarExportXLS()}" />
-                                <p:tooltip style="font-size: 12px" for="exportarXLS" value="#{msg['xls']}" />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false">
                                     <p:dataExporter type="xml"  target="#{controlCargo.exportXML()}" fileName="#{controlCargo.nombreXML}" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip style="font-size: 12px" for="exportarXML" value="#{msg['xml']}" />
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.validarExportPDF()}" ajax="false"/>
-                                <p:tooltip style="font-size: 12px" for="exportarPDF" value="#{msg['pdf']}" />
+                                <p:tooltip  for="exportarPDF" value="#{msg['pdf']}" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.dialogoNuevoRegistro()}" process="@this"/> 
-                                <p:tooltip style="font-size: 12px" for="insertar" value="#{msg['nuevo']}" />
+                                <p:tooltip  for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRegistroBorrar()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="eliminar" value="#{msg['eliminar']}" />
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRegistroDuplicar()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="duplicar" value="#{msg['duplicar']}" />
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
-                                <p:separator /> 
+                                <p:separator style="position: relative; top: -9px"/> 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.verificarRastro()}" process="@this"/>  
-                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+                                <p:tooltip  for="rastro" value="#{msg['rastro']}"/>
+
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.cancelarModificacionGeneral()}"   process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCargo.salir()}" action="#{controlCargo.valorPaginaAnterior()}"  process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+
+
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <fieldset style="position: absolute; left: 10px; top: 260px; font-size: 10px; width: 415px; height: 120px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue"><strong>#{msg['sueldosMercados']}</strong></legend>
+                        <fieldset style="position: absolute; left: 10px; top: 255px; width: 415px; height: 115px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>#{msg['sueldosMercados']}</strong></legend>
 
-                            <p:dataTable id="datosSueldoMercado" var="infoSM" rowKey="#{infoSM.secuencia}" rowIndexVar="indiceSM" style="font-size: 10px; border: 1px; text-align: left;width: 395px"
+                            <p:dataTable id="datosSueldoMercado" var="infoSM" rowKey="#{infoSM.secuencia}" rowIndexVar="indiceSM" style="border: 1px; text-align: left;width: 395px"
                                          value="#{controlCargo.listaSueldosMercados}" scrollable="true" scrollHeight="#{controlCargo.altoTablaSueldoMercado}" scrollWidth="410"
-                                         filteredValue="#{controlCargo.filtrarListaSueldosMercados}" emptyMessage="#{msg['vacio']}"
+                                         filteredValue="#{controlCargo.filtrarListaSueldosMercados}" emptyMessage="#{msg['vacio']}" liveScroll="true" scrollRows="5" selection="#{controlCargo.sueldoMercadoTablaSeleccionado}" selectionMode="single"
                                          editable="true" editMode="cell">
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['tipoEmpresa']}" sortBy="#{infoSM.tipoempresa.descripcion}" filterBy="#{infoSM.tipoempresa.descripcion}" filterMatchMode="contains"  
+                                <p:column headerText="#{msg['tipoEmpresa']}" sortBy="#{infoSM.tipoempresa.descripcion}" filterBy="#{infoSM.tipoempresa.descripcion}" filterMatchMode="contains"  
                                           width="120" id="sueldoMercadoTipoEmpresa" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -315,11 +323,11 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooTipoEmpresa"  process="@this" value="#{msg['tipoEmpresa']}"/>
+                                        <p:commandButton style="width: 120px; margin: -14px; height: 26px; border: none; color: blue" id="fooTipoEmpresa"  value=" "/>
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['sueldoMinimo']}" sortBy="#{infoSM.sueldomin}" filterBy="#{infoSM.sueldomin}" filterMatchMode="contains"  
+                                <p:column headerText="#{msg['sueldoMinimo']}" sortBy="#{infoSM.sueldomin}" filterBy="#{infoSM.sueldomin}" filterMatchMode="contains"  
                                           width="80" id="sueldoMercadoSueldoMinimo" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
@@ -331,17 +339,16 @@
                                             <p:inputText value="#{infoSM.sueldomin}" onclick="select();"  id="editarSueldoMinimoSueldoMercado" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.modificarSueldoMercado(indiceSM)}" process="@this" update="editarSueldoMinimoSueldoMercado"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndiceSueldoMercado(indiceSM,1)}" process="@this"/> 
-                                                <f:convertNumber currencySymbol="$" for="editarSueldoMinimoSueldoMercado" type="currency" />
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['sueldoMinimo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['sueldoMaximo']}" sortBy="#{infoSM.sueldomax}" filterBy="#{infoSM.sueldomax}" filterMatchMode="contains" 
-                                          width="80" id="sueldoMercadoSueldoMaximo" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['sueldoMaximo']}" sortBy="#{infoSM.sueldomax}" filterBy="#{infoSM.sueldomax}" filterMatchMode="contains" 
+                                           width="80" id="sueldoMercadoSueldoMaximo" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText id="outSueldoMaximoSM" value="#{infoSM.sueldomax}" >
@@ -352,12 +359,11 @@
                                             <p:inputText value="#{infoSM.sueldomax}" onclick="select();"  id="editarSueldoMaximoSueldoMercado" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.modificarSueldoMercado(indiceSM)}" process="@this" update="editarSueldoMaximoSueldoMercado"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndiceSueldoMercado(indiceSM,2)}" process="@this"/> 
-                                                <f:convertNumber currencySymbol="$" for="editarSueldoMaximoSueldoMercado" type="currency" />
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['sueldoMaximo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
@@ -366,18 +372,18 @@
 
 
 
-                        <fieldset style="position: absolute; left: 10px; top: 392px; font-size: 10px; width: 415px; height: 120px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue"><strong>#{msg['competenciasCargos']}</strong></legend>
+                        <fieldset style="position: absolute; left: 10px; top: 388px; width: 415px; height: 115px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>#{msg['competenciasCargos']}</strong></legend>
 
-                            <p:dataTable id="datosCompetenciaCargo" var="infoCC" rowKey="#{infoCC.secuencia}" rowIndexVar="indiceCC" style="font-size: 10px; border: 1px; text-align: left;width: 395px"
+                            <p:dataTable id="datosCompetenciaCargo" var="infoCC" rowKey="#{infoCC.secuencia}" rowIndexVar="indiceCC" style="border: 1px; text-align: left;width: 395px"
                                          value="#{controlCargo.listaCompetenciasCargos}" scrollable="true" scrollHeight="#{controlCargo.altoTablaCompetencia}" scrollWidth="410"
-                                         filteredValue="#{controlCargo.filtrarListaCompetenciasCargos}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell">
+                                         filteredValue="#{controlCargo.filtrarListaCompetenciasCargos}" emptyMessage="#{msg['vacio']}" selection="#{controlCargo.competenciaCargoTablaSeleccionado}" selectionMode="single"
+                                         editable="true" editMode="cell"  liveScroll="true" scrollRows="5" >
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['descripcion']}" sortBy="#{infoCC.evalcompetencia.descripcion}" filterBy="#{infoCC.evalcompetencia.descripcion}" filterMatchMode="contains" 
-                                          width="130" id="competenciaCargoDescripcion" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['descripcion']}" sortBy="#{infoCC.evalcompetencia.descripcion}" filterBy="#{infoCC.evalcompetencia.descripcion}" filterMatchMode="contains" 
+                                           width="130" id="competenciaCargoDescripcion" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoCC.evalcompetencia.descripcion}" style="text-transform: uppercase">
@@ -392,24 +398,24 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooEvalCompetencias"  process="@this" value="#{msg['descripcion']}"/>
+                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooEvalCompetencias"  value=" "/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
                         </fieldset> 
 
-                        <fieldset style="position: absolute; left: 450px; top: 260px; font-size: 10px; width: 392px; height: 252px; border-radius: 10px; ">
-                            <legend style="font-size: 12px; color: blue"><strong>#{msg['tiposDetalles']}</strong></legend>
+                        <fieldset style="position: absolute; left: 450px; top: 255px; width: 392px; height: 247px; border-radius: 10px; ">
+                            <legend style="color: blue"><strong>#{msg['tiposDetalles']}</strong></legend>
 
-                            <p:dataTable id="datosTipoDetalle" var="infoTD" rowKey="#{infoTD.secuencia}" rowIndexVar="indiceTD" style="font-size: 10px; border: 1px; text-align: left;width: 370px"
+                            <p:dataTable id="datosTipoDetalle" var="infoTD" rowKey="#{infoTD.secuencia}" rowIndexVar="indiceTD" style="border: 1px; text-align: left;width: 370px"
                                          value="#{controlCargo.listaTiposDetalles}" scrollable="true" scrollHeight="#{controlCargo.altoTablaTipoDetalle}" scrollWidth="385"
-                                         filteredValue="#{controlCargo.filtrarListaTiposDetalles}" emptyMessage="#{msg['vacio']}"
-                                         editable="true" editMode="cell">
+                                         filteredValue="#{controlCargo.filtrarListaTiposDetalles}" emptyMessage="#{msg['vacio']}" selection="#{controlCargo.tipoDetalleTablaSeleccionado}" selectionMode="single"
+                                         editable="true" editMode="cell" liveScroll="true" scrollRows="5" >
 
                                 <p:ajax event="filter" listener="#{controlCargo.eventoFiltrar()}"/>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['codigo']}" sortBy="#{infoTD.codigo}" filterBy="#{infoTD.codigo}" filterMatchMode="contains"  
-                                          id="tipoDetalleCodigo" width="80" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['codigo']}" sortBy="#{infoTD.codigo}" filterBy="#{infoTD.codigo}" filterMatchMode="contains"  
+                                           id="tipoDetalleCodigo" width="80" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoTD.codigo}" >
@@ -423,31 +429,31 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['codigo']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['descripcion']}" sortBy="#{infoTD.descripcion}" filterBy="#{infoTD.descripcion}" filterMatchMode="contains"  
-                                          id="tipoDetalleDescripcion" width="100" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['descripcion']}" sortBy="#{infoTD.descripcion}" filterBy="#{infoTD.descripcion}" filterMatchMode="contains"  
+                                           id="tipoDetalleDescripcion" width="100" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoTD.descripcion}" style="text-transform: uppercase">
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{infoTD.descripcion}" onclick="select();"  id="editarDescripcionTipoDetalle" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{infoTD.descripcion}" maxlength="40" onclick="select();"  id="editarDescripcionTipoDetalle" style=" border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.procesoModificacionTipoDetalle(indiceTD)}" process="@this" update="editarDescripcionTipoDetalle"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndiceTipoDetalle(indiceTD,1)}" process="@this"/> 
                                             </p:inputText>
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <h:outputText value="#{msg['descripcion']}" />
+                                        <h:outputText value="" />
                                     </f:facet>
                                 </p:column>
 
-                                <p:column style="font-size: 11px" headerText="#{msg['enfoque']}" sortBy="#{infoTD.enfoque.descripcion}" filterBy="#{infoTD.enfoque.descripcion}" filterMatchMode="contains"  
-                                          id="tipoDetalleEnfoque"  width="100" filterStyle="display: none; visibility: hidden;"  >  
+                                <p:column  headerText="#{msg['enfoque']}" sortBy="#{infoTD.enfoque.descripcion}" filterBy="#{infoTD.enfoque.descripcion}" filterMatchMode="contains"  
+                                           id="tipoDetalleEnfoque"  width="100" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{infoTD.enfoque.descripcion}" style="text-transform: uppercase">
@@ -462,17 +468,17 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px;border: none; color: blue" id="fooEnfoque"  process="@this" value="#{msg['enfoque']}"/>
+                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooEnfoque"  value=" "/>
                                     </f:facet>
                                 </p:column>
 
                             </p:dataTable>  
 
 
-                            <fieldset style="position: absolute; left: 10px; top: 130px; font-size: 10px; width: 365px; height: 112px; border-radius: 10px; border: none">
-                                <h:outputText id="legendDetalleCargo" style="font-size: 12px; color: blue; font-weight: bold" value="#{controlCargo.legendDetalleCargo}"/>
-                                <p:inputTextarea id="detalleCargo" disabled="#{controlCargo.activoDetalleCargo}" onclick="select();" value="#{controlCargo.detalleCargo.descripcion}" style="position: absolute;left: 5px; top: 20px;height: 85px;width: 360px;text-transform: uppercase" styleClass="textarea">
-                                    <p:ajax event="select" process="@this" listener="#{controlCargo.validarExistenciaInformacionDetalleCargo()}"/>
+                            <fieldset style="position: absolute; left: 10px; top: 130px; width: 365px; height: 112px; border-radius: 10px; border: none">
+                                <h:outputText id="legendDetalleCargo"  style="color: blue; font-weight: bold" value="#{controlCargo.legendDetalleCargo}"/>
+                                <p:inputTextarea id="detalleCargo" maxlength="4000" disabled="#{controlCargo.activoDetalleCargo}" onclick="select();" value="#{controlCargo.detalleCargo.descripcion}" style="position: absolute;left: 5px; top: 20px;height: 85px;width: 360px;text-transform: uppercase" styleClass="textarea">
+                                    <p:ajax event="focus" process="@this" listener="#{controlCargo.validarExistenciaInformacionDetalleCargo()}"/>
                                     <p:ajax event="change" process="@this" listener="#{controlCargo.modificacionesDetalleCargo()}"/>
                                 </p:inputTextarea>
                             </fieldset> 
@@ -483,19 +489,19 @@
 
 
                     <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCargo.guardarGeneral()}"  style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCargo.cancelarModificacionGeneral()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCargo.guardarGeneral()}"  style="position: absolute; top: 50px; left: 195px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlCargo.cancelarModificacionGeneral()}" style="position: absolute; top: 50px; left: 235px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 280px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarGuardarSalida" header="#{msg['atencion']}" widgetVar="confirmarGuardarSalida"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 20px; top: 10px;"  />
                         <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlCargo.guardarYSalir()}" action="#{controlCargo.valorPaginaAnterior()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlCargo.cancelarYSalir()}" action="#{controlCargo.valorPaginaAnterior()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlCargo.guardarYSalir()}" action="#{controlCargo.valorPaginaAnterior()}" style="position: absolute; top: 50px; left: 195px" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarGuardarSalida.hide();" actionListener="#{controlCargo.cancelarYSalir()}" action="#{controlCargo.valorPaginaAnterior()}" style="position: absolute; top: 50px; left: 235px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardarSalida.hide();" style="position: absolute; top: 50px; left: 280px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="verificarRastrosTablas" widgetVar="verificarRastrosTablas" header="#{msg['rpter']}" resizable="false" draggable="false" modal="true" height="130" width="530px" style="font-size: 12px" >
@@ -585,24 +591,24 @@
 
                     <p:dialog id="ingresoNuevoDetalleCargo" header="#{msg['atencion']}" widgetVar="ingresoNuevoDetalleCargo"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="font-size: 12px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="#{msg['ingresoNuevoDetalleCargo']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="#{msg['aceptar']}" onclick="ingresoNuevoDetalleCargo.hide();" actionListener="#{controlCargo.crearDetalleCargo()}" style="position: absolute; top: 60px; left: 190px" process="@this" />
-                        <p:commandButton value="#{msg['cancelar']}" onclick="ingresoNuevoDetalleCargo.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['ingresoNuevoDetalleCargo']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: left" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="ingresoNuevoDetalleCargo.hide();" actionListener="#{controlCargo.crearDetalleCargo()}" style="position: absolute; top: 55px; left: 160px" process="@this" />
+                        <p:commandButton value="#{msg['cancelar']}" onclick="ingresoNuevoDetalleCargo.hide();" style="position: absolute; top: 55px; left: 240px" process="@this" />
                     </p:dialog>
 
                     <p:dialog header="#{msg['buscarCargoD']}" widgetVar="BuscarCargoDialogo" draggable="false" resizable="false" closable="false" id="BuscarCargoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="600" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovBuscarCargo" style="font-size: 11px; width: 570px" var="buscarCargo" value="#{controlCargo.lovCargos}" rowKey="#{buscarCargo.secuencia}"
-                                     selection="#{controlCargo.cargoSeleccionado}" scrollWidth="586" selectionMode="single" widgetVar="lovBuscarCargo" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovBuscarCargo" style="width: 400px" var="buscarCargo" value="#{controlCargo.lovCargos}" rowKey="#{buscarCargo.secuencia}"
+                                     selection="#{controlCargo.cargoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovBuscarCargo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovCargos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarBC"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarCargo()}"  process="@this" onstart="lovBuscarCargo.clearFilters()" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarBC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovBuscarCargo.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovBuscarCargo.filter();" style="width:140px; position: relative; left: 5px;" />  
                             </f:facet>
 
-                            <p:column filterBy="#{buscarCargo.codigo}" filterMatchMode="contains">
+                            <p:column filterBy="#{buscarCargo.codigo}" width="80" filterStyle="width: 60px" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigo']}" />
                                 </f:facet>
@@ -615,25 +621,28 @@
                                 <h:outputText value="#{buscarCargo.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarBC" style="position: relative; left: 430px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();"  actionListener="#{controlCargo.actualizarCargo()}" update="lovBuscarCargo, aceptarBC, datosCargo" process="@this">
+                        
+                        <h:outputText id="infoRegistroCargo" value="#{controlCargo.infoRegistroCargo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarBC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();"  actionListener="#{controlCargo.actualizarCargo()}" update="lovBuscarCargo, aceptarBC, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasBC" style="position: relative; left: 430px" value="#{msg['atras']}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovBuscarCargo" process="@this">
+                        <p:commandButton id="atrasBC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovBuscarCargo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
 
                     <p:dialog header="#{msg['grupoSalarialD']}" widgetVar="GrupoSalarialDialogo" draggable="false" resizable="false" closable="false" id="GrupoSalarialDialogo"  
-                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovGrupoSalarial" style="font-size: 11px; width: 410px" var="grupoSalarial" value="#{controlCargo.lovGruposSalariales}" rowKey="#{grupoSalarial.secuencia}"
-                                     selection="#{controlCargo.grupoSalarialSeleccionado}" scrollWidth="410" selectionMode="single" widgetVar="lovGrupoSalarial" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovGrupoSalarial" style="width: 400px" var="grupoSalarial" value="#{controlCargo.lovGruposSalariales}" rowKey="#{grupoSalarial.secuencia}"
+                                     selection="#{controlCargo.grupoSalarialSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovGrupoSalarial" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovGruposSalariales}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarGS"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarGrupoSalarial()}"  process="@this" onstart="lovGrupoSalarial.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarGS']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovGrupoSalarial.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovGrupoSalarial.filter();" style="width:140px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{grupoSalarial.descripcion}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -642,28 +651,30 @@
                                 <h:outputText value="#{grupoSalarial.descripcion}" />
                             </p:column>
 
-                            <p:column filterBy="#{grupoSalarial.salario}" filterMatchMode="contains">
+                            <p:column filterBy="#{grupoSalarial.salario}" width="100" filterStyle="width: 80px" filterMatchMode="contains">
                                 <f:facet name="header">
-                                    <h:outputText id="salarioGS" value="#{msg['salario']}" >
-                                        <f:convertNumber currencySymbol="$" for="salarioGS" type="currency" />
-                                    </h:outputText>
+                                    <h:outputText id="salarioGS" value="#{msg['salario']}" />
                                 </f:facet>
-                                <h:outputText value="#{grupoSalarial.salario}" />
+                                <h:outputText value="#{grupoSalarial.salario}" > 
+                                    <f:convertNumber currencySymbol="$" type="currency" />
+                                </h:outputText>
                             </p:column>
-
                         </p:dataTable>
-                        <p:commandButton id="aceptarGS" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.actualizarGrupoSalarial()}" update="lovGrupoSalarial, aceptarGS, datosCargo" process="@this">
+                        
+                        <h:outputText id="infoRegistroGrupoSalarial" value="#{controlCargo.infoRegistroGrupoSalarial}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarGS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.actualizarGrupoSalarial()}" update="lovGrupoSalarial, aceptarGS, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovGrupoSalarial:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasGS" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoSalarial()}" update="lovGrupoSalarial" process="@this">
+                        <p:commandButton id="atrasGS" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoSalarial()}" update="lovGrupoSalarial" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovGrupoSalarial:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['grupoViaticoD']}" widgetVar="GrupoViaticoDialogo" draggable="false" resizable="false" closable="false" id="GrupoViaticoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="600" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovGrupoViatico" style="font-size: 11px; width: 570px" var="grupoViatico" value="#{controlCargo.lovGruposViaticos}" rowKey="#{grupoViatico.secuencia}"
-                                     selection="#{controlCargo.grupoViaticoSeleccionado}" scrollWidth="586" selectionMode="single" widgetVar="lovGrupoViatico" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovGrupoViatico" style="width: 400px" var="grupoViatico" value="#{controlCargo.lovGruposViaticos}" rowKey="#{grupoViatico.secuencia}"
+                                     selection="#{controlCargo.grupoViaticoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovGrupoViatico" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovGruposViaticos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarGV"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarGrupoViatico()}"  process="@this" onstart="lovGrupoViatico.clearFilters()" />
@@ -678,31 +689,33 @@
                                 </f:facet>
                                 <h:outputText value="#{grupoViatico.descripcion}" />
                             </p:column>
-                            <p:column filterBy="#{grupoViatico.codigo}" filterMatchMode="contains">
+                            <p:column filterBy="#{grupoViatico.codigo}" width="90" filterStyle="width: 70px" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigo']}" />
                                 </f:facet>
                                 <h:outputText value="#{grupoViatico.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarGV" style="position: relative; left: 430px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();"  actionListener="#{controlCargo.actualizarGrupoViatico()}" update="lovGrupoViatico, aceptarGV, datosCargo" process="@this">
+                        <h:outputText id="infoRegistroGrupoViatico" value="#{controlCargo.infoRegistroGrupoViatico}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarGV" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();"  actionListener="#{controlCargo.actualizarGrupoViatico()}" update="lovGrupoViatico, aceptarGV, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovGrupoViatico:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasGV" style="position: relative; left: 430px" value="#{msg['atras']}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovGrupoViatico" process="@this">
+                        <p:commandButton id="atrasGV" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();" actionListener="#{controlCargo.cancelarCambioGrupoViatico()}" update="lovGrupoViatico" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovGrupoViatico:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['procesoProductivoD']}" widgetVar="ProcesoProductivoDialogo" draggable="false" resizable="false" closable="false" id="ProcesoProductivoDialogo"  
-                              showEffect="fade" hideEffect="fade" width="600" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovProcesoProductivo" style="font-size: 11px; width: 570px" var="procesoProductivo" value="#{controlCargo.lovProcesosProductivos}" rowKey="#{procesoProductivo.secuencia}"
-                                     selection="#{controlCargo.procesoProductivoSeleccionado}" scrollWidth="586" selectionMode="single" widgetVar="lovProcesoProductivo" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovProcesoProductivo" style="width: 400px" var="procesoProductivo" value="#{controlCargo.lovProcesosProductivos}" rowKey="#{procesoProductivo.secuencia}"
+                                     selection="#{controlCargo.procesoProductivoSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovProcesoProductivo" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovProcesosProductivos}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarPP"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarProcesoProductivo()}"  process="@this" onstart="lovProcesoProductivo.clearFilters()" />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarPP']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovProcesoProductivo.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovProcesoProductivo.filter();" style="width:140px; position: relative; left: 20px;" />  
                             </f:facet>
 
                             <p:column filterBy="#{procesoProductivo.descripcion}" filterMatchMode="contains">
@@ -711,31 +724,34 @@
                                 </f:facet>
                                 <h:outputText value="#{procesoProductivo.descripcion}" />
                             </p:column>
-                            <p:column filterBy="#{procesoProductivo.codigo}" filterMatchMode="contains">
+                            <p:column filterBy="#{procesoProductivo.codigo}" width="90" filterStyle="width: 70px" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigo']}" />
                                 </f:facet>
                                 <h:outputText value="#{procesoProductivo.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarPP" style="position: relative; left: 430px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();"  actionListener="#{controlCargo.actualizarProcesoProductivo()}" update="lovProcesoProductivo, aceptarPP, datosCargo" process="@this">
+                        
+                        <h:outputText id="infoRegistroProcesoProductivo" value="#{controlCargo.infoRegistroProcesoProductivo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarPP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();"  actionListener="#{controlCargo.actualizarProcesoProductivo()}" update="lovProcesoProductivo, aceptarPP, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovProcesoProductivo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasPP" style="position: relative; left: 430px" value="#{msg['atras']}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();" actionListener="#{controlCargo.cancelarCambioProcesoProductivo()}" update="lovProcesoProductivo" process="@this">
+                        <p:commandButton id="atrasPP" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();" actionListener="#{controlCargo.cancelarCambioProcesoProductivo()}" update="lovProcesoProductivo" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovProcesoProductivo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['tipoEmpresaD']}" widgetVar="TipoEmpresaDialogo" draggable="false" resizable="false" closable="false" id="TipoEmpresaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovTipoEmpresa" style="font-size: 11px; width: 410px" var="tipoEmpresa" value="#{controlCargo.lovTiposEmpresas}" rowKey="#{tipoEmpresa.secuencia}"
-                                     selection="#{controlCargo.tipoEmpresaSeleccionado}" scrollWidth="410" selectionMode="single" widgetVar="lovTipoEmpresa" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true">
+                        <p:dataTable id="lovTipoEmpresa" style="width: 400px" var="tipoEmpresa" value="#{controlCargo.lovTiposEmpresas}" rowKey="#{tipoEmpresa.secuencia}"
+                                     selection="#{controlCargo.tipoEmpresaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovTipoEmpresa" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovTiposEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarTE"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarTipoEmpresa()}"  process="@this" onstart="lovTipoEmpresa.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarTE']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovTipoEmpresa.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovTipoEmpresa.filter();" style="width:140px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{tipoEmpresa.codigo}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -750,24 +766,27 @@
                                 <h:outputText value="#{tipoEmpresa.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarTE" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.actualizarTipoEmpresa()}" update="lovTipoEmpresa, aceptarTE, datosSueldoMercado" process="@this">
+                        
+                        <h:outputText id="infoRegistroTipoEmpresa" value="#{controlCargo.infoRegistroTipoEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.actualizarTipoEmpresa()}" update="lovTipoEmpresa, aceptarTE, datosSueldoMercado" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovTipoEmpresa:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.cancelarCambioTipoEmpresa()}" update="lovTipoEmpresa" process="@this">
+                        <p:commandButton id="atrasTE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.cancelarCambioTipoEmpresa()}" update="lovTipoEmpresa" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovTipoEmpresa:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['evalCompetenciantidadD']}" widgetVar="EvalCompetenciaDialogo" draggable="false" resizable="false" closable="false" id="EvalCompetenciaDialogo"  
-                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEvalCompetencia" style="font-size: 11px; width: 410px" var="evalCompetencia" value="#{controlCargo.lovEvalCompetencias}" rowKey="#{evalCompetencia.secuencia}"
-                                     selection="#{controlCargo.evalCompetenciaSeleccionado}" scrollWidth="410" selectionMode="single" widgetVar="lovEvalCompetencia" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovEvalCompetencia" style="width: 400px" var="evalCompetencia" value="#{controlCargo.lovEvalCompetencias}" rowKey="#{evalCompetencia.secuencia}"
+                                     selection="#{controlCargo.evalCompetenciaSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovEvalCompetencia" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovEvalCompetencias}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarEC"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEvalCompetencia()}"  process="@this" onstart="lovEvalCompetencia.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEC']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEvalCompetencia.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEvalCompetencia.filter();" style="width:140px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{evalCompetencia.codigo}" filterMatchMode="contains">
                                 <f:facet name="header">
@@ -782,26 +801,29 @@
                                 <h:outputText value="#{evalCompetencia.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEC" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.actualizarEvalCompetencia()}" update="lovEvalCompetencia, aceptarEC, datosCompetenciaCargo" process="@this">
+                        
+                        <h:outputText id="infoRegistroEval" value="#{controlCargo.infoRegistroEval}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarEC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.actualizarEvalCompetencia()}" update="lovEvalCompetencia, aceptarEC, datosCompetenciaCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEvalCompetencia:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.cancelarCambioEvalCompetencia()}" update="lovEvalCompetencia" process="@this">
+                        <p:commandButton id="atrasEC" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.cancelarCambioEvalCompetencia()}" update="lovEvalCompetencia" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEvalCompetencia:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
                     <p:dialog header="#{msg['enfoqueD']}" widgetVar="EnfoqueDialogo" draggable="false" resizable="false" closable="false" id="EnfoqueDialogo"  
-                              showEffect="fade" hideEffect="fade" width="435" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEnfoque" style="font-size: 11px; width: 410px" var="enfoque" value="#{controlCargo.lovEnfoques}" rowKey="#{enfoque.secuencia}"
-                                     selection="#{controlCargo.enfoqueSeleccionado}" scrollWidth="410" selectionMode="single" widgetVar="lovEnfoque" scrollable="true" scrollHeight="250" 
+                              showEffect="fade" hideEffect="fade" width="431" modal="true" >
+                        <p:dataTable id="lovEnfoque" style="width: 400px" var="enfoque" value="#{controlCargo.lovEnfoques}" rowKey="#{enfoque.secuencia}"
+                                     selection="#{controlCargo.enfoqueSeleccionado}" scrollWidth="415" selectionMode="single" widgetVar="lovEnfoque" scrollable="true" scrollHeight="250" 
                                      filteredValue="#{controlCargo.filtrarLovEnfoques}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarE"/>
                             <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEnfoque()}"  process="@this" onstart="lovEnfoque.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarE']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 70px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovFormula.filter();" style="width:140px; position: relative; left: 10px;" />  
                             </f:facet>
-                            <p:column filterBy="#{enfoque.codigo}" filterMatchMode="contains">
+                            <p:column filterBy="#{enfoque.codigo}" width="80" filterStyle="width: 60px" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="#{msg['codigo']}" />
                                 </f:facet>
@@ -814,24 +836,28 @@
                                 <h:outputText value="#{enfoque.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarE" style="position: relative; left: 190px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.actualizarEnfoque()}" update="lovEnfoque, aceptarE, datosTipoDetalle" process="@this">
+                        
+                        <h:outputText id="infoRegistroEnfoque" value="#{controlCargo.infoRegistroEnfoque}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.actualizarEnfoque()}" update="lovEnfoque, aceptarE, datosTipoDetalle" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEnfoque:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.cancelarCambioEnfoque()}" update="lovEnfoque" process="@this">
+                        <p:commandButton id="atrasE" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.cancelarCambioEnfoque()}" update="lovEnfoque" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEnfoque:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
 
 
                     <p:dialog header="#{msg['empresasD']}" widgetVar="EmpresasDialogo" draggable="false" resizable="false" closable="false" id="EmpresasDialogo"  
-                              showEffect="fade" hideEffect="fade" width="341" modal="true" style="font-size: 11px;">
-                        <p:dataTable id="lovEmpresas" style="font-size: 11px; width: 310px" var="empresa" value="#{controlCargo.listaEmpresas}" rowKey="#{empresa.secuencia}"
-                                     selection="#{controlCargo.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="330" scrollHeight="250"
+                              showEffect="fade" hideEffect="fade" width="341" modal="true" >
+                        <p:dataTable id="lovEmpresas" style="width: 310px" var="empresa" value="#{controlCargo.listaEmpresas}" rowKey="#{empresa.secuencia}"
+                                     selection="#{controlCargo.empresaSeleccionada}" selectionMode="single" widgetVar="lovEmpresas" scrollable="true" scrollWidth="325" scrollHeight="250"
                                      filteredValue="#{controlCargo.filtrarListaEmpresas}" emptyMessage="#{msg['lovvacio']}">              
                             <p:ajax event="rowSelect" listener="#{controlCargo.activarAceptar()}" update=":form:aceptarEM"/>
+                            <p:ajax event="rowDblselect" listener="#{controlCargo.actualizarEmpresa()}"  process="@this" onstart="lovEmpresas.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarEM']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 10px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovEmpresas.filter();" style="width:100px; position: relative; left: 30px;" />  
                             </f:facet>
                             <p:column filterBy="#{empresa.nit}" width="60" filterMatchMode="contains" filterStyle="width: 50px">
                                 <f:facet name="header">
@@ -846,10 +872,13 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarEM" style="position: relative; left: 200px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" update="aceptarEM" process="@this">
+                        
+                        <h:outputText id="infoRegistroEmpresa" value="#{controlCargo.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        
+                        <p:commandButton id="aceptarEM" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" update="aceptarEM" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEmpresas:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasEM" style="position: relative; left: 200px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlCargo.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this">
+                        <p:commandButton id="atrasEM" style="position: relative; left: 150px" value="#{msg['atras']}" onclick="EmpresasDialogo.hide(), lovEmpresas.clearFilters();" actionListener="#{controlCargo.cancelarCambioEmpresa()}" update="lovEmpresas" process="@this" icon="ui-icon-arrowreturnthick-1-w">
                             <p:resetInput target=":form:lovEmpresas:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -876,24 +905,24 @@
                         <p:commandButton value="#{msg['tiposDetalles']}" onclick="verificarNuevoRegistro.hide();" style=";width: 300px;position: absolute; left: 220px; top: 90px;"  actionListener="#{controlCargo.dispararDialogoNuevoTipoDetalle()}" disabled="#{controlCargo.activoTipoDetalle}" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="NuevoRegistroCargo" header="#{msg['nuevoregistroC']}" widgetVar="NuevoRegistroCargo" closable="false" resizable="false"  draggable="false" modal="true" height="550" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoC']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="NuevoRegistroCargo" header="#{msg['nuevoregistroC']}" widgetVar="NuevoRegistroCargo" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoC']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevoCargo" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoNC']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['codigoNC']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="nuevoCargoCodigo" onclick="select();" value="#{controlCargo.nuevoCargo.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;">
                                 <p:ajax event="change" update="nuevoCargoCodigo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['codigo']}" for="nuevoCargoCodigo"/>
 
-                            <strong><h:outputText value="#{msg['nombreNC']}" style="font-size: 14px; position: absolute; top: 115px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoNombre" maxlength="50" onclick="select();" value="#{controlCargo.nuevoCargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['nombreNC']}" style="position: absolute; top: 105px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoNombre" maxlength="50" onclick="select();" value="#{controlCargo.nuevoCargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoCargoNombre"/>
                             </p:inputText>
                             <p:watermark value="#{msg['descripcion']}" for="nuevoCargoNombre"/>
 
-                            <strong><h:outputText value="#{msg['grupoSalarialNC']}" style="font-size: 14px; position: absolute; top: 155px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoGrupoSalarial" onclick="select();" value="#{controlCargo.nuevoCargo.gruposalarial.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['grupoSalarialNC']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoGrupoSalarial" onclick="select();" value="#{controlCargo.nuevoCargo.gruposalarial.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indice,0,1,0)}" process="@this" update="nuevoCargoGrupoSalarial"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(1, 'GRUPOSALARIAL')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoCargo('GRUPOSALARIAL', controlCargo.nuevoCargo.gruposalarial.descripcion, 1)}" />
@@ -901,159 +930,159 @@
                             <p:watermark value="#{msg['grupoSalarial']}" for="nuevoCargoGrupoSalarial"/>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 150px;  " id="btnNuevoGrupoSalarialCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,0,1,0)}"/>   
 
-                            <strong><h:outputText value="#{msg['salarioNC']}" style="font-size: 14px; position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoSalario" onclick="select();" readonly="true" value="#{controlCargo.nuevoCargo.gruposalarial.salario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 190px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['salarioNC']}" style="position: absolute; top: 165px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoSalario" onclick="select();" readonly="true" value="#{controlCargo.nuevoCargo.gruposalarial.salario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 160px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoCargoSalario"/>
                                 <f:convertNumber currencySymbol="$" for="nuevoCargoSalario" type="currency" />
                             </p:inputText>
                             <p:watermark value="#{msg['salario']}" for="nuevoCargoSalario"/>
 
-                            <strong><h:outputText value="#{msg['sueldoMinimoNC']}" style="font-size: 14px; position: absolute; top: 235px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoSueldoMinimo" onclick="select();" value="#{controlCargo.nuevoCargo.sueldominimo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 230px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMinimoNC']}" style="position: absolute; top: 195px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoSueldoMinimo" onclick="select();" value="#{controlCargo.nuevoCargo.sueldominimo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 190px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoCargoSueldoMinimo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMinimo']}" for="nuevoCargoSueldoMinimo"/>
 
-                            <strong><h:outputText value="#{msg['sueldoMaximoNC']}" style="font-size: 14px; position: absolute; top: 275px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoSueldoMaximo" onclick="select();" value="#{controlCargo.nuevoCargo.sueldomaximo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMaximoNC']}" style="position: absolute; top: 225px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoSueldoMaximo" onclick="select();" value="#{controlCargo.nuevoCargo.sueldomaximo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoCargoSueldoMaximo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMaximo']}" for="nuevoCargoSueldoMaximo"/>
 
-                            <strong><h:outputText value="#{msg['grupoViaticoNC']}" style="font-size: 14px; position: absolute; top: 315px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoGrupoViatico" onclick="select();" value="#{controlCargo.nuevoCargo.grupoviatico.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 310px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['grupoViaticoNC']}" style="position: absolute; top: 255px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoGrupoViatico" onclick="select();" value="#{controlCargo.nuevoCargo.grupoviatico.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 250px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indice,1,1,0)}" process="@this" update="nuevoCargoGrupoViatico"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(1, 'GRUPOVIATICO')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoCargo('GRUPOVIATICO', controlCargo.nuevoCargo.grupoviatico.descripcion, 1)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['grupoViatico']}" for="nuevoCargoGrupoViatico"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 310px;  " id="btnNuevoGrupoViaticoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,1,1,0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 250px;  " id="btnNuevoGrupoViaticoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,1,1,0)}"/>   
 
 
-                            <strong><h:outputText value="#{msg['cargoRotativoNC']}" style="font-size: 14px; position: absolute; top: 355px; left: 50px" /></strong>
-                            <p:selectBooleanCheckbox id="nuevoCargoCargoRotativo"  value="#{controlCargo.nuevoCargo.checkCargoRotativo}" style="alignment-adjust: central;position: absolute; top: 350px; left: 200px">  
+                            <strong><h:outputText value="#{msg['cargoRotativoNC']}" style="position: absolute; top: 285px; left: 50px" /></strong>
+                            <p:selectBooleanCheckbox id="nuevoCargoCargoRotativo"  value="#{controlCargo.nuevoCargo.checkCargoRotativo}" style="alignment-adjust: central;position: absolute; top: 280px; left: 200px">  
                                 <p:ajax event="change" update="nuevoCargoCargoRotativo"/>
                             </p:selectBooleanCheckbox>  
 
-                            <strong><h:outputText value="#{msg['jefeNC']}" style="font-size: 14px; position: absolute; top: 395px; left: 50px" /></strong>                            
-                            <p:selectBooleanCheckbox id="nuevoCargoJefe" value="#{controlCargo.nuevoCargo.chechJefe}" style="alignment-adjust: central;position: absolute; top: 390px; left: 200px">  
+                            <strong><h:outputText value="#{msg['jefeNC']}" style="position: absolute; top: 315px; left: 50px" /></strong>                            
+                            <p:selectBooleanCheckbox id="nuevoCargoJefe" value="#{controlCargo.nuevoCargo.chechJefe}" style="alignment-adjust: central;position: absolute; top: 310px; left: 200px">  
                                 <p:ajax event="change" update="nuevoCargoJefe"/>
                             </p:selectBooleanCheckbox>  
 
-                            <strong><h:outputText value="#{msg['procesoProductivoNC']}" style="font-size: 14px; position: absolute; top: 435px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoProcesoProductivo" onclick="select();" value="#{controlCargo.nuevoCargo.procesoproductivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 430px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['procesoProductivoNC']}" style="position: absolute; top: 345px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoProcesoProductivo" onclick="select();" value="#{controlCargo.nuevoCargo.procesoproductivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 340px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indice,2,1,0)}" process="@this" update="nuevoCargoProcesoProductivo"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(1, 'PROCESOPRODUCTIVO')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoCargo('PROCESOPRODUCTIVO', controlCargo.nuevoCargo.procesoproductivo.descripcion, 1)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['procesoProductivo']}" for="nuevoCargoProcesoProductivo"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 430px;  " id="btnNuevoProcesoProductivoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,2,1,0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 340px;  " id="btnNuevoProcesoProductivoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,2,1,0)}"/>   
 
-                            <strong><h:outputText value="#{msg['codigoAlternativoNC']}" style="font-size: 14px; position: absolute; top: 475px; left: 50px" /></strong>
-                            <p:inputText id="nuevoCargoCodigoAlternativo" maxlength="20" onclick="select();" value="#{controlCargo.nuevoCargo.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 470px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['codigoAlternativoNC']}" style="position: absolute; top: 375px; left: 50px" /></strong>
+                            <p:inputText id="nuevoCargoCodigoAlternativo" maxlength="20" onclick="select();" value="#{controlCargo.nuevoCargo.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 370px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoCargoCodigoAlternativo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['codigoAlternativo']}" for="nuevoCargoCodigoAlternativo"/>
 
-                            <p:commandButton id="limpiarNC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 510px;" actionListener="#{controlCargo.limpiarNuevaCargo()}" update="nuevoCargo" process="@this"/>
-                            <p:commandButton id="aceptarNC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 510px;"  actionListener="#{controlCargo.agregarNuevoCargo()}" process="@this"  />
-                            <p:commandButton id="cancelarNC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 510px;" actionListener="#{controlCargo.limpiarNuevaCargo()}" update="nuevoCargo" onclick="NuevoRegistroCargo.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarNC" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 420px;" actionListener="#{controlCargo.limpiarNuevaCargo()}" update="nuevoCargo" process="@this"/>
+                            <p:commandButton id="aceptarNC" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 420px;"  actionListener="#{controlCargo.agregarNuevoCargo()}" process="@this"  />
+                            <p:commandButton id="cancelarNC" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style=" position: absolute; left: 280px; top: 420px;" actionListener="#{controlCargo.limpiarNuevaCargo()}" update="nuevoCargo" onclick="NuevoRegistroCargo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
-                    <p:dialog id="DuplicarRegistroCargo" header="#{msg['duplicarregistroC']}" widgetVar="DuplicarRegistroCargo" closable="false" resizable="false"  draggable="false" modal="true" height="550" width="400" style="font-size: 12px; padding: 0px">  
+                    <p:dialog id="DuplicarRegistroCargo" header="#{msg['duplicarregistroC']}" widgetVar="DuplicarRegistroCargo" closable="false" resizable="false"  draggable="false" modal="true" height="450" width="400" style="font-size: 12px; padding: 0px">  
 
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoC']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoC']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarCargo" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoNC']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['codigoNC']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="duplicarCargoCodigo" onclick="select();" value="#{controlCargo.duplicarCargo.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;">
                                 <p:ajax event="change" update="duplicarCargoCodigo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['codigo']}" for="duplicarCargoCodigo"/>
 
-                            <strong><h:outputText value="#{msg['nombreNC']}" style="font-size: 14px; position: absolute; top: 115px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoNombre" maxlength="50" onclick="select();" value="#{controlCargo.duplicarCargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['nombreNC']}" style="position: absolute; top: 105px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoNombre" maxlength="50" onclick="select();" value="#{controlCargo.duplicarCargo.nombre}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarCargoNombre"/>
                             </p:inputText>
                             <p:watermark value="#{msg['descripcion']}" for="duplicarCargoNombre"/>
 
-                            <strong><h:outputText value="#{msg['grupoSalarialNC']}" style="font-size: 14px; position: absolute; top: 155px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoGrupoSalarial" onclick="select();" value="#{controlCargo.duplicarCargo.gruposalarial.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['grupoSalarialNC']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoGrupoSalarial" onclick="select();" value="#{controlCargo.duplicarCargo.gruposalarial.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indice,0,2,0)}" process="@this" update="duplicarCargoGrupoSalarial"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(2, 'GRUPOSALARIAL')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoCargo('GRUPOSALARIAL', controlCargo.duplicarCargo.gruposalarial.descripcion, 2)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['grupoSalarial']}" for="duplicarCargoGrupoSalarial"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 150px;  " id="btnDuplicarGrupoSalarialCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,0,2,0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 130px;  " id="btnDuplicarGrupoSalarialCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,0,2,0)}"/>   
 
-                            <strong><h:outputText value="#{msg['salarioNC']}" style="font-size: 14px; position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoSalario" onclick="select();" readonly="true" value="#{controlCargo.duplicarCargo.gruposalarial.salario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 190px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['salarioNC']}" style="position: absolute; top: 165px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoSalario" onclick="select();" readonly="true" value="#{controlCargo.duplicarCargo.gruposalarial.salario}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 160px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarCargoSalario"/>
                                 <f:convertNumber currencySymbol="$" for="duplicarCargoSalario" type="currency" />
                             </p:inputText>
                             <p:watermark value="#{msg['salario']}" for="duplicarCargoSalario"/>
 
-                            <strong><h:outputText value="#{msg['sueldoMinimoNC']}" style="font-size: 14px; position: absolute; top: 235px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoSueldoMinimo" onclick="select();" value="#{controlCargo.duplicarCargo.sueldominimo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 230px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMinimoNC']}" style="position: absolute; top: 195px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoSueldoMinimo" onclick="select();" value="#{controlCargo.duplicarCargo.sueldominimo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 190px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarCargoSueldoMinimo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMinimo']}" for="duplicarCargoSueldoMinimo"/>
 
-                            <strong><h:outputText value="#{msg['sueldoMaximoNC']}" style="font-size: 14px; position: absolute; top: 275px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoSueldoMaximo" onclick="select();" value="#{controlCargo.duplicarCargo.sueldomaximo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 270px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMaximoNC']}" style="position: absolute; top: 225px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoSueldoMaximo" onclick="select();" value="#{controlCargo.duplicarCargo.sueldomaximo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 220px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarCargoSueldoMaximo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMaximo']}" for="duplicarCargoSueldoMaximo"/>
 
-                            <strong><h:outputText value="#{msg['grupoViaticoNC']}" style="font-size: 14px; position: absolute; top: 315px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoGrupoViatico" onclick="select();" value="#{controlCargo.duplicarCargo.grupoviatico.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 310px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['grupoViaticoNC']}" style="position: absolute; top: 255px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoGrupoViatico" onclick="select();" value="#{controlCargo.duplicarCargo.grupoviatico.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 250px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indice,1,2,0)}" process="@this" update="duplicarCargoGrupoViatico"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(2, 'GRUPOVIATICO')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoCargo('GRUPOVIATICO', controlCargo.duplicarCargo.grupoviatico.descripcion, 2)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['grupoViatico']}" for="duplicarCargoGrupoViatico"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 310px;  " id="btnDuplicarGrupoViaticoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,1,2,0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 250px;  " id="btnDuplicarGrupoViaticoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,1,2,0)}"/>   
 
-                            <strong><h:outputText value="#{msg['cargoRotativoNC']}" style="font-size: 14px; position: absolute; top: 355px; left: 50px" /></strong>
-                            <p:selectBooleanCheckbox id="duplicarCargoCargoRotativo"  value="#{controlCargo.duplicarCargo.checkCargoRotativo}" style="alignment-adjust: central;position: absolute; top: 350px; left: 200px">  
+                            <strong><h:outputText value="#{msg['cargoRotativoNC']}" style="position: absolute; top: 285px; left: 50px" /></strong>
+                            <p:selectBooleanCheckbox id="duplicarCargoCargoRotativo"  value="#{controlCargo.duplicarCargo.checkCargoRotativo}" style="alignment-adjust: central;position: absolute; top: 280px; left: 200px">  
                                 <p:ajax event="change" update="duplicarCargoCargoRotativo"/>
                             </p:selectBooleanCheckbox>  
 
-                            <strong><h:outputText value="#{msg['jefeNC']}" style="font-size: 14px; position: absolute; top: 395px; left: 50px" /></strong>                            
-                            <p:selectBooleanCheckbox id="duplicarCargoJefe" value="#{controlCargo.duplicarCargo.chechJefe}" style="alignment-adjust: central;position: absolute; top: 390px; left: 200px">  
+                            <strong><h:outputText value="#{msg['jefeNC']}" style="position: absolute; top: 315px; left: 50px" /></strong>                            
+                            <p:selectBooleanCheckbox id="duplicarCargoJefe" value="#{controlCargo.duplicarCargo.chechJefe}" style="alignment-adjust: central;position: absolute; top: 310px; left: 200px">  
                                 <p:ajax event="change" update="duplicarCargoJefe"/>
                             </p:selectBooleanCheckbox>  
 
-                            <strong><h:outputText value="#{msg['procesoProductivoNC']}" style="font-size: 14px; position: absolute; top: 435px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoProcesoProductivo" onclick="select();" value="#{controlCargo.duplicarCargo.procesoproductivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 430px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['procesoProductivoNC']}" style="position: absolute; top: 345px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoProcesoProductivo" onclick="select();" value="#{controlCargo.duplicarCargo.procesoproductivo.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 340px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indice,2,2,0)}" process="@this" update="duplicarCargoProcesoProductivo"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(2, 'PROCESOPRODUCTIVO')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoCargo('PROCESOPRODUCTIVO', controlCargo.duplicarCargo.procesoproductivo.descripcion, 2)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['procesoProductivo']}" for="duplicarCargoProcesoProductivo"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 430px;  " id="btnDuplicarProcesoProductivoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,2,2,0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 340px;  " id="btnDuplicarProcesoProductivoCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indice,2,2,0)}"/>   
 
-                            <strong><h:outputText value="#{msg['codigoAlternativoNC']}" style="font-size: 14px; position: absolute; top: 475px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoCodigoAlternativo"  maxlength="20" onclick="select();" value="#{controlCargo.duplicarCargo.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 470px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['codigoAlternativoNC']}" style="position: absolute; top: 375px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoCodigoAlternativo"  maxlength="20" onclick="select();" value="#{controlCargo.duplicarCargo.codigoalternativo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 370px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarCargoCodigoAlternativo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['codigoAlternativo']}" for="duplicarCargoCodigoAlternativo"/>
 
-                            <p:commandButton id="limpiarDC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 510px;" actionListener="#{controlCargo.limpiarDuplicarCargo()}" update="duplicarCargo" process="@this"/>
-                            <p:commandButton id="agregarDC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 510px;"  actionListener="#{controlCargo.confirmarDuplicarCargo()}" process="@this"  />
-                            <p:commandButton id="cancelarDC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 510px;" actionListener="#{controlCargo.limpiarDuplicarCargo()}" update="duplicarCargo" onclick="DuplicarRegistroCargo.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDC" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 420px;" actionListener="#{controlCargo.limpiarDuplicarCargo()}" update="duplicarCargo" process="@this"/>
+                            <p:commandButton id="agregarDC" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 420px;"  actionListener="#{controlCargo.confirmarDuplicarCargo()}" process="@this"  />
+                            <p:commandButton id="cancelarDC" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 420px;" actionListener="#{controlCargo.limpiarDuplicarCargo()}" update="duplicarCargo" onclick="DuplicarRegistroCargo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
-                    <p:dialog id="NuevoRegistroSueldoMercado" header="#{msg['nuevoregistroSM']}" widgetVar="NuevoRegistroSueldoMercado" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoSM']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="NuevoRegistroSueldoMercado" header="#{msg['nuevoregistroSM']}" widgetVar="NuevoRegistroSueldoMercado" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoSM']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevoSueldoMercado" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['tipoEmpresaNSM']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['tipoEmpresaNSM']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="nuevoSueldoMercadoTipoEmpresa" onclick="select();" value="#{controlCargo.nuevoSueldoMercado.tipoempresa.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indiceSM,0,1,1)}" process="@this" update="nuevoSueldoMercadoTipoEmpresa"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(1, 'TIPOEMPRESA')}" />
@@ -1062,29 +1091,29 @@
                             <p:watermark value="#{msg['tipoEmpresa']}" for="nuevoSueldoMercadoTipoEmpresa"/>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 70px;  " id="btnNuevoTipoEmpresaSueldoMercado" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceSM,0,1,1)}"/>   
 
-                            <strong><h:outputText value="#{msg['sueldoMinimoNSM']}" style="font-size: 14px; position: absolute; top: 115px; left: 50px" /></strong>
-                            <p:inputText id="nuevoSueldoMercadoSalarioMinimo" onclick="select();" value="#{controlCargo.nuevoSueldoMercado.sueldomin}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMinimoNSM']}" style="position: absolute; top: 105px; left: 50px" /></strong>
+                            <p:inputText id="nuevoSueldoMercadoSalarioMinimo" onclick="select();" value="#{controlCargo.nuevoSueldoMercado.sueldomin}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoSueldoMercadoSalarioMinimo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMinimo']}" for="nuevoSueldoMercadoSalarioMinimo"/>
 
-                            <strong><h:outputText value="#{msg['sueldoMaximoNSM']}" style="font-size: 14px; position: absolute; top: 155px; left: 50px" /></strong>
-                            <p:inputText id="nuevoSueldoMercadoSalarioMaximo" onclick="select();" value="#{controlCargo.nuevoSueldoMercado.sueldomax}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMaximoNSM']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputText id="nuevoSueldoMercadoSalarioMaximo" onclick="select();" value="#{controlCargo.nuevoSueldoMercado.sueldomax}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoSueldoMercadoSalarioMaximo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMaximo']}" for="nuevoSueldoMercadoSalarioMaximo"/>
 
-                            <p:commandButton id="limpiarNSM" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 185px;" actionListener="#{controlCargo.limpiarNuevaSueldoMercado()}" update="nuevoSueldoMercado" process="@this"/>
-                            <p:commandButton id="aceptarNSM" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 185px;"  actionListener="#{controlCargo.agregarNuevoSueldoMercado()}" process="@this"  />
-                            <p:commandButton id="cancelarNSM" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 185px;" actionListener="#{controlCargo.limpiarNuevaSueldoMercado()}" update="nuevoSueldoMercado" onclick="NuevoRegistroSueldoMercado.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarNSM" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 165px;" actionListener="#{controlCargo.limpiarNuevaSueldoMercado()}" update="nuevoSueldoMercado" process="@this"/>
+                            <p:commandButton id="aceptarNSM" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 165px;"  actionListener="#{controlCargo.agregarNuevoSueldoMercado()}" process="@this"  />
+                            <p:commandButton id="cancelarNSM" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 165px;" actionListener="#{controlCargo.limpiarNuevaSueldoMercado()}" update="nuevoSueldoMercado" onclick="NuevoRegistroSueldoMercado.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistroSueldoMercado" header="#{msg['duplicarregistroSM']}" widgetVar="DuplicarRegistroSueldoMercado" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoSM']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="DuplicarRegistroSueldoMercado" header="#{msg['duplicarregistroSM']}" widgetVar="DuplicarRegistroSueldoMercado" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoSM']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="duplicarSueldoMercado" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['tipoEmpresaNSM']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['tipoEmpresaNSM']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="duplicarSueldoMercadoTipoEmpresa" onclick="select();" value="#{controlCargo.duplicarSueldoMercado.tipoempresa.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indiceSM,0,2,1)}" process="@this" update="duplicarSueldoMercadoTipoEmpresa"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(2, 'TIPOEMPRESA')}" />
@@ -1093,30 +1122,30 @@
                             <p:watermark value="#{msg['tipoEmpresa']}" for="duplicarSueldoMercadoTipoEmpresa"/>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 70px;  " id="btnDuplicarTipoEmpresaSueldoMercado" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceSM,0,2,1)}"/>   
 
-                            <strong><h:outputText value="#{msg['sueldoMinimoNSM']}" style="font-size: 14px; position: absolute; top: 115px; left: 50px" /></strong>
-                            <p:inputText id="duplicarSueldoMercadoSalarioMinimo" onclick="select();" value="#{controlCargo.duplicarSueldoMercado.sueldomin}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMinimoNSM']}" style="position: absolute; top: 105px; left: 50px" /></strong>
+                            <p:inputText id="duplicarSueldoMercadoSalarioMinimo" onclick="select();" value="#{controlCargo.duplicarSueldoMercado.sueldomin}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarSueldoMercadoSalarioMinimo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMinimo']}" for="duplicarSueldoMercadoSalarioMinimo"/>
 
-                            <strong><h:outputText value="#{msg['sueldoMaximoNSM']}" style="font-size: 14px; position: absolute; top: 155px; left: 50px" /></strong>
-                            <p:inputText id="duplicarSueldoMercadoSalarioMaximo" onclick="select();" value="#{controlCargo.duplicarSueldoMercado.sueldomax}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
+                            <strong><h:outputText value="#{msg['sueldoMaximoNSM']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputText id="duplicarSueldoMercadoSalarioMaximo" onclick="select();" value="#{controlCargo.duplicarSueldoMercado.sueldomax}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarSueldoMercadoSalarioMaximo"/>
                             </p:inputText>
                             <p:watermark value="#{msg['sueldoMaximo']}" for="duplicarSueldoMercadoSalarioMaximo"/>
 
-                            <p:commandButton id="limpiarDSM" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 185px;" actionListener="#{controlCargo.limpiarDuplicarSueldoMercado()}" update="duplicarSueldoMercado" process="@this"/>
-                            <p:commandButton id="aceptarDSM" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 185px;"  actionListener="#{controlCargo.confirmarDuplicarSueldoMercado()}" process="@this"/>
-                            <p:commandButton id="cancelarDSM" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 185px;" actionListener="#{controlCargo.limpiarDuplicarSueldoMercado()}" update="duplicarSueldoMercado" onclick="DuplicarRegistroSueldoMercado.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDSM" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 165px;" actionListener="#{controlCargo.limpiarDuplicarSueldoMercado()}" update="duplicarSueldoMercado" process="@this"/>
+                            <p:commandButton id="aceptarDSM" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 165px;"  actionListener="#{controlCargo.confirmarDuplicarSueldoMercado()}" process="@this"/>
+                            <p:commandButton id="cancelarDSM" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 165px;" actionListener="#{controlCargo.limpiarDuplicarSueldoMercado()}" update="duplicarSueldoMercado" onclick="DuplicarRegistroSueldoMercado.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
                     <p:dialog id="NuevoRegistroCompetenciaCargo" header="#{msg['nuevoregistroCC']}" widgetVar="NuevoRegistroCompetenciaCargo" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoCC']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoCC']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevoCompetenciaCargo" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['evalCompetenciaNCC']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['evalCompetenciaNCC']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="nuevoCompetenciaCargoEval" onclick="select();" value="#{controlCargo.nuevoCompetenciaCargo.evalcompetencia.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indiceCC,0,1,2)}" process="@this" update="nuevoCompetenciaCargoEval"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(1, 'EVALCOMPETENCIA')}" />
@@ -1125,17 +1154,17 @@
                             <p:watermark value="#{msg['decripNuevoCC']}" for="nuevoCompetenciaCargoEval"/>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 70px;  " id="btnNuevoEvalCompetenciaCompetenciaCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceCC,0,1,2)}"/>   
 
-                            <p:commandButton id="limpiarNCC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 115px;" actionListener="#{controlCargo.limpiarNuevaCompetenciaCargo()}" update="nuevoCompetenciaCargo" process="@this"/>
-                            <p:commandButton id="aceptarNCC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 115px;"  actionListener="#{controlCargo.agregarNuevoCompetenciaCargo()}" process="@this"  />
-                            <p:commandButton id="cancelarNCC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 115px;" actionListener="#{controlCargo.limpiarNuevaCompetenciaCargo()}" update="nuevoCompetenciaCargo" onclick="NuevoRegistroCompetenciaCargo.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarNCC" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 115px;" actionListener="#{controlCargo.limpiarNuevaCompetenciaCargo()}" update="nuevoCompetenciaCargo" process="@this"/>
+                            <p:commandButton id="aceptarNCC" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 115px;"  actionListener="#{controlCargo.agregarNuevoCompetenciaCargo()}" process="@this"  />
+                            <p:commandButton id="cancelarNCC" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 115px;" actionListener="#{controlCargo.limpiarNuevaCompetenciaCargo()}" update="nuevoCompetenciaCargo" onclick="NuevoRegistroCompetenciaCargo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <p:dialog id="DuplicarRegistroCompetenciaCargo" header="#{msg['duplicarregistroCC']}" widgetVar="DuplicarRegistroCompetenciaCargo" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoCC']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoCC']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="duplicarCompetenciaCargo" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['evalCompetenciaNCC']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['evalCompetenciaNCC']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="duplicarCompetenciaCargoEval" onclick="select();" value="#{controlCargo.duplicarCompetenciaCargo.evalcompetencia.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indiceSM,0,2,2)}" process="@this" update="duplicarCompetenciaCargoEval"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(2, 'EVALCOMPETENCIA')}" />
@@ -1145,71 +1174,71 @@
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 70px;  " id="btnDuplicarEvalCompetenciaCompetenciaCargo" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceSM,0,2,2)}"/>   
 
 
-                            <p:commandButton id="limpiarDCC" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 115px;" actionListener="#{controlCargo.limpiarDuplicarCompetenciaCargo()}" update="duplicarCompetenciaCargo" process="@this"/>
-                            <p:commandButton id="aceptarDCC" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 115px;"  actionListener="#{controlCargo.confirmarDuplicarCompetenciaCargo()}" process="@this"/>
-                            <p:commandButton id="cancelarDCC" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 115px;" actionListener="#{controlCargo.limpiarDuplicarCompetenciaCargo()}" update="duplicarCompetenciaCargo" onclick="DuplicarRegistroCompetenciaCargo.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDCC" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 115px;" actionListener="#{controlCargo.limpiarDuplicarCompetenciaCargo()}" update="duplicarCompetenciaCargo" process="@this"/>
+                            <p:commandButton id="aceptarDCC" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 115px;"  actionListener="#{controlCargo.confirmarDuplicarCompetenciaCargo()}" process="@this"/>
+                            <p:commandButton id="cancelarDCC" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 115px;" actionListener="#{controlCargo.limpiarDuplicarCompetenciaCargo()}" update="duplicarCompetenciaCargo" onclick="DuplicarRegistroCompetenciaCargo.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="NuevoRegistroTipoDetalle" header="#{msg['nuevoregistroTD']}" widgetVar="NuevoRegistroTipoDetalle" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoTD']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="NuevoRegistroTipoDetalle" header="#{msg['nuevoregistroTD']}" widgetVar="NuevoRegistroTipoDetalle" closable="false" resizable="false"  draggable="false" modal="true" height="200" width="400" style="font-size: 12px; padding: 0px">  
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoTD']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="nuevoTipoDetalle" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoNTD']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['codigoNTD']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="nuevoTipoDetalleCodigo" onclick="select();" value="#{controlCargo.nuevoTipoDetalle.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoTipoDetalleCodigo" />
                             </p:inputText>
                             <p:watermark value="#{msg['codigo']}" for="nuevoTipoDetalleCodigo"/>
 
-                            <strong><h:outputText value="#{msg['descripcionNTD']}" style="font-size: 14px; position: absolute; top: 115px; left: 50px" /></strong>
-                            <p:inputText id="nuevoTipoDetalleDescripcion" onclick="select();" value="#{controlCargo.nuevoTipoDetalle.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['descripcionNTD']}" style="position: absolute; top: 105px; left: 50px" /></strong>
+                            <p:inputText id="nuevoTipoDetalleDescripcion" maxlength="40" onclick="select();" value="#{controlCargo.nuevoTipoDetalle.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
                                 <p:ajax event="change" update="nuevoTipoDetalleDescripcion"/>
                             </p:inputText>
                             <p:watermark value="#{msg['descripcion']}" for="nuevoTipoDetalleDescripcion"/>
 
-                            <strong><h:outputText value="#{msg['enfoqueNTD']}" style="font-size: 14px; position: absolute; top: 155px; left: 50px" /></strong>
-                            <p:inputText id="nuevoTipoDetalleEnfoque" onclick="select();" value="#{controlCargo.nuevoTipoDetalle.enfoque.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['enfoqueNTD']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputText id="nuevoTipoDetalleEnfoque" onclick="select();" value="#{controlCargo.nuevoTipoDetalle.enfoque.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indiceTD,0,1,3)}" process="@this" update="nuevoTipoDetalleEnfoque"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(1, 'ENFOQUE')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoTipoDetalle('ENFOQUE', controlCargo.nuevoTipoDetalle.enfoque.descripcion, 1)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['enfoque']}" for="nuevoTipoDetalleEnfoque"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 150px;  " id="btnNuevoEnfoqueTipoDetalle" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceTD,0,1,3)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 130px;  " id="btnNuevoEnfoqueTipoDetalle" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceTD,0,1,3)}"/>   
 
-                            <p:commandButton id="limpiarNTD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 185px;" actionListener="#{controlCargo.limpiarNuevaTipoDetalle()}" update="nuevoTipoDetalle" process="@this"/>
-                            <p:commandButton id="aceptarNTD" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 185px;"  actionListener="#{controlCargo.agregarNuevoTipoDetalle()}" process="@this"  />
-                            <p:commandButton id="cancelarNTD" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 185px;" actionListener="#{controlCargo.limpiarNuevaTipoDetalle()}" update="nuevoTipoDetalle" onclick="NuevoRegistroTipoDetalle.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarNTD" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 165px;" actionListener="#{controlCargo.limpiarNuevaTipoDetalle()}" update="nuevoTipoDetalle" process="@this"/>
+                            <p:commandButton id="aceptarNTD" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 165px;"  actionListener="#{controlCargo.agregarNuevoTipoDetalle()}" process="@this"  />
+                            <p:commandButton id="cancelarNTD" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 165px;" actionListener="#{controlCargo.limpiarNuevaTipoDetalle()}" update="nuevoTipoDetalle" onclick="NuevoRegistroTipoDetalle.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <p:dialog id="DuplicarRegistroTipoDetalle" header="#{msg['duplicarregistroTD']}" widgetVar="DuplicarRegistroTipoDetalle" closable="false" resizable="false"  draggable="false" modal="true" height="220" width="400" style="font-size: 12px; padding: 0px">  
-                        <center><strong><h:outputText value="#{msg['ingresarnuevoTD']}" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevoTD']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
                         <p:panel id="duplicarTipoDetalle" style="border: none;">
 
-                            <strong><h:outputText value="#{msg['codigoNTD']}" style="font-size: 14px; position: absolute; top: 75px; left: 50px" /></strong>
+                            <strong><h:outputText value="*#{msg['codigoNTD']}" style="position: absolute; top: 75px; left: 50px" /></strong>
                             <p:inputText id="duplicarTipoDetalleCodigo" onclick="select();" value="#{controlCargo.duplicarTipoDetalle.codigo}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 70px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarTipoDetalleCodigo" />
                             </p:inputText>
                             <p:watermark value="#{msg['codigo']}" for="duplicarTipoDetalleCodigo"/>
 
-                            <strong><h:outputText value="#{msg['descripcionNTD']}" style="font-size: 14px; position: absolute; top: 115px; left: 50px" /></strong>
-                            <p:inputText id="duplicarTipoDetalleDescripcion" onclick="select();" value="#{controlCargo.duplicarTipoDetalle.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 110px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['descripcionNTD']}" style="position: absolute; top: 105px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTipoDetalleDescripcion" maxlength="40" onclick="select();" value="#{controlCargo.duplicarTipoDetalle.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 100px;text-transform: uppercase">
                                 <p:ajax event="change" update="duplicarTipoDetalleDescripcion"/>
                             </p:inputText>
                             <p:watermark value="#{msg['descripcion']}" for="duplicarTipoDetalleDescripcion"/>
 
-                            <strong><h:outputText value="#{msg['enfoqueNTD']}" style="font-size: 14px; position: absolute; top: 155px; left: 50px" /></strong>
-                            <p:inputText id="duplicarTipoDetalleEnfoque" onclick="select();" value="#{controlCargo.duplicarTipoDetalle.enfoque.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 150px;text-transform: uppercase">
+                            <strong><h:outputText value="*#{msg['enfoqueNTD']}" style="position: absolute; top: 135px; left: 50px" /></strong>
+                            <p:inputText id="duplicarTipoDetalleEnfoque" onclick="select();" value="#{controlCargo.duplicarTipoDetalle.enfoque.descripcion}" style="font-size: 12px; width: 122px; position: absolute; left: 200px; top: 130px;text-transform: uppercase">
                                 <p:ajax event="dblclick" listener="#{controlCargo.asignarIndex(indiceTD,0,2,3)}" process="@this" update="duplicarTipoDetalleEnfoque"/>
                                 <p:ajax event="click" listener="#{controlCargo.valoresBackupAutocompletarGeneral(2, 'ENFOQUE')}" />
                                 <p:ajax event="change" listener="#{controlCargo.autocompletarNuevoyDuplicadoTipoDetalle('ENFOQUE', controlCargo.duplicarTipoDetalle.enfoque.descripcion, 2)}" />
                             </p:inputText>
                             <p:watermark value="#{msg['enfoque']}" for="duplicarTipoDetalleEnfoque"/>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 150px;  " id="btnDuplicarEnfoqueTipoDetalle" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceTD,0,1,3)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 130px;  " id="btnDuplicarEnfoqueTipoDetalle" icon="ui-icon-search" process="@this"  actionListener="#{controlCargo.asignarIndex(indiceTD,0,1,3)}"/>   
 
-                            <p:commandButton id="limpiarDTD" value="#{msg['limpiar']}" style=" font-size: 11px ;position: absolute; left: 20px; top: 185px;" actionListener="#{controlCargo.limpiarDuplicarTipoDetalle()}" update="duplicarTipoDetalle" process="@this"/>
-                            <p:commandButton id="aceptarDTD" value="#{msg['agregar']}" style="font-size: 11px; position: absolute; left: 190px; top: 185px;"  actionListener="#{controlCargo.confirmarDuplicarTipoDetalle()}" process="@this"/>
-                            <p:commandButton id="cancelarDTD" value="#{msg['cancelar']}" style="font-size: 11px; position: absolute; left: 280px; top: 185px;" actionListener="#{controlCargo.limpiarDuplicarTipoDetalle()}" update="duplicarTipoDetalle" onclick="DuplicarRegistroTipoDetalle.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDTD" icon="ui-icon-trash" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 165px;" actionListener="#{controlCargo.limpiarDuplicarTipoDetalle()}" update="duplicarTipoDetalle" process="@this"/>
+                            <p:commandButton id="aceptarDTD" icon="ui-icon-circle-check" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 165px;"  actionListener="#{controlCargo.confirmarDuplicarTipoDetalle()}" process="@this"/>
+                            <p:commandButton id="cancelarDTD" icon="ui-icon-circle-close" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 165px;" actionListener="#{controlCargo.limpiarDuplicarTipoDetalle()}" update="duplicarTipoDetalle" onclick="DuplicarRegistroTipoDetalle.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -1217,103 +1246,86 @@
 
                     <!-- editar celdas cargo -->
 
-                    <p:dialog id="editarCodigoCargoD" header="#{msg['editarCodigoCargoD']}" widgetVar="editarCodigoCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCodigoCargoD" header="#{msg['editarCodigoCargoD']}" widgetVar="editarCodigoCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigoCargoD" value="#{msg['atras']}" onclick="editarCodigoCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarNombreCargoD" header="#{msg['editarNombreCargoD']}" widgetVar="editarNombreCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarNombreCargoD" header="#{msg['editarNombreCargoD']}" widgetVar="editarNombreCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarNombreCargoD" value="#{msg['atras']}" onclick="editarNombreCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarGrupoSalarialCargoD" header="#{msg['editarGrupoSalarialCargoD']}" widgetVar="editarGrupoSalarialCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarGrupoSalarialCargoD" header="#{msg['editarGrupoSalarialCargoD']}" widgetVar="editarGrupoSalarialCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.gruposalarial.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarGrupoSalarialCargoD" value="#{msg['atras']}" onclick="editarGrupoSalarialCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSalarioCargoD" header="#{msg['editarSalarioCargoD']}" widgetVar="editarSalarioCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSalarioCargoD" header="#{msg['editarSalarioCargoD']}" widgetVar="editarSalarioCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.gruposalarial.salario}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" type="currency" />
                         </p:inputTextarea>
-                        <p:commandButton id="cancelarSalarioCargoD" value="#{msg['atras']}" onclick="editarSalarioCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMinimoCargoD" header="#{msg['editarSueldoMinimoCargoD']}" widgetVar="editarSueldoMinimoCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMinimoCargoD" header="#{msg['editarSueldoMinimoCargoD']}" widgetVar="editarSueldoMinimoCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.sueldominimo}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" type="currency" />
                         </p:inputTextarea>
-                        <p:commandButton id="cancelarSueldoMinimoCargoD" value="#{msg['atras']}" onclick="editarSueldoMinimoCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMaximoCargoD" header="#{msg['editarSueldoMaximoCargoD']}" widgetVar="editarSueldoMaximoCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMaximoCargoD" header="#{msg['editarSueldoMaximoCargoD']}" widgetVar="editarSueldoMaximoCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.sueldomaximo}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" type="currency" />
                         </p:inputTextarea>
-                        <p:commandButton id="cancelarSueldoMaximoCargoD" value="#{msg['atras']}" onclick="editarSueldoMaximoCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarGrupoViaticoCargoD" header="#{msg['editarGrupoViaticoCargoD']}" widgetVar="editarGrupoViaticoCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarGrupoViaticoCargoD" header="#{msg['editarGrupoViaticoCargoD']}" widgetVar="editarGrupoViaticoCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.grupoviatico.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarGrupoViaticoCargoD" value="#{msg['atras']}" onclick="editarGrupoViaticoCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarProcesoProductivoCargoD" header="#{msg['editarProcesoProductivoCargoD']}" widgetVar="editarProcesoProductivoCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarProcesoProductivoCargoD" header="#{msg['editarProcesoProductivoCargoD']}" widgetVar="editarProcesoProductivoCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.procesoproductivo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarProcesoProductivoCargoD" value="#{msg['atras']}" onclick="editarProcesoProductivoCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarCodigoAlternativoCargoD" header="#{msg['editarCodigoAlternativoCargoD']}" widgetVar="editarCodigoAlternativoCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCodigoAlternativoCargoD" header="#{msg['editarCodigoAlternativoCargoD']}" widgetVar="editarCodigoAlternativoCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCargo.codigoalternativo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigoAlternativoCargoD" value="#{msg['atras']}" onclick="editarCodigoAlternativoCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <!-- editar celdas sueldo mercado -->
 
-
-                    <p:dialog id="editarTipoEmpresaSueldoMercadoD" header="#{msg['editarTipoEmpresaSueldoMercadoD']}" widgetVar="editarTipoEmpresaSueldoMercadoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarTipoEmpresaSueldoMercadoD" header="#{msg['editarTipoEmpresaSueldoMercadoD']}" widgetVar="editarTipoEmpresaSueldoMercadoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarSueldoMercado.tipoempresa.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarTipoEmpresaSueldoMercadoD" value="#{msg['atras']}" onclick="editarTipoEmpresaSueldoMercadoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMinimoSueldoMercadoD" header="#{msg['editarSueldoMinimoSueldoMercadoD']}" widgetVar="editarSueldoMinimoSueldoMercadoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMinimoSueldoMercadoD" header="#{msg['editarSueldoMinimoSueldoMercadoD']}" widgetVar="editarSueldoMinimoSueldoMercadoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarSueldoMercado.sueldomin}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" type="currency" />
                         </p:inputTextarea>
-                        <p:commandButton id="cancelarSueldoMinimoSueldoMercadoD" value="#{msg['atras']}" onclick="editarSueldoMinimoSueldoMercadoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSueldoMaximoSueldoMercadoD" header="#{msg['editarSueldoMaximoSueldoMercadoD']}" widgetVar="editarSueldoMaximoSueldoMercadoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarSueldoMaximoSueldoMercadoD" header="#{msg['editarSueldoMaximoSueldoMercadoD']}" widgetVar="editarSueldoMaximoSueldoMercadoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarSueldoMercado.sueldomax}" style="overflow: auto; width: 200px; height: 40px" readonly="true">
                             <f:convertNumber currencySymbol="$" type="currency" />
                         </p:inputTextarea>
-                        <p:commandButton id="cancelarSueldoMaximoSueldoMercadoD" value="#{msg['atras']}" onclick="editarSueldoMaximoSueldoMercadoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
 
 
                     <!-- editar celdas competencia cargo -->
 
-                    <p:dialog id="editarDescripcionCompetenciaCargoD" header="#{msg['editarDescripcionCompetenciaCargoD']}" widgetVar="editarDescripcionCompetenciaCargoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                   <p:dialog id="editarDescripcionCompetenciaCargoD" header="#{msg['editarDescripcionCompetenciaCargoD']}" widgetVar="editarDescripcionCompetenciaCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCompetenciaCargo.evalcompetencia.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarDescripcionCompetenciaCargoDD" value="#{msg['atras']}" onclick="editarDescripcionCompetenciaCargoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
                     <!-- editar celdas tipo detalle -->
 
-                    <p:dialog id="editarCodigoTipoDetalleD" header="#{msg['editarCodigoTipoDetalleD']}" widgetVar="editarCodigoTipoDetalleD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarCodigoTipoDetalleD" header="#{msg['editarCodigoTipoDetalleD']}" widgetVar="editarCodigoTipoDetalleD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarTipoDetalle.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigoTipoDetalleD" value="#{msg['atras']}" onclick="editarCodigoTipoDetalleD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarDescripcionTipoDetalleD" header="#{msg['editarDescripcionTipoDetalleD']}" widgetVar="editarDescripcionTipoDetalleD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarDescripcionTipoDetalleD" header="#{msg['editarDescripcionTipoDetalleD']}" widgetVar="editarDescripcionTipoDetalleD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarTipoDetalle.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarDescripcionTipoDetalleD" value="#{msg['atras']}" onclick="editarDescripcionTipoDetalleD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarEnfoqueTipoDetalleD" header="#{msg['editarEnfoqueTipoDetalleD']}" widgetVar="editarEnfoqueTipoDetalleD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+                    <p:dialog id="editarEnfoqueTipoDetalleD" header="#{msg['editarEnfoqueTipoDetalleD']}" widgetVar="editarEnfoqueTipoDetalleD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarTipoDetalle.enfoque.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarEnfoqueTipoDetalleD" value="#{msg['atras']}" onclick="editarEnfoqueTipoDetalleD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
 
 

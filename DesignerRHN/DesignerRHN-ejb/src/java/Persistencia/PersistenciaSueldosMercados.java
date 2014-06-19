@@ -35,7 +35,7 @@ public class PersistenciaSueldosMercados implements PersistenciaSueldosMercadosI
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(sueldosMercados);
+            em.persist(sueldosMercados);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaSueldosMercados.crear: " + e);

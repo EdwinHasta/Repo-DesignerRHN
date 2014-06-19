@@ -35,7 +35,7 @@ public class PersistenciaDiasLaborables implements PersistenciaDiasLaborablesInt
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(diasLaborables);
+            em.persist(diasLaborables);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaDiasLaborables.crear: " + e);

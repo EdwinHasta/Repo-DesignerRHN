@@ -18,8 +18,7 @@
 
                         <p:commandButton style="position: absolute; left: 785px; top: 480px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteLaboral.salir()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 690px; top: 480px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteLaboral.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteLaboral.cambiosReporte}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 170px; top: 480px; " icon="ui-icon-refresh" id="REFRESCAR" value="#{msg['refrescar']}" actionListener="#{controlNReporteLaboral.cancelarModificaciones()}" process="@this" />
-                        <p:separator id="separatorBtnsInferiores"  style="vertical-align: central;position: absolute;height: 25px;width: 3px;top: 477px;left: 155px "/>  
+                        
                         <p:commandButton style="position: absolute; left: 10px; top: 480px;" id="ENVIOCORREO" value="#{msg['envio']}"   process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteLaboral.defaultPropiedadesParametrosReporte()}"/>
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
@@ -74,11 +73,11 @@
                             </p:dataTable>
 
                             <p:commandButton style="position: absolute; left: 585px; top: 231px; " id="MOSTRARTODOS" value="#{msg['mostrar']}"  process="@this" actionListener="#{controlNReporteLaboral.mostrarTodos()}"  disabled="#{controlNReporteLaboral.activoMostrarTodos}" update=":form:reportesLaboral"/>
-                            <p:tooltip  for="MOSTRARTODOS" value="Mostrar todos los reportes." />
+                            <p:tooltip style="font-size: 12px" for="MOSTRARTODOS" value="#{msg['mostrarTodos']}" />
                             <p:commandButton style="position: absolute; left: 460px; top: 231px; " id="BUSCARREPORTE" value="#{msg['buscar']}"   process="@this" actionListener="#{controlNReporteLaboral.mostrarDialogoBuscarReporte()}" disabled="#{controlNReporteLaboral.activoBuscarReporte}"/>
-                            <p:tooltip  for="BUSCARREPORTE" value="Buscar Reportes." />
+                            <p:tooltip style="font-size: 12px" for="BUSCARREPORTE" value="#{msg['buscarReporte']}" />
                             <p:commandButton style="position: absolute; left: 10px; top: 231px; " id="GENERARREPORTE" value="#{msg['generar']}"   process="@this" actionListener="#{controlNReporteLaboral.generarReporte()}" />
-                            <p:tooltip  for="GENERARREPORTE" value="Generar Reporte." />
+                            <p:tooltip style="font-size: 12px" for="GENERARREPORTE" value="#{msg['generarReporte']}" />
 
                         </fieldset>
 
@@ -121,6 +120,18 @@
                                 <p:commandButton id="duplicar" disabled="true" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " />  
                                 <p:tooltip  for="duplicar" value="#{msg['duplicar']}" />
 
+                                <p:separator style="position: relative; top: -9px"/>
+                                <p:commandButton id="rastro" value="" disabled="true" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "  process="@this"/>  
+                                <p:tooltip style="font-size: 12px" for="rastro" value="#{msg['rastro']}"/>
+
+                                <p:separator style="position: relative; top: -9px"/> 
+
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReporteLaboral.cancelarModificaciones()}"   process="@this"/>  
+                                <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
+
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReporteLaboral.salir()}" action="nomina"  process="@this"/>  
+                                <p:tooltip  for="salir" value="#{msg['salir']}"/>
+                                
                             </p:toolbarGroup>  
                         </p:toolbar>
 
@@ -137,7 +148,7 @@
                             <p:ajax event="rowDblselect" listener="#{controlNReporteLaboral.actualizarSeleccionInforeporte()}"  process="@this" onstart="lovReportesDialogo.clearFilters()"  />
                             <f:facet name="header">  
                                 <h:outputText value="#{msg['buscarR']}"  style="position: absolute; left: 27px; top: 14px"/>  
-                                <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: 30px;" />  
+                                <p:inputText id="globalFilter" onkeyup="lovReportesDialogo.filter();" style="width:150px; position: relative; left: -5px;" />  
                             </f:facet>
                             <p:column  filterBy="#{reportes.codigo}" width="20" filterMatchMode="contains" filterStyle="width: 30px">
                                 <f:facet name="header">
@@ -160,10 +171,11 @@
                                 <h:outputText value="#{reportes.tipo}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarR" icon="ui-icon-check" style="position: relative; left: 250px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesLaboral" process="@this">
+                        <h:outputText id="infoRegistroReportes" value="#{controlNReporteLaboral.infoRegistroReportes}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarR" icon="ui-icon-check" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionInforeporte()}" update="lovReportesDialogo, aceptarR, reportesLaboral" process="@this">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasR" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 250px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionInforeporte()}" process="@this">
+                        <p:commandButton id="atrasR" icon="ui-icon-arrowreturnthick-1-w"  style="position: relative; left: 280px" value="#{msg['atras']}" onclick="ReportesDialogo.hide(), lovReportesDialogo.clearFilters();"  update="lovReportesDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionInforeporte()}" process="@this">
                             <p:resetInput target=":form:lovReportesDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -193,10 +205,11 @@
                                 <h:outputText value="#{cargo.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 275px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionCargo()}" update="lovCargoDialogo, aceptarC" process="@this">
+                        <h:outputText id="infoRegistroCargo" value="#{controlNReporteLaboral.infoRegistroCargo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
+                        <p:commandButton id="aceptarC" icon="ui-icon-check" style="position: relative; left: 280px" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarSeleccionCargo()}" update="lovCargoDialogo, aceptarC" process="@this">
                             <p:resetInput target=":form:lovCargoDialogo:globalFilter"/>
                         </p:commandButton>
-                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 275px" value="#{msg['atras']}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();"  update="lovCargoDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionCargo()}" process="@this">
+                        <p:commandButton id="atrasC" icon="ui-icon-arrowreturnthick-1-w" style="position: relative; left: 280px" value="#{msg['atras']}" onclick="CargoDialogo.hide(), lovCargoDialogo.clearFilters();"  update="lovCargoDialogo" actionListener="#{controlNReporteLaboral.cancelarSeleccionCargo()}" process="@this">
                             <p:resetInput target=":form:lovCargoDialogo:globalFilter"/>
                         </p:commandButton>
                     </p:dialog>
@@ -225,6 +238,7 @@
                                 <h:outputText value="#{empleadoDesde.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
+                        <h:outputText id="infoRegistroEmpleadoDesde" value="#{controlNReporteLaboral.infoRegistroEmpleadoDesde}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         <p:commandButton id="aceptarED" style="position: relative; left: 280px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpleadoDesdeDialogo.hide(), lovEmpleadoDesde.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpleadoDesde()}" update="lovEmpleadoDesde, aceptarED" process="@this">
                             <p:resetInput target=":form:lovEmpleadoDesde:globalFilter"/>
                         </p:commandButton>
@@ -257,6 +271,7 @@
                                 <h:outputText value="#{empleadoHasta.persona.nombreCompleto}" />
                             </p:column>
                         </p:dataTable>
+                        <h:outputText id="infoRegistroEmpleadoHasta" value="#{controlNReporteLaboral.infoRegistroEmpleadoHasta}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         <p:commandButton id="aceptarEH" style="position: relative; left: 280px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpleadoHastaDialogo.hide(), lovEmpleadoHasta.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpleadoHasta()}" update="lovEmpleadoHasta, aceptarEH" process="@this">
                             <p:resetInput target=":form:lovEmpleadoHasta:globalFilter"/>
                         </p:commandButton>
@@ -290,6 +305,7 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
+                        <h:outputText id="infoRegistroEmpresa" value="#{controlNReporteLaboral.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                         <p:commandButton id="aceptarE" style="position: relative; left: 280px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlNReporteLaboral.aceptar}" onclick="EmpresaDialogo.hide(), lovEmpresa.clearFilters();" actionListener="#{controlNReporteLaboral.actualizarEmpresa()}" update="lovEmpresa, aceptarE" process="@this">
                             <p:resetInput target=":form:lovEmpresa:globalFilter"/>
                         </p:commandButton>
@@ -408,6 +424,7 @@
                 </h:form>
 
                 <h:form id="formDialogos">
+                    
                     <p:dialog id="editarFechaDesde" header="#{msg['editarFechaDesde']}" widgetVar="editarFechaDesde" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlNReporteLaboral.parametroDeInforme.fechadesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  
                             <f:convertDateTime pattern="dd/MM/yyyy"/>

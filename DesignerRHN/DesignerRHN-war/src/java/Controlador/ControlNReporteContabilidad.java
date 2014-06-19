@@ -92,6 +92,8 @@ public class ControlNReporteContabilidad implements Serializable {
     //
     private Date fechaDesde, fechaHasta;
     private BigInteger emplDesde, emplHasta;
+    //
+    private String infoRegistroProceso, infoRegistroEmpleadoDesde, infoRegistroEmpleadoHasta;
 
     public ControlNReporteContabilidad() {
         color = "black";
@@ -120,7 +122,7 @@ public class ControlNReporteContabilidad implements Serializable {
         listProcesos = null;
         procesoSeleccionado = new Procesos();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -462,6 +464,7 @@ public class ControlNReporteContabilidad implements Serializable {
         context.update("form:ProcesoDialogo");
         context.update("form:lovProceso");
         context.update("form:aceptarPro");
+        context.reset("form:lovProceso:globalFilter");
         context.execute("ProcesoDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:procesoParametroL");
@@ -486,6 +489,7 @@ public class ControlNReporteContabilidad implements Serializable {
         context.update("form:EmpleadoDesdeDialogo");
         context.update("form:lovEmpleadoDesde");
         context.update("form:aceptarED");
+        context.reset("form:lovEmpleadoDesde:globalFilter");
         context.execute("EmpleadoDesdeDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoDesdeParametroL");
@@ -510,6 +514,7 @@ public class ControlNReporteContabilidad implements Serializable {
         context.update("form:EmpleadoHastaDialogo");
         context.update("form:lovEmpleadoHasta");
         context.update("form:aceptarEH");
+        context.reset("form:lovEmpleadoHasta:globalFilter");
         context.execute("EmpleadoHastaDialogo.hide()");
         context.update("form:ACEPTAR");
         context.update("formParametros:empleadoHastaParametroL");
@@ -986,4 +991,47 @@ public class ControlNReporteContabilidad implements Serializable {
     public void setDecoracion2(String decoracion) {
         this.decoracion2 = decoracion;
     }
+
+    public String getInfoRegistroProceso() {
+        getListProcesos();
+        if (listProcesos != null) {
+            infoRegistroProceso = "Cantidad de registros : " + listProcesos.size();
+        } else {
+            infoRegistroProceso = "Cantidad de registros : 0";
+        }
+        return infoRegistroProceso;
+    }
+
+    public void setInfoRegistroProceso(String infoRegistroProceso) {
+        this.infoRegistroProceso = infoRegistroProceso;
+    }
+
+    public String getInfoRegistroEmpleadoDesde() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoDesde = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoDesde;
+    }
+
+    public void setInfoRegistroEmpleadoDesde(String infoRegistroEmpleadoDesde) {
+        this.infoRegistroEmpleadoDesde = infoRegistroEmpleadoDesde;
+    }
+
+    public String getInfoRegistroEmpleadoHasta() {
+        getListEmpleados();
+        if (listEmpleados != null) {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : " + listEmpleados.size();
+        } else {
+            infoRegistroEmpleadoHasta = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpleadoHasta;
+    }
+
+    public void setInfoRegistroEmpleadoHasta(String infoRegistroEmpleadoHasta) {
+        this.infoRegistroEmpleadoHasta = infoRegistroEmpleadoHasta;
+    }
+
 }

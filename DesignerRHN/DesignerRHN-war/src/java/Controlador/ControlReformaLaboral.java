@@ -102,6 +102,8 @@ public class ControlReformaLaboral implements Serializable {
     //
     private ReformasLaborales reformaActualTabla;
     private DetallesReformasLaborales detalleActualTabla;
+    //
+    private String infoRegistroReforma;
 
     public ControlReformaLaboral() {
         reformaActualTabla = new ReformasLaborales();
@@ -109,8 +111,8 @@ public class ControlReformaLaboral implements Serializable {
         reformaLaboralAClonar = new ReformasLaborales();
         reformaLaboralSeleccionado = new ReformasLaborales();
         lovReformasLaborales = null;
-        altoTablaReforma = "137";
-        altoTablaDetalles = "120";
+        altoTablaReforma = "177";
+        altoTablaDetalles = "135";
         cambiosPagina = true;
         tipoActualizacion = -1;
         indexDetalle = -1;
@@ -152,11 +154,11 @@ public class ControlReformaLaboral implements Serializable {
             administrarReformaLaboral.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void inicializarPagina() {
         listaDetallesReformasLaborales = null;
         listaReformasLaborales = null;
@@ -185,7 +187,7 @@ public class ControlReformaLaboral implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosDetalleReformaLaboral");
         if (banderaDetalle == 1) {
-            altoTablaDetalles = "120";
+            altoTablaDetalles = "135";
             detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
             detalleFactor.setFilterStyle("display: none; visibility: hidden;");
             detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -207,7 +209,7 @@ public class ControlReformaLaboral implements Serializable {
         }
         indexDetalle = pos;
         if (bandera == 1) {
-            altoTablaReforma = "137";
+            altoTablaReforma = "177";
             reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
             reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
             reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -457,7 +459,7 @@ public class ControlReformaLaboral implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:datosDetalleReformaLaboral");
             if (banderaDetalle == 1) {
-                altoTablaDetalles = "120";
+                altoTablaDetalles = "135";
                 detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
                 detalleFactor.setFilterStyle("display: none; visibility: hidden;");
                 detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -490,7 +492,7 @@ public class ControlReformaLaboral implements Serializable {
             auxTipoPagoDetalle = filtrarListaDetallesReformasLaborales.get(indexDetalle).getTipopago();
         }
         if (bandera == 1) {
-            altoTablaReforma = "137";
+            altoTablaReforma = "177";
             reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
             reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
             reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -523,9 +525,6 @@ public class ControlReformaLaboral implements Serializable {
             if (guardadoDetalles == false) {
                 guardarCambiosDetalleReformaLaboral();
             }
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            RequestContext.getCurrentInstance().update("form:growl");
             cambiosPagina = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
@@ -533,61 +532,79 @@ public class ControlReformaLaboral implements Serializable {
     }
 
     public void guardarCambiosReformaLaboral() {
-
-        if (!listReformasLaboralesBorrar.isEmpty()) {
-            for (int i = 0; i < listReformasLaboralesBorrar.size(); i++) {
-                administrarReformaLaboral.borrarReformaLaboral(listReformasLaboralesBorrar);
+        try {
+            if (!listReformasLaboralesBorrar.isEmpty()) {
+                for (int i = 0; i < listReformasLaboralesBorrar.size(); i++) {
+                    administrarReformaLaboral.borrarReformaLaboral(listReformasLaboralesBorrar);
+                }
+                listReformasLaboralesBorrar.clear();
             }
-            listReformasLaboralesBorrar.clear();
-        }
-        if (!listReformasLaboralesCrear.isEmpty()) {
-            for (int i = 0; i < listReformasLaboralesCrear.size(); i++) {
-                administrarReformaLaboral.crearReformaLaboral(listReformasLaboralesCrear);
+            if (!listReformasLaboralesCrear.isEmpty()) {
+                for (int i = 0; i < listReformasLaboralesCrear.size(); i++) {
+                    administrarReformaLaboral.crearReformaLaboral(listReformasLaboralesCrear);
+                }
+                listReformasLaboralesCrear.clear();
             }
-            listReformasLaboralesCrear.clear();
-        }
-        if (!listReformasLaboralesModificar.isEmpty()) {
-            administrarReformaLaboral.editarReformaLaboral(listReformasLaboralesModificar);
-            listReformasLaboralesModificar.clear();
-        }
-        listaReformasLaborales = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosReformaLaboral");
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
+            if (!listReformasLaboralesModificar.isEmpty()) {
+                administrarReformaLaboral.editarReformaLaboral(listReformasLaboralesModificar);
+                listReformasLaboralesModificar.clear();
+            }
+            listaReformasLaborales = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosReformaLaboral");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
 
-        index = -1;
-        secRegistro = null;
-
+            index = -1;
+            secRegistro = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Reforma Laboral se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosReformaLaboral : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ocurrio un error en el guardado de Reforma Laboral, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
     }
 
     public void guardarCambiosDetalleReformaLaboral() {
-        if (!listDetallesReformasLaboralesBorrar.isEmpty()) {
-            for (int i = 0; i < listDetallesReformasLaboralesBorrar.size(); i++) {
-                administrarReformaLaboral.borrarDetalleReformaLaboral(listDetallesReformasLaboralesBorrar);
+        try {
+            if (!listDetallesReformasLaboralesBorrar.isEmpty()) {
+                for (int i = 0; i < listDetallesReformasLaboralesBorrar.size(); i++) {
+                    administrarReformaLaboral.borrarDetalleReformaLaboral(listDetallesReformasLaboralesBorrar);
+                }
+                listDetallesReformasLaboralesBorrar.clear();
             }
-            listDetallesReformasLaboralesBorrar.clear();
-        }
-        if (!listDetallesReformasLaboralesCrear.isEmpty()) {
-            for (int i = 0; i < listDetallesReformasLaboralesCrear.size(); i++) {
-                administrarReformaLaboral.crearDetalleReformaLaboral(listDetallesReformasLaboralesCrear);
+            if (!listDetallesReformasLaboralesCrear.isEmpty()) {
+                for (int i = 0; i < listDetallesReformasLaboralesCrear.size(); i++) {
+                    administrarReformaLaboral.crearDetalleReformaLaboral(listDetallesReformasLaboralesCrear);
+                }
+                listDetallesReformasLaboralesCrear.clear();
             }
-            listDetallesReformasLaboralesCrear.clear();
-        }
-        if (!listDetallesReformasLaboralesModificar.isEmpty()) {
-            administrarReformaLaboral.editarDetalleReformaLaboral(listDetallesReformasLaboralesModificar);
-            listDetallesReformasLaboralesModificar.clear();
-        }
-        listaDetallesReformasLaborales = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosDetalleReformaLaboral");
-        guardadoDetalles = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
+            if (!listDetallesReformasLaboralesModificar.isEmpty()) {
+                administrarReformaLaboral.editarDetalleReformaLaboral(listDetallesReformasLaboralesModificar);
+                listDetallesReformasLaboralesModificar.clear();
+            }
+            listaDetallesReformasLaborales = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosDetalleReformaLaboral");
+            guardadoDetalles = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
 
-        indexDetalle = -1;
-        secRegistroDetalles = null;
+            indexDetalle = -1;
+            secRegistroDetalles = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Detalle Reforma Laboral se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosDetalleReformaLaboral : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ocurrio un error en el guardado de Detalle Reforma Laboral, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        }
     }
     //CANCELAR MODIFICACIONES
 
@@ -624,7 +641,7 @@ public class ControlReformaLaboral implements Serializable {
 
     public void cancelarModificacionReformaLaboral() {
         if (bandera == 1) {
-            altoTablaReforma = "137";
+            altoTablaReforma = "177";
             reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
             reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
             reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -650,7 +667,7 @@ public class ControlReformaLaboral implements Serializable {
 
     public void cancelarModificacionDetalleReformaLaboral() {
         if (banderaDetalle == 1) {
-            altoTablaDetalles = "120";
+            altoTablaDetalles = "135";
             detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
             detalleFactor.setFilterStyle("display: none; visibility: hidden;");
             detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -743,7 +760,7 @@ public class ControlReformaLaboral implements Serializable {
             tamDes = nuevoReformaLaboral.getNombre().length();
             if (tamDes >= 1 && tamDes <= 30) {
                 if (bandera == 1) {
-                    altoTablaReforma = "137";
+                    altoTablaReforma = "177";
                     reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
                     reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -792,7 +809,7 @@ public class ControlReformaLaboral implements Serializable {
             tamDes = nuevoDetalleReformaLaboral.getTipopago().length();
             if (tamDes >= 1 && tamDes <= 10) {
                 if (banderaDetalle == 1) {
-                    altoTablaDetalles = "120";
+                    altoTablaDetalles = "135";
                     detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
                     detalleFactor.setFilterStyle("display: none; visibility: hidden;");
                     detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -939,7 +956,7 @@ public class ControlReformaLaboral implements Serializable {
                     //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
                 if (bandera == 1) {
-                    altoTablaReforma = "137";
+                    altoTablaReforma = "177";
                     reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
                     reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -988,7 +1005,7 @@ public class ControlReformaLaboral implements Serializable {
                     //RequestContext.getCurrentInstance().update("form:aceptar");
                 }
                 if (banderaDetalle == 1) {
-                    altoTablaDetalles = "120";
+                    altoTablaDetalles = "135";
                     detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
                     detalleFactor.setFilterStyle("display: none; visibility: hidden;");
                     detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -1142,17 +1159,17 @@ public class ControlReformaLaboral implements Serializable {
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
-                altoTablaReforma = "115";
+                altoTablaReforma = "155";
                 reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
-                reformaCodigo.setFilterStyle("width: 65px");
+                reformaCodigo.setFilterStyle("width: 125px");
                 reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
-                reformaNombre.setFilterStyle("width: 65px");
+                reformaNombre.setFilterStyle("width: 125px");
                 reformaIntegral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaIntegral");
                 reformaIntegral.setFilterStyle("width: 15px");
                 RequestContext.getCurrentInstance().update("form:datosReformaLaboral");
                 bandera = 1;
             } else if (bandera == 1) {
-                altoTablaReforma = "137";
+                altoTablaReforma = "177";
                 reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
                 reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
                 reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -1167,7 +1184,7 @@ public class ControlReformaLaboral implements Serializable {
         }
         if (indexDetalle >= 0) {
             if (banderaDetalle == 0) {
-                altoTablaDetalles = "98";
+                altoTablaDetalles = "113";
                 detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
                 detalleFactor.setFilterStyle("width: 80px");
                 detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -1175,7 +1192,7 @@ public class ControlReformaLaboral implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosDetalleReformaLaboral");
                 banderaDetalle = 1;
             } else if (banderaDetalle == 1) {
-                altoTablaDetalles = "120";
+                altoTablaDetalles = "135";
                 detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
                 detalleFactor.setFilterStyle("display: none; visibility: hidden;");
                 detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -1194,7 +1211,7 @@ public class ControlReformaLaboral implements Serializable {
      */
     public void salir() {
         if (bandera == 1) {
-            altoTablaReforma = "137";
+            altoTablaReforma = "177";
             reformaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaCodigo");
             reformaCodigo.setFilterStyle("display: none; visibility: hidden;");
             reformaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosReformaLaboral:reformaNombre");
@@ -1207,7 +1224,7 @@ public class ControlReformaLaboral implements Serializable {
             tipoLista = 0;
         }
         if (banderaDetalle == 1) {
-            altoTablaDetalles = "120";
+            altoTablaDetalles = "135";
             detalleFactor = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleFactor");
             detalleFactor.setFilterStyle("display: none; visibility: hidden;");
             detalleTipoPago = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleReformaLaboral:detalleTipoPago");
@@ -1499,6 +1516,7 @@ public class ControlReformaLaboral implements Serializable {
         context.update("form:ReformaLaboralDialogo");
         context.update("form:lovReformaLaboral");
         context.update("form:aceptarRL");
+        context.reset("form:lovReformaLaboral:globalFilter");
         context.execute("ReformaLaboralDialogo.hide()");
     }
 
@@ -1629,14 +1647,13 @@ public class ControlReformaLaboral implements Serializable {
     public List<DetallesReformasLaborales> getListaDetallesReformasLaborales() {
         if (listaDetallesReformasLaborales == null) {
             listaDetallesReformasLaborales = new ArrayList<DetallesReformasLaborales>();
-            if (index == -1) {
-                index = indexAux;
-            }
-            if (tipoLista == 0) {
-                listaDetallesReformasLaborales = administrarReformaLaboral.listaDetalleReformasLaborales(listaReformasLaborales.get(index).getSecuencia());
-            }
-            if (tipoLista == 1) {
-                listaDetallesReformasLaborales = administrarReformaLaboral.listaDetalleReformasLaborales(filtrarListaReformasLaborales.get(index).getSecuencia());
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    listaDetallesReformasLaborales = administrarReformaLaboral.listaDetalleReformasLaborales(listaReformasLaborales.get(index).getSecuencia());
+                }
+                if (tipoLista == 1) {
+                    listaDetallesReformasLaborales = administrarReformaLaboral.listaDetalleReformasLaborales(filtrarListaReformasLaborales.get(index).getSecuencia());
+                }
             }
         }
         return listaDetallesReformasLaborales;
@@ -1872,11 +1889,32 @@ public class ControlReformaLaboral implements Serializable {
     }
 
     public DetallesReformasLaborales getDetalleActualTabla() {
+        getListaDetallesReformasLaborales();
+        if (listaDetallesReformasLaborales != null) {
+            int tam = listaDetallesReformasLaborales.size();
+            if (tam > 0) {
+                detalleActualTabla = listaDetallesReformasLaborales.get(0);
+            }
+        }
         return detalleActualTabla;
     }
 
     public void setDetalleActualTabla(DetallesReformasLaborales detalleActualTabla) {
         this.detalleActualTabla = detalleActualTabla;
+    }
+
+    public String getInfoRegistroReforma() {
+        getLovReformasLaborales();
+        if (lovReformasLaborales != null) {
+            infoRegistroReforma = "Cantidad de registros : " + lovReformasLaborales.size();
+        } else {
+            infoRegistroReforma = "Cantidad de registros : 0";
+        }
+        return infoRegistroReforma;
+    }
+
+    public void setInfoRegistroReforma(String infoRegistroReforma) {
+        this.infoRegistroReforma = infoRegistroReforma;
     }
 
 }

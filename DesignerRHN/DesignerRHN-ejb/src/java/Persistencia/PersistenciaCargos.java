@@ -34,7 +34,7 @@ public class PersistenciaCargos implements PersistenciaCargosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(cargos);
+            em.persist(cargos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaCargos.crear: " + e);

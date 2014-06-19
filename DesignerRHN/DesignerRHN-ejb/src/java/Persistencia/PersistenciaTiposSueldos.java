@@ -36,7 +36,7 @@ public class PersistenciaTiposSueldos implements PersistenciaTiposSueldosInterfa
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(tiposSueldos);
+            em.persist(tiposSueldos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposSueldos.crear: " + e);

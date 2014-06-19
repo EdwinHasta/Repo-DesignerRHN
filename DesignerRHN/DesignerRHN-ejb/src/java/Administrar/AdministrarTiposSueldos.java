@@ -279,8 +279,6 @@ public class AdministrarTiposSueldos implements AdministrarTiposSueldosInterface
         try {
             for (int i = 0; i < listaTE.size(); i++) {
                 listaTE.get(i).setEmpresa(listaTE.get(i).getConcepto().getEmpresa());
-                System.out.println("listaTE.get(i).setEmpresa(listaTE.get(i).getConcepto().getEmpresa() : " + listaTE.get(i).getConcepto().getEmpresa().getNombre());
-                System.out.println("listaTE.get(i) : " + listaTE.get(i).getTipoentidad().getNombre());
                 persistenciaTEFormulasConceptos.crear(em, listaTE.get(i));
             }
         } catch (Exception e) {

@@ -45,7 +45,7 @@ public class PersistenciaVWActualesCargos implements PersistenciaVWActualesCargo
     @Override  
     public Long conteoCodigosEmpleados(EntityManager em, BigInteger secEstructura) {
         try {
-            Query query = em.createQuery("SELECT COUNT (em.codigoempleado) FROM VWActualesCargos vc, Empleados em WHERE vc.empleado.secuencia = em.secuencia AND vc.estructura = :secEstructura AND EXISTS (SELECT vt FROM VWActualesTiposTrabajadores vt, TiposTrabajadores tt WHERE vt.empleado.secuencia = em.secuencia AND vt.tipoTrabajador.secuencia  = tt.secuencia AND tt.tipo = 'ACTIVO')");
+            Query query = em.createQuery("SELECT COUNT (em.codigoempleado) FROM VWActualesCargos vc, Empleados em WHERE vc.empleado.secuencia = em.secuencia AND vc.estructura.secuencia = :secEstructura AND EXISTS (SELECT vt FROM VWActualesTiposTrabajadores vt, TiposTrabajadores tt WHERE vt.empleado.secuencia = em.secuencia AND vt.tipoTrabajador.secuencia  = tt.secuencia AND tt.tipo = 'ACTIVO')");
             query.setParameter("secEstructura", secEstructura);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             Long conteo = (Long) query.getSingleResult();

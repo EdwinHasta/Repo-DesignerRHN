@@ -36,7 +36,7 @@ public class PersistenciaTiposDetalles implements PersistenciaTiposDetallesInter
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(tiposDetalles);
+            em.persist(tiposDetalles);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaTiposDetalles.crear: " + e);

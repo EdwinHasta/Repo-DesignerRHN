@@ -33,7 +33,7 @@ public class PersistenciaVigenciasDeportes implements PersistenciaVigenciasDepor
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasDeportes);
+            em.persist(vigenciasDeportes);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasDeportes.crear: " + e);

@@ -1981,8 +1981,7 @@
     </navigation-rule>
     
     <navigation-rule>
-        <from-view-id>/Proyecto.xhtml
-        </from-view-id>
+        <from-view-id>/Proyecto.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>rastro</from-outcome>
             <to-view-id>/Rastro.xhtml</to-view-id>
