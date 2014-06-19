@@ -155,18 +155,18 @@ public class ControlTiposExamenes implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            minimoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
+            minimoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
             minimoNormal.setFilterStyle("display: none; visibility: hidden;");
-            maximoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
+            maximoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
             maximoNormal.setFilterStyle("display: none; visibility: hidden;");
-            diasRecurrencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
+            diasRecurrencia = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
             diasRecurrencia.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosTipoExamen");
@@ -196,18 +196,18 @@ public class ControlTiposExamenes implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            minimoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
+            minimoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
             minimoNormal.setFilterStyle("display: none; visibility: hidden;");
-            maximoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
+            maximoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
             maximoNormal.setFilterStyle("display: none; visibility: hidden;");
-            diasRecurrencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
+            diasRecurrencia = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
             diasRecurrencia.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosTipoExamen");
@@ -237,18 +237,18 @@ public class ControlTiposExamenes implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:codigo");
             codigo.setFilterStyle("width: 60px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:descripcion");
             descripcion.setFilterStyle("width: 170px");
-            minimoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
+            minimoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
             minimoNormal.setFilterStyle("width: 145px");
-            maximoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
+            maximoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
             maximoNormal.setFilterStyle("width: 135px");
-            diasRecurrencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
+            diasRecurrencia = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
             diasRecurrencia.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosTipoExamen");
             System.out.println("Activar");
@@ -256,15 +256,15 @@ public class ControlTiposExamenes implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            minimoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
+            minimoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
             minimoNormal.setFilterStyle("display: none; visibility: hidden;");
-            maximoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
+            maximoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
             maximoNormal.setFilterStyle("display: none; visibility: hidden;");
-            diasRecurrencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
+            diasRecurrencia = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
             diasRecurrencia.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoExamen");
             bandera = 0;
@@ -699,18 +699,18 @@ public class ControlTiposExamenes implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                minimoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
+                minimoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
                 minimoNormal.setFilterStyle("display: none; visibility: hidden;");
-                maximoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
+                maximoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
                 maximoNormal.setFilterStyle("display: none; visibility: hidden;");
-                diasRecurrencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
+                diasRecurrencia = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
                 diasRecurrencia.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoExamen");
                 bandera = 0;
@@ -838,17 +838,17 @@ public class ControlTiposExamenes implements Serializable {
 
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                minimoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
+                minimoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:minimoNormal");
                 minimoNormal.setFilterStyle("display: none; visibility: hidden;");
-                maximoNormal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
+                maximoNormal = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:maximoNormal");
                 maximoNormal.setFilterStyle("display: none; visibility: hidden;");
-                diasRecurrencia = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
+                diasRecurrencia = (Column) c.getViewRoot().findComponent("form:datosTipoExamen:diasRecurrencia");
                 diasRecurrencia.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoExamen");
                 bandera = 0;

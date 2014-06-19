@@ -14,6 +14,7 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
+                    <p:growl id="growl" showDetail="true"/> 
                     <p:panel  id="PanelTotal" header="Vigencias Plantas"  style="position: absolute; width: 874px; height: 510px; text-align: left">    
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Vigencias Plantas</strong></legend>
@@ -31,24 +32,13 @@
                                          >
                                 <p:ajax event="filter" listener="#{controlVigenciasPlantas.eventoFiltrar()}"/>
 
-                                <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="  border-radius: 0px; width: 400px; text-transform: uppercase"  > 
-                                                <p:ajax event="select" listener="#{controlVigenciasPlantas.cambiarIndice(indice, 0)}" process="@this"/> 
-                                                <p:ajax event="change" listener="#{controlVigenciasPlantas.modificarVigenciaPlanta(indice, 'N', info.codigo)}"  update="codigo"/>
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
 
-                                </p:column>
                                 <p:column headerText="Fecha" sortBy="#{info.fechavigencia}" filterBy="#{info.fechavigencia}" filterMatchMode="contains" 
-                                          id="fecha" width="80"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                          id="fecha" width="400px"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 100px; ">                                  
                                     <p:cellEditor> 
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechavigencia}" style="width: 80px; text-transform: uppercase">
+                                            <h:outputText value="#{info.fechavigencia}" style="height: 12px; width: 600px; text-transform: uppercase">
                                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
@@ -63,8 +53,17 @@
 
                                 </p:column>
 
-
-
+                                <p:column headerText="Código" sortBy="#{info.codigo}" filterBy="#{info.codigo}" filterMatchMode="contains" id="codigo" width="200px" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText value="#{info.codigo}" /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.codigo}" id="editarCodigo" style="height: 12px;   border-radius: 0px; width: 700px; text-transform: uppercase"  > 
+                                                <p:ajax event="select" listener="#{controlVigenciasPlantas.cambiarIndice(indice, 0)}" process="@this"/> 
+                                                <p:ajax event="change" listener="#{controlVigenciasPlantas.modificarVigenciaPlanta(indice, 'N', info.codigo)}"  update="codigo"/>
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+                                </p:column>
                             </p:dataTable>
 
                         </fieldset>
@@ -218,65 +217,63 @@
 
 
 
-                    <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="93" width="240" style="text-transform: uppercase">  
+                    <p:dialog id="editCodigo" header="Código" widgetVar="editCodigo" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlVigenciasPlantas.editarVigenciaPlanta.codigo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarCodigo" value="Atras" onclick="editCodigo.hide();" style="position: absolute; top: 60px; left: 148px; " process="@this"/>
                     </p:dialog>
-                    <p:dialog id="editDescripcion" header="Fecha" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="93" width="240" style="text-transform: uppercase">  
+                    <p:dialog id="editDescripcion" header="Fecha" widgetVar="editDescripcion" resizable="false" draggable="false" modal="true" height="55" width="240" style="text-transform: uppercase">  
                         <p:inputTextarea value="#{controlVigenciasPlantas.editarVigenciaPlanta.fechavigencia}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
-                        <p:commandButton id="cancelarNombre" value="Atras" onclick="editDescripcion.hide();" style="position: absolute; top: 60px; left: 170px; " process="@this"/>
                     </p:dialog>
 
 
 
-                    <p:dialog id="nuevoRegistroVigenciasPlantas" header="Nuevo Registro" widgetVar="nuevoRegistroVigenciasPlantas" closable="false" resizable="false"  draggable="false" modal="true" height="255" width="340" style=" padding: 0px">  
-                        <center><strong><h:outputText id="informacion" value="Ingresar Nueva Vigencia Planta" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+                    <p:dialog id="nuevoRegistroVigenciasPlantas" header="Nuevo Registro" widgetVar="nuevoRegistroVigenciasPlantas" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
+                        <center><strong><h:outputText id="informacion" value="Nueva Vigencia Planta" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
-                            <strong><h:outputText value="Código: "  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlVigenciasPlantas.nuevoVigenciaPlanta.codigo}" style=" width: 102px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Código: "  style=" position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="nuevoCodigo" value="#{controlVigenciasPlantas.nuevoVigenciaPlanta.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
-                            <strong><h:outputText value="FECHA : "  style=" position: absolute; top: 110px;text-transform: uppercase" /></strong>
-                            <div  id="nuevoNombrea" style=" width: 102px; position: absolute; left: 150px; top: 105px;text-transform: uppercase">
+                            <strong><h:outputText value="*Fecha: "  style=" position: absolute; top: 60px;" /></strong>
+                            <div  id="nuevoNombrea" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <lnk:calendar id="nuevoNombre" value="#{controlVigenciasPlantas.nuevoVigenciaPlanta.fechavigencia}" >
                                     <p:ajax event="dateSelect" update="nuevoNombre"/>
                                     <p:ajax event="change" update="nuevoNombre"/>
                                 </lnk:calendar>
                             </div>
                             <p:watermark for="nuevoNombre" value="Descripción" />
-                            <p:commandButton id="limpiar" value="Limpiar" style=" position: absolute; left: 20px; top: 220px;"  actionListener="#{controlVigenciasPlantas.limpiarNuevoVigenciasPlantas()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" style=" position: absolute; left: 180px; top: 220px;" actionListener="#{controlVigenciasPlantas.agregarNuevoVigenciasPlantas()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" style=" position: absolute; left: 250px; top: 220px;"  update="nuevaTipoempresa" onclick="nuevoRegistroVigenciasPlantas.hide();"  actionListener="#{controlVigenciasPlantas.limpiarNuevoVigenciasPlantas()}"  process="@this"/>
+                            <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlVigenciasPlantas.limpiarNuevoVigenciasPlantas()}" update="nuevaTipoempresa" process="@this"/>
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlVigenciasPlantas.agregarNuevoVigenciasPlantas()}" process="@this" />
+                            <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroVigenciasPlantas.hide();"  actionListener="#{controlVigenciasPlantas.limpiarNuevoVigenciasPlantas()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroVigenciasPlantas" header="duplicar Registro" widgetVar="duplicarRegistroVigenciasPlantas" closable="false" resizable="false"  draggable="false" modal="true" height="255" width="340" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroVigenciasPlantas" header="duplicar Registro" widgetVar="duplicarRegistroVigenciasPlantas" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Vigencia Planta" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
-                            <strong><h:outputText value="código "  style=" position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlVigenciasPlantas.duplicarVigenciaPlanta.codigo}" style=" width: 102px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Codigo: "  style=" position: absolute; top: 90px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlVigenciasPlantas.duplicarVigenciaPlanta.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
-                            <strong><h:outputText value="FECHA : "  style=" position: absolute; top: 110px;text-transform: uppercase" /></strong>
-                            <div  id="duplicarNombreaa" style=" width: 102px; position: absolute; left: 150px; top: 105px;text-transform: uppercase">
+                            <strong><h:outputText value="*Fecha: "  style=" position: absolute; top: 60px;" /></strong>
+                            <div  id="duplicarNombreaa" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <lnk:calendar id="duplicarNombre" value="#{controlVigenciasPlantas.duplicarVigenciaPlanta.fechavigencia}" >
                                     <p:ajax event="dateSelect" update="duplicarNombre"/>
                                     <p:ajax event="change" update="duplicarNombre"/>
                                 </lnk:calendar>
                             </div>
                             <p:watermark for="duplicarNombre" value="Fecha" />
-                            <p:commandButton id="limpiarD" value="Limpiar" style=" position: absolute; left: 20px; top: 220px;"  actionListener="#{controlVigenciasPlantas.limpiarDuplicarVigenciasPlantas() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" value="Agregar" style=" position: absolute; left: 180px; top: 220px;" actionListener="#{controlVigenciasPlantas.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" value="Cancelar" style=" position: absolute; left: 250px; top: 220px;"  update="duplicarTE" onclick="duplicarRegistroVigenciasPlantas.hide();" actionListener="#{controlVigenciasPlantas.limpiarDuplicarVigenciasPlantas()}"  process="@this"/>
+                            <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 20px; top: 120px;"  actionListener="#{controlVigenciasPlantas.limpiarDuplicarVigenciasPlantas() }" update="duplicarTE"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlVigenciasPlantas.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroVigenciasPlantas.hide();" actionListener="#{controlVigenciasPlantas.limpiarDuplicarVigenciasPlantas()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

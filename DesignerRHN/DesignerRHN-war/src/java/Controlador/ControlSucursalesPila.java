@@ -402,12 +402,13 @@ public class ControlSucursalesPila implements Serializable {
         try {
             System.out.println("entre a CONTROLSUCURSALESPILA.cancelarModificacion");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 //0
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //2
 
@@ -450,12 +451,13 @@ public class ControlSucursalesPila implements Serializable {
         try {
             System.out.println("entre a CONTROLSUCURSALESPILA.cancelarModificacion");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 //0
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 //2
 
@@ -637,9 +639,10 @@ public class ControlSucursalesPila implements Serializable {
                     RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
-                    codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    codigoCC = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
                     codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                    nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
+                    nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
                     nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosSucursalesPila");
 
@@ -811,11 +814,12 @@ public class ControlSucursalesPila implements Serializable {
             }
             context.update("form:informacionRegistro");
             if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
                 //1
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSucursalesPila");
                 bandera = 0;
@@ -1011,13 +1015,13 @@ public class ControlSucursalesPila implements Serializable {
         System.out.println("\n ENTRE A CONTROLSUCURSALESPILA.activarCtrlF11 \n");
 
         try {
-
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 0) {
                 tamano = 246;
                 System.out.println("Activar");
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
                 codigoCC.setFilterStyle("width: 80px");
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("width: 105px");
                 RequestContext.getCurrentInstance().update("form:datosSucursalesPila");
                 bandera = 1;
@@ -1025,9 +1029,9 @@ public class ControlSucursalesPila implements Serializable {
                 System.out.println("Desactivar");
                 //
                 tamano = 270;
-                codigoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
+                codigoCC = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:codigoCC");
                 codigoCC.setFilterStyle("display: none; visibility: hidden;");
-                nombreCentroCosto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
+                nombreCentroCosto = (Column) c.getViewRoot().findComponent("form:datosSucursalesPila:nombreCentroCosto");
                 nombreCentroCosto.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSucursalesPila");
                 bandera = 0;

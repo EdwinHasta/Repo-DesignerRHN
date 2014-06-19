@@ -170,16 +170,16 @@ public class ControlPryClientes implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+            direccion = (Column) c.getViewRoot().findComponent("form:datosPryCliente:direccion");
             direccion.setFilterStyle("display: none; visibility: hidden;");
-            telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+            telefono = (Column) c.getViewRoot().findComponent("form:datosPryCliente:telefono");
             telefono.setFilterStyle("display: none; visibility: hidden;");
-            contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+            contacto = (Column) c.getViewRoot().findComponent("form:datosPryCliente:contacto");
             contacto.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosPryCliente");
             bandera = 0;
@@ -208,16 +208,16 @@ public class ControlPryClientes implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+            direccion = (Column) c.getViewRoot().findComponent("form:datosPryCliente:direccion");
             direccion.setFilterStyle("display: none; visibility: hidden;");
-            telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+            telefono = (Column) c.getViewRoot().findComponent("form:datosPryCliente:telefono");
             telefono.setFilterStyle("display: none; visibility: hidden;");
-            contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+            contacto = (Column) c.getViewRoot().findComponent("form:datosPryCliente:contacto");
             contacto.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosPryCliente");
             bandera = 0;
@@ -246,16 +246,16 @@ public class ControlPryClientes implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
             nombre.setFilterStyle("width: 215px");
-            direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+            direccion = (Column) c.getViewRoot().findComponent("form:datosPryCliente:direccion");
             direccion.setFilterStyle("width: 210px");
-            telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+            telefono = (Column) c.getViewRoot().findComponent("form:datosPryCliente:telefono");
             telefono.setFilterStyle("width: 100px");
-            contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+            contacto = (Column) c.getViewRoot().findComponent("form:datosPryCliente:contacto");
             contacto.setFilterStyle("width: 170px");
             RequestContext.getCurrentInstance().update("form:datosPryCliente");
             System.out.println("Activar");
@@ -263,13 +263,13 @@ public class ControlPryClientes implements Serializable {
         } else if (bandera == 1) {
             tamano = 270;
             System.out.println("Desactivar");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+            direccion = (Column) c.getViewRoot().findComponent("form:datosPryCliente:direccion");
             direccion.setFilterStyle("display: none; visibility: hidden;");
-            telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+            telefono = (Column) c.getViewRoot().findComponent("form:datosPryCliente:telefono");
             telefono.setFilterStyle("display: none; visibility: hidden;");
-            contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+            contacto = (Column) c.getViewRoot().findComponent("form:datosPryCliente:contacto");
             contacto.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosPryCliente");
@@ -614,16 +614,16 @@ public class ControlPryClientes implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 1) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+                direccion = (Column) c.getViewRoot().findComponent("form:datosPryCliente:direccion");
                 direccion.setFilterStyle("display: none; visibility: hidden;");
-                telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+                telefono = (Column) c.getViewRoot().findComponent("form:datosPryCliente:telefono");
                 telefono.setFilterStyle("display: none; visibility: hidden;");
-                contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+                contacto = (Column) c.getViewRoot().findComponent("form:datosPryCliente:contacto");
                 contacto.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosPryCliente");
                 bandera = 0;
@@ -736,15 +736,15 @@ public class ControlPryClientes implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                direccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:direccion");
+                direccion = (Column) c.getViewRoot().findComponent("form:datosPryCliente:direccion");
                 direccion.setFilterStyle("display: none; visibility: hidden;");
-                telefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:telefono");
+                telefono = (Column) c.getViewRoot().findComponent("form:datosPryCliente:telefono");
                 telefono.setFilterStyle("display: none; visibility: hidden;");
-                contacto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosPryCliente:contacto");
+                contacto = (Column) c.getViewRoot().findComponent("form:datosPryCliente:contacto");
                 contacto.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosPryCliente");

@@ -153,12 +153,12 @@ public class ControlSectoresEvaluaciones implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
             bandera = 0;
@@ -188,11 +188,11 @@ public class ControlSectoresEvaluaciones implements Serializable {
     }
 
     public void salir() {
-        if (bandera == 1) {
+        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
             bandera = 0;
@@ -221,12 +221,12 @@ public class ControlSectoresEvaluaciones implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("width: 220px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
             descripcion.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
             System.out.println("Activar");
@@ -234,9 +234,9 @@ public class ControlSectoresEvaluaciones implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
             bandera = 0;
@@ -629,12 +629,12 @@ public class ControlSectoresEvaluaciones implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
                 bandera = 0;
@@ -759,11 +759,11 @@ public class ControlSectoresEvaluaciones implements Serializable {
             infoRegistro = "Cantidad de registros: " + listSectoresEvaluaciones.size();
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSectoresEvaluaciones:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSectoresEvaluaciones");
                 bandera = 0;

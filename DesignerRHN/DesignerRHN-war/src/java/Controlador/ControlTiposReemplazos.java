@@ -168,14 +168,14 @@ public class ControlTiposReemplazos implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+            factorReemplazado = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
             factorReemplazado.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             bandera = 0;
@@ -204,14 +204,14 @@ public class ControlTiposReemplazos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+            factorReemplazado = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
             factorReemplazado.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             bandera = 0;
@@ -241,14 +241,14 @@ public class ControlTiposReemplazos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("width: 195px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("width: 265px");
-            factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+            factorReemplazado = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
             factorReemplazado.setFilterStyle("width: 265px");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             System.out.println("Activar");
@@ -257,11 +257,11 @@ public class ControlTiposReemplazos implements Serializable {
             tamano = 270;
 
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+            factorReemplazado = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
             factorReemplazado.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
             bandera = 0;
@@ -676,14 +676,14 @@ public class ControlTiposReemplazos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+                factorReemplazado = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
                 factorReemplazado.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
                 bandera = 0;
@@ -812,13 +812,13 @@ public class ControlTiposReemplazos implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
-                factorReemplazado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
+                factorReemplazado = (Column) c.getViewRoot().findComponent("form:datosTipoReemplazo:factorReemplazado");
                 factorReemplazado.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoReemplazo");
                 bandera = 0;

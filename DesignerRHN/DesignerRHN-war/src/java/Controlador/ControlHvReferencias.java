@@ -204,16 +204,16 @@ public class ControlHvReferencias implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
-            numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+            numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
             numTelefono.setFilterStyle("display: none; visibility: hidden;");
-            numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+            numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
             numCelular.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvReferencia");
             bandera = 0;
@@ -242,16 +242,16 @@ public class ControlHvReferencias implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
-            numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+            numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
             numTelefono.setFilterStyle("display: none; visibility: hidden;");
-            numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+            numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
             numCelular.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvReferencia");
             bandera = 0;
@@ -279,16 +279,16 @@ public class ControlHvReferencias implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
             nombre.setFilterStyle("width: 270px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
             cargo.setFilterStyle("width: 145px");
-            numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+            numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
             numTelefono.setFilterStyle("width: 135px");
-            numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+            numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
             numCelular.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosHvReferencia");
             System.out.println("Activar");
@@ -296,13 +296,13 @@ public class ControlHvReferencias implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
-            numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+            numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
             numTelefono.setFilterStyle("display: none; visibility: hidden;");
-            numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+            numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
             numCelular.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvReferencia");
             bandera = 0;
@@ -655,17 +655,17 @@ public class ControlHvReferencias implements Serializable {
         System.err.println("agregar tipo entrevista " + nuevoHvReferencia.getTipo());
         System.out.println("contador " + contador);
 
-        if (contador == 1) {
+        if (contador == 1) {FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
-                numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+                numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
                 numTelefono.setFilterStyle("display: none; visibility: hidden;");
-                numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+                numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
                 numCelular.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosHvReferencia");
@@ -793,15 +793,15 @@ public class ControlHvReferencias implements Serializable {
             infoRegistro = "Cantidad de registros: " + listHvReferencias.size();
             context.update("form:informacionRegistro");
             RequestContext.getCurrentInstance().update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
-                numTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
+                numTelefono = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numTelefono");
                 numTelefono.setFilterStyle("display: none; visibility: hidden;");
-                numCelular = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvReferencia:numCelular");
+                numCelular = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:numCelular");
                 numCelular.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosHvReferencia");

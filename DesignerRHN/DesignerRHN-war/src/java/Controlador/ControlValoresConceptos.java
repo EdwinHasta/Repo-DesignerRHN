@@ -214,13 +214,13 @@ public class ControlValoresConceptos implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
+        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosValoresConceptos");
             bandera = 0;
@@ -249,14 +249,14 @@ public class ControlValoresConceptos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosValoresConceptos");
             bandera = 0;
@@ -285,14 +285,14 @@ public class ControlValoresConceptos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
             codigo.setFilterStyle("width: 130px");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:personafir");
             personafir.setFilterStyle("width: 270px");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:cargo");
             cargo.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosValoresConceptos");
             System.out.println("Activar");
@@ -300,11 +300,11 @@ public class ControlValoresConceptos implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
-            cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:cargo");
+            cargo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:cargo");
             cargo.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosValoresConceptos");
@@ -1256,14 +1256,14 @@ public class ControlValoresConceptos implements Serializable {
         BigInteger contarValoresConceptos = administrarValoresConceptos.contarConceptoValorConcepto(nuevoValoresConceptos.getConcepto().getSecuencia());
 
         if (contador == 2 && contarValoresConceptos.equals(new BigInteger("0"))) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarValoresConceptos = null;
@@ -1395,13 +1395,13 @@ public class ControlValoresConceptos implements Serializable {
             infoRegistro = "Cantidad de registros: " + listValoresConceptos.size();
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:personafir");
+                personafir = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:personafir");
                 personafir.setFilterStyle("display: none; visibility: hidden;");
-                cargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosValoresConceptos:cargo");
+                cargo = (Column) c.getViewRoot().findComponent("form:datosValoresConceptos:cargo");
                 cargo.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosValoresConceptos");
                 bandera = 0;

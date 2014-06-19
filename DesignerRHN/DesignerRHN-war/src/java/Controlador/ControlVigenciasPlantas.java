@@ -156,11 +156,11 @@ public class ControlVigenciasPlantas implements Serializable {
     }
 
     public void cancelarModificacion() {
-        if (bandera == 1) {
+        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
             bandera = 0;
@@ -189,12 +189,12 @@ public class ControlVigenciasPlantas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
             bandera = 0;
@@ -223,12 +223,12 @@ public class ControlVigenciasPlantas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("width: 370px");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
             fecha.setFilterStyle("width: 400px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
             System.out.println("Activar");
@@ -236,9 +236,9 @@ public class ControlVigenciasPlantas implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
             bandera = 0;
@@ -263,7 +263,6 @@ public class ControlVigenciasPlantas implements Serializable {
                 System.err.println("MODIFICAR FECHA \n Indice" + indice + "Fecha " + listVigenciasPlantas.get(indice).getFechavigencia());
                 if (listVigenciasPlantas.get(indice).getFechavigencia() == null) {
                     mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
-                    contador++;
                     listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
                     System.out.println("ControlVigenciasPlantas despues de mostrar el error fechaAsignada : " + listVigenciasPlantas.get(indice).getFechavigencia());
                 } else {
@@ -274,13 +273,14 @@ public class ControlVigenciasPlantas implements Serializable {
                             }
                         }
                     }
+                    if (fechas > 0) {
+                        listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
+                        mensajeValidacion = "FECHAS REPETIDAS";
+                    } else {
+                        contador++;
+                    }
                 }
-                if (fechas > 0) {
-                    listVigenciasPlantas.get(indice).setFechavigencia(backUpFecha);
-                    mensajeValidacion = "FECHAS REPETIDAS";
-                    contador++;
-                }
-                if (contador == 0) {
+                if (contador == 1) {
                     if (!crearVigenciasPlantas.contains(listVigenciasPlantas.get(indice))) {
                         if (modificarVigenciasPlantas.isEmpty()) {
                             modificarVigenciasPlantas.add(listVigenciasPlantas.get(indice));
@@ -356,6 +356,7 @@ public class ControlVigenciasPlantas implements Serializable {
 
             index = -1;
             secRegistro = null;
+            context.update("form:datosVigenciaPlanta");
         }
         System.out.println("Indice: " + index + " Celda: " + cualCelda);
 
@@ -688,13 +689,13 @@ public class ControlVigenciasPlantas implements Serializable {
         System.out.println("agregarNuevoVigenciasPlantas");
         int contador = 0;
         int duplicados = 0;
-
+        int duplicadosFechas = 0;
         Integer a = 0;
         a = null;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoVigenciaPlanta.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoVigenciaPlanta.getCodigo());
@@ -714,24 +715,32 @@ public class ControlVigenciasPlantas implements Serializable {
                 contador++;
             }
         }
-        if (nuevoVigenciaPlanta.getFechavigencia() == null || nuevoVigenciaPlanta.getFechavigencia().equals("")) {
-            mensajeValidacion = " *Debe tener una fecha \n";
+        if (nuevoVigenciaPlanta.getFechavigencia() == null) {
+            mensajeValidacion = " *Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
-            System.out.println("bandera");
-            contador++;
+            for (int j = 0; j < listVigenciasPlantas.size(); j++) {
+                if (nuevoVigenciaPlanta.getFechavigencia().equals(listVigenciasPlantas.get(j).getFechavigencia())) {
+                    duplicadosFechas++;
+                }
+            }
+            if (duplicadosFechas > 0) {
+                mensajeValidacion += "Fechas Repetidas";
+            } else {
+                contador++;
+            }
 
         }
 
         System.out.println("contador " + contador);
-
+FacesContext c = FacesContext.getCurrentInstance();
         if (contador == 2) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
                 bandera = 0;
@@ -809,6 +818,7 @@ public class ControlVigenciasPlantas implements Serializable {
         int contador = 0;
         mensajeValidacion = " ";
         int duplicados = 0;
+        int duplicadosFechas = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         Integer a = 0;
         a = null;
@@ -834,12 +844,20 @@ public class ControlVigenciasPlantas implements Serializable {
             }
         }
         if (duplicarVigenciaPlanta.getFechavigencia() == null) {
-            mensajeValidacion = mensajeValidacion + "   * una Fecha \n";
+            mensajeValidacion = " *Fecha \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
-
         } else {
-            System.out.println("Bandera : ");
-            contador++;
+            for (int j = 0; j < listVigenciasPlantas.size(); j++) {
+                if (duplicarVigenciaPlanta.getFechavigencia().equals(listVigenciasPlantas.get(j).getFechavigencia())) {
+                    duplicadosFechas++;
+                }
+            }
+            if (duplicadosFechas > 0) {
+                mensajeValidacion += "Fechas Repetidas";
+            } else {
+                contador++;
+            }
+
         }
 
         if (contador == 2) {
@@ -861,11 +879,11 @@ public class ControlVigenciasPlantas implements Serializable {
 
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosVigenciaPlanta:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosVigenciaPlanta");
                 bandera = 0;
