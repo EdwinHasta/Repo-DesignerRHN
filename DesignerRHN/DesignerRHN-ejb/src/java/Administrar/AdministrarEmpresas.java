@@ -97,10 +97,21 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     }
 
     @Override
+    public List<Empresas> listasEmpresasPorSecuenciaEmpresa(BigInteger secuencia) {
+        try {
+            List<Empresas> lista = persistenciaEmpresas.buscarEmpresasLista(em, secuencia);
+            return lista;
+        } catch (Exception e) {
+            System.err.println("Error listaEmpresas Admi : " + e.toString());
+            return null;
+        }
+    }
+
+    @Override
     public void crearEmpresas(List<Empresas> listaE) {
         try {
             for (int i = 0; i < listaE.size(); i++) {
-                persistenciaEmpresas.crear(em,listaE.get(i));
+                persistenciaEmpresas.crear(em, listaE.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearEmpresas Admi : " + e.toString());
@@ -111,7 +122,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void editarEmpresas(List<Empresas> listaE) {
         try {
             for (int i = 0; i < listaE.size(); i++) {
-                persistenciaEmpresas.editar(em,listaE.get(i));
+                persistenciaEmpresas.editar(em, listaE.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarEmpresas Admi : " + e.toString());
@@ -122,7 +133,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void borrarEmpresas(List<Empresas> listaE) {
         try {
             for (int i = 0; i < listaE.size(); i++) {
-                persistenciaEmpresas.borrar(em,listaE.get(i));
+                persistenciaEmpresas.borrar(em, listaE.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarEmpresas Admi : " + e.toString());
@@ -132,7 +143,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     @Override
     public List<Circulares> listaCircularesParaEmpresa(BigInteger secuencia) {
         try {
-            List<Circulares> lista = persistenciaCirculares.buscarCircularesPorSecuenciaEmpresa(em,secuencia);
+            List<Circulares> lista = persistenciaCirculares.buscarCircularesPorSecuenciaEmpresa(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaCircularesParaEmpresa Admi : " + e.toString());
@@ -144,7 +155,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void crearCirculares(List<Circulares> listaC) {
         try {
             for (int i = 0; i < listaC.size(); i++) {
-                persistenciaCirculares.crear(em,listaC.get(i));
+                persistenciaCirculares.crear(em, listaC.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearEmpresas Admi : " + e.toString());
@@ -155,7 +166,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void editarCirculares(List<Circulares> listaC) {
         try {
             for (int i = 0; i < listaC.size(); i++) {
-                persistenciaCirculares.editar(em,listaC.get(i));
+                persistenciaCirculares.editar(em, listaC.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarEmpresas Admi : " + e.toString());
@@ -166,7 +177,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void borrarCirculares(List<Circulares> listaC) {
         try {
             for (int i = 0; i < listaC.size(); i++) {
-                persistenciaCirculares.borrar(em,listaC.get(i));
+                persistenciaCirculares.borrar(em, listaC.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarEmpresas Admi : " + e.toString());
@@ -176,7 +187,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     @Override
     public List<VigenciasMonedasBases> listaVigenciasMonedasBasesParaEmpresa(BigInteger secuencia) {
         try {
-            List<VigenciasMonedasBases> lista = persistenciaVigenciasMonedasBases.buscarVigenciasMonedasBasesPorSecuenciaEmpresa(em,secuencia);
+            List<VigenciasMonedasBases> lista = persistenciaVigenciasMonedasBases.buscarVigenciasMonedasBasesPorSecuenciaEmpresa(em, secuencia);
             return lista;
         } catch (Exception e) {
             System.out.println("Error listaVigenciasMonedasBasesParaEmpresa Admi : " + e.toString());
@@ -188,7 +199,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void crearVigenciasMonedasBases(List<VigenciasMonedasBases> listaVMB) {
         try {
             for (int i = 0; i < listaVMB.size(); i++) {
-                persistenciaVigenciasMonedasBases.crear(em,listaVMB.get(i));
+                persistenciaVigenciasMonedasBases.crear(em, listaVMB.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error crearVigenciasMonedasBases Admi : " + e.toString());
@@ -199,7 +210,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void editarVigenciasMonedasBases(List<VigenciasMonedasBases> listaVMB) {
         try {
             for (int i = 0; i < listaVMB.size(); i++) {
-                persistenciaVigenciasMonedasBases.editar(em,listaVMB.get(i));
+                persistenciaVigenciasMonedasBases.editar(em, listaVMB.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error editarVigenciasMonedasBases Admi : " + e.toString());
@@ -210,7 +221,7 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
     public void borrarVigenciasMonedasBases(List<VigenciasMonedasBases> listaVMB) {
         try {
             for (int i = 0; i < listaVMB.size(); i++) {
-                persistenciaVigenciasMonedasBases.borrar(em,listaVMB.get(i));
+                persistenciaVigenciasMonedasBases.borrar(em, listaVMB.get(i));
             }
         } catch (Exception e) {
             System.out.println("Error borrarVigenciasMonedasBases Admi : " + e.toString());

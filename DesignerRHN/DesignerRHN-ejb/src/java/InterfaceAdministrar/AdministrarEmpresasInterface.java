@@ -130,4 +130,5 @@ public interface AdministrarEmpresasInterface {
      */
     public List<Monedas> lovMonedas();
 
+    public List<Empresas> listasEmpresasPorSecuenciaEmpresa(BigInteger secuencia);
 }
