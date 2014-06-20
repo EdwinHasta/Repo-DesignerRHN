@@ -39,13 +39,14 @@ public class ControlCiudades implements Serializable {
     @EJB
     AdministrarRastrosInterface administrarRastros;
 
+    //
+    private List<Ciudades> listaCiudades;
+    private List<Ciudades> filtradoListaCiudades;
+    private Ciudades ciudadSeleccionada;
     //Listas
     private List<Departamentos> listaDepartamentos;
     private List<Departamentos> filtradoListaDepatartamentos;
     private Departamentos seleccionDepartamento;
-    private List<Ciudades> listaCiudades;
-    private List<Ciudades> filtradoListaCiudades;
-    private Ciudades ciudadSeleccionada;
     //Otros
     private boolean aceptar;
     private int index;
@@ -119,6 +120,12 @@ public class ControlCiudades implements Serializable {
             administrarCiudades.obtenerConexion(ses.getId());
             administrarDepartamentos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+            getListaCiudades();
+            if (listaCiudades != null) {
+                infoRegistro = "Cantidad de registros : " + listaCiudades.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -432,7 +439,7 @@ public class ControlCiudades implements Serializable {
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosCiudades");
             bandera = 1;
-            
+
             System.out.println("TipoLista= " + tipoLista);
         } else if (bandera == 1) {
             tipoLista = 0;
@@ -745,7 +752,7 @@ public class ControlCiudades implements Serializable {
     public void eventoFiltrar() {
         System.out.println("Entra");
         if (tipoLista == 0) {
-            tipoLista = 1;  
+            tipoLista = 1;
         }
         System.out.println("Tamaño Lista Filtrada: " + filtradoListaCiudades.size());
         infoRegistro = "Cantidad de Registros: " + filtradoListaCiudades.size();
@@ -923,18 +930,6 @@ public class ControlCiudades implements Serializable {
             if (listaCiudades == null) {
                 listaCiudades = administrarCiudades.consultarCiudades();
             }
-
-            RequestContext context = RequestContext.getCurrentInstance();
-            if (listaCiudades == null || listaCiudades.isEmpty()) {
-                infoRegistro = "Cantidad de registros: 0 ";
-                infoRegistro2 = "Cantidad de registros: 0 ";
-                infoRegistro3 = "Cantidad de registros: 0 ";
-            } else {
-                infoRegistro = "Cantidad de registros: " + listaCiudades.size();
-                infoRegistro2 = "Cantidad de registros: " + listaCiudades.size();
-                infoRegistro3 = "Cantidad de registros: " + listaCiudades.size();
-            }
-            context.update("form:informacionRegistro");
             return listaCiudades;
         } catch (Exception e) {
             return listaCiudades = null;
@@ -1099,7 +1094,5 @@ public class ControlCiudades implements Serializable {
     public void setInfoRegistro3(String infoRegistro3) {
         this.infoRegistro3 = infoRegistro3;
     }
-    
-    
 
 }
