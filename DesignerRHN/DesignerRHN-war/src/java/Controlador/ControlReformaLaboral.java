@@ -911,15 +911,12 @@ public class ControlReformaLaboral implements Serializable {
     public void duplicarDetalleReformaLaboralM() {
         if (indexDetalle >= 0) {
             duplicarDetalleReformaLaboral = new DetallesReformasLaborales();
-            k++;
-            l = BigInteger.valueOf(k);
+
             if (tipoListaDetalles == 0) {
-                duplicarDetalleReformaLaboral.setSecuencia(l);
                 duplicarDetalleReformaLaboral.setFactor(listaDetallesReformasLaborales.get(indexDetalle).getFactor());
                 duplicarDetalleReformaLaboral.setTipopago(listaDetallesReformasLaborales.get(indexDetalle).getTipopago());
             }
             if (tipoListaDetalles == 1) {
-                duplicarDetalleReformaLaboral.setSecuencia(l);
                 duplicarDetalleReformaLaboral.setFactor(filtrarListaDetallesReformasLaborales.get(indexDetalle).getFactor());
                 duplicarDetalleReformaLaboral.setTipopago(filtrarListaDetallesReformasLaborales.get(indexDetalle).getTipopago());
             }
@@ -940,8 +937,13 @@ public class ControlReformaLaboral implements Serializable {
             int tamDes = 0;
             tamDes = nuevoReformaLaboral.getNombre().length();
             if (tamDes >= 1 && tamDes <= 30) {
-                String text = duplicarReformaLaboral.getNombre().toUpperCase();
-                duplicarReformaLaboral.setNombre(text);
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarDetalleReformaLaboral.setSecuencia(l);
+                if (duplicarReformaLaboral.getNombre() != null) {
+                    String text = duplicarReformaLaboral.getNombre().toUpperCase();
+                    duplicarReformaLaboral.setNombre(text);
+                }
                 listaReformasLaborales.add(duplicarReformaLaboral);
                 listReformasLaboralesCrear.add(duplicarReformaLaboral);
                 cambiosPagina = false;

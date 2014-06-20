@@ -1521,7 +1521,6 @@ public class ControlVigenciaSueldo implements Serializable {
             k++;
             BigInteger var = BigInteger.valueOf(k);
             if (tipoLista == 0) {
-                duplicarVS.setSecuencia(var);
                 duplicarVS.setEmpleado(listVigenciasSueldos.get(index).getEmpleado());
                 duplicarVS.setFechavigencia(listVigenciasSueldos.get(index).getFechavigencia());
                 duplicarVS.setMotivocambiosueldo(listVigenciasSueldos.get(index).getMotivocambiosueldo());
@@ -1537,7 +1536,6 @@ public class ControlVigenciaSueldo implements Serializable {
                 duplicarVS.setObservaciones(listVigenciasSueldos.get(index).getObservaciones());
             }
             if (tipoLista == 1) {
-                duplicarVS.setSecuencia(var);
                 duplicarVS.setEmpleado(filtrarVigenciasSueldos.get(index).getEmpleado());
                 duplicarVS.setFechavigencia(filtrarVigenciasSueldos.get(index).getFechavigencia());
                 duplicarVS.setMotivocambiosueldo(filtrarVigenciasSueldos.get(index).getMotivocambiosueldo());
@@ -1568,6 +1566,9 @@ public class ControlVigenciaSueldo implements Serializable {
         if ((duplicarVS.getFechavigencia() != null) && (duplicarVS.getValor() != null) && (duplicarVS.getFechavigenciaretroactivo() != null)
                 && (duplicarVS.getTiposueldo().getSecuencia() != null) && (duplicarVS.getMotivocambiosueldo().getSecuencia() != null)) {
             if (validarFechasRegistroVigenciaSueldo(2) == true) {
+                k++;
+                BigInteger var = BigInteger.valueOf(k);
+                duplicarVS.setSecuencia(var);
                 listVigenciasSueldos.add(duplicarVS);
                 listVSCrear.add(duplicarVS);
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1632,12 +1633,8 @@ public class ControlVigenciaSueldo implements Serializable {
 
         if (indexVA >= 0) {
             duplicarVA = new VigenciasAfiliaciones();
-            k++;
-            BigDecimal var = BigDecimal.valueOf(k);
-            l = BigInteger.valueOf(k);
-
+            
             if (tipoListaVA == 0) {
-                duplicarVA.setSecuencia(l);
                 duplicarVA.setVigenciasueldo(listVigenciasSueldos.get(indexAuxVS));
                 duplicarVA.setFechafinal(listVigenciasAfiliaciones.get(indexVA).getFechainicial());
                 duplicarVA.setFechainicial(listVigenciasAfiliaciones.get(indexVA).getFechafinal());
@@ -1647,7 +1644,6 @@ public class ControlVigenciaSueldo implements Serializable {
 
             }
             if (tipoListaVA == 1) {
-                duplicarVA.setSecuencia(l);
                 duplicarVA.setVigenciasueldo(listVigenciasSueldos.get(indexAuxVS));
                 duplicarVA.setFechafinal(filtrarVigenciasAfiliaciones.get(indexVA).getFechainicial());
                 duplicarVA.setFechainicial(filtrarVigenciasAfiliaciones.get(indexVA).getFechafinal());
@@ -1671,6 +1667,9 @@ public class ControlVigenciaSueldo implements Serializable {
     public void confirmarDuplicarVA() {
         if (duplicarVA.getFechainicial() != null && duplicarVA.getTercerosucursal().getTercero().getSecuencia() != null && duplicarVA.getTipoentidad().getSecuencia() != null) {
             if (validarFechasRegistroVigenciaAfiliaciones(2) == true) {
+                k++;
+                BigInteger var = BigInteger.valueOf(k);
+                duplicarVA.setSecuencia(var);
                 cambioVigenciaA = true;
                 listVigenciasAfiliaciones.add(duplicarVA);
                 listVACrear.add(duplicarVA);

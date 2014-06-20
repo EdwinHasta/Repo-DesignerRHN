@@ -418,7 +418,7 @@ public class ControlEmplDemanda implements Serializable {
         guardadoGeneral();
         salir();
     }
-    
+
     public void cancelarSalir() {
         guardadoGeneral();
         salir();
@@ -596,8 +596,10 @@ public class ControlEmplDemanda implements Serializable {
                 k++;
                 l = BigInteger.valueOf(k);
                 nuevaDemandaEmpleado.setSecuencia(l);
-                String aux = nuevaDemandaEmpleado.getSeguimiento().toUpperCase();
-                nuevaDemandaEmpleado.setSeguimiento(aux);
+                if (nuevaDemandaEmpleado.getSeguimiento() != null) {
+                    String aux = nuevaDemandaEmpleado.getSeguimiento().toUpperCase();
+                    nuevaDemandaEmpleado.setSeguimiento(aux);
+                }
                 nuevaDemandaEmpleado.setEmpleado(empleado);
                 if (listDemandasEmpleado == null) {
                     listDemandasEmpleado = new ArrayList<Demandas>();
@@ -705,8 +707,10 @@ public class ControlEmplDemanda implements Serializable {
                 cambioDemanda = true;
                 k++;
                 l = BigInteger.valueOf(k);
-                String aux = duplicarDemandaEmpleado.getSeguimiento().toUpperCase();
-                duplicarDemandaEmpleado.setSeguimiento(aux);
+                if (duplicarDemandaEmpleado.getSeguimiento() != null) {
+                    String aux = duplicarDemandaEmpleado.getSeguimiento().toUpperCase();
+                    duplicarDemandaEmpleado.setSeguimiento(aux);
+                }
                 duplicarDemandaEmpleado.setEmpleado(empleado);
                 duplicarDemandaEmpleado.setSecuencia(l);
                 if (listDemandasEmpleado == null) {
@@ -936,6 +940,7 @@ public class ControlEmplDemanda implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambioDemanda = true;
                 permitirIndexD = true;

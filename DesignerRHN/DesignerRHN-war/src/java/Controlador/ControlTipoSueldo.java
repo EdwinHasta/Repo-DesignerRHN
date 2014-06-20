@@ -1802,7 +1802,6 @@ public class ControlTipoSueldo implements Serializable {
         k++;
         l = BigInteger.valueOf(k);
         if (tipoLista == 0) {
-            duplicarTipoSueldo.setSecuencia(l);
             duplicarTipoSueldo.setCodigo(listaTiposSueldos.get(index).getCodigo());
             duplicarTipoSueldo.setDescripcion(listaTiposSueldos.get(index).getDescripcion());
             duplicarTipoSueldo.setBasico(listaTiposSueldos.get(index).getBasico());
@@ -1810,7 +1809,6 @@ public class ControlTipoSueldo implements Serializable {
             duplicarTipoSueldo.setAdicionalbasico(listaTiposSueldos.get(index).getAdicionalbasico());
         }
         if (tipoLista == 1) {
-            duplicarTipoSueldo.setSecuencia(l);
             duplicarTipoSueldo.setCodigo(filtrarListaTiposSueldos.get(index).getCodigo());
             duplicarTipoSueldo.setDescripcion(filtrarListaTiposSueldos.get(index).getDescripcion());
             duplicarTipoSueldo.setBasico(filtrarListaTiposSueldos.get(index).getBasico());
@@ -1830,13 +1828,11 @@ public class ControlTipoSueldo implements Serializable {
         k++;
         l = BigInteger.valueOf(k);
         if (tipoListaTSFormulas == 0) {
-            duplicarTSFormulaConcepto.setSecuencia(l);
             duplicarTSFormulaConcepto.setOrigen(listaTSFormulasConceptos.get(indexTSFormulas).getOrigen());
             duplicarTSFormulaConcepto.setFormula(listaTSFormulasConceptos.get(indexTSFormulas).getFormula());
             duplicarTSFormulaConcepto.setConcepto(listaTSFormulasConceptos.get(indexTSFormulas).getConcepto());
         }
         if (tipoListaTSFormulas == 1) {
-            duplicarTSFormulaConcepto.setSecuencia(l);
             duplicarTSFormulaConcepto.setOrigen(filtrarListaTSFormulasConceptos.get(indexTSFormulas).getOrigen());
             duplicarTSFormulaConcepto.setFormula(filtrarListaTSFormulasConceptos.get(indexTSFormulas).getFormula());
             duplicarTSFormulaConcepto.setConcepto(filtrarListaTSFormulasConceptos.get(indexTSFormulas).getConcepto());
@@ -1854,11 +1850,9 @@ public class ControlTipoSueldo implements Serializable {
         k++;
         l = BigInteger.valueOf(k);
         if (tipoListaTSGrupos == 0) {
-            duplicarTSGrupoTipoEntidad.setSecuencia(l);
             duplicarTSGrupoTipoEntidad.setGrupotipoentidad(listaTSGruposTiposEntidades.get(indexTSGrupos).getGrupotipoentidad());
         }
         if (tipoListaTSGrupos == 1) {
-            duplicarTSGrupoTipoEntidad.setSecuencia(l);
             duplicarTSGrupoTipoEntidad.setGrupotipoentidad(filtrarListaTSGruposTiposEntidades.get(indexTSGrupos).getGrupotipoentidad());
         }
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1871,16 +1865,15 @@ public class ControlTipoSueldo implements Serializable {
 
     public void duplicarTEFormulaM() {
         duplicarTEFormulaConcepto = new TEFormulasConceptos();
-        k++;
-        l = BigInteger.valueOf(k);
+
         if (tipoListaTEFormulas == 0) {
-            duplicarTEFormulaConcepto.setSecuencia(l);
+
             duplicarTEFormulaConcepto.setTipoentidad(listaTEFormulasConceptos.get(indexTEFormulas).getTipoentidad());
             duplicarTEFormulaConcepto.setFormula(listaTEFormulasConceptos.get(indexTEFormulas).getFormula());
             duplicarTEFormulaConcepto.setConcepto(listaTEFormulasConceptos.get(indexTEFormulas).getConcepto());
         }
         if (tipoListaTEFormulas == 1) {
-            duplicarTEFormulaConcepto.setSecuencia(l);
+
             duplicarTEFormulaConcepto.setTipoentidad(filtrarListaTEFormulasConceptos.get(indexTEFormulas).getTipoentidad());
             duplicarTEFormulaConcepto.setFormula(filtrarListaTEFormulasConceptos.get(indexTEFormulas).getFormula());
             duplicarTEFormulaConcepto.setConcepto(filtrarListaTEFormulasConceptos.get(indexTEFormulas).getConcepto());
@@ -1919,7 +1912,9 @@ public class ControlTipoSueldo implements Serializable {
                     filtrarListaTiposSueldos = null;
                     tipoLista = 0;
                 }
-
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarTipoSueldo.setSecuencia(l);
                 String text = duplicarTipoSueldo.getDescripcion().toUpperCase();
                 duplicarTipoSueldo.setDescripcion(text);
                 listaTiposSueldos.add(duplicarTipoSueldo);
@@ -1964,7 +1959,9 @@ public class ControlTipoSueldo implements Serializable {
                 filtrarListaTSFormulasConceptos = null;
                 tipoListaTSFormulas = 0;
             }
-
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarTSFormulaConcepto.setSecuencia(l);
             if (tipoLista == 0) {
                 duplicarTSFormulaConcepto.setTiposueldo(listaTiposSueldos.get(indexAux));
             }
@@ -2012,6 +2009,9 @@ public class ControlTipoSueldo implements Serializable {
             if (tipoLista == 1) {
                 duplicarTSGrupoTipoEntidad.setTiposueldo(filtrarListaTiposSueldos.get(indexAux));
             }
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarTSGrupoTipoEntidad.setSecuencia(l);
             listaTSGruposTiposEntidades.add(duplicarTSGrupoTipoEntidad);
             listTSGruposTiposEntidadesCrear.add(duplicarTSGrupoTipoEntidad);
             cambiosPagina = false;
@@ -2053,7 +2053,9 @@ public class ControlTipoSueldo implements Serializable {
                     filtrarListaTEFormulasConceptos = null;
                     tipoListaTEFormulas = 0;
                 }
-
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarTEFormulaConcepto.setSecuencia(l);
                 if (tipoListaTSGrupos == 0) {
                     duplicarTEFormulaConcepto.setTsgrupotipoentidad(listaTSGruposTiposEntidades.get(indexAuxTSGrupos));
                 }

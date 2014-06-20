@@ -2171,16 +2171,15 @@ public class ControlCargo implements Serializable {
 
     public void duplicarTipoDetalleM() {
         duplicarTipoDetalle = new TiposDetalles();
-        k++;
-        l = BigInteger.valueOf(k);
+
         if (tipoListaTipoDetalle == 0) {
-            duplicarTipoDetalle.setSecuencia(l);
+
             duplicarTipoDetalle.setCodigo(listaTiposDetalles.get(indexTipoDetalle).getCodigo());
             duplicarTipoDetalle.setDescripcion(listaTiposDetalles.get(indexTipoDetalle).getDescripcion());
             duplicarTipoDetalle.setEnfoque(listaTiposDetalles.get(indexTipoDetalle).getEnfoque());
         }
         if (tipoListaTipoDetalle == 1) {
-            duplicarTipoDetalle.setSecuencia(l);
+
             duplicarTipoDetalle.setCodigo(filtrarListaTiposDetalles.get(indexTipoDetalle).getCodigo());
             duplicarTipoDetalle.setDescripcion(filtrarListaTiposDetalles.get(indexTipoDetalle).getDescripcion());
             duplicarTipoDetalle.setEnfoque(filtrarListaTiposDetalles.get(indexTipoDetalle).getEnfoque());
@@ -2231,6 +2230,9 @@ public class ControlCargo implements Serializable {
                     filtrarListaCargos = null;
                     tipoLista = 0;
                 }
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarTipoDetalle.setSecuencia(l);
                 duplicarCargo.setEmpresa(empresaActual);
                 String text = duplicarCargo.getNombre().toUpperCase();
                 duplicarCargo.setNombre(text);

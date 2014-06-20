@@ -33,7 +33,7 @@ public class PersistenciaFormulasConceptos implements PersistenciaFormulasConcep
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(conceptos);
+            em.persist(conceptos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaFormulasConceptos.crear: " + e);

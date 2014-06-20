@@ -33,7 +33,7 @@ public class PersistenciaFormulasProcesos implements PersistenciaFormulasProceso
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(formulasProcesos);
+            em.persist(formulasProcesos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaFormulasProcesos.crear: " + e);

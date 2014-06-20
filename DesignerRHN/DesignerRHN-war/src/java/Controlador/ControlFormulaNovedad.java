@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -35,9 +36,10 @@ public class ControlFormulaNovedad implements Serializable {
     AdministrarFormulaNovedadInterface administrarFormulaNovedad;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     private List<FormulasNovedades> listFormulasNovedades;
     private List<FormulasNovedades> filtrarListFormulasNovedades;
+    private FormulasNovedades formulaTablaSeleccionada;
     private Formulas formulaActual;
     ///////
     //Activo/Desactivo Crtl + F11
@@ -78,8 +80,13 @@ public class ControlFormulaNovedad implements Serializable {
     private boolean permitirIndex;
     private int tipoActualizacion;
     private String auxFormulaDescripcion;
+    //
+    private String infoRegistro;
+    private String infoRegistroFormula;
+    private String altoTabla;
 
     public ControlFormulaNovedad() {
+        altoTabla = "260";
         auxFormulaDescripcion = "";
         permitirIndex = true;
         tipoActualizacion = -1;
@@ -109,7 +116,7 @@ public class ControlFormulaNovedad implements Serializable {
         secRegistro = null;
         formulaActual = new Formulas();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -126,7 +133,11 @@ public class ControlFormulaNovedad implements Serializable {
     public void recibirFormula(BigInteger secuencia) {
         formulaActual = administrarFormulaNovedad.formulaActual(secuencia);
         listFormulasNovedades = getListFormulasNovedades();
-        System.out.println("formulaActual : " + formulaActual.getSecuencia());
+        if (listFormulasNovedades != null) {
+            infoRegistro = "Cantidad de registros : " + listFormulasNovedades.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
     }
 
     public void modificacionesCamposFormula(int indice) {
@@ -149,6 +160,7 @@ public class ControlFormulaNovedad implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
         }
@@ -161,7 +173,7 @@ public class ControlFormulaNovedad implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
         }
@@ -214,6 +226,7 @@ public class ControlFormulaNovedad implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
             }
@@ -226,13 +239,23 @@ public class ControlFormulaNovedad implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
-                        //RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
             }
             guardado = true;
         }
         context.update("form:datosFormulaNovedad");
+    }
+
+    public void posicionFormula() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndice(indice, columna);
     }
 
     public void cambiarIndice(int indice, int celda) {
@@ -255,61 +278,76 @@ public class ControlFormulaNovedad implements Serializable {
     //GUARDAR
     public void guardarGeneral() {
         guardarCambiosFormulaNovedad();
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void guardarCambiosFormulaNovedad() {
-        if (guardado == false) {
-            if (!listFormulasNovedadesBorrar.isEmpty()) {
-                for (int i = 0; i < listFormulasNovedadesBorrar.size(); i++) {
-                    administrarFormulaNovedad.borrarFormulasNovedades(listFormulasNovedadesBorrar);
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listFormulasNovedadesBorrar.isEmpty()) {
+                    for (int i = 0; i < listFormulasNovedadesBorrar.size(); i++) {
+                        administrarFormulaNovedad.borrarFormulasNovedades(listFormulasNovedadesBorrar);
+                    }
+                    listFormulasNovedadesBorrar.clear();
                 }
-                listFormulasNovedadesBorrar.clear();
-            }
-            if (!listFormulasNovedadesCrear.isEmpty()) {
-                for (int i = 0; i < listFormulasNovedadesCrear.size(); i++) {
-                    administrarFormulaNovedad.crearFormulasNovedades(listFormulasNovedadesCrear);
+                if (!listFormulasNovedadesCrear.isEmpty()) {
+                    for (int i = 0; i < listFormulasNovedadesCrear.size(); i++) {
+                        administrarFormulaNovedad.crearFormulasNovedades(listFormulasNovedadesCrear);
+                    }
+                    listFormulasNovedadesCrear.clear();
                 }
-                listFormulasNovedadesCrear.clear();
+                if (!listFormulasNovedadesModificar.isEmpty()) {
+                    administrarFormulaNovedad.editarFormulasNovedades(listFormulasNovedadesModificar);
+                    listFormulasNovedadesModificar.clear();
+                }
+                listFormulasNovedades = null;
+                getListFormulasNovedades();
+                if (listFormulasNovedades != null) {
+                    infoRegistro = "Cantidad de registros : " + listFormulasNovedades.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:datosFormulaNovedad");
+                k = 0;
+                index = -1;
+                secRegistro = null;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            if (!listFormulasNovedadesModificar.isEmpty()) {
-                administrarFormulaNovedad.editarFormulasNovedades(listFormulasNovedadesModificar);
-                listFormulasNovedadesModificar.clear();
-            }
-            listFormulasNovedades = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosFormulaNovedad");
-            guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        index = -1;
-        secRegistro = null;
 
     }
 
     public void cancelarModificacionGeneral() {
-        if (guardado == false) {
-            cancelarModificacionFormulaNovedad();
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosFormulaNovedad");
-        }
+        cancelarModificacionFormulaNovedad();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:datosFormulaNovedad");
     }
 
     public void cancelarModificacionFormulaNovedad() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            formulaCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
+            altoTabla = "260";
+            formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("display: none; visibility: hidden;");
-            formulaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
+            formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
             formulaNombre.setFilterStyle("display: none; visibility: hidden;");
-            formulaUsa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
+            formulaUsa = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
             formulaUsa.setFilterStyle("display: none; visibility: hidden;");
-            formulaGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
+            formulaGarantiza = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
             formulaGarantiza.setFilterStyle("display: none; visibility: hidden;");
-            formulaSugerida = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
+            formulaSugerida = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
             formulaSugerida.setFilterStyle("display: none; visibility: hidden;");
-            formulaCargue = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
+            formulaCargue = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
             formulaCargue.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
             bandera = 0;
@@ -326,7 +364,15 @@ public class ControlFormulaNovedad implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        getListFormulasNovedades();
+        if (listFormulasNovedades != null) {
+            infoRegistro = "Cantidad de registros : " + listFormulasNovedades.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosFormulaNovedad");
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
 
     public void editarCelda() {
@@ -361,18 +407,20 @@ public class ControlFormulaNovedad implements Serializable {
     //CREAR 
     public void agregarNuevoFormulaNovedad() {
         if (nuevoFormulaNovedad.getFormula().getSecuencia() != null) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
-                formulaCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
+                altoTabla = "260";
+                formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
                 formulaCorto.setFilterStyle("display: none; visibility: hidden;");
-                formulaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
+                formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
                 formulaNombre.setFilterStyle("display: none; visibility: hidden;");
-                formulaUsa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
+                formulaUsa = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
                 formulaUsa.setFilterStyle("display: none; visibility: hidden;");
-                formulaGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
+                formulaGarantiza = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
                 formulaGarantiza.setFilterStyle("display: none; visibility: hidden;");
-                formulaSugerida = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
+                formulaSugerida = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
                 formulaSugerida.setFilterStyle("display: none; visibility: hidden;");
-                formulaCargue = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
+                formulaCargue = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
                 formulaCargue.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
                 bandera = 0;
@@ -383,16 +431,21 @@ public class ControlFormulaNovedad implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             nuevoFormulaNovedad.setSecuencia(l);
+            nuevoFormulaNovedad.setFormula(formulaActual);
             listFormulasNovedadesCrear.add(nuevoFormulaNovedad);
             listFormulasNovedades.add(nuevoFormulaNovedad);
             nuevoFormulaNovedad = new FormulasNovedades();
             nuevoFormulaNovedad.setFormula(new Formulas());
             RequestContext context = RequestContext.getCurrentInstance();
+
+            infoRegistro = "Cantidad de registros : " + listFormulasNovedades.size();
+
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulaNovedad");
             context.execute("NuevoRegistroFormula.hide()");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             index = -1;
             secRegistro = null;
@@ -426,7 +479,7 @@ public class ControlFormulaNovedad implements Serializable {
             k++;
             l = BigInteger.valueOf(k);
             if (tipoLista == 0) {
-                duplicarFormulaNovedad.setSecuencia(l);
+
                 duplicarFormulaNovedad.setFormula(listFormulasNovedades.get(index).getFormula());
                 duplicarFormulaNovedad.setGarantizada(listFormulasNovedades.get(index).getGarantizada());
                 duplicarFormulaNovedad.setUsaordenformulaconcepto(listFormulasNovedades.get(index).getUsaordenformulaconcepto());
@@ -434,7 +487,6 @@ public class ControlFormulaNovedad implements Serializable {
                 duplicarFormulaNovedad.setCargue(listFormulasNovedades.get(index).getCargue());
             }
             if (tipoLista == 1) {
-                duplicarFormulaNovedad.setSecuencia(l);
                 duplicarFormulaNovedad.setFormula(filtrarListFormulasNovedades.get(index).getFormula());
                 duplicarFormulaNovedad.setGarantizada(filtrarListFormulasNovedades.get(index).getGarantizada());
                 duplicarFormulaNovedad.setUsaordenformulaconcepto(filtrarListFormulasNovedades.get(index).getUsaordenformulaconcepto());
@@ -454,29 +506,36 @@ public class ControlFormulaNovedad implements Serializable {
      */
     public void confirmarDuplicarFormulaNovedad() {
         if (duplicarFormulaNovedad.getFormula().getSecuencia() != null) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarFormulaNovedad.setSecuencia(l);
             listFormulasNovedades.add(duplicarFormulaNovedad);
             listFormulasNovedadesCrear.add(duplicarFormulaNovedad);
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listFormulasNovedades.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulaNovedad");
             context.execute("DuplicarRegistroFormulaNovedad.hide()");
             index = -1;
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
-                formulaCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
+                altoTabla = "260";
+                formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
                 formulaCorto.setFilterStyle("display: none; visibility: hidden;");
-                formulaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
+                formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
                 formulaNombre.setFilterStyle("display: none; visibility: hidden;");
-                formulaUsa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
+                formulaUsa = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
                 formulaUsa.setFilterStyle("display: none; visibility: hidden;");
-                formulaGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
+                formulaGarantiza = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
                 formulaGarantiza.setFilterStyle("display: none; visibility: hidden;");
-                formulaSugerida = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
+                formulaSugerida = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
                 formulaSugerida.setFilterStyle("display: none; visibility: hidden;");
-                formulaCargue = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
+                formulaCargue = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
                 formulaCargue.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
                 bandera = 0;
@@ -545,13 +604,15 @@ public class ControlFormulaNovedad implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listFormulasNovedades.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulaNovedad");
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -562,33 +623,36 @@ public class ControlFormulaNovedad implements Serializable {
      * medio de la tecla Crtl+F11
      */
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            formulaCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
+            altoTabla = "238";
+            formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("width: 125px");
-            formulaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
+            formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
             formulaNombre.setFilterStyle("width: 125px");
-            formulaUsa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
+            formulaUsa = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
             formulaUsa.setFilterStyle("width: 10px");
-            formulaGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
-            formulaGarantiza.setFilterStyle("width: 10px");
-            formulaSugerida = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
-            formulaSugerida.setFilterStyle("width: 10px");
-            formulaCargue = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
-            formulaCargue.setFilterStyle("width: 10px");
+            formulaGarantiza = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
+            formulaGarantiza.setFilterStyle("width: 8px");
+            formulaSugerida = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
+            formulaSugerida.setFilterStyle("width: 8px");
+            formulaCargue = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
+            formulaCargue.setFilterStyle("width: 8px");
             RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
             bandera = 1;
         } else if (bandera == 1) {
-            formulaCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
+            altoTabla = "260";
+            formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("display: none; visibility: hidden;");
-            formulaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
+            formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
             formulaNombre.setFilterStyle("display: none; visibility: hidden;");
-            formulaUsa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
+            formulaUsa = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
             formulaUsa.setFilterStyle("display: none; visibility: hidden;");
-            formulaGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
+            formulaGarantiza = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
             formulaGarantiza.setFilterStyle("display: none; visibility: hidden;");
-            formulaSugerida = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
+            formulaSugerida = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
             formulaSugerida.setFilterStyle("display: none; visibility: hidden;");
-            formulaCargue = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
+            formulaCargue = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
             formulaCargue.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
             bandera = 0;
@@ -602,18 +666,20 @@ public class ControlFormulaNovedad implements Serializable {
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
-            formulaCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
+            altoTabla = "260";
+            formulaCorto = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCorto");
             formulaCorto.setFilterStyle("display: none; visibility: hidden;");
-            formulaNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
+            formulaNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaNombre");
             formulaNombre.setFilterStyle("display: none; visibility: hidden;");
-            formulaUsa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
+            formulaUsa = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaUsa");
             formulaUsa.setFilterStyle("display: none; visibility: hidden;");
-            formulaGarantiza = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
+            formulaGarantiza = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaGarantiza");
             formulaGarantiza.setFilterStyle("display: none; visibility: hidden;");
-            formulaSugerida = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
+            formulaSugerida = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaSugerida");
             formulaSugerida.setFilterStyle("display: none; visibility: hidden;");
-            formulaCargue = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
+            formulaCargue = (Column) c.getViewRoot().findComponent("form:datosFormulaNovedad:formulaCargue");
             formulaCargue.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaNovedad");
             bandera = 0;
@@ -714,6 +780,7 @@ public class ControlFormulaNovedad implements Serializable {
     }
 
     public void actualizarFormula() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listFormulasNovedades.get(index).setFormula(formulaSeleccionada);
@@ -736,19 +803,17 @@ public class ControlFormulaNovedad implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:formulaCorto");
-            context.update(":form:formulaNombre");
+            context.update("form:formulaCorto");
+            context.update("form:formulaNombre");
         } else if (tipoActualizacion == 1) {
             nuevoFormulaNovedad.setFormula(formulaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevoFormulaCorto");
             context.update("formularioDialogos:nuevoFormulaDescripcion");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaNovedad.setFormula(formulaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarFormulaCorto");
             context.update("formularioDialogos:duplicarFormulaDescripcion");
         }
@@ -758,6 +823,11 @@ public class ControlFormulaNovedad implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:FormulaDialogo");
+        context.update("form:lovFormula");
+        context.update("form:aceptarF");
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("FormulaDialogo.hide()");
     }
 
     public void cancelarCambioFormula() {
@@ -831,6 +901,9 @@ public class ControlFormulaNovedad implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + filtrarListFormulasNovedades.size();
+            context.update("form:informacionRegistro");
         }
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
@@ -882,12 +955,11 @@ public class ControlFormulaNovedad implements Serializable {
     public List<FormulasNovedades> getListFormulasNovedades() {
         try {
             if (listFormulasNovedades == null) {
-                listFormulasNovedades = new ArrayList<FormulasNovedades>();
-                listFormulasNovedades = administrarFormulaNovedad.listFormulasNovedadesParaFormula(formulaActual.getSecuencia());
-                return listFormulasNovedades;
-            } else {
-                return listFormulasNovedades;
+                if (formulaActual.getSecuencia() != null) {
+                    listFormulasNovedades = administrarFormulaNovedad.listFormulasNovedadesParaFormula(formulaActual.getSecuencia());
+                }
             }
+            return listFormulasNovedades;
         } catch (Exception e) {
             System.out.println("Error...!! getListFormulasNovedades " + e.toString());
             return null;
@@ -1023,9 +1095,8 @@ public class ControlFormulaNovedad implements Serializable {
     }
 
     public List<Formulas> getLovFormulas() {
-        if (lovFormulas == null) {
             lovFormulas = administrarFormulaNovedad.listFormulas(formulaActual.getSecuencia());
-        }
+        
         return lovFormulas;
     }
 
@@ -1055,6 +1126,59 @@ public class ControlFormulaNovedad implements Serializable {
 
     public void setFormulaActual(Formulas formulaActual) {
         this.formulaActual = formulaActual;
+    }
+
+    public FormulasNovedades getFormulaTablaSeleccionada() {
+        getListFormulasNovedades();
+        if (listFormulasNovedades != null) {
+            int tam = listFormulasNovedades.size();
+            if (tam > 0) {
+                formulaTablaSeleccionada = listFormulasNovedades.get(0);
+            }
+        }
+        return formulaTablaSeleccionada;
+    }
+
+    public void setFormulaTablaSeleccionada(FormulasNovedades formulaTablaSeleccionada) {
+        this.formulaTablaSeleccionada = formulaTablaSeleccionada;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroFormula() {
+        getLovFormulas();
+        if (lovFormulas != null) {
+            infoRegistroFormula = "Cantidad de registros : " + lovFormulas.size();
+        } else {
+            infoRegistroFormula = "Cantidad de registros : 0";
+        }
+        return infoRegistroFormula;
+    }
+
+    public void setInfoRegistroFormula(String infoRegistroFormula) {
+        this.infoRegistroFormula = infoRegistroFormula;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
     }
 
 }

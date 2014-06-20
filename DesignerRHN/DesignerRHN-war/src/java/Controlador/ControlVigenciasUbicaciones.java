@@ -901,6 +901,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
         }
         RequestContext context = RequestContext.getCurrentInstance();
         infoRegistro = "Cantidad de Registros: " + filtrarVU.size();
+        
         context.update("form:informacionRegistro");
     }
     //GETTERS AND SETTERS

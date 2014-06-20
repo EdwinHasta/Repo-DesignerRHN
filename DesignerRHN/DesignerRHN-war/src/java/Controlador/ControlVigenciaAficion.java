@@ -418,13 +418,13 @@ public class ControlVigenciaAficion implements Serializable {
             }
         }
     }
-    
-    public void guardarSalir(){
+
+    public void guardarSalir() {
         guardarCambios();
         salir();
     }
-    
-    public void cancelarSalir(){
+
+    public void cancelarSalir() {
         cancelarModificacion();
         salir();
     }
@@ -649,12 +649,9 @@ public class ControlVigenciaAficion implements Serializable {
     public void duplicarVigenciaAficionM() {
         if (index >= 0) {
             duplicarVigenciaAficion = new VigenciasAficiones();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
 
-                duplicarVigenciaAficion.setSecuencia(l);
                 duplicarVigenciaAficion.setAficion(listVigenciasAficiones.get(index).getAficion());
                 duplicarVigenciaAficion.setFechafinal(listVigenciasAficiones.get(index).getFechafinal());
                 duplicarVigenciaAficion.setFechainicial(listVigenciasAficiones.get(index).getFechainicial());
@@ -667,7 +664,6 @@ public class ControlVigenciaAficion implements Serializable {
             }
             if (tipoLista == 1) {
 
-                duplicarVigenciaAficion.setSecuencia(l);
                 duplicarVigenciaAficion.setAficion(filtrarListVigenciasAficiones.get(index).getAficion());
                 duplicarVigenciaAficion.setFechafinal(filtrarListVigenciasAficiones.get(index).getFechafinal());
                 duplicarVigenciaAficion.setFechainicial(filtrarListVigenciasAficiones.get(index).getFechainicial());
@@ -693,11 +689,14 @@ public class ControlVigenciaAficion implements Serializable {
      */
     public void confirmarDuplicar() {
         if (duplicarVigenciaAficion.getFechainicial() != null && duplicarVigenciaAficion.getAficion() != null) {
-            if (validarFechasRegistro(1) == true) {
+            if (validarFechasRegistro(2) == true) {
                 duplicarVigenciaAficion.setPersona(empleado.getPersona());
                 if (listVigenciasAficiones == null) {
                     listVigenciasAficiones = new ArrayList<VigenciasAficiones>();
                 }
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVigenciaAficion.setSecuencia(l);
                 listVigenciasAficiones.add(duplicarVigenciaAficion);
                 listVigenciaAficionCrear.add(duplicarVigenciaAficion);
                 infoRegistro = "Cantidad de registros : " + listVigenciasAficiones.size();

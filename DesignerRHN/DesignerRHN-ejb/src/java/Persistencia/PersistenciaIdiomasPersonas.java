@@ -31,8 +31,11 @@ public class PersistenciaIdiomasPersonas implements PersistenciaIdiomasPersonasI
         em.clear();
         EntityTransaction tx = em.getTransaction();
         try {
+            System.out.println("idiomasPersonas Persona : "+idiomasPersonas.getPersona().getSecuencia());
+            System.out.println("idiomasPersonas Idioma : "+idiomasPersonas.getIdioma().getSecuencia());
+            System.out.println("idiomasPersonas Secuencia : "+idiomasPersonas.getSecuencia());
             tx.begin();
-            em.merge(idiomasPersonas);
+            em.persist(idiomasPersonas);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaIdiomasPersonas.crear: " + e);

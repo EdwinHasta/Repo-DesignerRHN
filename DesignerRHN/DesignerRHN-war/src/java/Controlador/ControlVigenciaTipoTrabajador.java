@@ -601,10 +601,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             guardado = true;
             k = 0;
 
-            
             cambiosPagina = true;
             context.update("form:ACEPTAR");
-            
+
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
@@ -809,13 +808,11 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarVTT.setSecuencia(l);
                 duplicarVTT.setEmpleado(vigenciasTiposTrabajadores.get(index).getEmpleado());
                 duplicarVTT.setFechavigencia(vigenciasTiposTrabajadores.get(index).getFechavigencia());
                 duplicarVTT.setTipotrabajador(vigenciasTiposTrabajadores.get(index).getTipotrabajador());
             }
             if (tipoLista == 1) {
-                duplicarVTT.setSecuencia(l);
                 duplicarVTT.setEmpleado(filtrarVTT.get(index).getEmpleado());
                 duplicarVTT.setFechavigencia(filtrarVTT.get(index).getFechavigencia());
                 duplicarVTT.setTipotrabajador(vigenciasTiposTrabajadores.get(index).getTipotrabajador());
@@ -853,6 +850,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVTT.getFechavigencia() != null && duplicarVTT.getTipotrabajador().getSecuencia() != null) {
             if (validarFechasRegistroVTT(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVTT.setSecuencia(l);
                 vigenciasTiposTrabajadores.add(duplicarVTT);
                 listVTTCrear.add(duplicarVTT);
                 FacesContext c = FacesContext.getCurrentInstance();
@@ -1641,7 +1641,7 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
             banderaLimpiarPension = false;
 
             operacionPension = false;
-            
+
             cambiosPagina = true;
             context.update("form:ACEPTAR");
 
@@ -2276,9 +2276,9 @@ public class ControlVigenciaTipoTrabajador implements Serializable {
     }
 
     public List<Personas> getListaPersonas() {
-        
+
         listaPersonas = administrarVigenciasTiposTrabajadores.listaPersonas();
-       
+
         return listaPersonas;
     }
 

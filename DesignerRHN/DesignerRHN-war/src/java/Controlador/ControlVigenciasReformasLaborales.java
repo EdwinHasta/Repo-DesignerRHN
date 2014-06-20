@@ -613,13 +613,13 @@ public class ControlVigenciasReformasLaborales implements Serializable {
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarVRL.setSecuencia(l);
+
                 duplicarVRL.setEmpleado(vigenciasReformasLaborales.get(index).getEmpleado());
                 duplicarVRL.setFechavigencia(vigenciasReformasLaborales.get(index).getFechavigencia());
                 duplicarVRL.setReformalaboral(vigenciasReformasLaborales.get(index).getReformalaboral());
             }
             if (tipoLista == 1) {
-                duplicarVRL.setSecuencia(l);
+
                 duplicarVRL.setEmpleado(filtrarVRL.get(index).getEmpleado());
                 duplicarVRL.setFechavigencia(filtrarVRL.get(index).getFechavigencia());
                 duplicarVRL.setReformalaboral(filtrarVRL.get(index).getReformalaboral());
@@ -640,6 +640,9 @@ public class ControlVigenciasReformasLaborales implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVRL.getFechavigencia() != null && duplicarVRL.getReformalaboral().getSecuencia() != null) {
             if (validarFechasRegistro(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVRL.setSecuencia(l);
                 vigenciasReformasLaborales.add(duplicarVRL);
                 listVRLCrear.add(duplicarVRL);
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -1117,16 +1120,16 @@ public class ControlVigenciasReformasLaborales implements Serializable {
 
     public VigenciasReformasLaborales getVigenciaSeleccionada() {
         return vigenciaSeleccionada;
-    } 
+    }
 
     public void setVigenciaSeleccionada(VigenciasReformasLaborales vigenciaSeleccionada) {
         this.vigenciaSeleccionada = vigenciaSeleccionada;
-    } 
+    }
 
     public String getInfoRegistro() {
-        return infoRegistro; 
+        return infoRegistro;
     }
- 
+
     public String getInfoRegistroReformaLaboral() {
         getListaReformasLaborales();
         if (listaReformasLaborales != null) {
