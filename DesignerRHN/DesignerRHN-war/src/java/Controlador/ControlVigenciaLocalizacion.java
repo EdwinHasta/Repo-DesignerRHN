@@ -2310,7 +2310,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarVL.setSecuencia(l);
+
                 duplicarVL.setEmpleado(vigenciaLocalizaciones.get(index).getEmpleado());
                 duplicarVL.setFechavigencia(vigenciaLocalizaciones.get(index).getFechavigencia());
                 duplicarVL.setLocalizacion(vigenciaLocalizaciones.get(index).getLocalizacion());
@@ -2318,7 +2318,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 duplicarVL.setProyecto(vigenciaLocalizaciones.get(index).getProyecto());
             }
             if (tipoLista == 1) {
-                duplicarVL.setSecuencia(l);
+
                 duplicarVL.setEmpleado(filtrarVL.get(index).getEmpleado());
                 duplicarVL.setFechavigencia(filtrarVL.get(index).getFechavigencia());
                 duplicarVL.setLocalizacion(filtrarVL.get(index).getLocalizacion());
@@ -2349,6 +2349,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVL.getFechavigencia() != null && duplicarVL.getLocalizacion().getSecuencia() != null && duplicarVL.getMotivo().getSecuencia() != null) {
             if (validarFechasRegistro(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVL.setSecuencia(l);
                 cambiosVigencia = true;
                 vigenciaLocalizaciones.add(duplicarVL);
                 listVLCrear.add(duplicarVL);
@@ -2410,11 +2413,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
     public void duplicarVigenciaP() {
         if (indexVP >= 0) {
             duplicarVP = new VigenciasProrrateos();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoListaVP == 0) {
-                duplicarVP.setSecuencia(l);
+
                 duplicarVP.setCentrocosto(vigenciasProrrateosVigencia.get(indexVP).getCentrocosto());
                 duplicarVP.setViglocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
                 duplicarVP.setFechafinal(vigenciasProrrateosVigencia.get(indexVP).getFechafinal());
@@ -2424,7 +2425,7 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 duplicarVP.setProyecto(vigenciasProrrateosVigencia.get(indexVP).getProyecto());
             }
             if (tipoListaVP == 1) {
-                duplicarVP.setSecuencia(l);
+
                 duplicarVP.setCentrocosto(filtradoVigenciasProrrateosVigencia.get(indexVP).getCentrocosto());
                 duplicarVP.setViglocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
                 duplicarVP.setFechafinal(filtradoVigenciasProrrateosVigencia.get(indexVP).getFechafinal());
@@ -2450,6 +2451,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
         if (duplicarVP.getCentrocosto().getSecuencia() != null && duplicarVP.getPorcentaje() == null && duplicarVP.getFechainicial() != null) {
             if (validarFechasRegistroVigenciaProrrateo(2) == true) {
                 cambioVigenciaP = true;
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVP.setSecuencia(l);
                 vigenciasProrrateosVigencia.add(duplicarVP);
                 listVPCrear.add(duplicarVP);
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -2509,11 +2513,8 @@ public class ControlVigenciaLocalizacion implements Serializable {
     public void duplicarVigenciaPP() {
         if (indexVPP >= 0) {
             duplicarVPP = new VigenciasProrrateosProyectos();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoListaVPP == 0) {
-                duplicarVPP.setSecuencia(l);
                 duplicarVPP.setVigencialocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
                 duplicarVPP.setFechafinal(vigenciasProrrateosProyectosVigencia.get(indexVPP).getFechafinal());
                 duplicarVPP.setFechainicial(vigenciasProrrateosProyectosVigencia.get(indexVPP).getFechainicial());
@@ -2521,7 +2522,6 @@ public class ControlVigenciaLocalizacion implements Serializable {
                 duplicarVPP.setProyecto(vigenciasProrrateosProyectosVigencia.get(indexVPP).getProyecto());
             }
             if (tipoListaVPP == 1) {
-                duplicarVPP.setSecuencia(l);
                 duplicarVPP.setVigencialocalizacion(vigenciaLocalizaciones.get(indexAuxVL));
                 duplicarVPP.setFechafinal(filtradoVigenciasProrrateosProyectosVigencia.get(indexVPP).getFechafinal());
                 duplicarVPP.setFechainicial(filtradoVigenciasProrrateosProyectosVigencia.get(indexVPP).getFechainicial());
@@ -2544,6 +2544,9 @@ public class ControlVigenciaLocalizacion implements Serializable {
     public void confirmarDuplicarVPP() {
         if (duplicarVPP.getFechainicial() != null && duplicarVPP.getPorcentaje() >= 0 && duplicarVPP.getProyecto().getSecuencia() != null) {
             if (validarFechasRegistroVigenciaProrrateoProyecto(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVPP.setSecuencia(l);
                 vigenciasProrrateosProyectosVigencia.add(duplicarVPP);
                 listVPPCrear.add(duplicarVPP);
                 RequestContext context = RequestContext.getCurrentInstance();

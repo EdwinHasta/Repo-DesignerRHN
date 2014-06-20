@@ -1223,11 +1223,10 @@ public class ControlEmplMvr implements Serializable {
     public void duplicarMvr() {
         if (indexMvrs >= 0) {
             duplicarMvrs = new Mvrs();
-            k++;
-            BigInteger var = BigInteger.valueOf(k);
+            
 
             if (tipoListaMvrs == 0) {
-                duplicarMvrs.setSecuencia(var);
+                
                 duplicarMvrs.setEmpleado(listMvrsEmpleado.get(indexMvrs).getEmpleado());
                 duplicarMvrs.setValor(listMvrsEmpleado.get(indexMvrs).getValor());
                 duplicarMvrs.setFechafinal(listMvrsEmpleado.get(indexMvrs).getFechafinal());
@@ -1237,7 +1236,7 @@ public class ControlEmplMvr implements Serializable {
 
             }
             if (tipoListaMvrs == 1) {
-                duplicarMvrs.setSecuencia(var);
+                
                 duplicarMvrs.setEmpleado(filtrarListMvrsEmpleado.get(indexMvrs).getEmpleado());
                 duplicarMvrs.setValor(filtrarListMvrsEmpleado.get(indexMvrs).getValor());
                 duplicarMvrs.setFechafinal(filtrarListMvrsEmpleado.get(indexMvrs).getFechafinal());
@@ -1265,6 +1264,9 @@ public class ControlEmplMvr implements Serializable {
     public void confirmarDuplicar() {
         if (nuevaMvrs.getFechainicial() != null && nuevaMvrs.getMotivo() != null) {
             if (validarFechasRegistroMvrs(1) == true) {
+                k++;
+            BigInteger var = BigInteger.valueOf(k);
+                duplicarMvrs.setSecuencia(var);
                 cambiosMvr = true;
                 listMvrsEmpleado.add(duplicarMvrs);
                 listMvrsCrear.add(duplicarMvrs);

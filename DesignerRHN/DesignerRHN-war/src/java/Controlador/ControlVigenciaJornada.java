@@ -1475,14 +1475,12 @@ public class ControlVigenciaJornada implements Serializable {
             l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarVJ.setSecuencia(l);
                 duplicarVJ.setEmpleado(listVigenciasJornadas.get(index).getEmpleado());
                 duplicarVJ.setFechavigencia(listVigenciasJornadas.get(index).getFechavigencia());
                 duplicarVJ.setJornadatrabajo(listVigenciasJornadas.get(index).getJornadatrabajo());
                 duplicarVJ.setTipodescanso(listVigenciasJornadas.get(index).getTipodescanso());
             }
             if (tipoLista == 1) {
-                duplicarVJ.setSecuencia(l);
                 duplicarVJ.setEmpleado(filtrarVigenciasJornadas.get(index).getEmpleado());
                 duplicarVJ.setFechavigencia(filtrarVigenciasJornadas.get(index).getFechavigencia());
                 duplicarVJ.setJornadatrabajo(filtrarVigenciasJornadas.get(index).getJornadatrabajo());
@@ -1509,6 +1507,9 @@ public class ControlVigenciaJornada implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVJ.getFechavigencia() != null && duplicarVJ.getJornadatrabajo().getSecuencia() != null) {
             if (validarFechasRegistroVJ(2) == true) {
+                k++;
+            l = BigInteger.valueOf(k);
+            duplicarVJ.setSecuencia(l);
                 cambiosJornada = true;
                 listVigenciasJornadas.add(duplicarVJ);
                 listVJCrear.add(duplicarVJ);

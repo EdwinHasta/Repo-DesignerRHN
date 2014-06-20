@@ -930,16 +930,14 @@ public class ControlTipoContrato implements Serializable {
     public void duplicarDiaLaborableM() {
         if (indexDias >= 0) {
             duplicarDiaLaborable = new DiasLaborables();
-            k++;
-            l = BigInteger.valueOf(k);
             if (tipoListaDias == 0) {
-                duplicarDiaLaborable.setSecuencia(l);
+                
                 duplicarDiaLaborable.setDia(listaDiasLaborables.get(indexDias).getDia());
                 duplicarDiaLaborable.setHoraslaborables(listaDiasLaborables.get(indexDias).getHoraslaborables());
                 duplicarDiaLaborable.setTipodia(listaDiasLaborables.get(indexDias).getTipodia());
             }
             if (tipoListaDias == 1) {
-                duplicarDiaLaborable.setSecuencia(l);
+                
                 duplicarDiaLaborable.setDia(filtrarListaDiasLaborables.get(indexDias).getDia());
                 duplicarDiaLaborable.setHoraslaborables(filtrarListaDiasLaborables.get(indexDias).getHoraslaborables());
                 duplicarDiaLaborable.setTipodia(filtrarListaDiasLaborables.get(indexDias).getTipodia());
@@ -961,6 +959,9 @@ public class ControlTipoContrato implements Serializable {
             int tamDes = 0;
             tamDes = nuevoTipoContrato.getNombre().length();
             if (tamDes >= 1 && tamDes <= 30) {
+                k++;
+            l = BigInteger.valueOf(k);
+            duplicarDiaLaborable.setSecuencia(l);
                 String text = duplicarTipoContrato.getNombre().toUpperCase();
                 duplicarTipoContrato.setNombre(text);
                 listaTiposContratos.add(duplicarTipoContrato);

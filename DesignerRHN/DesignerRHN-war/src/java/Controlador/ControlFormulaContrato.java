@@ -39,12 +39,13 @@ public class ControlFormulaContrato implements Serializable {
     AdministrarFormulaContratoInterface administrarFormulaContrato;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //////////////Formulas//////////////////
     private Formulas formulaActual;
     ///////////Formulascontratos////////////
     private List<Formulascontratos> listFormulasContratos;
     private List<Formulascontratos> filtrarListFormulasContratos;
+    private Formulascontratos formulaTablaSeleccionada;
     ///////////Formulascontratos/////////////
     private int banderaFormulaContrato;
     private int indexFormulaContrato, indexAuxFormulaContrato;
@@ -72,7 +73,6 @@ public class ControlFormulaContrato implements Serializable {
     private List<Periodicidades> listPeriodicidades;
     private List<Periodicidades> filtrarListPeriodicidades;
     private Periodicidades periodicidadSeleccionado;
-
     //////////////Otros////////////////Otros////////////////////
     private boolean aceptar;
     private boolean guardado;
@@ -85,8 +85,13 @@ public class ControlFormulaContrato implements Serializable {
     private String nombreTablaRastro;
     private int tipoActualizacion;
     private Date fechaParametro;
+    //
+    private String infoRegistro;
+    private String altoTabla;
+    private String infoRegistroContrato, infoRegistroPeriodicidad, infoRegistroTercero;
 
     public ControlFormulaContrato() {
+        altoTabla = "260";
         formulaActual = new Formulas();
         listFormulasContratos = null;
         fechaParametro = new Date(1, 1, 0);
@@ -129,6 +134,7 @@ public class ControlFormulaContrato implements Serializable {
         duplicarFormulaContrato = new Formulascontratos();
         cambiosFormulaContrato = false;
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -145,6 +151,12 @@ public class ControlFormulaContrato implements Serializable {
     public void recibirFormula(BigInteger secuencia) {
         formulaActual = administrarFormulaContrato.actualFormula(secuencia);
         listFormulasContratos = null;
+        getListFormulasContratos();
+        if (listFormulasContratos != null) {
+            infoRegistro = "Cantidad de registros : " + listFormulasContratos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
     }
 
     public void modificarFormulaContrato(int indice) {
@@ -157,6 +169,7 @@ public class ControlFormulaContrato implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             indexFormulaContrato = -1;
@@ -170,6 +183,7 @@ public class ControlFormulaContrato implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             indexFormulaContrato = -1;
@@ -240,30 +254,41 @@ public class ControlFormulaContrato implements Serializable {
             }
         }
         if (confirmarCambio.equalsIgnoreCase("TERCERO")) {
-            if (tipoListaFormulaContrato == 0) {
-                listFormulasContratos.get(indice).getTercero().setNombre(tercero);
-            } else {
-                filtrarListFormulasContratos.get(indice).getTercero().setNombre(tercero);
-            }
-            for (int i = 0; i < listTerceros.size(); i++) {
-                if (listTerceros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoListaFormulaContrato == 0) {
-                    listFormulasContratos.get(indice).setTercero(listTerceros.get(indiceUnicoElemento));
+                    listFormulasContratos.get(indice).getTercero().setNombre(tercero);
                 } else {
-                    filtrarListFormulasContratos.get(indice).setTercero(listTerceros.get(indiceUnicoElemento));
+                    filtrarListFormulasContratos.get(indice).getTercero().setNombre(tercero);
                 }
-                listTerceros.clear();
-                getListTerceros();
+                for (int i = 0; i < listTerceros.size(); i++) {
+                    if (listTerceros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoListaFormulaContrato == 0) {
+                        listFormulasContratos.get(indice).setTercero(listTerceros.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListFormulasContratos.get(indice).setTercero(listTerceros.get(indiceUnicoElemento));
+                    }
+                    listTerceros.clear();
+                    getListTerceros();
+                } else {
+                    permitirIndexFormulaContrato = false;
+                    context.update("form:TerceroDialogo");
+                    context.execute("TerceroDialogo.show()");
+                    tipoActualizacion = 0;
+                }
             } else {
-                permitirIndexFormulaContrato = false;
-                context.update("form:TerceroDialogo");
-                context.execute("TerceroDialogo.show()");
-                tipoActualizacion = 0;
+                listTerceros.clear();
+                    getListTerceros();
+                if (tipoListaFormulaContrato == 0) {
+                    listFormulasContratos.get(indice).setTercero(new Terceros());
+                } else {
+                    filtrarListFormulasContratos.get(indice).setTercero(new Terceros());
+                }
+                coincidencias = 1;
             }
 
         }
@@ -277,6 +302,7 @@ public class ControlFormulaContrato implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexFormulaContrato = -1;
@@ -290,6 +316,7 @@ public class ControlFormulaContrato implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexFormulaContrato = -1;
@@ -392,34 +419,46 @@ public class ControlFormulaContrato implements Serializable {
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("TERCERO")) {
-            if (tipoNuevo == 1) {
-                nuevaFormulaContrato.getTercero().setNombre(tercero);
-            } else if (tipoNuevo == 2) {
-                duplicarFormulaContrato.getTercero().setNombre(tercero);
-            }
-            for (int i = 0; i < listTerceros.size(); i++) {
-                if (listTerceros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaFormulaContrato.setTercero(listTerceros.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaTercero");
+                    nuevaFormulaContrato.getTercero().setNombre(tercero);
                 } else if (tipoNuevo == 2) {
-                    duplicarFormulaContrato.setTercero(listTerceros.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarTercero");
+                    duplicarFormulaContrato.getTercero().setNombre(tercero);
                 }
-                listTerceros.clear();
-                getListTerceros();
+                for (int i = 0; i < listTerceros.size(); i++) {
+                    if (listTerceros.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaFormulaContrato.setTercero(listTerceros.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaTercero");
+                    } else if (tipoNuevo == 2) {
+                        duplicarFormulaContrato.setTercero(listTerceros.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarTercero");
+                    }
+                    listTerceros.clear();
+                    getListTerceros();
+                } else {
+                    context.update("form:TerceroDialogo");
+                    context.execute("TerceroDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaTercero");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarTercero");
+                    }
+                }
             } else {
-                context.update("form:TerceroDialogo");
-                context.execute("TerceroDialogo.show()");
-                tipoActualizacion = tipoNuevo;
+                listTerceros.clear();
+                    getListTerceros();
                 if (tipoNuevo == 1) {
+                    nuevaFormulaContrato.setTercero(new Terceros());
                     context.update("formularioDialogos:nuevaTercero");
                 } else if (tipoNuevo == 2) {
+                    duplicarFormulaContrato.setTercero(new Terceros());
                     context.update("formularioDialogos:duplicarTercero");
                 }
             }
@@ -430,12 +469,21 @@ public class ControlFormulaContrato implements Serializable {
         if (permitirIndexFormulaContrato == true) {
             cualCeldaFormulaContrato = celda;
             indexFormulaContrato = indice;
-            secRegistroFormulaContrato = listFormulasContratos.get(indexFormulaContrato).getSecuencia();
-            ///////// Captura Objetos Para Campos NotNull ///////////
-            fechaIni = listFormulasContratos.get(indexFormulaContrato).getFechainicial();
-            legislacion = listFormulasContratos.get(indexFormulaContrato).getContrato().getDescripcion();
-            tercero = listFormulasContratos.get(indexFormulaContrato).getTercero().getNombre();
-            periodicidad = listFormulasContratos.get(indexFormulaContrato).getPeriodicidad().getNombre();
+            if (tipoListaFormulaContrato == 0) {
+                secRegistroFormulaContrato = listFormulasContratos.get(indexFormulaContrato).getSecuencia();
+                ///////// Captura Objetos Para Campos NotNull ///////////
+                fechaIni = listFormulasContratos.get(indexFormulaContrato).getFechainicial();
+                legislacion = listFormulasContratos.get(indexFormulaContrato).getContrato().getDescripcion();
+                tercero = listFormulasContratos.get(indexFormulaContrato).getTercero().getNombre();
+                periodicidad = listFormulasContratos.get(indexFormulaContrato).getPeriodicidad().getNombre();
+            } else {
+                secRegistroFormulaContrato = filtrarListFormulasContratos.get(indexFormulaContrato).getSecuencia();
+                ///////// Captura Objetos Para Campos NotNull ///////////
+                fechaIni = filtrarListFormulasContratos.get(indexFormulaContrato).getFechainicial();
+                legislacion = filtrarListFormulasContratos.get(indexFormulaContrato).getContrato().getDescripcion();
+                tercero = filtrarListFormulasContratos.get(indexFormulaContrato).getTercero().getNombre();
+                periodicidad = filtrarListFormulasContratos.get(indexFormulaContrato).getPeriodicidad().getNombre();
+            }
         }
     }
 
@@ -524,6 +572,7 @@ public class ControlFormulaContrato implements Serializable {
             indexFormulaContrato = -1;
         }
     }
+
     //GUARDAR
     /**
      */
@@ -531,34 +580,47 @@ public class ControlFormulaContrato implements Serializable {
         if (cambiosFormulaContrato == true) {
             guardarCambiosFormula();
         }
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
     }
 
     public void guardarCambiosFormula() {
-
-        if (!listFormulasContratosBorrar.isEmpty()) {
-            administrarFormulaContrato.borrarFormulasContratos(listFormulasContratosBorrar);
-            listFormulasContratosBorrar.clear();
-        }
-        if (!listFormulasContratosCrear.isEmpty()) {
-            administrarFormulaContrato.crearFormulasContratos(listFormulasContratosCrear);
-            listFormulasContratosCrear.clear();
-        }
-        if (!listFormulasContratosModificar.isEmpty()) {
-            administrarFormulaContrato.editarFormulasContratos(listFormulasContratosModificar);
-            listFormulasContratosModificar.clear();
-        }
-        listFormulasContratos = null;
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosFormulaContrato");
-        context.update("form:growl");
-        k = 0;
-        indexFormulaContrato = -1;
-        secRegistroFormulaContrato = null;
-        cambiosFormulaContrato = false;
+        try {
+            if (!listFormulasContratosBorrar.isEmpty()) {
+                administrarFormulaContrato.borrarFormulasContratos(listFormulasContratosBorrar);
+                listFormulasContratosBorrar.clear();
+            }
+            if (!listFormulasContratosCrear.isEmpty()) {
+                administrarFormulaContrato.crearFormulasContratos(listFormulasContratosCrear);
+                listFormulasContratosCrear.clear();
+            }
+            if (!listFormulasContratosModificar.isEmpty()) {
+                administrarFormulaContrato.editarFormulasContratos(listFormulasContratosModificar);
+                listFormulasContratosModificar.clear();
+            }
+            listFormulasContratos = null;
+            getListFormulasContratos();
+            if (listFormulasContratos != null) {
+                infoRegistro = "Cantidad de registros : " + listFormulasContratos.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
+            context.update("form:informacionRegistro");
+            context.update("form:datosFormulaContrato");
+            k = 0;
+            indexFormulaContrato = -1;
+            secRegistroFormulaContrato = null;
+            cambiosFormulaContrato = false;
+            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     //CANCELAR MODIFICACIONES
@@ -566,16 +628,18 @@ public class ControlFormulaContrato implements Serializable {
      * Cancela las modificaciones realizas en la pagina
      */
     public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulaContrato == 1) {
-            formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
+            altoTabla = "260";
+            formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
+            formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
             formulaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            formulaLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
+            formulaLegislacion = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
             formulaLegislacion.setFilterStyle("display: none; visibility: hidden;");
-            formulaPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
+            formulaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
             formulaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            formulaTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
+            formulaTercero = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
             formulaTercero.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaContrato");
             banderaFormulaContrato = 0;
@@ -592,10 +656,18 @@ public class ControlFormulaContrato implements Serializable {
         k = 0;
         listFormulasContratos = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         cambiosFormulaContrato = false;
         permitirIndexFormulaContrato = true;
         getListFormulasContratos();
         RequestContext context = RequestContext.getCurrentInstance();
+        getListFormulasContratos();
+        if (listFormulasContratos != null) {
+            infoRegistro = "Cantidad de registros : " + listFormulasContratos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosFormulaContrato");
     }
 
@@ -731,16 +803,18 @@ public class ControlFormulaContrato implements Serializable {
         if (resp == true) {
             boolean validacion = validarFechasRegistroFormulas(1);
             if (validacion == true) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 if (banderaFormulaContrato == 1) {
-                    formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
+                    altoTabla = "260";
+                    formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
                     formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
+                    formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
                     formulaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    formulaLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
+                    formulaLegislacion = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
                     formulaLegislacion.setFilterStyle("display: none; visibility: hidden;");
-                    formulaPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
+                    formulaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
                     formulaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-                    formulaTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
+                    formulaTercero = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
                     formulaTercero.setFilterStyle("display: none; visibility: hidden;");
 
                     RequestContext.getCurrentInstance().update("form:datosFormulaContrato");
@@ -762,12 +836,14 @@ public class ControlFormulaContrato implements Serializable {
                 nuevaFormulaContrato.setContrato(new Contratos());
                 ////-----////
                 RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listFormulasContratos.size();
+                context.update("form:informacionRegistro");
                 context.execute("NuevoRegistroFormula.hide()");
                 context.update("form:datosFormulaContrato");
                 context.update("formularioDialogos:NuevoRegistroFormula");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosFormulaContrato = true;
                 indexFormulaContrato = -1;
@@ -824,21 +900,24 @@ public class ControlFormulaContrato implements Serializable {
         if (resp == true) {
             boolean validacion = validarFechasRegistroFormulas(2);
             if (validacion == true) {
-
+                FacesContext c = FacesContext.getCurrentInstance();
+                RequestContext context = RequestContext.getCurrentInstance();
                 if (banderaFormulaContrato == 1) {
-                    formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
+                    altoTabla = "260";
+                    formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
                     formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
+                    formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
                     formulaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    formulaLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
+                    formulaLegislacion = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
                     formulaLegislacion.setFilterStyle("display: none; visibility: hidden;");
-                    formulaPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
+                    formulaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
                     formulaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-                    formulaTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
+                    formulaTercero = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
                     formulaTercero.setFilterStyle("display: none; visibility: hidden;");
                     banderaFormulaContrato = 0;
                     filtrarListFormulasContratos = null;
                     tipoListaFormulaContrato = 0;
+                    context.update("form:datosFormulaContrato");
                 }
                 k++;
                 BigInteger var = BigInteger.valueOf(k);
@@ -854,11 +933,12 @@ public class ControlFormulaContrato implements Serializable {
                 duplicarFormulaContrato.setTercero(new Terceros());
                 duplicarFormulaContrato.setContrato(new Contratos());
 
-                RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listFormulasContratos.size();
+                context.update("form:informacionRegistro");
                 context.update("form:datosFormulaContrato");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 context.execute("DuplicarRegistroFormula.hide()");
                 cambiosFormulaContrato = true;
@@ -917,12 +997,16 @@ public class ControlFormulaContrato implements Serializable {
                 filtrarListFormulasContratos.remove(indexFormulaContrato);
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listFormulasContratos.size();
+            context.update("form:informacionRegistro");
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulaContrato");
             indexFormulaContrato = -1;
             secRegistroFormulaContrato = null;
             cambiosFormulaContrato = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -939,30 +1023,33 @@ public class ControlFormulaContrato implements Serializable {
     /**
      */
     public void filtradoFormula() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulaContrato == 0) {
-            formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
+            altoTabla = "238";
+            formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("width: 60px");
-            formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
+            formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
             formulaFechaFinal.setFilterStyle("width: 60px");
-            formulaLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
+            formulaLegislacion = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
             formulaLegislacion.setFilterStyle("width: 80px");
-            formulaPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
+            formulaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
             formulaPeriodicidad.setFilterStyle("width: 80px");
-            formulaTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
+            formulaTercero = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
             formulaTercero.setFilterStyle("width: 80px");
 
             RequestContext.getCurrentInstance().update("form:datosFormulaContrato");
             banderaFormulaContrato = 1;
         } else if (banderaFormulaContrato == 1) {
-            formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
+            altoTabla = "260";
+            formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
+            formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
             formulaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            formulaLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
+            formulaLegislacion = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
             formulaLegislacion.setFilterStyle("display: none; visibility: hidden;");
-            formulaPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
+            formulaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
             formulaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            formulaTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
+            formulaTercero = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
             formulaTercero.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosFormulaContrato");
@@ -971,21 +1058,24 @@ public class ControlFormulaContrato implements Serializable {
             tipoListaFormulaContrato = 0;
         }
     }
+
     //SALIR
     /**
      * Metodo que cierra la sesion y limpia los datos en la pagina
      */
     public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulaContrato == 1) {
-            formulaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
+            altoTabla = "260";
+            formulaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaInicial");
             formulaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            formulaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
+            formulaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaFechaFinal");
             formulaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            formulaLegislacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
+            formulaLegislacion = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaLegislacion");
             formulaLegislacion.setFilterStyle("display: none; visibility: hidden;");
-            formulaPeriodicidad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
+            formulaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaPeriodicidad");
             formulaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
-            formulaTercero = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
+            formulaTercero = (Column) c.getViewRoot().findComponent("form:datosFormulaContrato:formulaTercero");
             formulaTercero.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosFormulaContrato");
@@ -1004,6 +1094,7 @@ public class ControlFormulaContrato implements Serializable {
         indexAuxFormulaContrato = -1;
         listFormulasContratos = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         cambiosFormulaContrato = false;
         nuevaFormulaContrato = new Formulascontratos();
         duplicarFormulaContrato = new Formulascontratos();
@@ -1013,6 +1104,7 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public void actualizarContrato() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaFormulaContrato == 0) {
                 listFormulasContratos.get(indexFormulaContrato).setContrato(contratoSeleccionado);
@@ -1035,18 +1127,16 @@ public class ControlFormulaContrato implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexFormulaContrato = true;
             cambiosFormulaContrato = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarLegislacionFC");
+            context.update("form:datosFormulaContrato");
         } else if (tipoActualizacion == 1) {
             nuevaFormulaContrato.setContrato(contratoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaLegislacion");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaContrato.setContrato(contratoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarLegislacion");
         }
         filtrarListContratos = null;
@@ -1055,6 +1145,11 @@ public class ControlFormulaContrato implements Serializable {
         indexFormulaContrato = -1;
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
+        context.update("form:ContratoDialogo");
+        context.update("form:lovContrato");
+        context.update("form:aceptarC");
+        context.reset("form:lovContrato:globalFilter");
+        context.execute("ContratoDialogo.hide()");
     }
 
     public void cancelarCambioContrato() {
@@ -1068,6 +1163,7 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public void actualizarTercero() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaFormulaContrato == 0) {
                 listFormulasContratos.get(indexFormulaContrato).setTercero(terceroSeleccionada);
@@ -1090,18 +1186,16 @@ public class ControlFormulaContrato implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexFormulaContrato = true;
             cambiosFormulaContrato = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarTercero");
+            context.update("form:datosFormulaContrato");
         } else if (tipoActualizacion == 1) {
             nuevaFormulaContrato.setTercero(terceroSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaTercero");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaContrato.setTercero(terceroSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTercero");
         }
         filtrarListTerceros = null;
@@ -1110,6 +1204,11 @@ public class ControlFormulaContrato implements Serializable {
         indexFormulaContrato = -1;
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
+        context.update("form:TerceroDialogo");
+        context.update("form:lovTercero");
+        context.update("form:aceptarT");
+        context.reset("form:lovTercero:globalFilter");
+        context.execute("TerceroDialogo.hide()");
     }
 
     public void cancelarCambioTercero() {
@@ -1123,6 +1222,7 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public void actualizarPeriodicidad() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaFormulaContrato == 0) {
                 listFormulasContratos.get(indexFormulaContrato).setPeriodicidad(periodicidadSeleccionado);
@@ -1145,18 +1245,16 @@ public class ControlFormulaContrato implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexFormulaContrato = true;
             cambiosFormulaContrato = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarPeriodicidad");
+            context.update("form:datosFormulaContrato");
         } else if (tipoActualizacion == 1) {
             nuevaFormulaContrato.setPeriodicidad(periodicidadSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaPeriodicidad");
         } else if (tipoActualizacion == 2) {
             duplicarFormulaContrato.setPeriodicidad(periodicidadSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarPeriodicidad");
         }
         filtrarListPeriodicidades = null;
@@ -1165,6 +1263,11 @@ public class ControlFormulaContrato implements Serializable {
         indexFormulaContrato = -1;
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
+        context.update("form:PeriodicidadDialogo");
+        context.update("form:lovPeriodicidad");
+        context.update("form:aceptarP");
+        context.reset("form:lovPeriodicidad:globalFilter");
+        context.execute("PeriodicidadDialogo.hide()");
     }
 
     public void cancelarCambioPeriodicidad() {
@@ -1253,7 +1356,9 @@ public class ControlFormulaContrato implements Serializable {
         if (tipoListaFormulaContrato == 0) {
             tipoListaFormulaContrato = 1;
         }
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + filtrarListFormulasContratos.size();
+        context.update("form:informacionRegistro");
     }
 
     public void verificarRastroTabla() {
@@ -1311,14 +1416,14 @@ public class ControlFormulaContrato implements Serializable {
     public List<Formulascontratos> getListFormulasContratos() {
         try {
             if (listFormulasContratos == null) {
-                listFormulasContratos = new ArrayList<Formulascontratos>();
-                listFormulasContratos = administrarFormulaContrato.listFormulasContratosParaFormula(formulaActual.getSecuencia());
-            }
-            int tam = listFormulasContratos.size();
-            if (tam >= 1) {
-                for (int i = 0; i < tam; i++) {
-                    if (listFormulasContratos.get(i).getTercero() == null) {
-                        listFormulasContratos.get(i).setTercero(new Terceros());
+                if (formulaActual.getSecuencia() != null) {
+                    listFormulasContratos = administrarFormulaContrato.listFormulasContratosParaFormula(formulaActual.getSecuencia());
+                    if (listFormulasContratos != null) {
+                        for (int i = 0; i < listFormulasContratos.size(); i++) {
+                            if (listFormulasContratos.get(i).getTercero() == null) {
+                                listFormulasContratos.get(i).setTercero(new Terceros());
+                            }
+                        }
                     }
                 }
             }
@@ -1470,10 +1575,7 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public List<Contratos> getListContratos() {
-        if (listContratos == null) {
-            listContratos = administrarFormulaContrato.listContratos();
-
-        }
+        listContratos = administrarFormulaContrato.listContratos();
         return listContratos;
     }
 
@@ -1498,9 +1600,7 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public List<Terceros> getListTerceros() {
-        if (listTerceros == null) {
-            listTerceros = administrarFormulaContrato.listTerceros();
-        }
+        listTerceros = administrarFormulaContrato.listTerceros();
         return listTerceros;
     }
 
@@ -1525,9 +1625,8 @@ public class ControlFormulaContrato implements Serializable {
     }
 
     public List<Periodicidades> getListPeriodicidades() {
-        if (listPeriodicidades == null) {
-            listPeriodicidades = administrarFormulaContrato.listPeriodicidades();
-        }
+        listPeriodicidades = administrarFormulaContrato.listPeriodicidades();
+
         return listPeriodicidades;
     }
 
@@ -1561,6 +1660,95 @@ public class ControlFormulaContrato implements Serializable {
 
     public void setBackUpSecRegistroFormulaContrato(BigInteger backUpSecRegistroVigenciaCuenta) {
         this.backUpSecRegistroFormulaContrato = backUpSecRegistroVigenciaCuenta;
+    }
+
+    public Formulascontratos getFormulaTablaSeleccionada() {
+        getListFormulasContratos();
+        if (listFormulasContratos != null) {
+            int tam = listFormulasContratos.size();
+            if (tam > 0) {
+                formulaTablaSeleccionada = listFormulasContratos.get(0);
+            }
+        }
+        return formulaTablaSeleccionada;
+    }
+
+    public void setFormulaTablaSeleccionada(Formulascontratos formulaTablaSeleccionada) {
+        this.formulaTablaSeleccionada = formulaTablaSeleccionada;
+    }
+
+    public Periodicidades getPeriodicidadSeleccionado() {
+        return periodicidadSeleccionado;
+    }
+
+    public void setPeriodicidadSeleccionado(Periodicidades periodicidadSeleccionado) {
+        this.periodicidadSeleccionado = periodicidadSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public String getInfoRegistroContrato() {
+        getListContratos();
+        if (listContratos != null) {
+            infoRegistroContrato = "Cantidad de registros : " + listContratos.size();
+        } else {
+            infoRegistroContrato = "Cantidad de registros : 0";
+        }
+        return infoRegistroContrato;
+    }
+
+    public void setInfoRegistroContrato(String infoRegistroContrato) {
+        this.infoRegistroContrato = infoRegistroContrato;
+    }
+
+    public String getInfoRegistroPeriodicidad() {
+        getListPeriodicidades();
+        if (listPeriodicidades != null) {
+            infoRegistroPeriodicidad = "Cantidad de registros : " + listPeriodicidades.size();
+        } else {
+            infoRegistroPeriodicidad = "Cantidad de registros : 0";
+        }
+        return infoRegistroPeriodicidad;
+    }
+
+    public void setInfoRegistroPeriodicidad(String infoRegistroPeriodicidad) {
+        this.infoRegistroPeriodicidad = infoRegistroPeriodicidad;
+    }
+
+    public String getInfoRegistroTercero() {
+        getListTerceros();
+        if (listTerceros != null) {
+            infoRegistroTercero = "Cantidad de registros : " + listTerceros.size();
+        } else {
+            infoRegistroTercero = "Cantidad de registros : 0";
+        }
+        return infoRegistroTercero;
+    }
+
+    public void setInfoRegistroTercero(String infoRegistroTercero) {
+        this.infoRegistroTercero = infoRegistroTercero;
     }
 
 }

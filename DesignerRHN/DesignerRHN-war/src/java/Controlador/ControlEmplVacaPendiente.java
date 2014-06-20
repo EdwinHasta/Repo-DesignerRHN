@@ -76,8 +76,10 @@ public class ControlEmplVacaPendiente implements Serializable {
     private boolean guardado;
 
     private Date fechaFinalContratacion;
+    private int k;
 
     public ControlEmplVacaPendiente() {
+        k = 0;
         guardado = true;
         listVacaDisfrutadas = null;
         listVacaPendientes = null;
@@ -449,6 +451,9 @@ public class ControlEmplVacaPendiente implements Serializable {
         if (duplicarVacacion.getInicialcausacion() != null && duplicarVacacion.getFinalcausacion() != null && duplicarVacacion.getEstado() != null && duplicarVacacion.getDiaspendientes() != null) {
             if (validarFechasRegistroPendientes(2) == true) {
                 if (validarFechasConFechaContratacion(2) == true) {
+                    k++;
+                    BigInteger l = BigInteger.valueOf(k);
+                    duplicarVacacion.setSecuencia(l);
                     if (filtrarListaPendientes == 1) {
                         FacesContext c = FacesContext.getCurrentInstance();
                         vacacionesDP = (Column) c.getViewRoot().findComponent("form:datosVacacionesPEmpleado:vacacionesDP");

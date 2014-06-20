@@ -657,12 +657,9 @@ public class ControlVigenciaDeporte implements Serializable {
     public void duplicarVigenciaDeporteM() {
         if (index >= 0) {
             duplicarVigenciaDeporte = new VigenciasDeportes();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
 
-                duplicarVigenciaDeporte.setSecuencia(l);
                 duplicarVigenciaDeporte.setDeporte(listVigenciasDeportes.get(index).getDeporte());
                 duplicarVigenciaDeporte.setFechafinal(listVigenciasDeportes.get(index).getFechafinal());
                 duplicarVigenciaDeporte.setFechainicial(listVigenciasDeportes.get(index).getFechainicial());
@@ -675,7 +672,6 @@ public class ControlVigenciaDeporte implements Serializable {
             }
             if (tipoLista == 1) {
 
-                duplicarVigenciaDeporte.setSecuencia(l);
                 duplicarVigenciaDeporte.setDeporte(filtrarListVigenciasDeportes.get(index).getDeporte());
                 duplicarVigenciaDeporte.setFechafinal(filtrarListVigenciasDeportes.get(index).getFechafinal());
                 duplicarVigenciaDeporte.setFechainicial(filtrarListVigenciasDeportes.get(index).getFechainicial());
@@ -702,6 +698,9 @@ public class ControlVigenciaDeporte implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVigenciaDeporte.getFechainicial() != null && duplicarVigenciaDeporte.getDeporte() != null) {
             if (validarFechasRegistro(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVigenciaDeporte.setSecuencia(l);
                 duplicarVigenciaDeporte.setPersona(empleado.getPersona());
                 listVigenciasDeportes.add(duplicarVigenciaDeporte);
                 listVigenciaDeporteCrear.add(duplicarVigenciaDeporte);

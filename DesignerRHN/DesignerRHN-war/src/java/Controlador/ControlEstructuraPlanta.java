@@ -944,10 +944,7 @@ public class ControlEstructuraPlanta implements Serializable {
 
     public void duplicarEstructuraM() {
         duplicarEstructura = new Estructuras();
-        k++;
-        l = BigInteger.valueOf(k);
         if (tipoListaEstructura == 0) {
-            duplicarEstructura.setSecuencia(l);
             duplicarEstructura.setCodigo(listaEstructuras.get(indexEstructura).getCodigo());
             duplicarEstructura.setNombre(listaEstructuras.get(indexEstructura).getNombre());
             duplicarEstructura.setCentrocosto(listaEstructuras.get(indexEstructura).getCentrocosto());
@@ -956,7 +953,6 @@ public class ControlEstructuraPlanta implements Serializable {
             duplicarEstructura.setCantidadCargosEmplActivos(listaEstructuras.get(indexEstructura).getCantidadCargosEmplActivos());
         }
         if (tipoListaEstructura == 1) {
-            duplicarEstructura.setSecuencia(l);
             duplicarEstructura.setCodigo(filtrarListaEstructuras.get(indexEstructura).getCodigo());
             duplicarEstructura.setNombre(filtrarListaEstructuras.get(indexEstructura).getNombre());
             duplicarEstructura.setCentrocosto(filtrarListaEstructuras.get(indexEstructura).getCentrocosto());
@@ -994,7 +990,9 @@ public class ControlEstructuraPlanta implements Serializable {
                     filtrarListaEstructuras = null;
                     tipoListaEstructura = 0;
                 }
-
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarEstructura.setSecuencia(l);
                 if (tipoLista == 0) {
                     duplicarEstructura.setOrganigrama(listaOrganigramas.get(indexAux));
                 }
@@ -1382,9 +1380,9 @@ public class ControlEstructuraPlanta implements Serializable {
     }
 
     public void actualizarCentroCosto() {
-        System.out.println("tipoActualizacion : "+tipoActualizacion);
-        System.out.println("centroCostoSeleccionado : "+centroCostoSeleccionado.getNombre());
-        System.out.println("indexEstructura : "+indexEstructura);
+        System.out.println("tipoActualizacion : " + tipoActualizacion);
+        System.out.println("centroCostoSeleccionado : " + centroCostoSeleccionado.getNombre());
+        System.out.println("indexEstructura : " + indexEstructura);
         if (tipoActualizacion == 0) {
             if (tipoListaEstructura == 0) {
                 listaEstructuras.get(indexEstructura).setCentrocosto(centroCostoSeleccionado);

@@ -642,11 +642,8 @@ public class ControlSets implements Serializable {
     public void duplicarSets() {
         if (index >= 0) {
             duplicarSet = new Sets();
-            k++;
-            l = BigInteger.valueOf(k);
-
+            
             if (tipoLista == 0) {
-                duplicarSet.setSecuencia(l);
                 duplicarSet.setEmpleado(listSets.get(index).getEmpleado());
                 duplicarSet.setFechainicial(listSets.get(index).getFechainicial());
                 duplicarSet.setFechafinal(listSets.get(index).getFechafinal());
@@ -657,7 +654,6 @@ public class ControlSets implements Serializable {
             }
             if (tipoLista == 1) {
 
-                duplicarSet.setSecuencia(l);
                 duplicarSet.setEmpleado(filtrarSets.get(index).getEmpleado());
                 duplicarSet.setFechainicial(filtrarSets.get(index).getFechainicial());
                 duplicarSet.setFechafinal(filtrarSets.get(index).getFechafinal());
@@ -682,6 +678,9 @@ public class ControlSets implements Serializable {
         boolean resp = validarDatosRegistro(2);
         if (duplicarSet.getFechainicial() != null && resp == true) {
             if (validarFechasRegistro(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarSet.setSecuencia(l);
                 listSets.add(duplicarSet);
                 listSetsCrear.add(duplicarSet);
                 infoRegistro = "Cantidad de registros: " + listSets.size();

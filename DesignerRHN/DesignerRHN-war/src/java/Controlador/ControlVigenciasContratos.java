@@ -776,11 +776,9 @@ public class ControlVigenciasContratos implements Serializable {
     public void duplicarVigenciaC() {
         if (index >= 0) {
             duplicarVC = new VigenciasContratos();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarVC.setSecuencia(l);
+
                 duplicarVC.setEmpleado(vigenciasContratos.get(index).getEmpleado());
                 duplicarVC.setFechainicial(vigenciasContratos.get(index).getFechainicial());
                 duplicarVC.setFechafinal(vigenciasContratos.get(index).getFechafinal());
@@ -788,7 +786,6 @@ public class ControlVigenciasContratos implements Serializable {
                 duplicarVC.setTipocontrato(vigenciasContratos.get(index).getTipocontrato());
             }
             if (tipoLista == 1) {
-                duplicarVC.setSecuencia(l);
                 duplicarVC.setEmpleado(filtrarVC.get(index).getEmpleado());
                 duplicarVC.setFechainicial(filtrarVC.get(index).getFechafinal());
                 duplicarVC.setFechafinal(filtrarVC.get(index).getFechafinal());
@@ -813,7 +810,10 @@ public class ControlVigenciasContratos implements Serializable {
     public void confirmarDuplicar() {
         if (duplicarVC.getFechainicial() != null && duplicarVC.getContrato().getSecuencia() != null) {
             if (validarFechasRegistro(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
                 vigenciasContratos.add(duplicarVC);
+                duplicarVC.setSecuencia(l);
                 listVCCrear.add(duplicarVC);
                 RequestContext context = RequestContext.getCurrentInstance();
                 infoRegistro = "Cantidad de registros: " + vigenciasContratos.size();
