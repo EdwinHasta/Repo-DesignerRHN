@@ -129,6 +129,7 @@ public class FormulasNovedades implements Serializable {
     }
 
     public boolean isCheckSugerida() {
+        getSugerida();
         if (sugerida == null || sugerida.equalsIgnoreCase("N")) {
             checkSugerida = false;
         } else {
@@ -147,6 +148,7 @@ public class FormulasNovedades implements Serializable {
     }
 
     public boolean isCheckCargue() {
+        getCargue();
         if (cargue == null || cargue.equalsIgnoreCase("N")) {
             checkCargue = false;
         } else {
@@ -155,16 +157,17 @@ public class FormulasNovedades implements Serializable {
         return checkCargue;
     }
 
-    public void setCheckCargue(boolean checkCargue) {
-        if (checkSugerida == false) {
+    public void setCheckCargue(boolean check) {
+        if (check == false) {
             cargue = "N";
         } else {
             cargue = "S";
         }
-        this.checkCargue = checkCargue;
+        this.checkCargue = check;
     }
 
     public boolean isCheckUsa() {
+        getUsaordenformulaconcepto();
         if (usaordenformulaconcepto == null || usaordenformulaconcepto.equalsIgnoreCase("N")) {
             checkUsa = false;
         } else {
@@ -183,6 +186,7 @@ public class FormulasNovedades implements Serializable {
     }
 
     public boolean isCheckGarantiza() {
+        getGarantizada();
         if (garantizada == null || garantizada.equalsIgnoreCase("N")) {
             checkGarantiza = false;
         } else {

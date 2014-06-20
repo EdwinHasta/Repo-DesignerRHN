@@ -51,9 +51,6 @@ public class AdministrarIdiomaPersona implements AdministrarIdiomaPersonaInterfa
     public void crearIdiomasPersonas(List<IdiomasPersonas> listaID) {
         try {
             for (int i = 0; i < listaID.size(); i++) {
-                if (listaID.get(i).getIdioma().getSecuencia() == null) {
-                    listaID.get(i).setIdioma(null);
-                }
                 persistenciaIdiomasPersonas.crear(em, listaID.get(i));
             }
         } catch (Exception e) {

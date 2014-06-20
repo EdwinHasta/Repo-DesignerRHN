@@ -34,7 +34,7 @@ public class PersistenciaFormulasContratos implements PersistenciaFormulasContra
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(formulascontratos);
+            em.persist(formulascontratos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaFormulasContratos.crear: " + e);
