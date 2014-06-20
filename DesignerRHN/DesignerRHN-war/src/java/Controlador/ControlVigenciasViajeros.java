@@ -295,10 +295,11 @@ public class ControlVigenciasViajeros implements Serializable {
 
     public void cancelarModificacion() {
         if (bandera == 1) {
+            FacesContext c =FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("display: none; visibility: hidden;");
             altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
@@ -331,19 +332,19 @@ public class ControlVigenciasViajeros implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c =FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 60px");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("width: 600px");
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 1;
         } else if (bandera == 1) {
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+            parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
             parentesco.setFilterStyle("display: none; visibility: hidden;");
             altoTabla = "270";
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
@@ -885,12 +886,12 @@ public class ControlVigenciasViajeros implements Serializable {
          contador++;
          }*/
 
-        if (contador == 2 && pasa == 0) {
+        if (contador == 2 && pasa == 0) {FacesContext c =FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
                 parentesco.setFilterStyle("display: none; visibility: hidden;");
                 altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
@@ -1022,11 +1023,11 @@ public class ControlVigenciasViajeros implements Serializable {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c =FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                parentesco = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
+                parentesco = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:parentesco");
                 parentesco.setFilterStyle("display: none; visibility: hidden;");
                 altoTabla = "270";
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");

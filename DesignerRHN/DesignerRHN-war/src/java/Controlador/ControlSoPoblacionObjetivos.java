@@ -173,12 +173,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         }
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
             bandera = 0;
@@ -207,12 +207,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
             bandera = 0;
@@ -240,12 +240,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
             codigo.setFilterStyle("width: 20px");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
             descripcion.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
             System.out.println("Activar");
@@ -253,9 +253,9 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
             bandera = 0;
@@ -725,12 +725,12 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 bandera = 0;
                 filtrarSoPoblacionObjetivos = null;
@@ -879,11 +879,11 @@ public class ControlSoPoblacionObjetivos implements Serializable {
 
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
+                descripcion = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:descripcion");
                 descripcion.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosSoPoblacionObjetivos");
                 bandera = 0;

@@ -195,14 +195,14 @@ public class ControlProcesosProductivos implements Serializable {
         }
     }
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProcesosProductivos");
             bandera = 0;
@@ -231,14 +231,14 @@ public class ControlProcesosProductivos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
+            descripcion = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:descripcion");
             descripcion.setFilterStyle("display: none; visibility: hidden;");
-            personafir = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
+            personafir = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:personafir");
             personafir.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProcesosProductivos");
             bandera = 0;

@@ -250,16 +250,16 @@ public class ControlHvEntrevistas implements Serializable {
     }
     private String infoRegistro;
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+            tipoPuntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
             tipoPuntaje.setFilterStyle("display: none; visibility: hidden;");
-            puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+            puntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
             puntaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
@@ -287,16 +287,16 @@ public class ControlHvEntrevistas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+            tipoPuntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
             tipoPuntaje.setFilterStyle("display: none; visibility: hidden;");
-            puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+            puntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
             puntaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
@@ -324,16 +324,16 @@ public class ControlHvEntrevistas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("width: 90px");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:nombre");
             nombre.setFilterStyle("width: 270px");
-            tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+            tipoPuntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
             tipoPuntaje.setFilterStyle("width: 180px");
-            puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+            puntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
             puntaje.setFilterStyle("width: 130px");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             System.out.println("Activar");
@@ -341,13 +341,13 @@ public class ControlHvEntrevistas implements Serializable {
         } else if (bandera == 1) {
             tamano = 270;
             System.out.println("Desactivar");
-            fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+            fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
             fecha.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+            tipoPuntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
             tipoPuntaje.setFilterStyle("display: none; visibility: hidden;");
-            puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+            puntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
             puntaje.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
             bandera = 0;
@@ -691,17 +691,17 @@ public class ControlHvEntrevistas implements Serializable {
         System.err.println("agregar tipo entrevista " + nuevoHvEntrevista.getTipo());
         System.out.println("contador " + contador);
 
-        if (contador == 2) {
+        if (contador == 2) {FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+                tipoPuntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
                 tipoPuntaje.setFilterStyle("display: none; visibility: hidden;");
-                puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+                puntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
                 puntaje.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");
@@ -815,16 +815,16 @@ public class ControlHvEntrevistas implements Serializable {
             contador++;
         }
         if (contador == 2) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                fecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:fecha");
+                fecha = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:fecha");
                 fecha.setFilterStyle("display: none; visibility: hidden;");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                tipoPuntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
+                tipoPuntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:tipoPuntaje");
                 tipoPuntaje.setFilterStyle("display: none; visibility: hidden;");
-                puntaje = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
+                puntaje = (Column) c.getViewRoot().findComponent("form:datosHvEntrevista:puntaje");
                 puntaje.setFilterStyle("display: none; visibility: hidden;");
 
                 RequestContext.getCurrentInstance().update("form:datosHvEntrevista");

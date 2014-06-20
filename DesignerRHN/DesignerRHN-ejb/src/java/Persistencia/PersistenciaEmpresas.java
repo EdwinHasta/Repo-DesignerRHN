@@ -95,6 +95,19 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         }
     }
 
+    public List<Empresas> buscarEmpresasLista(EntityManager em, BigInteger secuencia) {
+        try {
+            Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Empresas> empresas = query.getResultList();
+            return empresas;
+        } catch (Exception e) {
+            System.out.println("Error buscarEmpresas PersistenciaEmpresas : " + e.toString());
+            return null;
+        }
+    }
+
     @Override
     public Empresas buscarEmpresasSecuencia(EntityManager em, BigInteger secuencia) {
         Empresas empresas;
@@ -220,43 +233,43 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             return null;
         }
     }
-    
+
     @Override
-    public BigInteger calcularControlEmpleadosEmpresa(EntityManager em,BigInteger secuencia){
-        try{
-            BigInteger contador=null;
-            String sql = "SELECT COUNT(1) FROM vigenciastipostrabajadores vtt, tipostrabajadores tt, empleados e, vigenciascargos vc, estructuras est, organigramas org\n" +
-                        "    WHERE tt.secuencia = vtt.tipotrabajador\n" +
-                        "    AND tt.tipo='ACTIVO'\n" +
-                        "    AND vtt.EMPLEADO=E.SECUENCIA\n" +
-                        "    AND E.SECUENCIA=VC.EMPLEADO\n" +
-                        "    AND VC.ESTRUCTURA=EST.SECUENCIA\n" +
-                        "    AND EST.ORGANIGRAMA=ORG.SECUENCIA\n" +
-                        "    AND ORG.EMPRESA=?\n" +
-                        "    AND VC.FECHAVIGENCIA= (SELECT MAX(FECHAVIGENCIA)\n" +
-                        "                          FROM VIGENCIASCARGOS VCI\n" +
-                        "                          WHERE VCI.EMPLEADO=VC.EMPLEADO\n" +
-                        "                          AND VCI.FECHAVIGENCIA<=SYSDATE)\n" +
-                        "    AND vtt.fechavigencia = (SELECT MAX(vtti.fechavigencia)\n" +
-                        "                             FROM vigenciastipostrabajadores vtti\n" +
-                        "                             WHERE vtti.empleado = vtt.empleado\n" +
-                        "                             AND vtti.fechavigencia <= sysdate)";
-            Query query =em.createNativeQuery(sql);
+    public BigInteger calcularControlEmpleadosEmpresa(EntityManager em, BigInteger secuencia) {
+        try {
+            BigInteger contador = null;
+            String sql = "SELECT COUNT(1) FROM vigenciastipostrabajadores vtt, tipostrabajadores tt, empleados e, vigenciascargos vc, estructuras est, organigramas org\n"
+                    + "    WHERE tt.secuencia = vtt.tipotrabajador\n"
+                    + "    AND tt.tipo='ACTIVO'\n"
+                    + "    AND vtt.EMPLEADO=E.SECUENCIA\n"
+                    + "    AND E.SECUENCIA=VC.EMPLEADO\n"
+                    + "    AND VC.ESTRUCTURA=EST.SECUENCIA\n"
+                    + "    AND EST.ORGANIGRAMA=ORG.SECUENCIA\n"
+                    + "    AND ORG.EMPRESA=?\n"
+                    + "    AND VC.FECHAVIGENCIA= (SELECT MAX(FECHAVIGENCIA)\n"
+                    + "                          FROM VIGENCIASCARGOS VCI\n"
+                    + "                          WHERE VCI.EMPLEADO=VC.EMPLEADO\n"
+                    + "                          AND VCI.FECHAVIGENCIA<=SYSDATE)\n"
+                    + "    AND vtt.fechavigencia = (SELECT MAX(vtti.fechavigencia)\n"
+                    + "                             FROM vigenciastipostrabajadores vtti\n"
+                    + "                             WHERE vtti.empleado = vtt.empleado\n"
+                    + "                             AND vtti.fechavigencia <= sysdate)";
+            Query query = em.createNativeQuery(sql);
             query.setParameter(1, secuencia);
-            BigDecimal variable  = (BigDecimal) query.getSingleResult();
-            if(variable != null){
+            BigDecimal variable = (BigDecimal) query.getSingleResult();
+            if (variable != null) {
                 contador = new BigInteger(variable.toString());
             }
             return contador;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error calcularControlEmpleadosEmpresa PersistenciaEmpresas : " + e.toString());
             return null;
         }
     }
-    
+
     @Override
-    public BigInteger obtenerMaximoEmpleadosEmpresa(EntityManager em,BigInteger secuencia){
-        try{
+    public BigInteger obtenerMaximoEmpleadosEmpresa(EntityManager em, BigInteger secuencia) {
+        try {
             BigInteger contador = null;
             Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia=:secuencia");
             query.setParameter("secuencia", secuencia);
@@ -264,7 +277,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
             Empresas empresa = (Empresas) query.getSingleResult();
             contador = empresa.getControlempleados();
             return contador;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Error obtenerMaximoEmpleadosEmpresa PersistenciaEmpresas : " + e.toString());
             return null;
         }

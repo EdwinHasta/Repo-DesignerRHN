@@ -262,14 +262,14 @@ public class ControlTiposCentrosCostos implements Serializable {
     }
 //------------------------------------------------------------------------------
 
-    public void cancelarModificacion() {
+    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            grupoTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
+            grupoTipoCC = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
             grupoTipoCC.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoCentroCosto");
             bandera = 0;
@@ -298,14 +298,14 @@ public class ControlTiposCentrosCostos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {
+    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            grupoTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
+            grupoTipoCC = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
             grupoTipoCC.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoCentroCosto");
             bandera = 0;
@@ -568,14 +568,14 @@ public class ControlTiposCentrosCostos implements Serializable {
     }
     //------------------------------------------------------------------------- 
 
-    public void activarCtrlF11() {
+    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
             codigo.setFilterStyle("width: 200px");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
             nombre.setFilterStyle("width: 270px");
-            grupoTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
+            grupoTipoCC = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
             grupoTipoCC.setFilterStyle("width: 270px");
             RequestContext.getCurrentInstance().update("form:datosTipoCentroCosto");
             System.out.println("Activar");
@@ -583,11 +583,11 @@ public class ControlTiposCentrosCostos implements Serializable {
         } else if (bandera == 1) {
             tamano = 270;
             System.out.println("Desactivar");
-            codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
+            codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
-            nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
+            nombre = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
             nombre.setFilterStyle("display: none; visibility: hidden;");
-            grupoTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
+            grupoTipoCC = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
             grupoTipoCC.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosTipoCentroCosto");
             bandera = 0;
@@ -732,14 +732,14 @@ public class ControlTiposCentrosCostos implements Serializable {
          }*/
         //----------------------------------------------------------------------
         if (contador == 3) {
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                grupoTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
+                grupoTipoCC = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
                 grupoTipoCC.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoCentroCosto");
                 bandera = 0;
@@ -930,13 +930,13 @@ public class ControlTiposCentrosCostos implements Serializable {
                 guardado = false;
                 RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            if (bandera == 1) {
+            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                codigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
+                codigo = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");
-                nombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
+                nombre = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
-                grupoTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
+                grupoTipoCC = (Column) c.getViewRoot().findComponent("form:datosTipoCentroCosto:grupoTipoCC");
                 grupoTipoCC.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosTipoCentroCosto");
                 bandera = 0;
