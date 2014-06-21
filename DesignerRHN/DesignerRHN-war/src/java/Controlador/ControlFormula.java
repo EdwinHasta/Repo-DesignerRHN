@@ -31,7 +31,6 @@ public class ControlFormula implements Serializable {
     AdministrarFormulaInterface administrarFormula;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
 
     //Parametros que llegan
     private BigInteger secTiposFormulas;
@@ -45,12 +44,11 @@ public class ControlFormula implements Serializable {
     private boolean verSeleccionFormula;
     private boolean verMostrarTodos;
     private boolean mostrarTodos;
-    private int tipoActualizacion;
     private boolean permitirIndex;
     //Activo/Desactivo Crtl + F11
     private int bandera;
     //Columnas Tabla VC
-    private Column columnaNombreLargo, columnaNombreCorto, columnaEstado, columnaNota, columnaTipo;
+    private Column columnaNombreLargo, columnaNombreCorto, columnaEstado, columnaNota, columnaTipo, columnaPeriodicidad;
     //Otros
     private boolean aceptar;
     private int index;
@@ -58,7 +56,7 @@ public class ControlFormula implements Serializable {
     private boolean propiedadesFormula;
     //modificar
     private List<Formulas> listaFormulasModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     //crear VC
     public Formulas nuevaFormula;
     private List<Formulas> listaFormulasCrear;
@@ -84,6 +82,10 @@ public class ControlFormula implements Serializable {
     private int llamadoPrevioPagina;
     private Formulas actualFormula;
     private String paginaAnterior;
+    //
+    private String infoRegistro;
+    private String infoRegistroFormula;
+    //
 
     public ControlFormula() {
         actualFormula = new Formulas();
@@ -105,18 +107,18 @@ public class ControlFormula implements Serializable {
         cualCelda = -1;
         tipoLista = 0;
         guardado = true;
-        //Crear VC
+        //Crear 
         nuevaFormula = new Formulas();
         duplicarFormula = new Formulas();
         //CLON
         formulaClon = new Formulas();
         formulaOriginal = new Formulas();
         permitirIndex = true;
-        altoTabla = "184";
+        altoTabla = "194";
         tiposFormulas = null;
 
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -129,12 +131,19 @@ public class ControlFormula implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
-    public void recibirPaginaEntrante(String pagina){
-        paginaAnterior = pagina;  
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+        listaFormulas = null;
+        getListaFormulas();
+        if (listaFormulas != null) {
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
         }
-    
-    public String redirigir(){
+    }
+
+    public String redirigir() {
         return paginaAnterior;
     }
 
@@ -172,7 +181,6 @@ public class ControlFormula implements Serializable {
     public void recibirDatosTiposFormulas(BigInteger secuenciaTiposFormulas, TiposFormulas tiposFormulasRegistro) {
         secTiposFormulas = secuenciaTiposFormulas;
         tiposFormulas = tiposFormulasRegistro;
-        System.out.println("secTiposFormulas " + secTiposFormulas + "operando" + tiposFormulas);
         listaFormulas = null;
         getListaFormulas();
     }
@@ -198,6 +206,7 @@ public class ControlFormula implements Serializable {
         }
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaFormulas.get(indice).getTipo().equals("FINAL") && listaFormulas.get(indice).getEstado().equals("ACTIVO")) {
@@ -257,6 +266,7 @@ public class ControlFormula implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             if (listaFormulas.get(indice).isPeriodicidadFormula() == true) {
@@ -276,6 +286,7 @@ public class ControlFormula implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             if (filtradoListaFormulas.get(indice).isPeriodicidadFormula() == true) {
@@ -350,17 +361,20 @@ public class ControlFormula implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (guardado == true) {
             if (bandera == 1) {
-                altoTabla = "184";
-                columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTabla = "194";
+                columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
                 columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+                columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
                 columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
                 columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+                columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
                 columnaNota.setFilterStyle("display: none; visibility: hidden;");
-                columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+                columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
                 columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+                columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+                columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulas");
                 bandera = 0;
                 filtradoListaFormulas = null;
@@ -388,17 +402,20 @@ public class ControlFormula implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (cambioFormula == 0) {
             if (bandera == 1) {
-                altoTabla = "184";
-                columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTabla = "194";
+                columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
                 columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+                columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
                 columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
                 columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+                columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
                 columnaNota.setFilterStyle("display: none; visibility: hidden;");
-                columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+                columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
                 columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+                columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+                columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulas");
                 bandera = 0;
                 filtradoListaFormulas = null;
@@ -419,8 +436,10 @@ public class ControlFormula implements Serializable {
         filtradoListaFormulasLOV = null;
         formulaSeleccionada = null;
         aceptar = true;
-        context.reset("formularioDialogos:lovFormulas:globalFilter");
+        context.update("formularioDialogos:FormulasDialogo");
         context.update("formularioDialogos:lovFormulas");
+        context.update("formularioDialogos:aceptarF");
+        context.reset("formularioDialogos:lovFormulas:globalFilter");
         context.execute("FormulasDialogo.hide()");
     }
 
@@ -460,6 +479,8 @@ public class ControlFormula implements Serializable {
             }
             activoDetalleFormula = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulas");
             context.update("form:detalleFormula");
             context.update("form:operandoFormula");
@@ -467,96 +488,123 @@ public class ControlFormula implements Serializable {
             secRegistro = null;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
+    }
+
+    public void guardarSalir() {
+        guardarCambios();
+        salir();
+    }
+
+    public void cancelarSalir() {
+        refrescar();
+        salir();
     }
 
     //GUARDAR
     public void guardarCambios() {
         RequestContext context = RequestContext.getCurrentInstance();
-        if (guardado == false) {
-            if (!listaFormulasBorrar.isEmpty()) {
-                for (int i = 0; i < listaFormulasBorrar.size(); i++) {
-                    System.out.println("Borrando...");
-                    if (listaFormulasBorrar.get(i).isPeriodicidadFormula() == true) {
-                        listaFormulasBorrar.get(i).setPeriodicidadindependiente("S");
-                    } else if (listaFormulasBorrar.get(i).isPeriodicidadFormula() == false) {
-                        listaFormulasBorrar.get(i).setPeriodicidadindependiente("N");
+        try {
+            if (guardado == false) {
+                if (!listaFormulasBorrar.isEmpty()) {
+                    for (int i = 0; i < listaFormulasBorrar.size(); i++) {
+                        if (listaFormulasBorrar.get(i).isPeriodicidadFormula() == true) {
+                            listaFormulasBorrar.get(i).setPeriodicidadindependiente("S");
+                        } else if (listaFormulasBorrar.get(i).isPeriodicidadFormula() == false) {
+                            listaFormulasBorrar.get(i).setPeriodicidadindependiente("N");
+                        }
+                        administrarFormula.borrar(listaFormulasBorrar.get(i));
                     }
-                    administrarFormula.borrar(listaFormulasBorrar.get(i));
+                    listaFormulasBorrar.clear();
                 }
-                listaFormulasBorrar.clear();
-            }
-            if (!listaFormulasCrear.isEmpty()) {
-                for (int i = 0; i < listaFormulasCrear.size(); i++) {
-                    System.out.println("Creando...");
-                    if (listaFormulasCrear.get(i).isPeriodicidadFormula() == true) {
-                        listaFormulasCrear.get(i).setPeriodicidadindependiente("S");
-                    } else if (listaFormulasCrear.get(i).isPeriodicidadFormula() == false) {
-                        listaFormulasCrear.get(i).setPeriodicidadindependiente("N");
+                if (!listaFormulasCrear.isEmpty()) {
+                    for (int i = 0; i < listaFormulasCrear.size(); i++) {
+                        if (listaFormulasCrear.get(i).isPeriodicidadFormula() == true) {
+                            listaFormulasCrear.get(i).setPeriodicidadindependiente("S");
+                        } else if (listaFormulasCrear.get(i).isPeriodicidadFormula() == false) {
+                            listaFormulasCrear.get(i).setPeriodicidadindependiente("N");
+                        }
+                        administrarFormula.crear(listaFormulasCrear.get(i));
                     }
-                    administrarFormula.crear(listaFormulasCrear.get(i));
+                    listaFormulasCrear.clear();
                 }
-                listaFormulasCrear.clear();
+                if (!listaFormulasModificar.isEmpty()) {
+                    administrarFormula.modificar(listaFormulasModificar);
+                    listaFormulasModificar.clear();
+                }
+                listaFormulas = null;
+                getListaFormulas();
+                if (listaFormulas != null) {
+                    infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:datosFormulas");
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                permitirIndex = true;
+                k = 0;
+                index = -1;
+                secRegistro = null;
+                activoDetalleFormula = true;
+                context.update("form:detalleFormula");
+                context.update("form:operandoFormula");
+                if (verSeleccionFormula
+                        == true) {
+                    lovFomula(0);
+                }
+                if (verMostrarTodos == true) {
+                    mostrarTodasFormulas();
+                }
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listaFormulasModificar.isEmpty()) {
-                administrarFormula.modificar(listaFormulasModificar);
-                listaFormulasModificar.clear();
-            }
-            System.out.println("Se guardaron los datos con exito");
-            listaFormulas = null;
-            context.update("form:datosFormulas");
-            guardado = true;
-            permitirIndex = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado, intente nuevamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             context.update("form:growl");
-        }
-        index = -1;
-        secRegistro = null;
-        activoDetalleFormula = true;
-        context.update("form:detalleFormula");
-        context.update("form:operandoFormula");
-        if (verSeleccionFormula
-                == true) {
-            lovFomula(0);
-        }
-        if (verMostrarTodos == true) {
-            mostrarTodasFormulas();
         }
     }
 
     //CTRL + F11 ACTIVAR/DESACTIVAR
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            altoTabla = "161";
-            columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+            altoTabla = "172";
+            columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
             columnaNombreLargo.setFilterStyle("width: 270px;");
-            columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+            columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
             columnaNombreCorto.setFilterStyle("width: 60px;");
-            columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+            columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
             columnaEstado.setFilterStyle("width: 60px;");
-            columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+            columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
             columnaNota.setFilterStyle("width: 160px;");
-            columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+            columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
             columnaTipo.setFilterStyle("width: 50px;");
+            columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+            columnaPeriodicidad.setFilterStyle("width: 5px;");
             RequestContext.getCurrentInstance().update("form:datosFormulas");
             bandera = 1;
 
         } else if (bandera == 1) {
-            altoTabla = "184";
-            columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+            altoTabla = "194";
+            columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
             columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+            columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
             columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-            columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+            columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
             columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-            columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+            columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
             columnaNota.setFilterStyle("display: none; visibility: hidden;");
-            columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+            columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
             columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+            columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+            columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulas");
             bandera = 0;
             filtradoListaFormulas = null;
@@ -601,17 +649,20 @@ public class ControlFormula implements Serializable {
         }
         if (pasa == 0) {
             if (bandera == 1) {
-                altoTabla = "184";
-                columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTabla = "194";
+                columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
                 columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-                columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+                columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
                 columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-                columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
                 columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-                columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+                columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
                 columnaNota.setFilterStyle("display: none; visibility: hidden;");
-                columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+                columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
                 columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+                columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+                columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
                 RequestContext.getCurrentInstance().update("form:datosFormulas");
                 bandera = 0;
                 filtradoListaFormulas = null;
@@ -628,10 +679,12 @@ public class ControlFormula implements Serializable {
             listaFormulasCrear.add(nuevaFormula);
             listaFormulas.add(nuevaFormula);
             nuevaFormula = new Formulas();
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulas");
             if (guardado == true) {
                 guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             context.execute("NuevaFormulaDialogo.hide()");
             context.update("formularioDialogos:NuevaFormulaDialogo");
@@ -653,9 +706,6 @@ public class ControlFormula implements Serializable {
     public void duplicarRegistro() {
         if (index >= 0) {
             duplicarFormula = new Formulas();
-            k++;
-            l = BigInteger.valueOf(k);
-            duplicarFormula.setSecuencia(l);
             if (tipoLista == 0) {
                 duplicarFormula.setNombrelargo(listaFormulas.get(index).getNombrelargo());
                 duplicarFormula.setNombrecorto(listaFormulas.get(index).getNombrecorto());
@@ -684,39 +734,73 @@ public class ControlFormula implements Serializable {
     }
 
     public void confirmarDuplicar() {
-        if (duplicarFormula.isPeriodicidadFormula() == true) {
-            duplicarFormula.setPeriodicidadindependiente("S");
-        } else if (duplicarFormula.isPeriodicidadFormula() == false) {
-            duplicarFormula.setPeriodicidadindependiente("N");
-        }
-        listaFormulas.add(duplicarFormula);
-        listaFormulasCrear.add(duplicarFormula);
+        int pasa = 0;
+        mensajeValidacion = "";
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosFormulas");
-        index = -1;
-        secRegistro = null;
-        context.execute("DuplicarFormulaDialogo.hide()");
-        if (guardado == true) {
-            guardado = false;
+        context.update("form:detalleFormula");
+        context.update("form:operandoFormula");
+        if (duplicarFormula.getNombrelargo() == null) {
+            mensajeValidacion = " * Nombre Largo\n";
+            pasa++;
         }
-        if (bandera == 1) {
-            altoTabla = "184";
-            columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
-            columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
-            columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-            columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
-            columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-            columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
-            columnaNota.setFilterStyle("display: none; visibility: hidden;");
-            columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
-            columnaTipo.setFilterStyle("display: none; visibility: hidden;");
-            RequestContext.getCurrentInstance().update("form:datosFormulas");
-            bandera = 0;
-            filtradoListaFormulas = null;
-            tipoLista = 0;
+        if (duplicarFormula.getNombrecorto() == null) {
+            mensajeValidacion = mensajeValidacion + " *Nombre Corto\n";
+            pasa++;
         }
-        duplicarFormula = new Formulas();
+        if (duplicarFormula.getTipo() == null) {
+            mensajeValidacion = mensajeValidacion + " *Tipo\n";
+            pasa++;
+        }
+        if (duplicarFormula.getEstado() == null) {
+            mensajeValidacion = mensajeValidacion + " *Estado\n";
+            pasa++;
+        }
+        if (pasa == 0) {
+            if (duplicarFormula.isPeriodicidadFormula() == true) {
+                duplicarFormula.setPeriodicidadindependiente("S");
+            } else if (duplicarFormula.isPeriodicidadFormula() == false) {
+                duplicarFormula.setPeriodicidadindependiente("N");
+            }
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarFormula.setSecuencia(l);
+            listaFormulas.add(duplicarFormula);
+            listaFormulasCrear.add(duplicarFormula);
+            context.update("form:datosFormulas");
+            index = -1;
+            secRegistro = null;
+            context.execute("DuplicarFormulaDialogo.hide()");
+            if (guardado == true) {
+                guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+            }
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            context.update("form:informacionRegistro");
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                altoTabla = "194";
+                columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+                columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
+                columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+                columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
+                columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+                columnaEstado.setFilterStyle("display: none; visibility: hidden;");
+                columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
+                columnaNota.setFilterStyle("display: none; visibility: hidden;");
+                columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+                columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+                columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+                columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosFormulas");
+                bandera = 0;
+                filtradoListaFormulas = null;
+                tipoLista = 0;
+            }
+            duplicarFormula = new Formulas();
+        } else {
+            context.update("formularioDialogos:validacioNuevaFormula");
+            context.execute("validacioNuevaFormula.show()");
+        }
     }
     //LIMPIAR DUPLICAR
 
@@ -726,17 +810,20 @@ public class ControlFormula implements Serializable {
 
     public void salir() {
         if (bandera == 1) {
-            altoTabla = "184";
-            columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "194";
+            columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
             columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+            columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
             columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-            columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+            columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
             columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-            columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+            columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
             columnaNota.setFilterStyle("display: none; visibility: hidden;");
-            columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+            columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
             columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+            columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+            columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulas");
             bandera = 0;
             filtradoListaFormulas = null;
@@ -750,6 +837,7 @@ public class ControlFormula implements Serializable {
         k = 0;
         listaFormulas = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         permitirIndex = true;
         mostrarTodos = true;
         formulaClon = new Formulas();
@@ -775,17 +863,20 @@ public class ControlFormula implements Serializable {
 
     public void refrescar() {
         if (bandera == 1) {
-            altoTabla = "184";
-            columnaNombreLargo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "194";
+            columnaNombreLargo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreLargo");
             columnaNombreLargo.setFilterStyle("display: none; visibility: hidden;");
-            columnaNombreCorto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
+            columnaNombreCorto = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNombreCorto");
             columnaNombreCorto.setFilterStyle("display: none; visibility: hidden;");
-            columnaEstado = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaEstado");
+            columnaEstado = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaEstado");
             columnaEstado.setFilterStyle("display: none; visibility: hidden;");
-            columnaNota = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaNota");
+            columnaNota = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaNota");
             columnaNota.setFilterStyle("display: none; visibility: hidden;");
-            columnaTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulas:columnaTipo");
+            columnaTipo = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaTipo");
             columnaTipo.setFilterStyle("display: none; visibility: hidden;");
+            columnaPeriodicidad = (Column) c.getViewRoot().findComponent("form:datosFormulas:columnaPeriodicidad");
+            columnaPeriodicidad.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulas");
             bandera = 0;
             filtradoListaFormulas = null;
@@ -798,7 +889,16 @@ public class ControlFormula implements Serializable {
         secRegistro = null;
         k = 0;
         listaFormulas = null;
+        RequestContext context = RequestContext.getCurrentInstance();
+        getListaFormulas();
+        if (listaFormulas != null) {
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        context.update("form:informacionRegistro");
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         permitirIndex = true;
         mostrarTodos = true;
         formulaClon = new Formulas();
@@ -810,7 +910,6 @@ public class ControlFormula implements Serializable {
         if (verMostrarTodos == true) {
             mostrarTodasFormulas();
         }
-        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:detalleFormula");
         context.update("form:mostrarTodos");
         context.update("form:datosFormulas");
@@ -888,6 +987,9 @@ public class ControlFormula implements Serializable {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + filtradoListaFormulas.size();
+        context.update("form:informacionRegistro");
     }
 
     public void activarAceptar() {
@@ -901,19 +1003,27 @@ public class ControlFormula implements Serializable {
             formulaClon = new Formulas();
             formulaOriginal = new Formulas();
             listaFormulas = null;
-            getListaFormulas();
-            activoDetalleFormula = true;
             RequestContext context = RequestContext.getCurrentInstance();
+            getListaFormulas();
+            if (listaFormulas != null) {
+                infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
+            context.update("form:informacionRegistro");
+            activoDetalleFormula = true;
             context.update("form:detalleFormula");
             context.update("form:operandoFormula");
-            FacesMessage msg = new FacesMessage("Información", "Formula clonada con exito");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            context.update("form:growl");
             context.update("form:datosFormulas");
             context.update("form:nombreLargoFormulaClon");
             context.update("form:nombreCortoFormulaClon");
             context.update("form:observacionFormulaClon");
             context.update("form:descripcionClon");
+            guardado = false;
+            context.update("form:ACEPTAR");
+            FacesMessage msg = new FacesMessage("Información", "Formula clonada con exito");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
     }
 
@@ -959,7 +1069,6 @@ public class ControlFormula implements Serializable {
                 context.update("form:legislacionFormula");
             }
         } else if (tiposFormulas != null) {
-            System.out.println("Lawl");
             listaFormulas = administrarFormula.formulas();
             listaFormulas.clear();
             listaFormulas.add(tiposFormulas.getFormula());
@@ -980,9 +1089,7 @@ public class ControlFormula implements Serializable {
     }
 
     public List<Formulas> getListaFormulasLOV() {
-        if (listaFormulasLOV == null) {
-            listaFormulasLOV = administrarFormula.formulas();
-        }
+        listaFormulasLOV = administrarFormula.formulas();
         return listaFormulasLOV;
     }
 
@@ -1111,11 +1218,48 @@ public class ControlFormula implements Serializable {
     }
 
     public Formulas getFormulaSeleccionadaPrueba() {
+        getListaFormulas();
+        if (listaFormulas != null) {
+            int tam = listaFormulas.size();
+            if (tam > 0) {
+                formulaSeleccionadaPrueba = listaFormulas.get(0);
+            }
+        }
         return formulaSeleccionadaPrueba;
     }
 
     public void setFormulaSeleccionadaPrueba(Formulas formulaSeleccionadaPrueba) {
         this.formulaSeleccionadaPrueba = formulaSeleccionadaPrueba;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroFormula() {
+        getListaFormulasLOV();
+        if (listaFormulasLOV != null) {
+            infoRegistroFormula = "Cantidad de registros : " + listaFormulasLOV.size();
+        } else {
+            infoRegistroFormula = "Cantidad de registros : 0";
+        }
+        return infoRegistroFormula;
+    }
+
+    public void setInfoRegistroFormula(String infoRegistroFormula) {
+        this.infoRegistroFormula = infoRegistroFormula;
     }
 
 }
