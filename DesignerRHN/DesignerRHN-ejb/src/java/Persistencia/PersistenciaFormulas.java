@@ -34,7 +34,7 @@ public class PersistenciaFormulas implements PersistenciaFormulasInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(formulas);
+            em.persist(formulas);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaFormulas.crear: " + e);

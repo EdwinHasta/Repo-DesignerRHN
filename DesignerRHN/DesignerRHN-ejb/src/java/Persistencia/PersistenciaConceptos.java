@@ -34,7 +34,7 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(concepto);
+            em.persist(concepto);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaConceptos.crear: " + e);
