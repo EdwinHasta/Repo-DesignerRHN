@@ -548,12 +548,12 @@
                                 confirmacionFormatoExtendido.show();"/>
                     </p:dialog>
 
-                    <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="100" width="380" style="font-size: 12px" closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 10px; top: 15px;"  />
-                        <h:outputText value="#{msg['formato']}" style="position: absolute; left: 80px; top: 10px; width: 280px; font-weight:bold;" />
-                        <h:outputText value="#{msg['aclaracion']}" style="position: absolute; left: 80px; top: 25px; width: 280px; font-weight:bold; text-align: justify" />
-                        <p:commandButton value="Si" style="position: absolute; top: 75px; left: 280px" actionListener="#{controlComprobantes.verDetallesFormula()}" onclick="confirmacionFormatoExtendido.hide();"/>
-                        <p:commandButton value="No" style="position: absolute; top: 75px; left: 320px" onclick="confirmacionFormatoExtendido.hide();"/>
+                    <p:dialog id="confirmacionFormatoExtendido" header="#{msg['atencion']}" widgetVar="confirmacionFormatoExtendido"  resizable="false" draggable="false" modal="true" height="110" width="430" style="font-size: 12px" closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="70" style="position: absolute; left: 10px; top: 15px;"  />
+                        <h:outputText value="#{msg['formato']}" style="position: absolute; left: 100px; top: 10px; width: 300px; font-weight:bold;" />
+                        <h:outputText value="#{msg['aclaracion']}" style="position: absolute; left: 103px; top: 30px; width: 280px; font-weight:bold; text-align: justify" />
+                        <p:commandButton value="Si" style="position: absolute; top: 80px; left: 300px" actionListener="#{controlComprobantes.verDetallesFormula()}" onclick="confirmacionFormatoExtendido.hide();"/>
+                        <p:commandButton value="No" style="position: absolute; top: 80px; left: 340px" onclick="confirmacionFormatoExtendido.hide();"/>
                     </p:dialog>
 
                     <p:dialog id="detallesFormulas" header="#{msg['atencion']}" widgetVar="detallesFormulas"  resizable="false" draggable="false" modal="true" height="220" width="505" style="font-size: 12px" closable="false">  

@@ -163,18 +163,15 @@ public class ControlCiudades implements Serializable {
     public void duplicarC() {
         if (index >= 0) {
             duplicarCiudad = new Ciudades();
-            k++;
-            l = BigInteger.valueOf(k);
 
             if (tipoLista == 0) {
-                duplicarCiudad.setSecuencia(l);
+
                 duplicarCiudad.setCodigo(listaCiudades.get(index).getCodigo());
                 duplicarCiudad.setNombre(listaCiudades.get(index).getNombre());
                 duplicarCiudad.setDepartamento(listaCiudades.get(index).getDepartamento());
                 duplicarCiudad.setCodigoalternativo(listaCiudades.get(index).getCodigoalternativo());
             }
             if (tipoLista == 1) {
-                duplicarCiudad.setSecuencia(l);
                 duplicarCiudad.setCodigo(filtradoListaCiudades.get(index).getCodigo());
                 duplicarCiudad.setNombre(filtradoListaCiudades.get(index).getNombre());
                 duplicarCiudad.setDepartamento(filtradoListaCiudades.get(index).getDepartamento());
@@ -190,6 +187,10 @@ public class ControlCiudades implements Serializable {
     }
 
     public void confirmarDuplicar() {
+
+        k++;
+        l = BigInteger.valueOf(k);
+        duplicarCiudad.setSecuencia(l);
 
         RequestContext context = RequestContext.getCurrentInstance();
         int pasa = 0;
@@ -235,7 +236,7 @@ public class ControlCiudades implements Serializable {
             duplicarCiudad = new Ciudades();
 
         }
-        context.update("formularioDialogos:DuplicarRegistroCiudad");
+        context.update("formularioDialogos:duplicarCiudad");
         context.execute("DuplicarRegistroCiudad.hide()");
 
     }
@@ -744,6 +745,7 @@ public class ControlCiudades implements Serializable {
         guardado = true;
         permitirIndex = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
         context.update("form:datosCiudades");
         context.update("form:informacionRegistro");
     }

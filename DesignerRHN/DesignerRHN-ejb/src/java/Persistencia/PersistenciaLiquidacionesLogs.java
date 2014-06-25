@@ -72,7 +72,8 @@ public class PersistenciaLiquidacionesLogs implements PersistenciaLiquidacionesL
 
     public List<LiquidacionesLogs> consultarLiquidacionesLogs(EntityManager em) {
         try {
-            Query query = em.createQuery("SELECT l FROM LiquidacionesLogs l ");
+            //Query query = em.createQuery("SELECT l FROM LiquidacionesLogs l WHERE EXISTS (SELECT 0 FROM Empleados e WHERE e.secuencia = l.empleado.secuencia)");
+            Query query = em.createQuery("SELECT l FROM LiquidacionesLogs l");
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<LiquidacionesLogs> listMotivosDemandas = query.getResultList();
             return listMotivosDemandas;

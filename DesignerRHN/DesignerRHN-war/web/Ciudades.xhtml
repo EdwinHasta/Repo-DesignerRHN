@@ -202,15 +202,13 @@
 
                             <strong><h:outputText value="#{msg['codigo']}" style=" position: absolute; top: 85px" /></strong>
                             <p:inputText maxlength="4" id="duplicarCodigo" value="#{controlCiudades.duplicarCiudad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 80px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarCiudad"/>
+                                <p:ajax event="change" update="duplicarCodigo"/>
                             </p:inputText>
-                            <p:watermark for="duplicarNombre" value="#{msg['codigo']}" />
 
                             <strong><h:outputText value="#{msg['nombre']}" style=" position: absolute; top: 125px" /></strong>
                             <p:inputText id="duplicarNombre" value="#{controlCiudades.duplicarCiudad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="change" update="duplicarCiudad"/>
+                                <p:ajax event="change" update="duplicarNombre"/>
                             </p:inputText>
-                            <p:watermark for="duplicarNombre" value="#{msg['nombre']}" />
 
                             <strong><h:outputText value="#{msg['departamento']}" style=" position: absolute; top: 165px" /></strong>
                             <p:inputText id="duplicarDepartamento" value="#{controlCiudades.duplicarCiudad.departamento.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
@@ -218,7 +216,6 @@
                                 <p:ajax event="change" listener="#{controlCiudades.autocompletarNuevoyDuplicado(controlCiudades.duplicarCiudad.departamento.nombre, 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlCiudades.llamarLovDepartamento(2)}" />
                             </p:inputText>
-                            <p:watermark for="duplicarDepartamento" value="#{msg['departamento']}" />
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 160px; " id="btnDuplicarDepartamento" process="@this" icon="ui-icon-search" actionListener="#{controlCiudades.llamarLovDepartamento(2)}"/>
 
                             <strong><h:outputText value="#{msg['codigoalternativo']}"  style=" position: absolute; top: 205px" /></strong>

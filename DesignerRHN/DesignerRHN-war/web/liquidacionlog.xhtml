@@ -12,9 +12,11 @@
             <ui:define name="body">                  
                 <h:form id="form"> 
                     <p:growl id="growl" showDetail="true"/> 
-                    <p:panel  id="PanelTotal" header="Clase de Pensión" style="position: absolute; width: 874px; height: 510px; text-align: left">    
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="font-size: 14px; color: blue"><strong>Clase Pensión</strong></legend>
+                    <p:panel  id="PanelTotal" header="Detalles de la Liquidación" style="position: absolute; width: 874px; height: 510px; text-align: left">    
+                        <h:outputText id="outNombrePersona" value="Empleado" style="position: absolute; left: 20px; top: 85px; width:50px ;height:50px; color: darkblue;font-weight: bold "/> 
+                        <h:outputText id="nombreEmpleado" value="#{controlLiquidacionesLogs.empleadoSeleccionado.persona.nombreCompleto}" style="position: absolute; left: 90px; top: 85px; width:300px ;height:50px; color: #BF1A1A;font-weight: bold " />
+                        <fieldset style="position: absolute;top: 110px;left: 10px;height: 320px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="font-size: 14px; color: blue"><strong>Detalles de Liquidación</strong></legend>
 
                             <p:dataTable id="datosLiquidacionesLogs" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlLiquidacionesLogs.listLiquidacionesLogs}" 
@@ -26,6 +28,9 @@
                                          editable="true" editMode="cell" paginator="false" 
                                          selection="#{controlLiquidacionesLogs.liquidacionesLogsSeleccionado}"
                                          selectionMode="single"
+                                         liveScroll="true"
+                                         scrollRows="14"  
+
                                          >
                                 <p:ajax event="filter" listener="#{controlLiquidacionesLogs.eventoFiltrar()}"/>
 
@@ -33,12 +38,12 @@
                                            width="72" id="fechaInicial" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechadesde}" >
+                                            <h:outputText value="#{info.fechadesde}" style="height: 12px;" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{info.fechadesde}" id="editarFechaInicialCredito"   
+                                            <p:inputText readonly="true" style="height: 12px;" value="#{info.fechadesde}" id="editarFechaInicialCredito"   
                                                          styleClass="ui-datepicker, myClass" autocomplete="true"
                                                          onselect="posicion([{name: 'n', value: '0'}, {name: 't', value: '#{indice}'}]);">      
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -51,12 +56,12 @@
                                            width="72" id="fechaFinal" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechahasta}" >
+                                            <h:outputText value="#{info.fechahasta}" style="height: 12px;" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" value="#{info.fechahasta}" id="editarFechaFinal"   
+                                            <p:inputText readonly="true" style="height: 12px;" value="#{info.fechahasta}" id="editarFechaFinal"   
                                                          styleClass="ui-datepicker, myClass" autocomplete="true"
                                                          onselect="posicion([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}]);">      
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
@@ -67,80 +72,64 @@
                                 </p:column>
 
                                 <p:column headerText="Empleado" sortBy="#{info.empleado.persona.nombreCompleto}" filterBy="#{info.empleado.persona.nombreCompleto}" 
-                                          filterMatchMode="contains" id="empleado" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                          filterMatchMode="contains" id="empleado" width="180" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.empleado.persona.nombreCompleto}">
-                                                <f:convertNumber type="currency" currencySymbol="$"/>
+
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.empleado.persona.nombreCompleto}" id="editarEmpleado" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText  readonly="true" value="#{info.empleado.persona.nombreCompleto}" id="editarEmpleadoTabla" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                          onselect="posicion([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                 </p:column>
 
-                                <p:column headerText="Empleado" sortBy="#{info.empleado.persona.nombreCompleto}" filterBy="#{info.empleado.persona.nombreCompleto}" 
-                                          filterMatchMode="contains" id="empleado" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.empleado.persona.nombreCompleto}">
-                                                <f:convertNumber type="currency" currencySymbol="$"/>
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.empleado.persona.nombreCompleto}" id="editarEmpleado" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}]);"> 
-                                            </p:inputText>
-                                        </f:facet>  
-                                    </p:cellEditor>
-
-                                </p:column>
 
                                 <p:column headerText="Operando" sortBy="#{info.operando.nombre}" filterBy="#{info.operando.nombre}" 
-                                          filterMatchMode="contains" id="operando" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                          filterMatchMode="contains" id="operando" width="143" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.operando.nombre}">
-                                                <f:convertNumber type="currency" currencySymbol="$"/>
+
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.operando.nombre}" id="editarOperando" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText  readonly="true" value="#{info.operando.nombre}" id="editarOperando" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                          onselect="posicion([{name: 'n', value: '3'}, {name: 't', value: '#{indice}'}]);"> 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
                                 <p:column headerText="Proceso" sortBy="#{info.proceso.descripcion}" filterBy="#{info.proceso.descripcion}" 
-                                          filterMatchMode="contains" id="proceso" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                          filterMatchMode="contains" id="proceso" width="123" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.proceso.descripcion}">
-                                                <f:convertNumber type="currency" currencySymbol="$"/>
+
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.proceso.descripcion}" id="editarProceso" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '3'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText  readonly="true" value="#{info.proceso.descripcion}" id="editarProceso" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                          onselect="posicion([{name: 'n', value: '4'}, {name: 't', value: '#{indice}'}]);"> 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                 </p:column>
                                 <p:column headerText="Valor" sortBy="#{info.valor}" filterBy="#{info.valor}" 
-                                          filterMatchMode="contains" id="proceso" width="133" filterStyle="display: none; visibility: hidden;" >                                  
+                                          filterMatchMode="contains" id="valor" width="80" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
                                             <h:outputText value="#{info.valor}">
-                                                <f:convertNumber type="currency" currencySymbol="$"/>
+
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.valor}" id="editarValor" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '3'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText  readonly="true" value="#{info.valor}" id="editarValor" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
+                                                          onselect="posicion([{name: 'n', value: '5'}, {name: 't', value: '#{indice}'}]);"> 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
@@ -207,9 +196,9 @@
 
                         <p:remoteCommand name="posicion" actionListener="#{controlLiquidacionesLogs.posicion()}"/>
 
-                        <h:outputText id="informacionRegistro" value="#{controlLiquidacionesLogs.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="Aceptar"  actionListener="#{controlLiquidacionesLogs.revisarDialogoGuardar()}" disabled="#{controlLiquidacionesLogs.guardado}"    process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 200px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="BUSCAREMPLEADO" value="Buscar Empleado" actionListener="#{controlLiquidacionesLogs.llamarDialogoEmpleado()}"    />
+                        <h:outputText id="informacionRegistro" value="#{controlLiquidacionesLogs.infoRegistro}" style="position: absolute; left: 15px; top: 450px; font-weight: bold"/>
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-check" value="Atras" />
+                        <p:commandButton style=" position: absolute; left: 10px; top: 470px; " icon="ui-icon-arrowreturnthick-1-w" id="BUSCAREMPLEADO" value="Buscar Empleado" actionListener="#{controlLiquidacionesLogs.llamarDialogoEmpleado()}"    />
 
                         <p:dialog id="confirmarGuardar" header="ATENCION...!" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
@@ -220,7 +209,7 @@
                         </p:dialog>
 
 
-                        <p:dialog header="#{msg['tiposcentrocostoTCC']}" widgetVar="tiposCentrosCostosDialogo" draggable="false" resizable="false" closable="false" id="tiposCentrosCostosDialogo"  
+                        <p:dialog header="EMPLEADOS" widgetVar="tiposCentrosCostosDialogo" draggable="false" resizable="false" closable="false" id="tiposCentrosCostosDialogo"  
                                   showEffect="fade" hideEffect="fade" width="440" modal="true" style="">
                             <p:dataTable id="lovTipoCentrosCostos" style="width: 400px" var="empleado" value="#{controlLiquidacionesLogs.listaEmpleados}" rowKey="#{empleado.secuencia}"
                                          selection="#{controlLiquidacionesLogs.empleadoSeleccionado}" selectionMode="single" widgetVar="lovTipoCentrosCostos" scrollable="true" scrollWidth="420" scrollHeight="250"
@@ -234,7 +223,7 @@
                                 </f:facet>
                                 <p:column filterBy="#{empleado.persona.numerodocumento}" width="40" filterMatchMode="contains" filterStyle="width: 30px">
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="Numero Documento" />
+                                        <h:outputText style="text-align: center" value="Documento" />
                                     </f:facet>
                                     <h:outputText  value="#{empleado.persona.numerodocumento}" />
                                 </p:column>
@@ -248,10 +237,10 @@
 
                             <h:outputText id="infoRegistroEmpleados" value="#{controlLiquidacionesLogs.infoRegistroEmpleados}" style="position: absolute; left: 5px; top: 350px; font-weight: bold"/>
 
-                            <p:commandButton id="aceptarTCC" style="position: relative; left: 260px" icon="ui-icon-check" value="#{msg['aceptar']}" disabled="#{controlLiquidacionesLogs.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlLiquidacionesLogs.seleccionarEmpleado()}" update="lovTipoCentrosCostos, aceptarTCC, datosLiquidacionesLogs" process="@this">
+                            <p:commandButton id="aceptarTCC" style="position: relative; left: 260px" icon="ui-icon-check" value="Aceptar" disabled="#{controlLiquidacionesLogs.aceptar}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlLiquidacionesLogs.seleccionarEmpleado()}" update="lovTipoCentrosCostos, aceptarTCC, datosLiquidacionesLogs" process="@this">
                                 <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton id="atrasTCC" style="position: relative; left: 260px" icon="ui-icon-arrowreturnthick-1-w" value="#{msg['atras']}" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlLiquidacionesLogs.cancelarCambioEmpleado()}" update="lovTipoCentrosCostos" process="@this">
+                            <p:commandButton id="atrasTCC" style="position: relative; left: 260px" icon="ui-icon-arrowreturnthick-1-w" value="Atras" onclick="tiposCentrosCostosDialogo.hide(), lovTipoCentrosCostos.clearFilters();" actionListener="#{controlLiquidacionesLogs.cancelarCambioEmpleado()}" update="lovTipoCentrosCostos" process="@this">
                                 <p:resetInput target=":form:lovTipoCentrosCostos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog> 
@@ -260,6 +249,8 @@
                     </p:panel>
 
                     <p:hotkey bind="ctrl+f11" actionListener="#{controlLiquidacionesLogs.activarCtrlF11()}"/> 
+                    <p:hotkey bind="alt+p" actionListener="#{controlLiquidacionesLogs.llamarDialogoEmpleado()}"/> 
+
                 </h:form>
 
                 <h:form id="formularioDialogos">
@@ -310,19 +301,70 @@
                         <h:outputText value="La tabla 'LIQUIDACIONESLOGS' no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
+                    <p:dialog id="editarFechaInicial" header="Fecha Desde" widgetVar="editarFechaInicial" resizable="false" draggable="false" modal="true" height="55" width="240" style="position: absolute; top: 10px;  padding: 0px">  
+                        <p:inputTextarea value="#{controlLiquidacionesLogs.editarLiquidacionesLogs.fechadesde}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
+                    </p:dialog>
+                    <p:dialog id="editarFechaHasta" header="Fecha Hasta" widgetVar="editarFechaHasta" resizable="false" draggable="false" modal="true" height="55" width="240" style="position: absolute; top: 10px;  padding: 0px">  
+                        <p:inputTextarea value="#{controlLiquidacionesLogs.editarLiquidacionesLogs.fechahasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true">  
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </p:inputTextarea>
+                    </p:dialog>
+
+
+                    <p:dialog id="editarEmpleado" header="Empleado" widgetVar="editarEmpleado" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlLiquidacionesLogs.editarLiquidacionesLogs.empleado.persona.nombreCompleto}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarOperandoE" header="Operando" widgetVar="editarOperandoE" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlLiquidacionesLogs.editarLiquidacionesLogs.operando.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
+                    <p:dialog id="editarProcesoE" header="Proceso" widgetVar="editarProcesoE" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlLiquidacionesLogs.editarLiquidacionesLogs.proceso.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+                    <p:dialog id="editarValorE" header="Valor" widgetVar="editarValorE" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                        <p:inputTextarea value="#{controlLiquidacionesLogs.editarLiquidacionesLogs.valor}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
+                    </p:dialog>
+
                 </h:form>
 
 
                 <h:form id="formExportar">
                     <p:dataTable id="datosLiquidacionesLogsExportar" var="info2" style="visibility: hidden; display: none;"                           
                                  value="#{controlLiquidacionesLogs.listLiquidacionesLogs}">
-                        <p:column>                                  
-                            <f:facet name="header"><h:outputText value="Codigo"/></f:facet> 
-                            <h:outputText value="#{info2.fechadesde}" />
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Desde" />
+                            </f:facet>
+                            <h:outputText value="#{info2.fechadesde}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
+                        </p:column>  
+                        <p:column>  
+                            <f:facet name="header">
+                                <h:outputText value="Desde" />
+                            </f:facet>
+                            <h:outputText value="#{info2.fechahasta}" >
+                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                            </h:outputText>
                         </p:column>  
                         <p:column>                                  
-                            <f:facet name="header"><h:outputText value="Codigo"/></f:facet> 
-                            <h:outputText value="#{info2.fechahasta}" />
+                            <f:facet name="header"><h:outputText value="Empleado"/></f:facet> 
+                            <h:outputText value="#{info2.empleado.persona.nombreCompleto}" />
+                        </p:column>  
+                        <p:column>                                  
+                            <f:facet name="header"><h:outputText value="Operando"/></f:facet> 
+                            <h:outputText value="#{info2.operando.descripcion}" />
+                        </p:column>  
+                        <p:column>                                  
+                            <f:facet name="header"><h:outputText value="Proceso"/></f:facet> 
+                            <h:outputText value="#{info2.proceso.descripcion}" />
+                        </p:column>  
+                        <p:column>                                  
+                            <f:facet name="header"><h:outputText value="Valor"/></f:facet> 
+                            <h:outputText value="#{info2.valor}" />
                         </p:column>  
 
                     </p:dataTable>

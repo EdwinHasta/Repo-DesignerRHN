@@ -3,7 +3,6 @@
  */
 package Persistencia;
 
-import ClasesAyuda.ColumnasBusquedaAvanzada;
 import Entidades.Empleados;
 import InterfacePersistencia.PersistenciaEmpleadoInterface;
 import java.math.BigInteger;
@@ -11,7 +10,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
@@ -32,8 +30,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            System.out.println("Empleado Persona Nombre : "+empleados.getPersona().getNombre());
-            System.out.println("Empleado Persona Secuencia : "+empleados.getPersona().getSecuencia());
+            System.out.println("Empleado Persona Nombre : " + empleados.getPersona().getNombre());
+            System.out.println("Empleado Persona Secuencia : " + empleados.getPersona().getSecuencia());
             em.merge(empleados);
             tx.commit();
         } catch (Exception e) {
@@ -111,6 +109,20 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
 
     }
 
+    public List<Empleados> consultarEmpleadosLiquidacionesLog(EntityManager em) {
+        try {
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE EXISTS (SELECT li.secuencia FROM LiquidacionesLogs li WHERE li.empleado.secuencia = e.secuencia) ORDER BY e.codigoempleado ASC");
+
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Empleados> listaEmpleados = query.getResultList();
+            return listaEmpleados;
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaEmpleados.todosEmpleados" + e);
+            return null;
+        }
+
+    }
+
     @Override
     public Empleados buscarEmpleadoSecuencia(EntityManager em, BigInteger secuencia) {
         try {
@@ -122,6 +134,20 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
             return empleado;
         } catch (Exception e) {
             System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuencia " + e);
+            return null;
+        }
+    }
+
+    public Empleados buscarEmpleadoSecuenciaPersona(EntityManager em, BigInteger secuencia) {
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.secuencia = :secuencia");
+            query.setParameter("secuencia", secuencia);
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            Empleados empleado = (Empleados) query.getSingleResult();
+            return empleado;
+        } catch (Exception e) {
+            System.err.println("Error PersistenciaEmpleados.buscarEmpleadoSecuenciaPersona " + e);
             return null;
         }
     }
@@ -316,8 +342,8 @@ public class PersistenciaEmpleados implements PersistenciaEmpleadoInterface {
         }
     }
 
-    @Override 
-    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em,BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
+    @Override
+    public Empleados obtenerUltimoEmpleadoAlmacenado(EntityManager em, BigInteger secuenciaEmpresa, BigInteger codigoEmpleado) {
         try {
             Query query = em.createQuery("SELECT e FROM Empleados e WHERE e.empresa.secuencia=:secuenciaEmpresa AND e.codigoempleado=:codigoEmpleado");
             query.setParameter("secuenciaEmpresa", secuenciaEmpresa);
