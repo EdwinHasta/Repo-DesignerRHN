@@ -226,7 +226,7 @@ public class Inforeportes implements Serializable {
     }
 
     public String getNombre() {
-        if(nombre == null){
+        if (nombre == null) {
             nombre = "";
         } else {
             nombre = nombre.toUpperCase();
@@ -237,11 +237,10 @@ public class Inforeportes implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public String getNombrereporte() {
-        if(nombrereporte == null){
+        if (nombrereporte == null) {
             nombrereporte = "";
-        } else {
-            nombrereporte = nombrereporte.toUpperCase();
         }
         return nombrereporte;
     }
@@ -251,7 +250,7 @@ public class Inforeportes implements Serializable {
     }
 
     public String getFecdesde() {
-        if(fecdesde == null){
+        if (fecdesde == null) {
             fecdesde = "NO";
         }
         return fecdesde;
@@ -262,7 +261,7 @@ public class Inforeportes implements Serializable {
     }
 
     public String getFechasta() {
-        if(fechasta == null){
+        if (fechasta == null) {
             fechasta = "NO";
         }
         return fechasta;
@@ -273,7 +272,7 @@ public class Inforeportes implements Serializable {
     }
 
     public String getEmdesde() {
-        if(emdesde == null){
+        if (emdesde == null) {
             emdesde = "NO";
         }
         return emdesde;
@@ -284,7 +283,7 @@ public class Inforeportes implements Serializable {
     }
 
     public String getEmhasta() {
-        if(emhasta == null){
+        if (emhasta == null) {
             emhasta = "NO";
         }
         return emhasta;
@@ -461,8 +460,8 @@ public class Inforeportes implements Serializable {
     public void setModulo(Modulos modulo) {
         this.modulo = modulo;
     }
-    
-     public String getTipo() {
+
+    public String getTipo() {
         return tipo;
     }
 
@@ -470,9 +469,8 @@ public class Inforeportes implements Serializable {
         this.tipo = tipo;
     }
 
-
     public String getEstadoTipo() {
-        if (estadoTipo == null ) {
+        if (estadoTipo == null) {
             if (tipo == null) {
                 estadoTipo = "PDF";
 

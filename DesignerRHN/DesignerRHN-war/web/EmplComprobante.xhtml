@@ -335,8 +335,8 @@
                             </div>
 
                             <div id="inferiorIzquierdaEM" style="height: 70px; width: 320px; overflow-y: hidden; position: absolute; top: 37px; border: 5px; border-color: red" >
-                                <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style=" width: 315px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
-                                             rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="315"
+                                <p:dataTable id="tablaInferiorIzquierdaEM" var="solucionNodoEmpleador" style=" width: 250px" value="#{controlEmplComprobantes.listaSolucionesNodosEmpleador}"
+                                             rowKey="#{solucionNodoEmpleador.secuencia}" scrollable="true" scrollWidth="300"
                                              widgetVar="tablaInferiorIzquierdaEM" styleClass="hide-column-names" rowIndexVar="indiceER"
                                              filteredValue="#{controlEmplComprobantes.filtradolistaSolucionesNodosEmpleador}" emptyMessage="#{msg['vacio']}">
 
@@ -344,11 +344,11 @@
                                         <p:commandButton value="" style="width: 20px; height: 20px;" actionListener="#{controlEmplComprobantes.parcialSolucionNodo(indiceER, 1)}"/>
                                     </p:column>
 
-                                    <p:column id="codigoSNEM" headerText="#{msg['codigo']}" sortBy="#{solucionNodoEmpleador.concepto.codigo}" style="width: 40px;"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
+                                    <p:column id="codigoSNEM" headerText="#{msg['codigo']}" sortBy="#{solucionNodoEmpleador.concepto.codigo}" style="width: 43px;"  filterBy="#{solucionNodoEmpleador.concepto.codigo}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" >
                                         <h:outputText value="#{solucionNodoEmpleador.concepto.codigo}" />  
                                     </p:column>  
 
-                                    <p:column id="descripcionSNEM" headerText="#{msg['descripcion']}" style="width: 232px"  sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
+                                    <p:column id="descripcionSNEM" headerText="#{msg['descripcion']}" style="width: 193px;"  sortBy="#{solucionNodoEmpleador.concepto.descripcion}"  filterBy="#{solucionNodoEmpleador.concepto.descripcion}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;">
                                         <h:outputText value="#{solucionNodoEmpleador.concepto.descripcion}" />  
                                     </p:column>  
                                 </p:dataTable>
