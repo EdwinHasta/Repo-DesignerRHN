@@ -35,7 +35,7 @@ public class PersistenciaVigenciasEventos implements PersistenciaVigenciasEvento
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasEventos);
+            em.persist(vigenciasEventos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasEventos.crear: " + e);

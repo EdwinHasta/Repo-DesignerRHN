@@ -34,7 +34,7 @@ public class PersistenciaContratos implements PersistenciaContratosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(contratos);
+            em.persist(contratos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaContratos.crear: " + e);

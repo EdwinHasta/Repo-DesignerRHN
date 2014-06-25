@@ -78,7 +78,7 @@ public class Proyectos implements Serializable {
     private Date fechafinal;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 20)
+    @Size(max = 20)
     @Column(name = "CODIGO")
     private String codigo;
     @OneToMany(mappedBy = "proyecto")
