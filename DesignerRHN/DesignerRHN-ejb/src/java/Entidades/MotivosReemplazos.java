@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -17,7 +16,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -31,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "MotivosReemplazos.findAll", query = "SELECT m FROM MotivosReemplazos m")})
 public class MotivosReemplazos implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -41,10 +40,7 @@ public class MotivosReemplazos implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "CODIGO")
-    private short codigo;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
+    private Integer codigo;
     @Column(name = "NOMBRE")
     private String nombre;
     @OneToMany(mappedBy = "motivoreemplazo")
@@ -57,7 +53,7 @@ public class MotivosReemplazos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public MotivosReemplazos(BigInteger secuencia, short codigo, String nombre) {
+    public MotivosReemplazos(BigInteger secuencia, Integer codigo, String nombre) {
         this.secuencia = secuencia;
         this.codigo = codigo;
         this.nombre = nombre;
@@ -71,23 +67,24 @@ public class MotivosReemplazos implements Serializable {
         this.secuencia = secuencia;
     }
 
-    public short getCodigo() {
+    public Integer getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(short codigo) {
+    public void setCodigo(Integer codigo) {
         this.codigo = codigo;
     }
 
     public String getNombre() {
-        if(nombre == null){
-            nombre = (" ");
-        }
-        return nombre.toUpperCase();
+        return nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        if (nombre != null) {
+            this.nombre = nombre.toUpperCase();
+        } else {
+            this.nombre = nombre;
+        }
     }
 
     @XmlTransient
@@ -123,5 +120,5 @@ public class MotivosReemplazos implements Serializable {
     public String toString() {
         return "Entidades.MotivosReemplazos[ secuencia=" + secuencia + " ]";
     }
-    
+
 }

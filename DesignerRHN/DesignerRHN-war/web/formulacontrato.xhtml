@@ -128,11 +128,11 @@
                             </p:dataTable>
                         </fieldset>
 
-                        <p:commandButton style="position: absolute; left: 683px; top: 415px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlFormulaContrato.guardado}" update=":form:datosFormulaContrato" process="@this" />
-                        <p:commandButton style="position: absolute; left: 775px; top: 415px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaContrato.salir()}" action="retornoFormula" process="@this" />
+                        <p:commandButton style="position: absolute; left: 683px; top: 408px; " id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlFormulaContrato.guardado}" update=":form:datosFormulaContrato" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 408px; " id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlFormulaContrato.salir()}" action="retornoFormula" process="@this" />
                         <h:outputText id="informacionRegistro" value="#{controlFormulaContrato.infoRegistro}" style="position: absolute; left: 65px; top: 415px; font-weight: bold"/>
 
-                        <p:commandButton id="detalleFormula" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 410px; left: 20px; " process="@this"/>  
+                        <p:commandButton id="detalleFormula" disabled="#{controlFormulaContrato.activoDetalle}" value="" style="background-image: url(Imagenes/revisar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 28px; height: 28px; position: absolute; top: 410px; left: 20px; " process="@this"/>  
                         <p:tooltip for="detalleFormula" value="#{msg['detalles']}"/>
                     </p:panel>
 

@@ -8,18 +8,19 @@ import Entidades.MotivosReemplazos;
 import InterfaceAdministrar.AdministrarMotivosReemplazosInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
 import InterfacePersistencia.PersistenciaMotivosReemplazosInterface;
+import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
 import javax.persistence.EntityManager;
 
 @Stateful
-public class AdministrarMotivosReemplazos implements AdministrarMotivosReemplazosInterface{
-    
+public class AdministrarMotivosReemplazos implements AdministrarMotivosReemplazosInterface {
+
     @EJB
     PersistenciaMotivosReemplazosInterface persistenciaMotivosReemplazos;
-    
-        /**
+
+    /**
      * Enterprise JavaBean.<br>
      * Atributo que representa todo lo referente a la conexión del usuario que
      * está usando el aplicativo.
@@ -33,7 +34,7 @@ public class AdministrarMotivosReemplazos implements AdministrarMotivosReemplazo
     public void obtenerConexion(String idSesion) {
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
-    
+
     @Override
     public List<MotivosReemplazos> MotivosReemplazos() {
         List<MotivosReemplazos> listaMotivosReemplazos;
@@ -46,6 +47,30 @@ public class AdministrarMotivosReemplazos implements AdministrarMotivosReemplazo
         return persistenciaMotivosReemplazos.motivosReemplazos(em);
     }
 
+    public void modificarMotivosReemplazos(List<MotivosReemplazos> listaMotivosReemplazos) {
+        for (int i = 0; i < listaMotivosReemplazos.size(); i++) {
+            System.out.println("Administrar Modificando...");
+            persistenciaMotivosReemplazos.editar(em, listaMotivosReemplazos.get(i));
+        }
+    }
 
+    public void borrarMotivosReemplazos(List<MotivosReemplazos> listaMotivosReemplazos) {
+        for (int i = 0; i < listaMotivosReemplazos.size(); i++) {
+            System.out.println("Administrar Borrando...");
+            persistenciaMotivosReemplazos.borrar(em, listaMotivosReemplazos.get(i));
+        }
+    }
+
+    public void crearMotivosReemplazos(List<MotivosReemplazos> listaMotivosReemplazos) {
+        for (int i = 0; i < listaMotivosReemplazos.size(); i++) {
+            System.out.println("Administrar Creando...");
+            persistenciaMotivosReemplazos.crear(em, listaMotivosReemplazos.get(i));
+        }
+    }
+
+    public BigInteger contarEncargaturasMotivoReemplazo(BigInteger secMotivoReemplazo) {
+        BigInteger encargaturasMotivoReemplazo = persistenciaMotivosReemplazos.contarEncargaturasMotivoReemplazo(em, secMotivoReemplazo);
+        return encargaturasMotivoReemplazo;
+    }
 
 }

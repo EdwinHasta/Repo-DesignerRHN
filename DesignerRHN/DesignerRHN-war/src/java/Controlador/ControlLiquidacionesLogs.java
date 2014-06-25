@@ -59,7 +59,7 @@ public class ControlLiquidacionesLogs implements Serializable {
     private boolean permitirIndex;
     //RASTRO
     private BigInteger secRegistro;
-    private Column codigo, descripcion;
+    private Column fechaInicial, fechaFinal, empleado, operando, proceso, valor;
     //borrado
     private int registrosBorrados;
     private String mensajeValidacion;
@@ -80,7 +80,9 @@ public class ControlLiquidacionesLogs implements Serializable {
         nuevoLiquidacionesLogs = new LiquidacionesLogs();
         duplicarLiquidacionesLogs = new LiquidacionesLogs();
         guardado = true;
+        aceptar = true;
         tamano = 270;
+        empleadoSeleccionado = null;
         System.out.println("controlLiquidacionesLogs Constructor");
     }
 
@@ -158,10 +160,18 @@ public class ControlLiquidacionesLogs implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
-            codigo = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaInicial");
+            fechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaFinal");
+            fechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            empleado = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:empleado");
+            empleado.setFilterStyle("display: none; visibility: hidden;");
+            operando = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:operando");
+            operando.setFilterStyle("display: none; visibility: hidden;");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:proceso");
+            proceso.setFilterStyle("display: none; visibility: hidden;");
+            valor = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:valor");
+            valor.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
             bandera = 0;
             filtrarLiquidacionesLogs = null;
@@ -194,10 +204,20 @@ public class ControlLiquidacionesLogs implements Serializable {
         if (bandera == 1) {
             //CERRAR FILTRADO
             FacesContext c = FacesContext.getCurrentInstance();
-            codigo = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaInicial");
+            fechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaFinal");
+            fechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            empleado = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:empleado");
+            empleado.setFilterStyle("display: none; visibility: hidden;");
+            operando = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:operando");
+            operando.setFilterStyle("display: none; visibility: hidden;");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:proceso");
+            proceso.setFilterStyle("display: none; visibility: hidden;");
+            valor = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:valor");
+            valor.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
+
             RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
             bandera = 0;
             filtrarLiquidacionesLogs = null;
@@ -223,20 +243,39 @@ public class ControlLiquidacionesLogs implements Serializable {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
-            codigo = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:codigo");
-            codigo.setFilterStyle("width: 170px");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaInicial");
+            fechaInicial.setFilterStyle("width: 60px");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaFinal");
+            fechaFinal.setFilterStyle("width: 60px");
+            empleado = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:empleado");
+            empleado.setFilterStyle("width: 170px");
+            operando = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:operando");
+            operando.setFilterStyle("width: 110px");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:proceso");
+            proceso.setFilterStyle("width: 110px");
+            valor = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:valor");
+            valor.setFilterStyle("width: 40px");
             RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
+
             System.out.println("Activar");
             bandera = 1;
         } else if (bandera == 1) {
             System.out.println("Desactivar");
             tamano = 270;
-            codigo = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:codigo");
-            codigo.setFilterStyle("display: none; visibility: hidden;");
-            descripcion = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:descripcion");
-            descripcion.setFilterStyle("display: none; visibility: hidden;");
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaInicial");
+            fechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaFinal");
+            fechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            empleado = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:empleado");
+            empleado.setFilterStyle("display: none; visibility: hidden;");
+            operando = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:operando");
+            operando.setFilterStyle("display: none; visibility: hidden;");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:proceso");
+            proceso.setFilterStyle("display: none; visibility: hidden;");
+            valor = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:valor");
+            valor.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
+
             RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
             bandera = 0;
             filtrarLiquidacionesLogs = null;
@@ -256,12 +295,28 @@ public class ControlLiquidacionesLogs implements Serializable {
             RequestContext context = RequestContext.getCurrentInstance();
             System.out.println("Entro a editar... valor celda: " + cualCelda);
             if (cualCelda == 0) {
-                context.update("formularioDialogos:editCodigo");
-                context.execute("editCodigo.show()");
+                context.update("formularioDialogos:editarFechaInicial");
+                context.execute("editarFechaInicial.show()");
                 cualCelda = -1;
             } else if (cualCelda == 1) {
-                context.update("formularioDialogos:editDescripcion");
-                context.execute("editDescripcion.show()");
+                context.update("formularioDialogos:editarFechaHasta");
+                context.execute("editarFechaHasta.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 2) {
+                context.update("formularioDialogos:editarEmpleado");
+                context.execute("editarEmpleado.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 3) {
+                context.update("formularioDialogos:editarOperandoE");
+                context.execute("editarOperandoE.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 4) {
+                context.update("formularioDialogos:editarProcesoE");
+                context.execute("editarProcesoE.show()");
+                cualCelda = -1;
+            } else if (cualCelda == 5) {
+                context.update("formularioDialogos:editarValorE");
+                context.execute("editarValorE.show()");
                 cualCelda = -1;
             }
 
@@ -289,12 +344,36 @@ public class ControlLiquidacionesLogs implements Serializable {
 
     public void seleccionarEmpleado() {
         RequestContext context = RequestContext.getCurrentInstance();
+        FacesContext c = FacesContext.getCurrentInstance();
 
         System.out.println("Empleado Seleccionado : " + empleadoSeleccionado.getPersona().getNombreCompleto());
+        if (bandera == 1) {
+            System.out.println("Desactivar");
+            tamano = 270;
+            fechaInicial = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaInicial");
+            fechaInicial.setFilterStyle("display: none; visibility: hidden;");
+            fechaFinal = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:fechaFinal");
+            fechaFinal.setFilterStyle("display: none; visibility: hidden;");
+            empleado = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:empleado");
+            empleado.setFilterStyle("display: none; visibility: hidden;");
+            operando = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:operando");
+            operando.setFilterStyle("display: none; visibility: hidden;");
+            proceso = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:proceso");
+            proceso.setFilterStyle("display: none; visibility: hidden;");
+            valor = (Column) c.getViewRoot().findComponent("form:datosLiquidacionesLogs:valor");
+            valor.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
+
+            RequestContext.getCurrentInstance().update("form:datosLiquidacionesLogs");
+            bandera = 0;
+            filtrarLiquidacionesLogs = null;
+            tipoLista = 0;
+        }
         listLiquidacionesLogs = null;
         getListLiquidacionesLogs();
         aceptar = true;
         context.update("form:datosLiquidacionesLogs");
+        context.update("form:nombreEmpleado");
         context.execute("tiposCentrosCostosDialogo.hide()");
     }
 
@@ -369,9 +448,10 @@ public class ControlLiquidacionesLogs implements Serializable {
     //*/*/*/*/*/*/*/*/*/*-/-*//-*/-*/*/*-*/-*/-*/*/*/*/*/---/*/*/*/*/-*/-*/-*/-*/-*/
     public List<LiquidacionesLogs> getListLiquidacionesLogs() {
         if (empleadoSeleccionado == null) {
+            getListaEmpleados();
             if (listLiquidacionesLogs == null) {
                 System.out.println("ControlLiquidacionesLogs getListLiquidacionesLogs");
-                listLiquidacionesLogs = administrarLiquidacionesLogs.consultarLiquidacionesLogs();
+                listLiquidacionesLogs = administrarLiquidacionesLogs.consultarLiquidacionesLogsPorEmpleado(empleadoSeleccionado.getSecuencia());
             }
         } else {
             listLiquidacionesLogs = administrarLiquidacionesLogs.consultarLiquidacionesLogsPorEmpleado(empleadoSeleccionado.getSecuencia());
@@ -382,6 +462,8 @@ public class ControlLiquidacionesLogs implements Serializable {
         } else {
             infoRegistro = "Cantidad de registros: " + listLiquidacionesLogs.size();
         }
+        context.update("form:informacionRegistro");
+
         return listLiquidacionesLogs;
     }
 
@@ -457,6 +539,7 @@ public class ControlLiquidacionesLogs implements Serializable {
     public List<Empleados> getListaEmpleados() {
         if (listaEmpleados == null) {
             listaEmpleados = administrarLiquidacionesLogs.consultarLOVEmpleados();
+            empleadoSeleccionado = listaEmpleados.get(0);
         }
         RequestContext context = RequestContext.getCurrentInstance();
         if (listaEmpleados == null || listaEmpleados.isEmpty()) {
@@ -480,6 +563,9 @@ public class ControlLiquidacionesLogs implements Serializable {
     }
 
     public Empleados getEmpleadoSeleccionado() {
+        if (empleadoSeleccionado == null) {
+            getListaEmpleados();
+        }
         return empleadoSeleccionado;
     }
 

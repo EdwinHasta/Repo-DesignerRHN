@@ -3212,4 +3212,20 @@
         </navigation-case>
     </navigation-rule>
     
+    <navigation-rule>
+        <from-view-id>/EmpleadoIndividual.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>adelanteVigenciaTalla</from-outcome>
+            <to-view-id>/vigenciatalla.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/vigenciatalla.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasVigenciaTalla</from-outcome>
+            <to-view-id>/EmpleadoIndividual.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

@@ -182,7 +182,7 @@ public class ControlHvReferencias1 implements Serializable {
                     backUpNombre = filtrarHvReferencias1.get(index).getNombrepersona();
                 }
             }
-            if (cualCelda == 0) {
+            if (cualCelda == 1) {
                 if (tipoLista == 0) {
                     backUpTelefono = listHvReferencias1.get(index).getTelefono();
                 } else {
@@ -245,7 +245,8 @@ public class ControlHvReferencias1 implements Serializable {
         }
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
@@ -285,7 +286,8 @@ public class ControlHvReferencias1 implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
@@ -325,7 +327,8 @@ public class ControlHvReferencias1 implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
@@ -1069,7 +1072,8 @@ public class ControlHvReferencias1 implements Serializable {
         System.err.println("agregar tipo entrevista " + nuevoHvReferencia1.getTipo());
         System.out.println("contador " + contador);
 
-        if (contador == 2) {FacesContext c = FacesContext.getCurrentInstance();
+        if (contador == 2) {
+            FacesContext c = FacesContext.getCurrentInstance();
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
@@ -1217,7 +1221,8 @@ public class ControlHvReferencias1 implements Serializable {
             infoRegistro = "Cantidad de registros: " + listHvReferencias1.size();
             context.update("form:informacionRegistro");
 
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 nombre = (Column) c.getViewRoot().findComponent("form:datosHvReferencia:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");
