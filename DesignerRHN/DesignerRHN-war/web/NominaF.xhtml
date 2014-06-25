@@ -424,7 +424,7 @@
 
                                     <hr style="float: left; height: 120px; position: absolute; left: 615px; top: -3px;"/>
 
-                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 7px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%; " action="contrato"/>
+                                    <p:commandButton id="LegislacionLaboral"  value="" style="position: absolute; left: 670px; top: 7px; width: 95px; height: 95px; background-image: url(Imagenes/nom_legislacion.gif);  background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlLegislacion.recibirPaginaEntrante('nomina')}" action="contrato"/>
                                     <p:tooltip  for="LegislacionLaboral">
                                         #{msg['toolTipLegislacion1']}<br/>#{msg['toolTipLegislacion2']}
                                     </p:tooltip>

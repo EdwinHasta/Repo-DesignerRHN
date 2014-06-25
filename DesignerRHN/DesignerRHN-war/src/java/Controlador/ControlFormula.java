@@ -33,7 +33,6 @@ public class ControlFormula implements Serializable {
     AdministrarRastrosInterface administrarRastros;
 
     //Parametros que llegan
-    private BigInteger secTiposFormulas;
     private TiposFormulas tiposFormulas;
     private List<Formulas> listaFormulas;
     private List<Formulas> filtradoListaFormulas;
@@ -179,10 +178,16 @@ public class ControlFormula implements Serializable {
     }
 
     public void recibirDatosTiposFormulas(BigInteger secuenciaTiposFormulas, TiposFormulas tiposFormulasRegistro) {
-        secTiposFormulas = secuenciaTiposFormulas;
         tiposFormulas = tiposFormulasRegistro;
         listaFormulas = null;
         getListaFormulas();
+        if (listaFormulas != null) {
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
     }
 
     //SELECCIONAR NATURALEZA
@@ -309,14 +314,19 @@ public class ControlFormula implements Serializable {
             secRegistro = listaFormulas.get(index).getSecuencia();
             if (tipoLista == 0) {
                 actualFormula = listaFormulas.get(index);
+                if (listaFormulas.get(index).getTipo().equals("FINAL") && listaFormulas.get(indice).getEstado().equals("ACTIVO")) {
+                    propiedadesFormula = false;
+                } else {
+                    propiedadesFormula = true;
+                }
             }
             if (tipoLista == 1) {
                 actualFormula = filtradoListaFormulas.get(index);
-            }
-            if (listaFormulas.get(index).getTipo().equals("FINAL") && listaFormulas.get(indice).getEstado().equals("ACTIVO")) {
-                propiedadesFormula = false;
-            } else {
-                propiedadesFormula = true;
+                if (filtradoListaFormulas.get(index).getTipo().equals("FINAL") && filtradoListaFormulas.get(indice).getEstado().equals("ACTIVO")) {
+                    propiedadesFormula = false;
+                } else {
+                    propiedadesFormula = true;
+                }
             }
             activoDetalleFormula = false;
             context.update("form:detalleFormula");
@@ -385,6 +395,12 @@ public class ControlFormula implements Serializable {
             verMostrarTodos = false;
             activoDetalleFormula = true;
             getListaFormulas();
+            if (listaFormulas != null) {
+                infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
+            context.update("form:informacionRegistro");
             context.update("form:datosFormulas");
             context.update("form:mostrarTodos");
             context.update("form:detalleFormula");
@@ -423,6 +439,8 @@ public class ControlFormula implements Serializable {
             }
             listaFormulas.clear();
             listaFormulas.add(formulaSeleccionada);
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
+            context.update("form:informacionRegistro");
             mostrarTodos = false;
             activoDetalleFormula = true;
             context.update("form:detalleFormula");
@@ -478,7 +496,9 @@ public class ControlFormula implements Serializable {
                 filtradoListaFormulas.remove(index);
             }
             activoDetalleFormula = true;
+            infoRegistro = "Cantidad de registros : " + listaFormulas.size();
             RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:informacionRegistro");
             infoRegistro = "Cantidad de registros : " + listaFormulas.size();
             context.update("form:informacionRegistro");
             context.update("form:datosFormulas");

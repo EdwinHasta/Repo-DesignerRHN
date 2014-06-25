@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
 import Entidades.Empresas;
@@ -15,13 +11,13 @@ import InterfaceAdministrar.AdministrarProyectosInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -47,6 +43,7 @@ public class ControlProyecto implements Serializable {
     private List<Proyectos> listProyectos;
     private List<Proyectos> filtrarListProyectos;
     private Proyectos proyectoSeleccionado;
+    private Proyectos proyectoTablaSeleccionado;
     //Empresas
     private List<Empresas> listEmpresas;
     private Empresas empresaSeleccionada;
@@ -91,17 +88,21 @@ public class ControlProyecto implements Serializable {
     private int cualCeldaP, tipoListaP;
     private Proyectos duplicarProyecto;
     private List<Proyectos> listProyectoCrear;
-    private boolean cambioProyecto;
-    private int tipoLista;
     private BigInteger secRegistro;
     private BigInteger backUpSecRegistro;
     private Date fechaInic, fechaFin;
     private String paginaAnterior;
+    //
+    private String auxCodigo, auxNombre;
+    //
+    private String altoTabla;
+    private String infoRegistro;
+    private String infoRegistroProyecto, infoRegistroTipoMoneda, infoRegistroPlataforma, infoRegistroCliente, infoRegistroEmpresa;
 
     public ControlProyecto() {
+        altoTabla = "270";
         proyectoSeleccionado = new Proyectos();
         backUpSecRegistro = null;
-        tipoLista = 0;
         //Otros
         aceptar = true;
         listProyectoBorrar = new ArrayList<Proyectos>();
@@ -125,9 +126,8 @@ public class ControlProyecto implements Serializable {
         nuevaProyectos.setPryCliente(new PryClientes());
         nuevaProyectos.setPryPlataforma(new PryPlataformas());
         listProyectoCrear = new ArrayList<Proyectos>();
-        cambioProyecto = false;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -139,6 +139,21 @@ public class ControlProyecto implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+        listProyectos = null;
+        getListProyectos();
+        if (listProyectos != null) {
+            infoRegistro = "Cantidad de registros : " + listProyectos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
     }
 
     public boolean validarFechasRegistro(int i) {
@@ -205,7 +220,8 @@ public class ControlProyecto implements Serializable {
             if (duplicarProyecto.getFechafinal() == null && duplicarProyecto.getFechainicial() != null) {
                 retorno = false;
             }
-        }        return retorno;
+        }
+        return retorno;
     }
 
     public void modificacionesFechas(int i, int c) {
@@ -219,15 +235,12 @@ public class ControlProyecto implements Serializable {
         boolean retorno = false;
         if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() == null)) {
             retorno = true;
-        }
-        else if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
+        } else if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() != null)) {
             indexP = i;
             retorno = validarFechasRegistro(0);
-        }
-        else if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() == null)) {
+        } else if ((auxiliar.getFechainicial() != null) && (auxiliar.getFechafinal() == null)) {
             retorno = true;
-        }
-        else if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() != null)) {
+        } else if ((auxiliar.getFechainicial() == null) && (auxiliar.getFechafinal() != null)) {
             retorno = false;
             fechaFin = null;
             fechaInic = null;
@@ -250,176 +263,272 @@ public class ControlProyecto implements Serializable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    /**
-     * Modifica los elementos de la tabla VigenciaProrrateo que no usan
-     * autocomplete
-     *
-     * @param indice Fila donde se efectu el cambio
-     */
-    public void modificarProyecto(int indice) {
-        if (tipoListaP == 0) {
-            if (!listProyectoCrear.contains(listProyectos.get(indice))) {
-                if (listProyectoModificar.isEmpty()) {
-                    listProyectoModificar.add(listProyectos.get(indice));
-                } else if (!listProyectoModificar.contains(listProyectos.get(indice))) {
-                    listProyectoModificar.add(listProyectos.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
+    public boolean validarDatosNull(int i) {
+        boolean retorno = true;
+        if (i == 0) {
+            Proyectos aux = null;
+            if (tipoListaP == 0) {
+                aux = listProyectos.get(indexP);
+            } else {
+                aux = filtrarListProyectos.get(indexP);
+            }
+            if (aux.getCodigo() == null) {
+                retorno = false;
+            } else {
+                if (aux.getCodigo().isEmpty()) {
+                    retorno = false;
                 }
             }
-            cambioProyecto = true;
-            indexP = -1;
-            secRegistro = null;
-        } else {
-            int ind = listProyectos.indexOf(filtrarListProyectos.get(indice));
-            indexP = ind;
-            if (!listProyectoCrear.contains(filtrarListProyectos.get(indice))) {
-                if (listProyectoModificar.isEmpty()) {
-                    listProyectoModificar.add(filtrarListProyectos.get(indice));
-                } else if (!listProyectoModificar.contains(filtrarListProyectos.get(indice))) {
-                    listProyectoModificar.add(filtrarListProyectos.get(indice));
-                }
-                if (guardado == true) {
-                    guardado = false;
+            if (aux.getNombreproyecto() == null) {
+                retorno = false;
+            } else {
+                if (aux.getNombreproyecto().isEmpty()) {
+                    retorno = false;
                 }
             }
-            cambioProyecto = true;
-            indexP = -1;
-            secRegistro = null;
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosProyectos");
-    }
-    
-    public void recibirPaginaEntrante(String pagina){
-        paginaAnterior = pagina;
-        
+        if (i == 1) {
+            if (nuevaProyectos.getCodigo() == null) {
+                retorno = false;
+            } else {
+                if (nuevaProyectos.getCodigo().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevaProyectos.getNombreproyecto() == null) {
+                retorno = false;
+            } else {
+                if (nuevaProyectos.getNombreproyecto().isEmpty()) {
+                    retorno = false;
+                }
+            }
         }
-    
-    public String redirigir(){
-        return paginaAnterior;
+        if (i == 2) {
+            if (duplicarProyecto.getCodigo() == null) {
+                retorno = false;
+            } else {
+                if (duplicarProyecto.getCodigo().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarProyecto.getNombreproyecto() == null) {
+                retorno = false;
+            } else {
+                if (duplicarProyecto.getNombreproyecto().isEmpty()) {
+                    retorno = false;
+                }
+            }
+        }
+        return retorno;
+
     }
 
-    /**
-     * Metodo que modifica los cambios efectuados en la tabla VigenciaProrrateo
-     * de la pagina
-     *
-     * @param indice Fila en la cual se realizo el cambio
-     */
+    public void modificarProyecto(int indice) {
+        if (validarDatosNull(0) == true) {
+            if (tipoListaP == 0) {
+                if (!listProyectoCrear.contains(listProyectos.get(indice))) {
+                    if (listProyectoModificar.isEmpty()) {
+                        listProyectoModificar.add(listProyectos.get(indice));
+                    } else if (!listProyectoModificar.contains(listProyectos.get(indice))) {
+                        listProyectoModificar.add(listProyectos.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
+                }
+
+                indexP = -1;
+                secRegistro = null;
+            } else {
+                int ind = listProyectos.indexOf(filtrarListProyectos.get(indice));
+                indexP = ind;
+                if (!listProyectoCrear.contains(filtrarListProyectos.get(indice))) {
+                    if (listProyectoModificar.isEmpty()) {
+                        listProyectoModificar.add(filtrarListProyectos.get(indice));
+                    } else if (!listProyectoModificar.contains(filtrarListProyectos.get(indice))) {
+                        listProyectoModificar.add(filtrarListProyectos.get(indice));
+                    }
+                    if (guardado == true) {
+                        guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                    }
+                }
+
+                indexP = -1;
+                secRegistro = null;
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosProyectos");
+        } else {
+            if (tipoListaP == 0) {
+                listProyectos.get(indexP).setCodigo(auxCodigo);
+                listProyectos.get(indexP).setNombreproyecto(auxNombre);
+            } else {
+                filtrarListProyectos.get(indexP).setCodigo(auxCodigo);
+                filtrarListProyectos.get(indexP).setNombreproyecto(auxNombre);
+            }
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosProyectos");
+            context.execute("errorDatosNull.show()");
+        }
+    }
+
     public void modificarProyecto(int indice, String confirmarCambio, String valorConfirmar) {
         indexP = indice;
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("EMPRESAS")) {
-            if (tipoListaP == 0) {
-                listProyectos.get(indice).getEmpresa().setNombre(empresas);
-            } else {
-                filtrarListProyectos.get(indice).getEmpresa().setNombre(empresas);
-            }
-            for (int i = 0; i < listEmpresas.size(); i++) {
-                if (listEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listProyectos.get(indice).setEmpresa(listEmpresas.get(indiceUnicoElemento));
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).getEmpresa().setNombre(empresas);
                 } else {
-                    filtrarListProyectos.get(indice).setEmpresa(listEmpresas.get(indiceUnicoElemento));
+                    filtrarListProyectos.get(indice).getEmpresa().setNombre(empresas);
                 }
+                for (int i = 0; i < listEmpresas.size(); i++) {
+                    if (listEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoListaP == 0) {
+                        listProyectos.get(indice).setEmpresa(listEmpresas.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListProyectos.get(indice).setEmpresa(listEmpresas.get(indiceUnicoElemento));
+                    }
+                    listEmpresas = null;
+                    getListEmpresas();
+
+                } else {
+                    permitirIndexP = false;
+                    context.update("form:EmpresasDialogo");
+                    context.execute("EmpresasDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 listEmpresas = null;
                 getListEmpresas();
-                cambioProyecto = true;
-            } else {
-                permitirIndexP = false;
-                context.update("form:EmpresasDialogo");
-                context.execute("EmpresasDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).setEmpresa(new Empresas());
+                } else {
+                    filtrarListProyectos.get(indice).setEmpresa(new Empresas());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CLIENTES")) {
-            if (tipoListaP == 0) {
-                listProyectos.get(indice).getPryCliente().setNombre(clientes);
-            } else {
-                filtrarListProyectos.get(indice).getPryCliente().setNombre(clientes);
-            }
-            for (int i = 0; i < listPryClientes.size(); i++) {
-                if (listPryClientes.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listProyectos.get(indice).setPryCliente(listPryClientes.get(indiceUnicoElemento));
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).getPryCliente().setNombre(clientes);
                 } else {
-                    filtrarListProyectos.get(indice).setPryCliente(listPryClientes.get(indiceUnicoElemento));
+                    filtrarListProyectos.get(indice).getPryCliente().setNombre(clientes);
                 }
+                for (int i = 0; i < listPryClientes.size(); i++) {
+                    if (listPryClientes.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoListaP == 0) {
+                        listProyectos.get(indice).setPryCliente(listPryClientes.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListProyectos.get(indice).setPryCliente(listPryClientes.get(indiceUnicoElemento));
+                    }
+                    listPryClientes = null;
+                    getListPryClientes();
+
+                } else {
+                    permitirIndexP = false;
+                    context.update("form:ClientesDialogo");
+                    context.execute("ClientesDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 listPryClientes = null;
                 getListPryClientes();
-                cambioProyecto = true;
-            } else {
-                permitirIndexP = false;
-                context.update("form:ClientesDialogo");
-                context.execute("ClientesDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).setPryCliente(new PryClientes());
+                } else {
+                    filtrarListProyectos.get(indice).setPryCliente(new PryClientes());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("PLATAFORMAS")) {
-            if (tipoListaP == 0) {
-                listProyectos.get(indice).getPryPlataforma().setDescripcion(plataformas);
-            } else {
-                filtrarListProyectos.get(indice).getPryPlataforma().setDescripcion(plataformas);
-            }
-            for (int i = 0; i < listPryPlataformas.size(); i++) {
-                if (listPryPlataformas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listProyectos.get(indice).setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).getPryPlataforma().setDescripcion(plataformas);
                 } else {
-                    filtrarListProyectos.get(indice).setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
+                    filtrarListProyectos.get(indice).getPryPlataforma().setDescripcion(plataformas);
                 }
-                cambioProyecto = true;
+                for (int i = 0; i < listPryPlataformas.size(); i++) {
+                    if (listPryPlataformas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoListaP == 0) {
+                        listProyectos.get(indice).setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListProyectos.get(indice).setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
+                    }
+                    listPryPlataformas = null;
+                    getListPryPlataformas();
+                } else {
+                    permitirIndexP = false;
+                    context.update("form:PlataformasDialogo");
+                    context.execute("PlataformasDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 listPryPlataformas = null;
                 getListPryPlataformas();
-            } else {
-                permitirIndexP = false;
-                context.update("form:PlataformasDialogo");
-                context.execute("PlataformasDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).setPryPlataforma(new PryPlataformas());
+                } else {
+                    filtrarListProyectos.get(indice).setPryPlataforma(new PryPlataformas());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("MONEDAS")) {
-            if (tipoListaP == 0) {
-                listProyectos.get(indice).getTipomoneda().setNombre(monedas);
-            } else {
-                filtrarListProyectos.get(indice).getTipomoneda().setNombre(monedas);
-            }
-            for (int i = 0; i < listMonedas.size(); i++) {
-                if (listMonedas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoLista == 0) {
-                    listProyectos.get(indice).setTipomoneda(listMonedas.get(indiceUnicoElemento));
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).getTipomoneda().setNombre(monedas);
                 } else {
-                    filtrarListProyectos.get(indice).setTipomoneda(listMonedas.get(indiceUnicoElemento));
+                    filtrarListProyectos.get(indice).getTipomoneda().setNombre(monedas);
                 }
-                cambioProyecto = true;
+                for (int i = 0; i < listMonedas.size(); i++) {
+                    if (listMonedas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoListaP == 0) {
+                        listProyectos.get(indice).setTipomoneda(listMonedas.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListProyectos.get(indice).setTipomoneda(listMonedas.get(indiceUnicoElemento));
+                    }
+
+                    listMonedas = null;
+                    getListMonedas();
+                } else {
+                    permitirIndexP = false;
+                    context.update("form:MonedasDialogo");
+                    context.execute("MonedasDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 listMonedas = null;
                 getListMonedas();
-            } else {
-                permitirIndexP = false;
-                context.update("form:MonedasDialogo");
-                context.execute("MonedasDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoListaP == 0) {
+                    listProyectos.get(indice).setTipomoneda(new Monedas());
+                } else {
+                    filtrarListProyectos.get(indice).setTipomoneda(new Monedas());
+                }
             }
         }
         if (coincidencias == 1) {
@@ -433,9 +542,10 @@ public class ControlProyecto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                cambioProyecto = true;
+
                 indexP = -1;
                 secRegistro = null;
             } else {
@@ -448,13 +558,14 @@ public class ControlProyecto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
-                cambioProyecto = true;
+
                 indexP = -1;
                 secRegistro = null;
             }
-            cambioProyecto = true;
+
         }
         context.update("form:datosProyectos");
     }
@@ -493,132 +604,181 @@ public class ControlProyecto implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("EMPRESAS")) {
-            if (tipoNuevo == 1) {
-                nuevaProyectos.getEmpresa().setNombre(empresas);
-            } else if (tipoNuevo == 2) {
-                duplicarProyecto.getEmpresa().setNombre(empresas);
-            }
-            for (int i = 0; i < listEmpresas.size(); i++) {
-                if (listEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaProyectos.setEmpresa(listEmpresas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaEmpresaP");
+                    nuevaProyectos.getEmpresa().setNombre(empresas);
                 } else if (tipoNuevo == 2) {
-                    duplicarProyecto.setEmpresa(listEmpresas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarEmpresaP");
+                    duplicarProyecto.getEmpresa().setNombre(empresas);
                 }
+                for (int i = 0; i < listEmpresas.size(); i++) {
+                    if (listEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaProyectos.setEmpresa(listEmpresas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaEmpresaP");
+                    } else if (tipoNuevo == 2) {
+                        duplicarProyecto.setEmpresa(listEmpresas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarEmpresaP");
+                    }
+                    listEmpresas = null;
+                    getListEmpresas();
+                } else {
+                    context.update("form:EmpresasDialogo");
+                    context.execute("EmpresasDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaEmpresaP");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarEmpresaP");
+                    }
+                }
+            } else {
                 listEmpresas = null;
                 getListEmpresas();
-            } else {
-                context.update("form:EmpresasDialogo");
-                context.execute("EmpresasDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaProyectos.setEmpresa(new Empresas());
                     context.update("formularioDialogos:nuevaEmpresaP");
                 } else if (tipoNuevo == 2) {
+                    duplicarProyecto.setEmpresa(new Empresas());
                     context.update("formularioDialogos:duplicarEmpresaP");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CLIENTES")) {
-            if (tipoNuevo == 1) {
-                nuevaProyectos.getPryCliente().setNombre(clientes);
-            } else if (tipoNuevo == 2) {
-                duplicarProyecto.getPryCliente().setNombre(clientes);
-            }
-            for (int i = 0; i < listPryClientes.size(); i++) {
-                if (listPryClientes.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaProyectos.setPryCliente(listPryClientes.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaClienteP");
+                    nuevaProyectos.getPryCliente().setNombre(clientes);
                 } else if (tipoNuevo == 2) {
-                    duplicarProyecto.setPryCliente(listPryClientes.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarClienteP");
+                    duplicarProyecto.getPryCliente().setNombre(clientes);
                 }
+                for (int i = 0; i < listPryClientes.size(); i++) {
+                    if (listPryClientes.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaProyectos.setPryCliente(listPryClientes.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaClienteP");
+                    } else if (tipoNuevo == 2) {
+                        duplicarProyecto.setPryCliente(listPryClientes.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarClienteP");
+                    }
+                    listPryClientes = null;
+                    getListPryClientes();
+                } else {
+                    context.update("form:ClientesDialogo");
+                    context.execute("ClientesDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaClienteP");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarClienteP");
+                    }
+                }
+            } else {
                 listPryClientes = null;
                 getListPryClientes();
-            } else {
-                context.update("form:ClientesDialogo");
-                context.execute("ClientesDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaProyectos.setPryCliente(new PryClientes());
                     context.update("formularioDialogos:nuevaClienteP");
                 } else if (tipoNuevo == 2) {
+                    duplicarProyecto.setPryCliente(new PryClientes());
                     context.update("formularioDialogos:duplicarClienteP");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("PLATAFORMAS")) {
-            if (tipoNuevo == 1) {
-                nuevaProyectos.getPryPlataforma().setDescripcion(clientes);
-            } else if (tipoNuevo == 2) {
-                duplicarProyecto.getPryPlataforma().setDescripcion(clientes);
-            }
-            for (int i = 0; i < listPryPlataformas.size(); i++) {
-                if (listPryPlataformas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaProyectos.setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaPlataformaP");
-                    duplicarProyecto.setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarPlataformaP");
+                    nuevaProyectos.getPryPlataforma().setDescripcion(clientes);
+                } else if (tipoNuevo == 2) {
+                    duplicarProyecto.getPryPlataforma().setDescripcion(clientes);
                 }
+                for (int i = 0; i < listPryPlataformas.size(); i++) {
+                    if (listPryPlataformas.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaProyectos.setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaPlataformaP");
+                    } else {
+                        duplicarProyecto.setPryPlataforma(listPryPlataformas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarPlataformaP");
+                    }
+                    listPryPlataformas = null;
+                    getListPryPlataformas();
+                } else {
+                    context.update("form:PlataformasDialogo");
+                    context.execute("PlataformasDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaPlataformaP");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarPlataformaP");
+                    }
+                }
+            } else {
                 listPryPlataformas = null;
                 getListPryPlataformas();
-            } else {
-                context.update("form:PlataformasDialogo");
-                context.execute("PlataformasDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaProyectos.setPryPlataforma(new PryPlataformas());
                     context.update("formularioDialogos:nuevaPlataformaP");
-                } else if (tipoNuevo == 2) {
+                } else {
+                    duplicarProyecto.setPryPlataforma(new PryPlataformas());
                     context.update("formularioDialogos:duplicarPlataformaP");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("MONEDAS")) {
+            if (!valorConfirmar.isEmpty()) {
+                if (tipoNuevo == 1) {
+                    nuevaProyectos.getTipomoneda().setNombre(monedas);
+                } else if (tipoNuevo == 2) {
+                    duplicarProyecto.getTipomoneda().setNombre(monedas);
+                }
+                for (int i = 0; i < listMonedas.size(); i++) {
+                    if (listMonedas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaProyectos.setTipomoneda(listMonedas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaMonedaP");
+                    } else if (tipoNuevo == 2) {
+                        duplicarProyecto.setTipomoneda(listMonedas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarMonedaP");
+                    }
+                    listMonedas = null;
+                    getListMonedas();
+                } else {
+                    context.update("form:PlataformasDialogo");
+                    context.execute("PlataformasDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaMonedaP");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarMonedaP");
+                    }
+                }
+            }
+        } else {
+            listMonedas = null;
+            getListMonedas();
             if (tipoNuevo == 1) {
-                nuevaProyectos.getTipomoneda().setNombre(monedas);
+                nuevaProyectos.setTipomoneda(new Monedas());
+                context.update("formularioDialogos:nuevaMonedaP");
             } else if (tipoNuevo == 2) {
-                duplicarProyecto.getTipomoneda().setNombre(monedas);
-            }
-            for (int i = 0; i < listMonedas.size(); i++) {
-                if (listMonedas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                if (tipoNuevo == 1) {
-                    nuevaProyectos.setTipomoneda(listMonedas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaMonedaP");
-                } else if (tipoNuevo == 2) {
-                    duplicarProyecto.setTipomoneda(listMonedas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarMonedaP");
-                }
-                listMonedas = null;
-                getListMonedas();
-            } else {
-                context.update("form:PlataformasDialogo");
-                context.execute("PlataformasDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                if (tipoNuevo == 1) {
-                    context.update("formularioDialogos:nuevaMonedaP");
-                } else if (tipoNuevo == 2) {
-                    context.update("formularioDialogos:duplicarMonedaP");
-                }
+                duplicarProyecto.setTipomoneda(new Monedas());
+                context.update("formularioDialogos:duplicarMonedaP");
             }
         }
     }
@@ -628,111 +788,103 @@ public class ControlProyecto implements Serializable {
             indexP = indice;
             cualCeldaP = celda;
             if (tipoListaP == 0) {
+                auxCodigo = listProyectos.get(indexP).getCodigo();
+                auxNombre = listProyectos.get(indexP).getNombreproyecto();
                 fechaFin = listProyectos.get(indexP).getFechafinal();
                 fechaInic = listProyectos.get(indexP).getFechainicial();
                 secRegistro = listProyectos.get(indexP).getSecuencia();
-                if (cualCeldaP == 0) {
-                    empresas = listProyectos.get(indexP).getEmpresa().getNombre();
-                }
-                if (cualCeldaP == 3) {
-                    clientes = listProyectos.get(indexP).getPryCliente().getNombre();
-                }
-                if (cualCeldaP == 4) {
-                    plataformas = listProyectos.get(indexP).getPryPlataforma().getDescripcion();
-                }
-                if (cualCeldaP == 6) {
-                    monedas = listProyectos.get(indexP).getTipomoneda().getNombre();
-                }
+                empresas = listProyectos.get(indexP).getEmpresa().getNombre();
+                clientes = listProyectos.get(indexP).getPryCliente().getNombre();
+                plataformas = listProyectos.get(indexP).getPryPlataforma().getDescripcion();
+                monedas = listProyectos.get(indexP).getTipomoneda().getNombre();
             }
             if (tipoListaP == 1) {
+                auxCodigo = filtrarListProyectos.get(indexP).getCodigo();
+                auxNombre = filtrarListProyectos.get(indexP).getNombreproyecto();
                 fechaFin = filtrarListProyectos.get(indexP).getFechafinal();
                 fechaInic = filtrarListProyectos.get(indexP).getFechainicial();
                 secRegistro = filtrarListProyectos.get(indexP).getSecuencia();
-                if (cualCeldaP == 0) {
-                    empresas = filtrarListProyectos.get(indexP).getEmpresa().getNombre();
-                }
-                if (cualCeldaP == 3) {
-                    clientes = filtrarListProyectos.get(indexP).getPryCliente().getNombre();
-                }
-                if (cualCeldaP == 4) {
-                    plataformas = filtrarListProyectos.get(indexP).getPryPlataforma().getDescripcion();
-                }
-                if (cualCeldaP == 6) {
-                    monedas = filtrarListProyectos.get(indexP).getTipomoneda().getNombre();
-                }
+                empresas = filtrarListProyectos.get(indexP).getEmpresa().getNombre();
+                clientes = filtrarListProyectos.get(indexP).getPryCliente().getNombre();
+                plataformas = filtrarListProyectos.get(indexP).getPryPlataforma().getDescripcion();
+                monedas = filtrarListProyectos.get(indexP).getTipomoneda().getNombre();
             }
-            System.out.println("Indice : " + indexP + " // Celda : " + cualCeldaP);
 
         }
     }
 
-    //GUARDAR
-    /**
-     * Metodo de guardado general para la pagina
-     */
     public void guardadoGeneral() {
         guardarCambiosP();
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
     }
 
-    /**
-     * Metodo que guarda los cambios efectuados en la pagina VigenciasProrrateos
-     */
     public void guardarCambiosP() {
-        if (guardado == false) {
-            if (!listProyectoBorrar.isEmpty()) {
-                administrarProyectos.borrarProyectos(listProyectoBorrar);
-                listProyectoBorrar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listProyectoBorrar.isEmpty()) {
+                    administrarProyectos.borrarProyectos(listProyectoBorrar);
+                    listProyectoBorrar.clear();
+                }
+                if (!listProyectoCrear.isEmpty()) {
+                    administrarProyectos.crearProyectos(listProyectoCrear);
+                    listProyectoCrear.clear();
+                }
+                if (!listProyectoModificar.isEmpty()) {
+                    administrarProyectos.editarProyectos(listProyectoModificar);
+                    listProyectoModificar.clear();
+                }
+                listProyectos = null;
+                getListProyectos();
+                if (listProyectos != null) {
+                    infoRegistro = "Cantidad de registros : " + listProyectos.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                context.update("form:datosProyectos");
+                k = 0;
+                indexP = -1;
+                secRegistro = null;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listProyectoCrear.isEmpty()) {
-                administrarProyectos.crearProyectos(listProyectoCrear);
-                listProyectoCrear.clear();
-            }
-            if (!listProyectoModificar.isEmpty()) {
-                administrarProyectos.editarProyectos(listProyectoModificar);
-                listProyectoModificar.clear();
-            }
-            listProyectos = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProyectos");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosP : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        cambioProyecto = false;
-        indexP = -1;
-        secRegistro = null;
+
     }
 
-    //CANCELAR MODIFICACIONES
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
-    /**
-     * Cancela las modifaciones de la tabla vigencias prorrateos
-     */
     public void cancelarModificacionP() {
         if (banderaP == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "270";
+            pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCodigo");
+            pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
             pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryNombre");
+            pryNombre = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryNombre");
             pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCliente");
+            pryCliente = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCliente");
             pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
+            pryPlataforma = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
             pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMonto");
+            pryMonto = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMonto");
             pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMoneda");
+            pryMoneda = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMoneda");
             pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPersonas");
+            pryPersonas = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPersonas");
             pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
+            pryFechaInicial = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
             pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
+            pryFechaFinal = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
             pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
+            pryDescripcion = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
             pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProyectos");
             banderaP = 0;
@@ -749,10 +901,17 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
         k = 0;
         listProyectos = null;
-        guardado = true;
         RequestContext context = RequestContext.getCurrentInstance();
+        getListProyectos();
+        if (listProyectos != null) {
+            infoRegistro = "Cantidad de registros : " + listProyectos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        context.update("form:informacionRegistro");
+        guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         context.update("form:datosProyectos");
-        cambioProyecto = false;
         nuevaProyectos = new Proyectos();
         nuevaProyectos.setTipomoneda(new Monedas());
         nuevaProyectos.setEmpresa(new Empresas());
@@ -760,11 +919,6 @@ public class ControlProyecto implements Serializable {
         nuevaProyectos.setPryPlataforma(new PryPlataformas());
     }
 
-    //MOSTRAR DATOS CELDA
-    /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o
-     * la lista filtrada y a la columna
-     */
     public void editarCelda() {
         if (indexP >= 0) {
             if (tipoListaP == 0) {
@@ -824,78 +978,77 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    /**
-     * Agrega una nueva Vigencia Prorrateo
-     */
     public void agregarNuevaP() {
         if (validarFechasRegistro(1) == true) {
-            cambioProyecto = true;
-            //CERRAR FILTRADO
-            if (banderaP == 1) {
-                pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
-                pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCodigo");
-                pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-                pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryNombre");
-                pryNombre.setFilterStyle("display: none; visibility: hidden;");
-                pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCliente");
-                pryCliente.setFilterStyle("display: none; visibility: hidden;");
-                pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
-                pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-                pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMonto");
-                pryMonto.setFilterStyle("display: none; visibility: hidden;");
-                pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMoneda");
-                pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-                pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPersonas");
-                pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-                pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
-                pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
-                pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
-                pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosProyectos");
-                banderaP = 0;
-                filtrarListProyectos = null;
-                tipoListaP = 0;
+            if (validarDatosNull(1) == true) {
+                if (banderaP == 1) {
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    altoTabla = "270";
+                    pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
+                    pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
+                    pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
+                    pryCodigo.setFilterStyle("display: none; visibility: hidden;");
+                    pryNombre = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryNombre");
+                    pryNombre.setFilterStyle("display: none; visibility: hidden;");
+                    pryCliente = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCliente");
+                    pryCliente.setFilterStyle("display: none; visibility: hidden;");
+                    pryPlataforma = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
+                    pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
+                    pryMonto = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMonto");
+                    pryMonto.setFilterStyle("display: none; visibility: hidden;");
+                    pryMoneda = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMoneda");
+                    pryMoneda.setFilterStyle("display: none; visibility: hidden;");
+                    pryPersonas = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPersonas");
+                    pryPersonas.setFilterStyle("display: none; visibility: hidden;");
+                    pryFechaInicial = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
+                    pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    pryFechaFinal = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
+                    pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    pryDescripcion = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
+                    pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosProyectos");
+                    banderaP = 0;
+                    filtrarListProyectos = null;
+                    tipoListaP = 0;
+                }
+                //AGREGAR REGISTRO A LA LISTA VIGENCIAS
+                k++;
+                l = BigInteger.valueOf(k);
+                nuevaProyectos.setSecuencia(l);
+                if (listProyectos == null) {
+                    listProyectos = new ArrayList<Proyectos>();
+                }
+                listProyectos.add(nuevaProyectos);
+                listProyectoCrear.add(nuevaProyectos);
+                //
+                RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listProyectos.size();
+                context.update("form:informacionRegistro");
+                nuevaProyectos = new Proyectos();
+                nuevaProyectos.setTipomoneda(new Monedas());
+                nuevaProyectos.setEmpresa(new Empresas());
+                nuevaProyectos.setPryCliente(new PryClientes());
+                nuevaProyectos.setPryPlataforma(new PryPlataformas());
+                limpiarNuevaP();
+                //
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+                indexP = -1;
+                secRegistro = null;
+                context.update("form:datosProyectos");
+                context.execute("NuevoRegistroP.hide()");
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorDatosNull.show()");
             }
-            //AGREGAR REGISTRO A LA LISTA VIGENCIAS
-            k++;
-            l = BigInteger.valueOf(k);
-            nuevaProyectos.setSecuencia(l);
-            if (listProyectos == null) {
-                listProyectos = new ArrayList<Proyectos>();
-            }
-            listProyectos.add(nuevaProyectos);
-            listProyectoCrear.add(nuevaProyectos);
-            //
-            nuevaProyectos = new Proyectos();
-            nuevaProyectos.setTipomoneda(new Monedas());
-            nuevaProyectos.setEmpresa(new Empresas());
-            nuevaProyectos.setPryCliente(new PryClientes());
-            nuevaProyectos.setPryPlataforma(new PryPlataformas());
-            limpiarNuevaP();
-            //
-            if (guardado == true) {
-                guardado = false;
-                RequestContext.getCurrentInstance().update("form:aceptar");
-            }
-            indexP = -1;
-            secRegistro = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProyectos");
-            context.execute("NuevoRegistroP.hide()");
-
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
         }
     }
 
-    /**
-     * Limpia los elementos de una nueva vigencia prorrateo
-     */
     public void limpiarNuevaP() {
         nuevaProyectos = new Proyectos();
         nuevaProyectos.setTipomoneda(new Monedas());
@@ -915,33 +1068,19 @@ public class ControlProyecto implements Serializable {
         nuevaProyectos.setPryPlataforma(new PryPlataformas());
         indexP = -1;
         secRegistro = null;
-        cambioProyecto = false;
+
     }
 
-    //DUPLICAR VL
-    /**
-     * Metodo que verifica que proceso de duplicar se genera con respecto a la
-     * posicion en la pagina que se tiene
-     */
     public void verificarDuplicarProyecto() {
         if (indexP >= 0) {
             duplicarProyectoM();
         }
     }
 
-    ///////////////////////////////////////////////////////////////
-    /**
-     * Duplica una registro de VigenciaProrrateos
-     */
     public void duplicarProyectoM() {
         if (indexP >= 0) {
             duplicarProyecto = new Proyectos();
-            k++;
-            BigDecimal var = BigDecimal.valueOf(k);
-            l = BigInteger.valueOf(k);
-
             if (tipoListaP == 0) {
-                duplicarProyecto.setSecuencia(l);
                 duplicarProyecto.setFechafinal(listProyectos.get(indexP).getFechafinal());
                 duplicarProyecto.setFechainicial(listProyectos.get(indexP).getFechainicial());
                 duplicarProyecto.setEmpresa(listProyectos.get(indexP).getEmpresa());
@@ -954,7 +1093,6 @@ public class ControlProyecto implements Serializable {
                 duplicarProyecto.setDescripcionproyecto(listProyectos.get(indexP).getDescripcionproyecto());
             }
             if (tipoListaP == 1) {
-                duplicarProyecto.setSecuencia(l);
                 duplicarProyecto.setFechafinal(filtrarListProyectos.get(indexP).getFechafinal());
                 duplicarProyecto.setFechainicial(filtrarListProyectos.get(indexP).getFechainicial());
                 duplicarProyecto.setEmpresa(filtrarListProyectos.get(indexP).getEmpresa());
@@ -966,7 +1104,7 @@ public class ControlProyecto implements Serializable {
                 duplicarProyecto.setTipomoneda(filtrarListProyectos.get(indexP).getTipomoneda());
                 duplicarProyecto.setDescripcionproyecto(filtrarListProyectos.get(indexP).getDescripcionproyecto());
             }
-            cambioProyecto = true;
+
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarP");
             context.execute("DuplicarRegistroP.show()");
@@ -977,55 +1115,63 @@ public class ControlProyecto implements Serializable {
 
     public void confirmarDuplicarP() {
         if (validarFechasRegistro(2) == true) {
-            cambioProyecto = true;
-            k++;
-            l = BigInteger.valueOf(k);
-            duplicarProyecto.setSecuencia(l);
-            if (listProyectos == null) {
-                listProyectos = new ArrayList<Proyectos>();
+            if (validarDatosNull(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarProyecto.setSecuencia(l);
+                if (listProyectos == null) {
+                    listProyectos = new ArrayList<Proyectos>();
+                }
+                listProyectos.add(duplicarProyecto);
+                listProyectoCrear.add(duplicarProyecto);
+                indexP = -1;
+                secRegistro = null;
+                if (guardado == true) {
+                    guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                }
+                if (banderaP == 1) {
+                    altoTabla = "270";
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    //CERRAR FILTRADO
+                    pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
+                    pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
+                    pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
+                    pryCodigo.setFilterStyle("display: none; visibility: hidden;");
+                    pryNombre = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryNombre");
+                    pryNombre.setFilterStyle("display: none; visibility: hidden;");
+                    pryCliente = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCliente");
+                    pryCliente.setFilterStyle("display: none; visibility: hidden;");
+                    pryPlataforma = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
+                    pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
+                    pryMonto = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMonto");
+                    pryMonto.setFilterStyle("display: none; visibility: hidden;");
+                    pryMoneda = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMoneda");
+                    pryMoneda.setFilterStyle("display: none; visibility: hidden;");
+                    pryPersonas = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPersonas");
+                    pryPersonas.setFilterStyle("display: none; visibility: hidden;");
+                    pryFechaInicial = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
+                    pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
+                    pryFechaFinal = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
+                    pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
+                    pryDescripcion = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
+                    pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
+                    RequestContext.getCurrentInstance().update("form:datosProyectos");
+                    banderaP = 0;
+                    filtrarListProyectos = null;
+                    tipoListaP = 0;
+                }
+                duplicarProyecto = new Proyectos();
+                limpiarduplicarP();
+                RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listProyectos.size();
+                context.update("form:informacionRegistro");
+                context.update("form:datosProyectos");
+                context.execute("DuplicarRegistroP.hide()");
+            } else {
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.execute("errorDatosNull.show()");
             }
-            listProyectos.add(duplicarProyecto);
-            listProyectoCrear.add(duplicarProyecto);
-            indexP = -1;
-            secRegistro = null;
-            if (guardado == true) {
-                guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
-            }
-            if (banderaP == 1) {
-                //CERRAR FILTRADO
-                pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
-                pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCodigo");
-                pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-                pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryNombre");
-                pryNombre.setFilterStyle("display: none; visibility: hidden;");
-                pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCliente");
-                pryCliente.setFilterStyle("display: none; visibility: hidden;");
-                pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
-                pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-                pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMonto");
-                pryMonto.setFilterStyle("display: none; visibility: hidden;");
-                pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMoneda");
-                pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-                pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPersonas");
-                pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-                pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
-                pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
-                pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
-                pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                RequestContext.getCurrentInstance().update("form:datosProyectos");
-                banderaP = 0;
-                filtrarListProyectos = null;
-                tipoListaP = 0;
-            }
-            duplicarProyecto = new Proyectos();
-            limpiarduplicarP();
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosProyectos");
-            context.execute("DuplicarRegistroP.hide()");
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("errorFechas.show()");
@@ -1041,7 +1187,6 @@ public class ControlProyecto implements Serializable {
     }
 
     public void cancelarDuplicadoP() {
-        cambioProyecto = false;
         duplicarProyecto = new Proyectos();
         duplicarProyecto.setTipomoneda(new Monedas());
         duplicarProyecto.setEmpresa(new Empresas());
@@ -1051,21 +1196,13 @@ public class ControlProyecto implements Serializable {
         secRegistro = null;
     }
 
-    /**
-     * Valida que registro se elimina de que tabla con respecto a la posicion en
-     * la pagina
-     */
     public void validarBorradoProyecto() {
         if (indexP >= 0) {
             borrarP();
         }
     }
 
-    /**
-     * Metodo que borra una vigencia prorrateo
-     */
     public void borrarP() {
-        cambioProyecto = true;
         if (tipoListaP == 0) {
             if (!listProyectoModificar.isEmpty() && listProyectoModificar.contains(listProyectos.get(indexP))) {
                 int modIndex = listProyectoModificar.indexOf(listProyectos.get(indexP));
@@ -1095,76 +1232,74 @@ public class ControlProyecto implements Serializable {
             filtrarListProyectos.remove(indexP);
         }
         RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + listProyectos.size();
+        context.update("form:informacionRegistro");
         context.update("form:datosProyectos");
         indexP = -1;
         secRegistro = null;
         if (guardado == true) {
             guardado = false;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
         }
 
     }
 
-    //CTRL + F11 ACTIVAR/DESACTIVAR
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el toolbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
         filtradoProyecto();
     }
 
-    /**
-     * Metodo que acciona el filtrado de la tabla vigencia prorrateo
-     */
     public void filtradoProyecto() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaP == 0) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
+            altoTabla = "248";
+            pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("width: 90px");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCodigo");
+            pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
             pryCodigo.setFilterStyle("width: 60px");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryNombre");
+            pryNombre = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryNombre");
             pryNombre.setFilterStyle("width: 80px");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCliente");
+            pryCliente = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCliente");
             pryCliente.setFilterStyle("width: 80px");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
+            pryPlataforma = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
             pryPlataforma.setFilterStyle("width: 90px");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMonto");
+            pryMonto = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMonto");
             pryMonto.setFilterStyle("width: 60px");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMoneda");
+            pryMoneda = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMoneda");
             pryMoneda.setFilterStyle("width: 90px");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPersonas");
+            pryPersonas = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPersonas");
             pryPersonas.setFilterStyle("width: 60px");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
+            pryFechaInicial = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
             pryFechaInicial.setFilterStyle("width: 60px");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
+            pryFechaFinal = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
             pryFechaFinal.setFilterStyle("width: 60px");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
+            pryDescripcion = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
             pryDescripcion.setFilterStyle("width: 200px");
             RequestContext.getCurrentInstance().update("form:datosProyectos");
             tipoListaP = 1;
             banderaP = 1;
         } else if (banderaP == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
+            altoTabla = "270";
+            pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCodigo");
+            pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
             pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryNombre");
+            pryNombre = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryNombre");
             pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCliente");
+            pryCliente = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCliente");
             pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
+            pryPlataforma = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
             pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMonto");
+            pryMonto = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMonto");
             pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMoneda");
+            pryMoneda = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMoneda");
             pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPersonas");
+            pryPersonas = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPersonas");
             pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
+            pryFechaInicial = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
             pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
+            pryFechaFinal = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
             pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
+            pryDescripcion = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
             pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProyectos");
             banderaP = 0;
@@ -1174,33 +1309,31 @@ public class ControlProyecto implements Serializable {
 
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (banderaP == 1) {
-            pryEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
+            altoTabla = "270";
+            FacesContext c = FacesContext.getCurrentInstance();
+            pryEmpresa = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryEmpresa");
             pryEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            pryCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCodigo");
+            pryCodigo = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCodigo");
             pryCodigo.setFilterStyle("display: none; visibility: hidden;");
-            pryNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryNombre");
+            pryNombre = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryNombre");
             pryNombre.setFilterStyle("display: none; visibility: hidden;");
-            pryCliente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryCliente");
+            pryCliente = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryCliente");
             pryCliente.setFilterStyle("display: none; visibility: hidden;");
-            pryPlataforma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
+            pryPlataforma = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPlataforma");
             pryPlataforma.setFilterStyle("display: none; visibility: hidden;");
-            pryMonto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMonto");
+            pryMonto = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMonto");
             pryMonto.setFilterStyle("display: none; visibility: hidden;");
-            pryMoneda = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryMoneda");
+            pryMoneda = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryMoneda");
             pryMoneda.setFilterStyle("display: none; visibility: hidden;");
-            pryPersonas = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryPersonas");
+            pryPersonas = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryPersonas");
             pryPersonas.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
+            pryFechaInicial = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaInicial");
             pryFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            pryFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
+            pryFechaFinal = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryFechaFinal");
             pryFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            pryDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
+            pryDescripcion = (Column) c.getViewRoot().findComponent("form:datosProyectos:pryDescripcion");
             pryDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosProyectos");
             banderaP = 0;
@@ -1215,20 +1348,10 @@ public class ControlProyecto implements Serializable {
         k = 0;
         listProyectos = null;
         guardado = true;
-        cambioProyecto = false;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         tipoActualizacion = -1;
     }
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
 
-    /**
-     * Metodo que ejecuta los dialogos de estructuras, motivos localizaciones,
-     * proyectos
-     *
-     * @param indice Fila de la tabla
-     * @param dlg Dialogo
-     * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
-     * VigenciaProrrateoProyecto
-     */
     public void asignarIndex(Integer indice, int dlg, int LND) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
@@ -1255,14 +1378,10 @@ public class ControlProyecto implements Serializable {
 
     }
 
-    //Motivo Localizacion
-    /**
-     * Metodo que actualiza el motivo localizacion seleccionado (vigencia
-     * localizacion)
-     */
     public void actualizarEmpresa() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
+            if (tipoListaP == 0) {
                 listProyectos.get(indexP).setEmpresa(empresaSeleccionada);
                 if (!listProyectoCrear.contains(listProyectos.get(indexP))) {
                     if (listProyectoModificar.isEmpty()) {
@@ -1273,8 +1392,9 @@ public class ControlProyecto implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                cambioProyecto = true;
+
                 permitirIndexP = true;
 
             } else {
@@ -1288,20 +1408,18 @@ public class ControlProyecto implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
-                cambioProyecto = true;
+
                 permitirIndexP = true;
 
             }
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarEmpresaP");
+            context.update("form:datosProyectos");
         } else if (tipoActualizacion == 1) {
             nuevaProyectos.setEmpresa(empresaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaEmpresaP");
         } else if (tipoActualizacion == 2) {
             duplicarProyecto.setEmpresa(empresaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarEmpresaP");
         }
         filtrarListEmpresas = null;
@@ -1310,12 +1428,13 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:EmpresasDialogo");
+        context.update("form:lovEmpresas");
+        context.update("form:aceptarE");
+        context.reset("form:lovEmpresas:globalFilter");
+        context.execute("EmpresasDialogo.hide()");
     }
 
-    /**
-     * Metodo que cancela la seleccion del motivo localizacion (vigencia
-     * localizacion)
-     */
     public void cancelarCambioEmpresa() {
         filtrarListEmpresas = null;
         empresaSeleccionada = null;
@@ -1326,13 +1445,10 @@ public class ControlProyecto implements Serializable {
         permitirIndexP = true;
     }
 
-    //Motivo Localizacion
-    /**
-     * Metodo que actualiza el proyecto seleccionado (vigencia localizacion)
-     */
     public void actualizarCliente() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
+            if (tipoListaP == 0) {
                 listProyectos.get(indexP).setPryCliente(clienteSeleccionado);
                 if (!listProyectoCrear.contains(listProyectos.get(indexP))) {
                     if (listProyectoModificar.isEmpty()) {
@@ -1353,18 +1469,16 @@ public class ControlProyecto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            cambioProyecto = true;
+
             permitirIndexP = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarClienteP");
+            context.update("form:datosProyectos");
         } else if (tipoActualizacion == 1) {
             nuevaProyectos.setPryCliente(clienteSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaClienteP");
         } else if (tipoActualizacion == 2) {
             duplicarProyecto.setPryCliente(clienteSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarClienteP");
         }
         filtrarListPryClientes = null;
@@ -1373,6 +1487,11 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:ClientesDialogo");
+        context.update("form:aceptarC");
+        context.update("form:datosProyectos");
+        context.reset("form:lovClientes:globalFilter");
+        context.execute("form:ClientesDialogo");
     }
 
     /**
@@ -1389,8 +1508,9 @@ public class ControlProyecto implements Serializable {
     }
 
     public void actualizarPlataforma() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
+            if (tipoListaP == 0) {
                 listProyectos.get(indexP).setPryPlataforma(plataformaSeleccionada);
                 if (!listProyectoCrear.contains(listProyectos.get(indexP))) {
                     if (listProyectoModificar.isEmpty()) {
@@ -1411,18 +1531,15 @@ public class ControlProyecto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            cambioProyecto = true;
             permitirIndexP = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarPlataformaP");
+            context.update("form:datosProyectos");
         } else if (tipoActualizacion == 1) {
             nuevaProyectos.setPryPlataforma(plataformaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaPlataformaP");
         } else if (tipoActualizacion == 2) {
             duplicarProyecto.setPryPlataforma(plataformaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarPlataformaP");
         }
         filtrarListPryPlataformas = null;
@@ -1431,6 +1548,11 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:PlataformasDialogo");
+        context.update("form:lovPlataforma");
+        context.update("form:aceptarP");
+        context.reset("form:lovPlataforma:globalFilter");
+        context.execute("form:PlataformasDialogo");
     }
 
     public void cancelarCambioPlataforma() {
@@ -1444,8 +1566,9 @@ public class ControlProyecto implements Serializable {
     }
 
     public void actualizarMoneda() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
-            if (tipoLista == 0) {
+            if (tipoListaP == 0) {
                 listProyectos.get(indexP).setTipomoneda(monedaSeleccionada);
                 if (!listProyectoCrear.contains(listProyectos.get(indexP))) {
                     if (listProyectoModificar.isEmpty()) {
@@ -1466,18 +1589,16 @@ public class ControlProyecto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
-            cambioProyecto = true;
+
             permitirIndexP = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarMonedaP");
+            context.update("form:datosProyectos");
         } else if (tipoActualizacion == 1) {
             nuevaProyectos.setTipomoneda(monedaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaMonedaP");
         } else if (tipoActualizacion == 2) {
             duplicarProyecto.setTipomoneda(monedaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarMonedaP");
         }
         filtrarListMonedas = null;
@@ -1486,6 +1607,11 @@ public class ControlProyecto implements Serializable {
         indexP = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:MonedasDialogo");
+        context.update("form:lovMoneda");
+        context.update("form:aceptarM");
+        context.reset("form:lovMoneda:globalFilter");
+        context.execute("MonedasDialogo.hide()");
     }
 
     public void cancelarCambioMoneda() {
@@ -1586,11 +1712,12 @@ public class ControlProyecto implements Serializable {
      * Evento que cambia la lista real a la filtrada
      */
     public void eventoFiltrar() {
-        if (indexP >= 0) {
-            if (tipoListaP == 0) {
-                tipoListaP = 1;
-            }
+        if (tipoListaP == 0) {
+            tipoListaP = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + filtrarListProyectos.size();
+        context.update("form:informacionRegistro");
     }
 
     public void dialogoProyecto() {
@@ -1607,8 +1734,15 @@ public class ControlProyecto implements Serializable {
         listProyectos = new ArrayList<Proyectos>();
         listProyectos.add(proyectoSeleccionado);
         RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + listProyectos.size();
+        context.update("form:informacionRegistro");
         context.update("form:datosProyectos");
         proyectoSeleccionado = new Proyectos();
+        context.update("form:BuscarProyectoDialogo");
+        context.update("form:lovProyecto");
+        context.update("form:aceptarPro");
+        context.reset("form:lovProyecto:globalFilter");
+        context.execute("BuscarProyectoDialogo.hide()");
     }
 
     public void cancelarActualizarProyecto() {
@@ -1620,6 +1754,12 @@ public class ControlProyecto implements Serializable {
         filtrarListProyectos = null;
         listProyectos = administrarProyectos.Proyectos();
         RequestContext context = RequestContext.getCurrentInstance();
+        if (listProyectos != null) {
+            infoRegistro = "Cantidad de registros : " + listProyectos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosProyectos");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
@@ -1660,7 +1800,6 @@ public class ControlProyecto implements Serializable {
     public List<Proyectos> getListProyectos() {
         try {
             if (listProyectos == null) {
-                listProyectos = new ArrayList<Proyectos>();
                 listProyectos = administrarProyectos.Proyectos();
                 for (int i = 0; i < listProyectos.size(); i++) {
                     if (listProyectos.get(i).getEmpresa() == null) {
@@ -1698,10 +1837,7 @@ public class ControlProyecto implements Serializable {
 
     public List<Empresas> getListEmpresas() {
         try {
-            if (listEmpresas == null) {
-                listEmpresas = new ArrayList<Empresas>();
-                listEmpresas = administrarProyectos.listEmpresas();
-            }
+            listEmpresas = administrarProyectos.listEmpresas();
             return listEmpresas;
         } catch (Exception e) {
             System.out.println("Error getListEmpresas " + e.toString());
@@ -1731,10 +1867,7 @@ public class ControlProyecto implements Serializable {
 
     public List<PryClientes> getListPryClientes() {
         try {
-            if (listPryClientes == null) {
-                listPryClientes = new ArrayList<PryClientes>();
-                listPryClientes = administrarProyectos.listPryClientes();
-            }
+            listPryClientes = administrarProyectos.listPryClientes();
             return listPryClientes;
         } catch (Exception e) {
             System.out.println("Error getListPryClientes " + e.toString());
@@ -1820,12 +1953,10 @@ public class ControlProyecto implements Serializable {
 
     public List<PryPlataformas> getListPryPlataformas() {
         try {
-            if (listPryPlataformas == null) {
-                listPryPlataformas = new ArrayList<PryPlataformas>();
-                listPryPlataformas = administrarProyectos.listPryPlataformas();
-            }
+            listPryPlataformas = administrarProyectos.listPryPlataformas();
             return listPryPlataformas;
         } catch (Exception e) {
+            System.out.println("Error getListPryPlataformas : " + e.toString());
             return null;
         }
 
@@ -1868,10 +1999,7 @@ public class ControlProyecto implements Serializable {
     }
 
     public List<Monedas> getListMonedas() {
-        if (listMonedas == null) {
-            listMonedas = new ArrayList<Monedas>();
-            listMonedas = administrarProyectos.listMonedas();
-        }
+        listMonedas = administrarProyectos.listMonedas();
         return listMonedas;
     }
 
@@ -1902,4 +2030,114 @@ public class ControlProyecto implements Serializable {
     public void setProyectoSeleccionado(Proyectos proyectoSeleccionado) {
         this.proyectoSeleccionado = proyectoSeleccionado;
     }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroProyecto() {
+        getListProyectos();
+        if (listEmpresas != null) {
+            infoRegistroProyecto = "Cantidad de registros : " + listProyectos.size();
+        } else {
+            infoRegistroProyecto = "Cantidad de registros : 0";
+        }
+        return infoRegistroProyecto;
+    }
+
+    public void setInfoRegistroProyecto(String infoRegistroProyecto) {
+        this.infoRegistroProyecto = infoRegistroProyecto;
+    }
+
+    public String getInfoRegistroTipoMoneda() {
+        getListMonedas();
+        if (listMonedas != null) {
+            infoRegistroTipoMoneda = "Cantidad de registros : " + listMonedas.size();
+        } else {
+            infoRegistroTipoMoneda = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoMoneda;
+    }
+
+    public void setInfoRegistroTipoMoneda(String infoRegistroTipoMoneda) {
+        this.infoRegistroTipoMoneda = infoRegistroTipoMoneda;
+    }
+
+    public String getInfoRegistroPlataforma() {
+        getListPryPlataformas();
+        if (listPryPlataformas != null) {
+            infoRegistroPlataforma = "Cantidad de registros : " + listPryPlataformas.size();
+        } else {
+            infoRegistroPlataforma = "Cantidad de registros : 0";
+        }
+        return infoRegistroPlataforma;
+    }
+
+    public void setInfoRegistroPlataforma(String infoRegistroPlataforma) {
+        this.infoRegistroPlataforma = infoRegistroPlataforma;
+    }
+
+    public String getInfoRegistroCliente() {
+        getListPryClientes();
+        if (listPryClientes != null) {
+            infoRegistroCliente = "Cantidad de registros : " + listPryClientes.size();
+        } else {
+            infoRegistroCliente = "Cantidad de registros : 0";
+        }
+        return infoRegistroCliente;
+    }
+
+    public void setInfoRegistroCliente(String infoRegistroCliente) {
+        this.infoRegistroCliente = infoRegistroCliente;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getListEmpresas();
+        if (listEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + listEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public Proyectos getProyectoTablaSeleccionado() {
+        getListProyectos();
+        if (listProyectos != null) {
+            int tam = listProyectos.size();
+            if (tam > 0) {
+                proyectoTablaSeleccionado = listProyectos.get(0);
+            }
+        }
+        return proyectoTablaSeleccionado;
+    }
+
+    public void setProyectoTablaSeleccionado(Proyectos proyectoTablaSeleccionado) {
+        this.proyectoTablaSeleccionado = proyectoTablaSeleccionado;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
 }
