@@ -26,6 +26,8 @@ public class AdministrarLiquidacionesLogs implements AdministrarLiquidacionesLog
 
     @EJB
     PersistenciaLiquidacionesLogsInterface persistenciaLiquidacionesLogs;
+    @EJB
+    PersistenciaEmpleadoInterface persistenciaEmpleado;
 
     @EJB
     PersistenciaEmpleadoInterface persistenciaEmpleados;
@@ -76,9 +78,10 @@ public class AdministrarLiquidacionesLogs implements AdministrarLiquidacionesLog
         return lesiones;
     }
 
+    @Override
     public List<Empleados> consultarLOVEmpleados() {
         List<Empleados> listEmpleados;
-        listEmpleados = persistenciaEmpleados.buscarEmpleados(em);
+        listEmpleados = persistenciaEmpleados.consultarEmpleadosLiquidacionesLog(em);
         return listEmpleados;
     }
 }

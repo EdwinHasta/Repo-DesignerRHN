@@ -237,7 +237,7 @@
                                 <p:ajax event="change" listener="#{controlEmpleadoIndividual.modificarCampo('P')}" update="@this"/>
                             </p:calendar>
                             <p:watermark for="fechaFallecimiento" value="#{msg['fechafallecimientowm']}" />
-                            <p:commandButton value="#{msg['tallas']}" process="@this" style="position: absolute; top: 140px; left: 10px; font-size: 12px; width: 100px"/>
+                            <p:commandButton value="#{msg['tallas']}" process="@this" actionListener="#{controlVigenciasTallas.recibirEmpleado(controlEmpleadoIndividual.empleado.secuencia)}" action="adelanteVigenciaTalla" style="position: absolute; top: 140px; left: 10px; font-size: 12px; width: 100px"/>
                             <p:commandButton value="#{msg['anteriorescontratos']}" style="position: absolute; top: 146px; left: 700px; "/>
                         </fieldset>
 
