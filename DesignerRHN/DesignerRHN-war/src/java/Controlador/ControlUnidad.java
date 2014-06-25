@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Entidades.Ciudades;
 import Entidades.TiposUnidades;
 import Entidades.Unidades;
 import Exportar.ExportarPDF;
@@ -81,6 +82,12 @@ public class ControlUnidad implements Serializable {
     //
     private Column unidadesCodigos, unidadesNombres, unidadesTipos;
     public String infoRegistro;
+    ///////////////////////////////////////////////
+    //////////////////PRUEBAS UNITARIAS COMPONENTES
+    ///////////////////////////////////////////////
+    public String buscarNombre;
+    public boolean buscador;
+    public String paginaAnterior;
 
     public ControlUnidad() {
         permitirIndex = true;
@@ -98,11 +105,11 @@ public class ControlUnidad implements Serializable {
         tipoLista = 0;
         nuevaUnidad = new Unidades();
         nuevaUnidad.setTipounidad(new TiposUnidades());
-        nuevaUnidad.getTipounidad().setNombre(" ");
         secRegistro = null;
         k = 0;
         altoTabla = "270";
         guardado = true;
+        buscador = false;
     }
 
     @PostConstruct
@@ -132,7 +139,6 @@ public class ControlUnidad implements Serializable {
         System.out.println("TipoLista= " + tipoLista);
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-            tipoLista = 1;
             System.out.println("Activar");
             unidadesCodigos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesCodigos");
             unidadesCodigos.setFilterStyle("width: 60px");
@@ -143,10 +149,9 @@ public class ControlUnidad implements Serializable {
             altoTabla = "246";
             RequestContext.getCurrentInstance().update("form:datosUnidades");
             bandera = 1;
-
+            tipoLista = 1;
             System.out.println("TipoLista= " + tipoLista);
         } else if (bandera == 1) {
-            tipoLista = 0;
             System.out.println("Desactivar");
             unidadesCodigos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesCodigos");
             unidadesCodigos.setFilterStyle("display: none; visibility: hidden;");
@@ -158,6 +163,7 @@ public class ControlUnidad implements Serializable {
             altoTabla = "270";
             bandera = 0;
             filtradoListaUnidades = null;
+            tipoLista = 0;
             System.out.println("TipoLista= " + tipoLista);
 
         }
@@ -419,7 +425,7 @@ public class ControlUnidad implements Serializable {
             }
         }
     }
-    
+
     //EXPORTAR
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosUnidadesExportar");
@@ -440,9 +446,8 @@ public class ControlUnidad implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
-    //LIMPIAR NUEVO REGISTRO CIUDAD
 
+    //LIMPIAR NUEVO REGISTRO CIUDAD
     public void limpiarNuevaUnidad() {
         nuevaUnidad = new Unidades();
         nuevaUnidad.setTipounidad(new TiposUnidades());
@@ -450,16 +455,145 @@ public class ControlUnidad implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    
-    public void valoresBackupAutocompletar(int tipoNuevo) {
 
+    //LIMPIAR DUPLICAR
+    public void limpiarDuplicarUnidad() {
+        duplicarUnidad = new Unidades();
+    }
+
+    public void verificarRastro() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        System.out.println("lol");
+        if (!listaUnidades.isEmpty()) {
+            if (secRegistro != null) {
+                System.out.println("lol 2");
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "UNIDADES");
+                System.out.println("resultado: " + resultado);
+                if (resultado == 1) {
+                    context.execute("errorObjetosDB.show()");
+                } else if (resultado == 2) {
+                    context.execute("confirmarRastro.show()");
+                } else if (resultado == 3) {
+                    context.execute("errorRegistroRastro.show()");
+                } else if (resultado == 4) {
+                    context.execute("errorTablaConRastro.show()");
+                } else if (resultado == 5) {
+                    context.execute("errorTablaSinRastro.show()");
+                }
+            } else {
+                context.execute("seleccionarRegistro.show()");
+            }
+        } else {
+            if (administrarRastros.verificarHistoricosTabla("UNIDADES")) {
+                context.execute("confirmarRastroHistorico.show()");
+            } else {
+                context.execute("errorRastroHistorico.show()");
+            }
+
+        }
+        index = -1;
+    }
+
+    public void cancelarModificacion() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            System.out.println("Desactivar");
+            unidadesCodigos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesCodigos");
+            unidadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+            unidadesNombres = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesNombres");
+            unidadesNombres.setFilterStyle("display: none; visibility: hidden;");
+            unidadesTipos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesTipos");
+            unidadesTipos.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosUnidades");
+            altoTabla = "270";
+            bandera = 0;
+            filtradoListaUnidades = null;
+            tipoLista = 0;
+            System.out.println("TipoLista= " + tipoLista);
+
+        }
+
+        listaUnidadesBorrar.clear();
+        listaUnidadesCrear.clear();
+        listaUnidadesModificar.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listaUnidades = null;
+        getListaUnidades();
+        if (listaUnidades != null && !listaUnidades.isEmpty()) {
+            unidadSeleccionada = listaUnidades.get(0);
+            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        context.update("form:datosUnidades");
+        context.update("form:informacionRegistro");
+    }
+
+    public void salir() {
+        if (bandera == 1) {
+            //CERRAR FILTRADO
+            FacesContext c = FacesContext.getCurrentInstance();
+            System.out.println("Desactivar");
+            unidadesCodigos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesCodigos");
+            unidadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+            unidadesNombres = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesNombres");
+            unidadesNombres.setFilterStyle("display: none; visibility: hidden;");
+            unidadesTipos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesTipos");
+            unidadesTipos.setFilterStyle("display: none; visibility: hidden;");
+            RequestContext.getCurrentInstance().update("form:datosUnidades");
+            altoTabla = "270";
+            bandera = 0;
+            filtradoListaUnidades = null;
+            tipoLista = 0;
+            System.out.println("TipoLista= " + tipoLista);
+
+        }
+
+        listaUnidadesBorrar.clear();
+        listaUnidadesCrear.clear();
+        listaUnidadesModificar.clear();
+        index = -1;
+        secRegistro = null;
+        k = 0;
+        listaUnidades = null;
+        getListaUnidades();
+        if (listaUnidades != null && !listaUnidades.isEmpty()) {
+            unidadSeleccionada = listaUnidades.get(0);
+            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+        } else {
+            infoRegistro = "Cantidad de registros: 0";
+        }
+        guardado = true;
+        permitirIndex = true;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:ACEPTAR");
+        context.update("form:datosUnidades");
+        context.update("form:informacionRegistro");
+    }
+    
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
+    }
+
+    public void valoresBackupAutocompletar(int tipoNuevo) {
         if (tipoNuevo == 1) {
             tipoUnidad = nuevaUnidad.getTipounidad().getNombre();
         } else if (tipoNuevo == 2) {
             tipoUnidad = duplicarUnidad.getTipounidad().getNombre();
         }
     }
-    
+
     public void autocompletarNuevoyDuplicado(String valorConfirmar, int tipoNuevo) {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
@@ -496,7 +630,7 @@ public class ControlUnidad implements Serializable {
             }
         }
     }
-    
+
     public void llamarLovTiposUnidades(int tipoN) {
         if (tipoN == 1) {
             tipoActualizacion = 1;
@@ -507,83 +641,235 @@ public class ControlUnidad implements Serializable {
         context.update("formularioDialogos:tiposUnidadesDialogo");
         context.execute("tiposUnidadesDialogo.show()");
     }
-    
-    /*//CREAR CIUDAD
+
+    //BORRAR CIUDADES
+    public void borrarUnidades() {
+
+        if (index >= 0) {
+            if (tipoLista == 0) {
+                if (!listaUnidadesModificar.isEmpty() && listaUnidadesModificar.contains(listaUnidades.get(index))) {
+                    int modIndex = listaUnidadesModificar.indexOf(listaUnidades.get(index));
+                    listaUnidadesModificar.remove(modIndex);
+                    listaUnidadesBorrar.add(listaUnidades.get(index));
+                } else if (!listaUnidadesCrear.isEmpty() && listaUnidadesCrear.contains(listaUnidades.get(index))) {
+                    int crearIndex = listaUnidadesCrear.indexOf(listaUnidades.get(index));
+                    listaUnidadesCrear.remove(crearIndex);
+                } else {
+                    listaUnidadesBorrar.add(listaUnidades.get(index));
+                }
+                listaUnidades.remove(index);
+                infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+            }
+
+            if (tipoLista == 1) {
+                if (!listaUnidadesModificar.isEmpty() && listaUnidadesModificar.contains(filtradoListaUnidades.get(index))) {
+                    int modIndex = listaUnidadesModificar.indexOf(filtradoListaUnidades.get(index));
+                    listaUnidadesModificar.remove(modIndex);
+                    listaUnidadesBorrar.add(filtradoListaUnidades.get(index));
+                } else if (!listaUnidadesCrear.isEmpty() && listaUnidadesCrear.contains(filtradoListaUnidades.get(index))) {
+                    int crearIndex = listaUnidadesCrear.indexOf(filtradoListaUnidades.get(index));
+                    listaUnidadesCrear.remove(crearIndex);
+                } else {
+                    listaUnidadesBorrar.add(filtradoListaUnidades.get(index));
+                }
+                int CIndex = listaUnidades.indexOf(filtradoListaUnidades.get(index));
+                listaUnidades.remove(CIndex);
+                filtradoListaUnidades.remove(index);
+                infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+            }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosUnidades");
+            context.update("form:informacionRegistro");
+            index = -1;
+            secRegistro = null;
+
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+        }
+    }
+
+    //CREAR UNIDAD
     public void agregarNuevaUnidad() {
-        
+
         int pasa = 0;
         int pasaA = 0;
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
 
-        if (nuevaCiudad.getNombre() == null && (nuevaCiudad.getNombre().equals(" ")) || (nuevaCiudad.getNombre().equals(""))) {
-            System.out.println("Entra");
-            mensajeValidacion = mensajeValidacion + " * Nombre de la Ciudad \n";
+        if (nuevaUnidad.getNombre() == null) {
+            System.out.println("Entra 1");
+            mensajeValidacion = mensajeValidacion + "   * Nombre \n";
             pasa++;
         }
-        if (nuevaCiudad.getDepartamento().getSecuencia() == null) {
+
+        if (nuevaUnidad.getTipounidad().getNombre() == null) {
             System.out.println("Entra 2");
-            mensajeValidacion = mensajeValidacion + "   * Departamento \n";
+            mensajeValidacion = mensajeValidacion + "   * Tipo Unidad\n";
             pasa++;
         }
 
-        for (int i = 0; i < listaCiudades.size(); i++) {
-            if (nuevaCiudad.getNombre().equals(listaCiudades.get(i).getNombre())) {
-                System.out.println("Entro al IF");
-                context.update("formularioDialogos:existe");
-                context.execute("existe.show()");
-                pasaA++;
-
+        for (int i = 0; i < listaUnidades.size(); i++) {
+            if (nuevaUnidad.getCodigo() != null) {
+                System.out.println("No es nulo el código");
+                if (nuevaUnidad.getCodigo().equals(listaUnidades.get(i).getCodigo())) {
+                    System.out.println("Entro al IF");
+                    context.update("formularioDialogos:existe");
+                    context.execute("existe.show()");
+                    pasaA++;
+                }
             }
         }
 
         if (pasa != 0) {
-            context.update("formularioDialogos:validacionNuevaCiudad");
-            context.execute("validacionNuevaCiudad.show()");
+            context.update("formularioDialogos:validacionNuevaUnidad");
+            context.execute("validacionNuevaUnidad.show()");
         }
 
         if (pasa == 0 && pasaA == 0) {
             if (bandera == 1) {
                 FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
-                ciudadesCodigos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigos");
-                ciudadesCodigos.setFilterStyle("display: none; visibility: hidden;");
-                ciudadesNombres = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesNombres");
-                ciudadesNombres.setFilterStyle("display: none; visibility: hidden;");
-                nombresDepartamentos = (Column) c.getViewRoot().findComponent("form:datosCiudades:nombresDepartamentos");
-                nombresDepartamentos.setFilterStyle("display: none; visibility: hidden;");
-                ciudadesCodigosAlternativos = (Column) c.getViewRoot().findComponent("form:datosCiudades:ciudadesCodigosAlternativos");
-                ciudadesCodigosAlternativos.setFilterStyle("display: none; visibility: hidden;");
+                System.out.println("Desactivar");
+                unidadesCodigos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesCodigos");
+                unidadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+                unidadesNombres = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesNombres");
+                unidadesNombres.setFilterStyle("display: none; visibility: hidden;");
+                unidadesTipos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesTipos");
+                unidadesTipos.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosUnidades");
                 altoTabla = "270";
-                RequestContext.getCurrentInstance().update("form:datosCiudades");
                 bandera = 0;
-                filtradoListaCiudades = null;
+                filtradoListaUnidades = null;
+                System.out.println("TipoLista= " + tipoLista);
                 tipoLista = 0;
             }
             //AGREGAR REGISTRO A LA LISTA CIUDADES.
             k++;
             l = BigInteger.valueOf(k);
-            nuevaCiudad.setSecuencia(l);
-            listaCiudadesCrear.add(nuevaCiudad);
-            listaCiudades.add(nuevaCiudad);
-            infoRegistro = "Cantidad de registros: " + listaCiudades.size();
+            nuevaUnidad.setSecuencia(l);
+            listaUnidadesCrear.add(nuevaUnidad);
+            listaUnidades.add(nuevaUnidad);
+            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
             context.update("form:informacionRegistro");
-            nuevaCiudad = new Ciudades();
+            nuevaUnidad = new Unidades();
             //  nuevaCiudad.setNombre(Departamento);
-            nuevaCiudad.setDepartamento(new Departamentos());
-            nuevaCiudad.getDepartamento().setNombre(" ");
+            nuevaUnidad.setTipounidad(new TiposUnidades());
             context.update("form:datosCiudades");
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-
             context.execute("NuevoRegistroCiudad.hide()");
             index = -1;
             secRegistro = null;
         }
     }
-*/
+
+    //DUPLICAR CIUDAD
+    public void duplicarU() {
+        if (index >= 0) {
+            duplicarUnidad = new Unidades();
+
+            if (tipoLista == 0) {
+                duplicarUnidad.setCodigo(listaUnidades.get(index).getCodigo());
+                duplicarUnidad.setNombre(listaUnidades.get(index).getNombre());
+                duplicarUnidad.setTipounidad(listaUnidades.get(index).getTipounidad());
+            }
+            if (tipoLista == 1) {
+                duplicarUnidad.setCodigo(filtradoListaUnidades.get(index).getCodigo());
+                duplicarUnidad.setNombre(filtradoListaUnidades.get(index).getNombre());
+                duplicarUnidad.setTipounidad(filtradoListaUnidades.get(index).getTipounidad());
+            }
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("formularioDialogos:duplicarUnidad");
+            context.execute("DuplicarRegistroUnidad.show()");
+            index = -1;
+            secRegistro = null;
+        }
+    }
+
+    public void confirmarDuplicar() {
+
+        int pasaA = 0;
+        int pasa = 0;
+        k++;
+        l = BigInteger.valueOf(k);
+        duplicarUnidad.setSecuencia(l);
+
+        RequestContext context = RequestContext.getCurrentInstance();
+
+        if (duplicarUnidad.getNombre() == null) {
+            System.out.println("Entra 1");
+            mensajeValidacion = mensajeValidacion + "   * Nombre \n";
+            pasa++;
+        }
+
+        if (duplicarUnidad.getTipounidad().getNombre() == null) {
+            System.out.println("Entra 2");
+            mensajeValidacion = mensajeValidacion + "   * Tipo Unidad\n";
+            pasa++;
+        }
+
+        for (int i = 0; i < listaUnidades.size(); i++) {
+            if (duplicarUnidad.getCodigo() != null) {
+                System.out.println("No es nulo el código");
+                if (duplicarUnidad.getCodigo().equals(listaUnidades.get(i).getCodigo())) {
+                    System.out.println("Entro al IF");
+                    context.update("formularioDialogos:existe");
+                    context.execute("existe.show()");
+                    pasaA++;
+                }
+            }
+        }
+
+        if (pasa == 0) {
+            listaUnidades.add(duplicarUnidad);
+            listaUnidadesCrear.add(duplicarUnidad);
+            infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+            context.update("form:informacionRegistro");
+            context.update("form:datosUnidades");
+            index = -1;
+            secRegistro = null;
+            if (guardado == true) {
+                guardado = false;
+                context.update("form:ACEPTAR");
+            }
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
+                //CERRAR FILTRADO
+                System.out.println("Desactivar");
+                unidadesCodigos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesCodigos");
+                unidadesCodigos.setFilterStyle("display: none; visibility: hidden;");
+                unidadesNombres = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesNombres");
+                unidadesNombres.setFilterStyle("display: none; visibility: hidden;");
+                unidadesTipos = (Column) c.getViewRoot().findComponent("form:datosUnidades:unidadesTipos");
+                unidadesTipos.setFilterStyle("display: none; visibility: hidden;");
+                RequestContext.getCurrentInstance().update("form:datosUnidades");
+                altoTabla = "270";
+                bandera = 0;
+                filtradoListaUnidades = null;
+                System.out.println("TipoLista= " + tipoLista);
+                tipoLista = 0;
+            }
+            duplicarUnidad = new Unidades();
+
+        }
+        context.update("formularioDialogos:duplicarUnidad");
+        context.execute("DuplicarRegistroUnidad.hide()");
+
+    }
+
+    public void activarBuscador() {
+        buscador = false;
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("formularioDialogos:busquedaNombre");
+        context.execute("busquedaNombre.show()");
+    }
+
     //Getter & Setters
     public List<Unidades> getListaUnidades() {
         if (listaUnidades == null) {
@@ -683,6 +969,65 @@ public class ControlUnidad implements Serializable {
 
     public void setInfoRegistro(String infoRegistro) {
         this.infoRegistro = infoRegistro;
+    }
+/////////////////////////////////
+////PRUEBAS UNITARIAS COMPONENTES
+/////////////////////////////////    
+
+    public String getBuscarNombre() {
+        return buscarNombre;
+    }
+
+    public void setBuscarNombre(String buscarNombre) {
+        this.buscarNombre = buscarNombre;
+    }
+
+    public boolean isBuscador() {
+        return buscador;
+    }
+
+    public void setBuscador(boolean buscador) {
+        this.buscador = buscador;
+    }
+
+    public String getMensajeValidacion() {
+        return mensajeValidacion;
+    }
+
+    public void setMensajeValidacion(String mensajeValidacion) {
+        this.mensajeValidacion = mensajeValidacion;
+    }
+
+    public Unidades getNuevaUnidad() {
+        return nuevaUnidad;
+    }
+
+    public void setNuevaUnidad(Unidades nuevaUnidad) {
+        this.nuevaUnidad = nuevaUnidad;
+    }
+
+    public Unidades getDuplicarUnidad() {
+        return duplicarUnidad;
+    }
+
+    public void setDuplicarUnidad(Unidades duplicarUnidad) {
+        this.duplicarUnidad = duplicarUnidad;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public BigInteger getSecRegistro() {
+        return secRegistro;
+    }
+
+    public void setSecRegistro(BigInteger secRegistro) {
+        this.secRegistro = secRegistro;
     }
 
 }

@@ -48,21 +48,21 @@
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistroUnidad.show()" update=":formularioDialogos:nuevaUnidad" process="@this"/> 
                                 <p:tooltip  for="insertar" value="Nuevo Registro" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.borrarCiudades()}" process="@this"/>  
+                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.borrarUnidades()}" process="@this"/>  
                                 <p:tooltip  for="eliminar" value="Eliminar Registro" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.duplicarC()}"  process="@this"/>  
+                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.duplicarU()}"  process="@this"/>  
                                 <p:tooltip  for="duplicar" value="Duplicar Registro" />
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.verificarRastro()}" process="@this"/>  
+                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.verificarRastro()}" process="@this"/>  
                                 <p:tooltip  for="rastro" value="Rastro"/>
 
                                 <p:separator style="position: relative; top: -9px"/>
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="Refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlCiudades.salir()}" action="#{controlCiudades.redirigir()}" process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.salir()}" action="#{controlUnidad.redirigir()}" process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
                             </p:toolbarGroup>  
                         </p:toolbar>
@@ -75,12 +75,11 @@
                                          filteredValue="#{controlUnidad.filtradoListaUnidades}"
                                          scrollHeight="#{controlUnidad.altoTabla}" scrollWidth="830"
                                          style="border: 1px;width: 810px" liveScroll="true" scrollRows="80"
-                                         emptyMessage="No hay ni mierda"
+                                         emptyMessage="No hay nada"
                                          editable="true" editMode="cell"
                                          selection="#{controlUnidad.unidadSeleccionada}" selectionMode="single">
 
                                 <p:ajax event="filter" listener="#{controlUnidad.eventofiltrar()}"/>
-
 
                                 <p:column headerText="Codigo" width="10" sortBy="#{unidades.codigo}" filterBy="#{unidades.codigo}" filterMatchMode="contains" id="unidadesCodigos" filterStyle="display: none; visibility: hidden;"  >  
                                     <p:cellEditor>  
@@ -137,60 +136,146 @@
                             <h:outputText id="informacionRegistro" value="#{controlUnidad.infoRegistro}" style="position: absolute; left: 15px; top: 340px; font-weight: bold"/>
 
                         </fieldset>
-
+                        <p:commandButton style="position: absolute; left: 683px; top: 470px;" icon="ui-icon-check" id="ACEPTAR" value="Aceptar" onclick="confirmarGuardar.show();" disabled="#{controlUnidad.guardado}" update=":form:datosUnidades" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 470px;" icon="ui-icon-closethick" id="ATRAS" value="Cancelar" actionListener="#{controlUnidad.salir()}" action="#{controlUnidad.redirigir()}" process="@this" />
                     </p:panel>
+                    <p:hotkey bind="ctrl+f11" actionListener="#{controlUnidad.activarCtrlF11()}" process="@this"/> 
+
                 </h:form>
+
+
+                <!--HotKey-->
+
                 <h:form id="formularioDialogos">
 
-                    <p:dialog id="NuevoRegistroUnidad" header="Nuevo Registro" widgetVar="NuevoRegistroUnidad" closable="false" resizable="false"  draggable="false" modal="true" height="290" width="400" style=" padding: 0px">  
+                    <p:dialog id="NuevoRegistroUnidad" header="Nuevo Registro" widgetVar="NuevoRegistroUnidad" closable="false" resizable="false"  draggable="false" modal="true" height="265" width="350" style=" padding: 0px">  
 
                         <center><strong><h:outputText value="Ingrese un nuevo registro de unidad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaUnidad" style="border: none;">
                             <strong><h:outputText value="Codigo: " style=" position: absolute; top: 85px" /></strong>
-                            <p:inputText maxlength="4" id="nuevoCodigo" value="#{controlUnidades.nuevaUnidad.codigo}" style=" width: 122px; position: absolute; left: 200px; top: 80px; text-transform: uppercase" onclick="select();">
+                            <p:inputText maxlength="4" id="nuevoCodigo" value="#{controlUnidades.nuevaUnidad.codigo}" style=" width: 122px; position: absolute; left: 130px; top: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
                             <strong><h:outputText value="*Nombre: " style=" position: absolute; top: 125px" /></strong>
-                            <p:inputText id="nuevoNombreUnidad" value="#{controlUnidades.nuevaUnidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 120px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoNombreUnidad" value="#{controlUnidades.nuevaUnidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 120px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText> 
 
                             <strong><h:outputText value="*Tipo Unidad: " style=" position: absolute; top: 165px" /></strong>
-                            <p:inputText id="nuevoTipoUnidad" value="#{controlUnidades.nuevaUnidad.tipounidad.nombre}" style=" width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoTipoUnidad" value="#{controlUnidades.nuevaUnidad.tipounidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="click" listener="#{controlUnidades.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlUnidades.autocompletarNuevoyDuplicado(controlUnidades.nuevaUnidad.tipounidad.nombre,1)}"/>
                                 <p:ajax event="dblclick" listener="#{controlUnidades.llamarLovTiposUnidades(1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 331px; top: 160px;  " id="btnNuevoTipoUnidad" icon="ui-icon-search" process="@this"  actionListener="#{controlUnidades.llamarLovTiposUnidades(1)}"/>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 261px; top: 160px;  " id="btnNuevoTipoUnidad" icon="ui-icon-search" process="@this"  actionListener="#{controlUnidades.llamarLovTiposUnidades(1)}"/>
 
-                            <p:commandButton id="limpiar" value="#{msg['limpiar']}" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 250px;" actionListener="#{controlUnidad.limpiarNuevaUnidad()}" update="nuevaUnidad" process="@this"/>
-                            <p:commandButton id="agregarC" value="#{msg['agregar']}" icon="ui-icon-circle-check" style=" position: absolute; left: 210px; top: 250px;"  actionListener="#{controlCiudades.agregarNuevaCiudad()}" process="@this"/>
-                            <p:commandButton id="cancelarC" value="#{msg['cancelar']}" icon="ui-icon-circle-close" style=" position: absolute; left: 300px; top: 250px;" actionListener="#{controlUnidad.limpiarNuevaUnidad()}" update="nuevaUnidad" onclick="NuevoRegistroUnidad.hide();"  process="@this"/>
+                            <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 210px;" actionListener="#{controlUnidad.limpiarNuevaUnidad()}" update="nuevaUnidad" process="@this"/>
+                            <p:commandButton id="agregarC" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 140px; top: 210px;"  actionListener="#{controlUnidad.agregarNuevaUnidad()}" process="@this"/>
+                            <p:commandButton id="cancelarC" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 210px;" actionListener="#{controlUnidad.limpiarNuevaUnidad()}" update="nuevaUnidad" onclick="NuevoRegistroUnidad.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
+                    <!--DIALOGO DUPLICAR-->
+
+                    <p:dialog id="DuplicarRegistroUnidad" header="Duplicar Registro" widgetVar="DuplicarRegistroUnidad" closable="false" resizable="false"  draggable="false" modal="true" height="265" width="350" style=" padding: 0px">  
+
+                        <center><strong><h:outputText value="Ingresar un nuevo registro de Unidad" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
+
+                        <p:panel id="duplicarUnidad" style="border: none;">
+
+                            <strong><h:outputText value="Codigo: " style=" position: absolute; top: 85px" /></strong>
+                            <p:inputText maxlength="4" id="duplicarCodigo" value="#{controlUnidad.duplicarUnidad.codigo}" style=" width: 122px; position: absolute; left: 130px; top: 80px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="*Nombre: " style=" position: absolute; top: 125px" /></strong>
+                            <p:inputText id="duplicarNombre" value="#{controlUnidad.duplicarUnidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 120px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="change" update="@this"/>
+                            </p:inputText>
+
+                            <strong><h:outputText value="*Tipo Unidad: " style=" position: absolute; top: 165px" /></strong>
+                            <p:inputText id="duplicarTipoUnidad" value="#{controlUnidad.duplicarUnidad.tipounidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 160px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlUnidad.valoresBackupAutocompletar(2)}" />
+                                <p:ajax event="change" listener="#{controlUnidad.autocompletarNuevoyDuplicado(controlUnidad.duplicarUnidad.tipounidad.nombre, 2)}" />
+                                <p:ajax event="dblclick" listener="#{controlUnidad.llamarLovTiposUnidades(2)}" />
+                            </p:inputText>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 261px; top: 160px; " id="btnDuplicarTipoUnidad" process="@this" icon="ui-icon-search" actionListener="#{controlUnidad.llamarLovTiposUnidades(2)}"/>
+
+                            <p:commandButton id="limpiarDuplicadoCiudad" value="Limpiar" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoCiudad" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 140px; top: 210px;"  process="@this" actionListener="#{controlUnidad.confirmarDuplicar()}"  />
+                            <p:commandButton id="cancelarDuplicadoCiudad" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" onclick="DuplicarRegistroUnidad.hide();"  process="@this"/>
+                        </p:panel>
+                    </p:dialog>
+
+                    <!-- DIALOGOS RASTROS -->
+
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlUnidad.secRegistro, 'Unidades', 'unidades')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('Unidades', 'unidades')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                        <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlUnidad.secRegistro, 'Unidades', 'unidades')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                    </p:dialog>
+
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold; text-align: center" />
+                    </p:dialog>
+
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
+
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                        <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                    </p:dialog>
 
                     <!-- DIALOGO L.O.V ESTATICO DE CIUDADES -->
-                    <p:dialog header="Tipos de unidades"  widgetVar="tiposUnidadesDialogo" draggable="false" resizable="false" closable="false" id="tiposUnidadesDialogo"  
+                    <p:dialog header="Tipos de unidades" widgetVar="tiposUnidadesDialogo" draggable="false" resizable="false" closable="false" id="tiposUnidadesDialogo"  
                               showEffect="fade" hideEffect="fade" width="380" height="350" modal="true" >
                         <p:dataTable id="LOVTiposUnidades" style="width: 330px" var="tiposunidades" value="#{controlUnidad.lovTiposUnidades}" rowKey="#{tiposunidades.secuencia}"
                                      selection="#{controlUnidad.tiposUnidadSeleccionado}" selectionMode="single" widgetVar="LOVTiposUnidades" scrollable="true" scrollHeight="200" scrollWidth="345"
-                                     filteredValue="#{controlUnidad.lovFiltradoTiposUnidades}" emptyMessage="No hay un culo">              
+                                     filteredValue="#{controlUnidad.lovFiltradoTiposUnidades}" emptyMessage="No hay nada">              
                             <p:ajax event="rowSelect" listener="#{controlUnidad.activarAceptar()}" update=":formularioDialogos:aceptarTU"/>
                             <p:ajax event="rowDblselect" listener="#{controlUnidad.actualizarTiposUnidades()}" process="@this" onstart="LOVTiposUnidades.clearFilters()"/>
                             <f:facet name="header">  
                                 <h:outputText value="Buscar Tipo Unidad: "  style="position: absolute; left: 27px; top: 14px"/>  
                                 <p:inputText id="globalFilter" onkeyup="LOVTiposUnidades.filter();" style="width:120px; position: relative; left: 55px;" />  
                             </f:facet>
-                            <p:column filterBy="#{tiposunidades.codigo}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{tiposunidades.codigo}" width="10" filterStyle="width:30px" filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Codigo" />
                                 </f:facet>
                                 <h:outputText value="#{tiposunidades.codigo}" />
                             </p:column>
-                            <p:column filterBy="#{tiposunidades.nombre}" width="100"  filterMatchMode="contains">
+                            <p:column filterBy="#{tiposunidades.nombre}" width="130"  filterMatchMode="contains">
                                 <f:facet name="header">
                                     <h:outputText value="Nombre" />
                                 </f:facet>
@@ -206,6 +291,20 @@
                         <p:commandButton id="atrasTU" style="position: absolute; top: 305px; left: 275px; " icon="ui-icon-arrowreturnthick-1-w" value="Atras" actionListener="#{controlUnidad.cancelarCambioTiposUnidades()}" onclick="tiposUnidadesDialogo.hide(), LOVTiposUnidades.clearFilters();"  update="LOVTiposUnidades" process="@this">
                             <p:resetInput target=":formularioDialogos:LOVTiposUnidades:globalFilter"/>
                         </p:commandButton>
+                    </p:dialog>
+
+                    <p:dialog id="validacionNuevaUnidad" header="#{msg['atencion']}" widgetVar="validacionNuevaUnidad"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="Para agregar un nuevo registro necesita: #{controlUnidad.mensajeValidacion}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaUnidad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
+
+                    <!-- Ya Existe -->
+
+                    <p:dialog id="existe" header="Atención" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="El código que desea agregar ya existe, por favor ingrese un codigo diferente." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
                     <!-- DIALOGOS EDITAR -->
