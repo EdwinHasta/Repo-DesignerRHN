@@ -44,7 +44,7 @@ public class Indicadores implements Serializable {
     private Short codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "indicador")
@@ -82,9 +82,6 @@ public class Indicadores implements Serializable {
     }
 
     public String getDescripcion() {
-        if(descripcion == null){
-            descripcion = " ";
-        }
         return descripcion;
     }
 

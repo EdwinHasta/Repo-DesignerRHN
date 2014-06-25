@@ -81,7 +81,7 @@ public class ControlRemoto implements Serializable {
     private String Imagen;
     private String fotoEmpleado;
     private BigInteger secuencia, identificacion;
-    private boolean acumulado, novedad, evaluacion, activo, pensionado, aspirante, hv1, hv2;
+    private boolean acumulado, novedad, evaluacion, activo, pensionado, aspirante, hv1, hv2, bandera;
     private VWActualesTiposTrabajadores emplSeleccionado;
     private VWActualesTiposTrabajadores emplSeleccionadoBE;
     private SelectItem[] tipoEmpleado;
@@ -152,6 +152,7 @@ public class ControlRemoto implements Serializable {
         buscar = true;
         buscarEmp = false;
         mostrarT = true;
+        bandera = false;
         //Carpeta Designer //
         listModulos = null;
         selectModulo = null;
@@ -917,6 +918,19 @@ public class ControlRemoto implements Serializable {
             vwActualesTiposTrabajadoresesLista = administrarCarpetaPersonal.consultarEmpleadosTipoTrabajador(tipo);
             if (vwActualesTiposTrabajadoresesLista != null && vwActualesTiposTrabajadoresesLista.isEmpty()) {
                 vwActualesTiposTrabajadoresesLista.add(new VWActualesTiposTrabajadores());
+                acumulado = true;
+                novedad = true;
+                evaluacion = true;
+                bandera = true;
+                hv1 = true;
+                hv2 = true;
+            }else{
+                acumulado = false;
+                novedad = false;
+                evaluacion = false;
+                bandera = false;
+                hv1 = false;
+                hv2 = false;
             }
             return vwActualesTiposTrabajadoresesLista;
         }
@@ -1365,5 +1379,9 @@ public class ControlRemoto implements Serializable {
 
     public boolean isMostrarTodasTablas() {
         return mostrarTodasTablas;
+    }
+
+    public boolean isBandera() {
+        return bandera;
     }
 }

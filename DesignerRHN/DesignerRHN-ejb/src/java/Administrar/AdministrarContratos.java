@@ -27,7 +27,6 @@ public class AdministrarContratos implements AdministrarContratosInterface {
     //--------------------------------------------------------------------------
     //ATRIBUTOS
     //--------------------------------------------------------------------------    
-
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -73,25 +72,21 @@ public class AdministrarContratos implements AdministrarContratosInterface {
     @Override
     public void modificarConceptos(List<Contratos> listContratosModificados) {
         for (int i = 0; i < listContratosModificados.size(); i++) {
-            System.out.println("Modificando...");
             if (listContratosModificados.get(i).getTipocotizante().getSecuencia() == null) {
                 listContratosModificados.get(i).setTipocotizante(null);
-                persistenciaContratos.editar(em,listContratosModificados.get(i));
-            } else {
-                persistenciaContratos.editar(em,listContratosModificados.get(i));
             }
+            persistenciaContratos.editar(em, listContratosModificados.get(i));
         }
     }
 
     @Override
     public void borrarConceptos(List<Contratos> listaContratos) {
         for (int i = 0; i < listaContratos.size(); i++) {
-            System.out.println("Borrando...");
             if (listaContratos.get(i).getTipocotizante().getSecuencia() == null) {
                 listaContratos.get(i).setTipocotizante(null);
-                persistenciaContratos.borrar(em,listaContratos.get(i));
+                persistenciaContratos.borrar(em, listaContratos.get(i));
             } else {
-                persistenciaContratos.borrar(em,listaContratos.get(i));
+                persistenciaContratos.borrar(em, listaContratos.get(i));
             }
         }
     }
@@ -99,18 +94,17 @@ public class AdministrarContratos implements AdministrarContratosInterface {
     @Override
     public void crearConceptos(List<Contratos> listaContratos) {
         for (int i = 0; i < listaContratos.size(); i++) {
-            System.out.println("Creando...");
             if (listaContratos.get(i).getTipocotizante().getSecuencia() == null) {
                 listaContratos.get(i).setTipocotizante(null);
-                persistenciaContratos.crear(em,listaContratos.get(i));
+                persistenciaContratos.crear(em, listaContratos.get(i));
             } else {
-                persistenciaContratos.crear(em,listaContratos.get(i));
+                persistenciaContratos.crear(em, listaContratos.get(i));
             }
         }
     }
 
     @Override
     public void reproducirContrato(Short codigoOrigen, Short codigoDestino) {
-        persistenciaContratos.reproducirContrato(em,codigoOrigen, codigoDestino);
+        persistenciaContratos.reproducirContrato(em, codigoOrigen, codigoDestino);
     }
 }

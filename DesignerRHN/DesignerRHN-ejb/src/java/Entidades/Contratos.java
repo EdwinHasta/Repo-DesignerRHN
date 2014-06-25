@@ -56,7 +56,7 @@ public class Contratos implements Serializable {
     private String descripcion;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 10)
+    @Size(max = 10)
     @Column(name = "ESTADO")
     private String estado;
     @Lob
@@ -120,6 +120,9 @@ public class Contratos implements Serializable {
     }
 
     public String getEstado() {
+        if (estado == null) {
+            estado = "INACTIVO";
+        }
         return estado;
     }
 

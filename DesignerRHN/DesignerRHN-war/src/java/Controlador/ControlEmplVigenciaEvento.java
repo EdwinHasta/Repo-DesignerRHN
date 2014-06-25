@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -37,7 +38,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlEmplVigenciaEvento implements Serializable {
 
-    
     @EJB
     AdministrarEmplVigenciaEventoInterface administrarEmplVigenciaEvento;
     @EJB
@@ -45,6 +45,8 @@ public class ControlEmplVigenciaEvento implements Serializable {
     ////
     private List<VigenciasEventos> listVigenciasEventos;
     private List<VigenciasEventos> filtrarListVigenciasEventos;
+    private VigenciasEventos vigenciaTablaSeleccionada;
+
     private List<Eventos> listEventos;
     private Eventos eventoSeleccionado;
     private List<Eventos> filtrarListEventos;
@@ -78,8 +80,12 @@ public class ControlEmplVigenciaEvento implements Serializable {
     private Empleados empleado;
     private Date fechaParametro;
     private Date fechaIni, fechaFin;
+    //
+    private String altoTabla;
+    private String infoRegistro, infoRegistroEvento;
 
     public ControlEmplVigenciaEvento() {
+        altoTabla = "270";
         listVigenciasEventos = null;
         listEventos = null;
         //Otros
@@ -106,7 +112,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
         empleado = new Empleados();
 
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -124,6 +130,12 @@ public class ControlEmplVigenciaEvento implements Serializable {
         listVigenciasEventos = null;
         listEventos = null;
         empleado = administrarEmplVigenciaEvento.empleadoActual(secuencia);
+        getListVigenciasEventos();
+        if (listVigenciasEventos != null) {
+            infoRegistro = "Cantidad de registros : " + listVigenciasEventos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
     }
 
     public void modificarVigenciaEvento(int indice) {
@@ -137,6 +149,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -151,6 +164,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -158,12 +172,6 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
     }
 
-    /**
-     * Metodo que modifica los cambios efectuados en la tabla
-     * VigenciasReformasLaborales de la pagina
-     *
-     * @param indice Fila en la cual se realizo el cambio
-     */
     public void modificarVigenciaEvento(int indice, String confirmarCambio, String valorConfirmar) {
         index = indice;
         int coincidencias = 0;
@@ -207,6 +215,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -221,6 +230,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -279,14 +289,6 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
     }
 
-    //Ubicacion Celda.
-    /**
-     * Metodo que obtiene la posicion dentro de la tabla
-     * VigenciasReformasLaborales
-     *
-     * @param indice Fila de la tabla
-     * @param celda Columna de la tabla
-     */
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
             index = indice;
@@ -397,8 +399,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 if (tipoLista == 0) {
                     listVigenciasEventos.get(i).setFechafinal(fechaFin);
                     listVigenciasEventos.get(i).setFechainicial(fechaIni);
-                }
-                if (tipoLista == 1) {
+                } else {
                     filtrarListVigenciasEventos.get(i).setFechafinal(fechaFin);
                     filtrarListVigenciasEventos.get(i).setFechainicial(fechaIni);
 
@@ -410,8 +411,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
         } else {
             if (tipoLista == 0) {
                 listVigenciasEventos.get(i).setFechainicial(fechaIni);
-            }
-            if (tipoLista == 1) {
+            } else {
                 filtrarListVigenciasEventos.get(i).setFechainicial(fechaIni);
 
             }
@@ -421,56 +421,66 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
     }
 
-    //GUARDAR
-    /**
-     * Metodo que guarda los cambios efectuados en la pagina
-     * VigenciasReformasLaborales
-     */
     public void guardarCambios() {
-        if (guardado == false) {
-            if (!listVigenciaEventoBorrar.isEmpty()) {
-                administrarEmplVigenciaEvento.borrarVigenciasEventos(listVigenciaEventoBorrar);
-                listVigenciaEventoBorrar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listVigenciaEventoBorrar.isEmpty()) {
+                    administrarEmplVigenciaEvento.borrarVigenciasEventos(listVigenciaEventoBorrar);
+                    listVigenciaEventoBorrar.clear();
+                }
+                if (!listVigenciaEventoCrear.isEmpty()) {
+                    administrarEmplVigenciaEvento.crearVigenciasEventos(listVigenciaEventoCrear);
+                    listVigenciaEventoCrear.clear();
+                }
+                if (!listVigenciaEventoModificar.isEmpty()) {
+                    administrarEmplVigenciaEvento.editarVigenciasEventos(listVigenciaEventoModificar);
+                    listVigenciaEventoModificar.clear();
+                }
+                listVigenciasEventos = null;
+                getListVigenciasEventos();
+                if (listVigenciasEventos != null) {
+                    infoRegistro = "Cantidad de registros : " + listVigenciasEventos.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:datosVigenciaEventos");
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                k = 0;
+                index = -1;
+                secRegistro = null;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listVigenciaEventoCrear.isEmpty()) {
-                administrarEmplVigenciaEvento.crearVigenciasEventos(listVigenciaEventoCrear);
-                listVigenciaEventoCrear.clear();
-            }
-            if (!listVigenciaEventoModificar.isEmpty()) {
-                administrarEmplVigenciaEvento.editarVigenciasEventos(listVigenciaEventoModificar);
-                listVigenciaEventoModificar.clear();
-            }
-            listVigenciasEventos = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosVigenciaEventos");
-            guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se presento un error en el guardado, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        index = -1;
-        secRegistro = null;
     }
-    //CANCELAR MODIFICACIONES
 
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "270";
+            veFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
+            veFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
             veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
+            veDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
             veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
+            veIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
             veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
+            veCIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
             veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
+            veGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
             veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
+            veCGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
             veCGrupal.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaEventos");
             bandera = 0;
@@ -486,15 +496,18 @@ public class ControlEmplVigenciaEvento implements Serializable {
         k = 0;
         listVigenciasEventos = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         RequestContext context = RequestContext.getCurrentInstance();
+        getListVigenciasEventos();
+        if (listVigenciasEventos != null) {
+            infoRegistro = "Cantidad de registros : " + listVigenciasEventos.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        context.update("form:informacionRegistro");
         context.update("form:datosVigenciaEventos");
     }
 
-    //MOSTRAR DATOS CELDA
-    /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o
-     * la lista filtrada y a la columna
-     */
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -539,28 +552,26 @@ public class ControlEmplVigenciaEvento implements Serializable {
         secRegistro = null;
     }
 
-    //CREAR VU
-    /**
-     * Metodo que se encarga de agregar un nueva VigenciaReformaLaboral
-     */
     public void agregarNuevaVigenciaEvento() {
         if (nuevaVigenciaEvento.getFechainicial() != null && nuevaVigenciaEvento.getEvento().getSecuencia() != null) {
             if (validarFechasRegistro(1) == true) {
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    altoTabla = "270";
+                    veFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
                     veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
+                    veFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
                     veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
+                    veDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
                     veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                    veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
+                    veIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
                     veIndividual.setFilterStyle("display: none; visibility: hidden;");
-                    veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
+                    veCIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
                     veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-                    veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
+                    veGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
                     veGrupal.setFilterStyle("display: none; visibility: hidden;");
-                    veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
+                    veCGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
                     veCGrupal.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaEventos");
                     bandera = 0;
@@ -578,11 +589,13 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 nuevaVigenciaEvento = new VigenciasEventos();
                 nuevaVigenciaEvento.setEvento(new Eventos());
                 RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listVigenciasEventos.size();
+                context.update("form:informacionRegistro");
                 context.update("form:datosVigenciaEventos");
                 context.execute("NuevoRegistroVigencias.hide()");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 index = -1;
                 secRegistro = null;
@@ -595,32 +608,18 @@ public class ControlEmplVigenciaEvento implements Serializable {
             context.execute("errorRegNew.show()");
         }
     }
-    //LIMPIAR NUEVO REGISTRO
 
-    /**
-     * Metodo que limpia las casillas de la nueva vigencia
-     */
     public void limpiarNuevaVigenciaEvento() {
         nuevaVigenciaEvento = new VigenciasEventos();
         nuevaVigenciaEvento.setEvento(new Eventos());
         index = -1;
         secRegistro = null;
     }
-    //DUPLICAR VC
 
-    /**
-     * Metodo que duplica una vigencia especifica dado por la posicion de la
-     * fila
-     */
     public void duplicarVigenciaEventoM() {
         if (index >= 0) {
             duplicarVigenciaEvento = new VigenciasEventos();
-            k++;
-            l = BigInteger.valueOf(k);
-
             if (tipoLista == 0) {
-
-                duplicarVigenciaEvento.setSecuencia(l);
                 duplicarVigenciaEvento.setFechafinal(listVigenciasEventos.get(index).getFechafinal());
                 duplicarVigenciaEvento.setFechainicial(listVigenciasEventos.get(index).getFechainicial());
                 duplicarVigenciaEvento.setEmpleado(listVigenciasEventos.get(index).getEmpleado());
@@ -629,11 +628,8 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 duplicarVigenciaEvento.setValorcuantitativo(listVigenciasEventos.get(index).getValorcuantitativo());
                 duplicarVigenciaEvento.setValorcuantitativogrupo(listVigenciasEventos.get(index).getValorcuantitativogrupo());
                 duplicarVigenciaEvento.setEvento(listVigenciasEventos.get(index).getEvento());
-
             }
             if (tipoLista == 1) {
-
-                duplicarVigenciaEvento.setSecuencia(l);
                 duplicarVigenciaEvento.setFechafinal(filtrarListVigenciasEventos.get(index).getFechafinal());
                 duplicarVigenciaEvento.setFechainicial(filtrarListVigenciasEventos.get(index).getFechainicial());
                 duplicarVigenciaEvento.setEmpleado(filtrarListVigenciasEventos.get(index).getEmpleado());
@@ -642,7 +638,6 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 duplicarVigenciaEvento.setValorcuantitativo(filtrarListVigenciasEventos.get(index).getValorcuantitativo());
                 duplicarVigenciaEvento.setValorcuantitativogrupo(filtrarListVigenciasEventos.get(index).getValorcuantitativogrupo());
                 duplicarVigenciaEvento.setEvento(filtrarListVigenciasEventos.get(index).getEvento());
-
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -653,40 +648,43 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
     }
 
-    /**
-     * Metodo que confirma el duplicado y actualiza los datos de la tabla
-     * VigenciasReformasLaborales
-     */
     public void confirmarDuplicar() {
         if (duplicarVigenciaEvento.getFechainicial() != null && duplicarVigenciaEvento.getEvento().getSecuencia() != null) {
             if (validarFechasRegistro(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVigenciaEvento.setSecuencia(l);
                 duplicarVigenciaEvento.setEmpleado(empleado);
                 listVigenciasEventos.add(duplicarVigenciaEvento);
                 listVigenciaEventoCrear.add(duplicarVigenciaEvento);
                 RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listVigenciasEventos.size();
+                context.update("form:informacionRegistro");
                 context.update("form:datosVigenciaEventos");
                 context.execute("DuplicarRegistroVigencias.hide()");
                 index = -1;
                 secRegistro = null;
                 if (guardado == true) {
                     guardado = false;
-                    //RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 if (bandera == 1) {
                     //CERRAR FILTRADO
-                    veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    altoTabla = "270";
+                    veFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
                     veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
+                    veFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
                     veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
+                    veDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
                     veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-                    veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
+                    veIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
                     veIndividual.setFilterStyle("display: none; visibility: hidden;");
-                    veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
+                    veCIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
                     veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-                    veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
+                    veGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
                     veGrupal.setFilterStyle("display: none; visibility: hidden;");
-                    veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
+                    veCGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
                     veCGrupal.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaEventos");
                     bandera = 0;
@@ -703,20 +701,12 @@ public class ControlEmplVigenciaEvento implements Serializable {
             context.execute("errorRegNew.show()");
         }
     }
-    //LIMPIAR DUPLICAR
 
-    /**
-     * Metodo que limpia los datos de un duplicar Vigencia
-     */
     public void limpiarDuplicar() {
         duplicarVigenciaEvento = new VigenciasEventos();
         duplicarVigenciaEvento.setEvento(new Eventos());
     }
 
-    //BORRAR VC
-    /**
-     * Metodo que borra las vigencias seleccionadas
-     */
     public void borrarVigenciaEvento() {
 
         if (index >= 0) {
@@ -750,55 +740,54 @@ public class ControlEmplVigenciaEvento implements Serializable {
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listVigenciasEventos.size();
+            context.update("form:informacionRegistro");
             context.update("form:datosVigenciaEventos");
             index = -1;
             secRegistro = null;
 
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
-    //CTRL + F11 ACTIVAR/DESACTIVAR
 
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
-
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
+            altoTabla = "248";
+            veFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
             veFechaInicial.setFilterStyle("width: 50px");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
+            veFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
             veFechaFinal.setFilterStyle("width: 50px");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
+            veDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
             veDescripcion.setFilterStyle("width: 100px");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
+            veIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
             veIndividual.setFilterStyle("width: 100px");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
+            veCIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
             veCIndividual.setFilterStyle("width: 100px");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
+            veGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
             veGrupal.setFilterStyle("width: 100px");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
+            veCGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
             veCGrupal.setFilterStyle("width: 100px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaEventos");
             bandera = 1;
         } else if (bandera == 1) {
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
+            altoTabla = "270";
+            veFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
+            veFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
             veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
+            veDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
             veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
+            veIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
             veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
+            veCIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
             veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
+            veGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
             veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
+            veCGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
             veCGrupal.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaEventos");
             bandera = 0;
@@ -807,25 +796,23 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (bandera == 1) {
-            veFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
+            FacesContext c = FacesContext.getCurrentInstance();
+            altoTabla = "270";
+            veFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaInicial");
             veFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            veFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
+            veFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veFechaFinal");
             veFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            veDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
+            veDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veDescripcion");
             veDescripcion.setFilterStyle("display: none; visibility: hidden;");
-            veIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
+            veIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veIndividual");
             veIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veCIndividual = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
+            veCIndividual = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCIndividual");
             veCIndividual.setFilterStyle("display: none; visibility: hidden;");
-            veGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
+            veGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veGrupal");
             veGrupal.setFilterStyle("display: none; visibility: hidden;");
-            veCGrupal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
+            veCGrupal = (Column) c.getViewRoot().findComponent("form:datosVigenciaEventos:veCGrupal");
             veCGrupal.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaEventos");
             bandera = 0;
@@ -841,17 +828,9 @@ public class ControlEmplVigenciaEvento implements Serializable {
         k = 0;
         listVigenciasEventos = null;
         guardado = true;
-
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO)
 
-    /**
-     * Metodo que ejecuta el dialogo de reforma laboral
-     *
-     * @param indice Fila de la tabla
-     * @param list Lista filtrada - Lista real
-     * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
-     */
     public void asignarIndex(Integer indice, int LND) {
         index = indice;
         RequestContext context = RequestContext.getCurrentInstance();
@@ -866,12 +845,8 @@ public class ControlEmplVigenciaEvento implements Serializable {
         context.execute("EventosDialogo.show()");
     }
 
-    //LOVS
-    //CIUDAD
-    /**
-     * Metodo que actualiza la reforma laboral seleccionada
-     */
     public void actualizarEvento() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoLista == 0) {
                 listVigenciasEventos.get(index).setEvento(eventoSeleccionado);
@@ -894,18 +869,16 @@ public class ControlEmplVigenciaEvento implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
-                //RequestContext.getCurrentInstance().update("form:aceptar");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndex = true;
-            RequestContext context = RequestContext.getCurrentInstance();
+
             context.update("form:datosVigenciaEventos");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaEvento.setEvento(eventoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaVigencias");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaEvento.setEvento(eventoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarVigencias");
         }
         filtrarListEventos = null;
@@ -914,11 +887,13 @@ public class ControlEmplVigenciaEvento implements Serializable {
         index = -1;
         secRegistro = null;
         tipoActualizacion = -1;
+        context.update("form:EventosDialogo");
+        context.update("form:lovEventos");
+        context.update("form:aceptarE");
+        context.reset("form:lovEventos:globalFilter");
+        context.execute("EventosDialogo.hide()");
     }
 
-    /**
-     * Metodo que cancela los cambios sobre reforma laboral
-     */
     public void cancelarCambioEvento() {
         filtrarListEventos = null;
         eventoSeleccionado = null;
@@ -929,11 +904,6 @@ public class ControlEmplVigenciaEvento implements Serializable {
         permitirIndex = true;
     }
 
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Metodo que activa la lista de valores de la tabla con respecto a las
-     * reformas laborales
-     */
     public void listaValoresBoton() {
         if (index >= 0) {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -945,19 +915,11 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
     }
 
-    /**
-     * Metodo que activa el boton aceptar de la pagina y los dialogos
-     */
     public void activarAceptar() {
         aceptar = false;
     }
     //EXPORTAR
 
-    /**
-     * Metodo que exporta datos a PDF
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVigenciaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -968,11 +930,6 @@ public class ControlEmplVigenciaEvento implements Serializable {
         secRegistro = null;
     }
 
-    /**
-     * Metodo que exporta datos a XLS
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportXLS() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosVigenciaExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -982,15 +939,14 @@ public class ControlEmplVigenciaEvento implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    //EVENTO FILTRAR
 
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
     public void eventoFiltrar() {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + filtrarListVigenciasEventos.size();
+        context.update("form:informacionRegistro");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -998,7 +954,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (listVigenciasEventos != null) {
             if (secRegistro != null) {
-                int resultado = administrarRastros.obtenerTabla(secRegistro, "IDIOMASPERSONAS");
+                int resultado = administrarRastros.obtenerTabla(secRegistro, "VIGENCIASEVENTOS");
                 backUpSecRegistro = secRegistro;
                 secRegistro = null;
                 if (resultado == 1) {
@@ -1016,7 +972,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
                 context.execute("seleccionarRegistro.show()");
             }
         } else {
-            if (administrarRastros.verificarHistoricosTabla("IDIOMASPERSONAS")) {
+            if (administrarRastros.verificarHistoricosTabla("VIGENCIASEVENTOS")) {
                 context.execute("confirmarRastroHistorico.show()");
             } else {
                 context.execute("errorRastroHistorico.show()");
@@ -1025,19 +981,13 @@ public class ControlEmplVigenciaEvento implements Serializable {
         }
         index = -1;
     }
-    //GETTERS AND SETTERS
 
-    /**
-     * Metodo que obtiene las VigenciasReformasLaborales de un empleado, en caso
-     * de ser null por medio del administrar hace el llamado para almacenarlo
-     *
-     * @return listVC Lista VigenciasReformasLaborales
-     */
     public List<VigenciasEventos> getListVigenciasEventos() {
         try {
             if (listVigenciasEventos == null) {
-                listVigenciasEventos = new ArrayList<VigenciasEventos>();
-                listVigenciasEventos = administrarEmplVigenciaEvento.listVigenciasEventosEmpleado(empleado.getSecuencia());
+                if (empleado.getSecuencia() != null) {
+                    listVigenciasEventos = administrarEmplVigenciaEvento.listVigenciasEventosEmpleado(empleado.getSecuencia());
+                }
                 return listVigenciasEventos;
             } else {
                 return listVigenciasEventos;
@@ -1073,10 +1023,7 @@ public class ControlEmplVigenciaEvento implements Serializable {
     }
 
     public List<Eventos> getListEventos() {
-        if (listEventos == null) {
-            listEventos = new ArrayList<Eventos>();
-            listEventos = administrarEmplVigenciaEvento.listEventos();
-        }
+        listEventos = administrarEmplVigenciaEvento.listEventos();
         return listEventos;
     }
 
@@ -1135,4 +1082,58 @@ public class ControlEmplVigenciaEvento implements Serializable {
     public Empleados getEmpleado() {
         return empleado;
     }
+
+    public VigenciasEventos getVigenciaTablaSeleccionada() {
+        getListVigenciasEventos();
+        if (listVigenciasEventos != null) {
+            int tam = listVigenciasEventos.size();
+            if (tam > 0) {
+                vigenciaTablaSeleccionada = listVigenciasEventos.get(0);
+            }
+        }
+        return vigenciaTablaSeleccionada;
+    }
+
+    public void setVigenciaTablaSeleccionada(VigenciasEventos vigenciaTablaSeleccionada) {
+        this.vigenciaTablaSeleccionada = vigenciaTablaSeleccionada;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroEvento() {
+        getListEventos();
+        if (listEventos != null) {
+            infoRegistroEvento = "Cantidad de registros : " + listEventos.size();
+        } else {
+            infoRegistroEvento = "Cantidad de registros : 0";
+        }
+        return infoRegistroEvento;
+    }
+
+    public void setInfoRegistroEvento(String infoRegistroEvento) {
+        this.infoRegistroEvento = infoRegistroEvento;
+    }
+
 }

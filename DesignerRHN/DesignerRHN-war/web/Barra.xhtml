@@ -87,7 +87,7 @@
                             <fieldset style="padding: 0px; position: absolute; top: 35px; border: none">
                                 <p:dataTable id="datosLiquidacionesCerradas" var="liquidacionCerrada" style="font-size: 11px; width: 300px;" value="#{controlBarra.liquidacionesCerradas}"
                                              scrollable="true" scrollWidth="315"
-                                             editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesCerradas}" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="#{msg['sinregistros']}">
+                                             editable="true" editMode="cell"  scrollHeight="#{controlBarra.altoScrollLiquidacionesCerradas}" filteredValue="#{controlBarra.filtradoLiquidacionesCerradas}" emptyMessage="#{msg['sinregistro']}">
 
                                     <p:column id="corte" headerText="#{msg['corte']}" sortBy="#{liquidacionCerrada.corte}" width="55" filterBy="#{liquidacionCerrada.corte}" filterMatchMode="contains" filterStyle="display: none; visibility: hidden;" style="padding-left: 3px" > 
                                         <p:cellEditor>  

@@ -50,7 +50,7 @@ public class TiposCotizantes implements Serializable {
     private BigInteger codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 40)
+    @Size(max = 40)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 1)
@@ -121,7 +121,7 @@ public class TiposCotizantes implements Serializable {
     }
 
     public BigInteger getCodigo() {
-        if(codigo == null){
+        if (codigo == null) {
             codigo = BigInteger.valueOf(0);
         }
         return codigo;
@@ -132,10 +132,10 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
+        if (descripcion != null) {
+            descripcion = descripcion.toUpperCase();
         }
-        return descripcion.toUpperCase();
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
@@ -234,10 +234,9 @@ public class TiposCotizantes implements Serializable {
 
     public boolean isCotizapensionBool() {
         getCotizapension();
-        if(cotizapension== null || cotizapension.equalsIgnoreCase("N")){
+        if (cotizapension == null || cotizapension.equalsIgnoreCase("N")) {
             cotizapensionBool = false;
-        }
-        else {
+        } else {
             cotizapensionBool = true;
         }
         return cotizapensionBool;
@@ -383,12 +382,12 @@ public class TiposCotizantes implements Serializable {
     }
 
     public String getEstadoSubTipoCotizante() {
-        
+
         getSubtipocotizante();
         if (subtipocotizante == null) {
             estadoSubTipoCotizante = "";
         } else {
-            
+
             int value = subtipocotizante.intValue();
             if (value == 1) {
                 estadoSubTipoCotizante = "1";
@@ -408,7 +407,7 @@ public class TiposCotizantes implements Serializable {
     }
 
     public void setEstadoSubTipoCotizante(String estadoSubTipoCotizante) {
-        
+
         if (estadoSubTipoCotizante.equals("1")) {
             setSubtipocotizante(new Short("1"));
         } else if (estadoSubTipoCotizante.equals("2")) {

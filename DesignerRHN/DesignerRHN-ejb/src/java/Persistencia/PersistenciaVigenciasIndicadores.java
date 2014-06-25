@@ -33,7 +33,7 @@ public class PersistenciaVigenciasIndicadores implements PersistenciaVigenciasIn
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasIndicadores);
+            em.persist(vigenciasIndicadores);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasIndicadores.crear: " + e);

@@ -33,7 +33,7 @@ public class PersistenciaProyectos implements PersistenciaProyectosInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(proyectos);
+            em.persist(proyectos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaProyectos.crear: " + e);
