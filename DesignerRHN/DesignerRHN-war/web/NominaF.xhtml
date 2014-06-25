@@ -410,14 +410,14 @@
 
                                     <hr style="float: left; height: 120px; position: absolute; left: 200px; top: -3px;"/>
 
-                                    <p:commandButton id="ConceptosNomina" value="" style="position: absolute; left: 255px; top: 7px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="concepto"/>
+                                    <p:commandButton id="ConceptosNomina" value="" style="position: absolute; left: 255px; top: 7px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_hojaconcepto.gif);  background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlConcepto.recibirPaginaEntrante('nomina')}" action="concepto"/>
                                     <p:tooltip  for="ConceptosNomina">
                                         #{msg['toolTipConcepto1']}<br/>#{msg['toolTipConcepto2']}
                                     </p:tooltip>
 
                                     <hr style="float: left; height: 120px; position: absolute; left: 405px; top: -3px;"/>
 
-                                    <p:commandButton id="FormulasLiquidacion" value="" style="position: absolute; left: 465px; top: 7px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%;" action="formula"/>
+                                    <p:commandButton id="FormulasLiquidacion" value="" style="position: absolute; left: 465px; top: 7px; width: 95px; height: 95px;  background-image: url(Imagenes/nom_formulas.gif);  background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlFormula.recibirPaginaEntrante('nomina')}" action="formula"/>
                                     <p:tooltip  for="FormulasLiquidacion">
                                         #{msg['toolTipFormulas']}
                                     </p:tooltip>

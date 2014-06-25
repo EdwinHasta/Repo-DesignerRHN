@@ -89,8 +89,11 @@ public class ControlFormulaContrato implements Serializable {
     private String infoRegistro;
     private String altoTabla;
     private String infoRegistroContrato, infoRegistroPeriodicidad, infoRegistroTercero;
+    //
+    private boolean activoDetalle;
 
     public ControlFormulaContrato() {
+        activoDetalle = true;
         altoTabla = "260";
         formulaActual = new Formulas();
         listFormulasContratos = null;
@@ -174,6 +177,8 @@ public class ControlFormulaContrato implements Serializable {
             }
             indexFormulaContrato = -1;
             secRegistroFormulaContrato = null;
+            activoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
         } else {
             if (!listFormulasContratosCrear.contains(filtrarListFormulasContratos.get(indice))) {
                 if (listFormulasContratosModificar.isEmpty()) {
@@ -188,6 +193,8 @@ public class ControlFormulaContrato implements Serializable {
             }
             indexFormulaContrato = -1;
             secRegistroFormulaContrato = null;
+            activoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
         }
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:datosFormulaContrato");
@@ -282,7 +289,7 @@ public class ControlFormulaContrato implements Serializable {
                 }
             } else {
                 listTerceros.clear();
-                    getListTerceros();
+                getListTerceros();
                 if (tipoListaFormulaContrato == 0) {
                     listFormulasContratos.get(indice).setTercero(new Terceros());
                 } else {
@@ -307,6 +314,8 @@ public class ControlFormulaContrato implements Serializable {
                 }
                 indexFormulaContrato = -1;
                 secRegistroFormulaContrato = null;
+                activoDetalle = true;
+                RequestContext.getCurrentInstance().update("form:detalleFormula");
             } else {
                 if (!listFormulasContratosCrear.contains(filtrarListFormulasContratos.get(indice))) {
                     if (listFormulasContratosModificar.isEmpty()) {
@@ -321,6 +330,8 @@ public class ControlFormulaContrato implements Serializable {
                 }
                 indexFormulaContrato = -1;
                 secRegistroFormulaContrato = null;
+                activoDetalle = true;
+                RequestContext.getCurrentInstance().update("form:detalleFormula");
             }
             cambiosFormulaContrato = true;
         }
@@ -453,7 +464,7 @@ public class ControlFormulaContrato implements Serializable {
                 }
             } else {
                 listTerceros.clear();
-                    getListTerceros();
+                getListTerceros();
                 if (tipoNuevo == 1) {
                     nuevaFormulaContrato.setTercero(new Terceros());
                     context.update("formularioDialogos:nuevaTercero");
@@ -469,6 +480,8 @@ public class ControlFormulaContrato implements Serializable {
         if (permitirIndexFormulaContrato == true) {
             cualCeldaFormulaContrato = celda;
             indexFormulaContrato = indice;
+            activoDetalle = false;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
             if (tipoListaFormulaContrato == 0) {
                 secRegistroFormulaContrato = listFormulasContratos.get(indexFormulaContrato).getSecuencia();
                 ///////// Captura Objetos Para Campos NotNull ///////////
@@ -558,6 +571,8 @@ public class ControlFormulaContrato implements Serializable {
                 context.update("form:datosFormulaContrato");
                 context.execute("errorFechasFC.show()");
                 indexFormulaContrato = -1;
+                activoDetalle = true;
+                RequestContext.getCurrentInstance().update("form:detalleFormula");
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
@@ -570,6 +585,8 @@ public class ControlFormulaContrato implements Serializable {
             context.update("form:datosFormulaContrato");
             context.execute("errorRegNuevo.show()");
             indexFormulaContrato = -1;
+            activoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
         }
     }
 
@@ -608,6 +625,8 @@ public class ControlFormulaContrato implements Serializable {
             context.update("form:datosFormulaContrato");
             k = 0;
             indexFormulaContrato = -1;
+            activoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
             secRegistroFormulaContrato = null;
             cambiosFormulaContrato = false;
             FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
@@ -651,6 +670,8 @@ public class ControlFormulaContrato implements Serializable {
         listFormulasContratosCrear.clear();
         listFormulasContratosModificar.clear();
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         indexAuxFormulaContrato = -1;
         secRegistroFormulaContrato = null;
         k = 0;
@@ -745,6 +766,8 @@ public class ControlFormulaContrato implements Serializable {
             }
             indexFormulaContrato = -1;
             secRegistroFormulaContrato = null;
+            activoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
         }
     }
 
@@ -847,6 +870,8 @@ public class ControlFormulaContrato implements Serializable {
                 }
                 cambiosFormulaContrato = true;
                 indexFormulaContrato = -1;
+                activoDetalle = true;
+                RequestContext.getCurrentInstance().update("form:detalleFormula");
                 secRegistroFormulaContrato = null;
             } else {
                 RequestContext context = RequestContext.getCurrentInstance();
@@ -864,6 +889,8 @@ public class ControlFormulaContrato implements Serializable {
         nuevaFormulaContrato.setTercero(new Terceros());
         nuevaFormulaContrato.setContrato(new Contratos());
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
     }
 
@@ -943,6 +970,8 @@ public class ControlFormulaContrato implements Serializable {
                 context.execute("DuplicarRegistroFormula.hide()");
                 cambiosFormulaContrato = true;
                 indexFormulaContrato = -1;
+                activoDetalle = true;
+                RequestContext.getCurrentInstance().update("form:detalleFormula");
                 secRegistroFormulaContrato = null;
 
             } else {
@@ -961,6 +990,8 @@ public class ControlFormulaContrato implements Serializable {
         duplicarFormulaContrato.setTercero(new Terceros());
         duplicarFormulaContrato.setContrato(new Contratos());
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
     }
 
@@ -1002,6 +1033,8 @@ public class ControlFormulaContrato implements Serializable {
             context.update("form:informacionRegistro");
             context.update("form:datosFormulaContrato");
             indexFormulaContrato = -1;
+            activoDetalle = true;
+            RequestContext.getCurrentInstance().update("form:detalleFormula");
             secRegistroFormulaContrato = null;
             cambiosFormulaContrato = true;
             if (guardado == true) {
@@ -1088,6 +1121,8 @@ public class ControlFormulaContrato implements Serializable {
         listFormulasContratosCrear.clear();
         listFormulasContratosModificar.clear();
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         formulaActual = null;
         k = 0;
@@ -1143,6 +1178,8 @@ public class ControlFormulaContrato implements Serializable {
         contratoSeleccionado = null;
         aceptar = true;
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         context.update("form:ContratoDialogo");
@@ -1157,6 +1194,8 @@ public class ControlFormulaContrato implements Serializable {
         contratoSeleccionado = null;
         aceptar = true;
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndexFormulaContrato = true;
@@ -1202,6 +1241,8 @@ public class ControlFormulaContrato implements Serializable {
         terceroSeleccionada = null;
         aceptar = true;
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         context.update("form:TerceroDialogo");
@@ -1216,6 +1257,8 @@ public class ControlFormulaContrato implements Serializable {
         terceroSeleccionada = null;
         aceptar = true;
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndexFormulaContrato = true;
@@ -1261,6 +1304,8 @@ public class ControlFormulaContrato implements Serializable {
         periodicidadSeleccionado = null;
         aceptar = true;
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         context.update("form:PeriodicidadDialogo");
@@ -1275,6 +1320,8 @@ public class ControlFormulaContrato implements Serializable {
         periodicidadSeleccionado = null;
         aceptar = true;
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         secRegistroFormulaContrato = null;
         tipoActualizacion = -1;
         permitirIndexFormulaContrato = true;
@@ -1303,6 +1350,8 @@ public class ControlFormulaContrato implements Serializable {
         nombreExportar = "FormulaContrato_PDF";
         exportPDF_Tabla();
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         indexAuxFormulaContrato = -1;
         secRegistroFormulaContrato = null;
 
@@ -1331,6 +1380,8 @@ public class ControlFormulaContrato implements Serializable {
         nombreExportar = "FormulaContrato_XLS";
         exportXLS_Tabla();
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         indexAuxFormulaContrato = -1;
         secRegistroFormulaContrato = null;
     }
@@ -1364,6 +1415,8 @@ public class ControlFormulaContrato implements Serializable {
     public void verificarRastroTabla() {
         verificarRastroFormulaContrato();
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
         indexAuxFormulaContrato = -1;
 
     }
@@ -1404,6 +1457,8 @@ public class ControlFormulaContrato implements Serializable {
             }
         }
         indexFormulaContrato = -1;
+        activoDetalle = true;
+        RequestContext.getCurrentInstance().update("form:detalleFormula");
     }
 
     public void limpiarMSNRastros() {
@@ -1749,6 +1804,14 @@ public class ControlFormulaContrato implements Serializable {
 
     public void setInfoRegistroTercero(String infoRegistroTercero) {
         this.infoRegistroTercero = infoRegistroTercero;
+    }
+
+    public boolean isActivoDetalle() {
+        return activoDetalle;
+    }
+
+    public void setActivoDetalle(boolean activoDetalle) {
+        this.activoDetalle = activoDetalle;
     }
 
 }
