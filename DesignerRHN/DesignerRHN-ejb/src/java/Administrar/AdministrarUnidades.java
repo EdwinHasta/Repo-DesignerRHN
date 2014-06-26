@@ -39,7 +39,7 @@ public class AdministrarUnidades implements AdministrarUnidadesInterface{
         em = administrarSesiones.obtenerConexionSesion(idSesion);
     }
     
-    @Override
+    
     public List<Unidades> consultarUnidades() {
         List<Unidades> listaUnidades;
         listaUnidades = persistenciaUnidades.consultarUnidades(em);
@@ -51,6 +51,49 @@ public class AdministrarUnidades implements AdministrarUnidadesInterface{
         List<TiposUnidades> listaTiposUnidades;
         listaTiposUnidades = persistenciaTiposUnidades.consultarTiposUnidades(em);
         return listaTiposUnidades;
+    }
+    
+    @Override
+    public void modificarUnidades(List<Unidades> listaUnidades) {
+        Unidades c;
+        for (int i = 0; i < listaUnidades.size(); i++) {
+            System.out.println("Modificando...");
+            if (listaUnidades.get(i).getCodigo().equals(null)) {
+                listaUnidades.get(i).setCodigo(null);
+                c = listaUnidades.get(i);
+            } else {
+                c = listaUnidades.get(i);
+            }
+            persistenciaUnidades.editar(em,c);
+        }
+    }
+
+    @Override
+    public void borrarUnidades(List<Unidades> listaUnidades) {
+        for (int i = 0; i < listaUnidades.size(); i++) {
+            System.out.println("Borrando...");
+            if (listaUnidades.get(i).getCodigo().equals(null)) {
+
+                listaUnidades.get(i).setCodigo(null);
+                persistenciaUnidades.borrar(em,listaUnidades.get(i));
+            } else {
+                persistenciaUnidades.borrar(em,listaUnidades.get(i));
+            }
+        }
+    }
+
+    @Override
+    public void crearUnidades(List<Unidades> listaUnidades) {
+        for (int i = 0; i < listaUnidades.size(); i++) {
+            System.out.println("Creando...");
+            if (listaUnidades.get(i).getCodigo().equals(null)) {
+
+                listaUnidades.get(i).setCodigo(null);
+                persistenciaUnidades.crear(em,listaUnidades.get(i));
+            } else {
+                persistenciaUnidades.crear(em,listaUnidades.get(i));
+            }
+        }
     }
     
 }

@@ -64,6 +64,7 @@ public class ControlTiposUnidades implements Serializable {
     private int tamano;
     private Integer backUpCodigo;
     private String backUpDescripcion;
+    public String paginaAnterior;
 
     public ControlTiposUnidades() {
         listTiposUnidades = null;
@@ -91,6 +92,14 @@ public class ControlTiposUnidades implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+    
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
+
+    public String redirigir() {
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {

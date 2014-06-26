@@ -20,4 +20,7 @@ public interface AdministrarUnidadesInterface {
     public List<Unidades> consultarUnidades();
     
     public List<TiposUnidades> consultarTiposUnidades();
+    public void borrarUnidades(List<Unidades> listaUnidades);
+    public void crearUnidades(List<Unidades> listaUnidades);
+    public void modificarUnidades(List<Unidades> listaUnidades);
 }
