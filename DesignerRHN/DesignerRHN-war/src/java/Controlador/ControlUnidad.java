@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -577,14 +578,8 @@ public class ControlUnidad implements Serializable {
         context.update("form:datosUnidades");
         context.update("form:informacionRegistro");
     }
-    
-    public void recibirPaginaEntrante(String pagina) {
-        paginaAnterior = pagina;
-    }
 
-    public String redirigir() {
-        return paginaAnterior;
-    }
+    
 
     public void valoresBackupAutocompletar(int tipoNuevo) {
         if (tipoNuevo == 1) {
@@ -757,12 +752,12 @@ public class ControlUnidad implements Serializable {
             nuevaUnidad = new Unidades();
             //  nuevaCiudad.setNombre(Departamento);
             nuevaUnidad.setTipounidad(new TiposUnidades());
-            context.update("form:datosCiudades");
+            context.update("form:datosUnidades");
             if (guardado == true) {
                 guardado = false;
                 context.update("form:ACEPTAR");
             }
-            context.execute("NuevoRegistroCiudad.hide()");
+            context.execute("NuevoRegistroUnidad.hide()");
             index = -1;
             secRegistro = null;
         }
@@ -868,6 +863,53 @@ public class ControlUnidad implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         context.update("formularioDialogos:busquedaNombre");
         context.execute("busquedaNombre.show()");
+    }
+
+    //GUARDAR
+    public void guardarCambiosUnidad() {
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                System.out.println("Realizando Operaciones Unidades");
+                if (!listaUnidadesBorrar.isEmpty()) {
+                    administrarUnidades.borrarUnidades(listaUnidadesBorrar);
+                    System.out.println("Entra");
+                    listaUnidadesBorrar.clear();
+                }
+                if (!listaUnidadesCrear.isEmpty()) {
+                    administrarUnidades.crearUnidades(listaUnidadesCrear);
+                    listaUnidadesCrear.clear();
+                }
+                if (!listaUnidadesModificar.isEmpty()) {
+                    administrarUnidades.modificarUnidades(listaUnidadesModificar);
+                    listaUnidadesModificar.clear();
+                }
+                System.out.println("Se guardaron los datos con exito");
+                listaUnidades = null;
+                getListaUnidades();
+                if (listaUnidades != null && !listaUnidades.isEmpty()) {
+                    unidadSeleccionada = listaUnidades.get(0);
+                    infoRegistro = "Cantidad de registros: " + listaUnidades.size();
+                } else {
+                    infoRegistro = "Cantidad de registros: 0";
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:datosUnidades");
+                guardado = true;
+                permitirIndex = true;
+                FacesMessage msg = new FacesMessage("Información", "Se guardaron los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                k = 0;
+                index = -1;
+                secRegistro = null;
+            }
+        } catch (Exception e) {
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     //Getter & Setters

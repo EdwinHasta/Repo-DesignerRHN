@@ -3228,5 +3228,22 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/unidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>tipounidad</from-outcome>
+            <to-view-id>/tipounidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/tipounidad.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>unidad</from-outcome>
+            <to-view-id>/unidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
 </faces-config>
