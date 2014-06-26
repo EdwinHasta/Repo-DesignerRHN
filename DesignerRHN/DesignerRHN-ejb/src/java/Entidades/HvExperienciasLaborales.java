@@ -46,7 +46,6 @@ public class HvExperienciasLaborales implements Serializable {
     @Size(max = 50)
     @Column(name = "EMPRESA")
     private String empresa;
-
     @Column(name = "FECHADESDE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fechadesde;

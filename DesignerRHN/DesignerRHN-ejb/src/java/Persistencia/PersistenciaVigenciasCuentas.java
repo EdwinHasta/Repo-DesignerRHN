@@ -34,7 +34,7 @@ public class PersistenciaVigenciasCuentas implements PersistenciaVigenciasCuenta
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasCuentas);
+            em.persist(vigenciasCuentas);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasCuentas.crear: " + e);

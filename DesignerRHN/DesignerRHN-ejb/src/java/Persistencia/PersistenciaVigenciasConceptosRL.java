@@ -33,7 +33,7 @@ public class PersistenciaVigenciasConceptosRL implements PersistenciaVigenciasCo
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasConceptosRL);
+            em.persist(vigenciasConceptosRL);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasConceptosRL.crear: " + e);
