@@ -163,6 +163,23 @@
     </navigation-rule>
     
     <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>gruposalarial</from-outcome>
+            <to-view-id>/GrupoSalarial.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/GrupoSalarial.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cargo</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
         <from-view-id>/Formula.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>novedadesFormula</from-outcome>
@@ -1948,6 +1965,24 @@
             <redirect />
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/auxtipoauxilio.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>rastro</from-outcome>
+            <to-view-id>/Rastro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/Rastro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>auxtipoauxilio</from-outcome>
+            <to-view-id>/auxtipoauxilio.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
     
     <navigation-rule>
         <from-view-id>/iniciored.xhtml</from-view-id>
