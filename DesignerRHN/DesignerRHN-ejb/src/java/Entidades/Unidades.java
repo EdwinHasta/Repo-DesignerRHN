@@ -95,7 +95,11 @@ public class Unidades implements Serializable {
     }
 
     public void setCodigo(String codigo) {
-        this.codigo = codigo;
+        if (codigo != null) {
+            this.codigo = codigo.toUpperCase();
+        } else {
+            this.codigo = codigo;
+        }
     }
 
     @XmlTransient

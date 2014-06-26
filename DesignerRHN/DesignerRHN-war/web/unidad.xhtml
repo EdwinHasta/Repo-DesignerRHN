@@ -18,7 +18,7 @@
                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">   
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlCiudades.guardarCambiosCiudad()}" process="@this" />
+                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; " actionListener="#{controlUnidad.guardarCambiosUnidad()}" process="@this" />
                                 <p:tooltip  for="guardarRapido" value="Guardar" />
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlUnidad.editarCelda()}" process="@this"/>
                                 <p:tooltip  for="editar" value="Editar" />
@@ -129,7 +129,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooTiposUnidades" />
+                                        <p:commandButton style="width: 315px; margin: -14px; height: 26px; border: none; color: blue" value=" " id="fooTiposUnidades" action="tipounidad" actionListener="#{controlTiposUnidades.recibirPaginaEntrante('unidad')}"/>
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
@@ -147,6 +147,14 @@
                 <!--HotKey-->
 
                 <h:form id="formularioDialogos">
+                    
+                    <!-- Ya Existe -->
+
+                    <p:dialog id="existe" header="Atención" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
+                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
+                        <h:outputText value="El código que desea agregar ya existe, por favor ingrese un codigo diferente." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
+                        <p:commandButton value="Aceptar" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
+                    </p:dialog>
 
                     <p:dialog id="NuevoRegistroUnidad" header="Nuevo Registro" widgetVar="NuevoRegistroUnidad" closable="false" resizable="false"  draggable="false" modal="true" height="265" width="350" style=" padding: 0px">  
 
@@ -154,22 +162,22 @@
 
                         <p:panel id="nuevaUnidad" style="border: none;">
                             <strong><h:outputText value="Codigo: " style=" position: absolute; top: 85px" /></strong>
-                            <p:inputText maxlength="4" id="nuevoCodigo" value="#{controlUnidades.nuevaUnidad.codigo}" style=" width: 122px; position: absolute; left: 130px; top: 80px; text-transform: uppercase" onclick="select();">
+                            <p:inputText maxlength="4" id="nuevoCodigo" value="#{controlUnidad.nuevaUnidad.codigo}" style=" width: 122px; position: absolute; left: 130px; top: 80px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
 
                             <strong><h:outputText value="*Nombre: " style=" position: absolute; top: 125px" /></strong>
-                            <p:inputText id="nuevoNombreUnidad" value="#{controlUnidades.nuevaUnidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 120px; text-transform: uppercase" onclick="select();">
+                            <p:inputText id="nuevoNombreUnidad" value="#{controlUnidad.nuevaUnidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 120px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText> 
 
                             <strong><h:outputText value="*Tipo Unidad: " style=" position: absolute; top: 165px" /></strong>
-                            <p:inputText id="nuevoTipoUnidad" value="#{controlUnidades.nuevaUnidad.tipounidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 160px; text-transform: uppercase" onclick="select();">
-                                <p:ajax event="click" listener="#{controlUnidades.valoresBackupAutocompletar(1)}" />
-                                <p:ajax event="change" listener="#{controlUnidades.autocompletarNuevoyDuplicado(controlUnidades.nuevaUnidad.tipounidad.nombre,1)}"/>
-                                <p:ajax event="dblclick" listener="#{controlUnidades.llamarLovTiposUnidades(1)}" />
+                            <p:inputText id="nuevoTipoUnidad" value="#{controlUnidad.nuevaUnidad.tipounidad.nombre}" style=" width: 122px; position: absolute; left: 130px; top: 160px; text-transform: uppercase" onclick="select();">
+                                <p:ajax event="click" listener="#{controlUnidad.valoresBackupAutocompletar(1)}" />
+                                <p:ajax event="change" listener="#{controlUnidad.autocompletarNuevoyDuplicado(controlUnidad.nuevaUnidad.tipounidad.nombre,1)}"/>
+                                <p:ajax event="dblclick" listener="#{controlUnidad.llamarLovTiposUnidades(1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 261px; top: 160px;  " id="btnNuevoTipoUnidad" icon="ui-icon-search" process="@this"  actionListener="#{controlUnidades.llamarLovTiposUnidades(1)}"/>
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 261px; top: 160px;  " id="btnNuevoTipoUnidad" icon="ui-icon-search" process="@this"  actionListener="#{controlUnidad.llamarLovTiposUnidades(1)}"/>
 
                             <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 210px;" actionListener="#{controlUnidad.limpiarNuevaUnidad()}" update="nuevaUnidad" process="@this"/>
                             <p:commandButton id="agregarC" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 140px; top: 210px;"  actionListener="#{controlUnidad.agregarNuevaUnidad()}" process="@this"/>
@@ -203,9 +211,9 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 261px; top: 160px; " id="btnDuplicarTipoUnidad" process="@this" icon="ui-icon-search" actionListener="#{controlUnidad.llamarLovTiposUnidades(2)}"/>
 
-                            <p:commandButton id="limpiarDuplicadoCiudad" value="Limpiar" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" process="@this"/>
-                            <p:commandButton id="agregarDuplicadoCiudad" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 140px; top: 210px;"  process="@this" actionListener="#{controlUnidad.confirmarDuplicar()}"  />
-                            <p:commandButton id="cancelarDuplicadoCiudad" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" onclick="DuplicarRegistroUnidad.hide();"  process="@this"/>
+                            <p:commandButton id="limpiarDuplicadoUnidad" value="Limpiar" icon="ui-icon-trash" style="position: absolute; left: 20px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" process="@this"/>
+                            <p:commandButton id="agregarDuplicadoUnidad" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 140px; top: 210px;"  process="@this" actionListener="#{controlUnidad.confirmarDuplicar()}"  />
+                            <p:commandButton id="cancelarDuplicadoUnidad" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 230px; top: 210px;" actionListener="#{controlUnidad.limpiarDuplicarUnidad()}" update="duplicarUnidad" onclick="DuplicarRegistroUnidad.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
@@ -257,7 +265,7 @@
                         <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <!-- DIALOGO L.O.V ESTATICO DE CIUDADES -->
+                    <!-- DIALOGO L.O.V ESTATICO DE UNIDADES -->
                     <p:dialog header="Tipos de unidades" widgetVar="tiposUnidadesDialogo" draggable="false" resizable="false" closable="false" id="tiposUnidadesDialogo"  
                               showEffect="fade" hideEffect="fade" width="380" height="350" modal="true" >
                         <p:dataTable id="LOVTiposUnidades" style="width: 330px" var="tiposunidades" value="#{controlUnidad.lovTiposUnidades}" rowKey="#{tiposunidades.secuencia}"
@@ -299,13 +307,7 @@
                         <p:commandButton value="#{msg['aceptar']}" onclick="validacionNuevaUnidad.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                     </p:dialog>
 
-                    <!-- Ya Existe -->
-
-                    <p:dialog id="existe" header="Atención" widgetVar="existe"  resizable="false" draggable="false" modal="true" height="95" width="400px"  closable="false">  
-                        <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
-                        <h:outputText value="El código que desea agregar ya existe, por favor ingrese un codigo diferente." style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                        <p:commandButton value="Aceptar" onclick="existe.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
-                    </p:dialog>
+                    
 
                     <!-- DIALOGOS EDITAR -->
 
@@ -325,7 +327,7 @@
                 <h:form id="formExportar">
                     <p:dataTable id="datosUnidadesExportar" var="u" style="visibility: hidden; display: none;"                           
                                  value="#{controlUnidad.listaUnidades}"> 
-                        <!--COLUMNAS TABLA CIUDADES--> 
+                        <!--COLUMNAS TABLA UNIDADES--> 
                         <p:column headerText="Codigo">                                  
                             <f:facet name="header"><h:outputText value="Codigo"/> </f:facet> 
                             <h:outputText value="#{u.codigo}" />
