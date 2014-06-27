@@ -49,16 +49,17 @@ public class ControlDetalleConcepto implements Serializable {
     AdministrarDetalleConceptoInterface administrarDetalleConcepto;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     //////////////Conceptos//////////////////
     private Conceptos conceptoActual;
     ///////////VigenciasCuentas////////////
     private List<VigenciasCuentas> listVigenciasCuentasConcepto;
     private List<VigenciasCuentas> filtrarListVigenciasCuentasConcepto;
+    private VigenciasCuentas vigenciaCuentaTablaSeleccionada;
+    private String altoTablaVigenciaCuenta;
     ///////////VigenciasCuentas/////////////
     private int banderaVigenciaCuenta;
-    private int indexVigenciaCuenta, indexAuxVigenciaCuenta;
+    private int indexVigenciaCuenta;
     private List<VigenciasCuentas> listVigenciasCuentasModificar;
     private VigenciasCuentas nuevaVigenciaCuenta;
     private List<VigenciasCuentas> listVigenciasCuentasCrear;
@@ -86,9 +87,11 @@ public class ControlDetalleConcepto implements Serializable {
     ///////////////////VigenciasGruposConceptos///////////////////////
     private List<VigenciasGruposConceptos> listVigenciasGruposConceptosConcepto;
     private List<VigenciasGruposConceptos> filtrarListVigenciasGruposConceptosConcepto;
+    private VigenciasGruposConceptos vigenciaGrupoConceptoTablaSeleccionada;
+    private String altoTablaVigenciaGrupoC;
     ///////////////////VigenciasGruposConceptos///////////////////////
     private int banderaVigenciaGrupoConcepto;
-    private int indexVigenciaGrupoConcepto, indexAuxVigenciaGrupoConcepto;
+    private int indexVigenciaGrupoConcepto;
     private List<VigenciasGruposConceptos> listVigenciasGruposConceptosModificar;
     private VigenciasGruposConceptos nuevaVigenciaGrupoConcepto;
     private List<VigenciasGruposConceptos> listVigenciasGruposConceptosCrear;
@@ -110,9 +113,11 @@ public class ControlDetalleConcepto implements Serializable {
     ///////////////////VigenciasConceptosTT///////////////////////////////
     private List<VigenciasConceptosTT> listVigenciasConceptosTTConcepto;
     private List<VigenciasConceptosTT> filtrarListVigenciasConceptosTT;
+    private VigenciasConceptosTT vigenciaConceptoTTTablaSeleccionada;
+    private String altoTablaVigenciaConceptoTT;
     ///////////////////VigenciasConceptosTT///////////////////////
     private int banderaVigenciaConceptoTT;
-    private int indexVigenciaConceptoTT, indexAuxVigenciaConceptoTT;
+    private int indexVigenciaConceptoTT;
     private List<VigenciasConceptosTT> listVigenciasConceptosTTModificar;
     private VigenciasConceptosTT nuevaVigenciaConceptoTT;
     private List<VigenciasConceptosTT> listVigenciasConceptosTTCrear;
@@ -134,9 +139,11 @@ public class ControlDetalleConcepto implements Serializable {
     ///////////////////VigenciasConceptosTC///////////////////////////////
     private List<VigenciasConceptosTC> listVigenciasConceptosTCConcepto;
     private List<VigenciasConceptosTC> filtrarListVigenciasConceptosTC;
+    private VigenciasConceptosTC vigenciaConceptoTCTablaSeleccionada;
+    private String altoTablaVigenciaConceptoTC;
     ///////////////////VigenciasConceptosTC///////////////////////
     private int banderaVigenciaConceptoTC;
-    private int indexVigenciaConceptoTC, indexAuxVigenciaConceptoTC;
+    private int indexVigenciaConceptoTC;
     private List<VigenciasConceptosTC> listVigenciasConceptosTCModificar;
     private VigenciasConceptosTC nuevaVigenciaConceptoTC;
     private List<VigenciasConceptosTC> listVigenciasConceptosTCCrear;
@@ -158,9 +165,11 @@ public class ControlDetalleConcepto implements Serializable {
     ///////////////////VigenciasConceptosRL///////////////////////////////
     private List<VigenciasConceptosRL> listVigenciasConceptosRLConcepto;
     private List<VigenciasConceptosRL> filtrarListVigenciasConceptosRL;
+    private VigenciasConceptosRL vigenciaConceptoRLTablaSeleccionada;
+    private String altoTablaVigenciaConceptoRL;
     ///////////////////VigenciasConceptosRL///////////////////////
     private int banderaVigenciaConceptoRL;
-    private int indexVigenciaConceptoRL, indexAuxVigenciaConceptoRL;
+    private int indexVigenciaConceptoRL;
     private List<VigenciasConceptosRL> listVigenciasConceptosRLModificar;
     private VigenciasConceptosRL nuevaVigenciaConceptoRL;
     private List<VigenciasConceptosRL> listVigenciasConceptosRLCrear;
@@ -182,9 +191,11 @@ public class ControlDetalleConcepto implements Serializable {
     ///////////////////FormulasConceptos///////////////////////////////
     private List<FormulasConceptos> listFormulasConceptosConcepto;
     private List<FormulasConceptos> filtrarListFormulasConceptosConcepto;
+    private FormulasConceptos formulaConceptoTablaSeleccionada;
+    private String altoTablaFormulaConcepto;
     ///////////////////FormulasConceptos///////////////////////
     private int banderaFormulasConceptos;
-    private int indexFormulasConceptos, indexAuxFormulasConceptos;
+    private int indexFormulasConceptos;
     private List<FormulasConceptos> listFormulasConceptosModificar;
     private FormulasConceptos nuevaFormulasConceptos;
     private List<FormulasConceptos> listFormulasConceptosCrear;
@@ -224,8 +235,16 @@ public class ControlDetalleConcepto implements Serializable {
     private String paginaRetorno;
     private String conceptoEliminar;
     ////////////////////////////////
+    private String infoRegistroTipoCentroCosto, infoRegistroCuentaDebito, infoRegistroCuentaCredito, infoRegistroCentroCostoDebito, infoRegistroCentroCostoCredito, infoRegistroGrupoConcepto, infoRegistroTipoTrabajador, infoRegistroTipoContrato, infoRegistroReformaLaboral, infoRegistroFormula, infoRegistroOrden;
 
     public ControlDetalleConcepto() {
+        altoTablaVigenciaCuenta = "160";
+        altoTablaVigenciaGrupoC = "160";
+        altoTablaVigenciaConceptoTT = "125";
+        altoTablaVigenciaConceptoTC = "125";
+        altoTablaVigenciaConceptoRL = "125";
+        altoTablaFormulaConcepto = "142";
+        //
         paginaRetorno = "";
         formulaSeleccionada = true;
         conceptoActual = new Conceptos();
@@ -380,7 +399,7 @@ public class ControlDetalleConcepto implements Serializable {
         cambiosFormulasConceptos = false;
 
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -389,7 +408,7 @@ public class ControlDetalleConcepto implements Serializable {
             administrarDetalleConcepto.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -398,9 +417,7 @@ public class ControlDetalleConcepto implements Serializable {
         conceptoActual = administrarDetalleConcepto.consultarConceptoActual(secuencia);
         if (conceptoActual != null) {
             Long auto = administrarDetalleConcepto.contarFormulasConceptosConcepto(conceptoActual.getSecuencia());
-            System.out.println("Automatico : " + auto);
             Long semi = administrarDetalleConcepto.contarFormulasNovedadesConcepto(conceptoActual.getSecuencia());
-            System.out.println("Semi - Automatico : " + semi);
             if (auto == 0 && semi == 0) {
                 comportamientoConcepto = conceptoActual.getInfoDetalleConcepto() + "MANUAL";
             } else {
@@ -436,6 +453,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaCuenta = -1;
@@ -449,6 +467,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaCuenta = -1;
@@ -694,6 +713,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaCuenta = -1;
@@ -707,6 +727,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaCuenta = -1;
@@ -730,6 +751,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaGrupoConcepto = -1;
@@ -743,6 +765,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaGrupoConcepto = -1;
@@ -836,6 +859,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaGrupoConcepto = -1;
@@ -849,6 +873,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaGrupoConcepto = -1;
@@ -872,6 +897,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoTT = -1;
@@ -885,6 +911,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoTT = -1;
@@ -950,6 +977,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoTT = -1;
@@ -963,6 +991,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoTT = -1;
@@ -986,6 +1015,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoTC = -1;
@@ -999,6 +1029,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoTC = -1;
@@ -1066,6 +1097,7 @@ public class ControlDetalleConcepto implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
                     }
                     indexVigenciaConceptoTC = -1;
@@ -1079,6 +1111,7 @@ public class ControlDetalleConcepto implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
                     }
                     indexVigenciaConceptoTC = -1;
@@ -1114,6 +1147,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoRL = -1;
@@ -1127,6 +1161,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexVigenciaConceptoRL = -1;
@@ -1194,6 +1229,7 @@ public class ControlDetalleConcepto implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
                     }
                     indexVigenciaConceptoRL = -1;
@@ -1207,6 +1243,7 @@ public class ControlDetalleConcepto implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
                     }
                     indexVigenciaConceptoRL = -1;
@@ -1242,6 +1279,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexFormulasConceptos = -1;
@@ -1255,6 +1293,7 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 indexFormulasConceptos = -1;
@@ -1351,6 +1390,7 @@ public class ControlDetalleConcepto implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
                     }
                     indexFormulasConceptos = -1;
@@ -1364,6 +1404,7 @@ public class ControlDetalleConcepto implements Serializable {
                         }
                         if (guardado == true) {
                             guardado = false;
+                            RequestContext.getCurrentInstance().update("form:ACEPTAR");
                         }
                     }
                     indexFormulasConceptos = -1;
@@ -2285,11 +2326,9 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 cambiarIndiceVigenciaCuenta(i, c);
                 modificarVigenciaCuenta(i);
-                indexAuxVigenciaCuenta = i;
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:datosVigenciaCuenta");
             } else {
-                System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaVigenciaCuenta == 0) {
                     listVigenciasCuentasConcepto.get(indexVigenciaCuenta).setFechainicial(auxVC_FechaIni);
@@ -2332,9 +2371,7 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 cambiarIndiceVigenciaGrupoConcepto(i, c);
                 modificarVigenciaGrupoConcepto(i);
-                indexAuxVigenciaGrupoConcepto = i;
             } else {
-                System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaVigenciaGrupoConcepto == 0) {
                     listVigenciasGruposConceptosConcepto.get(indexVigenciaGrupoConcepto).setFechainicial(auxVGC_FechaIni);
@@ -2377,9 +2414,7 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 cambiarIndiceVigenciaConceptoTT(i, c);
                 modificarVigenciaConceptoTT(i);
-                indexAuxVigenciaConceptoTT = i;
             } else {
-                System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaVigenciaConceptoTT == 0) {
                     listVigenciasConceptosTTConcepto.get(indexVigenciaConceptoTT).setFechainicial(auxVCTT_FechaIni);
@@ -2422,9 +2457,7 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 cambiarIndiceVigenciaConceptoTC(i, c);
                 modificarVigenciaConceptoTC(i);
-                indexAuxVigenciaConceptoTC = i;
             } else {
-                System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaVigenciaConceptoTC == 0) {
                     listVigenciasConceptosTCConcepto.get(indexVigenciaConceptoTC).setFechainicial(auxVCTC_FechaIni);
@@ -2467,9 +2500,7 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 cambiarIndiceVigenciaConceptoRL(i, c);
                 modificarVigenciaConceptoRL(i);
-                indexAuxVigenciaConceptoRL = i;
             } else {
-                System.out.println("Error de fechas de ingreso");
                 RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaVigenciaConceptoRL == 0) {
                     listVigenciasConceptosRLConcepto.get(indexVigenciaConceptoRL).setFechainicial(auxVCRL_FechaIni);
@@ -2500,6 +2531,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void modificacionesFechaFormulasConceptos(int i, int c) {
+        RequestContext context = RequestContext.getCurrentInstance();
         FormulasConceptos auxiliar = null;
         if (tipoListaFormulasConceptos == 0) {
             auxiliar = listFormulasConceptosConcepto.get(i);
@@ -2512,10 +2544,7 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 cambiarIndiceFormulasConceptos(i, c);
                 modificarFormulasConceptos(i);
-                indexAuxFormulasConceptos = i;
             } else {
-                System.out.println("Error de fechas de ingreso");
-                RequestContext context = RequestContext.getCurrentInstance();
                 if (tipoListaFormulasConceptos == 0) {
                     listFormulasConceptosConcepto.get(indexFormulasConceptos).setFechainicial(auxFC_FechaIni);
                     listFormulasConceptosConcepto.get(indexFormulasConceptos).setFechafinal(auxFC_FechaFin);
@@ -2529,7 +2558,6 @@ public class ControlDetalleConcepto implements Serializable {
                 indexFormulasConceptos = -1;
             }
         } else {
-            RequestContext context = RequestContext.getCurrentInstance();
             if (tipoListaFormulasConceptos == 0) {
                 listFormulasConceptosConcepto.get(indexFormulasConceptos).setFechainicial(auxFC_FechaIni);
                 listFormulasConceptosConcepto.get(indexFormulasConceptos).setFechafinal(auxFC_FechaFin);
@@ -2543,6 +2571,7 @@ public class ControlDetalleConcepto implements Serializable {
             indexFormulasConceptos = -1;
         }
     }
+
     //GUARDAR
     /**
      */
@@ -2566,158 +2595,210 @@ public class ControlDetalleConcepto implements Serializable {
         if (cambiosFormulasConceptos == true) {
             guardarCambiosFormulasConceptos();
         }
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
     }
 
     public void guardarCambiosVigenciaCuenta() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        if (!listVigenciasCuentasBorrar.isEmpty()) {
-            administrarDetalleConcepto.borrarVigenciasCuentas(listVigenciasCuentasBorrar);
-            listVigenciasCuentasBorrar.clear();
-        }
-        if (!listVigenciasCuentasCrear.isEmpty()) {
-            administrarDetalleConcepto.crearVigenciasCuentas(listVigenciasCuentasCrear);
-            listVigenciasCuentasCrear.clear();
-        }
-        if (!listVigenciasCuentasModificar.isEmpty()) {
-            administrarDetalleConcepto.modificarVigenciasCuentas(listVigenciasCuentasModificar);
-            listVigenciasCuentasModificar.clear();
-        }
-        listVigenciasCuentasConcepto = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaCuenta");
-        context.update("form:growl");
-        k = 0;
-        indexVigenciaCuenta = -1;
-        secRegistroVigenciaCuenta = null;
-        cambiosVigenciaCuenta = false;
+        try {
+            if (!listVigenciasCuentasBorrar.isEmpty()) {
+                administrarDetalleConcepto.borrarVigenciasCuentas(listVigenciasCuentasBorrar);
+                listVigenciasCuentasBorrar.clear();
+            }
+            if (!listVigenciasCuentasCrear.isEmpty()) {
+                administrarDetalleConcepto.crearVigenciasCuentas(listVigenciasCuentasCrear);
+                listVigenciasCuentasCrear.clear();
+            }
+            if (!listVigenciasCuentasModificar.isEmpty()) {
+                administrarDetalleConcepto.modificarVigenciasCuentas(listVigenciasCuentasModificar);
+                listVigenciasCuentasModificar.clear();
+            }
+            listVigenciasCuentasConcepto = null;
+            context.update("form:datosVigenciaCuenta");
+            k = 0;
+            indexVigenciaCuenta = -1;
+            secRegistroVigenciaCuenta = null;
+            cambiosVigenciaCuenta = false;
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron de Cuentas y Tipos CC con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosVigenciaCuenta : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Cuentas y Tipos CC, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     public void guardarCambiosVigenciaGrupoConcepto() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        if (!listVigenciasGruposConceptosBorrar.isEmpty()) {
-            administrarDetalleConcepto.borrarVigenciasGruposConceptos(listVigenciasGruposConceptosBorrar);
-            listVigenciasGruposConceptosBorrar.clear();
-        }
-        if (!listVigenciasGruposConceptosCrear.isEmpty()) {
-            administrarDetalleConcepto.crearVigenciasGruposConceptos(listVigenciasGruposConceptosCrear);
-            listVigenciasGruposConceptosCrear.clear();
-        }
-        if (!listVigenciasGruposConceptosModificar.isEmpty()) {
-            administrarDetalleConcepto.modificarVigenciasGruposConceptos(listVigenciasGruposConceptosModificar);
-            listVigenciasGruposConceptosModificar.clear();
-        }
-        listVigenciasCuentasConcepto = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaGrupoConcepto");
-        context.update("form:growl");
-        k = 0;
-        indexVigenciaGrupoConcepto = -1;
-        secRegistroVigenciaGrupoConcepto = null;
-        cambiosVigenciaGrupoConcepto = false;
+        try {
+            if (!listVigenciasGruposConceptosBorrar.isEmpty()) {
+                administrarDetalleConcepto.borrarVigenciasGruposConceptos(listVigenciasGruposConceptosBorrar);
+                listVigenciasGruposConceptosBorrar.clear();
+            }
+            if (!listVigenciasGruposConceptosCrear.isEmpty()) {
+                administrarDetalleConcepto.crearVigenciasGruposConceptos(listVigenciasGruposConceptosCrear);
+                listVigenciasGruposConceptosCrear.clear();
+            }
+            if (!listVigenciasGruposConceptosModificar.isEmpty()) {
+                administrarDetalleConcepto.modificarVigenciasGruposConceptos(listVigenciasGruposConceptosModificar);
+                listVigenciasGruposConceptosModificar.clear();
+            }
+            listVigenciasCuentasConcepto = null;
+            context.update("form:datosVigenciaGrupoConcepto");
+            k = 0;
+            indexVigenciaGrupoConcepto = -1;
+            secRegistroVigenciaGrupoConcepto = null;
+            cambiosVigenciaGrupoConcepto = false;
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron de Grupos C/N/G con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosVigenciaGrupoConcepto : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Grupos C/N/G, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     public void guardarCambiosVigenciaConceptoTT() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        if (!listVigenciasConceptosTTBorrar.isEmpty()) {
-            administrarDetalleConcepto.borrarVigenciasConceptosTT(listVigenciasConceptosTTBorrar);
-            listVigenciasConceptosTTBorrar.clear();
-        }
-        if (!listVigenciasConceptosTTCrear.isEmpty()) {
-            administrarDetalleConcepto.crearVigenciasConceptosTT(listVigenciasConceptosTTCrear);
-            listVigenciasConceptosTTCrear.clear();
-        }
-        if (!listVigenciasConceptosTTModificar.isEmpty()) {
-            administrarDetalleConcepto.modificarVigenciasConceptosTT(listVigenciasConceptosTTModificar);
-            listVigenciasConceptosTTModificar.clear();
-        }
-        listVigenciasConceptosTTConcepto = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaConceptoTT");
-        context.update("form:growl");
-        k = 0;
-        indexVigenciaConceptoTT = -1;
-        secRegistroVigenciaConceptoTT = null;
-        cambiosVigenciaConceptoTT = false;
+        try {
+            if (!listVigenciasConceptosTTBorrar.isEmpty()) {
+                administrarDetalleConcepto.borrarVigenciasConceptosTT(listVigenciasConceptosTTBorrar);
+                listVigenciasConceptosTTBorrar.clear();
+            }
+            if (!listVigenciasConceptosTTCrear.isEmpty()) {
+                administrarDetalleConcepto.crearVigenciasConceptosTT(listVigenciasConceptosTTCrear);
+                listVigenciasConceptosTTCrear.clear();
+            }
+            if (!listVigenciasConceptosTTModificar.isEmpty()) {
+                administrarDetalleConcepto.modificarVigenciasConceptosTT(listVigenciasConceptosTTModificar);
+                listVigenciasConceptosTTModificar.clear();
+            }
+            listVigenciasConceptosTTConcepto = null;
+            context.update("form:datosVigenciaConceptoTT");
+            k = 0;
+            indexVigenciaConceptoTT = -1;
+            secRegistroVigenciaConceptoTT = null;
+            cambiosVigenciaConceptoTT = false;
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron de Tipo Trabajador con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosVigenciaConceptoTT : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Tipo Trabajador, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     public void guardarCambiosVigenciaConceptoTC() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        if (!listVigenciasConceptosTCBorrar.isEmpty()) {
-            administrarDetalleConcepto.borrarVigenciasConceptosTC(listVigenciasConceptosTCBorrar);
-            listVigenciasConceptosTCBorrar.clear();
-        }
-        if (!listVigenciasConceptosTCCrear.isEmpty()) {
-            administrarDetalleConcepto.crearVigenciasConceptosTC(listVigenciasConceptosTCCrear);
-            listVigenciasConceptosTCCrear.clear();
-        }
-        if (!listVigenciasConceptosTCModificar.isEmpty()) {
-            administrarDetalleConcepto.modificarVigenciasConceptosTC(listVigenciasConceptosTCModificar);
-            listVigenciasConceptosTCModificar.clear();
-        }
-        listVigenciasConceptosTCConcepto = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaConceptoTC");
-        context.update("form:growl");
-        k = 0;
-        indexVigenciaConceptoTC = -1;
-        secRegistroVigenciaConceptoTC = null;
-        cambiosVigenciaConceptoTC = false;
+        try {
+            if (!listVigenciasConceptosTCBorrar.isEmpty()) {
+                administrarDetalleConcepto.borrarVigenciasConceptosTC(listVigenciasConceptosTCBorrar);
+                listVigenciasConceptosTCBorrar.clear();
+            }
+            if (!listVigenciasConceptosTCCrear.isEmpty()) {
+                administrarDetalleConcepto.crearVigenciasConceptosTC(listVigenciasConceptosTCCrear);
+                listVigenciasConceptosTCCrear.clear();
+            }
+            if (!listVigenciasConceptosTCModificar.isEmpty()) {
+                administrarDetalleConcepto.modificarVigenciasConceptosTC(listVigenciasConceptosTCModificar);
+                listVigenciasConceptosTCModificar.clear();
+            }
+            listVigenciasConceptosTCConcepto = null;
+            context.update("form:datosVigenciaConceptoTC");
+            k = 0;
+            indexVigenciaConceptoTC = -1;
+            secRegistroVigenciaConceptoTC = null;
+            cambiosVigenciaConceptoTC = false;
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron de Tipo Contrato con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosVigenciaConceptoTC : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Tipo Contrato, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     public void guardarCambiosVigenciaConceptoRL() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        if (!listVigenciasConceptosRLBorrar.isEmpty()) {
-            administrarDetalleConcepto.borrarVigenciasConceptosRL(listVigenciasConceptosRLBorrar);
-            listVigenciasConceptosRLBorrar.clear();
-        }
-        if (!listVigenciasConceptosRLCrear.isEmpty()) {
-            administrarDetalleConcepto.crearVigenciasConceptosRL(listVigenciasConceptosRLCrear);
-            listVigenciasConceptosRLCrear.clear();
-        }
-        if (!listVigenciasConceptosRLModificar.isEmpty()) {
-            administrarDetalleConcepto.modificarVigenciasConceptosRL(listVigenciasConceptosRLModificar);
-            listVigenciasConceptosRLModificar.clear();
-        }
-        listVigenciasConceptosRLConcepto = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaConceptoRL");
-        context.update("form:growl");
-        k = 0;
-        indexVigenciaConceptoRL = -1;
-        secRegistroVigenciaConceptoRL = null;
-        cambiosVigenciaConceptoRL = false;
+        try {
+            if (!listVigenciasConceptosRLBorrar.isEmpty()) {
+                administrarDetalleConcepto.borrarVigenciasConceptosRL(listVigenciasConceptosRLBorrar);
+                listVigenciasConceptosRLBorrar.clear();
+            }
+            if (!listVigenciasConceptosRLCrear.isEmpty()) {
+                administrarDetalleConcepto.crearVigenciasConceptosRL(listVigenciasConceptosRLCrear);
+                listVigenciasConceptosRLCrear.clear();
+            }
+            if (!listVigenciasConceptosRLModificar.isEmpty()) {
+                administrarDetalleConcepto.modificarVigenciasConceptosRL(listVigenciasConceptosRLModificar);
+                listVigenciasConceptosRLModificar.clear();
+            }
+            listVigenciasConceptosRLConcepto = null;
+            context.update("form:datosVigenciaConceptoRL");
+            k = 0;
+            indexVigenciaConceptoRL = -1;
+            secRegistroVigenciaConceptoRL = null;
+            cambiosVigenciaConceptoRL = false;
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron de Tipo Salario con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosVigenciaConceptoRL : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Tipo Salario, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     public void guardarCambiosFormulasConceptos() {
-        FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        if (!listFormulasConceptosBorrar.isEmpty()) {
-            administrarDetalleConcepto.borrarFormulasConceptos(listFormulasConceptosBorrar);
-            listFormulasConceptosBorrar.clear();
-        }
-        if (!listFormulasConceptosCrear.isEmpty()) {
-            administrarDetalleConcepto.crearFormulasConceptos(listFormulasConceptosCrear);
-            listFormulasConceptosCrear.clear();
-        }
-        if (!listFormulasConceptosModificar.isEmpty()) {
-            administrarDetalleConcepto.modificarFormulasConceptos(listFormulasConceptosModificar);
-            listFormulasConceptosModificar.clear();
-        }
-        listFormulasConceptosConcepto = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosFormulaConcepto");
-        context.update("form:growl");
-        k = 0;
-        indexFormulasConceptos = -1;
-        secRegistroFormulasConceptos = null;
-        cambiosFormulasConceptos = false;
+        try {
+            if (!listFormulasConceptosBorrar.isEmpty()) {
+                administrarDetalleConcepto.borrarFormulasConceptos(listFormulasConceptosBorrar);
+                listFormulasConceptosBorrar.clear();
+            }
+            if (!listFormulasConceptosCrear.isEmpty()) {
+                administrarDetalleConcepto.crearFormulasConceptos(listFormulasConceptosCrear);
+                listFormulasConceptosCrear.clear();
+            }
+            if (!listFormulasConceptosModificar.isEmpty()) {
+                administrarDetalleConcepto.modificarFormulasConceptos(listFormulasConceptosModificar);
+                listFormulasConceptosModificar.clear();
+            }
+            listFormulasConceptosConcepto = null;
+            context.update("form:datosFormulaConcepto");
+            k = 0;
+            indexFormulasConceptos = -1;
+            secRegistroFormulasConceptos = null;
+            cambiosFormulasConceptos = false;
+            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron de Formula con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:ACEPTAR");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosFormulasConceptos : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Formula, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
     //CANCELAR MODIFICACIONES
 
@@ -2726,23 +2807,25 @@ public class ControlDetalleConcepto implements Serializable {
      */
     public void cancelarModificacion() {
         if (banderaVigenciaCuenta == 1) {
-            vigenciaCuentaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
+            altoTablaVigenciaCuenta = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
             vigenciaCuentaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
+            vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
             vigenciaCuentaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
+            vigenciaCuentaTipoCC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
             vigenciaCuentaTipoCC.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
+            vigenciaCuentaDebitoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
             vigenciaCuentaDebitoCod.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
+            vigenciaCuentaDebitoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
             vigenciaCuentaDebitoDes.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
+            vigenciaCuentaCCConsolidadorD = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
             vigenciaCuentaCCConsolidadorD.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
+            vigenciaCuentaCreditoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
             vigenciaCuentaCreditoCod.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
+            vigenciaCuentaCreditoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
             vigenciaCuentaCreditoDes.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
+            vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
             vigenciaCuentaCCConsolidadorC.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
             banderaVigenciaCuenta = 0;
@@ -2750,13 +2833,15 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaCuenta = 0;
         }
         if (banderaVigenciaGrupoConcepto == 1) {
-            vigenciaGCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
+            altoTablaVigenciaGrupoC = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
             vigenciaGCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
+            vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
             vigenciaGCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
+            vigenciaGCCodigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
             vigenciaGCCodigo.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
+            vigenciaGCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
             vigenciaGCDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
             banderaVigenciaGrupoConcepto = 0;
@@ -2765,11 +2850,13 @@ public class ControlDetalleConcepto implements Serializable {
         }
 
         if (banderaVigenciaConceptoTT == 1) {
-            vigenciaCTTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
+            altoTablaVigenciaConceptoTT = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
             vigenciaCTTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
+            vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
             vigenciaCTTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
+            vigenciaCTTDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
             vigenciaCTTDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
             banderaVigenciaConceptoTT = 0;
@@ -2777,11 +2864,13 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaConceptoTT = 0;
         }
         if (banderaVigenciaConceptoTC == 1) {
-            vigenciaCTCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
+            altoTablaVigenciaConceptoTC = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
             vigenciaCTCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
+            vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
             vigenciaCTCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
+            vigenciaCTCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
             vigenciaCTCDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
             banderaVigenciaConceptoTC = 0;
@@ -2789,11 +2878,13 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaConceptoTC = 0;
         }
         if (banderaVigenciaConceptoRL == 1) {
-            vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+            altoTablaVigenciaConceptoRL = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
             vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+            vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
             vigenciaCRLFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-            vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+            vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
             vigenciaCRLDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
             banderaVigenciaConceptoRL = 0;
@@ -2802,13 +2893,15 @@ public class ControlDetalleConcepto implements Serializable {
         }
 
         if (banderaFormulasConceptos == 1) {
-            formulaCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
+            altoTablaFormulaConcepto = "142";
+            FacesContext c = FacesContext.getCurrentInstance();
+            formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
             formulaCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            formulaCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
+            formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
             formulaCFechaFinal.setFilterStyle("display: none; visibililty: hidden;");
-            formulaCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
+            formulaCNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
             formulaCNombre.setFilterStyle("display: none; visibility: hidden;");
-            formulaCOrden = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
+            formulaCOrden = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
             formulaCOrden.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
             banderaFormulasConceptos = 0;
@@ -2846,13 +2939,6 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoTC = -1;
         indexVigenciaGrupoConcepto = -1;
         indexFormulasConceptos = -1;
-
-        indexAuxVigenciaCuenta = -1;
-        indexAuxVigenciaConceptoTT = -1;
-        indexAuxVigenciaConceptoRL = -1;
-        indexAuxVigenciaConceptoTC = -1;
-        indexAuxVigenciaGrupoConcepto = -1;
-        indexAuxFormulasConceptos = -1;
 
         secRegistroVigenciaCuenta = null;
         secRegistroVigenciaConceptoTT = null;
@@ -3440,43 +3526,39 @@ public class ControlDetalleConcepto implements Serializable {
     public boolean validarNuevosDatosVigenciaCuenta(int i) {
         boolean retorno = false;
         if (i == 0) {
-            VigenciasCuentas aux = listVigenciasCuentasConcepto.get(indexVigenciaCuenta);
-            if ((!aux.getConsolidadorc().getNombre().isEmpty())
-                    && (!aux.getCuentac().getDescripcion().isEmpty())
-                    && (!aux.getCuentac().getCodigo().isEmpty())
-                    && (!aux.getConsolidadord().getNombre().isEmpty())
-                    && (!aux.getCuentad().getDescripcion().isEmpty())
-                    && (!aux.getCuentad().getCodigo().isEmpty())
-                    && (!aux.getTipocc().getNombre().isEmpty())
-                    && (aux.getFechafinal() != null) && (aux.getFechainicial() != null)) {
-                /////
-                return true;
+            VigenciasCuentas aux = null;
+            if (tipoListaVigenciaCuenta == 0) {
+                aux = listVigenciasCuentasConcepto.get(indexVigenciaCuenta);
+            } else {
+                aux = filtrarListVigenciasCuentasConcepto.get(indexVigenciaCuenta);
+            }
+            if ((aux.getFechafinal() != null) && (aux.getFechainicial() != null)
+                    && (aux.getConsolidadorc().getSecuencia() != null)
+                    && (aux.getConsolidadord().getSecuencia() != null)
+                    && (aux.getCuentac().getSecuencia() != null)
+                    && (aux.getCuentad().getSecuencia() != null)
+                    && (aux.getTipocc().getSecuencia() != null)) {
+                retorno = true;
             }
         }
         if (i == 1) {
-            if ((!nuevaVigenciaCuenta.getConsolidadorc().getNombre().isEmpty())
-                    && (!nuevaVigenciaCuenta.getCuentac().getDescripcion().isEmpty())
-                    && (!nuevaVigenciaCuenta.getCuentac().getCodigo().isEmpty())
-                    && (!nuevaVigenciaCuenta.getConsolidadord().getNombre().isEmpty())
-                    && (!nuevaVigenciaCuenta.getCuentad().getDescripcion().isEmpty())
-                    && (!nuevaVigenciaCuenta.getCuentad().getCodigo().isEmpty())
-                    && (!nuevaVigenciaCuenta.getTipocc().getNombre().isEmpty())
-                    && (nuevaVigenciaCuenta.getFechafinal() != null) && (nuevaVigenciaCuenta.getFechainicial() != null)) {
-                /////
-                return true;
+            if ((nuevaVigenciaCuenta.getFechafinal() != null) && (nuevaVigenciaCuenta.getFechainicial() != null)
+                    && (nuevaVigenciaCuenta.getConsolidadorc().getSecuencia() != null)
+                    && (nuevaVigenciaCuenta.getConsolidadord().getSecuencia() != null)
+                    && (nuevaVigenciaCuenta.getCuentac().getSecuencia() != null)
+                    && (nuevaVigenciaCuenta.getCuentad().getSecuencia() != null)
+                    && (nuevaVigenciaCuenta.getTipocc().getSecuencia() != null)) {
+                retorno = true;
             }
         }
         if (i == 2) {
-            if ((!duplicarVigenciaCuenta.getConsolidadorc().getNombre().isEmpty())
-                    && (!duplicarVigenciaCuenta.getCuentac().getDescripcion().isEmpty())
-                    && (!duplicarVigenciaCuenta.getCuentac().getCodigo().isEmpty())
-                    && (!duplicarVigenciaCuenta.getConsolidadord().getNombre().isEmpty())
-                    && (!duplicarVigenciaCuenta.getCuentad().getDescripcion().isEmpty())
-                    && (!duplicarVigenciaCuenta.getCuentad().getCodigo().isEmpty())
-                    && (!duplicarVigenciaCuenta.getTipocc().getNombre().isEmpty())
-                    && (duplicarVigenciaCuenta.getFechafinal() != null) && (duplicarVigenciaCuenta.getFechainicial() != null)) {
-                /////
-                return true;
+            if ((duplicarVigenciaCuenta.getFechafinal() != null) && (duplicarVigenciaCuenta.getFechainicial() != null)
+                    && (duplicarVigenciaCuenta.getConsolidadorc().getSecuencia() != null)
+                    && (duplicarVigenciaCuenta.getConsolidadord().getSecuencia() != null)
+                    && (duplicarVigenciaCuenta.getCuentac().getSecuencia() != null)
+                    && (duplicarVigenciaCuenta.getCuentad().getSecuencia() != null)
+                    && (duplicarVigenciaCuenta.getTipocc().getSecuencia() != null)) {
+                retorno = true;
             }
         }
         return retorno;
@@ -3485,28 +3567,30 @@ public class ControlDetalleConcepto implements Serializable {
     public boolean validarNuevosDatosVigenciaGrupoConcepto(int i) {
         boolean retorno = false;
         if (i == 0) {
-            VigenciasGruposConceptos aux = listVigenciasGruposConceptosConcepto.get(indexVigenciaGrupoConcepto);
-            if ((!aux.getGrupoconcepto().getDescripcion().isEmpty())
-                    && (!aux.getGrupoconcepto().getStrCodigo().isEmpty())
-                    && (aux.getFechafinal() != null) && (aux.getFechainicial() != null)) {
+            VigenciasGruposConceptos aux = null;
+            if (tipoListaVigenciaGrupoConcepto == 0) {
+                aux = listVigenciasGruposConceptosConcepto.get(indexVigenciaGrupoConcepto);
+            } else {
+                aux = filtrarListVigenciasGruposConceptosConcepto.get(indexVigenciaGrupoConcepto);
+            }
+            if ((aux.getFechafinal() != null) && (aux.getFechainicial() != null)
+                    && (aux.getGrupoconcepto().getSecuencia() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 1) {
-            if ((!nuevaVigenciaGrupoConcepto.getGrupoconcepto().getDescripcion().isEmpty())
-                    && (!nuevaVigenciaGrupoConcepto.getGrupoconcepto().getStrCodigo().isEmpty())
-                    && (nuevaVigenciaGrupoConcepto.getFechafinal() != null) && (nuevaVigenciaGrupoConcepto.getFechainicial() != null)) {
+            if ((nuevaVigenciaGrupoConcepto.getFechafinal() != null) && (nuevaVigenciaGrupoConcepto.getFechainicial() != null)
+                    && (nuevaVigenciaGrupoConcepto.getGrupoconcepto().getSecuencia() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 2) {
-            if ((!duplicarVigenciaGrupoConcepto.getGrupoconcepto().getDescripcion().isEmpty())
-                    && (!duplicarVigenciaGrupoConcepto.getGrupoconcepto().getStrCodigo().isEmpty())
-                    && (duplicarVigenciaGrupoConcepto.getFechafinal() != null) && (duplicarVigenciaGrupoConcepto.getFechainicial() != null)) {
+            if ((duplicarVigenciaGrupoConcepto.getFechafinal() != null) && (duplicarVigenciaGrupoConcepto.getFechainicial() != null)
+                    && (duplicarVigenciaGrupoConcepto.getGrupoconcepto().getSecuencia() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         return retorno;
@@ -3515,25 +3599,30 @@ public class ControlDetalleConcepto implements Serializable {
     public boolean validarNuevosDatosVigenciaConceptoTT(int i) {
         boolean retorno = false;
         if (i == 0) {
-            VigenciasConceptosTT aux = listVigenciasConceptosTTConcepto.get(indexVigenciaConceptoTT);
-            if ((!aux.getTipotrabajador().getNombre().isEmpty())
-                    && (aux.getFechafinal() != null) && (aux.getFechainicial() != null)) {
+            VigenciasConceptosTT aux = null;
+            if (tipoListaVigenciaConceptoTT == 0) {
+                aux = listVigenciasConceptosTTConcepto.get(indexVigenciaConceptoTT);
+            } else {
+                aux = filtrarListVigenciasConceptosTT.get(indexVigenciaConceptoTT);
+            }
+            if ((aux.getFechafinal() != null) && (aux.getFechainicial() != null)
+                    && (aux.getTipotrabajador().getSecuencia() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 1) {
-            if ((!nuevaVigenciaConceptoTT.getTipotrabajador().getNombre().isEmpty())
+            if ((nuevaVigenciaConceptoTT.getTipotrabajador().getSecuencia() != null)
                     && (nuevaVigenciaConceptoTT.getFechafinal() != null) && (nuevaVigenciaConceptoTT.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 2) {
-            if ((!duplicarVigenciaConceptoTT.getTipotrabajador().getNombre().isEmpty())
+            if ((duplicarVigenciaConceptoTT.getTipotrabajador().getSecuencia() != null)
                     && (duplicarVigenciaConceptoTT.getFechafinal() != null) && (duplicarVigenciaConceptoTT.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         return retorno;
@@ -3542,25 +3631,30 @@ public class ControlDetalleConcepto implements Serializable {
     public boolean validarNuevosDatosVigenciaConceptoTC(int i) {
         boolean retorno = false;
         if (i == 0) {
-            VigenciasConceptosTC aux = listVigenciasConceptosTCConcepto.get(indexVigenciaConceptoTC);
-            if ((!aux.getTipocontrato().getNombre().isEmpty())
+            VigenciasConceptosTC aux = null;
+            if (tipoListaVigenciaConceptoTC == 0) {
+                aux = listVigenciasConceptosTCConcepto.get(indexVigenciaConceptoTC);
+            } else {
+                aux = filtrarListVigenciasConceptosTC.get(indexVigenciaConceptoTC);
+            }
+            if ((aux.getTipocontrato().getSecuencia() != null)
                     && (aux.getFechafinal() != null) && (aux.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 1) {
-            if ((!nuevaVigenciaConceptoTC.getTipocontrato().getNombre().isEmpty())
+            if ((nuevaVigenciaConceptoTC.getTipocontrato().getSecuencia() != null)
                     && (nuevaVigenciaConceptoTC.getFechafinal() != null) && (nuevaVigenciaConceptoTC.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 2) {
-            if ((!duplicarVigenciaConceptoTC.getTipocontrato().getNombre().isEmpty())
+            if ((duplicarVigenciaConceptoTC.getTipocontrato().getSecuencia() != null)
                     && (duplicarVigenciaConceptoTC.getFechafinal() != null) && (duplicarVigenciaConceptoTC.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         return retorno;
@@ -3569,25 +3663,30 @@ public class ControlDetalleConcepto implements Serializable {
     public boolean validarNuevosDatosVigenciaConceptoRL(int i) {
         boolean retorno = false;
         if (i == 0) {
-            VigenciasConceptosRL aux = listVigenciasConceptosRLConcepto.get(indexVigenciaConceptoRL);
-            if ((!aux.getTiposalario().getNombre().isEmpty())
+            VigenciasConceptosRL aux = null;
+            if (tipoListaVigenciaConceptoRL == 0) {
+                aux = listVigenciasConceptosRLConcepto.get(indexVigenciaConceptoRL);
+            } else {
+                aux = filtrarListVigenciasConceptosRL.get(indexVigenciaConceptoRL);
+            }
+            if ((aux.getTiposalario().getSecuencia() != null)
                     && (aux.getFechafinal() != null) && (aux.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 1) {
-            if ((!nuevaVigenciaConceptoRL.getTiposalario().getNombre().isEmpty())
+            if ((nuevaVigenciaConceptoRL.getTiposalario().getSecuencia() != null)
                     && (nuevaVigenciaConceptoRL.getFechafinal() != null) && (nuevaVigenciaConceptoRL.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 2) {
-            if ((!duplicarVigenciaConceptoRL.getTiposalario().getNombre().isEmpty())
+            if ((duplicarVigenciaConceptoRL.getTiposalario().getSecuencia() != null)
                     && (duplicarVigenciaConceptoRL.getFechafinal() != null) && (duplicarVigenciaConceptoRL.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         return retorno;
@@ -3596,28 +3695,34 @@ public class ControlDetalleConcepto implements Serializable {
     public boolean validarNuevosDatosFormulasConceptos(int i) {
         boolean retorno = false;
         if (i == 0) {
-            FormulasConceptos aux = listFormulasConceptosConcepto.get(indexFormulasConceptos);
-            if ((!aux.getFormula().getNombrelargo().isEmpty())
+            FormulasConceptos aux = null;
+            if (tipoListaFormulasConceptos == 0) {
+                aux = listFormulasConceptosConcepto.get(indexFormulasConceptos);
+            } else {
+                aux = listFormulasConceptosConcepto.get(indexFormulasConceptos);
+            }
+
+            if ((aux.getFormula().getSecuencia() != null)
                     && (!aux.getStrOrden().isEmpty())
                     && (aux.getFechafinal() != null) && (aux.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 1) {
-            if ((!nuevaFormulasConceptos.getFormula().getNombrelargo().isEmpty())
+            if ((nuevaFormulasConceptos.getFormula().getSecuencia() != null)
                     && (!nuevaFormulasConceptos.getStrOrden().isEmpty())
                     && (nuevaFormulasConceptos.getFechafinal() != null) && (nuevaFormulasConceptos.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         if (i == 2) {
-            if ((!duplicarFormulasConceptos.getFormula().getNombrelargo().isEmpty())
+            if ((duplicarFormulasConceptos.getFormula().getSecuencia() != null)
                     && (!duplicarFormulasConceptos.getStrOrden().isEmpty())
                     && (duplicarFormulasConceptos.getFechafinal() != null) && (duplicarFormulasConceptos.getFechainicial() != null)) {
                 /////
-                return true;
+                retorno = true;
             }
         }
         return retorno;
@@ -3629,23 +3734,25 @@ public class ControlDetalleConcepto implements Serializable {
             boolean validacion = validarFechasRegistroVigenciaCuenta(1);
             if (validacion == true) {
                 if (banderaVigenciaCuenta == 1) {
-                    vigenciaCuentaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
+                    altoTablaVigenciaCuenta = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+                    vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
                     vigenciaCuentaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
+                    vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
                     vigenciaCuentaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
+                    vigenciaCuentaTipoCC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
                     vigenciaCuentaTipoCC.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
+                    vigenciaCuentaDebitoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
                     vigenciaCuentaDebitoCod.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
+                    vigenciaCuentaDebitoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
                     vigenciaCuentaDebitoDes.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
+                    vigenciaCuentaCCConsolidadorD = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
                     vigenciaCuentaCCConsolidadorD.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
+                    vigenciaCuentaCreditoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
                     vigenciaCuentaCreditoCod.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
+                    vigenciaCuentaCreditoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
                     vigenciaCuentaCreditoDes.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
+                    vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
                     vigenciaCuentaCCConsolidadorC.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
                     banderaVigenciaCuenta = 0;
@@ -3673,7 +3780,7 @@ public class ControlDetalleConcepto implements Serializable {
                 context.update("formularioDialogos:NuevoRegistroVigenciaCuenta");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosVigenciaCuenta = true;
                 indexVigenciaCuenta = -1;
@@ -3705,13 +3812,15 @@ public class ControlDetalleConcepto implements Serializable {
             boolean validacion = validarFechasRegistroVigenciaGrupoConcepto(1);
             if (validacion == true) {
                 if (banderaVigenciaGrupoConcepto == 1) {
-                    vigenciaGCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
+                    altoTablaVigenciaGrupoC = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+                    vigenciaGCFechaInicial = (Column)c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
                     vigenciaGCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaGCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
+                    vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
                     vigenciaGCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
+                    vigenciaGCCodigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
                     vigenciaGCCodigo.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
+                    vigenciaGCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
                     vigenciaGCDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
                     banderaVigenciaGrupoConcepto = 0;
@@ -3735,7 +3844,7 @@ public class ControlDetalleConcepto implements Serializable {
                 context.update("formularioDialogos:NuevoRegistroGrupoConcepto");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosVigenciaGrupoConcepto = true;
                 indexVigenciaGrupoConcepto = -1;
@@ -3763,11 +3872,13 @@ public class ControlDetalleConcepto implements Serializable {
             boolean validacion = validarFechasRegistroVigenciaConceptoTT(1);
             if (validacion == true) {
                 if (banderaVigenciaConceptoTT == 1) {
-                    vigenciaCTTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
+                    altoTablaVigenciaConceptoTT = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+                    vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
                     vigenciaCTTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
+                    vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
                     vigenciaCTTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
+                    vigenciaCTTDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
                     vigenciaCTTDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
                     banderaVigenciaConceptoTT = 0;
@@ -3791,7 +3902,7 @@ public class ControlDetalleConcepto implements Serializable {
                 context.update("formularioDialogos:NuevoRegistroVigenciaConceptoTT");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosVigenciaConceptoTT = true;
                 indexVigenciaConceptoTT = -1;
@@ -3819,11 +3930,13 @@ public class ControlDetalleConcepto implements Serializable {
             boolean validacion = validarFechasRegistroVigenciaConceptoTC(1);
             if (validacion == true) {
                 if (banderaVigenciaConceptoTC == 1) {
-                    vigenciaCTCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
+                    altoTablaVigenciaConceptoTC = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+                    vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
                     vigenciaCTCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
+                    vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
                     vigenciaCTCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
+                    vigenciaCTCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
                     vigenciaCTCDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
                     banderaVigenciaConceptoTC = 0;
@@ -3847,7 +3960,7 @@ public class ControlDetalleConcepto implements Serializable {
                 context.update("formularioDialogos:NuevoRegistroVigenciaConceptoTC");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosVigenciaConceptoTC = true;
                 indexVigenciaConceptoTC = -1;
@@ -3875,11 +3988,13 @@ public class ControlDetalleConcepto implements Serializable {
             boolean validacion = validarFechasRegistroVigenciaConceptoRL(1);
             if (validacion == true) {
                 if (banderaVigenciaConceptoRL == 1) {
-                    vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+                    altoTablaVigenciaConceptoRL = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+                    vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
                     vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+                    vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
                     vigenciaCRLFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-                    vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+                    vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
                     vigenciaCRLDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
                     banderaVigenciaConceptoRL = 0;
@@ -3903,7 +4018,7 @@ public class ControlDetalleConcepto implements Serializable {
                 context.update("formularioDialogos:NuevoRegistroVigenciaConceptoRL");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosVigenciaConceptoRL = true;
                 indexVigenciaConceptoRL = -1;
@@ -3931,11 +4046,13 @@ public class ControlDetalleConcepto implements Serializable {
             boolean validacion = validarFechasRegistroFormulasConceptos(1);
             if (validacion == true) {
                 if (banderaFormulasConceptos == 1) {
-                    vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+                    altoTablaFormulaConcepto = "142";
+            FacesContext c = FacesContext.getCurrentInstance();
+                    vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
                     vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                    vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+                    vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
                     vigenciaCRLFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-                    vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+                    vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
                     vigenciaCRLDescripcion.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
                     banderaVigenciaConceptoRL = 0;
@@ -3959,7 +4076,7 @@ public class ControlDetalleConcepto implements Serializable {
                 context.update("formularioDialogos:NuevoRegistroFormulaConcepto");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 cambiosFormulasConceptos = true;
                 indexFormulasConceptos = -1;
@@ -4139,23 +4256,25 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 if (indexVigenciaCuenta >= 0) {
                     if (banderaVigenciaCuenta == 1) {
-                        vigenciaCuentaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
+                        altoTablaVigenciaCuenta = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+                        vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
                         vigenciaCuentaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
+                        vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
                         vigenciaCuentaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
+                        vigenciaCuentaTipoCC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
                         vigenciaCuentaTipoCC.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
+                        vigenciaCuentaDebitoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
                         vigenciaCuentaDebitoCod.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
+                        vigenciaCuentaDebitoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
                         vigenciaCuentaDebitoDes.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
+                        vigenciaCuentaCCConsolidadorD = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
                         vigenciaCuentaCCConsolidadorD.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
+                        vigenciaCuentaCreditoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
                         vigenciaCuentaCreditoCod.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
+                        vigenciaCuentaCreditoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
                         vigenciaCuentaCreditoDes.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
+                        vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
                         vigenciaCuentaCCConsolidadorC.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
                         banderaVigenciaCuenta = 0;
@@ -4164,7 +4283,6 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     k++;
                     BigInteger var = BigInteger.valueOf(k);
-
                     duplicarVigenciaCuenta.setSecuencia(var);
                     duplicarVigenciaCuenta.setConcepto(conceptoActual);
                     listVigenciasCuentasCrear.add(duplicarVigenciaCuenta);
@@ -4181,7 +4299,7 @@ public class ControlDetalleConcepto implements Serializable {
                     context.update("form:datosVigenciaGrupoConcepto");
                     if (guardado == true) {
                         guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                     context.execute("DuplicarRegistroVigenciaCuenta.hide()");
                     cambiosVigenciaCuenta = true;
@@ -4214,13 +4332,15 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 if (indexVigenciaGrupoConcepto >= 0) {
                     if (banderaVigenciaGrupoConcepto == 1) {
-                        vigenciaGCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
+                        altoTablaVigenciaGrupoC = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+                        vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
                         vigenciaGCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaGCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
+                        vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
                         vigenciaGCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
+                        vigenciaGCCodigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
                         vigenciaGCCodigo.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
+                        vigenciaGCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
                         vigenciaGCDescripcion.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
                         banderaVigenciaGrupoConcepto = 0;
@@ -4230,7 +4350,6 @@ public class ControlDetalleConcepto implements Serializable {
 
                     k++;
                     BigInteger var = BigInteger.valueOf(k);
-
                     duplicarVigenciaGrupoConcepto.setSecuencia(var);
                     duplicarVigenciaGrupoConcepto.setConcepto(conceptoActual);
                     listVigenciasGruposConceptosCrear.add(duplicarVigenciaGrupoConcepto);
@@ -4242,7 +4361,7 @@ public class ControlDetalleConcepto implements Serializable {
                     context.update("form:datosVigenciaGrupoConcepto");
                     if (guardado == true) {
                         guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                     context.execute("DuplicarRegistroVigenciaGrupoConcepto.hide()");
                     cambiosVigenciaGrupoConcepto = true;
@@ -4271,11 +4390,13 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 if (indexVigenciaConceptoTT >= 0) {
                     if (banderaVigenciaConceptoTT == 1) {
-                        vigenciaCTTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
+                        altoTablaVigenciaConceptoTT = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+                        vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
                         vigenciaCTTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
+                        vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
                         vigenciaCTTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
+                        vigenciaCTTDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
                         vigenciaCTTDescripcion.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
                         banderaVigenciaConceptoTT = 0;
@@ -4284,7 +4405,6 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     k++;
                     BigInteger var = BigInteger.valueOf(k);
-
                     duplicarVigenciaConceptoTT.setSecuencia(var);
                     duplicarVigenciaConceptoTT.setConcepto(conceptoActual);
                     listVigenciasConceptosTTCrear.add(duplicarVigenciaConceptoTT);
@@ -4296,7 +4416,7 @@ public class ControlDetalleConcepto implements Serializable {
                     context.update("form:datosVigenciaConceptoTT");
                     if (guardado == true) {
                         guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                     context.execute("DuplicarRegistroVigenciaConceptoTT.hide()");
                     cambiosVigenciaConceptoTT = true;
@@ -4325,11 +4445,13 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 if (indexVigenciaConceptoTC >= 0) {
                     if (banderaVigenciaConceptoTC == 1) {
-                        vigenciaCTCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
+                        altoTablaVigenciaConceptoTC = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+                        vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
                         vigenciaCTCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
+                        vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
                         vigenciaCTCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
+                        vigenciaCTCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
                         vigenciaCTCDescripcion.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
                         banderaVigenciaConceptoTC = 0;
@@ -4338,19 +4460,17 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     k++;
                     BigInteger var = BigInteger.valueOf(k);
-
                     duplicarVigenciaConceptoTC.setSecuencia(var);
                     duplicarVigenciaConceptoTC.setConcepto(conceptoActual);
                     listVigenciasConceptosTCCrear.add(duplicarVigenciaConceptoTC);
                     listVigenciasConceptosTCConcepto.add(duplicarVigenciaConceptoTC);
-
                     duplicarVigenciaConceptoTC = new VigenciasConceptosTC();
                     duplicarVigenciaConceptoTC.setTipocontrato(new TiposContratos());
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.update("form:datosVigenciaConceptoTC");
                     if (guardado == true) {
                         guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                     context.execute("DuplicarRegistroVigenciaConceptoTC.hide()");
                     cambiosVigenciaConceptoTC = true;
@@ -4379,11 +4499,13 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 if (indexVigenciaConceptoRL >= 0) {
                     if (banderaVigenciaConceptoRL == 1) {
-                        vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+                        altoTablaVigenciaConceptoRL = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+                        vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
                         vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-                        vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+                        vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
                         vigenciaCRLFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-                        vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+                        vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
                         vigenciaCRLDescripcion.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
                         banderaVigenciaConceptoRL = 0;
@@ -4392,19 +4514,17 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     k++;
                     BigInteger var = BigInteger.valueOf(k);
-
                     duplicarVigenciaConceptoRL.setSecuencia(var);
                     duplicarVigenciaConceptoRL.setConcepto(conceptoActual);
                     listVigenciasConceptosRLCrear.add(duplicarVigenciaConceptoRL);
                     listVigenciasConceptosRLConcepto.add(duplicarVigenciaConceptoRL);
-
                     duplicarVigenciaConceptoRL = new VigenciasConceptosRL();
                     duplicarVigenciaConceptoRL.setTiposalario(new ReformasLaborales());
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.update("form:datosVigenciaConceptoRL");
                     if (guardado == true) {
                         guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                     context.execute("DuplicarRegistroVigenciaConceptoRL.hide()");
                     cambiosVigenciaConceptoRL = true;
@@ -4433,13 +4553,15 @@ public class ControlDetalleConcepto implements Serializable {
             if (validacion == true) {
                 if (indexFormulasConceptos >= 0) {
                     if (banderaFormulasConceptos == 1) {
-                        formulaCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
+                        altoTablaFormulaConcepto = "142";
+            FacesContext c = FacesContext.getCurrentInstance();
+                        formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
                         formulaCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-                        formulaCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
+                        formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
                         formulaCFechaFinal.setFilterStyle("display: none; visibililty: hidden;");
-                        formulaCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
+                        formulaCNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
                         formulaCNombre.setFilterStyle("display: none; visibility: hidden;");
-                        formulaCOrden = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
+                        formulaCOrden = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
                         formulaCOrden.setFilterStyle("display: none; visibility: hidden;");
                         RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
                         banderaFormulasConceptos = 0;
@@ -4448,22 +4570,19 @@ public class ControlDetalleConcepto implements Serializable {
                     }
                     k++;
                     BigInteger var = BigInteger.valueOf(k);
-
                     duplicarFormulasConceptos.setSecuencia(var);
                     duplicarFormulasConceptos.setConcepto(conceptoActual);
                     listFormulasConceptosCrear.add(duplicarFormulasConceptos);
                     listFormulasConceptosConcepto.add(duplicarFormulasConceptos);
-
                     duplicarFormulasConceptos = new FormulasConceptos();
                     duplicarFormulasConceptos.setFormula(new Formulas());
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.update("form:datosFormulaConcepto");
                     if (guardado == true) {
                         guardado = false;
-                        RequestContext.getCurrentInstance().update("form:aceptar");
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                     formulaSeleccionada = true;
-
                     context.update("form:detalleFormula");
                     context.execute("DuplicarRegistroFormulaConcepto.hide()");
                     cambiosFormulasConceptos = true;
@@ -4491,7 +4610,6 @@ public class ControlDetalleConcepto implements Serializable {
      * la pagina
      */
     public void borrarVigenciaCuenta() {
-
         if (indexVigenciaCuenta >= 0) {
             if (tipoListaVigenciaCuenta == 0) {
                 if (!listVigenciasCuentasModificar.isEmpty() && listVigenciasCuentasModificar.contains(listVigenciasCuentasConcepto.get(indexVigenciaCuenta))) {
@@ -4528,6 +4646,7 @@ public class ControlDetalleConcepto implements Serializable {
             cambiosVigenciaCuenta = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -4569,6 +4688,7 @@ public class ControlDetalleConcepto implements Serializable {
             cambiosVigenciaGrupoConcepto = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -4610,6 +4730,7 @@ public class ControlDetalleConcepto implements Serializable {
             cambiosVigenciaConceptoTT = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -4651,6 +4772,7 @@ public class ControlDetalleConcepto implements Serializable {
             cambiosVigenciaConceptoTC = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -4692,6 +4814,7 @@ public class ControlDetalleConcepto implements Serializable {
             cambiosVigenciaConceptoRL = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -4735,6 +4858,7 @@ public class ControlDetalleConcepto implements Serializable {
             cambiosFormulasConceptos = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
@@ -4771,46 +4895,48 @@ public class ControlDetalleConcepto implements Serializable {
     /**
      */
     public void filtradoVigenciaCuenta() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaCuenta == 0) {
-
-            vigenciaCuentaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
+            altoTablaVigenciaCuenta = "138";
+            vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
             vigenciaCuentaFechaInicial.setFilterStyle("width: 60px");
-            vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
+            vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
             vigenciaCuentaFechaFinal.setFilterStyle("width: 60px");
-            vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
+            vigenciaCuentaTipoCC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
             vigenciaCuentaTipoCC.setFilterStyle("width: 80px");
-            vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
+            vigenciaCuentaDebitoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
             vigenciaCuentaDebitoCod.setFilterStyle("width: 80px");
-            vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
+            vigenciaCuentaDebitoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
             vigenciaCuentaDebitoDes.setFilterStyle("width: 80px");
-            vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
+            vigenciaCuentaCCConsolidadorD = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
             vigenciaCuentaCCConsolidadorD.setFilterStyle("width: 80px");
-            vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
+            vigenciaCuentaCreditoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
             vigenciaCuentaCreditoCod.setFilterStyle("width: 80px");
-            vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
+            vigenciaCuentaCreditoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
             vigenciaCuentaCreditoDes.setFilterStyle("width: 80px");
-            vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
+            vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
             vigenciaCuentaCCConsolidadorC.setFilterStyle("width: 80px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
             banderaVigenciaCuenta = 1;
         } else if (banderaVigenciaCuenta == 1) {
-            vigenciaCuentaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
+            altoTablaVigenciaCuenta = "160";
+            vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
             vigenciaCuentaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
+            vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
             vigenciaCuentaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
+            vigenciaCuentaTipoCC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
             vigenciaCuentaTipoCC.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
+            vigenciaCuentaDebitoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
             vigenciaCuentaDebitoCod.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
+            vigenciaCuentaDebitoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
             vigenciaCuentaDebitoDes.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
+            vigenciaCuentaCCConsolidadorD = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
             vigenciaCuentaCCConsolidadorD.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
+            vigenciaCuentaCreditoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
             vigenciaCuentaCreditoCod.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
+            vigenciaCuentaCreditoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
             vigenciaCuentaCreditoDes.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
+            vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
             vigenciaCuentaCCConsolidadorC.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
             banderaVigenciaCuenta = 0;
@@ -4820,25 +4946,28 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void filtradoVigenciaGrupoConcepto() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaGrupoConcepto == 0) {
-            vigenciaGCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
+            altoTablaVigenciaGrupoC = "138";
+            vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
             vigenciaGCFechaInicial.setFilterStyle("width: 60px");
-            vigenciaGCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
+            vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
             vigenciaGCFechaFinal.setFilterStyle("width: 60px");
-            vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
+            vigenciaGCCodigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
             vigenciaGCCodigo.setFilterStyle("width: 60px");
-            vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
+            vigenciaGCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
             vigenciaGCDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
             banderaVigenciaGrupoConcepto = 1;
         } else if (banderaVigenciaGrupoConcepto == 1) {
-            vigenciaGCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
+            altoTablaVigenciaGrupoC = "160";
+            vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
             vigenciaGCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
+            vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
             vigenciaGCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
+            vigenciaGCCodigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
             vigenciaGCCodigo.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
+            vigenciaGCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
             vigenciaGCDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
             banderaVigenciaGrupoConcepto = 0;
@@ -4848,21 +4977,24 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void filtradoVigenciaConceptoTT() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaConceptoTT == 0) {
-            vigenciaCTTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
+            altoTablaVigenciaConceptoTT = "103";
+            vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
             vigenciaCTTFechaFinal.setFilterStyle("width: 60px");
-            vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
+            vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
             vigenciaCTTFechaInicial.setFilterStyle("width: 60px");
-            vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
+            vigenciaCTTDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
             vigenciaCTTDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
             banderaVigenciaConceptoTT = 1;
         } else if (banderaVigenciaConceptoTT == 1) {
-            vigenciaCTTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
+            altoTablaVigenciaConceptoTT = "125";
+            vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
             vigenciaCTTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
+            vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
             vigenciaCTTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
+            vigenciaCTTDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
             vigenciaCTTDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
             banderaVigenciaConceptoTT = 0;
@@ -4872,21 +5004,24 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void filtradoVigenciaConceptoTC() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaConceptoTC == 0) {
-            vigenciaCTCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
+            altoTablaVigenciaConceptoTC = "103";
+            vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
             vigenciaCTCFechaFinal.setFilterStyle("width: 60px");
-            vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
+            vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
             vigenciaCTCFechaInicial.setFilterStyle("width: 60px");
-            vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
+            vigenciaCTCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
             vigenciaCTCDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
             banderaVigenciaConceptoTC = 1;
         } else if (banderaVigenciaConceptoTC == 1) {
-            vigenciaCTCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
+            altoTablaVigenciaConceptoTC = "125";
+            vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
             vigenciaCTCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
+            vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
             vigenciaCTCFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-            vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
+            vigenciaCTCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
             vigenciaCTCDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
             banderaVigenciaConceptoTC = 0;
@@ -4896,21 +5031,24 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void filtradoVigenciaConceptoRL() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaVigenciaConceptoRL == 0) {
-            vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+            altoTablaVigenciaConceptoRL = "103";
+            vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
             vigenciaCRLFechaFinal.setFilterStyle("width: 60px");
-            vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+            vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
             vigenciaCRLFechaInicial.setFilterStyle("width: 60px");
-            vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+            vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
             vigenciaCRLDescripcion.setFilterStyle("width: 250px");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
             banderaVigenciaConceptoRL = 1;
         } else if (banderaVigenciaConceptoRL == 1) {
-            vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+            altoTablaVigenciaConceptoRL = "125";
+            vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
             vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+            vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
             vigenciaCRLFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-            vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+            vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
             vigenciaCRLDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
             banderaVigenciaConceptoRL = 0;
@@ -4920,25 +5058,28 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void filtradoFormulasConceptos() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (banderaFormulasConceptos == 0) {
-            formulaCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
+            altoTablaFormulaConcepto = "142";
+            formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
             formulaCFechaInicial.setFilterStyle("width: 60px");
-            formulaCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
+            formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
             formulaCFechaFinal.setFilterStyle("width: 60px");
-            formulaCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
+            formulaCNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
             formulaCNombre.setFilterStyle("width: 200px");
-            formulaCOrden = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
+            formulaCOrden = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
             formulaCOrden.setFilterStyle("width: 60px");
             RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
             banderaFormulasConceptos = 1;
         } else if (banderaFormulasConceptos == 1) {
-            formulaCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
+            altoTablaFormulaConcepto = "142";
+            formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
             formulaCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            formulaCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
+            formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
             formulaCFechaFinal.setFilterStyle("display: none; visibililty: hidden;");
-            formulaCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
+            formulaCNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
             formulaCNombre.setFilterStyle("display: none; visibility: hidden;");
-            formulaCOrden = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
+            formulaCOrden = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
             formulaCOrden.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
             banderaFormulasConceptos = 0;
@@ -4953,23 +5094,25 @@ public class ControlDetalleConcepto implements Serializable {
      */
     public void salir() {
         if (banderaVigenciaCuenta == 1) {
-            vigenciaCuentaFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
+            altoTablaVigenciaCuenta = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCuentaFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaInicial");
             vigenciaCuentaFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
+            vigenciaCuentaFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaFechaFinal");
             vigenciaCuentaFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaTipoCC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
+            vigenciaCuentaTipoCC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaTipoCC");
             vigenciaCuentaTipoCC.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaDebitoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
+            vigenciaCuentaDebitoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoCod");
             vigenciaCuentaDebitoCod.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaDebitoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
+            vigenciaCuentaDebitoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaDebitoDes");
             vigenciaCuentaDebitoDes.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCCConsolidadorD = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
+            vigenciaCuentaCCConsolidadorD = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorD");
             vigenciaCuentaCCConsolidadorD.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCreditoCod = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
+            vigenciaCuentaCreditoCod = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoCod");
             vigenciaCuentaCreditoCod.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCreditoDes = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
+            vigenciaCuentaCreditoDes = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCreditoDes");
             vigenciaCuentaCreditoDes.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCuentaCCConsolidadorC = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
+            vigenciaCuentaCCConsolidadorC = (Column) c.getViewRoot().findComponent("form:datosVigenciaCuenta:vigenciaCuentaCCConsolidadorC");
             vigenciaCuentaCCConsolidadorC.setFilterStyle("display: none; visibility: hidden;");
 
             RequestContext.getCurrentInstance().update("form:datosVigenciaCuenta");
@@ -4978,13 +5121,15 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaCuenta = 0;
         }
         if (banderaVigenciaGrupoConcepto == 1) {
-            vigenciaGCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
+            altoTablaVigenciaGrupoC = "160";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaGCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaInicial");
             vigenciaGCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
+            vigenciaGCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCFechaFinal");
             vigenciaGCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
+            vigenciaGCCodigo = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCCodigo");
             vigenciaGCCodigo.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaGCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
+            vigenciaGCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaGrupoConcepto:vigenciaGCDescripcion");
             vigenciaGCDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaGrupoConcepto");
             banderaVigenciaGrupoConcepto = 0;
@@ -4992,11 +5137,13 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaGrupoConcepto = 0;
         }
         if (banderaVigenciaConceptoTT == 1) {
-            vigenciaCTTFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
+            altoTablaVigenciaConceptoTT = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCTTFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaFinal");
             vigenciaCTTFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTTFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
+            vigenciaCTTFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTFechaInicial");
             vigenciaCTTFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTTDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
+            vigenciaCTTDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTT:vigenciaCTTDescripcion");
             vigenciaCTTDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTT");
             banderaVigenciaConceptoTT = 0;
@@ -5004,11 +5151,13 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaConceptoTT = 0;
         }
         if (banderaVigenciaConceptoTC == 1) {
-            vigenciaCTCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
+            altoTablaVigenciaConceptoTC = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCTCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaFinal");
             vigenciaCTCFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
+            vigenciaCTCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCFechaInicial");
             vigenciaCTCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCTCDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
+            vigenciaCTCDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoTC:vigenciaCTCDescripcion");
             vigenciaCTCDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoTC");
             banderaVigenciaConceptoTC = 0;
@@ -5016,11 +5165,13 @@ public class ControlDetalleConcepto implements Serializable {
             tipoListaVigenciaConceptoTC = 0;
         }
         if (banderaVigenciaConceptoRL == 1) {
-            vigenciaCRLFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
+            altoTablaVigenciaConceptoRL = "125";
+            FacesContext c = FacesContext.getCurrentInstance();
+            vigenciaCRLFechaFinal = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaFinal");
             vigenciaCRLFechaFinal.setFilterStyle("display: none; visibility: hidden;");
-            vigenciaCRLFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
+            vigenciaCRLFechaInicial = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLFechaInicial");
             vigenciaCRLFechaInicial.setFilterStyle("display: none; visibililty: hidden;");
-            vigenciaCRLDescripcion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
+            vigenciaCRLDescripcion = (Column) c.getViewRoot().findComponent("form:datosVigenciaConceptoRL:vigenciaCRLDescripcion");
             vigenciaCRLDescripcion.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosVigenciaConceptoRL");
             banderaVigenciaConceptoRL = 0;
@@ -5029,13 +5180,15 @@ public class ControlDetalleConcepto implements Serializable {
         }
 
         if (banderaFormulasConceptos == 1) {
-            formulaCFechaInicial = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
+            altoTablaFormulaConcepto = "142";
+            FacesContext c = FacesContext.getCurrentInstance();
+            formulaCFechaInicial = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaInicial");
             formulaCFechaInicial.setFilterStyle("display: none; visibility: hidden;");
-            formulaCFechaFinal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
+            formulaCFechaFinal = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCFechaFinal");
             formulaCFechaFinal.setFilterStyle("display: none; visibililty: hidden;");
-            formulaCNombre = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
+            formulaCNombre = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCNombre");
             formulaCNombre.setFilterStyle("display: none; visibility: hidden;");
-            formulaCOrden = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
+            formulaCOrden = (Column) c.getViewRoot().findComponent("form:datosFormulaConcepto:formulaCOrden");
             formulaCOrden.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosFormulaConcepto");
             banderaFormulasConceptos = 0;
@@ -5084,12 +5237,6 @@ public class ControlDetalleConcepto implements Serializable {
         conceptoActual = null;
         k = 0;
 
-        indexAuxVigenciaCuenta = -1;
-        indexAuxVigenciaGrupoConcepto = -1;
-        indexAuxVigenciaConceptoTT = -1;
-        indexAuxVigenciaConceptoTC = -1;
-        indexAuxVigenciaConceptoRL = -1;
-        indexAuxFormulasConceptos = -1;
 
         listVigenciasCuentasConcepto = null;
         listVigenciasGruposConceptosConcepto = null;
@@ -5099,6 +5246,7 @@ public class ControlDetalleConcepto implements Serializable {
         listFormulasConceptosConcepto = null;
 
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
 
         cambiosVigenciaCuenta = false;
         cambiosVigenciaGrupoConcepto = false;
@@ -5136,6 +5284,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarTipoCentroCosto() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaCuenta == 0) {
                 listVigenciasCuentasConcepto.get(indexVigenciaCuenta).setTipocc(tipoCentroCostoSeleccionado);
@@ -5158,18 +5307,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaCuenta = true;
             cambiosVigenciaCuenta = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarTipoCCVC");
+
+            context.update("form:datosVigenciaCuenta");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaCuenta.setTipocc(tipoCentroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaTipoCCVC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaCuenta.setTipocc(tipoCentroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTipoCCVC");
         }
         filtrarListTiposCentrosCostos = null;
@@ -5178,6 +5326,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoCCDialogo");
+        context.update("form:lovTiposCC");
+        context.update("form:aceptarTCC");
+        context.reset("form:lovTiposCC:globalFilter");
+        context.execute("TipoCCDialogo.hide()");
     }
 
     public void cancelarCambioTipoCentroCosto() {
@@ -5191,6 +5345,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarCuentaDebito() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaCuenta == 0) {
                 listVigenciasCuentasConcepto.get(indexVigenciaCuenta).setCuentad(cuentaSeleccionada);
@@ -5213,20 +5368,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaCuenta = true;
             cambiosVigenciaCuenta = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCodigoDebVC");
-            context.update(":form:editarDescripcionDebVC");
+            context.update("form:datosVigenciaCuenta");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaCuenta.setCuentad(cuentaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaDebitoVC");
             context.update("formularioDialogos:nuevaDesDebitoVC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaCuenta.setCuentad(cuentaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarDebitoVC");
             context.update("formularioDialogos:duplicaDesDebitoVC");
         }
@@ -5236,6 +5388,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
+
+        context.update("form:DebitoDialogo");
+        context.update("form:lovDebito");
+        context.update("form:aceptarCD");
+        context.reset("form:lovDebito:globalFilter");
+        context.execute("DebitoDialogo.hide()");
     }
 
     public void cancelarCambioCuentaDebito() {
@@ -5249,6 +5407,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarCuentaCredito() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaCuenta == 0) {
                 listVigenciasCuentasConcepto.get(indexVigenciaCuenta).setCuentac(cuentaSeleccionada);
@@ -5271,20 +5430,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaCuenta = true;
             cambiosVigenciaCuenta = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCodigoCreVC");
-            context.update(":form:editarDescripcionCreVC");
+            context.update("form:datosVigenciaCuenta");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaCuenta.setCuentac(cuentaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaCreditoVC");
             context.update("formularioDialogos:nuevaDesCreditoVC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaCuenta.setCuentac(cuentaSeleccionada);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicaCreditoVC");
             context.update("formularioDialogos:duplicaDesCreditoVC");
         }
@@ -5294,6 +5450,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
+
+        context.update("form:CreditoDialogo");
+        context.update("form:lovCredito");
+        context.update("form:aceptarCC");
+        context.reset("form:lovCredito:globalFilter");
+        context.execute("CreditoDialogo.hide()");
     }
 
     public void cancelarCambioCuentaCredito() {
@@ -5307,6 +5469,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarCentroCostoDebito() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaCuenta == 0) {
                 listVigenciasCuentasConcepto.get(indexVigenciaCuenta).setConsolidadord(centroCostoSeleccionado);
@@ -5329,18 +5492,16 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaCuenta = true;
             cambiosVigenciaCuenta = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCCConsolidadorDVC");
+            context.update("form:datosVigenciaCuenta");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaCuenta.setConsolidadord(centroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaConsoliDebVC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaCuenta.setConsolidadord(centroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicaConsoliDebVC");
         }
         filtrarListCentrosCostos = null;
@@ -5349,6 +5510,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
+
+        context.update("form:CentroCostoDDialogo");
+        context.update("form:lovCentroCostoD");
+        context.update("form:aceptarCCD");
+        context.reset("form:lovCentroCostoD:globalFilter");
+        context.execute("CentroCostoDDialogo.hide()");
     }
 
     public void cancelarCambioCentroCostoDebito() {
@@ -5362,6 +5529,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarCentroCostoCredito() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaCuenta == 0) {
                 listVigenciasCuentasConcepto.get(indexVigenciaCuenta).setConsolidadorc(centroCostoSeleccionado);
@@ -5384,18 +5552,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaCuenta = true;
             cambiosVigenciaCuenta = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCCConsolidadorCVC");
+
+            context.update("form:datosVigenciaCuenta");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaCuenta.setConsolidadorc(centroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaConsoliCreVC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaCuenta.setConsolidadorc(centroCostoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicaConsoliCreVC");
         }
         filtrarListCentrosCostos = null;
@@ -5404,6 +5571,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaCuenta = -1;
         secRegistroVigenciaCuenta = null;
         tipoActualizacion = -1;
+
+        context.update("form:CentroCostoCDialogo");
+        context.update("form:lovCentroCostoC");
+        context.update("form:aceptarCCC");
+        context.reset("form:lovCentroCostoC:globalFilter");
+        context.execute("CentroCostoCDialogo.hide()");
     }
 
     public void cancelarCambioCentroCostoCredito() {
@@ -5417,6 +5590,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarGrupoConcepto() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaGrupoConcepto == 0) {
                 listVigenciasGruposConceptosConcepto.get(indexVigenciaGrupoConcepto).setGrupoconcepto(grupoConceptoSeleccionado);
@@ -5439,20 +5613,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaGrupoConcepto = true;
             cambiosVigenciaGrupoConcepto = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarCodigoVGC");
-            context.update(":form:editarDescripcionVGC");
+            context.update("form:datosVigenciaGrupoConcepto");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaGrupoConcepto.setGrupoconcepto(grupoConceptoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaCodigoVGC");
             context.update("formularioDialogos:nuevaDescripcionVGC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaGrupoConcepto.setGrupoconcepto(grupoConceptoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarCodigoVGC");
             context.update("formularioDialogos:duplicarDescripcionVGC");
         }
@@ -5462,6 +5633,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaGrupoConcepto = -1;
         secRegistroVigenciaGrupoConcepto = null;
         tipoActualizacion = -1;
+
+        context.update("form:GruposConceptosDialogo");
+        context.update("form:lovGrupoConcepto");
+        context.update("form:aceptarGC");
+        context.reset("form:lovGrupoConcepto:globalFilter");
+        context.execute("GruposConceptosDialogo.hide()");
     }
 
     public void cancelarCambioGrupoConcepto() {
@@ -5475,6 +5652,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarTipoTrabajador() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaConceptoTT == 0) {
                 listVigenciasConceptosTTConcepto.get(indexVigenciaConceptoTT).setTipotrabajador(tipoTrabajadorSeleccionado);
@@ -5497,18 +5675,16 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaConceptoTT = true;
             cambiosVigenciaConceptoTT = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:vigenciaCTTDescripcion");
+            context.update("form:datosVigenciaConceptoTT");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaConceptoTT.setTipotrabajador(tipoTrabajadorSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaTrabajadorVCTT");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaConceptoTT.setTipotrabajador(tipoTrabajadorSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarTrabajadorVCTT");
         }
         filtrarListTiposTrabajadores = null;
@@ -5517,6 +5693,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoTT = -1;
         secRegistroVigenciaConceptoTT = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoTrabajadorDialogo");
+        context.update("form:lovTipoTrabajador");
+        context.update("form:aceptarTTr");
+        context.reset("form:lovTipoTrabajador:globalFilter");
+        context.execute("TipoTrabajadorDialogo.hide()");
     }
 
     public void cancelarCambioTipoTrabajador() {
@@ -5530,6 +5712,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarTipoContrato() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaConceptoTC == 0) {
                 listVigenciasConceptosTCConcepto.get(indexVigenciaConceptoTC).setTipocontrato(tipoContratoSeleccionado);
@@ -5552,18 +5735,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaConceptoTC = true;
             cambiosVigenciaConceptoTC = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:vigenciaCTCDescripcion");
+
+            context.update("form:datosVigenciaConceptoTC");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaConceptoTC.setTipocontrato(tipoContratoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaContratoVCTC");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaConceptoTC.setTipocontrato(tipoContratoSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarContratoVCTC");
         }
         filtrarListTiposContratos = null;
@@ -5572,6 +5754,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoTC = -1;
         secRegistroVigenciaConceptoTC = null;
         tipoActualizacion = -1;
+
+        context.update("form:TipoContratosDialogo");
+        context.update("form:lovTipoContrato");
+        context.update("form:aceptarTCt");
+        context.reset("form:lovTipoContrato:globalFilter");
+        context.execute("TipoContratosDialogo.hide()");
     }
 
     public void cancelarCambioTipoContrato() {
@@ -5585,6 +5773,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarReformaLaboral() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaVigenciaConceptoRL == 0) {
                 listVigenciasConceptosRLConcepto.get(indexVigenciaConceptoRL).setTiposalario(reformaLaboralSeleccionado);
@@ -5607,18 +5796,16 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexVigenciaConceptoRL = true;
             cambiosVigenciaConceptoRL = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:vigenciaCRLDescripcion");
+            context.update("form:datosVigenciaConceptoRL");
         } else if (tipoActualizacion == 1) {
             nuevaVigenciaConceptoRL.setTiposalario(reformaLaboralSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaReformaVCRL");
         } else if (tipoActualizacion == 2) {
             duplicarVigenciaConceptoRL.setTiposalario(reformaLaboralSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarReformaVCRL");
         }
         filtrarListReformasLaborales = null;
@@ -5627,6 +5814,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexVigenciaConceptoRL = -1;
         secRegistroVigenciaConceptoRL = null;
         tipoActualizacion = -1;
+
+        context.update("form:ReformaLaboralDialogo");
+        context.update("form:lovReformaLaboral");
+        context.update("form:aceptarRL");
+        context.reset("form:lovReformaLaboral:globalFilter");
+        context.execute("ReformaLaboralDialogo.hide()");
     }
 
     public void cancelarCambioReformaLaboral() {
@@ -5640,6 +5833,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarFormula() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaFormulasConceptos == 0) {
                 listFormulasConceptosConcepto.get(indexFormulasConceptos).setFormula(formulaSeleccionado);
@@ -5662,18 +5856,16 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexFormulasConceptos = true;
             cambiosFormulasConceptos = true;
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update(":form:editarNombreFC");
         } else if (tipoActualizacion == 1) {
             nuevaFormulasConceptos.setFormula(formulaSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaFormulaFC");
         } else if (tipoActualizacion == 2) {
             duplicarFormulasConceptos.setFormula(formulaSeleccionado);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarFormulaFC");
         }
         filtrarListFormulas = null;
@@ -5682,6 +5874,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexFormulasConceptos = -1;
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
+
+        context.update("form:FormulasDialogo");
+        context.update("form:lovFormula");
+        context.update("form:aceptarF");
+        context.reset("form:lovFormula:globalFilter");
+        context.execute("FormulasDialogo.hide()");
     }
 
     public void cancelarCambioFormula() {
@@ -5695,6 +5893,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public void actualizarOrden() {
+        RequestContext context = RequestContext.getCurrentInstance();
         if (tipoActualizacion == 0) {
             if (tipoListaFormulasConceptos == 0) {
                 listFormulasConceptosConcepto.get(indexFormulasConceptos).setStrOrden(formulaConceptoSeleccionado.getStrOrden());
@@ -5717,18 +5916,17 @@ public class ControlDetalleConcepto implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
             permitirIndexFormulasConceptos = true;
             cambiosFormulasConceptos = true;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update(":form:editarOrdenFC");
+
+            context.update("form:datosFormulaConcepto");
         } else if (tipoActualizacion == 1) {
             nuevaFormulasConceptos.setStrOrden(formulaConceptoSeleccionado.getStrOrden());
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:nuevaOrdenFC");
         } else if (tipoActualizacion == 2) {
             duplicarFormulasConceptos.setStrOrden(formulaConceptoSeleccionado.getStrOrden());
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("formularioDialogos:duplicarOrdenFC");
         }
         filtrarListFormulasConceptos = null;
@@ -5737,6 +5935,12 @@ public class ControlDetalleConcepto implements Serializable {
         indexFormulasConceptos = -1;
         secRegistroFormulasConceptos = null;
         tipoActualizacion = -1;
+
+        context.update("form:FormulaConceptoDialogo");
+        context.update("form:lovFormulaC");
+        context.update("form:aceptarFC");
+        context.reset("form:lovFormulaC:globalFilter");
+        context.execute("FormulaConceptoDialogo.hide()");
     }
 
     public void cancelarCambioOrden() {
@@ -5801,7 +6005,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasCuentas_PDF";
             exportPDF_Tabla();
             indexVigenciaCuenta = -1;
-            indexAuxVigenciaCuenta = -1;
             secRegistroVigenciaCuenta = null;
         }
         if (indexVigenciaGrupoConcepto >= 0) {
@@ -5809,7 +6012,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasGruposConceptos_PDF";
             exportPDF_Tabla();
             indexVigenciaGrupoConcepto = -1;
-            indexAuxVigenciaGrupoConcepto = -1;
             secRegistroVigenciaGrupoConcepto = null;
         }
         if (indexVigenciaConceptoTT >= 0) {
@@ -5817,7 +6019,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasConceptosTT_PDF";
             exportPDF_Tabla();
             indexVigenciaConceptoTT = -1;
-            indexAuxVigenciaConceptoTT = -1;
             secRegistroVigenciaConceptoTT = null;
         }
         if (indexVigenciaConceptoTC >= 0) {
@@ -5825,7 +6026,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasConceptosTC_PDF";
             exportPDF_Tabla();
             indexVigenciaConceptoTC = -1;
-            indexAuxVigenciaConceptoTC = -1;
             secRegistroVigenciaConceptoTC = null;
         }
         if (indexVigenciaConceptoRL >= 0) {
@@ -5833,7 +6033,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasConceptosRL_PDF";
             exportPDF_Tabla();
             indexVigenciaConceptoRL = -1;
-            indexAuxVigenciaConceptoRL = -1;
             secRegistroVigenciaConceptoRL = null;
         }
         if (indexFormulasConceptos >= 0) {
@@ -5841,7 +6040,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "FormulasConceptos_PDF";
             exportPDF_Tabla();
             indexFormulasConceptos = -1;
-            indexAuxFormulasConceptos = -1;
             secRegistroFormulasConceptos = null;
             formulaSeleccionada = true;
             RequestContext context = RequestContext.getCurrentInstance();
@@ -5874,7 +6072,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasCuentas_XLS";
             exportXLS_Tabla();
             indexVigenciaCuenta = -1;
-            indexAuxVigenciaCuenta = -1;
             secRegistroVigenciaCuenta = null;
         }
         if (indexVigenciaGrupoConcepto >= 0) {
@@ -5882,7 +6079,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasGruposConceptos_XLS";
             exportXLS_Tabla();
             indexVigenciaGrupoConcepto = -1;
-            indexAuxVigenciaGrupoConcepto = -1;
             secRegistroVigenciaGrupoConcepto = null;
         }
         if (indexVigenciaConceptoTT >= 0) {
@@ -5890,7 +6086,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasConceptosTT_XLS";
             exportXLS_Tabla();
             indexVigenciaConceptoTT = -1;
-            indexAuxVigenciaConceptoTT = -1;
             secRegistroVigenciaConceptoTT = null;
         }
         if (indexVigenciaConceptoTC >= 0) {
@@ -5898,7 +6093,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasConceptosTC_XLS";
             exportXLS_Tabla();
             indexVigenciaConceptoTC = -1;
-            indexAuxVigenciaConceptoTC = -1;
             secRegistroVigenciaConceptoTC = null;
         }
         if (indexVigenciaConceptoRL >= 0) {
@@ -5906,7 +6100,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "VigenciasConceptosRL_XLS";
             exportXLS_Tabla();
             indexVigenciaConceptoRL = -1;
-            indexAuxVigenciaConceptoRL = -1;
             secRegistroVigenciaConceptoRL = null;
         }
         if (indexFormulasConceptos >= 0) {
@@ -5914,7 +6107,6 @@ public class ControlDetalleConcepto implements Serializable {
             nombreExportar = "FormulasConceptos_XLS";
             exportXLS_Tabla();
             indexFormulasConceptos = -1;
-            indexAuxFormulasConceptos = -1;
             secRegistroFormulasConceptos = null;
             formulaSeleccionada = true;
             RequestContext context = RequestContext.getCurrentInstance();
@@ -5979,32 +6171,26 @@ public class ControlDetalleConcepto implements Serializable {
         if (indexVigenciaCuenta >= 0) {
             verificarRastroVigenciaCuenta();
             indexVigenciaCuenta = -1;
-            indexAuxVigenciaCuenta = -1;
         }
         if (indexVigenciaGrupoConcepto >= 0) {
             verificarRastroVigenciaGrupoConcepto();
             indexVigenciaGrupoConcepto = -1;
-            indexAuxVigenciaGrupoConcepto = -1;
         }
         if (indexVigenciaConceptoTT >= 0) {
             verificarRastroVigenciaConceptoTT();
             indexVigenciaConceptoTT = -1;
-            indexAuxVigenciaConceptoTT = -1;
         }
         if (indexVigenciaConceptoTC >= 0) {
             verificarRastroVigenciaConceptoTC();
             indexVigenciaConceptoTC = -1;
-            indexAuxVigenciaConceptoTC = -1;
         }
         if (indexVigenciaConceptoRL >= 0) {
             verificarRastroVigenciaConceptoRL();
             indexVigenciaConceptoRL = -1;
-            indexAuxVigenciaConceptoRL = -1;
         }
         if (indexFormulasConceptos >= 0) {
             verificarRastroFormulasConceptos();
             indexFormulasConceptos = -1;
-            indexAuxFormulasConceptos = -1;
             formulaSeleccionada = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:detalleFormula");
@@ -6249,10 +6435,8 @@ public class ControlDetalleConcepto implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         boolean retorno = administrarDetalleConcepto.verificarSolucionesNodosConcepto(conceptoActual.getSecuencia());
         if (retorno == true) {
-            System.out.println("No elimina");
             context.execute("errorEliminacionConcepto.show()");
         } else {
-            System.out.println("Proceso de eliminacion del concepto");
             context.execute("paso1Eliminacion.show()");
         }
     }
@@ -6270,7 +6454,7 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public String conceptoAEliminar() {
-        if(indexFormulasConceptos>=0){
+        if (indexFormulasConceptos >= 0) {
             conceptoEliminar = "Va a eliminar el concepto el cual tiene el código : " + listFormulasConceptosConcepto.get(indexFormulasConceptos).getConcepto().getCodigo().toString() + ". ¿Esta seguro?";
         }
         return conceptoEliminar;
@@ -6280,8 +6464,9 @@ public class ControlDetalleConcepto implements Serializable {
     public List<VigenciasCuentas> getListVigenciasCuentasConcepto() {
         try {
             if (listVigenciasCuentasConcepto == null) {
-                listVigenciasCuentasConcepto = new ArrayList<VigenciasCuentas>();
-                listVigenciasCuentasConcepto = administrarDetalleConcepto.consultarListaVigenciasCuentasConcepto(conceptoActual.getSecuencia());
+                if (conceptoActual.getSecuencia() != null) {
+                    listVigenciasCuentasConcepto = administrarDetalleConcepto.consultarListaVigenciasCuentasConcepto(conceptoActual.getSecuencia());
+                }
             }
             return listVigenciasCuentasConcepto;
         } catch (Exception e) {
@@ -6439,10 +6624,9 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public List<TiposCentrosCostos> getListTiposCentrosCostos() {
-        if (listTiposCentrosCostos == null) {
-            listTiposCentrosCostos = administrarDetalleConcepto.consultarLOVTiposCentrosCostos();
 
-        }
+        listTiposCentrosCostos = administrarDetalleConcepto.consultarLOVTiposCentrosCostos();
+
         return listTiposCentrosCostos;
     }
 
@@ -6467,9 +6651,9 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public List<Cuentas> getListCuentas() {
-        if (listCuentas == null) {
-            listCuentas = administrarDetalleConcepto.consultarLOVCuentas();
-        }
+
+        listCuentas = administrarDetalleConcepto.consultarLOVCuentas();
+
         return listCuentas;
     }
 
@@ -6494,9 +6678,9 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public List<CentrosCostos> getListCentrosCostos() {
-        if (listCentrosCostos == null) {
-            listCentrosCostos = administrarDetalleConcepto.consultarLOVCentrosCostos();
-        }
+
+        listCentrosCostos = administrarDetalleConcepto.consultarLOVCentrosCostos();
+
         return listCentrosCostos;
     }
 
@@ -6547,8 +6731,9 @@ public class ControlDetalleConcepto implements Serializable {
     public List<VigenciasGruposConceptos> getListVigenciasGruposConceptosConcepto() {
         try {
             if (listVigenciasGruposConceptosConcepto == null) {
-                listVigenciasGruposConceptosConcepto = new ArrayList<VigenciasGruposConceptos>();
-                listVigenciasGruposConceptosConcepto = administrarDetalleConcepto.consultarListaVigenciasGruposConceptosConcepto(conceptoActual.getSecuencia());
+                if (conceptoActual.getSecuencia() != null) {
+                    listVigenciasGruposConceptosConcepto = administrarDetalleConcepto.consultarListaVigenciasGruposConceptosConcepto(conceptoActual.getSecuencia());
+                }
             }
             return listVigenciasGruposConceptosConcepto;
         } catch (Exception e) {
@@ -6635,10 +6820,9 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public List<GruposConceptos> getListGruposConceptos() {
-        if (listGruposConceptos == null) {
-            listGruposConceptos = administrarDetalleConcepto.consultarLOVGruposConceptos();
 
-        }
+        listGruposConceptos = administrarDetalleConcepto.consultarLOVGruposConceptos();
+
         return listGruposConceptos;
     }
 
@@ -6665,8 +6849,9 @@ public class ControlDetalleConcepto implements Serializable {
     public List<VigenciasConceptosTT> getListVigenciasConceptosTTConcepto() {
         try {
             if (listVigenciasConceptosTTConcepto == null) {
-                listVigenciasConceptosTTConcepto = new ArrayList<VigenciasConceptosTT>();
-                listVigenciasConceptosTTConcepto = administrarDetalleConcepto.consultarListaVigenciasConceptosTTConcepto(conceptoActual.getSecuencia());
+                if (conceptoActual.getSecuencia() != null) {
+                    listVigenciasConceptosTTConcepto = administrarDetalleConcepto.consultarListaVigenciasConceptosTTConcepto(conceptoActual.getSecuencia());
+                }
             }
             return listVigenciasConceptosTTConcepto;
         } catch (Exception e) {
@@ -6690,8 +6875,9 @@ public class ControlDetalleConcepto implements Serializable {
     public List<VigenciasConceptosTC> getListVigenciasConceptosTCConcepto() {
         try {
             if (listVigenciasConceptosTCConcepto == null) {
-                listVigenciasConceptosTCConcepto = new ArrayList<VigenciasConceptosTC>();
-                listVigenciasConceptosTCConcepto = administrarDetalleConcepto.consultarListaVigenciasConceptosTCConcepto(conceptoActual.getSecuencia());
+                if (conceptoActual.getSecuencia() != null) {
+                    listVigenciasConceptosTCConcepto = administrarDetalleConcepto.consultarListaVigenciasConceptosTCConcepto(conceptoActual.getSecuencia());
+                }
             }
             return listVigenciasConceptosTCConcepto;
         } catch (Exception e) {
@@ -6716,8 +6902,9 @@ public class ControlDetalleConcepto implements Serializable {
         try {
 
             if (listVigenciasConceptosRLConcepto == null) {
-                listVigenciasConceptosRLConcepto = new ArrayList<VigenciasConceptosRL>();
-                listVigenciasConceptosRLConcepto = administrarDetalleConcepto.consultarListaVigenciasConceptosRLCConcepto(conceptoActual.getSecuencia());
+                if (conceptoActual.getSecuencia() != null) {
+                    listVigenciasConceptosRLConcepto = administrarDetalleConcepto.consultarListaVigenciasConceptosRLCConcepto(conceptoActual.getSecuencia());
+                }
             }
             return listVigenciasConceptosRLConcepto;
         } catch (Exception e) {
@@ -6740,8 +6927,9 @@ public class ControlDetalleConcepto implements Serializable {
     public List<FormulasConceptos> getListFormulasConceptosConcepto() {
         try {
             if (listFormulasConceptosConcepto == null) {
-                listFormulasConceptosConcepto = new ArrayList<FormulasConceptos>();
-                listFormulasConceptosConcepto = administrarDetalleConcepto.consultarListaFormulasConceptosConcepto(conceptoActual.getSecuencia());
+                if (conceptoActual.getSecuencia() != null) {
+                    listFormulasConceptosConcepto = administrarDetalleConcepto.consultarListaFormulasConceptosConcepto(conceptoActual.getSecuencia());
+                }
             }
             return listFormulasConceptosConcepto;
         } catch (Exception e) {
@@ -6827,9 +7015,9 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<TiposTrabajadores> getListTiposTrabajadores() {
         try {
-            if (listTiposTrabajadores == null) {
-                listTiposTrabajadores = administrarDetalleConcepto.consultarLOVTiposTrabajadores();
-            }
+
+            listTiposTrabajadores = administrarDetalleConcepto.consultarLOVTiposTrabajadores();
+
             return listTiposTrabajadores;
         } catch (Exception e) {
             System.out.println("Error getListTiposTrabajadores : " + e.toString());
@@ -6922,9 +7110,9 @@ public class ControlDetalleConcepto implements Serializable {
     }
 
     public List<TiposContratos> getListTiposContratos() {
-        if (listTiposContratos == null) {
-            listTiposContratos = administrarDetalleConcepto.consultarLOVTiposContratos();
-        }
+
+        listTiposContratos = administrarDetalleConcepto.consultarLOVTiposContratos();
+
         return listTiposContratos;
     }
 
@@ -7014,9 +7202,9 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<ReformasLaborales> getListReformasLaborales() {
         try {
-            if (listReformasLaborales == null) {
-                listReformasLaborales = administrarDetalleConcepto.consultarLOVReformasLaborales();
-            }
+
+            listReformasLaborales = administrarDetalleConcepto.consultarLOVReformasLaborales();
+
             return listReformasLaborales;
         } catch (Exception e) {
             System.out.println("Error getListReformasLaborales : " + e.toString());
@@ -7110,9 +7298,9 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<Formulas> getListFormulas() {
         try {
-            if (listFormulas == null) {
-                listFormulas = administrarDetalleConcepto.consultarLOVFormulas();
-            }
+
+            listFormulas = administrarDetalleConcepto.consultarLOVFormulas();
+
             return listFormulas;
         } catch (Exception e) {
             System.out.println("Error getListFormulas : " + e.toString());
@@ -7142,9 +7330,9 @@ public class ControlDetalleConcepto implements Serializable {
 
     public List<FormulasConceptos> getListFormulasConceptos() {
         try {
-            if (listFormulasConceptos == null) {
-                listFormulasConceptos = administrarDetalleConcepto.consultarLOVFormulasConceptos();
-            }
+
+            listFormulasConceptos = administrarDetalleConcepto.consultarLOVFormulasConceptos();
+
             return listFormulasConceptos;
         } catch (Exception e) {
             System.out.println("Error getListFormulasConceptos Admi : " + e.toString());
@@ -7195,4 +7383,307 @@ public class ControlDetalleConcepto implements Serializable {
     public void setActualFormulaConcepto(FormulasConceptos setActualFormulaConcepto) {
         this.actualFormulaConcepto = setActualFormulaConcepto;
     }
+
+    public VigenciasCuentas getVigenciaCuentaTablaSeleccionada() {
+        getListVigenciasCuentasConcepto();
+        if(listVigenciasCuentasConcepto != null){
+            int tam = listVigenciasCuentasConcepto.size();
+            if(tam>0){
+            vigenciaCuentaTablaSeleccionada = listVigenciasCuentasConcepto.get(0);
+            }
+        }
+        return vigenciaCuentaTablaSeleccionada;
+    }
+
+    public void setVigenciaCuentaTablaSeleccionada(VigenciasCuentas vigenciaCuentaTablaSeleccionada) {
+        this.vigenciaCuentaTablaSeleccionada = vigenciaCuentaTablaSeleccionada;
+    }
+
+    public String getAltoTablaVigenciaCuenta() {
+        return altoTablaVigenciaCuenta;
+    }
+
+    public void setAltoTablaVigenciaCuenta(String altoTablaVigenciaCuenta) {
+        this.altoTablaVigenciaCuenta = altoTablaVigenciaCuenta;
+    }
+
+    public VigenciasGruposConceptos getVigenciaGrupoConceptoTablaSeleccionada() {
+        getListVigenciasGruposConceptosConcepto();
+        if(listVigenciasGruposConceptosConcepto != null){
+            int tam = listVigenciasGruposConceptosConcepto.size();
+            if(tam>0){
+            vigenciaGrupoConceptoTablaSeleccionada = listVigenciasGruposConceptosConcepto.get(0);
+            }
+        }
+        return vigenciaGrupoConceptoTablaSeleccionada;
+    }
+
+    public void setVigenciaGrupoConceptoTablaSeleccionada(VigenciasGruposConceptos vigenciaGrupoConceptoTablaSeleccionada) {
+        this.vigenciaGrupoConceptoTablaSeleccionada = vigenciaGrupoConceptoTablaSeleccionada;
+    }
+
+    public String getAltoTablaVigenciaGrupoC() {
+        return altoTablaVigenciaGrupoC;
+    }
+
+    public void setAltoTablaVigenciaGrupoC(String altoTablaVigenciaGrupoC) {
+        this.altoTablaVigenciaGrupoC = altoTablaVigenciaGrupoC;
+    }
+
+    public VigenciasConceptosTT getVigenciaConceptoTTTablaSeleccionada() {
+        getListVigenciasConceptosTTConcepto();
+        if(listVigenciasConceptosTTConcepto != null){
+            int tam = listVigenciasConceptosTTConcepto.size();
+            if(tam>0){
+                vigenciaConceptoTTTablaSeleccionada = listVigenciasConceptosTTConcepto.get(0);
+            }
+        }
+        return vigenciaConceptoTTTablaSeleccionada;
+    }
+
+    public void setVigenciaConceptoTTTablaSeleccionada(VigenciasConceptosTT vigenciaConceptoTTTablaSeleccionada) {
+        this.vigenciaConceptoTTTablaSeleccionada = vigenciaConceptoTTTablaSeleccionada;
+    }
+
+    public String getAltoTablaVigenciaConceptoTT() {
+        return altoTablaVigenciaConceptoTT;
+    }
+
+    public void setAltoTablaVigenciaConceptoTT(String altoTablaVigenciaConceptoTT) {
+        this.altoTablaVigenciaConceptoTT = altoTablaVigenciaConceptoTT;
+    }
+
+    public VigenciasConceptosTC getVigenciaConceptoTCTablaSeleccionada() {
+        getListVigenciasConceptosTCConcepto();
+        if(listVigenciasConceptosTCConcepto != null){
+            int tam = listVigenciasConceptosTCConcepto.size();
+            if(tam>0){
+            vigenciaConceptoTCTablaSeleccionada = listVigenciasConceptosTCConcepto.get(0);
+            }
+        }
+        return vigenciaConceptoTCTablaSeleccionada;
+    }
+
+    public void setVigenciaConceptoTCTablaSeleccionada(VigenciasConceptosTC vigenciaConceptoTCTablaSeleccionada) {
+        this.vigenciaConceptoTCTablaSeleccionada = vigenciaConceptoTCTablaSeleccionada;
+    }
+
+    public String getAltoTablaVigenciaConceptoTC() {
+        return altoTablaVigenciaConceptoTC;
+    }
+
+    public void setAltoTablaVigenciaConceptoTC(String altoTablaVigenciaConceptoTC) {
+        this.altoTablaVigenciaConceptoTC = altoTablaVigenciaConceptoTC;
+    }
+
+    public VigenciasConceptosRL getVigenciaConceptoRLTablaSeleccionada() {
+        getListVigenciasConceptosRLConcepto();
+        if(listVigenciasConceptosRLConcepto != null){
+            int tam = listVigenciasConceptosRLConcepto.size();
+            if(tam>0){
+                vigenciaConceptoRLTablaSeleccionada = listVigenciasConceptosRLConcepto.get(0);
+            }
+        }
+        return vigenciaConceptoRLTablaSeleccionada;
+    }
+
+    public void setVigenciaConceptoRLTablaSeleccionada(VigenciasConceptosRL vigenciaConceptoRLTablaSeleccionada) {
+        this.vigenciaConceptoRLTablaSeleccionada = vigenciaConceptoRLTablaSeleccionada;
+    }
+
+    public String getAltoTablaVigenciaConceptoRL() {
+        return altoTablaVigenciaConceptoRL;
+    }
+
+    public void setAltoTablaVigenciaConceptoRL(String altoTablaVigenciaConceptoRL) {
+        this.altoTablaVigenciaConceptoRL = altoTablaVigenciaConceptoRL;
+    }
+
+    public FormulasConceptos getFormulaConceptoTablaSeleccionada() {
+        getListFormulasConceptosConcepto();
+        if(listFormulasConceptosConcepto != null){
+            int tam = listFormulasConceptosConcepto.size();
+            if(tam>0){
+            formulaConceptoTablaSeleccionada = listFormulasConceptosConcepto.get(0);
+            }
+        }
+        return formulaConceptoTablaSeleccionada;
+    }
+
+    public void setFormulaConceptoTablaSeleccionada(FormulasConceptos formulaConceptoTablaSeleccionada) {
+        this.formulaConceptoTablaSeleccionada = formulaConceptoTablaSeleccionada;
+    }
+
+    public String getAltoTablaFormulaConcepto() {
+        return altoTablaFormulaConcepto;
+    }
+
+    public void setAltoTablaFormulaConcepto(String altoTablaFormulaConcepto) {
+        this.altoTablaFormulaConcepto = altoTablaFormulaConcepto;
+    }
+
+    public String getInfoRegistroTipoCentroCosto() {
+        getListTiposCentrosCostos();
+        if (listTiposCentrosCostos != null) {
+            infoRegistroTipoCentroCosto = "Cantidad de registros : " + listTiposCentrosCostos.size();
+        } else {
+            infoRegistroTipoCentroCosto = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoCentroCosto;
+    }
+
+    public void setInfoRegistroTipoCentroCosto(String infoRegistroTipoCentroCosto) {
+        this.infoRegistroTipoCentroCosto = infoRegistroTipoCentroCosto;
+    }
+
+    public String getInfoRegistroCuentaDebito() {
+        getListCuentas();
+        if (listCuentas != null) {
+            infoRegistroCuentaDebito = "Cantidad de registros : " + listCuentas.size();
+        } else {
+            infoRegistroCuentaDebito = "Cantidad de registros : 0";
+        }
+        return infoRegistroCuentaDebito;
+    }
+
+    public void setInfoRegistroCuentaDebito(String infoRegistroCuentaDebito) {
+        this.infoRegistroCuentaDebito = infoRegistroCuentaDebito;
+    }
+
+    public String getInfoRegistroCuentaCredito() {
+        getListCuentas();
+        if (listCuentas != null) {
+            infoRegistroCuentaCredito = "Cantidad de registros : " + listCuentas.size();
+        } else {
+            infoRegistroCuentaCredito = "Cantidad de registros : 0";
+        }
+        return infoRegistroCuentaCredito;
+    }
+
+    public void setInfoRegistroCuentaCredito(String infoRegistroCuentaCredito) {
+        this.infoRegistroCuentaCredito = infoRegistroCuentaCredito;
+    }
+
+    public String getInfoRegistroCentroCostoDebito() {
+        getListCentrosCostos();
+        if (listCentrosCostos != null) {
+            infoRegistroCentroCostoDebito = "Cantidad de registros : " + listCentrosCostos.size();
+        } else {
+            infoRegistroCentroCostoDebito = "Cantidad de registros : 0";
+        }
+        return infoRegistroCentroCostoDebito;
+    }
+
+    public void setInfoRegistroCentroCostoDebito(String infoRegistroCentroCostoDebito) {
+        this.infoRegistroCentroCostoDebito = infoRegistroCentroCostoDebito;
+    }
+
+    public String getInfoRegistroCentroCostoCredito() {
+        getListCentrosCostos();
+        if (listCentrosCostos != null) {
+            infoRegistroCentroCostoCredito = "Cantidad de registros : " + listCentrosCostos.size();
+        } else {
+            infoRegistroCentroCostoCredito = "Cantidad de registros : 0";
+        }
+        return infoRegistroCentroCostoCredito;
+    }
+
+    public void setInfoRegistroCentroCostoCredito(String infoRegistroCentroCostoCredito) {
+        this.infoRegistroCentroCostoCredito = infoRegistroCentroCostoCredito;
+    }
+
+    public String getInfoRegistroGrupoConcepto() {
+        getListGruposConceptos();
+        if (listGruposConceptos != null) {
+            infoRegistroGrupoConcepto = "Cantidad de registros : " + listGruposConceptos.size();
+        } else {
+            infoRegistroGrupoConcepto = "Cantidad de registros : 0";
+        }
+        return infoRegistroGrupoConcepto;
+    }
+
+    public void setInfoRegistroGrupoConcepto(String infoRegistroGrupoConcepto) {
+        this.infoRegistroGrupoConcepto = infoRegistroGrupoConcepto;
+    }
+
+    public String getInfoRegistroTipoTrabajador() {
+        getListTiposTrabajadores();
+        if (listTiposTrabajadores != null) {
+            infoRegistroTipoTrabajador = "Cantidad de registros : " + listTiposTrabajadores.size();
+        } else {
+            infoRegistroTipoTrabajador = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoTrabajador;
+    }
+
+    public void setInfoRegistroTipoTrabajador(String infoRegistroTipoTrabajador) {
+        this.infoRegistroTipoTrabajador = infoRegistroTipoTrabajador;
+    }
+
+    public String getInfoRegistroTipoContrato() {
+        getListTiposContratos();
+        if (listTiposContratos != null) {
+            infoRegistroTipoContrato = "Cantidad de registros : " + listTiposContratos.size();
+        } else {
+            infoRegistroTipoContrato = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoContrato;
+    }
+
+    public void setInfoRegistroTipoContrato(String infoRegistroTipoContrato) {
+        this.infoRegistroTipoContrato = infoRegistroTipoContrato;
+    }
+
+    public String getInfoRegistroReformaLaboral() {
+        getListReformasLaborales();
+        if (listReformasLaborales != null) {
+            infoRegistroReformaLaboral = "Cantidad de registros : " + listReformasLaborales.size();
+        } else {
+            infoRegistroReformaLaboral = "Cantidad de registros : 0";
+        }
+        return infoRegistroReformaLaboral;
+    }
+
+    public void setInfoRegistroReformaLaboral(String infoRegistroReformaLaboral) {
+        this.infoRegistroReformaLaboral = infoRegistroReformaLaboral;
+    }
+
+    public String getInfoRegistroFormula() {
+        getListFormulas();
+        if (listFormulas != null) {
+            infoRegistroFormula = "Cantidad de registros : " + listFormulas.size();
+        } else {
+            infoRegistroFormula = "Cantidad de registros : 0";
+        }
+        return infoRegistroFormula;
+    }
+
+    public void setInfoRegistroFormula(String infoRegistroFormula) {
+        this.infoRegistroFormula = infoRegistroFormula;
+    }
+
+    public String getInfoRegistroOrden() {
+        getListFormulasConceptos();
+        if (listFormulasConceptos != null) {
+            infoRegistroOrden = "Cantidad de registros : " + listFormulasConceptos.size();
+        } else {
+            infoRegistroOrden = "Cantidad de registros : 0";
+        }
+        return infoRegistroOrden;
+    }
+
+    public void setInfoRegistroOrden(String infoRegistroOrden) {
+        this.infoRegistroOrden = infoRegistroOrden;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+    
+    
+
 }

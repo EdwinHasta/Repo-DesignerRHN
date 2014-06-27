@@ -99,7 +99,7 @@ public class AdministrarCiudades implements AdministrarCiudadesInterface {
     @Override
     public void crearCiudades(List<Ciudades> listaCiudades) {
         for (int i = 0; i < listaCiudades.size(); i++) {
-            System.out.println("Borrando...");
+            System.out.println("Creando...");
             if (listaCiudades.get(i).getDepartamento().getSecuencia() == null) {
 
                 listaCiudades.get(i).setDepartamento(null);

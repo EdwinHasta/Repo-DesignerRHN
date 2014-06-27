@@ -64,7 +64,7 @@ public class GruposConceptos implements Serializable {
     private Integer codigo;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 50)
+    @Size(max = 50)
     @Column(name = "DESCRIPCION")
     private String descripcion;
     @Size(max = 1)
@@ -107,17 +107,22 @@ public class GruposConceptos implements Serializable {
     }
 
     public String getStrCodigo() {
-        if (codigo > 0) {
-            strCodigo = String.valueOf(codigo);
-        } else {
-            strCodigo = " ";
+        getCodigo();
+        if (codigo != null) {
+            if (codigo > 0) {
+                strCodigo = String.valueOf(codigo);
+            }
         }
         return strCodigo;
     }
 
     public void setStrCodigo(String strCodigo) {
-        if (!strCodigo.isEmpty()) {
-            codigo = Integer.parseInt(strCodigo);
+        if (strCodigo != null) {
+            if (!strCodigo.isEmpty()) {
+                codigo = Integer.parseInt(strCodigo);
+            } else {
+                codigo = 0;
+            }
         } else {
             codigo = 0;
         }
@@ -125,9 +130,7 @@ public class GruposConceptos implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
-        }
+        
         return descripcion;
     }
 

@@ -13,29 +13,33 @@
         <ui:composition template="/Template.xhtml">
             <ui:define name="body">                  
                 <h:form id="form"> 
-                    <p:panel  id="PanelTotal" header="Experiencia Laboral" style="position: absolute; width: 874px; height: 530px; text-align: left" >  
+                    
+                    <f:loadBundle basename="Recursos.perexperiencialaboral" var="msg" />
+                    <p:growl id="growl" showDetail="true"/>
+                    
+                    <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 505px; text-align: left" >  
 
                         <h:outputText style="position: absolute; top: 50px; height: 12px;position: absolute; color: red; font-weight: bold;text-align: right;width: 240px;left: 600px;" id="nombreEmpleado" value="#{controlPerExperienciaLaboral.empleado.persona.primerapellido} #{controlPerExperienciaLaboral.empleado.persona.segundoapellido} #{controlPerExperienciaLaboral.empleado.persona.nombre}"/>  
 
 
-                        <p:commandButton style="position: absolute; left: 710px; top: 495px;" id="ACEPTAR" value="Aceptar" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlPerExperienciaLaboral.guardado}" update=":form:datosExperiencia" process="@this" />
-                        <p:commandButton style="position: absolute; left: 796px; top: 495px;" id="ATRAS" value="Atras" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerExperienciaLaboral.salir()}" action="controlPerExperienciaLaboral" process="@this" />
-                        <h:outputText id="informacionRegistro" value="#{controlPerExperienciaLaboral.infoRegistro}" style="position: absolute; left: 15px; top: 495px; font-weight: bold"/>
+                        <p:commandButton style="position: absolute; left: 683px; top: 475px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardar.show();" disabled="#{controlPerExperienciaLaboral.guardado}" update=":form:datosExperiencia" process="@this" />
+                        <p:commandButton style="position: absolute; left: 775px; top: 475px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-arrowreturnthick-1-w" actionListener="#{controlPerExperienciaLaboral.salir()}" action="controlPerExperienciaLaboral" process="@this" />
+                        <h:outputText id="informacionRegistro" value="#{controlPerExperienciaLaboral.infoRegistro}" style="position: absolute; left: 15px; top: 480px; font-weight: bold"/>
 
-                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 390px;width: 830px; border-radius: 10px; text-align: left">
-                            <legend style="color: blue"><strong>Experiencias Laborales</strong></legend>
+                        <fieldset style="position: absolute;top: 80px;left: 10px;height: 375px;width: 830px; border-radius: 10px; text-align: left">
+                            <legend style="color: blue"><strong>#{msg['expLaboral']}</strong></legend>
                             <p:dataTable id="datosExperiencia" var="info" rowKey="#{info.secuencia}" rowIndexVar="indice" value="#{controlPerExperienciaLaboral.listExperienciaLaboralEmpl}" 
                                          filteredValue="#{controlPerExperienciaLaboral.filtrarListExperienciaLaboralEmpl}" editable="true" editMode="cell" 
-                                         scrollable="true" scrollWidth="830" scrollHeight="110" emptyMessage="No se encontrarón resultados para la búsqueda" style="border: 1px;width: 830px"
+                                         scrollable="true" scrollWidth="825" scrollHeight="#{controlPerExperienciaLaboral.altoTabla}" emptyMessage="#{msg['vacio']}" style="border: 1px;width: 820px"
                                          liveScroll="true" scrollRows="20" selection="#{controlPerExperienciaLaboral.experienciaTablaSeleccionada}" selectionMode="single">
 
 
-                                <p:column headerText="Empresa" sortBy="#{info.empresa}" filterBy="#{info.empresa}" filterMatchMode="contains" width="133"
-                                          id="expEmpresa" filterStyle="display: none; visibility: hidden;"  style="width: 70px">                                  
+                                <p:column headerText="#{msg['empresa']}" sortBy="#{info.empresa}" filterBy="#{info.empresa}" filterMatchMode="contains" width="133"
+                                          id="expEmpresa" filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.empresa}" style="width: 100px; text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.empresa}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.empresa}" id="editarEmpresaE" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.empresa}" maxlength="50" id="editarEmpresaE" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,0)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this" update="editarEmpresaE"/>
                                             </p:inputText>
@@ -46,11 +50,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Ingreso" sortBy="#{info.strFechaDesde}" filterBy="#{info.strFechaDesde}" filterMatchMode="contains" id="expFechaInicio" width="100"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                <p:column headerText="#{msg['fechaIngreso']}" sortBy="#{info.strFechaDesde}" filterBy="#{info.strFechaDesde}" filterMatchMode="contains" id="expFechaInicio" width="100"
+                                          filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechadesde}" style="width: 100px; ">
+                                            <h:outputText value="#{info.fechadesde}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
@@ -67,11 +71,11 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Fecha Retiro" sortBy="#{info.strFechaHasta}" filterBy="#{info.strFechaHasta}" filterMatchMode="contains" id="expFechaRetiro" width="100"
-                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px;">                                  
+                                <p:column headerText="#{msg['fechaRetiro']}" sortBy="#{info.strFechaHasta}" filterBy="#{info.strFechaHasta}" filterMatchMode="contains" id="expFechaRetiro" width="100"
+                                          filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechahasta}" style="width: 100px; ">
+                                            <h:outputText value="#{info.fechahasta}" >
                                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                                             </h:outputText>
                                         </f:facet>  
@@ -89,12 +93,12 @@
                                 </p:column>
 
 
-                                <p:column headerText="Cargo Desempeñado" sortBy="#{info.cargo}" filterBy="#{info.cargo}" width="110"
-                                          filterMatchMode="contains" id="expCargoDes" filterStyle="display: none; visibility: hidden;"  style="width: 110px;" >                                  
+                                <p:column headerText="#{msg['cargoDesempenado']}" sortBy="#{info.cargo}" filterBy="#{info.cargo}" width="125"
+                                          filterMatchMode="contains" id="expCargoDes" filterStyle="display: none; visibility: hidden;"   >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.cargo}" style="width: 100px; text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.cargo}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  value="#{info.cargo}" id="editarCargoDesE" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText  value="#{info.cargo}" maxlength="50" id="editarCargoDesE" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,3)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this" update="editarCargoDesE"/>                                   
                                             </p:inputText>
@@ -105,12 +109,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Jefe Inmediato" sortBy="#{info.strFechaDesde}" filterBy="#{info.strFechaDesde}" width="133"
-                                          filterMatchMode="contains" id="expJefe" filterStyle="display: none; visibility: hidden;"  style="width: 110px;" >                                  
+                                <p:column headerText="#{msg['jefeInmediato']}" sortBy="#{info.strFechaDesde}" filterBy="#{info.strFechaDesde}" width="133"
+                                          filterMatchMode="contains" id="expJefe" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.jefeinmediato}" style="width: 100px; text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.jefeinmediato}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  value="#{info.jefeinmediato}" id="editarJefeE" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText  value="#{info.jefeinmediato}" maxlength="100" id="editarJefeE" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,4)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this" update="expJefe"/>                                   
                                             </p:inputText>
@@ -122,12 +126,12 @@
                                 </p:column>
 
 
-                                <p:column headerText="Telefono" sortBy="#{info.telefono}" filterBy="#{info.telefono}" width="133"
-                                          filterMatchMode="contains" id="expTelefono" filterStyle="display: none; visibility: hidden;"  style="width: 110px; " >                                  
+                                <p:column headerText="#{msg['telefono']}" sortBy="#{info.telefono}" filterBy="#{info.telefono}" width="133"
+                                          filterMatchMode="contains" id="expTelefono" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.telefono}" style="width: 100px; text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.telefono}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  value="#{info.telefono}" id="editarTelefonoE" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText  value="#{info.telefono}" id="editarTelefonoE" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,5)}" process="@this"/> 
                                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice)}" process="@this" update="editarTelefonoE"/>                                   
                                             </p:inputText>
@@ -140,12 +144,12 @@
 
 
 
-                                <p:column headerText="Sector Economico" sortBy="#{info.sectoreconomico.descripcion}" filterBy="#{info.sectoreconomico.descripcion}" filterMatchMode="contains" width="133"
-                                          id="expSectorEco" filterStyle="display: none; visibility: hidden;"  style="width: 70px;">                                  
+                                <p:column headerText="#{msg['sectorEconomico']}" sortBy="#{info.sectoreconomico.descripcion}" filterBy="#{info.sectoreconomico.descripcion}" filterMatchMode="contains" width="133"
+                                          id="expSectorEco" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.sectoreconomico.descripcion}" style="width: 100px;text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.sectoreconomico.descripcion}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.sectoreconomico.descripcion}" id="editarSectorE" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.sectoreconomico.descripcion}" id="editarSectorE" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,6)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,0)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice, 'SECTORES', info.sectoreconomico.descripcion)}" process="@this" update="editarSectorE"/>
@@ -157,12 +161,12 @@
                                     </f:facet>
                                 </p:column>
 
-                                <p:column headerText="Motivo Retiro" sortBy="#{info.motivoretiro.nombre}" filterBy="#{info.motivoretiro.nombre}}" filterMatchMode="contains" width="133"
-                                          id="expMotivos" filterStyle="display: none; visibility: hidden;"  style="width: 70px; ">                                  
+                                <p:column headerText="#{msg['motivoRetiro']}" sortBy="#{info.motivoretiro.nombre}" filterBy="#{info.motivoretiro.nombre}}" filterMatchMode="contains" width="133"
+                                          id="expMotivos" filterStyle="display: none; visibility: hidden;"  >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output"><h:outputText value="#{info.motivoretiro.nombre}" style="width: 100px; text-transform: uppercase"/></f:facet>  
+                                        <f:facet name="output"><h:outputText value="#{info.motivoretiro.nombre}" style="text-transform: uppercase"/></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText value="#{info.motivoretiro.nombre}" id="editarMotivosE" style="border-radius: 0px; width: 93.5%;text-transform: uppercase"> 
+                                            <p:inputText value="#{info.motivoretiro.nombre}" id="editarMotivosE" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="select" listener="#{controlPerExperienciaLaboral.cambiarIndice(indice,7)}" process="@this"/> 
                                                 <p:ajax event="dblclick" listener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,0)}" process="@this"/>
                                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarExperiencia(indice, 'MOTIVOS', info.motivoretiro.nombre )}" process="@this" update="editarMotivosE"/>
@@ -177,8 +181,8 @@
 
 
                             <fieldset style="position: absolute;top: 260px;height: 100px;width: 805px; border-radius: 10px; text-align: left">
-                                <legend style="color: blue"><strong>Logros Alcanzados</strong></legend>
-                                <p:inputTextarea id="editarLogrosEP" value="#{controlPerExperienciaLaboral.logrosAlcanzados}" style="text-transform: uppercase;width: 790px;height: 70px" styleClass="textarea" readonly="#{controlPerExperienciaLaboral.readOnlyLogros}">
+                                <legend style="color: blue"><strong>#{msg['logroAlcanzado']}</strong></legend>
+                                <p:inputTextarea id="editarLogrosEP" maxlength="4000" value="#{controlPerExperienciaLaboral.logrosAlcanzados}" style="text-transform: uppercase;width: 790px;height: 70px" styleClass="textarea" readonly="#{controlPerExperienciaLaboral.readOnlyLogros}">
                                     <p:ajax event="select" listener="#{controlPerExperienciaLaboral.posicionLogros(8)}" process="@this"/> 
                                     <p:ajax event="change" listener="#{controlPerExperienciaLaboral.modificarLogros()}" process="@this" update="editarLogrosEP"/>                                   
                                 </p:inputTextarea>
@@ -189,47 +193,47 @@
                             <p:toolbarGroup align="left"> 
 
                                 <p:commandButton id="guardarRapido" value="" style="background-size: 100% 100%;background-image: url(Imagenes/guardar.jpg) ;background-repeat: no-repeat; width: 25px; height: 25px;" actionListener="#{controlPerExperienciaLaboral.guardadoGeneral()}" process="@this" />
-                                <p:tooltip  for="guardarRapido" value="Guardar" />
+                                <p:tooltip  for="guardarRapido" value="#{msg['guardar']}" />
 
                                 <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.editarCelda()}" process="@this"/>
-                                <p:tooltip  for="editar" value="Editar" />
+                                <p:tooltip  for="editar" value="#{msg['editar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.listaValoresBoton()}" process="@this"/>
-                                <p:tooltip  for="listaValores" value="Lista de Valores" />
+                                <p:tooltip  for="listaValores" value="#{msg['lista']}" />
 
                                 <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.activarCtrlF11()}" process="@this"/>
-                                <p:tooltip  for="filtrar" value="Activar filtrado" />
+                                <p:tooltip  for="filtrar" value="#{msg['filtrar']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
 
                                 <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " ajax="false" actionListener="#{controlPerExperienciaLaboral.verificarExportXLS()}" />
-                                <p:tooltip  for="exportarXLS" value="Exportar a XLS" />
+                                <p:tooltip  for="exportarXLS" value="#{msg['xls']}" />
 
                                 <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.limpiarNuevaE()}" ajax="false">
                                     <p:dataExporter type="xml"  target=":formExportar:datosExperienciaExportar" fileName="ProyectoXML" encoding="UTF-8"/> 
                                 </p:commandButton> 
-                                <p:tooltip  for="exportarXML" value="Exportar a XML" />
+                                <p:tooltip  for="exportarXML" value="#{msg['xml']}" />
 
                                 <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.validarExportPDF()}" ajax="false"/>
-                                <p:tooltip for="exportarPDF" value="Exportar a PDF" />
+                                <p:tooltip for="exportarPDF" value="#{msg['pdf']}" />
 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
                                 <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " oncomplete="NuevoRegistro.show()" update=":formularioDialogos:nuevaEP"  process="@this"/> 
-                                <p:tooltip for="insertar" value="Nueva Experiencia Laboral" />
+                                <p:tooltip for="insertar" value="#{msg['nuevo']}" />
 
                                 <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.validarBorradoExperiencia()}" process="@this"/>  
-                                <p:tooltip  for="eliminar" value="Eliminar Experiencia Laboral" />
+                                <p:tooltip  for="eliminar" value="#{msg['eliminar']}" />
 
                                 <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.verificarDuplicarExperiencia()}"  process="@this"/>  
-                                <p:tooltip  for="duplicar" value="Duplicar Experiencia Laboral" />
+                                <p:tooltip  for="duplicar" value="#{msg['duplicar"']}" />
                                 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
                                 <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlPerExperienciaLaboral.verificarRastro()}" process="@this"/>  
-                                <p:tooltip for="rastro" value="Rastro"/>
+                                <p:tooltip for="rastro" value="#{msg['rastro']}"/>
                                 
                                 <p:separator style="position: relative; top: -9px"/>
                                 
@@ -242,21 +246,21 @@
                             </p:toolbarGroup>  
                         </p:toolbar> 
 
-                        <p:dialog header="Sectores Economicos" widgetVar="SectorDialogo" draggable="false" resizable="false" closable="false" id="SectorDialogo"  
+                        <p:dialog header="#{msg['sectorEconomicoM']}" widgetVar="SectorDialogo" draggable="false" resizable="false" closable="false" id="SectorDialogo"  
                                   showEffect="fade" hideEffect="fade" width="431" modal="true" >
                             <p:dataTable id="lovSector" style="width: 400px" scrollWidth="416" var="sector" value="#{controlPerExperienciaLaboral.listSectoresEconomicos}" rowKey="#{sector.secuencia}"
                                          selection="#{controlPerExperienciaLaboral.sectorSeleccionada}" selectionMode="single" widgetVar="lovSector" scrollable="true" scrollHeight="250"
-                                         filteredValue="#{controlPerExperienciaLaboral.filtrarListSectoresEconomicos}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                         filteredValue="#{controlPerExperienciaLaboral.filtrarListSectoresEconomicos}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlPerExperienciaLaboral.activarAceptar()}" update=":form:aceptarS"/>
                                 <p:ajax event="rowDblselect" listener="#{controlPerExperienciaLaboral.actualizarSector()}" process="@this" onstart="lovSector.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Sector: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarS']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovSector.filter();" style="width:150px; position: relative; left: 30px;" />  
                                 </f:facet>
 
                                 <p:column filterBy="#{sector.descripcion}" filterMatchMode="contains">
                                     <f:facet name="header">
-                                        <h:outputText value="Descripcion Sector" />
+                                        <h:outputText value="#{msg['descripcionSector']}" />
                                     </f:facet>
                                     <h:outputText value="#{sector.descripcion}" />
                                 </p:column>
@@ -264,30 +268,30 @@
                             
                             <h:outputText id="infoRegistroSector" value="#{controlPerExperienciaLaboral.infoRegistroSector}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton icon="ui-icon-check" id="aceptarS" style="position: relative; left: 200px" value="Aceptar" disabled="#{controlPerExperienciaLaboral.aceptar}" onclick="SectorDialogo.hide(), lovSector.clearFilters();" actionListener="#{controlPerExperienciaLaboral.actualizarSector()}" update="lovSector, aceptarS, datosExperiencia" process="@this">
+                            <p:commandButton icon="ui-icon-check" id="aceptarS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlPerExperienciaLaboral.aceptar}" onclick="SectorDialogo.hide(), lovSector.clearFilters();" actionListener="#{controlPerExperienciaLaboral.actualizarSector()}" update="lovSector, aceptarS, datosExperiencia" process="@this">
                                 <p:resetInput target=":form:lovSector:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasS" style="position: relative; left: 250px" value="Atras" onclick="SectorDialogo.hide(), lovSector.clearFilters();" actionListener="#{controlPerExperienciaLaboral.cancelarCambioSector()}" update="lovSector" process="@this">
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasS" style="position: relative; left: 230px" value="#{msg['atras']}" onclick="SectorDialogo.hide(), lovSector.clearFilters();" actionListener="#{controlPerExperienciaLaboral.cancelarCambioSector()}" update="lovSector" process="@this">
                                 <p:resetInput target=":form:lovSector:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
 
 
-                        <p:dialog header="Motivos Retiros" widgetVar="MotivosDialogo" draggable="false" resizable="false" closable="false" id="MotivosDialogo"  
+                        <p:dialog header="#{msg['motivoRetiroM']}" widgetVar="MotivosDialogo" draggable="false" resizable="false" closable="false" id="MotivosDialogo"  
                                   showEffect="fade" hideEffect="fade" width="431" modal="true" >
                             <p:dataTable id="lovMotivos" style="width: 400px" scrollWidth="416" var="motivo" value="#{controlPerExperienciaLaboral.listMotivosRetiros}" rowKey="#{motivo.secuencia}"
                                          selection="#{controlPerExperienciaLaboral.motivoSeleccionado}" selectionMode="single" widgetVar="lovMotivos" scrollable="true"  scrollHeight="250"
-                                         filteredValue="#{controlPerExperienciaLaboral.filtrarListMotivosRetiros}" emptyMessage="No se encontraron resultados con el criterio de busqueda.">              
+                                         filteredValue="#{controlPerExperienciaLaboral.filtrarListMotivosRetiros}" emptyMessage="#{msg['lovvacio']}">              
                                 <p:ajax event="rowSelect" listener="#{controlPerExperienciaLaboral.activarAceptar()}" update=":form:aceptarM"/>
                                 <p:ajax event="rowDblselect" listener="#{controlPerExperienciaLaboral.actualizarMotivo()}" process="@this" onstart="lovMotivos.clearFilters()"/>
                                 <f:facet name="header">  
-                                    <h:outputText value="Buscar Motivo: "  style="position: absolute; left: 27px; top: 14px"/>  
+                                    <h:outputText value="#{msg['buscarM']}"  style="position: absolute; left: 27px; top: 14px"/>  
                                     <p:inputText id="globalFilter" onkeyup="lovMotivos.filter();" style="width:150px; position: relative; left: 20px;" />  
                                 </f:facet>
 
                                 <p:column filterBy="#{motivo.nombre}" filterMatchMode="contains" >
                                     <f:facet name="header">
-                                        <h:outputText style="text-align: center" value="Nombre" />
+                                        <h:outputText style="text-align: center" value="#{msg['nombre']}" />
                                     </f:facet>
                                     <h:outputText  value="#{motivo.nombre}" />
                                 </p:column>
@@ -295,10 +299,10 @@
                             
                             <h:outputText id="infoRegistroMotivo" value="#{controlPerExperienciaLaboral.infoRegistroMotivo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
                             
-                            <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="Aceptar" actionListener="#{controlPerExperienciaLaboral.actualizarMotivo()}" disabled="#{controlPerExperienciaLaboral.aceptar}" onclick="MotivosDialogo.hide(), lovMotivos.clearFilters();" update="lovMotivos, aceptarM, datosExperiencia" process="@this">
+                            <p:commandButton icon="ui-icon-check" id="aceptarM" style="position: relative; left: 230px" value="#{msg['aceptar']}" actionListener="#{controlPerExperienciaLaboral.actualizarMotivo()}" disabled="#{controlPerExperienciaLaboral.aceptar}" onclick="MotivosDialogo.hide(), lovMotivos.clearFilters();" update="lovMotivos, aceptarM, datosExperiencia" process="@this">
                                 <p:resetInput target=":form:lovMotivos:globalFilter"/>
                             </p:commandButton>
-                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="Atras" actionListener="#{controlPerExperienciaLaboral.cancelarCambioMotivo()}" onclick="MotivosDialogo.hide(), lovMotivos.clearFilters();" update="lovMotivos" process="@this">
+                            <p:commandButton icon="ui-icon-arrowreturnthick-1-w" id="atrasM" style="position: relative; left: 230px" value="#{msg['atras']}" actionListener="#{controlPerExperienciaLaboral.cancelarCambioMotivo()}" onclick="MotivosDialogo.hide(), lovMotivos.clearFilters();" update="lovMotivos" process="@this">
                                 <p:resetInput target=":form:lovMotivos:globalFilter"/>
                             </p:commandButton>
                         </p:dialog>
@@ -313,66 +317,66 @@
                         <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                     </p:dialog>    
                     
-                    <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="confirmarRastro" header="#{msg['atencion']}" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla HVEXPERIENCIASLABORALES tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerExperienciaLaboral.backUpSecRegistro, 'HvExperienciasLaborales', 'experienciasLabRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastro']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerExperienciaLaboral.backUpSecRegistro, 'HvExperienciasLaborales', 'experienciasLabRastro')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" closable="false">  
+                    <p:dialog id="confirmarRastroHistorico" header="#{msg['atencion']}" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla HVEXPERIENCIASLABORALES tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('HvExperienciasLaborales', 'experienciasLabRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['confirmarRastroHistorico']}" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('HvExperienciasLaborales', 'experienciasLabRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorRastroHistorico" header="ATENCIÓN" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorRastroHistorico" header="#{msg['atencion']}" widgetVar="errorRastroHistorico"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no tiene rastros historicos." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRastroHistorico']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorRegistroRastro" header="ATENCIÓN" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorRegistroRastro" header="#{msg['atencion']}" widgetVar="errorRegistroRastro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El registro seleccionado no tiene rastros." style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
+                        <h:outputText value="#{msg['errorRegistroRastro']}" style="position: absolute; left: 70px; top: 20px; width: 185px; font-weight:bold; text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" closable="false">  
+                    <p:dialog id="errorTablaConRastro" header="#{msg['atencion']}" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerExperienciaLaboral.backUpSecRegistro, 'HvExperienciasLaborales', 'experienciasLabRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
-                        <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
+                        <h:outputText value="#{msg['errorTablaConRastro']}" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
+                        <p:commandButton value="#{msg['si']}" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlPerExperienciaLaboral.backUpSecRegistro, 'HvExperienciasLaborales', 'experienciasLabRastro')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="#{msg['no']}" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorTablaSinRastro" header="ATENCIÓN" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
+                    <p:dialog id="errorTablaSinRastro" header="#{msg['atencion']}" widgetVar="errorTablaSinRastro"  resizable="false" draggable="false" modal="true" height="60" width="285px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no existe en RASTROSTABLAS, y no tiene registros asociados." style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['errorTablaSinRastro']}" style="position: absolute; left: 70px; top: 10px; width: 195px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="seleccionarRegistro" header="ATENCIÓN" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="seleccionarRegistro" header="#{msg['atencion']}" widgetVar="seleccionarRegistro"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Por favor seleccione un registro." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
+                        <h:outputText value="#{msg['seleccionarRegistro']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;text-align: center" />
                     </p:dialog>
 
-                    <p:dialog id="errorObjetosDB" header="ATENCIÓN" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
+                    <p:dialog id="errorObjetosDB" header="#{msg['atencion']}" widgetVar="errorObjetosDB"  resizable="false" draggable="false" modal="true" height="60" width="275px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La tabla no se encuentra en ObjetosDB. Porfavor comunicarse con soporte." style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorObjetosDB']}" style="position: absolute; left: 70px; top: 28px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorBorradoReg" header="ATENCIÓN" widgetVar="errorBorradoReg"  resizable="false" draggable="false" modal="true" height="70" width="255px"  closable="true">  
+                    <p:dialog id="errorBorradoReg" header="#{msg['atencion']}" widgetVar="errorBorradoReg"  resizable="false" draggable="false" modal="true" height="70" width="255px"  closable="true">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="Es necesario que el campo LOGROS ALCANZADOS se encuentre vacio." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorBorradoReg']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                     </p:dialog>
 
-                    <p:dialog id="errorIngresoReg"  header="ATENCIÓN" widgetVar="errorIngresoReg" resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="errorIngresoReg"  header="#{msg['atencion']}" widgetVar="errorIngresoReg" resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="El campo fecha ingreso no debe ser vacio." style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorIngresoReg']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                         <p:commandButton value="OK" onclick="errorIngresoReg.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
-                    <p:dialog id="errorFechasIngresoReg"  header="ATENCIÓN" widgetVar="errorFechasIngresoReg" resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
+                    <p:dialog id="errorFechasIngresoReg"  header="#{msg['atencion']}" widgetVar="errorFechasIngresoReg" resizable="false" draggable="false" modal="true" height="95" width="350px"  closable="false">  
                         <h:graphicImage value="Imagenes/error.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
-                        <h:outputText value="La fecha final es menor que la fecha inicial. Error de ingreso" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
+                        <h:outputText value="#{msg['errorFechasIngresoReg']}" style="position: absolute; left: 70px; top: 10px; width: 185px; font-weight:bold;" />
                         <p:commandButton value="OK" onclick="errorFechasIngresoReg.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
                     
@@ -381,20 +385,20 @@
                 </h:form>
                 <h:form id="formularioDialogos" >
 
-                    <p:dialog id="NuevoRegistro" header="Nuevo Registro Experiencia Laboral" widgetVar="NuevoRegistro" closable="false" resizable="false"  draggable="false" modal="true" height="395" width="400" style="padding: 0px">  
+                    <p:dialog id="NuevoRegistro" header="#{msg['nuevoregistro']}" widgetVar="NuevoRegistro" closable="false" resizable="false"  draggable="false" modal="true" height="425" width="400" style="padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nueva información de experiencia laboral" style="color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaEP" style="border: none;">
 
-                            <strong><h:outputText value="Empresa: " style="position: absolute; top: 75px; left: 50px" /></strong>
-                            <p:inputText id="nuevaEmpresaEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.empresa}" style="width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['empresaN']}" style="position: absolute; top: 75px; left: 50px" /></strong>
+                            <p:inputText id="nuevaEmpresaEP" maxlength="50" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.empresa}" style="width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaEmpresaEP"/>
                             </p:inputText>
-                            <p:watermark for="nuevaEmpresaEP" value="Empresa" />
+                            <p:watermark for="nuevaEmpresaEP" value="#{msg['empresa']}" />
 
 
-                            <strong><h:outputText value="Fecha Ingreso: " style="position: absolute; top: 105px; left: 50px;" /></strong>
+                            <strong><h:outputText value="*#{msg['fechaIngresoN']}" style="position: absolute; top: 105px; left: 50px;" /></strong>
                             <form style="position: absolute;  top: 100px; left: 200px;">
                                 <lnk:calendar id="nuevaDateFechaDesde" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.fechadesde}"   >
                                     <p:ajax event="dateSelect" update="nuevaDateFechaDesde"/>
@@ -402,7 +406,7 @@
                                 </lnk:calendar>
                             </form>
 
-                            <strong><h:outputText value="Fecha Retiro: " style="position: absolute; top: 135px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechaRetiroN']}" style="position: absolute; top: 135px; left: 50px;" /></strong>
                             <form  style="position: absolute;  top: 130px; left: 200px;">
                                 <lnk:calendar id="nuevaDateFechaHasta" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.fechahasta}"   >
                                     <p:ajax event="dateSelect" update="nuevaDateFechaHasta"/>
@@ -410,167 +414,167 @@
                                 </lnk:calendar>
                             </form>
 
-                            <strong><h:outputText value="Cargo Desempeñado: " style="position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="nuevaCargoEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.cargo}" style="width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['cargoDesempenadoN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
+                            <p:inputText id="nuevaCargoEP" maxlength="50" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.cargo}" style="width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaCargoEP"/>
                             </p:inputText>
-                            <p:watermark for="nuevaCargoEP" value="Cargo Desempeñado" />
+                            <p:watermark for="nuevaCargoEP" value="#{msg['cargoDesempenado']}" />
 
-                            <strong><h:outputText value="Jefe Inmediato: " style="position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="nuevaJefeEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.jefeinmediato}" style="width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['jefeInmediatoN']}" style="position: absolute; top: 195px; left: 50px" /></strong>
+                            <p:inputText id="nuevaJefeEP" maxlength="100" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.jefeinmediato}" style="width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaJefeEP"/>
                             </p:inputText>
-                            <p:watermark for="nuevaJefeEP" value="Jefe Inmediato" />
+                            <p:watermark for="nuevaJefeEP" value="#{msg['jefeInmediato']}" />
 
-                            <strong><h:outputText value="Telefono: " style="position: absolute; top: 225px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['telefonoN']}" style="position: absolute; top: 225px; left: 50px" /></strong>
                             <p:inputText id="nuevaTelefonoEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.telefono}" style="width: 122px; position: absolute; left: 200px; top: 220px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaTelefonoEP"/>
                             </p:inputText>
-                            <p:watermark for="nuevaTelefonoEP" value="Telefono" />
+                            <p:watermark for="nuevaTelefonoEP" value="#{msg['telefono']}" />
 
-                            <strong><h:outputText value="Sector Economico: " style="position: absolute; top: 255px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['sectorEconomicoN']}" style="position: absolute; top: 255px; left: 50px" /></strong>
                             <p:inputText id="nuevaSectorEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.sectoreconomico.descripcion}" style="width: 122px; position: absolute; left: 200px; top: 250px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,1)}"/>
                                 <p:ajax event="click" listener="#{controlPerExperienciaLaboral.valoresBackupAutocompletarExperiencia(1, 'SECTORES')}" />
                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.autocompletarNuevoyDuplicadoExperiencia('SECTORES', controlPerExperienciaLaboral.nuevaExperienciaLaboral.sectoreconomico.descripcion,1)}" process="@this" update="nuevaSectorEP"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 250px;  " id="btnNuevaSector" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,1)}" update="nuevaSectorEP"/>   
-                            <p:watermark for="nuevaSectorEP" value="Sector Economico" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 250px;  " id="btnNuevaSector" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,1)}" update="nuevaSectorEP"/>   
+                            <p:watermark for="nuevaSectorEP" value="#{msg['sectorEconomico']}" />
 
-                            <strong><h:outputText value="Motivo Retiro: " style="position: absolute; top: 285px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['motivoRetiroN']}" style="position: absolute; top: 285px; left: 50px" /></strong>
                             <p:inputText id="nuevaMotivoEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.motivoretiro.nombre}" style="width: 122px; position: absolute; left: 200px; top: 280px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,1)}"/>
                                 <p:ajax event="click" listener="#{controlPerExperienciaLaboral.valoresBackupAutocompletarExperiencia(1, 'MOTIVOS')}" />
                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.autocompletarNuevoyDuplicadoExperiencia('MOTIVOS', controlPerExperienciaLaboral.nuevaExperienciaLaboral.motivoretiro.nombre,1)}" process="@this" update="nuevaMotivoEP"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 345px; top: 280px;  " id="btnNuevaMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,1)}" update="nuevaMotivoEP"/>   
-                            <p:watermark for="nuevaMotivoEP" value="Motivo Retiro" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 280px;  " id="btnNuevaMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,1)}" update="nuevaMotivoEP"/>   
+                            <p:watermark for="nuevaMotivoEP" value="#{msg['motivoRetiro']}" />
 
-                            <strong><h:outputText value="Logro Alcanzado: " style="position: absolute; top: 315px; left: 50px" /></strong>
-                            <p:inputTextarea id="nuevaLogroEP" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.alcance}" style="width: 122px; position: absolute; left: 200px; top: 310px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['logroAlcanzadoN']}" style="position: absolute; top: 315px; left: 50px" /></strong>
+                            <p:inputTextarea id="nuevaLogroEP" maxlength="4000" value="#{controlPerExperienciaLaboral.nuevaExperienciaLaboral.alcance}" style="width: 140px; position: absolute; left: 200px; top: 310px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="nuevaLogroEP"/>
                             </p:inputTextarea>
-                            <p:watermark for="nuevaLogroEP" value="Logros Alcanzados" />
+                            <p:watermark for="nuevaLogroEP" value="#{msg['logroAlcanzado']}" />
 
-                            <p:commandButton icon="ui-icon-trash" id="limpiarN" value="Limpiar" style="position: absolute; left: 20px; top: 365px;" actionListener="#{controlPerExperienciaLaboral.limpiarNuevaE()}" update="nuevaEP" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="agregarN" value="Agregar" style="position: absolute; left: 190px; top: 365px;" actionListener="#{controlPerExperienciaLaboral.agregarNuevaE()}" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-close" id="cancelarN" value="Cancelar" style="position: absolute; left: 280px; top: 365px;" actionListener="#{controlPerExperienciaLaboral.limpiarNuevaE()}" update="nuevaEP" onclick="NuevoRegistro.hide();"  process="@this"/>
+                            <p:commandButton icon="ui-icon-trash" id="limpiarN" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 385px;" actionListener="#{controlPerExperienciaLaboral.limpiarNuevaE()}" update="nuevaEP" process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="agregarN" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 385px;" actionListener="#{controlPerExperienciaLaboral.agregarNuevaE()}" process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarN" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 385px;" actionListener="#{controlPerExperienciaLaboral.limpiarNuevaE()}" update="nuevaEP" onclick="NuevoRegistro.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
-                    <p:dialog id="DuplicarRegistro" header="Nuevo Registro Experiencia Laboral" widgetVar="DuplicarRegistro" closable="false" resizable="false"  draggable="false" modal="true" height="395" width="400" style="padding: 0px">  
+                    <p:dialog id="DuplicarRegistro" header="#{msg['duplicarregistro']}" widgetVar="DuplicarRegistro" closable="false" resizable="false"  draggable="false" modal="true" height="425" width="400" style="padding: 0px">  
 
-                        <center><strong><h:outputText value="Ingresar nueva información de experiencia laboral" style="color: blue; position: relative; top: 10px" /></strong></center> 
+                        <center><strong><h:outputText value="#{msg['ingresarnuevo']}" style="color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarEP" style="border: none;">
 
-                            <strong><h:outputText value="Empresa: " style="position: absolute; top: 75px; left: 50px" /></strong>
-                            <p:inputText id="duplicarEmpresaEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.empresa}" style="width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['empresaN']}" style="position: absolute; top: 75px; left: 50px" /></strong>
+                            <p:inputText id="duplicarEmpresaEP" maxlength="50" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.empresa}" style="width: 122px; position: absolute; left: 200px; top: 70px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="duplicarEmpresaEP"/>
                             </p:inputText>
-                            <p:watermark for="duplicarEmpresaEP" value="Empresa" />
+                            <p:watermark for="duplicarEmpresaEP" value="#{msg['empresa']}" />
 
-                            <strong><h:outputText value="Fecha Ingreso: " style="position: absolute; top: 105px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechaIngresoN']}" style="position: absolute; top: 105px; left: 50px;" /></strong>
                             <p:calendar  id="duplicarFechaInicioEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.fechadesde}" style="position: absolute;  top: 100px; left: 200px;" styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaInicioEP"/>
                                 <p:ajax event="change" update="duplicarFechaInicioEP"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Fecha Retiro: " style="position: absolute; top: 135px; left: 50px;" /></strong>
+                            <strong><h:outputText value="#{msg['fechaRetiroN']}" style="position: absolute; top: 135px; left: 50px;" /></strong>
                             <p:calendar  id="duplicarFechaFinalEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.fechahasta}" style="position: absolute;  top: 130px; left: 200px;" styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" locale="es" pattern="dd/MM/yyyy">
                                 <p:ajax event="dateSelect" update="duplicarFechaFinalEP"/>
                                 <p:ajax event="change" update="duplicarFechaFinalEP"/>
                             </p:calendar>
 
-                            <strong><h:outputText value="Cargo Desempeñado: " style="position: absolute; top: 165px; left: 50px" /></strong>
-                            <p:inputText id="duplicarCargoEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.cargo}" style="width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['cargoDesempenadoN']}" style="position: absolute; top: 165px; left: 50px" /></strong>
+                            <p:inputText id="duplicarCargoEP" maxlength="50" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.cargo}" style="width: 122px; position: absolute; left: 200px; top: 160px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="duplicarCargoEP"/>
                             </p:inputText>
-                            <p:watermark for="duplicarCargoEP" value="Cargo Desempeñado" />
+                            <p:watermark for="duplicarCargoEP" value="#{msg['cargoDesempenado']}" />
 
-                            <strong><h:outputText value="Jefe Inmediato: " style="position: absolute; top: 195px; left: 50px" /></strong>
-                            <p:inputText id="duplicarJefeEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.jefeinmediato}" style="width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['jefeInmediatoN']}" style="position: absolute; top: 195px; left: 50px" /></strong>
+                            <p:inputText id="duplicarJefeEP" maxlength="100" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.jefeinmediato}" style="width: 122px; position: absolute; left: 200px; top: 190px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="duplicarJefeEP"/>
                             </p:inputText>
-                            <p:watermark for="duplicarJefeEP" value="Jefe Inmediato" />
+                            <p:watermark for="duplicarJefeEP" value="#{msg['jefeInmediato']}" />
 
-                            <strong><h:outputText value="Telefono: " style="position: absolute; top: 225px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['telefonoN']}" style="position: absolute; top: 225px; left: 50px" /></strong>
                             <p:inputText id="duplicarTelefonoEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.telefono}" style="width: 122px; position: absolute; left: 200px; top: 220px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="duplicarTelefonoEP"/>
                             </p:inputText>
-                            <p:watermark for="duplicarTelefonoEP" value="Telefono" />
+                            <p:watermark for="duplicarTelefonoEP" value="#{msg['telefono']}" />
 
-                            <strong><h:outputText value="Sector Economico: " style="position: absolute; top: 255px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['sectorEconomicoN']}" style="position: absolute; top: 255px; left: 50px" /></strong>
                             <p:inputText id="duplicarSectorEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.sectoreconomico.descripcion}" style="width: 122px; position: absolute; left: 200px; top: 250px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,2)}"/>
                                 <p:ajax event="click" listener="#{controlPerExperienciaLaboral.valoresBackupAutocompletarExperiencia(2, 'SECTORES')}" />
                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.autocompletarNuevoyDuplicadoExperiencia('SECTORES', controlPerExperienciaLaboral.duplicarExperienciaLaboral.sectoreconomico.descripcion,2)}" process="@this" update="duplicarSectorEP"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 333px; top: 250px;  " id="btnDuplicarSector" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,2)}" update="duplicarSectorEP"/>   
-                            <p:watermark for="duplicarSectorEP" value="Sector Economico" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 250px;  " id="btnDuplicarSector" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,1,2)}" update="duplicarSectorEP"/>   
+                            <p:watermark for="duplicarSectorEP" value="#{msg['sectorEconomico']}" />
 
-                            <strong><h:outputText value="Motivo Retiro: " style=" position: absolute; top: 285px; left: 50px" /></strong>
+                            <strong><h:outputText value="#{msg['motivoRetiroN']}" style=" position: absolute; top: 285px; left: 50px" /></strong>
                             <p:inputText id="duplicarMotivoEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.motivoretiro.nombre}" style="width: 122px; position: absolute; left: 200px; top: 280px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="dblclick" listener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,2)}"/>
                                 <p:ajax event="click" listener="#{controlPerExperienciaLaboral.valoresBackupAutocompletarExperiencia(2, 'MOTIVOS')}" />
                                 <p:ajax event="change" listener="#{controlPerExperienciaLaboral.autocompletarNuevoyDuplicadoExperiencia('MOTIVOS', controlPerExperienciaLaboral.duplicarExperienciaLaboral.motivoretiro.nombre,2)}" process="@this" update="duplicarMotivoEP"/>
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 333px; top: 280px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,2)}" update="duplicarMotivoEP"/>   
-                            <p:watermark for="duplicarMotivoEP" value="Motivo Retiro" />
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 330px; top: 280px;  " id="btnDuplicarMotivo" icon="ui-icon-search" process="@this"  actionListener="#{controlPerExperienciaLaboral.asignarIndex(indice,2,2)}" update="duplicarMotivoEP"/>   
+                            <p:watermark for="duplicarMotivoEP" value="#{msg['motivoRetiro']}" />
 
-                            <strong><h:outputText value="Logro Alcanzado: " style="position: absolute; top: 315px; left: 50px" /></strong>
-                            <p:inputTextarea id="duplicarLogroEP" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.alcance}" styleClass="textarea" style="width: 122px; position: absolute; left: 200px; top: 310px; text-transform: uppercase" onclick="select();">
+                            <strong><h:outputText value="#{msg['logroAlcanzadoN']}" style="position: absolute; top: 315px; left: 50px" /></strong>
+                            <p:inputTextarea id="duplicarLogroEP" maxlength="4000" value="#{controlPerExperienciaLaboral.duplicarExperienciaLaboral.alcance}" styleClass="textarea" style="width: 140px; position: absolute; left: 200px; top: 310px; text-transform: uppercase" onclick="select();">
                                 <p:ajax event="change" process="@this" update="duplicarLogroEP"/>
                             </p:inputTextarea>
-                            <p:watermark for="duplicarLogroEP" value="Logros Alcanzados" />
+                            <p:watermark for="duplicarLogroEP" value="#{msg['logroAlcanzado']}" />
 
 
-                            <p:commandButton icon="ui-icon-trash" id="limpiarD" value="Limpiar" style="position: absolute; left: 20px; top: 365px;" actionListener="#{controlPerExperienciaLaboral.limpiarduplicarE()}" update="duplicarEP" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="agregarD" value="Agregar" style="position: absolute; left: 190px; top: 365px;" actionListener="#{controlPerExperienciaLaboral.confirmarDuplicarE()}" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-close" id="cancelarD" value="Cancelar" style="position: absolute; left: 280px; top: 365px;" actionListener="#{controlPerExperienciaLaboral.limpiarduplicarE()}" update="duplicarEP" onclick="DuplicarRegistro.hide();"  process="@this"/>
+                            <p:commandButton icon="ui-icon-trash" id="limpiarD" value="#{msg['limpiar']}" style="position: absolute; left: 20px; top: 385px;" actionListener="#{controlPerExperienciaLaboral.limpiarduplicarE()}" update="duplicarEP" process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="agregarD" value="#{msg['agregar']}" style="position: absolute; left: 190px; top: 385px;" actionListener="#{controlPerExperienciaLaboral.confirmarDuplicarE()}" process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarD" value="#{msg['cancelar']}" style="position: absolute; left: 280px; top: 385px;" actionListener="#{controlPerExperienciaLaboral.limpiarduplicarE()}" update="duplicarEP" onclick="DuplicarRegistro.hide();"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
                     <!-- ////// ////// ////// -->
 
-                    <p:dialog id="editarEmpresaD" header="Empresa Experiencia Laboral" widgetVar="editarEmpresaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarEmpresaD" header="#{msg['editarEmpresaD']}" widgetVar="editarEmpresaD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.empresa}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaInicialD" header="Fecha Inicio Experiencia Laboral" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="93" width="240">  
+                    <p:dialog id="editarFechaInicialD" header="#{msg['editarFechaInicialD']}" widgetVar="editarFechaInicialD" resizable="false" draggable="false" modal="true" height="93" width="240">  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.strFechaDesde}" style="overflow: auto; width: 200px; height: 40px;text-transform: uppercase" readonly="true"/>
-                        <p:commandButton id="cancelarFechaIni" value="Atras" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 60px; left: 148px;" process="@this"/>
+                        <p:commandButton id="cancelarFechaIni" value="#{msg['atras']}" onclick="editarFechaInicialD.hide();" style="position: absolute; top: 60px; left: 148px;" process="@this"/>
                     </p:dialog>
 
-                    <p:dialog id="editarFechaFinalD" header="Fecha Final Experiencia Labora" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
+                    <p:dialog id="editarFechaFinalD" header="#{msg['editarFechaFinalD']}" widgetVar="editarFechaFinalD" resizable="false" draggable="false" modal="true" height="55" width="240" style=" padding: 0px">  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.fechahasta}" style="overflow: auto; width: 200px; height: 40px" readonly="true">                        
                             <f:convertDateTime pattern="dd/MM/yyyy"/>
                         </p:inputTextarea>
                     </p:dialog>
 
-                    <p:dialog id="editarCargoD" header="Cargo Experiencia Laboral" widgetVar="editarCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarCargoD" header="#{msg['editarCargoD']}" widgetVar="editarCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.cargo}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarJefeD" header="Jefe Experiencia Laboral" widgetVar="editarJefeD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarJefeD" header="#{msg['editarJefeD']}" widgetVar="editarJefeD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.jefeinmediato}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarTelefonoD" header="Telefono Experiencia Laboral" widgetVar="editarTelefonoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarTelefonoD" header="#{msg['editarTelefonoD']}" widgetVar="editarTelefonoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.telefono}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarSectorD" header="Sector Economico Experiencia Laboral" widgetVar="editarSectorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarSectorD" header="#{msg['editarSectorD"']}" widgetVar="editarSectorD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.sectoreconomico.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarMotivoD" header="Montivo Retiro Experiencia Laboral" widgetVar="editarMotivoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarMotivoD" header="#{msg['editarMotivoD']}" widgetVar="editarMotivoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.motivoretiro.nombre}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
-                    <p:dialog id="editarLogroD" header="Logros Alcanzados Experiencia Laboral" widgetVar="editarLogroD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarLogroD" header="#{msg['editarLogroD']}" widgetVar="editarLogroD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlPerExperienciaLaboral.editarExperienciaLaboral.alcance}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 
@@ -579,52 +583,52 @@
                     <p:dataTable id="datosExperienciaExportar" var="infoExp" style="visibility: hidden; display: none;"                           
                                  value="#{controlPerExperienciaLaboral.listExperienciaLaboralEmpl}"> 
 
-                        <p:column headerText="Empresa">                                  
-                            <f:facet name="header"><h:outputText value="Empresa"/> </f:facet> 
+                        <p:column headerText="#{msg['empresaX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['empresaX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.empresa}" />
                         </p:column>
 
-                        <p:column headerText="Fecha Inicio">                                  
-                            <f:facet name="header"><h:outputText value="FechaInicio"/> </f:facet> 
+                        <p:column headerText="#{msg['fechaInicioXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['fechaInicioX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.fechadesde}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Fecha Retiro">                                  
-                            <f:facet name="header"><h:outputText value="FechaRetiro"/> </f:facet> 
+                        <p:column headerText="#{msg['fechaRetiroXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['fechaRetiroX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.fechahasta}" >
                                 <f:convertDateTime pattern="dd/MM/yyyy" />
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Cargo Desempeñado">                                  
-                            <f:facet name="header"><h:outputText value="CargoDesempeñado"/> </f:facet> 
+                        <p:column headerText="#{msg['cargoDesempenadoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['cargoDesempenadoX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.cargo}" />
                         </p:column>
 
-                        <p:column headerText="Jefe Inmediato">                                  
-                            <f:facet name="header"><h:outputText value="JefeInmediato"/> </f:facet> 
+                        <p:column headerText="#{msg['jefeX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['jefeX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.jefeinmediato}" />
                         </p:column>
 
-                        <p:column headerText="Telefono">                                  
-                            <f:facet name="header"><h:outputText value="Telefono"/> </f:facet> 
+                        <p:column headerText="#{msg['telefonoX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['telefonoX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.telefono}" />
                         </p:column>
 
-                        <p:column headerText="Sector Economico">                                  
-                            <f:facet name="header"><h:outputText value="SectorEconomico"/> </f:facet> 
+                        <p:column headerText="#{msg['sectorEconomicoXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['sectorEconomicoX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.sectoreconomico.descripcion}" />
                         </p:column>
 
-                        <p:column headerText="Motivo Retiro">                                  
-                            <f:facet name="header"><h:outputText value="MotivoRetiro"/> </f:facet> 
+                        <p:column headerText="#{msg['motivoRetiroXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['motivoRetiroX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.motivoretiro.nombre}" />
                         </p:column>
 
-                        <p:column headerText="Logros Alcanzados">                                  
-                            <f:facet name="header"><h:outputText value="LogrosAlcanzados"/> </f:facet> 
+                        <p:column headerText="#{msg['logrosXX']}">                                  
+                            <f:facet name="header"><h:outputText value="#{msg['logrosX']}"/> </f:facet> 
                             <h:outputText value="#{infoExp.alcance}" />
                         </p:column>
 
