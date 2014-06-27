@@ -3,6 +3,7 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.ClavesSap;
 import Entidades.Conceptos;
 import Entidades.Empresas;
 import Entidades.Terceros;
@@ -108,4 +109,8 @@ public interface AdministrarConceptosInterface {
      * @param descripcionConceptoNuevo Descripción del nuevo concepto.
      */
     public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo);
+
+    public List<ClavesSap> consultarLOVClavesSap();
+
+    public List<Empresas> consultarEmpresaPorSecuencia(BigInteger secEmpresa);
 }

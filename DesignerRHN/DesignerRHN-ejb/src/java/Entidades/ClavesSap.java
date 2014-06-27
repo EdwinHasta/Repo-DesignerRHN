@@ -31,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ClavesSap.findAll", query = "SELECT c FROM ClavesSap c")})
 public class ClavesSap implements Serializable {
+
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
@@ -74,7 +75,11 @@ public class ClavesSap implements Serializable {
     }
 
     public void setClave(String clave) {
-        this.clave = clave;
+        if (clave != null) {
+            this.clave = clave.toUpperCase();
+        } else {
+            this.clave = clave;
+        }
     }
 
     public String getClasificacion() {
@@ -143,5 +148,5 @@ public class ClavesSap implements Serializable {
     public String toString() {
         return "Entidades.ClavesSap[ secuencia=" + secuencia + " ]";
     }
-    
+
 }
