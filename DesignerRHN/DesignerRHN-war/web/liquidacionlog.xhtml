@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:lnk="http://java.sun.com/jsf/composite/linkare">
     <h:head>
     </h:head>
     <h:body>
@@ -34,107 +35,82 @@
                                          >
                                 <p:ajax event="filter" listener="#{controlLiquidacionesLogs.eventoFiltrar()}"/>
 
-                                <p:column  headerText="Fecha Inicial" sortBy="#{info.fechadesde}" filterBy="#{info.fechadesde}" filterMatchMode="contains" 
-                                           width="72" id="fechaInicial" filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:cellEditor>  
+                                <p:column headerText="Fecha Desde" sortBy="#{info.fechadesde}" filterBy="#{info.fechadesde}" filterMatchMode="contains" 
+                                          id="fechaInicial" width="70"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                    <p:cellEditor> 
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechadesde}" style="height: 12px;" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            <h:outputText value="#{info.fechadesde}"  style="width: 80px; text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" style="height: 12px;" value="#{info.fechadesde}" id="editarFechaInicialCredito"   
-                                                         styleClass="ui-datepicker, myClass" autocomplete="true"
-                                                         onselect="posicion([{name: 'n', value: '0'}, {name: 't', value: '#{indice}'}]);">      
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:inputText>
-                                        </f:facet>   
+                                            <h:inputText value="#{info.fechadesde}" disabled="true" style="height: 16px;width: 90px; text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:inputText>
+                                        </f:facet>  
                                     </p:cellEditor>
 
                                 </p:column>
-                                <p:column  headerText="Fecha Final" sortBy="#{info.fechahasta}" filterBy="#{info.fechahasta}" filterMatchMode="contains" 
-                                           width="72" id="fechaFinal" filterStyle="display: none; visibility: hidden;"  >  
-                                    <p:cellEditor>  
+                                <p:column headerText="Fecha Desde" sortBy="#{info.fechahasta}" filterBy="#{info.fechahasta}" filterMatchMode="contains" 
+                                          id="fechaFinal" width="70"
+                                          filterStyle="display: none; visibility: hidden;"  style="width: 80px; ">                                  
+                                    <p:cellEditor> 
                                         <f:facet name="output">
-                                            <h:outputText value="#{info.fechahasta}" style="height: 12px;" >
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
+                                            <h:outputText value="#{info.fechahasta}" style="width: 80px; text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
                                             </h:outputText>
                                         </f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText readonly="true" style="height: 12px;" value="#{info.fechahasta}" id="editarFechaFinal"   
-                                                         styleClass="ui-datepicker, myClass" autocomplete="true"
-                                                         onselect="posicion([{name: 'n', value: '1'}, {name: 't', value: '#{indice}'}]);">      
-                                                <f:convertDateTime pattern="dd/MM/yyyy" />
-                                            </p:inputText>
-                                        </f:facet>   
-                                    </p:cellEditor>
-
-                                </p:column>
-
-                                <p:column headerText="Empleado" sortBy="#{info.empleado.persona.nombreCompleto}" filterBy="#{info.empleado.persona.nombreCompleto}" 
-                                          filterMatchMode="contains" id="empleado" width="180" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.empleado.persona.nombreCompleto}">
-
-                                            </h:outputText>
-                                        </f:facet>  
-                                        <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.empleado.persona.nombreCompleto}" id="editarEmpleadoTabla" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '2'}, {name: 't', value: '#{indice}'}]);"> 
-                                            </p:inputText>
+                                            <h:inputText value="#{info.fechahasta}" disabled="true" style="height: 16px;width: 90px; text-transform: uppercase">
+                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
 
                                 </p:column>
 
-
-                                <p:column headerText="Operando" sortBy="#{info.operando.nombre}" filterBy="#{info.operando.nombre}" 
-                                          filterMatchMode="contains" id="operando" width="143" filterStyle="display: none; visibility: hidden;" >                                  
+                                <p:column headerText="Empleado" sortBy="#{info.empleado.persona.nombreCompleto}" filterBy="#{info.empleado.persona.nombreCompleto}" filterMatchMode="contains" id="empleado" width="250" filterStyle="display: none; visibility: hidden;" >                                  
                                     <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.operando.nombre}">
-
-                                            </h:outputText>
-                                        </f:facet>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.empleado.persona.nombreCompleto}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.operando.nombre}" id="editarOperando" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '3'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText value="#{info.empleado.persona.nombreCompleto}" disabled="true" maxlength="50" id="editarEmpleado" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                </p:column>
-                                <p:column headerText="Proceso" sortBy="#{info.proceso.descripcion}" filterBy="#{info.proceso.descripcion}" 
-                                          filterMatchMode="contains" id="proceso" width="123" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.proceso.descripcion}">
 
-                                            </h:outputText>
-                                        </f:facet>  
+                                </p:column>
+                                <p:column headerText="Operando" sortBy="#{info.operando.nombre}" filterBy="#{info.operando.nombre}" filterMatchMode="contains" id="operando" width="200" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.operando.nombre}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.proceso.descripcion}" id="editarProceso" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '4'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText value="#{info.operando.nombre}" maxlength="50" disabled="true" id="editarOperando" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
-                                </p:column>
-                                <p:column headerText="Valor" sortBy="#{info.valor}" filterBy="#{info.valor}" 
-                                          filterMatchMode="contains" id="valor" width="80" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
-                                        <f:facet name="output">
-                                            <h:outputText value="#{info.valor}">
 
-                                            </h:outputText>
-                                        </f:facet>  
+                                </p:column>
+                                <p:column headerText="Proceso" sortBy="#{info.proceso.descripcion}" filterBy="#{info.proceso.descripcion}" filterMatchMode="contains" id="proceso" width="60" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.proceso.descripcion}"  /></f:facet>  
                                         <f:facet name="input">
-                                            <p:inputText  readonly="true" value="#{info.valor}" id="editarValor" style="height: 12px;border-radius: 0px; width: 93.5%;text-transform: uppercase"
-                                                          onselect="posicion([{name: 'n', value: '5'}, {name: 't', value: '#{indice}'}]);"> 
+                                            <p:inputText value="#{info.proceso.descripcion}" disabled="true" maxlength="50" id="editarPproceso" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
                                             </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
+
                                 </p:column>
 
+                                <p:column headerText="Valor" sortBy="#{info.valor}" filterBy="#{info.valor}" filterMatchMode="contains" id="valor" width="60" filterStyle="display: none; visibility: hidden;" >                                  
+                                    <p:cellEditor>  
+                                        <f:facet name="output"><h:outputText style="text-transform: uppercase" value="#{info.valor}"  /></f:facet>  
+                                        <f:facet name="input">
+                                            <p:inputText value="#{info.valor}" disabled="true" maxlength="50" id="editarValor" style="height: 12px; border-radius: 0px; width: 420px; text-transform: uppercase"  > 
+                                            </p:inputText>
+                                        </f:facet>  
+                                    </p:cellEditor>
+
+                                </p:column>
 
                             </p:dataTable>
 
@@ -194,7 +170,6 @@
                             </p:toolbarGroup>  
                         </p:toolbar>
 
-                        <p:remoteCommand name="posicion" actionListener="#{controlLiquidacionesLogs.posicion()}"/>
 
                         <h:outputText id="informacionRegistro" value="#{controlLiquidacionesLogs.infoRegistro}" style="position: absolute; left: 15px; top: 450px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-check" value="Atras" />

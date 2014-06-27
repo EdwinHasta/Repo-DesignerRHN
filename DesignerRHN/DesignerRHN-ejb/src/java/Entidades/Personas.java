@@ -255,8 +255,8 @@ public class Personas implements Serializable {
         if (nombre == null) {
             return "";
         } else {
-        return nombre;
-    }
+            return nombre;
+        }
     }
 
     public void setNombre(String nombre) {
@@ -512,7 +512,11 @@ public class Personas implements Serializable {
     }
 
     public void setNombreCompleto(String nombreCompleto) {
-        this.nombreCompleto = nombreCompleto;
+        if (nombreCompleto != null) {
+            this.nombreCompleto = nombreCompleto.toUpperCase();
+        } else {
+            this.nombreCompleto = nombreCompleto;
+        }
     }
 
     public int getEdad() {
