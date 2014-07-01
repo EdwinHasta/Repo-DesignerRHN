@@ -118,7 +118,9 @@ public class PersistenciaConceptos implements PersistenciaConceptosInterface {
     @Override
     public List<Conceptos> conceptosPorEmpresa(EntityManager em, BigInteger secEmpresa) {
         try {
-            Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia = :secEmpresa ORDER BY c.codigo ASC");
+           // Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = NVL(:secEmpresa, c.empresa.secuencia) ORDER BY c.codigo ASC");
+                        Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = :secEmpresa ORDER BY c.codigo ASC");
+
             query.setParameter("secEmpresa", secEmpresa);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Conceptos> listaConceptos = query.getResultList();

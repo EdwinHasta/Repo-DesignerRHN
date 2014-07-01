@@ -757,15 +757,22 @@ public class ControlConcepto implements Serializable {
         if (permitirIndex == true) {
             index = indice;
             cualCelda = celda;
-            secRegistro = listaConceptosEmpresa.get(index).getSecuencia();
-            conceptoRegistro = listaConceptosEmpresa.get(index);
-            if (cualCelda == 3) {
+            if (tipoLista == 0) {
+                secRegistro = listaConceptosEmpresa.get(index).getSecuencia();
+                conceptoRegistro = listaConceptosEmpresa.get(index);
                 codigoUnidad = listaConceptosEmpresa.get(index).getUnidad().getCodigo();
-            } else if (cualCelda == 4) {
                 nombreUnidad = listaConceptosEmpresa.get(index).getUnidad().getNombre();
-            } else if (cualCelda == 10) {
                 Tercero = listaConceptosEmpresa.get(index).getTercero().getNombre();
+            } else {
+                secRegistro = filtradoConceptosEmpresa.get(index).getSecuencia();
+                conceptoRegistro = filtradoConceptosEmpresa.get(index);
+                codigoUnidad = filtradoConceptosEmpresa.get(index).getUnidad().getCodigo();
+                nombreUnidad = filtradoConceptosEmpresa.get(index).getUnidad().getNombre();
+                Tercero = filtradoConceptosEmpresa.get(index).getTercero().getNombre();
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            activoDetalle = false;
+            context.update("form:DETALLES");
         }
     }
 

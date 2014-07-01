@@ -140,10 +140,10 @@ public class Operandos implements Serializable {
     }
 
     public String getDescripcion() {
-        if (descripcion == null) {
-            descripcion = " ";
+        if(descripcion != null){
+        descripcion = descripcion.toUpperCase();
         }
-        return descripcion.toUpperCase();
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {

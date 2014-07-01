@@ -33,7 +33,7 @@ public class PersistenciaVigenciasGruposConceptos implements PersistenciaVigenci
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(vigenciasGruposConceptos);
+            em.persist(vigenciasGruposConceptos);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasGruposConceptos.crear: " + e);

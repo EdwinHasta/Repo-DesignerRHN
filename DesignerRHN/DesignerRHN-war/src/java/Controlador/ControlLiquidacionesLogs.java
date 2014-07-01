@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -111,15 +112,69 @@ public class ControlLiquidacionesLogs implements Serializable {
         }
     }
 
-    public void posicion() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
-        String name = map.get("n"); // name attribute of node
-        String type = map.get("t"); // type attribute of node
-        int indice = Integer.parseInt(type);
-        int columna = Integer.parseInt(name);
-        cambiarIndice(indice, columna);
+    public void mostrarInfo(int indice, int celda) {
+
+        mensajeValidacion = " ";
+        index = indice;
+        cualCelda = celda;
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (permitirIndex == true) {
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    secRegistro = listLiquidacionesLogs.get(index).getSecuencia();
+
+                    if (listLiquidacionesLogs.get(indice).getFechadesde() == null) {
+                        listLiquidacionesLogs.get(indice).setFechadesde(backUpFechaDesde);
+                    } else if (!listLiquidacionesLogs.get(indice).getFechadesde().equals(backUpFechaDesde) && backUpFechaDesde != null) {
+                        listLiquidacionesLogs.get(indice).setFechadesde(backUpFechaDesde);
+                    }
+                    index = -1;
+                    secRegistro = null;
+
+                } else {
+                    if (filtrarLiquidacionesLogs.get(indice).getFechadesde() == null) {
+                        filtrarLiquidacionesLogs.get(indice).setFechadesde(backUpFechaDesde);
+                    } else if (!filtrarLiquidacionesLogs.get(indice).getFechadesde().equals(backUpFechaDesde) && backUpFechaDesde != null) {
+                        filtrarLiquidacionesLogs.get(indice).setFechadesde(backUpFechaDesde);
+                    }
+                    index = -1;
+                    secRegistro = null;
+                }
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    secRegistro = listLiquidacionesLogs.get(index).getSecuencia();
+
+                    if (listLiquidacionesLogs.get(indice).getFechahasta() == null) {
+                        listLiquidacionesLogs.get(indice).setFechahasta(backUpFechaHasta);
+                    } else if (!listLiquidacionesLogs.get(indice).getFechahasta().equals(backUpFechaHasta) && backUpFechaHasta != null) {
+                        listLiquidacionesLogs.get(indice).setFechahasta(backUpFechaHasta);
+                    }
+                    index = -1;
+                    secRegistro = null;
+
+                } else {
+                    if (filtrarLiquidacionesLogs.get(indice).getFechahasta() == null) {
+                        filtrarLiquidacionesLogs.get(indice).setFechahasta(backUpFechaHasta);
+                    } else if (!filtrarLiquidacionesLogs.get(indice).getFechahasta().equals(backUpFechaHasta) && backUpFechaHasta != null) {
+                        filtrarLiquidacionesLogs.get(indice).setFechahasta(backUpFechaHasta);
+                    }
+                    index = -1;
+                    secRegistro = null;
+                }
+            }
+
+            context.update("form:datosLiquidacionesLogs");
+
+        }
+
     }
+    private Date backUpFechaDesde;
+    private Date backUpFechaHasta;
+    private String backUpEmpleado;
+    private String backUpOperando;
+    private String backUpProceso;
+    private String backUpValor;
 
     public void cambiarIndice(int indice, int celda) {
         System.err.println("TIPO LISTA = " + tipoLista);
@@ -128,8 +183,132 @@ public class ControlLiquidacionesLogs implements Serializable {
             index = indice;
             cualCelda = celda;
             secRegistro = listLiquidacionesLogs.get(index).getSecuencia();
+            if (cualCelda == 0) {
+                if (tipoLista == 0) {
+                    backUpFechaDesde = listLiquidacionesLogs.get(index).getFechadesde();
+                } else {
+                    backUpFechaDesde = filtrarLiquidacionesLogs.get(index).getFechadesde();
+                }
+                System.out.println("backUpFechaDesde : " + backUpFechaDesde);
+            }
+            if (cualCelda == 1) {
+                if (tipoLista == 0) {
+                    backUpFechaHasta = listLiquidacionesLogs.get(index).getFechahasta();
+                } else {
+                    backUpFechaHasta = filtrarLiquidacionesLogs.get(index).getFechahasta();
+                }
+                System.out.println("backUpFechaHasta : " + backUpFechaHasta);
+            }
+            if (cualCelda == 2) {
+                if (tipoLista == 0) {
+                    backUpEmpleado = listLiquidacionesLogs.get(index).getEmpleado().getPersona().getNombreCompleto();
+                } else {
+                    backUpEmpleado = filtrarLiquidacionesLogs.get(index).getEmpleado().getPersona().getNombreCompleto();
+                }
+                System.out.println("backUpEmpleado : " + backUpEmpleado);
+            }
+            if (cualCelda == 3) {
+                if (tipoLista == 0) {
+                    backUpOperando = listLiquidacionesLogs.get(index).getOperando().getDescripcion();
+                } else {
+                    backUpOperando = filtrarLiquidacionesLogs.get(index).getOperando().getDescripcion();
+                }
+                System.out.println("backUpOperando : " + backUpOperando);
+            }
+            if (cualCelda == 4) {
+                if (tipoLista == 0) {
+                    backUpProceso = listLiquidacionesLogs.get(index).getProceso().getDescripcion();
+                } else {
+                    backUpProceso = filtrarLiquidacionesLogs.get(index).getProceso().getDescripcion();
+                }
+                System.out.println("backUpProceso : " + backUpProceso);
+            }
+            if (cualCelda == 5) {
+                if (tipoLista == 0) {
+                    backUpValor = listLiquidacionesLogs.get(index).getValor();
+                } else {
+                    backUpValor = filtrarLiquidacionesLogs.get(index).getValor();
+                }
+                System.out.println("backUpProceso : " + backUpValor);
+            }
             System.out.println("Indice: " + index + " Celda: " + cualCelda);
         }
+    }
+
+    public void modificarLiquidacionesLogSinGuardar(int indice, String confirmarCambio, String valorConfirmar) {
+        index = indice;
+        int coincidencias = 0;
+        int indiceUnicoElemento = 0, pass = 0;
+        mensajeValidacion = " ";
+        RequestContext context = RequestContext.getCurrentInstance();
+        if (confirmarCambio.equalsIgnoreCase("N")) {
+            System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar");
+            if (tipoLista == 0) {
+                if (!crearLiquidacionesLogs.contains(listLiquidacionesLogs.get(indice))) {
+
+                    if (listLiquidacionesLogs.get(indice).getEmpleado().getPersona().getNombreCompleto() == null) {
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpEmpleado : " + backUpEmpleado);
+                        listLiquidacionesLogs.get(indice).getEmpleado().getPersona().setNombreCompleto(backUpEmpleado);
+                    } else if (!listLiquidacionesLogs.get(indice).getEmpleado().getPersona().getNombreCompleto().equals(backUpEmpleado) && backUpEmpleado != null) {
+                        listLiquidacionesLogs.get(indice).getEmpleado().getPersona().setNombreCompleto(backUpEmpleado);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpEmpleado : " + backUpEmpleado);
+                    }
+                    if (listLiquidacionesLogs.get(indice).getOperando().getDescripcion() == null) {
+                        listLiquidacionesLogs.get(indice).getOperando().setDescripcion(backUpOperando);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpOperando : " + backUpOperando);
+                    } else if (!listLiquidacionesLogs.get(indice).getOperando().getDescripcion().equals(backUpOperando) && backUpOperando != null) {
+                        listLiquidacionesLogs.get(indice).getOperando().setDescripcion(backUpOperando);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpOperando : " + backUpOperando);
+                    }
+                    if (listLiquidacionesLogs.get(indice).getProceso().getDescripcion() == null) {
+                        listLiquidacionesLogs.get(indice).getProceso().setDescripcion(backUpProceso);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpProceso : " + backUpProceso);
+                    } else if (!listLiquidacionesLogs.get(indice).getProceso().getDescripcion().equals(backUpProceso) && backUpProceso != null) {
+                        listLiquidacionesLogs.get(indice).getProceso().setDescripcion(backUpProceso);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpProceso : " + backUpProceso);
+                    }
+                    if (listLiquidacionesLogs.get(indice).getValor() == null) {
+                        listLiquidacionesLogs.get(indice).setValor(backUpValor);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpValor : " + backUpValor);
+                    } else if (!listLiquidacionesLogs.get(indice).getValor().equals(backUpValor) && backUpValor != null) {
+                        listLiquidacionesLogs.get(indice).setValor(backUpValor);
+                        System.err.println("CONTROLLIQUIDACIONESLOGS modificarLiquidacionesLogSinGuardar backUpValor : " + backUpValor);
+                    }
+
+                    index = -1;
+                    secRegistro = null;
+                }
+            } else {
+
+                if (!crearLiquidacionesLogs.contains(filtrarLiquidacionesLogs.get(indice))) {
+
+                    if (filtrarLiquidacionesLogs.get(indice).getEmpleado().getPersona().getNombreCompleto() == null) {
+                        filtrarLiquidacionesLogs.get(indice).getEmpleado().getPersona().setNombreCompleto(backUpEmpleado);
+                    } else if (!filtrarLiquidacionesLogs.get(indice).getEmpleado().getPersona().getNombreCompleto().equals(backUpEmpleado) && backUpEmpleado != null) {
+                        filtrarLiquidacionesLogs.get(indice).getEmpleado().getPersona().setNombreCompleto(backUpEmpleado);
+                    }
+                    if (filtrarLiquidacionesLogs.get(indice).getOperando().getDescripcion() == null) {
+                        filtrarLiquidacionesLogs.get(indice).getOperando().setDescripcion(backUpOperando);
+                    } else if (!filtrarLiquidacionesLogs.get(indice).getOperando().getDescripcion().equals(backUpOperando) && backUpOperando != null) {
+                        filtrarLiquidacionesLogs.get(indice).getOperando().setDescripcion(backUpOperando);
+                    }
+                    if (filtrarLiquidacionesLogs.get(indice).getProceso().getDescripcion() == null) {
+                        filtrarLiquidacionesLogs.get(indice).getProceso().setDescripcion(backUpProceso);
+                    } else if (!filtrarLiquidacionesLogs.get(indice).getProceso().getDescripcion().equals(backUpProceso) && backUpProceso != null) {
+                        filtrarLiquidacionesLogs.get(indice).getProceso().setDescripcion(backUpProceso);
+                    }
+                    if (filtrarLiquidacionesLogs.get(indice).getValor() == null) {
+                        filtrarLiquidacionesLogs.get(indice).setValor(backUpValor);
+                    } else if (!filtrarLiquidacionesLogs.get(indice).getValor().equals(backUpValor) && backUpValor != null) {
+                        filtrarLiquidacionesLogs.get(indice).setValor(backUpValor);
+                    }
+                    index = -1;
+                    secRegistro = null;
+                }
+
+            }
+        }
+        context.update("form:datosLiquidacionesLogs");
     }
 
     public void asignarIndex(Integer indice, int LND, int dig) {
