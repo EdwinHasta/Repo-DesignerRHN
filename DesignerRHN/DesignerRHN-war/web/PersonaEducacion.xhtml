@@ -211,8 +211,7 @@
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['observaciones']}"  />
                                     </f:facet>
-                                </p:column>                                
-
+                                </p:column>
 
                             </p:dataTable>  
                         </fieldset> 
@@ -336,7 +335,7 @@
                                 </p:column> 
 
                                 <p:column headerText="#{msg['observaciones']}"  sortBy="#{vigenciasNoFormales.observacion}" filterBy="#{vigenciasNoFormales.observacion}" filterMatchMode="contains" id="pEObservacionesNF" width="133" filterStyle="display: none; visibility: hidden;" >                                  
-                                    <p:cellEditor>  
+                                    <p:cellEditor>
                                         <f:facet name="output"><h:outputText value="#{vigenciasNoFormales.observacion}" /></f:facet>  
                                         <f:facet name="input">
                                             <p:inputText value="#{vigenciasNoFormales.observacion}" id="editarObservacion" maxlength="50" style=" border-radius: 0px; width: 93.5%;text-transform: uppercase;height: 12px" > 
@@ -349,7 +348,7 @@
                                     <f:facet name="footer">
                                         <h:outputText value="#{msg['observaciones']}"  />
                                     </f:facet>
-                                </p:column>                                
+                                </p:column>                       
 
                             </p:dataTable>  
                         </fieldset>
