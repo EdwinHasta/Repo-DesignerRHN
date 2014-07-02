@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -46,7 +47,7 @@ public class ControlAusentismos implements Serializable {
     AdministrarSoausentismosInterface administrarAusentismos;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //LISTA FICTI PORCENTAJES
     private List<String> listaPorcentaje;
     private List<String> filtradosListaPorcentajes;
@@ -202,6 +203,7 @@ public class ControlAusentismos implements Serializable {
         nuevoAusentismo.setProrroga(new Soausentismos());
         nuevoAusentismo.setTercero(new Terceros());
     }
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -210,7 +212,7 @@ public class ControlAusentismos implements Serializable {
             administrarAusentismos.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
@@ -2358,12 +2360,18 @@ public class ControlAusentismos implements Serializable {
         }
     }
 
+    public void experimento(Date aux) {
+        System.out.println("experimento Valor experimento : " + aux);
+        System.out.println("experimento Nuevo Ausentismo Fecha Inicial: " + nuevoAusentismo.getFecha());
+    }
+
     //CREAR NOVEDADES
     public void agregarNuevoAusentismo() {
         int pasa = 0;
         mensajeValidacion = new String();
         RequestContext context = RequestContext.getCurrentInstance();
-
+        System.out.println("Nuevo Ausentismo Fecha Inicial: " + nuevoAusentismo.getFecha());
+        System.out.println("Nuevo Ausentismo Fecha Inicial: " + nuevoAusentismo.getFecha());
         if (nuevoAusentismo.getFecha() == null) {
             System.out.println("Entro a Fecha ");
             mensajeValidacion = mensajeValidacion + " * Fecha Inicio Ausentismo\n";
@@ -2376,18 +2384,18 @@ public class ControlAusentismos implements Serializable {
             pasa++;
         }
 
-        if (nuevoAusentismo.getCausa().getDescripcion().equals(" ")) {
+        if (nuevoAusentismo.getCausa().getDescripcion().equals("")) {
             System.out.println("Entro a Causa");
             mensajeValidacion = mensajeValidacion + " * Causa\n";
             pasa++;
         }
-        if (nuevoAusentismo.getClase().getDescripcion().equals(" ")) {
+        if (nuevoAusentismo.getClase().getDescripcion().equals("")) {
             System.out.println("Entro a Clase");
             mensajeValidacion = mensajeValidacion + " * Clase\n";
             pasa++;
         }
 
-        if (nuevoAusentismo.getFormaliquidacion().equals(" ")) {
+        if (nuevoAusentismo.getFormaliquidacion().equals("")) {
             System.out.println("Entro a Forma");
             mensajeValidacion = mensajeValidacion + " * Forma Liquidación\n";
             pasa++;

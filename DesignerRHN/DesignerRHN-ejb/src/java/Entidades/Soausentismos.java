@@ -261,7 +261,7 @@ public class Soausentismos implements Serializable {
 
     public String getFormaliquidacion() {
         if (formaliquidacion == null) {
-            formaliquidacion = (" ");
+            formaliquidacion = ("");
         }
         return formaliquidacion;
     }
@@ -293,7 +293,6 @@ public class Soausentismos implements Serializable {
         if (tipo == null) {
             tipo = new Tiposausentismos();
         }
-
         return tipo;
     }
 
