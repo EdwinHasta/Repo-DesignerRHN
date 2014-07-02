@@ -5,7 +5,6 @@
  */
 package Persistencia;
 
-import Entidades.Empresas;
 import InterfacePersistencia.PersistenciaErroresLiquidacionesInterface;
 import Entidades.ErroresLiquidacion;
 import java.math.BigInteger;
@@ -33,6 +32,24 @@ public class PersistenciaErroresLiquidaciones implements PersistenciaErroresLiqu
         } catch (Exception e) {
             System.out.println("\n ERROR EN PersistenciaErroresLiquidaciones consultarErroresLiquidacion ERROR : " + e);
             return null;
+        }
+    }
+
+    public void BorrarTotosErroresLiquidaciones(EntityManager em) {
+        em.clear();
+        EntityTransaction tx = em.getTransaction();
+        int i = -100;
+        try {
+            tx.begin();
+            String sqlQuery = "call ERRORESLIQUIDACION_pkg.BorrarErroresLiquidacion()";
+            Query query = em.createNativeQuery(sqlQuery);
+            i = query.executeUpdate();
+            tx.commit();
+        } catch (Exception e) {
+            System.out.println("Error PersistenciaCandados.liquidar. " + e);
+            if (tx.isActive()) {
+                tx.rollback();
+            }
         }
     }
 

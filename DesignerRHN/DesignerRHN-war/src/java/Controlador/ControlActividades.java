@@ -693,7 +693,7 @@ public class ControlActividades implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoActividades.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoActividades.getCodigo());
@@ -714,11 +714,11 @@ public class ControlActividades implements Serializable {
             }
         }
         if (nuevoActividades.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else if (nuevoActividades.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -829,7 +829,7 @@ public class ControlActividades implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarActividades.getDescripcion());
 
         if (duplicarActividades.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listActividades.size(); x++) {
@@ -847,11 +847,11 @@ public class ControlActividades implements Serializable {
             }
         }
         if (duplicarActividades.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else if (duplicarActividades.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripcion \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

@@ -659,7 +659,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevaSoCondicionAmbientalP.getCodigo() == null) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevaSoCondicionAmbientalP.getCodigo());
@@ -680,7 +680,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             }
         }
         if (nuevaSoCondicionAmbientalP.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener Un Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -781,7 +781,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarSoCondicionAmbientalP.getDescripcion());
 
         if (duplicarSoCondicionAmbientalP.getCodigo() == null || duplicarSoCondicionAmbientalP.getCodigo().equals(" ") || duplicarSoCondicionAmbientalP.getCodigo().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * Un Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -800,7 +800,7 @@ public class ControlSoCondicionesAmbientalesP implements Serializable {
             }
         }
         if (duplicarSoCondicionAmbientalP.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

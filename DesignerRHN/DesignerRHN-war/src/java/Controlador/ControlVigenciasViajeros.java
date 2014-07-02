@@ -90,6 +90,7 @@ public class ControlVigenciasViajeros implements Serializable {
         listaTiposviajeros = null;
         filtradoTiposviajeros = null;
         guardado = true;
+        aceptar = true;
         altoTabla = "270";
     }
 

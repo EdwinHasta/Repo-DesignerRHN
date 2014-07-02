@@ -708,17 +708,11 @@ public class ControlErroresLiquidacion implements Serializable {
     public void borrarTodosErroresLiquidacion() {
 
         RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage msg = new FacesMessage("Información", "Por favor Espere");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-        context.update("form:growl");
-        administrarErroresLiquidacion.borrarErroresLiquidaciones(listErroresLiquidacion);
+        administrarErroresLiquidacion.borrarTodosErroresLiquidacion();
         index = -1;
         secRegistro = null;
         guardado = true;
         borrarTodo = true;
-        registrosBorrados = listErroresLiquidacion.size();
-        context.update("form:mostrarBorrados");
-        context.execute("mostrarBorrados.show()");
         listErroresLiquidacion = null;
         getListErroresLiquidacion();
         context.update("form:ACEPTAR");

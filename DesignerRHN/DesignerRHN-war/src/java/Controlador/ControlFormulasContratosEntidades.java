@@ -90,6 +90,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         listaTiposEntidades = null;
         filtradoTiposEntidades = null;
         guardado = true;
+        aceptar= true;
         tamano = 270;
         secuenciaFormulasContratos = BigInteger.valueOf(10510720);
         //secuenciaFormulaSeleccionada = BigInteger.valueOf(4613967);

@@ -276,67 +276,67 @@
 
 
 
-                    <p:dialog id="nuevoRegistroDepartamentos" header="Nuevo Registro" widgetVar="nuevoRegistroDepartamentos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="320" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroDepartamentos" header="Nuevo Registro" widgetVar="nuevoRegistroDepartamentos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="330" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nuevo Departamento" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlDepartamentos.nuevoDepartamentos.codigo}" style=" width: 135px; position: absolute; left: 135px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" value="#{controlDepartamentos.nuevoDepartamentos.codigo}" style=" width: 140px; position: absolute; left: 135px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Nombre: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlDepartamentos.nuevoDepartamentos.nombre}" style=" width: 135px; position: absolute; left: 135px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlDepartamentos.nuevoDepartamentos.nombre}" style=" width: 140px; position: absolute; left: 135px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Nombre" />
 
                             <strong><h:outputText value="*Pais: "  style=" position: absolute; top: 120px;" /></strong>
-                            <p:inputText  id="nuevoPais" value="#{controlDepartamentos.nuevoDepartamentos.pais.nombre}" style=" width: 135px; position: absolute; left: 135px; top: 115px;text-transform: uppercase">
+                            <p:inputText  id="nuevoPais" value="#{controlDepartamentos.nuevoDepartamentos.pais.nombre}" style=" width: 140px; position: absolute; left: 135px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlDepartamentos.valoresBackupAutocompletar(1)}" />
                                 <p:ajax event="change" listener="#{controlDepartamentos.autocompletarNuevo('PAISES',controlDepartamentos.nuevoDepartamentos.pais.nombre, 1)}" />
                                 <p:ajax event="dblclick" listener="#{controlDepartamentos.asignarVariablePaises(0)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 280px; top: 115px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlDepartamentos.asignarVariablePaises(0)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 285px; top: 115px;  " id="btnnuevoNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlDepartamentos.asignarVariablePaises(0)}"/>   
                             <p:watermark for="nuevoPais" value="Pais" />
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 20px; top: 150px;"  actionListener="#{controlDepartamentos.limpiarNuevoDepartamentos()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 150px;" actionListener="#{controlDepartamentos.agregarNuevoDepartamentos()}" process="@this" />
-                            <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 150px;"  update="nuevaTipoempresa" onclick="nuevoRegistroDepartamentos.hide();"  actionListener="#{controlDepartamentos.limpiarNuevoDepartamentos()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 130px; top: 150px;" actionListener="#{controlDepartamentos.agregarNuevoDepartamentos()}" process="@this" />
+                            <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 220px; top: 150px;"  update="nuevaTipoempresa" onclick="nuevoRegistroDepartamentos.hide();"  actionListener="#{controlDepartamentos.limpiarNuevoDepartamentos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroDepartamentos" header="duplicar Registro" widgetVar="duplicarRegistroDepartamentos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="320" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroDepartamentos" header="duplicar Registro" widgetVar="duplicarRegistroDepartamentos" closable="false" resizable="false"  draggable="false" modal="true" height="180" width="330" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Departamento" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="código "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlDepartamentos.duplicarDepartamentos.codigo}" style=" width: 135px; position: absolute; left: 135px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="duplicarCodigo" value="#{controlDepartamentos.duplicarDepartamentos.codigo}" style=" width: 140px; position: absolute; left: 135px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="Descripcion"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlDepartamentos.duplicarDepartamentos.nombre}"  style=" width: 135px; position: absolute; left: 135px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" value="#{controlDepartamentos.duplicarDepartamentos.nombre}"  style=" width: 140px; position: absolute; left: 135px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
                             <strong><h:outputText value="Descripcion"  style=" position: absolute; top: 120px;" /></strong>
-                            <p:inputText id="duplicarPais" value="#{controlDepartamentos.duplicarDepartamentos.pais.nombre}"  style=" width: 135px; position: absolute; left: 135px; top: 115px;text-transform: uppercase">
+                            <p:inputText id="duplicarPais" value="#{controlDepartamentos.duplicarDepartamentos.pais.nombre}"  style=" width: 140px; position: absolute; left: 135px; top: 115px;text-transform: uppercase">
                                 <p:ajax event="click" listener="#{controlDepartamentos.valoresBackupAutocompletar(2)}" />
                                 <p:ajax event="change" listener="#{controlDepartamentos.autocompletarDuplicado('PAISES', controlDepartamentos.duplicarDepartamentos.pais.nombre , 2)}" />
                                 <p:ajax event="dblclick" listener="#{controlDepartamentos.asignarVariablePaises(1)}" />
                             </p:inputText>
-                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 280px; top: 115px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlDepartamentos.asignarVariablePaises(1)}"/>   
+                            <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 285px; top: 115px;  " id="btnduplicarNombreSucursal" icon="ui-icon-search" process="@this"  actionListener="#{controlDepartamentos.asignarVariablePaises(1)}"/>   
                             <p:watermark for="duplicarPais" value="Pais" />
 
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 20px; top: 150px;"  actionListener="#{controlDepartamentos.limpiarDuplicarDepartamentos() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 150px;" actionListener="#{controlDepartamentos.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 150px;"  update="duplicarTE" onclick="duplicarRegistroDepartamentos.hide();" actionListener="#{controlDepartamentos.limpiarDuplicarDepartamentos()}"  process="@this"/>
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 130px; top: 150px;" actionListener="#{controlDepartamentos.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 220px; top: 150px;"  update="duplicarTE" onclick="duplicarRegistroDepartamentos.hide();" actionListener="#{controlDepartamentos.limpiarDuplicarDepartamentos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

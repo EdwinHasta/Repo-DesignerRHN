@@ -89,6 +89,7 @@ public class ControlClasesAusentismos implements Serializable {
         listaTiposausentismos = null;
         filtradoTiposausentismos = null;
         guardado = true;
+        aceptar = true;
         tamano = 270;
     }
 

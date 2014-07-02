@@ -122,7 +122,7 @@
                                 <p:commandButton id="guardarRapido" disabled="true" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "  process="@this" />
                                 <p:tooltip style="" for="guardarRapido" value="Guardar" />
 
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLiquidacionesLogs.editarCelda()}"  process="@this"/>
+                                <p:commandButton id="editar" value="" disabled="true"  style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLiquidacionesLogs.editarCelda()}"  process="@this"/>
                                 <p:tooltip style="" for="editar" value="Editar" />
 
                                 <p:separator style="position: relative; top: -9px"/>
@@ -161,7 +161,7 @@
 
                                 <p:separator style="position: relative; top: -9px"/>
 
-                                <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLiquidacionesLogs.cancelarModificacion()}" process="@this"/>  
+                                <p:commandButton id="refrescar" value="" disabled="true"  style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLiquidacionesLogs.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="refrescar"/>
 
                                 <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlLiquidacionesLogs.salir()}"  process="@this"/>  

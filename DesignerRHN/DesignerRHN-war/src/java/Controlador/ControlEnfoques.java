@@ -230,9 +230,9 @@ public class ControlEnfoques implements Serializable {
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosEnfoque:codigo");
-            codigo.setFilterStyle("width: 370px");
+            codigo.setFilterStyle("width: 200px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosEnfoque:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            descripcion.setFilterStyle("width: 200px");
             RequestContext.getCurrentInstance().update("form:datosEnfoque");
             System.out.println("Activar");
             bandera = 1;

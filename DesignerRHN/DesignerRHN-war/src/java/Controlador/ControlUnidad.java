@@ -114,7 +114,8 @@ public class ControlUnidad implements Serializable {
         guardado = true;
         buscador = false;
         //     secuenciaPruebaConceptoEmpresa = new BigInteger("11197246");
-        secuenciaEmpleado = new BigInteger("11286362");
+        //secuenciaEmpleado = new BigInteger("11280578");
+        secuenciaEmpleado = null;
         secuenciaPruebaConceptoEmpresa = null;
     }
 

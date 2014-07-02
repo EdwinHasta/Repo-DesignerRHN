@@ -678,7 +678,7 @@ public class ControlClasesAccidentes implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevaClaseAccidente.getCodigo() == null) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevaClaseAccidente.getCodigo());
@@ -699,7 +699,7 @@ public class ControlClasesAccidentes implements Serializable {
             }
         }
         if (nuevaClaseAccidente.getNombre() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener un nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -800,7 +800,7 @@ public class ControlClasesAccidentes implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarClaseAccidente.getNombre());
 
         if (duplicarClaseAccidente.getCodigo() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -819,7 +819,7 @@ public class ControlClasesAccidentes implements Serializable {
             }
         }
         if (duplicarClaseAccidente.getNombre() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Nombre \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

@@ -22,4 +22,5 @@ public interface AdministrarErroresLiquidacionesInterface {
     public List<ErroresLiquidacion> consultarErroresLiquidacionEmpleado(BigInteger secEmpleado);
 
     public void borrarErroresLiquidaciones(List<ErroresLiquidacion> listaErroresLiquidacion);
+    public void borrarTodosErroresLiquidacion();
 }
