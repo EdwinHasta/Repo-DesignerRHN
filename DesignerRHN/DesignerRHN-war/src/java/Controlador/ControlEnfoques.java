@@ -99,6 +99,9 @@ public class ControlEnfoques implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEnfoques.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLENFOQUES eventoFiltrar ERROR===" + e.getMessage());
         }

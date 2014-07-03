@@ -214,48 +214,48 @@
 
 
 
-                    <p:dialog id="nuevoRegistroSectoresEvaluaciones" header="Nuevo Registro" widgetVar="nuevoRegistroSectoresEvaluaciones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="340" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroSectoresEvaluaciones" header="Nuevo Registro" widgetVar="nuevoRegistroSectoresEvaluaciones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Ingresar Nuevo Sector Evaluaciones" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlSectoresEvaluaciones.nuevoSectoresEvaluaciones.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" value="#{controlSectoresEvaluaciones.nuevoSectoresEvaluaciones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion: "  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlSectoresEvaluaciones.nuevoSectoresEvaluaciones.descripcion}" style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlSectoresEvaluaciones.nuevoSectoresEvaluaciones.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripcion" />
                             <p:commandButton icon="ui-icon-trash" id="limpiar" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlSectoresEvaluaciones.limpiarNuevoSectoresEvaluaciones()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="agregarTE" value="Agregar" style=" position: absolute; left: 130px; top: 120px;" actionListener="#{controlSectoresEvaluaciones.agregarNuevoSectoresEvaluaciones()}" process="@this" />
-                            <p:commandButton icon="ui-icon-circle-close" id="cancelarTE" value="Cancelar" style=" position: absolute; left: 220px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroSectoresEvaluaciones.hide();"  actionListener="#{controlSectoresEvaluaciones.limpiarNuevoSectoresEvaluaciones()}"  process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="agregarTE" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlSectoresEvaluaciones.agregarNuevoSectoresEvaluaciones()}" process="@this" />
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarTE" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroSectoresEvaluaciones.hide();"  actionListener="#{controlSectoresEvaluaciones.limpiarNuevoSectoresEvaluaciones()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroSectoresEvaluaciones" header="duplicar Registro" widgetVar="duplicarRegistroSectoresEvaluaciones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="340" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroSectoresEvaluaciones" header="duplicar Registro" widgetVar="duplicarRegistroSectoresEvaluaciones" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Sector Evaluacion" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
                             <strong><h:outputText value="*Código: "  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlSectoresEvaluaciones.duplicarSectoresEvaluaciones.codigo}" style=" width: 150px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="duplicarCodigo" value="#{controlSectoresEvaluaciones.duplicarSectoresEvaluaciones.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripcion:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlSectoresEvaluaciones.duplicarSectoresEvaluaciones.descripcion}"  style=" width: 150px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" value="#{controlSectoresEvaluaciones.duplicarSectoresEvaluaciones.descripcion}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
                             <p:commandButton icon="ui-icon-trash" id="limpiarD" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlSectoresEvaluaciones.limpiarDuplicarSectoresEvaluaciones() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton icon="ui-icon-circle-check" id="duplicarVFP" value="Agregar" style=" position: absolute; left: 130px; top: 120px;" actionListener="#{controlSectoresEvaluaciones.confirmarDuplicar()}"  process="@this" />
-                            <p:commandButton icon="ui-icon-circle-close" id="cancelarDuplicarVFP" value="Cancelar" style=" position: absolute; left: 220px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroSectoresEvaluaciones.hide();" actionListener="#{controlSectoresEvaluaciones.limpiarDuplicarSectoresEvaluaciones()}"  process="@this"/>
+                            <p:commandButton icon="ui-icon-circle-check" id="duplicarVFP" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlSectoresEvaluaciones.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton icon="ui-icon-circle-close" id="cancelarDuplicarVFP" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroSectoresEvaluaciones.hide();" actionListener="#{controlSectoresEvaluaciones.limpiarDuplicarSectoresEvaluaciones()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
                 </h:form>

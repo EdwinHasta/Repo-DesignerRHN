@@ -91,7 +91,9 @@ public class ControlTiposDocumentos implements Serializable {
             System.out.println("\n ENTRE A ControlTiposDocumentos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }  RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposDocumentos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposDocumentos eventoFiltrar ERROR===" + e.getMessage());
         }

@@ -220,7 +220,9 @@ public class ControlBetaEmplVigenciaNormaLaboral implements Serializable {
         try {
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            } RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEmplVigenciaNormaLaboralPorEmplado.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLBETAEMPLVIGENCIANORMALABORAL eventoFiltrar ERROR===" + e.getMessage());
         }

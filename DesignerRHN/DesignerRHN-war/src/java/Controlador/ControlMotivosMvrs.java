@@ -76,7 +76,7 @@ public class ControlMotivosMvrs implements Serializable {
         nuevoMotivoMvr = new Motivosmvrs();
         duplicarMotivosMvrs = new Motivosmvrs();
         tamano = 270;
-        guardado=true;
+        guardado = true;
     }
 
     @PostConstruct
@@ -98,6 +98,9 @@ public class ControlMotivosMvrs implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarMotivosMvrs.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlNormasLaborales eventoFiltrar ERROR===" + e.getMessage());
         }

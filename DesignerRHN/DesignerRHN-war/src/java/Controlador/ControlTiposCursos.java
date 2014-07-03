@@ -98,7 +98,9 @@ public class ControlTiposCursos implements Serializable {
             System.out.println("\n ENTRE A ControlTiposCursos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }  RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposCursos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposCursos eventoFiltrar ERROR===" + e.getMessage());
         }

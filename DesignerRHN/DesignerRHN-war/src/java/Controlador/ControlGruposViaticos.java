@@ -98,6 +98,9 @@ public class ControlGruposViaticos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarGruposViaticos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlGruposViaticos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -188,6 +191,7 @@ public class ControlGruposViaticos implements Serializable {
         context.update("form:datosGruposViaticos");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {

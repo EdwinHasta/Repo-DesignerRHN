@@ -133,6 +133,9 @@ public class ControlEmpresasBancos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEmpresasBancos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlEmpresasBancos eventoFiltrar ERROR===" + e.getMessage());
         }

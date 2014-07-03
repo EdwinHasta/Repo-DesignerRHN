@@ -99,6 +99,9 @@ public class ControlTiposAusentismos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposAusentismos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposAusentismos eventoFiltrar ERROR===" + e.getMessage());
         }

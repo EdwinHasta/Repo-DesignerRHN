@@ -96,6 +96,9 @@ public class ControlEvalEvaluadores implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEvalEvaluadores.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlEvalEvaluadores eventoFiltrar ERROR===" + e.getMessage());
         }

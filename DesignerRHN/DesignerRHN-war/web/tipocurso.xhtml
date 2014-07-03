@@ -218,32 +218,32 @@
 
 
 
-                    <p:dialog id="nuevoRegistroTiposCursos" header="Nuevo Registro" widgetVar="nuevoRegistroTiposCursos" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroTiposCursos" header="Nuevo Registro" widgetVar="nuevoRegistroTiposCursos" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nuevo Tipo Curso" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
 
-                            <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
+                            <strong><h:outputText value="*Código: "  style="position: absolute; top: 60px;" /></strong>
                             <p:inputText id="nuevoCodigo" value="#{controlTiposCursos.nuevoTiposCursos.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
-                            <strong><h:outputText value="*Descripción: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
+                            <strong><h:outputText value="*Descripción: "  style="position: absolute; top: 90px;" /></strong>
                             <p:inputText  id="nuevoNombre" value="#{controlTiposCursos.nuevoTiposCursos.descripcion}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripcion" />
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposCursos.limpiarNuevoTiposCursos()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlTiposCursos.agregarNuevoTiposCursos()}" process="@this" />
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlTiposCursos.agregarNuevoTiposCursos()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroTiposCursos.hide();"  actionListener="#{controlTiposCursos.limpiarNuevoTiposCursos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroTiposCursos" header="duplicar Registro" widgetVar="duplicarRegistroTiposCursos" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroTiposCursos" header="duplicar Registro" widgetVar="duplicarRegistroTiposCursos" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Tipo Curso" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">

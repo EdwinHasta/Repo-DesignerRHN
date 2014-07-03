@@ -98,6 +98,9 @@ public class ControlClasesAccidentes implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarClasesAccidentes.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
         }

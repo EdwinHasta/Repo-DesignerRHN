@@ -97,6 +97,9 @@ public class ControlEvalActividades implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEvalActividades.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlEvalActividades eventoFiltrar ERROR===" + e.getMessage());
         }

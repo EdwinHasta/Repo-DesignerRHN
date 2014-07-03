@@ -98,7 +98,9 @@ public class ControlClasesPensiones implements Serializable {
             System.out.println("\n ENTRE A ControlClasesPensiones.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }  RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarClasesPensiones.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlClasesPensiones eventoFiltrar ERROR===" + e.getMessage());
         }

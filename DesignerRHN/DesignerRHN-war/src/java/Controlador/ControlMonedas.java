@@ -98,6 +98,9 @@ public class ControlMonedas implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarMonedas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlMonedas eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -432,7 +435,7 @@ public class ControlMonedas implements Serializable {
                         pass++;
                     }
 
-                    if (pass==2) {
+                    if (pass == 2) {
 
                         if (guardado == true) {
                             guardado = false;

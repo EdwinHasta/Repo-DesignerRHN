@@ -97,6 +97,9 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSoCondicionesTrabajos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlSoCondicionesTrabajos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -153,7 +156,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
@@ -188,7 +192,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
     }
 
     public void salir() {
-        if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 1) {
+            FacesContext c = FacesContext.getCurrentInstance();
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
             codigo.setFilterStyle("display: none; visibility: hidden;");
@@ -221,7 +226,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
@@ -672,7 +678,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             nuevoSoCondicionesTrabajos.setEfectocronico(" ");
             nuevoSoCondicionesTrabajos.setObservacion(" ");
             nuevoSoCondicionesTrabajos.setRecomendacion(" ");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
@@ -806,7 +813,8 @@ public class ControlSoCondicionesTrabajos implements Serializable {
             infoRegistro = "Cantidad de registros: " + listSoCondicionesTrabajos.size();
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosSoCondicionesTrabajos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");

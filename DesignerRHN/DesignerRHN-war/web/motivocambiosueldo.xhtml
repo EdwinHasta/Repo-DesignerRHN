@@ -173,14 +173,14 @@
                     <p:dialog id="confirmarRastro" header="ATENCIÓN" widgetVar="confirmarRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla 'MOTIVOSCAMBIOSSUELDOS' tiene rastros para el registro seleccionado, ¿desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlMotivosCambiosSueldos.secRegistro, 'MotivosCambiosSueldos', 'motivoscambiossueldos')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlMotivosCambiosSueldos.secRegistro, 'MotivosCambiosSueldos', 'motivocambiosueldo')}" style="position: absolute; top: 63px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastro.hide();" style="position: absolute; top: 63px; left: 270px" process="@this" />
                     </p:dialog>
 
                     <p:dialog id="confirmarRastroHistorico" header="ATENCIÓN" widgetVar="confirmarRastroHistorico"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla MOTIVOSCAMBIOSSUELDOS tiene rastros historicos, ¿Desea continuar?" style="position: absolute; left: 70px; top: 15px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('MotivosCambiosSueldos', 'motivoscambiossueldos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="confirmarRastroHistorico.hide();" actionListener="#{controlRastro.historicosTabla('MotivosCambiosSueldos', 'motivocambiosueldo')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="confirmarRastroHistorico.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -197,7 +197,7 @@
                     <p:dialog id="errorTablaConRastro" header="ATENCIÓN" widgetVar="errorTablaConRastro"  resizable="false" draggable="false" modal="true" height="95" width="350px" style="" closable="false">  
                         <h:graphicImage value="Imagenes/informacion.png" width="50" height="50" style="position: absolute; left: 10px; top: 10px;"  />
                         <h:outputText value="La tabla no existe en RASTROSTABLAS, pero tiene registros asociados, ¿Desea continuar?" style="position: absolute; left: 70px; top: 20px; width: 250px; font-weight:bold; text-align: center" />
-                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlMotivosCambiosSueldos.secRegistro, 'MotivosCambiosSueldos', 'motivoscambiossueldos')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
+                        <p:commandButton value="Si" onclick="errorTablaConRastro.hide();" actionListener="#{controlRastro.recibirDatosTabla(controlMotivosCambiosSueldos.secRegistro, 'MotivosCambiosSueldos', 'motivocambiosueldo')}" style="position: absolute; top: 60px; left: 230px" action="rastro" process="@this" />
                         <p:commandButton value="No" onclick="errorTablaConRastro.hide();" style="position: absolute; top: 60px; left: 270px" process="@this" />
                     </p:dialog>
 
@@ -232,13 +232,13 @@
                         <p:panel id="nuevoMotivoCambioSueldo" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlMotivosCambiosSueldos.nuevoMotivoCambioSueldo.codigo}" style="text-transform: uppercase ; width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <p:inputText id="nuevoCodigo" value="#{controlMotivosCambiosSueldos.nuevoMotivoCambioSueldo.codigo}" style="text-transform: uppercase ; width: 140px; position: absolute; left: 150px; top: 55px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style="left: 10px; position: absolute; top: 90px" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlMotivosCambiosSueldos.nuevoMotivoCambioSueldo.nombre}" style="text-transform: uppercase ; width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlMotivosCambiosSueldos.nuevoMotivoCambioSueldo.nombre}" style="text-transform: uppercase ; width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
@@ -246,14 +246,14 @@
 
 
                             <strong><h:outputText value="Sueldo Promedio: "  style="left: 10px; position: absolute; top: 120px" /></strong>
-                            <p:selectBooleanCheckbox id="nuevoSueldo" value="#{controlMotivosCambiosSueldos.nuevoMotivoCambioSueldo.estadoSueldoPromedio}" style="text-transform: uppercase ; width: 135px; position: absolute; left: 150px; top: 120px;">  
+                            <p:selectBooleanCheckbox id="nuevoSueldo" value="#{controlMotivosCambiosSueldos.nuevoMotivoCambioSueldo.estadoSueldoPromedio}" style="text-transform: uppercase ; width: 140px; position: absolute; left: 150px; top: 120px;">  
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 
 
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 150px;"  actionListener="#{controlMotivosCambiosSueldos.limpiarNuevoMotivoCambioSueldo()}" update="nuevoMotivoCambioSueldo" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 150px;" actionListener="#{controlMotivosCambiosSueldos.agregarNuevoMotivoCambioSueldo()}" process="@this" />
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 115px; top: 150px;" actionListener="#{controlMotivosCambiosSueldos.agregarNuevoMotivoCambioSueldo()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 205px; top: 150px;"  update="nuevoMotivoCambioSueldo" onclick="nuevoRegistroMotivoCambiosSueldos.hide();"  actionListener="#{controlMotivosCambiosSueldos.limpiarNuevoMotivoCambioSueldo()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
@@ -262,20 +262,20 @@
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Motivo Cambio Sueldo" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarMotivosCambiosSueldos" style="border: none;">
-                            <strong><h:outputText value="código "  style="left: 10px; position: absolute; top: 60px;text-transform: uppercase" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlMotivosCambiosSueldos.duplicarMotivoCambioSueldo.codigo}" style="text-transform: uppercase ;width: 135px; position: absolute; left: 150px; top: 55px;">
+                            <strong><h:outputText value="*Codigo "  style="left: 10px; position: absolute; top: 60px" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlMotivosCambiosSueldos.duplicarMotivoCambioSueldo.codigo}" style="text-transform: uppercase ;width: 140px; position: absolute; left: 150px; top: 55px;">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción:"  style="left: 10px; position: absolute; top: 90px" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlMotivosCambiosSueldos.duplicarMotivoCambioSueldo.nombre}"  style="text-transform: uppercase ; width: 135px; position: absolute; left: 150px; top: 85px;" >
+                            <p:inputText id="duplicarNombre" value="#{controlMotivosCambiosSueldos.duplicarMotivoCambioSueldo.nombre}"  style="text-transform: uppercase ; width: 140px; position: absolute; left: 150px; top: 85px;" >
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />
 
                             <strong><h:outputText value="Sueldo Promedio: "  style="left: 10px; position: absolute; top: 120px;text-transform: uppercase" /></strong>
-                            <p:selectBooleanCheckbox id="diplicarSueldo" value="#{controlMotivosCambiosSueldos.duplicarMotivoCambioSueldo.estadoSueldoPromedio}" style=" width: 135px; position: absolute; left: 150px; top: 120px;">  
+                            <p:selectBooleanCheckbox id="diplicarSueldo" value="#{controlMotivosCambiosSueldos.duplicarMotivoCambioSueldo.estadoSueldoPromedio}" style=" width: 140px; position: absolute; left: 150px; top: 120px;">  
                                 <p:ajax update="@this"/>
                             </p:selectBooleanCheckbox>
 

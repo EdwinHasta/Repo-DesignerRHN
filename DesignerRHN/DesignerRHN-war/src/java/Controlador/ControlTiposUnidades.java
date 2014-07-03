@@ -93,7 +93,7 @@ public class ControlTiposUnidades implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void recibirPaginaEntrante(String pagina) {
         paginaAnterior = pagina;
     }
@@ -108,6 +108,9 @@ public class ControlTiposUnidades implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposUnidades.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposUnidades eventoFiltrar ERROR===" + e.getMessage());
         }

@@ -214,7 +214,7 @@
 
 
 
-                    <p:dialog id="nuevoRegistroPartesCuerpo" header="Nuevo Registro" widgetVar="nuevoRegistroPartesCuerpo" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroPartesCuerpo" header="Nuevo Registro" widgetVar="nuevoRegistroPartesCuerpo" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nuevo Parte Cuerpo" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
@@ -232,14 +232,14 @@
                             <p:watermark for="nuevoNombre" value="Descripcion" />
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlPartesCuerpo.limpiarNuevoPartesCuerpo()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlPartesCuerpo.agregarNuevoPartesCuerpo()}" process="@this" />
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlPartesCuerpo.agregarNuevoPartesCuerpo()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroPartesCuerpo.hide();"  actionListener="#{controlPartesCuerpo.limpiarNuevoPartesCuerpo()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroPartesCuerpo" header="duplicar Registro" widgetVar="duplicarRegistroPartesCuerpo" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroPartesCuerpo" header="duplicar Registro" widgetVar="duplicarRegistroPartesCuerpo" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Parte Cuerpo" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
@@ -255,7 +255,7 @@
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripcion" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlPartesCuerpo.limpiarDuplicarPartesCuerpo() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlPartesCuerpo.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlPartesCuerpo.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroPartesCuerpo.hide();" actionListener="#{controlPartesCuerpo.limpiarDuplicarPartesCuerpo()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>

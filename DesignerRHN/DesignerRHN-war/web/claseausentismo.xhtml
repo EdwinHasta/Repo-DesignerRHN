@@ -19,9 +19,12 @@
 
                             <p:dataTable id="datosClasesAusentismos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlClasesAusentismos.listClasesAusentismos}" scrollHeight="#{controlClasesAusentismos.tamano}"
-                                         filteredValue="#{controlClasesAusentismos.filtrarClasesAusentismos}" emptyMessage="#{msg['lovvacio']}"
-                                         selection="#{controlClasesAusentismos.clasesAusentismoSeleccionado}" selectionMode="single"
-                                         editable="true" editMode="cell" scrollable="true" liveScroll="true" scrollRows="50"  scrollWidth="830"
+                                         filteredValue="#{controlClasesAusentismos.filtrarClasesAusentismos}" 
+                                         emptyMessage="#{msg['lovvacio']}"
+                                         selection="#{controlClasesAusentismos.clasesAusentismoSeleccionado}"
+                                         selectionMode="single"
+                                         editable="true" editMode="cell" scrollable="true" liveScroll="true"
+                                         scrollRows="50"  scrollWidth="830"
                                          >
                                 <p:ajax event="filter" listener="#{controlClasesAusentismos.eventoFiltrar()}"/>
 

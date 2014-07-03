@@ -121,7 +121,9 @@ public class ControlPapeles implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
-
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarPapeles.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLPAPELES eventoFiltrar ERROR===" + e.getMessage());
         }

@@ -95,6 +95,9 @@ public class ControlClasesCategorias implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarClasesCategorias.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlClasesCategorias eventoFiltrar ERROR===" + e.getMessage());
         }

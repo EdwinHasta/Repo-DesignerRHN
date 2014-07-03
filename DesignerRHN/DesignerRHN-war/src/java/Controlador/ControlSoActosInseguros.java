@@ -99,6 +99,9 @@ public class ControlSoActosInseguros implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSoActosInseguros.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
         }
@@ -217,7 +220,7 @@ public class ControlSoActosInseguros implements Serializable {
         RequestContext.getCurrentInstance().update("form:ACEPTAR");
         context.update("form:datosSoCondicionesAmbientalesP");
     }
-    
+
     public void activarCtrlF11() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {

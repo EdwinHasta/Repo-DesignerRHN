@@ -98,6 +98,9 @@ public class ControlSoPoblacionObjetivos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSoPoblacionObjetivos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlSoPoblacionObjetivos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -173,7 +176,8 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         }
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
@@ -207,7 +211,8 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
@@ -240,7 +245,8 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
@@ -725,7 +731,8 @@ public class ControlSoPoblacionObjetivos implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
@@ -879,7 +886,8 @@ public class ControlSoPoblacionObjetivos implements Serializable {
 
             context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosSoPoblacionObjetivos:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");

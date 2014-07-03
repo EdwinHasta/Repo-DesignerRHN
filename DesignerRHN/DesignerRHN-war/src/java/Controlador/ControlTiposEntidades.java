@@ -102,7 +102,9 @@ public class ControlTiposEntidades implements Serializable {
             System.out.println("\n ENTRE A ControlTiposEntidades.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }  RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposEntidades.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposEntidades eventoFiltrar ERROR===" + e.getMessage());
         }
