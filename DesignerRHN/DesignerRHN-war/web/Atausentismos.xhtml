@@ -563,8 +563,8 @@
                             <strong><h:outputText value="#{msg['iausencia']}" style=" position: absolute; top: 285px" /></strong>
                             <div id="posicionFechaInicialNuevoReg" style=" position: absolute; top: 280px; left: 200px">
                                 <lnk:calendar id="nuevaFecha" value="#{controlAusentismos.nuevoAusentismo.fecha}" >
-                                    <p:ajax event="dateSelect"  update="@nuevaFecha" process="@this"/>
-                                    <p:ajax event="change" update="@nuevaFecha" process="@this"/>
+                                    <p:ajax event="dateSelect"  update="nuevaFecha" process="@this"/>
+                                    <p:ajax event="change" update="nuevaFecha" process="@this"/>
                                 </lnk:calendar>
                             </div>
 

@@ -79,6 +79,7 @@ public class ControlErroresLiquidacion implements Serializable {
         guardado = true;
         aceptar = true;
         tamano = 270;
+        secuenciaEmpleado = null;
         System.out.println("controlErroresLiquidacion Constructor");
     }
 

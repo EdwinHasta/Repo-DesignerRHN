@@ -16,7 +16,7 @@
                     <f:loadBundle basename="Recursos.nreportebienestar" var="msg" />
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 12px; position: absolute; width: 874px; height: 530px; text-align: left" >  
 
-                        <p:commandButton style="position: absolute; left: 785px; top: 480px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="nomina" actionListener="#{controlNReporteBienestar.salir()}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 785px; top: 480px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="atrasReporteBienestar" actionListener="#{controlNReporteBienestar.salir()}" process="@this" />
                         <p:commandButton style="position: absolute; left: 690px; top: 480px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteBienestar.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteBienestar.cambiosReporte}" process="@this" />
                         
                         <p:commandButton style="position: absolute; left: 10px; top: 480px; " id="ENVIOCORREO" value="#{msg['envio']}" process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteBienestar.defaultPropiedadesParametrosReporte()}"/>
@@ -24,8 +24,8 @@
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="95" width="400px" style="font-size: 12px" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="70" height="50" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 100px; top: 20px; width: 300px;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" action="nomina" actionListener="#{controlNReporteBienestar.guardarYSalir()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
-                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" action="nomina" actionListener="#{controlNReporteBienestar.cancelarYSalir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
+                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" action="atrasReporteBienestar" actionListener="#{controlNReporteBienestar.guardarYSalir()}" style="position: absolute; top: 60px; left: 215px" process="@this" />
+                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" action="atrasReporteBienestar" actionListener="#{controlNReporteBienestar.cancelarYSalir()}" style="position: absolute; top: 60px; left: 255px" process="@this" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 60px; left: 300px" process="@this" />
                         </p:dialog>
 
@@ -128,7 +128,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReporteBienestar.cancelarModificaciones()}"   process="@this"/>  
                                 <p:tooltip  for="refrescar" value="#{msg['refrescar']}"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReporteBienestar.salir()}" action="nomina"  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlNReporteBienestar.salir()}" action="atrasReporteBienestar"  process="@this"/>  
                                 <p:tooltip  for="salir" value="#{msg['salir']}"/>
                                 
 

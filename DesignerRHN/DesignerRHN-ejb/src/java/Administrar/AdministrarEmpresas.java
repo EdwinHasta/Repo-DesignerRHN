@@ -95,6 +95,16 @@ public class AdministrarEmpresas implements AdministrarEmpresasInterface {
             return null;
         }
     }
+    
+    public Empresas consultarEmpresaSecuencia(BigInteger secEmpresa) {
+        try {
+            Empresas lista = persistenciaEmpresas.buscarEmpresasSecuencia(em, secEmpresa);
+            return lista;
+        } catch (Exception e) {
+            System.err.println("Error AdministrarEmpresas consultarEmpresaSecuencia : " + e.toString());
+            return null;
+        }
+    }
 
     @Override
     public List<Empresas> listasEmpresasPorSecuenciaEmpresa(BigInteger secuencia) {

@@ -18,7 +18,7 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style=" font-size: 13px; position: absolute; width: 874px; height: 550px;  text-align: left" >  
 
                         <p:commandButton style="position: absolute; left: 20px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DETALLES" value="#{msg['detalle']}"  actionListener="#{controlDetalleEmpresa.inicializarPagina(controlEmpresa.secRegistro, 'empresa')}" action="detalle" process="@this" />
-                        <p:commandButton style="position: absolute; left: 150px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="EMPRESABANCO" value="#{msg['empresaBanco']}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 150px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" action="empresabanco" id="EMPRESABANCO" value="#{msg['empresaBanco']}" process="@this" />
                         <p:commandButton style="position: absolute; left: 285px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="DIRECCIONES" value="#{msg['direccion']}"  disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" />
                         <p:separator style="position: absolute; top: 520px; width: 3px; height: 23px; left: 420px"/>
                         <p:commandButton style="position: absolute; left: 430px; top: 525px; font-size: 11px; font-family: Arial, Helvetica, sans-serif;" id="REFRESCAR" value="#{msg['refrescar']}" icon="ui-icon-refresh" actionListener="#{controlEmpresa.cancelarModificacionGeneral()}"  process="@this" />

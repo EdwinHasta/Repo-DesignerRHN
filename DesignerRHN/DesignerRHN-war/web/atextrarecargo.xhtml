@@ -79,7 +79,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="color: blue; height: 16px; border: none;width: 100%" value="#{msg['tipodia']}" id="fooTipoDiaExtra"/>
+                                        <p:commandButton style="color: blue; height: 16px; border: none;width: 100%" value="#{msg['tipodia']}" action="adelanteAtExtraRecargoTipoDia" actionListener="#{controlTiposDias.recibirAtras('atrasAtExtraRecargoTipoDia')}" id="fooTipoDiaExtra"/>
                                     </f:facet>
                                 </p:column>
 

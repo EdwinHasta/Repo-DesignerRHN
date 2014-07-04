@@ -88,6 +88,16 @@ public class ControlClasesCategorias implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
+    private String paginaAnterior;
+
+    public void recibirAtras(String atras) {
+        paginaAnterior = atras;
+        System.out.println("ControlClasesCategorias pagina anterior : " + paginaAnterior);
+    }
+
+    public String redireccionarAtras() {
+        return paginaAnterior;
+    }
 
     public void eventoFiltrar() {
         try {

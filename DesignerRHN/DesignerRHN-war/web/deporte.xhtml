@@ -104,7 +104,7 @@
                                 <p:commandButton id="refrescar" value="" style="background-image: url(Imagenes/refrescar.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeportes.cancelarModificacion()}" process="@this"/>  
                                 <p:tooltip  for="refrescar" value="refrescar"/>
 
-                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeportes.salir()}"  process="@this"/>  
+                                <p:commandButton id="salir" value="" style="background-image: url(Imagenes/salir.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px " actionListener="#{controlDeportes.salir()}" action="atrasdeporte"  process="@this"/>  
                                 <p:tooltip  for="salir" value="Salir"/>
 
                             </p:toolbarGroup>  
@@ -112,13 +112,13 @@
 
                         <h:outputText id="informacionRegistro" value="#{controlDeportes.infoRegistro}" style="position: absolute; left: 15px; top: 475px; font-weight: bold"/>
                         <p:commandButton style=" position: absolute; left: 688px; top: 470px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}" disabled="#{controlDeportes.guardado}" onclick="confirmarGuardar.show();"   update="datosDeporte"  process="@this"   />
-                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" id="ATRAS" value="#{msg['atras']}"    />
+                        <p:commandButton style=" position: absolute; left: 785px; top: 470px; " icon="ui-icon-closethick" action="atrasdeporte" id="ATRAS" value="#{msg['atras']}"    />
 
                         <p:dialog id="confirmarGuardar" header="#{msg['atencion']}" widgetVar="confirmarGuardar"  resizable="false" draggable="false" modal="true" height="85" width="425" closable="false">  
                             <h:graphicImage value="Imagenes/alerta.jpg" width="75" height="60" style="position: absolute; left: 30px; top: 10px;"  />
                             <h:outputText value="#{msg['cambiosRealizados']}" style="position: absolute; left: 120px; top: 20px; width: 250px; font-weight:bold;" />
-                            <p:commandButton value="#{msg['si']}" onclick="confirmarGuardar.hide();" actionListener="#{controlDeportes.guardarDeportes()}" action="normalaboralNominaF" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
-                            <p:commandButton value="#{msg['no']}" onclick="confirmarGuardar.hide();" actionListener="#{controlDeportes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
+                            <p:commandButton value="#{msg['si']}" action="atrasdeporte" onclick="confirmarGuardar.hide();" actionListener="#{controlDeportes.guardarDeportes()}" style="position: absolute; top: 50px; left: 207px" process="@this" icon="ui-icon-check" />
+                            <p:commandButton value="#{msg['no']}" action="atrasdeporte" onclick="confirmarGuardar.hide();" actionListener="#{controlDeportes.cancelarModificacion()}" style="position: absolute; top: 50px; left: 258px" process="@this" icon="ui-icon-close" />
                             <p:commandButton value="#{msg['cancelar']}" onclick="confirmarGuardar.hide();" style="position: absolute; top: 50px; left: 315px" process="@this" icon="ui-icon-arrowreturnthick-1-w" />
                         </p:dialog>
 

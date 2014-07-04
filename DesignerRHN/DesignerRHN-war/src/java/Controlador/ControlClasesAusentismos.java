@@ -74,6 +74,7 @@ public class ControlClasesAusentismos implements Serializable {
     private String nuevoYduplicarCompletarPersona;
     //--------------------------------------
     private String backupTipo;
+    private String paginaAnterior;
 
     public ControlClasesAusentismos() {
         listClasesAusentismos = null;
@@ -104,6 +105,15 @@ public class ControlClasesAusentismos implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+
+    public void recibirAtras(String atras) {
+        paginaAnterior = atras;
+        System.out.println("ControlClasesAusentismos pagina anterior : " + paginaAnterior);
+    }
+
+    public String redireccionarAtras() {
+        return paginaAnterior;
     }
 
     public void eventoFiltrar() {
