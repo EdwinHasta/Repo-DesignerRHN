@@ -37,14 +37,15 @@ public class ControlEscalafonSalarial implements Serializable {
     AdministrarEscalafonesSalarialesInterface administrarEscalafonesSalariales;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     //
     private List<EscalafonesSalariales> listaEscalafonesSalariales;
     private List<EscalafonesSalariales> filtrarListaEscalafonesSalariales;
+    private EscalafonesSalariales escalafonTablaSeleccionado;
     ///////
     private List<GruposSalariales> listaGruposSalariales;
     private List<GruposSalariales> filtrarListaGruposSalariales;
+    private GruposSalariales grupoTablaSeleccionado;
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaGS;
     //Columnas Tabla VC
@@ -96,8 +97,13 @@ public class ControlEscalafonSalarial implements Serializable {
     private String altoTablaEscalafon, altoTablaGrupo;
     //
     private boolean cambiosPagina;
+    //
+    private String infoRegistroTipoTrabajador;
+    //
+    private boolean disabledNuevoGrupoSalarial;
 
     public ControlEscalafonSalarial() {
+        disabledNuevoGrupoSalarial = true;
         cambiosPagina = true;
         altoTablaEscalafon = "170";
         altoTablaGrupo = "120";
@@ -127,6 +133,7 @@ public class ControlEscalafonSalarial implements Serializable {
         editarEscalafonSalarial = new EscalafonesSalariales();
         editarGrupoSalarial = new GruposSalariales();
         cualCelda = -1;
+        index = -1;
         cualCeldaGS = -1;
         tipoListaGS = 0;
         tipoLista = 0;
@@ -143,7 +150,7 @@ public class ControlEscalafonSalarial implements Serializable {
         secRegistroGS = null;
         backUpSecRegistroGS = null;
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -167,25 +174,51 @@ public class ControlEscalafonSalarial implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListaEscalafonesSalariales.get(index);
             }
-            if (aux.getDescripcion().isEmpty() || aux.getCodigo() == null) {
+            if (aux.getCodigo() == null) {
+                retorno = false;
+            }
+            if (aux.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (aux.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (aux.getTipotrabajador().getSecuencia() == null) {
                 retorno = false;
             }
         }
         if (i == 1) {
-            if (nuevoEscalafonSalarial.getDescripcion().isEmpty() || nuevoEscalafonSalarial.getCodigo() == null) {
+            if (nuevoEscalafonSalarial.getCodigo() == null) {
+                retorno = false;
+            }
+            if (nuevoEscalafonSalarial.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (nuevoEscalafonSalarial.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevoEscalafonSalarial.getTipotrabajador().getSecuencia() == null) {
                 retorno = false;
             }
         }
         if (i == 2) {
-            if (duplicarEscalafonSalarial.getDescripcion().isEmpty() || duplicarEscalafonSalarial.getCodigo() == null) {
+            if (duplicarEscalafonSalarial.getCodigo() == null) {
+                retorno = false;
+            }
+            if (duplicarEscalafonSalarial.getDescripcion() == null) {
+                retorno = false;
+            } else {
+                if (duplicarEscalafonSalarial.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarEscalafonSalarial.getTipotrabajador().getSecuencia() == null) {
                 retorno = false;
             }
         }
         return retorno;
-    }
-    
-    public void ajaja(){
-        System.out.println("enter here |");
     }
 
     public boolean validarCamposNulosGrupoSalarial(int i) {
@@ -198,18 +231,51 @@ public class ControlEscalafonSalarial implements Serializable {
             if (tipoListaGS == 1) {
                 aux = filtrarListaGruposSalariales.get(indexGS);
             }
-            if (aux.getDescripcion().isEmpty() || aux.getSalario() == null) {
+            if (aux.getDescripcion() == null) {
                 retorno = false;
+            } else {
+                if (aux.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (aux.getSalario() == null) {
+                retorno = false;
+            } else {
+                if (aux.getSalario().doubleValue() <= 0) {
+                    retorno = false;
+                }
             }
         }
         if (i == 1) {
-            if (nuevoGrupoSalarial.getDescripcion().isEmpty() || nuevoGrupoSalarial.getSalario() == null) {
+            if (nuevoGrupoSalarial.getDescripcion() == null) {
                 retorno = false;
+            } else {
+                if (nuevoGrupoSalarial.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevoGrupoSalarial.getSalario() == null) {
+                retorno = false;
+            } else {
+                if (nuevoGrupoSalarial.getSalario().doubleValue() <= 0) {
+                    retorno = false;
+                }
             }
         }
         if (i == 2) {
-            if (duplicarGrupoSalarial.getDescripcion().isEmpty() || duplicarGrupoSalarial.getSalario() == null) {
+            if (duplicarGrupoSalarial.getDescripcion() == null) {
                 retorno = false;
+            } else {
+                if (duplicarGrupoSalarial.getDescripcion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarGrupoSalarial.getSalario() == null) {
+                retorno = false;
+            } else {
+                if (duplicarGrupoSalarial.getSalario().doubleValue() <= 0) {
+                    retorno = false;
+                }
             }
         }
         return retorno;
@@ -501,65 +567,80 @@ public class ControlEscalafonSalarial implements Serializable {
             cambiosPagina = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-            context.update("form:growl");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
         }
 
     }
 
     public void guardarCambiosEscalafonSalarial() {
-        if (!listEscalafonesSalarialesBorrar.isEmpty()) {
-            for (int i = 0; i < listEscalafonesSalarialesBorrar.size(); i++) {
-                administrarEscalafonesSalariales.borrarEscalafonesSalariales(listEscalafonesSalarialesBorrar);
-            }
-            listEscalafonesSalarialesBorrar.clear();
-        }
-        if (!listEscalafonesSalarialesCrear.isEmpty()) {
-            for (int i = 0; i < listEscalafonesSalarialesCrear.size(); i++) {
-                administrarEscalafonesSalariales.crearEscalafonesSalariales(listEscalafonesSalarialesCrear);
-            }
-            listEscalafonesSalarialesCrear.clear();
-        }
-        if (!listEscalafonesSalarialesModificar.isEmpty()) {
-            administrarEscalafonesSalariales.editarEscalafonesSalariales(listEscalafonesSalarialesModificar);
-            listEscalafonesSalarialesModificar.clear();
-        }
-        listaEscalafonesSalariales = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosEscalafonSalarial");
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        index = -1;
-        secRegistro = null;
+        try {
+            if (!listEscalafonesSalarialesBorrar.isEmpty()) {
+                for (int i = 0; i < listEscalafonesSalarialesBorrar.size(); i++) {
+                    administrarEscalafonesSalariales.borrarEscalafonesSalariales(listEscalafonesSalarialesBorrar);
+                }
+                listEscalafonesSalarialesBorrar.clear();
+            }
+            if (!listEscalafonesSalarialesCrear.isEmpty()) {
+                for (int i = 0; i < listEscalafonesSalarialesCrear.size(); i++) {
+                    administrarEscalafonesSalariales.crearEscalafonesSalariales(listEscalafonesSalarialesCrear);
+                }
+                listEscalafonesSalarialesCrear.clear();
+            }
+            if (!listEscalafonesSalarialesModificar.isEmpty()) {
+                administrarEscalafonesSalariales.editarEscalafonesSalariales(listEscalafonesSalarialesModificar);
+                listEscalafonesSalarialesModificar.clear();
+            }
+            listaEscalafonesSalariales = null;
+            context.update("form:datosEscalafonSalarial");
+            guardado = true;
+            k = 0;
+            index = -1;
+            secRegistro = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Escalafon Salarial se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosEscalafonSalarial : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Escalafon Salarial, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
     }
 
     public void guardarCambiosGrupoSalarial() {
-        if (!listGruposSalarialesBorrar.isEmpty()) {
-            for (int i = 0; i < listGruposSalarialesBorrar.size(); i++) {
-                administrarEscalafonesSalariales.borrarGruposSalariales(listGruposSalarialesBorrar);
-            }
-            listGruposSalarialesBorrar.clear();
-        }
-        if (!listGruposSalarialesCrear.isEmpty()) {
-            for (int i = 0; i < listGruposSalarialesCrear.size(); i++) {
-                administrarEscalafonesSalariales.crearGruposSalariales(listGruposSalarialesCrear);
-            }
-            listGruposSalarialesCrear.clear();
-        }
-        if (!listGruposSalarialesModificar.isEmpty()) {
-            administrarEscalafonesSalariales.editarGruposSalariales(listGruposSalarialesModificar);
-            listGruposSalarialesModificar.clear();
-        }
-        listaGruposSalariales = null;
         RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosGrupoSalarial");
-        guardadoGS = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        indexGS = -1;
-        secRegistroGS = null;
+        try {
+            if (!listGruposSalarialesBorrar.isEmpty()) {
+                for (int i = 0; i < listGruposSalarialesBorrar.size(); i++) {
+                    administrarEscalafonesSalariales.borrarGruposSalariales(listGruposSalarialesBorrar);
+                }
+                listGruposSalarialesBorrar.clear();
+            }
+            if (!listGruposSalarialesCrear.isEmpty()) {
+                for (int i = 0; i < listGruposSalarialesCrear.size(); i++) {
+                    administrarEscalafonesSalariales.crearGruposSalariales(listGruposSalarialesCrear);
+                }
+                listGruposSalarialesCrear.clear();
+            }
+            if (!listGruposSalarialesModificar.isEmpty()) {
+                administrarEscalafonesSalariales.editarGruposSalariales(listGruposSalarialesModificar);
+                listGruposSalarialesModificar.clear();
+            }
+            listaGruposSalariales = null;
+            context.update("form:datosGrupoSalarial");
+            guardadoGS = true;
+            k = 0;
+            indexGS = -1;
+            secRegistroGS = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Grupo Salarial se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosEscalafonSalarial : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Grupo Salarial, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
+        }
 
     }
     //CANCELAR MODIFICACIONES
@@ -685,10 +766,15 @@ public class ControlEscalafonSalarial implements Serializable {
 
     public void dialogoNuevoRegistro() {
         RequestContext context = RequestContext.getCurrentInstance();
-        int tamER = listaEscalafonesSalariales.size();
-        int tamDER = listaGruposSalariales.size();
-        if (tamER == 0 || tamDER == 0) {
+        int tam = listaEscalafonesSalariales.size();
+        int tam2 = listaGruposSalariales.size();
+        if (tam == 0 || tam2 == 0) {
             if (cambiosPagina == true) {
+                if(tam > 0){
+                    disabledNuevoGrupoSalarial = false;
+                } else{
+                    disabledNuevoGrupoSalarial = true;
+                }
                 context.update("form:verificarNuevoRegistro");
                 context.execute("verificarNuevoRegistro.show()");
             } else {
@@ -754,7 +840,7 @@ public class ControlEscalafonSalarial implements Serializable {
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("errorDatosNullExtra.show()");
+            context.execute("errorDatosNullEscalafon.show()");
         }
     }
 
@@ -833,16 +919,12 @@ public class ControlEscalafonSalarial implements Serializable {
     public void duplicarEscalafonSalarialM() {
         if (index >= 0) {
             duplicarEscalafonSalarial = new EscalafonesSalariales();
-            k++;
-            l = BigInteger.valueOf(k);
             if (tipoLista == 0) {
-                duplicarEscalafonSalarial.setSecuencia(l);
                 duplicarEscalafonSalarial.setCodigo(listaEscalafonesSalariales.get(index).getCodigo());
                 duplicarEscalafonSalarial.setDescripcion(listaEscalafonesSalariales.get(index).getDescripcion());
                 duplicarEscalafonSalarial.setTipotrabajador(listaEscalafonesSalariales.get(index).getTipotrabajador());
             }
             if (tipoLista == 1) {
-                duplicarEscalafonSalarial.setSecuencia(l);
                 duplicarEscalafonSalarial.setCodigo(filtrarListaEscalafonesSalariales.get(index).getCodigo());
                 duplicarEscalafonSalarial.setDescripcion(filtrarListaEscalafonesSalariales.get(index).getDescripcion());
                 duplicarEscalafonSalarial.setTipotrabajador(filtrarListaEscalafonesSalariales.get(index).getTipotrabajador());
@@ -858,15 +940,11 @@ public class ControlEscalafonSalarial implements Serializable {
     public void duplicarGrupoSalarialM() {
         if (indexGS >= 0) {
             duplicarGrupoSalarial = new GruposSalariales();
-            k++;
-            l = BigInteger.valueOf(k);
             if (tipoListaGS == 0) {
-                duplicarGrupoSalarial.setSecuencia(l);
                 duplicarGrupoSalarial.setDescripcion(listaGruposSalariales.get(indexGS).getDescripcion());
                 duplicarGrupoSalarial.setSalario(listaGruposSalariales.get(indexGS).getSalario());
             }
             if (tipoListaGS == 1) {
-                duplicarGrupoSalarial.setSecuencia(l);
                 duplicarGrupoSalarial.setDescripcion(filtrarListaGruposSalariales.get(indexGS).getDescripcion());
                 duplicarGrupoSalarial.setSalario(filtrarListaGruposSalariales.get(indexGS).getSalario());
             }
@@ -887,6 +965,9 @@ public class ControlEscalafonSalarial implements Serializable {
             int tamDes = 0;
             tamDes = duplicarEscalafonSalarial.getDescripcion().length();
             if (tamDes >= 1 && tamDes <= 30) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarEscalafonSalarial.setSecuencia(l);
                 String text = duplicarEscalafonSalarial.getDescripcion().toUpperCase();
                 duplicarEscalafonSalarial.setDescripcion(text);
                 listaEscalafonesSalariales.add(duplicarEscalafonSalarial);
@@ -922,13 +1003,16 @@ public class ControlEscalafonSalarial implements Serializable {
             }
         } else {
             RequestContext context = RequestContext.getCurrentInstance();
-            context.execute("errorDatosNullExtra.show()");
+            context.execute("errorDatosNullEscalafon.show()");
         }
     }
 
     public void confirmarDuplicarGrupoSalarial() {
         boolean respueta = validarCamposNulosGrupoSalarial(2);
         if (respueta == true) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarGrupoSalarial.setSecuencia(l);
             if (tipoLista == 0) {
                 duplicarGrupoSalarial.setEscalafonsalarial(listaEscalafonesSalariales.get(indexAux));
             }
@@ -1764,9 +1848,7 @@ public class ControlEscalafonSalarial implements Serializable {
     }
 
     public List<TiposTrabajadores> getLovTiposTrabajadores() {
-        if (lovTiposTrabajadores == null) {
-            lovTiposTrabajadores = administrarEscalafonesSalariales.lovTiposTrabajadores();
-        }
+        lovTiposTrabajadores = administrarEscalafonesSalariales.lovTiposTrabajadores();
         return lovTiposTrabajadores;
     }
 
@@ -1812,6 +1894,58 @@ public class ControlEscalafonSalarial implements Serializable {
 
     public void setCambiosPagina(boolean cambiosPagina) {
         this.cambiosPagina = cambiosPagina;
+    }
+
+    public EscalafonesSalariales getEscalafonTablaSeleccionado() {
+        getListaEscalafonesSalariales();
+        if (listaEscalafonesSalariales != null) {
+            int tam = listaEscalafonesSalariales.size();
+            if (tam > 0) {
+                escalafonTablaSeleccionado = listaEscalafonesSalariales.get(0);
+            }
+        }
+        return escalafonTablaSeleccionado;
+    }
+
+    public void setEscalafonTablaSeleccionado(EscalafonesSalariales escalafonTablaSeleccionado) {
+        this.escalafonTablaSeleccionado = escalafonTablaSeleccionado;
+    }
+
+    public GruposSalariales getGrupoTablaSeleccionado() {
+        getListaGruposSalariales();
+        if (listaGruposSalariales != null) {
+            int tam = listaGruposSalariales.size();
+            if (tam > 0) {
+                grupoTablaSeleccionado = listaGruposSalariales.get(0);
+            }
+        }
+        return grupoTablaSeleccionado;
+    }
+
+    public void setGrupoTablaSeleccionado(GruposSalariales grupoTablaSeleccionado) {
+        this.grupoTablaSeleccionado = grupoTablaSeleccionado;
+    }
+
+    public String getInfoRegistroTipoTrabajador() {
+        getLovTiposTrabajadores();
+        if (lovTiposTrabajadores != null) {
+            infoRegistroTipoTrabajador = "Cantidad de registros : " + lovTiposTrabajadores.size();
+        } else {
+            infoRegistroTipoTrabajador = "Cantidad de registros : 0";
+        }
+        return infoRegistroTipoTrabajador;
+    }
+
+    public void setInfoRegistroTipoTrabajador(String infoRegistroTipoTrabajador) {
+        this.infoRegistroTipoTrabajador = infoRegistroTipoTrabajador;
+    }
+
+    public boolean isDisabledNuevoGrupoSalarial() {
+        return disabledNuevoGrupoSalarial;
+    }
+
+    public void setDisabledNuevoGrupoSalarial(boolean disabledNuevoGrupoSalarial) {
+        this.disabledNuevoGrupoSalarial = disabledNuevoGrupoSalarial;
     }
 
 }

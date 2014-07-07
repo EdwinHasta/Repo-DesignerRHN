@@ -37,7 +37,7 @@ public class PersistenciaVigenciasMonedasBases implements PersistenciaVigenciasM
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(monedasBases);
+            em.persist(monedasBases);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasMonedasBases.crear: " + e);

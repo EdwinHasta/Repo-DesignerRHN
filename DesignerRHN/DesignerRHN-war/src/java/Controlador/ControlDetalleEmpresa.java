@@ -6,14 +6,12 @@ import Entidades.DetallesEmpresas;
 import Entidades.Empleados;
 import Entidades.Empresas;
 import Entidades.Personas;
-import Exportar.ExportarPDF;
 import Exportar.ExportarPDFTablasAnchas;
 import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarDetallesEmpresasInterface;
 import InterfaceAdministrar.AdministrarRastrosInterface;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +36,6 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class ControlDetalleEmpresa implements Serializable {
 
-    
     @EJB
     AdministrarDetallesEmpresasInterface administrarDetalleEmpresa;
     @EJB
@@ -46,6 +43,7 @@ public class ControlDetalleEmpresa implements Serializable {
     //Detalles Empresas
     private List<DetallesEmpresas> listaDetallesEmpresas;
     private List<DetallesEmpresas> filtrarListaDetallesEmpresas;
+    private DetallesEmpresas detalleTablaSeleccionado;
     //LOV Empresas
     private List<Empresas> lovEmpresas;
     private Empresas empresaSeleccionada;
@@ -112,10 +110,9 @@ public class ControlDetalleEmpresa implements Serializable {
     private String auxTipo, auxDireccion, auxTelefono, auxFax, auxNameRepre, auxDocRepre;
     private String altoTabla;
     private String paginaAnterior;
+    //
+    private String infoRegistro, infoRegistroEmpresa, infoRegistroCiudad, infoRegistroCiudadDocumento, infoRegistroGerente, infoRegistroPersona, infoRegistroCargo, infoRegistroSubGerente, infoRegistroRepresentante;
 
-    /**
-     * Creates a new instance of ControlDetalleEmpresa
-     */
     public ControlDetalleEmpresa() {
         paginaAnterior = "";
         altoTabla = "260";
@@ -162,7 +159,7 @@ public class ControlDetalleEmpresa implements Serializable {
         //Duplicar
         duplicarDetalleEmpresa = new DetallesEmpresas();
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -171,19 +168,25 @@ public class ControlDetalleEmpresa implements Serializable {
             administrarDetalleEmpresa.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
 
-    public String regresarAPaginaAnterior(){
+    public String regresarAPaginaAnterior() {
         return paginaAnterior;
     }
-    
-    
+
     public void inicializarPagina(BigInteger secuencia, String paginaAnterior) {
         this.paginaAnterior = paginaAnterior;
         secEmpresa = secuencia;
+        listaDetallesEmpresas = null;
+        getListaDetallesEmpresas();
+        if (listaDetallesEmpresas != null) {
+            infoRegistro = "Cantidad de registros : " + listaDetallesEmpresas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
     }
 
     public boolean validarFechaCamaraComercio(int i) {
@@ -247,24 +250,133 @@ public class ControlDetalleEmpresa implements Serializable {
             if (tipoLista == 1) {
                 detalle = filtrarListaDetallesEmpresas.get(index);
             }
-            if (detalle.getEmpresa().getSecuencia() == null || detalle.getTipo().isEmpty() || detalle.getDireccion().isEmpty()
-                    || detalle.getCiudad().getSecuencia() == null || detalle.getTelefono().isEmpty() || detalle.getFax().isEmpty()
-                    || detalle.getNombrerepresentante().isEmpty() || detalle.getDocumentorepresentante().isEmpty()) {
+            if (detalle.getEmpresa().getSecuencia() == null) {
                 retorno = false;
             }
+            if (detalle.getDireccion() == null) {
+                retorno = false;
+            } else {
+                if (detalle.getDireccion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (detalle.getCiudad().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (detalle.getTelefono() == null) {
+                retorno = false;
+            } else {
+                if (detalle.getTelefono().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (detalle.getFax() == null) {
+                retorno = false;
+            } else {
+                if (detalle.getFax().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (detalle.getNombrerepresentante() == null) {
+                retorno = false;
+            } else {
+                if (detalle.getNombrerepresentante().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (detalle.getDocumentorepresentante() == null) {
+                retorno = false;
+            } else {
+                if (detalle.getDocumentorepresentante().isEmpty()) {
+                    retorno = false;
+                }
+            }
+
         }
         if (i == 1) {
-            if (nuevaDetalleEmpresa.getEmpresa().getSecuencia() == null || nuevaDetalleEmpresa.getTipo().isEmpty() || nuevaDetalleEmpresa.getDireccion().isEmpty()
-                    || nuevaDetalleEmpresa.getCiudad().getSecuencia() == null || nuevaDetalleEmpresa.getTelefono().isEmpty() || nuevaDetalleEmpresa.getFax().isEmpty()
-                    || nuevaDetalleEmpresa.getNombrerepresentante().isEmpty() || nuevaDetalleEmpresa.getDocumentorepresentante().isEmpty()) {
+            if (nuevaDetalleEmpresa.getEmpresa().getSecuencia() == null) {
                 retorno = false;
+            }
+            if (nuevaDetalleEmpresa.getDireccion() == null) {
+                retorno = false;
+            } else {
+                if (nuevaDetalleEmpresa.getDireccion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevaDetalleEmpresa.getCiudad().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (nuevaDetalleEmpresa.getTelefono() == null) {
+                retorno = false;
+            } else {
+                if (nuevaDetalleEmpresa.getTelefono().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevaDetalleEmpresa.getFax() == null) {
+                retorno = false;
+            } else {
+                if (nuevaDetalleEmpresa.getFax().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevaDetalleEmpresa.getNombrerepresentante() == null) {
+                retorno = false;
+            } else {
+                if (nuevaDetalleEmpresa.getNombrerepresentante().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevaDetalleEmpresa.getDocumentorepresentante() == null) {
+                retorno = false;
+            } else {
+                if (nuevaDetalleEmpresa.getDocumentorepresentante().isEmpty()) {
+                    retorno = false;
+                }
             }
         }
         if (i == 2) {
-            if (duplicarDetalleEmpresa.getEmpresa().getSecuencia() == null || duplicarDetalleEmpresa.getTipo().isEmpty() || duplicarDetalleEmpresa.getDireccion().isEmpty()
-                    || duplicarDetalleEmpresa.getCiudad().getSecuencia() == null || duplicarDetalleEmpresa.getTelefono().isEmpty() || duplicarDetalleEmpresa.getFax().isEmpty()
-                    || duplicarDetalleEmpresa.getNombrerepresentante().isEmpty() || duplicarDetalleEmpresa.getDocumentorepresentante().isEmpty()) {
+            if (duplicarDetalleEmpresa.getEmpresa().getSecuencia() == null) {
                 retorno = false;
+            }
+            if (duplicarDetalleEmpresa.getDireccion() == null) {
+                retorno = false;
+            } else {
+                if (duplicarDetalleEmpresa.getDireccion().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarDetalleEmpresa.getCiudad().getSecuencia() == null) {
+                retorno = false;
+            }
+            if (duplicarDetalleEmpresa.getTelefono() == null) {
+                retorno = false;
+            } else {
+                if (duplicarDetalleEmpresa.getTelefono().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarDetalleEmpresa.getFax() == null) {
+                retorno = false;
+            } else {
+                if (duplicarDetalleEmpresa.getFax().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarDetalleEmpresa.getNombrerepresentante() == null) {
+                retorno = false;
+            } else {
+                if (duplicarDetalleEmpresa.getNombrerepresentante().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarDetalleEmpresa.getDocumentorepresentante() == null) {
+                retorno = false;
+            } else {
+                if (duplicarDetalleEmpresa.getDocumentorepresentante().isEmpty()) {
+                    retorno = false;
+                }
             }
         }
         return retorno;
@@ -289,7 +401,6 @@ public class ControlDetalleEmpresa implements Serializable {
     }
 
     public void modificarDetalleEmpresaSOneMenuCheckBox(int indice) {
-        System.out.println("indice : " + indice);
         if (tipoLista == 0) {
             if (!listDetallesEmpresasCrear.contains(listaDetallesEmpresas.get(indice))) {
                 if (listDetallesEmpresasModificar.isEmpty()) {
@@ -388,9 +499,6 @@ public class ControlDetalleEmpresa implements Serializable {
         int coincidencias = 0;
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
-        System.out.println("Indice :: " + indice);
-        System.out.println("valorConfirmar : " + valorConfirmar);
-        System.out.println("empresa : " + empresa);
         if (confirmarCambio.equalsIgnoreCase("CIUDAD")) {
             if (tipoLista == 0) {
                 listaDetallesEmpresas.get(indice).getCiudad().setNombre(ciudad);
@@ -446,166 +554,239 @@ public class ControlDetalleEmpresa implements Serializable {
                 tipoActualizacion = 0;
             }
         } else if (confirmarCambio.equalsIgnoreCase("GERENTE")) {
-            if (tipoLista == 0) {
-                listaDetallesEmpresas.get(indice).getGerentegeneral().getPersona().setNombreCompleto(gerente);
-            } else {
-                filtrarListaDetallesEmpresas.get(indice).getGerentegeneral().getPersona().setNombreCompleto(gerente);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaDetallesEmpresas.get(indice).setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
+                    listaDetallesEmpresas.get(indice).getGerentegeneral().getPersona().setNombreCompleto(gerente);
                 } else {
-                    filtrarListaDetallesEmpresas.get(indice).setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
+                    filtrarListaDetallesEmpresas.get(indice).getGerentegeneral().getPersona().setNombreCompleto(gerente);
                 }
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaDetallesEmpresas.get(indice).setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaDetallesEmpresas.get(indice).setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
+                    }
+                    cambiosPagina = false;
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:GerenteDialogo");
+                    context.execute("GerenteDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
                 cambiosPagina = false;
+                coincidencias = 1;
                 lovEmpleados = null;
                 getLovEmpleados();
-            } else {
-                permitirIndex = false;
-                context.update("form:GerenteDialogo");
-                context.execute("GerenteDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaDetallesEmpresas.get(indice).setGerentegeneral(new Empleados());
+                } else {
+                    filtrarListaDetallesEmpresas.get(indice).setGerentegeneral(new Empleados());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("REPRESENTANTE")) {
-            if (tipoLista == 0) {
-                listaDetallesEmpresas.get(indice).getRepresentantecir().getPersona().setNombreCompleto(representante);
-            } else {
-                filtrarListaDetallesEmpresas.get(indice).getRepresentantecir().getPersona().setNombreCompleto(representante);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaDetallesEmpresas.get(indice).setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
+                    listaDetallesEmpresas.get(indice).getRepresentantecir().getPersona().setNombreCompleto(representante);
                 } else {
-                    filtrarListaDetallesEmpresas.get(indice).setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
+                    filtrarListaDetallesEmpresas.get(indice).getRepresentantecir().getPersona().setNombreCompleto(representante);
                 }
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaDetallesEmpresas.get(indice).setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaDetallesEmpresas.get(indice).setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
+                    }
+                    cambiosPagina = false;
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:RepresentanteDialogo");
+                    context.execute("RepresentanteDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 cambiosPagina = false;
                 lovEmpleados = null;
                 getLovEmpleados();
-            } else {
-                permitirIndex = false;
-                context.update("form:RepresentanteDialogo");
-                context.execute("RepresentanteDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaDetallesEmpresas.get(indice).setRepresentantecir(new Empleados());
+                } else {
+                    filtrarListaDetallesEmpresas.get(indice).setRepresentantecir(new Empleados());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CARGO")) {
-            if (tipoLista == 0) {
-                listaDetallesEmpresas.get(indice).getCargofirmaconstancia().setNombre(cargo);
-            } else {
-                filtrarListaDetallesEmpresas.get(indice).getCargofirmaconstancia().setNombre(cargo);
-            }
-            for (int i = 0; i < lovCargos.size(); i++) {
-                if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaDetallesEmpresas.get(indice).setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
+                    listaDetallesEmpresas.get(indice).getCargofirmaconstancia().setNombre(cargo);
                 } else {
-                    filtrarListaDetallesEmpresas.get(indice).setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
+                    filtrarListaDetallesEmpresas.get(indice).getCargofirmaconstancia().setNombre(cargo);
                 }
+                for (int i = 0; i < lovCargos.size(); i++) {
+                    if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaDetallesEmpresas.get(indice).setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaDetallesEmpresas.get(indice).setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
+                    }
+                    cambiosPagina = false;
+                    lovCargos = null;
+                    getLovCargos();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:CargoFirmaDialogo");
+                    context.execute("CargoFirmaDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 cambiosPagina = false;
                 lovCargos = null;
                 getLovCargos();
-            } else {
-                permitirIndex = false;
-                context.update("form:CargoFirmaDialogo");
-                context.execute("CargoFirmaDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaDetallesEmpresas.get(indice).setCargofirmaconstancia(new Cargos());
+                } else {
+                    filtrarListaDetallesEmpresas.get(indice).setCargofirmaconstancia(new Cargos());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("SUBGERENTE")) {
-            if (tipoLista == 0) {
-                listaDetallesEmpresas.get(indice).getSubgerente().getPersona().setNombreCompleto(subGerente);
-            } else {
-                filtrarListaDetallesEmpresas.get(indice).getSubgerente().getPersona().setNombreCompleto(subGerente);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaDetallesEmpresas.get(indice).setSubgerente(lovEmpleados.get(indiceUnicoElemento));
+                    listaDetallesEmpresas.get(indice).getSubgerente().getPersona().setNombreCompleto(subGerente);
                 } else {
-                    filtrarListaDetallesEmpresas.get(indice).setSubgerente(lovEmpleados.get(indiceUnicoElemento));
+                    filtrarListaDetallesEmpresas.get(indice).getSubgerente().getPersona().setNombreCompleto(subGerente);
                 }
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaDetallesEmpresas.get(indice).setSubgerente(lovEmpleados.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaDetallesEmpresas.get(indice).setSubgerente(lovEmpleados.get(indiceUnicoElemento));
+                    }
+                    cambiosPagina = false;
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:SubGerenteDialogo");
+                    context.execute("SubGerenteDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 cambiosPagina = false;
                 lovEmpleados = null;
                 getLovEmpleados();
-            } else {
-                permitirIndex = false;
-                context.update("form:SubGerenteDialogo");
-                context.execute("SubGerenteDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaDetallesEmpresas.get(indice).setSubgerente(new Empleados());
+                } else {
+                    filtrarListaDetallesEmpresas.get(indice).setSubgerente(new Empleados());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("PERSONA")) {
-            if (tipoLista == 0) {
-                listaDetallesEmpresas.get(indice).getPersonafirmaconstancia().setNombreCompleto(persona);
-            } else {
-                filtrarListaDetallesEmpresas.get(indice).getPersonafirmaconstancia().setNombreCompleto(persona);
-            }
-            for (int i = 0; i < lovPersonas.size(); i++) {
-                if (lovPersonas.get(i).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaDetallesEmpresas.get(indice).setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
+                    listaDetallesEmpresas.get(indice).getPersonafirmaconstancia().setNombreCompleto(persona);
                 } else {
-                    filtrarListaDetallesEmpresas.get(indice).setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
+                    filtrarListaDetallesEmpresas.get(indice).getPersonafirmaconstancia().setNombreCompleto(persona);
                 }
+                for (int i = 0; i < lovPersonas.size(); i++) {
+                    if (lovPersonas.get(i).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaDetallesEmpresas.get(indice).setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaDetallesEmpresas.get(indice).setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
+                    }
+                    cambiosPagina = false;
+                    lovPersonas = null;
+                    getLovPersonas();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:PersonaFirmaDialogo");
+                    context.execute("PersonaFirmaDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 cambiosPagina = false;
                 lovPersonas = null;
                 getLovPersonas();
-            } else {
-                permitirIndex = false;
-                context.update("form:PersonaFirmaDialogo");
-                context.execute("PersonaFirmaDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaDetallesEmpresas.get(indice).setPersonafirmaconstancia(new Personas());
+                } else {
+                    filtrarListaDetallesEmpresas.get(indice).setPersonafirmaconstancia(new Personas());
+                }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CIUDADDOCUMENTO")) {
-            if (tipoLista == 0) {
-                listaDetallesEmpresas.get(indice).getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
-            } else {
-                filtrarListaDetallesEmpresas.get(indice).getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
-            }
-            for (int i = 0; i < lovCiudades.size(); i++) {
-                if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaDetallesEmpresas.get(indice).setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
+                    listaDetallesEmpresas.get(indice).getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
                 } else {
-                    filtrarListaDetallesEmpresas.get(indice).setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
+                    filtrarListaDetallesEmpresas.get(indice).getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
                 }
+                for (int i = 0; i < lovCiudades.size(); i++) {
+                    if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaDetallesEmpresas.get(indice).setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaDetallesEmpresas.get(indice).setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
+                    }
+                    cambiosPagina = false;
+                    lovCiudades = null;
+                    getLovCiudades();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:CiudadDocumentoDialogo");
+                    context.execute("CiudadDocumentoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 cambiosPagina = false;
                 lovCiudades = null;
                 getLovCiudades();
-            } else {
-                permitirIndex = false;
-                context.update("form:CiudadDocumentoDialogo");
-                context.execute("CiudadDocumentoDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaDetallesEmpresas.get(indice).setCiudaddocumentorepresentante(new Ciudades());
+                } else {
+                    filtrarListaDetallesEmpresas.get(indice).setCiudaddocumentorepresentante(new Ciudades());
+                }
+
             }
         }
         if (coincidencias == 1) {
@@ -736,202 +917,267 @@ public class ControlDetalleEmpresa implements Serializable {
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("GERENTE")) {
-            System.out.println("gerente: " + gerente);
-            if (tipoNuevo == 1) {
-                nuevaDetalleEmpresa.getGerentegeneral().getPersona().setNombreCompleto(gerente);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleEmpresa.getGerentegeneral().getPersona().setNombreCompleto(gerente);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                System.out.println("Entra gerente");
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaDetalleEmpresa.setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaGerenteDetalle");
+                    nuevaDetalleEmpresa.getGerentegeneral().getPersona().setNombreCompleto(gerente);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleEmpresa.setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarGerenteDetalle");
+                    duplicarDetalleEmpresa.getGerentegeneral().getPersona().setNombreCompleto(gerente);
                 }
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaDetalleEmpresa.setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaGerenteDetalle");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleEmpresa.setGerentegeneral(lovEmpleados.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarGerenteDetalle");
+                    }
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                } else {
+                    context.update("form:GerenteDialogo");
+                    context.execute("GerenteDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaGerenteDetalle");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarGerenteDetalle");
+                    }
+                }
+            } else {
                 lovEmpleados = null;
                 getLovEmpleados();
-            } else {
-                context.update("form:GerenteDialogo");
-                context.execute("GerenteDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaDetalleEmpresa.setGerentegeneral(new Empleados());
                     context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaGerenteDetalle");
                 } else if (tipoNuevo == 2) {
+                    duplicarDetalleEmpresa.setGerentegeneral(new Empleados());
                     context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarGerenteDetalle");
                 }
+
             }
         } else if (confirmarCambio.equalsIgnoreCase("SUBGERENTE")) {
-            System.out.println("subGerente: " + subGerente);
-            if (tipoNuevo == 1) {
-                nuevaDetalleEmpresa.getSubgerente().getPersona().setNombreCompleto(subGerente);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleEmpresa.getSubgerente().getPersona().setNombreCompleto(subGerente);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
-                System.out.println("Entra subGerente");
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaDetalleEmpresa.setSubgerente(lovEmpleados.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaSubGerenteDetalle");
+                    nuevaDetalleEmpresa.getSubgerente().getPersona().setNombreCompleto(subGerente);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleEmpresa.setSubgerente(lovEmpleados.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarSubGerenteDetalle");
+                    duplicarDetalleEmpresa.getSubgerente().getPersona().setNombreCompleto(subGerente);
                 }
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaDetalleEmpresa.setSubgerente(lovEmpleados.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaSubGerenteDetalle");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleEmpresa.setSubgerente(lovEmpleados.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarSubGerenteDetalle");
+                    }
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                } else {
+                    context.update("form:SubGerenteDialogo");
+                    context.execute("SubGerenteDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaSubGerenteDetalle");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarSubGerenteDetalle");
+                    }
+                }
+            } else {
                 lovEmpleados = null;
                 getLovEmpleados();
-            } else {
-                System.out.println("Error false subGerente");
-                context.update("form:SubGerenteDialogo");
-                context.execute("SubGerenteDialogo.show()");
-                tipoActualizacion = tipoNuevo;
-                System.out.println("tipoNuevo : " + tipoNuevo);
                 if (tipoNuevo == 1) {
+                    nuevaDetalleEmpresa.setSubgerente(new Empleados());
                     context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaSubGerenteDetalle");
                 } else if (tipoNuevo == 2) {
+                    duplicarDetalleEmpresa.setSubgerente(new Empleados());
                     context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarSubGerenteDetalle");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("REPRESENTANTE")) {
-            if (tipoNuevo == 1) {
-                nuevaDetalleEmpresa.getRepresentantecir().getPersona().setNombreCompleto(representante);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleEmpresa.getRepresentantecir().getPersona().setNombreCompleto(representante);
-            }
-            for (int i = 0; i < lovEmpleados.size(); i++) {
-                if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaDetalleEmpresa.setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaRepresentanteDetalle");
-                } else {
-                    duplicarDetalleEmpresa.setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarRepresentanteDetalle");
+                    nuevaDetalleEmpresa.getRepresentantecir().getPersona().setNombreCompleto(representante);
+                } else if (tipoNuevo == 2) {
+                    duplicarDetalleEmpresa.getRepresentantecir().getPersona().setNombreCompleto(representante);
                 }
+                for (int i = 0; i < lovEmpleados.size(); i++) {
+                    if (lovEmpleados.get(i).getPersona().getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaDetalleEmpresa.setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaRepresentanteDetalle");
+                    } else {
+                        duplicarDetalleEmpresa.setRepresentantecir(lovEmpleados.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarRepresentanteDetalle");
+                    }
+                    lovEmpleados = null;
+                    getLovEmpleados();
+                } else {
+                    context.update("form:RepresentanteDialogo");
+                    context.execute("RepresentanteDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaRepresentanteDetalle");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarRepresentanteDetalle");
+                    }
+                }
+            } else {
                 lovEmpleados = null;
                 getLovEmpleados();
-            } else {
-                context.update("form:RepresentanteDialogo");
-                context.execute("RepresentanteDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaDetalleEmpresa.setRepresentantecir(new Empleados());
                     context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaRepresentanteDetalle");
-                } else if (tipoNuevo == 2) {
+                } else {
+                    duplicarDetalleEmpresa.setRepresentantecir(new Empleados());
                     context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarRepresentanteDetalle");
                 }
             }
         } else if (confirmarCambio.equalsIgnoreCase("CARGO")) {
-            if (tipoNuevo == 1) {
-                nuevaDetalleEmpresa.getCargofirmaconstancia().setNombre(cargo);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleEmpresa.getCargofirmaconstancia().setNombre(cargo);
-            }
-            for (int i = 0; i < lovCargos.size(); i++) {
-                if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaDetalleEmpresa.setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCargoFirmaDetalle");
+                    nuevaDetalleEmpresa.getCargofirmaconstancia().setNombre(cargo);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleEmpresa.setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCargoFirmaDetalle");
+                    duplicarDetalleEmpresa.getCargofirmaconstancia().setNombre(cargo);
                 }
+                for (int i = 0; i < lovCargos.size(); i++) {
+                    if (lovCargos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaDetalleEmpresa.setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCargoFirmaDetalle");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleEmpresa.setCargofirmaconstancia(lovCargos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCargoFirmaDetalle");
+                    }
+                    lovCargos = null;
+                    getLovCargos();
+                } else {
+                    context.update("form:CargoFirmaDialogo");
+                    context.execute("CargoFirmaDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCargoFirmaDetalle");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCargoFirmaDetalle");
+                    }
+                }
+            } else {
                 lovCargos = null;
                 getLovCargos();
-            } else {
-                context.update("form:CargoFirmaDialogo");
-                context.execute("CargoFirmaDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaDetalleEmpresa.setCargofirmaconstancia(new Cargos());
                     context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCargoFirmaDetalle");
                 } else if (tipoNuevo == 2) {
+                    duplicarDetalleEmpresa.setCargofirmaconstancia(new Cargos());
                     context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCargoFirmaDetalle");
                 }
             }
-
         } else if (confirmarCambio.equalsIgnoreCase("PERSONA")) {
-            if (tipoNuevo == 1) {
-                nuevaDetalleEmpresa.getPersonafirmaconstancia().setNombreCompleto(persona);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleEmpresa.getPersonafirmaconstancia().setNombreCompleto(persona);
-            }
-            for (int i = 0; i < lovPersonas.size(); i++) {
-                if (lovPersonas.get(i).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaDetalleEmpresa.setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaPersonaFirmaDetalle");
+                    nuevaDetalleEmpresa.getPersonafirmaconstancia().setNombreCompleto(persona);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleEmpresa.setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarPersonaFirmaDetalle");
+                    duplicarDetalleEmpresa.getPersonafirmaconstancia().setNombreCompleto(persona);
                 }
+                for (int i = 0; i < lovPersonas.size(); i++) {
+                    if (lovPersonas.get(i).getNombreCompleto().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaDetalleEmpresa.setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaPersonaFirmaDetalle");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleEmpresa.setPersonafirmaconstancia(lovPersonas.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarPersonaFirmaDetalle");
+                    }
+                    lovPersonas = null;
+                    getLovPersonas();
+                } else {
+                    context.update("form:PersonaFirmaDialogo");
+                    context.execute("PersonaFirmaDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaPersonaFirmaDetalle");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarPersonaFirmaDetalle");
+                    }
+                }
+            } else {
                 lovPersonas = null;
                 getLovPersonas();
-            } else {
-                context.update("form:PersonaFirmaDialogo");
-                context.execute("PersonaFirmaDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaDetalleEmpresa.setPersonafirmaconstancia(new Personas());
                     context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaPersonaFirmaDetalle");
                 } else if (tipoNuevo == 2) {
+                    duplicarDetalleEmpresa.setPersonafirmaconstancia(new Personas());
                     context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarPersonaFirmaDetalle");
                 }
             }
-
         } else if (confirmarCambio.equalsIgnoreCase("CIUDADDOCUMENTO")) {
-            if (tipoNuevo == 1) {
-                nuevaDetalleEmpresa.getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
-            } else if (tipoNuevo == 2) {
-                duplicarDetalleEmpresa.getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
-            }
-            for (int i = 0; i < lovCiudades.size(); i++) {
-                if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevaDetalleEmpresa.setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCiudadDocumentoDetalle");
+                    nuevaDetalleEmpresa.getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
                 } else if (tipoNuevo == 2) {
-                    duplicarDetalleEmpresa.setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCiudadDocumentoDetalle");
+                    duplicarDetalleEmpresa.getCiudaddocumentorepresentante().setNombre(ciudadDocumento);
                 }
+                for (int i = 0; i < lovCiudades.size(); i++) {
+                    if (lovCiudades.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevaDetalleEmpresa.setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCiudadDocumentoDetalle");
+                    } else if (tipoNuevo == 2) {
+                        duplicarDetalleEmpresa.setCiudaddocumentorepresentante(lovCiudades.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCiudadDocumentoDetalle");
+                    }
+                    lovCiudades = null;
+                    getLovCiudades();
+                } else {
+                    context.update("form:CiudadDocumentoDialogo");
+                    context.execute("CiudadDocumentoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCiudadDocumentoDetalle");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCiudadDocumentoDetalle");
+                    }
+                }
+            } else {
                 lovCiudades = null;
                 getLovCiudades();
-            } else {
-                context.update("form:CiudadDocumentoDialogo");
-                context.execute("CiudadDocumentoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevaDetalleEmpresa.setCiudaddocumentorepresentante(new Ciudades());
                     context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCiudadDocumentoDetalle");
                 } else if (tipoNuevo == 2) {
+                    duplicarDetalleEmpresa.setCiudaddocumentorepresentante(new Ciudades());
                     context.update("formularioDialogos:duplicarDetalleEmpresa:duplicarCiudadDocumentoDetalle");
                 }
             }
@@ -1008,19 +1254,19 @@ public class ControlDetalleEmpresa implements Serializable {
                 auxNameRepre = filtrarListaDetallesEmpresas.get(index).getNombrerepresentante();
                 auxDocRepre = filtrarListaDetallesEmpresas.get(index).getDocumentorepresentante();
             }
-            System.out.println("CambiarIndice empresa : " + empresa);
         }
     }
 
-    public void guardarSalir(){
+    public void guardarSalir() {
         guardadoGeneral();
         salir();
     }
-    public void cancelaralir(){
+
+    public void cancelaralir() {
         cancelarModificacion();
         salir();
     }
-    
+
     //GUARDAR
     public void guardadoGeneral() {
         guardarCambios();
@@ -1029,111 +1275,125 @@ public class ControlDetalleEmpresa implements Serializable {
     }
 
     public void guardarCambios() {
-        if (guardado == false) {
-            if (!listDetallesEmpresasBorrar.isEmpty()) {
-                administrarDetalleEmpresa.borrarDetalleEmpresa(listDetallesEmpresasBorrar);
-                listDetallesEmpresasBorrar.clear();
+        try {
+            if (guardado == false) {
+                if (!listDetallesEmpresasBorrar.isEmpty()) {
+                    administrarDetalleEmpresa.borrarDetalleEmpresa(listDetallesEmpresasBorrar);
+                    listDetallesEmpresasBorrar.clear();
+                }
+                if (!listDetallesEmpresasCrear.isEmpty()) {
+                    administrarDetalleEmpresa.crearDetalleEmpresa(listDetallesEmpresasCrear);
+                    listDetallesEmpresasCrear.clear();
+                }
+                if (!listDetallesEmpresasModificar.isEmpty()) {
+                    administrarDetalleEmpresa.editarDetalleEmpresa(listDetallesEmpresasModificar);
+                    listDetallesEmpresasModificar.clear();
+                }
+                listaDetallesEmpresas = null;
+                getListaDetallesEmpresas();
+                if (listaDetallesEmpresas != null) {
+                    infoRegistro = "Cantidad de registros : " + listaDetallesEmpresas.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                RequestContext.getCurrentInstance().update("form:informacionRegistro");
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.update("form:datosDetalleEmpresa");
+                k = 0;
+                cambiosPagina = true;
+                context.update("form:ACEPTAR");
+                index = -1;
+                secRegistro = null;
+                FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                RequestContext.getCurrentInstance().update("form:growl");
             }
-            if (!listDetallesEmpresasCrear.isEmpty()) {
-                administrarDetalleEmpresa.crearDetalleEmpresa(listDetallesEmpresasCrear);
-                listDetallesEmpresasCrear.clear();
-            }
-            if (!listDetallesEmpresasModificar.isEmpty()) {
-                administrarDetalleEmpresa.editarDetalleEmpresa(listDetallesEmpresasModificar);
-                listDetallesEmpresasModificar.clear();
-            }
-            listaDetallesEmpresas = null;
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosDetalleEmpresa");
-            k = 0;
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        cambiosPagina = true;
-        context.update("form:ACEPTAR");
-        index = -1;
-        secRegistro = null;
     }
 
     //CANCELAR MODIFICACIONES
     public void cancelarModificacion() {
         if (bandera == 1) {
             altoTabla = "260";
-            detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
+            detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
             detalleTipoDocumento.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
+            detalleTipo = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
             detalleTipo.setFilterStyle("display: none; visibility: hidden;");
-            detalleDireccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
+            detalleDireccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
             detalleDireccion.setFilterStyle("display: none; visibility: hidden;");
-            detalleCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
+            detalleCiudad = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
             detalleCiudad.setFilterStyle("display: none; visibility: hidden;");
-            detalleTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
+            detalleTelefono = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
             detalleTelefono.setFilterStyle("display: none; visibility: hidden;");
-            detalleFax = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
+            detalleFax = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
             detalleFax.setFilterStyle("display: none; visibility: hidden;");
-            detalleNombreRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
+            detalleNombreRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
             detalleNombreRepresentante.setFilterStyle("display: none; visibility: hidden;");
-            detalleDocumentoRepresentane = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
+            detalleDocumentoRepresentane = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
             detalleDocumentoRepresentane.setFilterStyle("display: none; visibility: hidden;");
-            detalleCiudadDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
+            detalleCiudadDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
             detalleCiudadDocumento.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
+            detalleTipoNit = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
             detalleTipoNit.setFilterStyle("display: none; visibility: hidden;");
-            detalleDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
+            detalleDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
             detalleDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            detalleGerenteGeneral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
+            detalleGerenteGeneral = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
             detalleGerenteGeneral.setFilterStyle("display: none; visibility: hidden;");
-            detallePersonaFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
+            detallePersonaFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
             detallePersonaFirma.setFilterStyle("display: none; visibility: hidden;");
-            detalleCargoFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
+            detalleCargoFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
             detalleCargoFirma.setFilterStyle("display: none; visibility: hidden;");
-            detalleEmail = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
+            detalleEmail = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
             detalleEmail.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoZona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
+            detalleTipoZona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
             detalleTipoZona.setFilterStyle("display: none; visibility: hidden;");
-            detalleCIIU = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
+            detalleCIIU = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
             detalleCIIU.setFilterStyle("display: none; visibility: hidden;");
-            detalleActEconomica = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
+            detalleActEconomica = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
             detalleActEconomica.setFilterStyle("display: none; visibility: hidden;");
-            detalleSubGerente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
+            detalleSubGerente = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
             detalleSubGerente.setFilterStyle("display: none; visibility: hidden;");
-            detalleArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
+            detalleArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
             detalleArquitecto.setFilterStyle("display: none; visibility: hidden;");
-            detalleCargoArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
+            detalleCargoArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
             detalleCargoArquitecto.setFilterStyle("display: none; visibility: hidden;");
-            detalleRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
+            detalleRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
             detalleRepresentante.setFilterStyle("display: none; visibility: hidden;");
-            detallePlanilla = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
+            detallePlanilla = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
             detallePlanilla.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoPersona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
+            detalleTipoPersona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
             detalleTipoPersona.setFilterStyle("display: none; visibility: hidden;");
-            detalleNaturalezaJ = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
+            detalleNaturalezaJ = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
             detalleNaturalezaJ.setFilterStyle("display: none; visibility: hidden;");
-            detalleClaseAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
+            detalleClaseAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
             detalleClaseAportante.setFilterStyle("display: none; visibility: hidden;");
-            detalleFormaPresentacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
+            detalleFormaPresentacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
             detalleFormaPresentacion.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
+            detalleTipoAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
             detalleTipoAportante.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoAccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
+            detalleTipoAccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
             detalleTipoAccion.setFilterStyle("display: none; visibility: hidden;");
-            detalleFechaComercio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
+            detalleFechaComercio = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
             detalleFechaComercio.setFilterStyle("display: none; visibility: hidden;");
-            detalleAnosParafiscal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
+            detalleAnosParafiscal = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
             detalleAnosParafiscal.setFilterStyle("display: none; visibility: hidden;");
-            detalleReformaExonera = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
+            detalleReformaExonera = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
             detalleReformaExonera.setFilterStyle("display: none; visibility: hidden;");
-            detallePilaMultinea = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
+            detallePilaMultinea = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
             detallePilaMultinea.setFilterStyle("display: none; visibility: hidden;");
-            detalleSolidaridadFosyga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
+            detalleSolidaridadFosyga = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
             detalleSolidaridadFosyga.setFilterStyle("display: none; visibility: hidden;");
-            detalleExoneraLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
+            detalleExoneraLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
             detalleExoneraLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
-            detalleReportaLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
+            detalleReportaLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
             detalleReportaLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDetalleEmpresa");
             bandera = 0;
@@ -1153,6 +1413,12 @@ public class ControlDetalleEmpresa implements Serializable {
         k = 0;
         listaDetallesEmpresas = null;
         getListaDetallesEmpresas();
+        if (listaDetallesEmpresas != null) {
+            infoRegistro = "Cantidad de registros : " + listaDetallesEmpresas.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
         guardado = true;
         nuevaDetalleEmpresa = new DetallesEmpresas();
         nuevaDetalleEmpresa.setCiudad(new Ciudades());
@@ -1169,11 +1435,6 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:datosDetalleEmpresa");
     }
 
-    //MOSTRAR DATOS CELDA
-    /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o
-     * la lista filtrada y a la columna
-     */
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -1281,9 +1542,6 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    /**
-     */
     public void agregarNuevaDetalleEmpresa() {
         if (validarDatosNullDetalleEmpresa(1) == true) {
             if (validarFechaCamaraComercio(1) == true) {
@@ -1291,79 +1549,80 @@ public class ControlDetalleEmpresa implements Serializable {
                 //CERRAR FILTRADO
                 if (bandera == 1) {
                     altoTabla = "260";
-                    detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
                     detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
+                    detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
                     detalleTipoDocumento.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
+                    detalleTipo = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
                     detalleTipo.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDireccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
+                    detalleDireccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
                     detalleDireccion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
+                    detalleCiudad = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
                     detalleCiudad.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
+                    detalleTelefono = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
                     detalleTelefono.setFilterStyle("display: none; visibility: hidden;");
-                    detalleFax = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
+                    detalleFax = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
                     detalleFax.setFilterStyle("display: none; visibility: hidden;");
-                    detalleNombreRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
+                    detalleNombreRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
                     detalleNombreRepresentante.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDocumentoRepresentane = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
+                    detalleDocumentoRepresentane = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
                     detalleDocumentoRepresentane.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCiudadDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
+                    detalleCiudadDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
                     detalleCiudadDocumento.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
+                    detalleTipoNit = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
                     detalleTipoNit.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
+                    detalleDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
                     detalleDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleGerenteGeneral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
+                    detalleGerenteGeneral = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
                     detalleGerenteGeneral.setFilterStyle("display: none; visibility: hidden;");
-                    detallePersonaFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
+                    detallePersonaFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
                     detallePersonaFirma.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCargoFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
+                    detalleCargoFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
                     detalleCargoFirma.setFilterStyle("display: none; visibility: hidden;");
-                    detalleEmail = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
+                    detalleEmail = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
                     detalleEmail.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoZona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
+                    detalleTipoZona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
                     detalleTipoZona.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCIIU = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
+                    detalleCIIU = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
                     detalleCIIU.setFilterStyle("display: none; visibility: hidden;");
-                    detalleActEconomica = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
+                    detalleActEconomica = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
                     detalleActEconomica.setFilterStyle("display: none; visibility: hidden;");
-                    detalleSubGerente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
+                    detalleSubGerente = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
                     detalleSubGerente.setFilterStyle("display: none; visibility: hidden;");
-                    detalleArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
+                    detalleArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
                     detalleArquitecto.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCargoArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
+                    detalleCargoArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
                     detalleCargoArquitecto.setFilterStyle("display: none; visibility: hidden;");
-                    detalleRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
+                    detalleRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
                     detalleRepresentante.setFilterStyle("display: none; visibility: hidden;");
-                    detallePlanilla = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
+                    detallePlanilla = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
                     detallePlanilla.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoPersona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
+                    detalleTipoPersona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
                     detalleTipoPersona.setFilterStyle("display: none; visibility: hidden;");
-                    detalleNaturalezaJ = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
+                    detalleNaturalezaJ = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
                     detalleNaturalezaJ.setFilterStyle("display: none; visibility: hidden;");
-                    detalleClaseAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
+                    detalleClaseAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
                     detalleClaseAportante.setFilterStyle("display: none; visibility: hidden;");
-                    detalleFormaPresentacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
+                    detalleFormaPresentacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
                     detalleFormaPresentacion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
+                    detalleTipoAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
                     detalleTipoAportante.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoAccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
+                    detalleTipoAccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
                     detalleTipoAccion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleFechaComercio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
+                    detalleFechaComercio = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
                     detalleFechaComercio.setFilterStyle("display: none; visibility: hidden;");
-                    detalleAnosParafiscal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
+                    detalleAnosParafiscal = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
                     detalleAnosParafiscal.setFilterStyle("display: none; visibility: hidden;");
-                    detalleReformaExonera = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
+                    detalleReformaExonera = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
                     detalleReformaExonera.setFilterStyle("display: none; visibility: hidden;");
-                    detallePilaMultinea = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
+                    detallePilaMultinea = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
                     detallePilaMultinea.setFilterStyle("display: none; visibility: hidden;");
-                    detalleSolidaridadFosyga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
+                    detalleSolidaridadFosyga = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
                     detalleSolidaridadFosyga.setFilterStyle("display: none; visibility: hidden;");
-                    detalleExoneraLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
+                    detalleExoneraLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
                     detalleExoneraLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
-                    detalleReportaLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
+                    detalleReportaLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
                     detalleReportaLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosDetalleEmpresa");
                     bandera = 0;
@@ -1398,6 +1657,10 @@ public class ControlDetalleEmpresa implements Serializable {
                 index = -1;
                 secRegistro = null;
                 RequestContext context = RequestContext.getCurrentInstance();
+
+                infoRegistro = "Cantidad de registros : " + listaDetallesEmpresas.size();
+
+                RequestContext.getCurrentInstance().update("form:informacionRegistro");
                 context.update("form:ACEPTAR");
                 context.update("form:datosDetalleEmpresa");
                 context.execute("NuevoRegistroDetalleEmpresa.hide()");
@@ -1449,17 +1712,10 @@ public class ControlDetalleEmpresa implements Serializable {
         }
     }
 
-    ///////////////////////////////////////////////////////////////
-    /**
-     */
     public void duplicarDetalleEmpresaD() {
         if (index >= 0) {
             duplicarDetalleEmpresa = new DetallesEmpresas();
-            k++;
-            BigDecimal var = BigDecimal.valueOf(k);
-            l = BigInteger.valueOf(k);
             if (tipoLista == 0) {
-                duplicarDetalleEmpresa.setSecuencia(l);
                 duplicarDetalleEmpresa.setEmpresa(listaDetallesEmpresas.get(index).getEmpresa());
                 duplicarDetalleEmpresa.setTipodocumento(listaDetallesEmpresas.get(index).getTipodocumento());
                 duplicarDetalleEmpresa.setTipo(listaDetallesEmpresas.get(index).getTipo());
@@ -1499,7 +1755,6 @@ public class ControlDetalleEmpresa implements Serializable {
                 duplicarDetalleEmpresa.setCheckSolidaridadFosygaeExentoPrf(listaDetallesEmpresas.get(index).isCheckSolidaridadFosygaeExentoPrf());
             }
             if (tipoLista == 1) {
-                duplicarDetalleEmpresa.setSecuencia(l);
                 duplicarDetalleEmpresa.setEmpresa(filtrarListaDetallesEmpresas.get(index).getEmpresa());
                 duplicarDetalleEmpresa.setTipodocumento(filtrarListaDetallesEmpresas.get(index).getTipodocumento());
                 duplicarDetalleEmpresa.setTipo(filtrarListaDetallesEmpresas.get(index).getTipo());
@@ -1550,6 +1805,9 @@ public class ControlDetalleEmpresa implements Serializable {
     public void confirmarDuplicarDetalleEmpresa() {
         if (validarDatosNullDetalleEmpresa(2) == true) {
             if (validarFechaCamaraComercio(2) == true) {
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarDetalleEmpresa.setSecuencia(l);
                 cambiosPagina = false;
                 k++;
                 l = BigInteger.valueOf(k);
@@ -1567,79 +1825,80 @@ public class ControlDetalleEmpresa implements Serializable {
                 }
                 if (bandera == 1) {
                     altoTabla = "260";
-                    detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
+                    FacesContext c = FacesContext.getCurrentInstance();
+                    detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
                     detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
+                    detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
                     detalleTipoDocumento.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
+                    detalleTipo = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
                     detalleTipo.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDireccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
+                    detalleDireccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
                     detalleDireccion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
+                    detalleCiudad = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
                     detalleCiudad.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
+                    detalleTelefono = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
                     detalleTelefono.setFilterStyle("display: none; visibility: hidden;");
-                    detalleFax = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
+                    detalleFax = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
                     detalleFax.setFilterStyle("display: none; visibility: hidden;");
-                    detalleNombreRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
+                    detalleNombreRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
                     detalleNombreRepresentante.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDocumentoRepresentane = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
+                    detalleDocumentoRepresentane = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
                     detalleDocumentoRepresentane.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCiudadDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
+                    detalleCiudadDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
                     detalleCiudadDocumento.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
+                    detalleTipoNit = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
                     detalleTipoNit.setFilterStyle("display: none; visibility: hidden;");
-                    detalleDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
+                    detalleDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
                     detalleDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleGerenteGeneral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
+                    detalleGerenteGeneral = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
                     detalleGerenteGeneral.setFilterStyle("display: none; visibility: hidden;");
-                    detallePersonaFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
+                    detallePersonaFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
                     detallePersonaFirma.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCargoFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
+                    detalleCargoFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
                     detalleCargoFirma.setFilterStyle("display: none; visibility: hidden;");
-                    detalleEmail = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
+                    detalleEmail = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
                     detalleEmail.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoZona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
+                    detalleTipoZona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
                     detalleTipoZona.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCIIU = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
+                    detalleCIIU = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
                     detalleCIIU.setFilterStyle("display: none; visibility: hidden;");
-                    detalleActEconomica = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
+                    detalleActEconomica = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
                     detalleActEconomica.setFilterStyle("display: none; visibility: hidden;");
-                    detalleSubGerente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
+                    detalleSubGerente = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
                     detalleSubGerente.setFilterStyle("display: none; visibility: hidden;");
-                    detalleArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
+                    detalleArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
                     detalleArquitecto.setFilterStyle("display: none; visibility: hidden;");
-                    detalleCargoArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
+                    detalleCargoArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
                     detalleCargoArquitecto.setFilterStyle("display: none; visibility: hidden;");
-                    detalleRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
+                    detalleRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
                     detalleRepresentante.setFilterStyle("display: none; visibility: hidden;");
-                    detallePlanilla = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
+                    detallePlanilla = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
                     detallePlanilla.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoPersona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
+                    detalleTipoPersona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
                     detalleTipoPersona.setFilterStyle("display: none; visibility: hidden;");
-                    detalleNaturalezaJ = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
+                    detalleNaturalezaJ = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
                     detalleNaturalezaJ.setFilterStyle("display: none; visibility: hidden;");
-                    detalleClaseAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
+                    detalleClaseAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
                     detalleClaseAportante.setFilterStyle("display: none; visibility: hidden;");
-                    detalleFormaPresentacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
+                    detalleFormaPresentacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
                     detalleFormaPresentacion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
+                    detalleTipoAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
                     detalleTipoAportante.setFilterStyle("display: none; visibility: hidden;");
-                    detalleTipoAccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
+                    detalleTipoAccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
                     detalleTipoAccion.setFilterStyle("display: none; visibility: hidden;");
-                    detalleFechaComercio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
+                    detalleFechaComercio = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
                     detalleFechaComercio.setFilterStyle("display: none; visibility: hidden;");
-                    detalleAnosParafiscal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
+                    detalleAnosParafiscal = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
                     detalleAnosParafiscal.setFilterStyle("display: none; visibility: hidden;");
-                    detalleReformaExonera = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
+                    detalleReformaExonera = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
                     detalleReformaExonera.setFilterStyle("display: none; visibility: hidden;");
-                    detallePilaMultinea = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
+                    detallePilaMultinea = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
                     detallePilaMultinea.setFilterStyle("display: none; visibility: hidden;");
-                    detalleSolidaridadFosyga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
+                    detalleSolidaridadFosyga = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
                     detalleSolidaridadFosyga.setFilterStyle("display: none; visibility: hidden;");
-                    detalleExoneraLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
+                    detalleExoneraLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
                     detalleExoneraLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
-                    detalleReportaLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
+                    detalleReportaLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
                     detalleReportaLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
                     RequestContext.getCurrentInstance().update("form:datosDetalleEmpresa");
                     bandera = 0;
@@ -1648,6 +1907,8 @@ public class ControlDetalleEmpresa implements Serializable {
                 }
                 duplicarDetalleEmpresa = new DetallesEmpresas();
                 RequestContext context = RequestContext.getCurrentInstance();
+                infoRegistro = "Cantidad de registros : " + listaDetallesEmpresas.size();
+                RequestContext.getCurrentInstance().update("form:informacionRegistro");
                 context.update("form:ACEPTAR");
                 context.update("form:datosDetalleEmpresa");
                 context.execute("DuplicarRegistroDetalleEmpresa.hide()");
@@ -1687,19 +1948,12 @@ public class ControlDetalleEmpresa implements Serializable {
         duplicarDetalleEmpresa.setPersonafirmaconstancia(new Personas());
     }
 
-    /**
-     * Valida que registro se elimina de que tabla con respecto a la posicion en
-     * la pagina
-     */
     public void validarBorradoDetalleEmpresa() {
         if (index >= 0) {
             borrarDetalleEmpresa();
         }
     }
 
-    /**
-     * Metodo que borra una vigencia prorrateo
-     */
     public void borrarDetalleEmpresa() {
         cambiosPagina = false;
         if (tipoLista == 0) {
@@ -1731,6 +1985,8 @@ public class ControlDetalleEmpresa implements Serializable {
             filtrarListaDetallesEmpresas.remove(index);
         }
         RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de registros : " + listaDetallesEmpresas.size();
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
         context.update("form:ACEPTAR");
         context.update("form:datosDetalleEmpresa");
         index = -1;
@@ -1741,173 +1997,166 @@ public class ControlDetalleEmpresa implements Serializable {
 
     }
 
-    //CTRL + F11 ACTIVAR/DESACTIVAR
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el toolbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
         filtradoDetalleEmpresa();
     }
 
-    /**
-     * Metodo que acciona el filtrado de la tabla vigencia prorrateo
-     */
     public void filtradoDetalleEmpresa() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             altoTabla = "238";
-            detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
+            detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("width: 90px");
-            detalleTipoDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
+            detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
             detalleTipoDocumento.setFilterStyle("width: 70px");
-            detalleTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
+            detalleTipo = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
             detalleTipo.setFilterStyle("width: 70px");
-            detalleDireccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
+            detalleDireccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
             detalleDireccion.setFilterStyle("width: 90px");
-            detalleCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
+            detalleCiudad = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
             detalleCiudad.setFilterStyle("width: 90px");
-            detalleTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
+            detalleTelefono = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
             detalleTelefono.setFilterStyle("width: 70px");
-            detalleFax = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
+            detalleFax = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
             detalleFax.setFilterStyle("width: 70px");
-            detalleNombreRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
+            detalleNombreRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
             detalleNombreRepresentante.setFilterStyle("width: 90px");
-            detalleDocumentoRepresentane = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
+            detalleDocumentoRepresentane = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
             detalleDocumentoRepresentane.setFilterStyle("width: 90px");
-            detalleCiudadDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
+            detalleCiudadDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
             detalleCiudadDocumento.setFilterStyle("width: 90px");
-            detalleTipoNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
+            detalleTipoNit = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
             detalleTipoNit.setFilterStyle("width: 70px");
-            detalleDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
+            detalleDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
             detalleDigitoVerificacion.setFilterStyle("width: 90px");
-            detalleGerenteGeneral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
+            detalleGerenteGeneral = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
             detalleGerenteGeneral.setFilterStyle("width: 90px");
-            detallePersonaFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
+            detallePersonaFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
             detallePersonaFirma.setFilterStyle("width: 90px");
-            detalleCargoFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
+            detalleCargoFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
             detalleCargoFirma.setFilterStyle("width: 90px");
-            detalleEmail = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
+            detalleEmail = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
             detalleEmail.setFilterStyle("width: 90px");
-            detalleTipoZona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
+            detalleTipoZona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
             detalleTipoZona.setFilterStyle("width: 70px");
-            detalleCIIU = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
+            detalleCIIU = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
             detalleCIIU.setFilterStyle("width: 90px");
-            detalleActEconomica = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
+            detalleActEconomica = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
             detalleActEconomica.setFilterStyle("width: 90px");
-            detalleSubGerente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
+            detalleSubGerente = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
             detalleSubGerente.setFilterStyle("width: 90px");
-            detalleArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
+            detalleArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
             detalleArquitecto.setFilterStyle("width: 90px");
-            detalleCargoArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
+            detalleCargoArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
             detalleCargoArquitecto.setFilterStyle("width: 90px");
-            detalleRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
+            detalleRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
             detalleRepresentante.setFilterStyle("width: 90px");
-            detallePlanilla = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
+            detallePlanilla = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
             detallePlanilla.setFilterStyle("width: 90px");
-            detalleTipoPersona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
+            detalleTipoPersona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
             detalleTipoPersona.setFilterStyle("width: 90px");
-            detalleNaturalezaJ = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
+            detalleNaturalezaJ = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
             detalleNaturalezaJ.setFilterStyle("width: 90px");
-            detalleClaseAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
+            detalleClaseAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
             detalleClaseAportante.setFilterStyle("width: 90px");
-            detalleFormaPresentacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
+            detalleFormaPresentacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
             detalleFormaPresentacion.setFilterStyle("width: 90px");
-            detalleTipoAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
+            detalleTipoAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
             detalleTipoAportante.setFilterStyle("width: 90px");
-            detalleTipoAccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
+            detalleTipoAccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
             detalleTipoAccion.setFilterStyle("width: 90px");
-            detalleFechaComercio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
+            detalleFechaComercio = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
             detalleFechaComercio.setFilterStyle("width: 90px");
-            detalleAnosParafiscal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
+            detalleAnosParafiscal = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
             detalleAnosParafiscal.setFilterStyle("width: 90px");
-            detalleReformaExonera = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
+            detalleReformaExonera = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
             detalleReformaExonera.setFilterStyle("width: 15px");
-            detallePilaMultinea = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
+            detallePilaMultinea = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
             detallePilaMultinea.setFilterStyle("width: 15px");
-            detalleSolidaridadFosyga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
+            detalleSolidaridadFosyga = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
             detalleSolidaridadFosyga.setFilterStyle("width: 15px");
-            detalleExoneraLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
+            detalleExoneraLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
             detalleExoneraLnsTarifa.setFilterStyle("width: 15px");
-            detalleReportaLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
+            detalleReportaLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
             detalleReportaLnsTarifa.setFilterStyle("width: 15px");
             RequestContext.getCurrentInstance().update("form:datosDetalleEmpresa");
             tipoLista = 1;
             bandera = 1;
         } else if (bandera == 1) {
             altoTabla = "260";
-            detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
+            detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
+            detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
             detalleTipoDocumento.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
+            detalleTipo = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
             detalleTipo.setFilterStyle("display: none; visibility: hidden;");
-            detalleDireccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
+            detalleDireccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
             detalleDireccion.setFilterStyle("display: none; visibility: hidden;");
-            detalleCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
+            detalleCiudad = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
             detalleCiudad.setFilterStyle("display: none; visibility: hidden;");
-            detalleTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
+            detalleTelefono = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
             detalleTelefono.setFilterStyle("display: none; visibility: hidden;");
-            detalleFax = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
+            detalleFax = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
             detalleFax.setFilterStyle("display: none; visibility: hidden;");
-            detalleNombreRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
+            detalleNombreRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
             detalleNombreRepresentante.setFilterStyle("display: none; visibility: hidden;");
-            detalleDocumentoRepresentane = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
+            detalleDocumentoRepresentane = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
             detalleDocumentoRepresentane.setFilterStyle("display: none; visibility: hidden;");
-            detalleCiudadDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
+            detalleCiudadDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
             detalleCiudadDocumento.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
+            detalleTipoNit = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
             detalleTipoNit.setFilterStyle("display: none; visibility: hidden;");
-            detalleDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
+            detalleDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
             detalleDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            detalleGerenteGeneral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
+            detalleGerenteGeneral = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
             detalleGerenteGeneral.setFilterStyle("display: none; visibility: hidden;");
-            detallePersonaFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
+            detallePersonaFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
             detallePersonaFirma.setFilterStyle("display: none; visibility: hidden;");
-            detalleCargoFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
+            detalleCargoFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
             detalleCargoFirma.setFilterStyle("display: none; visibility: hidden;");
-            detalleEmail = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
+            detalleEmail = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
             detalleEmail.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoZona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
+            detalleTipoZona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
             detalleTipoZona.setFilterStyle("display: none; visibility: hidden;");
-            detalleCIIU = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
+            detalleCIIU = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
             detalleCIIU.setFilterStyle("display: none; visibility: hidden;");
-            detalleActEconomica = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
+            detalleActEconomica = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
             detalleActEconomica.setFilterStyle("display: none; visibility: hidden;");
-            detalleSubGerente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
+            detalleSubGerente = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
             detalleSubGerente.setFilterStyle("display: none; visibility: hidden;");
-            detalleArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
+            detalleArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
             detalleArquitecto.setFilterStyle("display: none; visibility: hidden;");
-            detalleCargoArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
+            detalleCargoArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
             detalleCargoArquitecto.setFilterStyle("display: none; visibility: hidden;");
-            detalleRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
+            detalleRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
             detalleRepresentante.setFilterStyle("display: none; visibility: hidden;");
-            detallePlanilla = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
+            detallePlanilla = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
             detallePlanilla.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoPersona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
+            detalleTipoPersona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
             detalleTipoPersona.setFilterStyle("display: none; visibility: hidden;");
-            detalleNaturalezaJ = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
+            detalleNaturalezaJ = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
             detalleNaturalezaJ.setFilterStyle("display: none; visibility: hidden;");
-            detalleClaseAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
+            detalleClaseAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
             detalleClaseAportante.setFilterStyle("display: none; visibility: hidden;");
-            detalleFormaPresentacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
+            detalleFormaPresentacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
             detalleFormaPresentacion.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
+            detalleTipoAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
             detalleTipoAportante.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoAccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
+            detalleTipoAccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
             detalleTipoAccion.setFilterStyle("display: none; visibility: hidden;");
-            detalleFechaComercio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
+            detalleFechaComercio = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
             detalleFechaComercio.setFilterStyle("display: none; visibility: hidden;");
-            detalleAnosParafiscal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
+            detalleAnosParafiscal = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
             detalleAnosParafiscal.setFilterStyle("display: none; visibility: hidden;");
-            detalleReformaExonera = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
+            detalleReformaExonera = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
             detalleReformaExonera.setFilterStyle("display: none; visibility: hidden;");
-            detallePilaMultinea = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
+            detallePilaMultinea = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
             detallePilaMultinea.setFilterStyle("display: none; visibility: hidden;");
-            detalleSolidaridadFosyga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
+            detalleSolidaridadFosyga = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
             detalleSolidaridadFosyga.setFilterStyle("display: none; visibility: hidden;");
-            detalleExoneraLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
+            detalleExoneraLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
             detalleExoneraLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
-            detalleReportaLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
+            detalleReportaLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
             detalleReportaLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDetalleEmpresa");
             bandera = 0;
@@ -1917,86 +2166,83 @@ public class ControlDetalleEmpresa implements Serializable {
 
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (bandera == 1) {
             altoTabla = "260";
-            detalleEmpresa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
+            FacesContext c = FacesContext.getCurrentInstance();
+            detalleEmpresa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmpresa");
             detalleEmpresa.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
+            detalleTipoDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoDocumento");
             detalleTipoDocumento.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
+            detalleTipo = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipo");
             detalleTipo.setFilterStyle("display: none; visibility: hidden;");
-            detalleDireccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
+            detalleDireccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDireccion");
             detalleDireccion.setFilterStyle("display: none; visibility: hidden;");
-            detalleCiudad = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
+            detalleCiudad = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudad");
             detalleCiudad.setFilterStyle("display: none; visibility: hidden;");
-            detalleTelefono = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
+            detalleTelefono = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTelefono");
             detalleTelefono.setFilterStyle("display: none; visibility: hidden;");
-            detalleFax = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
+            detalleFax = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFax");
             detalleFax.setFilterStyle("display: none; visibility: hidden;");
-            detalleNombreRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
+            detalleNombreRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNombreRepresentante");
             detalleNombreRepresentante.setFilterStyle("display: none; visibility: hidden;");
-            detalleDocumentoRepresentane = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
+            detalleDocumentoRepresentane = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDocumentoRepresentane");
             detalleDocumentoRepresentane.setFilterStyle("display: none; visibility: hidden;");
-            detalleCiudadDocumento = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
+            detalleCiudadDocumento = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCiudadDocumento");
             detalleCiudadDocumento.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoNit = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
+            detalleTipoNit = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoNit");
             detalleTipoNit.setFilterStyle("display: none; visibility: hidden;");
-            detalleDigitoVerificacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
+            detalleDigitoVerificacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleDigitoVerificacion");
             detalleDigitoVerificacion.setFilterStyle("display: none; visibility: hidden;");
-            detalleGerenteGeneral = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
+            detalleGerenteGeneral = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleGerenteGeneral");
             detalleGerenteGeneral.setFilterStyle("display: none; visibility: hidden;");
-            detallePersonaFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
+            detallePersonaFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePersonaFirma");
             detallePersonaFirma.setFilterStyle("display: none; visibility: hidden;");
-            detalleCargoFirma = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
+            detalleCargoFirma = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoFirma");
             detalleCargoFirma.setFilterStyle("display: none; visibility: hidden;");
-            detalleEmail = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
+            detalleEmail = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleEmail");
             detalleEmail.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoZona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
+            detalleTipoZona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoZona");
             detalleTipoZona.setFilterStyle("display: none; visibility: hidden;");
-            detalleCIIU = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
+            detalleCIIU = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCIIU");
             detalleCIIU.setFilterStyle("display: none; visibility: hidden;");
-            detalleActEconomica = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
+            detalleActEconomica = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleActEconomica");
             detalleActEconomica.setFilterStyle("display: none; visibility: hidden;");
-            detalleSubGerente = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
+            detalleSubGerente = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSubGerente");
             detalleSubGerente.setFilterStyle("display: none; visibility: hidden;");
-            detalleArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
+            detalleArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleArquitecto");
             detalleArquitecto.setFilterStyle("display: none; visibility: hidden;");
-            detalleCargoArquitecto = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
+            detalleCargoArquitecto = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleCargoArquitecto");
             detalleCargoArquitecto.setFilterStyle("display: none; visibility: hidden;");
-            detalleRepresentante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
+            detalleRepresentante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleRepresentante");
             detalleRepresentante.setFilterStyle("display: none; visibility: hidden;");
-            detallePlanilla = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
+            detallePlanilla = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePlanilla");
             detallePlanilla.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoPersona = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
+            detalleTipoPersona = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoPersona");
             detalleTipoPersona.setFilterStyle("display: none; visibility: hidden;");
-            detalleNaturalezaJ = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
+            detalleNaturalezaJ = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleNaturalezaJ");
             detalleNaturalezaJ.setFilterStyle("display: none; visibility: hidden;");
-            detalleClaseAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
+            detalleClaseAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleClaseAportante");
             detalleClaseAportante.setFilterStyle("display: none; visibility: hidden;");
-            detalleFormaPresentacion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
+            detalleFormaPresentacion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFormaPresentacion");
             detalleFormaPresentacion.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoAportante = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
+            detalleTipoAportante = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAportante");
             detalleTipoAportante.setFilterStyle("display: none; visibility: hidden;");
-            detalleTipoAccion = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
+            detalleTipoAccion = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleTipoAccion");
             detalleTipoAccion.setFilterStyle("display: none; visibility: hidden;");
-            detalleFechaComercio = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
+            detalleFechaComercio = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleFechaComercio");
             detalleFechaComercio.setFilterStyle("display: none; visibility: hidden;");
-            detalleAnosParafiscal = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
+            detalleAnosParafiscal = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleAnosParafiscal");
             detalleAnosParafiscal.setFilterStyle("display: none; visibility: hidden;");
-            detalleReformaExonera = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
+            detalleReformaExonera = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReformaExonera");
             detalleReformaExonera.setFilterStyle("display: none; visibility: hidden;");
-            detallePilaMultinea = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
+            detallePilaMultinea = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detallePilaMultinea");
             detallePilaMultinea.setFilterStyle("display: none; visibility: hidden;");
-            detalleSolidaridadFosyga = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
+            detalleSolidaridadFosyga = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleSolidaridadFosyga");
             detalleSolidaridadFosyga.setFilterStyle("display: none; visibility: hidden;");
-            detalleExoneraLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
+            detalleExoneraLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleExoneraLnsTarifa");
             detalleExoneraLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
-            detalleReportaLnsTarifa = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
+            detalleReportaLnsTarifa = (Column) c.getViewRoot().findComponent("form:datosDetalleEmpresa:detalleReportaLnsTarifa");
             detalleReportaLnsTarifa.setFilterStyle("display: none; visibility: hidden;");
             RequestContext.getCurrentInstance().update("form:datosDetalleEmpresa");
             bandera = 0;
@@ -2016,15 +2262,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:ACEPTAR");
         tipoActualizacion = -1;
     }
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) 
 
-    /**
-     *
-     *
-     * @param indice Fila de la tabla
-     * @param dlg Dialogo
-     * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
-     */
     public void asignarIndex(Integer indice, int dlg, int LND) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
@@ -2098,7 +2336,7 @@ public class ControlDetalleEmpresa implements Serializable {
 
             }
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setEmpresa(empresaSeleccionada);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaEmpresaDetalle");
@@ -2115,6 +2353,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:EmpresasDialogo");
         context.update("form:lovEmpresas");
         context.update("form:aceptarE");
+        context.update("form:lovEmpresas:globalFilter");
         context.execute("EmpresasDialogo.hide()");
     }
 
@@ -2156,7 +2395,7 @@ public class ControlDetalleEmpresa implements Serializable {
             cambiosPagina = false;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setCiudad(ciudadSeleccionada);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCiudadDetalle");
@@ -2173,6 +2412,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:CiudadDialogo");
         context.update("form:lovCiudad");
         context.update("form:aceptarC");
+        context.update("form:lovCiudad:globalFilter");
         context.execute("CiudadDialogo.hide()");
     }
 
@@ -2215,7 +2455,7 @@ public class ControlDetalleEmpresa implements Serializable {
             permitirIndex = true;
 
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setCiudaddocumentorepresentante(ciudadSeleccionada);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCiudadDocumentoDetalle");
@@ -2232,6 +2472,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:CiudadDocumentoDialogo");
         context.update("form:lovCiudadDocumento");
         context.update("form:aceptarCD");
+        context.update("form:lovCiudadDocumento:globalFilter");
         context.execute("CiudadDocumentoDialogo.hide()");
     }
 
@@ -2273,7 +2514,7 @@ public class ControlDetalleEmpresa implements Serializable {
             cambiosPagina = false;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setGerentegeneral(empleadoSeleccionado);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaGerenteDetalle");
@@ -2290,6 +2531,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:GerenteDialogo");
         context.update("form:lovGerente");
         context.update("form:aceptarG");
+        context.update("form:lovGerente:globalFilter");
         context.execute("GerenteDialogo.hide()");
     }
 
@@ -2331,7 +2573,7 @@ public class ControlDetalleEmpresa implements Serializable {
             cambiosPagina = false;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setSubgerente(empleadoSeleccionado);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaSubGerenteDetalle");
@@ -2348,6 +2590,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:SubGerenteDialogo");
         context.update("form:lovSubGerente");
         context.update("form:aceptarSG");
+        context.update("form:lovRepresentante:globalFilter");
         context.execute("SubGerenteDialogo.hide()");
     }
 
@@ -2389,7 +2632,7 @@ public class ControlDetalleEmpresa implements Serializable {
             cambiosPagina = false;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setRepresentantecir(empleadoSeleccionado);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaRepresentanteDetalle");
@@ -2406,6 +2649,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:RepresentanteDialogo");
         context.update("form:lovRepresentante");
         context.update("form:aceptarR");
+        context.update("form:lovRepresentante:globalFilter");
         context.execute("RepresentanteDialogo.hide()");
     }
 
@@ -2447,7 +2691,7 @@ public class ControlDetalleEmpresa implements Serializable {
             cambiosPagina = false;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setPersonafirmaconstancia(personaSeleccionada);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaPersonaFirmaDetalle");
@@ -2464,6 +2708,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:PersonaFirmaDialogo");
         context.update("form:lovPersona");
         context.update("form:aceptarPF");
+        context.update("form:lovPersona:globalFilter");
         context.execute("PersonaFirmaDialogo.hide()");
     }
 
@@ -2505,7 +2750,7 @@ public class ControlDetalleEmpresa implements Serializable {
             cambiosPagina = false;
             permitirIndex = true;
             context.update("form:ACEPTAR");
-            context.update(":form:datosDetalleEmpresa");
+            context.update("form:datosDetalleEmpresa");
         } else if (tipoActualizacion == 1) {
             nuevaDetalleEmpresa.setCargofirmaconstancia(cargoSeleccionado);
             context.update("formularioDialogos:nuevaDetalleEmpresa:nuevaCargoFirmaDetalle");
@@ -2522,6 +2767,7 @@ public class ControlDetalleEmpresa implements Serializable {
         context.update("form:CargoFirmaDialogo");
         context.update("form:lovCargoFirma");
         context.update("form:aceptarCF");
+        context.update("form:lovCargoFirma:globalFilter");
         context.execute("CargoFirmaDialogo.hide()");
     }
 
@@ -2582,27 +2828,15 @@ public class ControlDetalleEmpresa implements Serializable {
 
     }
 
-    /**
-     * Metodo que activa el boton aceptar de la pagina y los dialogos
-     */
     public void activarAceptar() {
         aceptar = false;
     }
     //EXPORTAR
 
-    /**
-     * Valida la tabla a exportar en PDF con respecto al index activo
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void validarExportPDF() throws IOException {
         exportPDF_DE();
     }
 
-    /**
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportPDF_DE() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarDE:datosDetalleExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -2613,20 +2847,10 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
     }
 
-    /**
-     * Verifica que tabla exportar XLS con respecto al index activo
-     *
-     * @throws IOException
-     */
     public void verificarExportXLS() throws IOException {
         exportXLS_EM();
     }
 
-    /**
-     * Metodo que exporta datos a XLS Vigencia Afiliaciones
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportXLS_EM() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarDE:datosDetalleExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -2637,16 +2861,12 @@ public class ControlDetalleEmpresa implements Serializable {
         secRegistro = null;
     }
 
-    //EVENTO FILTRAR
-    /**
-     * Evento que cambia la lista real a la filtrada
-     */
     public void eventoFiltrar() {
-        if (index >= 0) {
-            if (tipoLista == 0) {
-                tipoLista = 1;
-            }
+        if (tipoLista == 0) {
+            tipoLista = 1;
         }
+        infoRegistro = "Cantidad de registros : " + filtrarListaDetallesEmpresas.size();
+        RequestContext.getCurrentInstance().update("form:informacionRegistro");
     }
 
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
@@ -2748,10 +2968,9 @@ public class ControlDetalleEmpresa implements Serializable {
 
     public List<Empresas> getLovEmpresas() {
         try {
-            if (lovEmpresas == null) {
-                lovEmpresas = new ArrayList<Empresas>();
-                lovEmpresas = administrarDetalleEmpresa.lovEmpresas();
-            }
+
+            lovEmpresas = administrarDetalleEmpresa.lovEmpresas();
+
             return lovEmpresas;
         } catch (Exception e) {
             System.out.println("Error getLovEmpresas " + e.toString());
@@ -2781,10 +3000,9 @@ public class ControlDetalleEmpresa implements Serializable {
 
     public List<Ciudades> getLovCiudades() {
         try {
-            if (lovCiudades == null) {
-                lovCiudades = new ArrayList<Ciudades>();
-                lovCiudades = administrarDetalleEmpresa.lovCiudades();
-            }
+
+            lovCiudades = administrarDetalleEmpresa.lovCiudades();
+
             return lovCiudades;
         } catch (Exception e) {
             System.out.println("Error getLovCiudades " + e.toString());
@@ -2870,10 +3088,9 @@ public class ControlDetalleEmpresa implements Serializable {
 
     public List<Empleados> getLovEmpleados() {
         try {
-            if (lovEmpleados == null) {
-                lovEmpleados = new ArrayList<Empleados>();
-                lovEmpleados = administrarDetalleEmpresa.lovEmpleados();
-            }
+
+            lovEmpleados = administrarDetalleEmpresa.lovEmpleados();
+
             return lovEmpleados;
         } catch (Exception e) {
             System.out.println("Error en getLovEmpleados ... " + e.toString());
@@ -2919,10 +3136,9 @@ public class ControlDetalleEmpresa implements Serializable {
     }
 
     public List<Personas> getLovPersonas() {
-        if (lovPersonas == null) {
-            lovPersonas = new ArrayList<Personas>();
-            lovPersonas = administrarDetalleEmpresa.lovPersonas();
-        }
+
+        lovPersonas = administrarDetalleEmpresa.lovPersonas();
+
         return lovPersonas;
     }
 
@@ -2947,9 +3163,7 @@ public class ControlDetalleEmpresa implements Serializable {
     }
 
     public List<Cargos> getLovCargos() {
-        if (lovCargos == null) {
-            lovCargos = administrarDetalleEmpresa.lovCargos();
-        }
+        lovCargos = administrarDetalleEmpresa.lovCargos();
         return lovCargos;
     }
 
@@ -2995,6 +3209,141 @@ public class ControlDetalleEmpresa implements Serializable {
 
     public void setPaginaAnterior(String paginaAnterior) {
         this.paginaAnterior = paginaAnterior;
+    }
+
+    public DetallesEmpresas getDetalleTablaSeleccionado() {
+        getListaDetallesEmpresas();
+        if (listaDetallesEmpresas != null) {
+            int tam = listaDetallesEmpresas.size();
+            if (tam > 0) {
+                detalleTablaSeleccionado = listaDetallesEmpresas.get(0);
+            }
+        }
+        return detalleTablaSeleccionado;
+    }
+
+    public void setDetalleTablaSeleccionado(DetallesEmpresas detalleTablaSeleccionado) {
+        this.detalleTablaSeleccionado = detalleTablaSeleccionado;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getLovEmpresas();
+        if (lovEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + lovEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de regtistros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public String getInfoRegistroCiudad() {
+        getLovCiudades();
+        if (lovCiudades != null) {
+            infoRegistroCiudad = "Cantidad de registros : " + lovCiudades.size();
+        } else {
+            infoRegistroCiudad = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudad;
+    }
+
+    public void setInfoRegistroCiudad(String infoRegistroCiudad) {
+        this.infoRegistroCiudad = infoRegistroCiudad;
+    }
+
+    public String getInfoRegistroCiudadDocumento() {
+        getLovCiudades();
+        if (lovCiudades != null) {
+            infoRegistroCiudadDocumento = "Cantidad de registros : " + lovCiudades.size();
+        } else {
+            infoRegistroCiudadDocumento = "Cantidad de registros : 0";
+        }
+        return infoRegistroCiudadDocumento;
+    }
+
+    public void setInfoRegistroCiudadDocumento(String infoRegistroCiudadDocumento) {
+        this.infoRegistroCiudadDocumento = infoRegistroCiudadDocumento;
+    }
+
+    public String getInfoRegistroGerente() {
+        getLovEmpleados();
+        if (lovEmpleados != null) {
+            infoRegistroGerente = "Cantidad de registros : " + lovEmpleados.size();
+        } else {
+            infoRegistroGerente = "Cantidad de registros : 0";
+        }
+        return infoRegistroGerente;
+    }
+
+    public void setInfoRegistroGerente(String infoRegistroGerente) {
+        this.infoRegistroGerente = infoRegistroGerente;
+    }
+
+    public String getInfoRegistroPersona() {
+        getLovPersonas();
+        if (lovPersonas != null) {
+            infoRegistroPersona = "Cantidad de registros : " + lovPersonas.size();
+        } else {
+            infoRegistroPersona = "Cantidad de registros : 0";
+        }
+        return infoRegistroPersona;
+    }
+
+    public void setInfoRegistroPersona(String infoRegistroPersona) {
+        this.infoRegistroPersona = infoRegistroPersona;
+    }
+
+    public String getInfoRegistroCargo() {
+        getLovCargos();
+        if (lovCargos != null) {
+            infoRegistroCargo = "Cantidad de registros : " + lovCargos.size();
+        } else {
+            infoRegistroCargo = "Cantidad de registros : 0";
+        }
+        return infoRegistroCargo;
+    }
+
+    public void setInfoRegistroCargo(String infoRegistroCargo) {
+        this.infoRegistroCargo = infoRegistroCargo;
+    }
+
+    public String getInfoRegistroSubGerente() {
+        getLovEmpleados();
+        if (lovEmpleados != null) {
+            infoRegistroSubGerente = "Cantidad de registros : " + lovEmpleados.size();
+        } else {
+            infoRegistroSubGerente = "Cantidad de registros : 0";
+        }
+        return infoRegistroSubGerente;
+    }
+
+    public void setInfoRegistroSubGerente(String infoRegistroSubGerente) {
+        this.infoRegistroSubGerente = infoRegistroSubGerente;
+    }
+
+    public String getInfoRegistroRepresentante() {
+        getLovEmpresas();
+        if (lovEmpleados != null) {
+            infoRegistroRepresentante = "Cantidad de registros : " + lovEmpleados.size();
+        } else {
+            infoRegistroRepresentante = "Cantidad de registros : 0";
+        }
+        return infoRegistroRepresentante;
+    }
+
+    public void setInfoRegistroRepresentante(String infoRegistroRepresentante) {
+        this.infoRegistroRepresentante = infoRegistroRepresentante;
     }
 
 }

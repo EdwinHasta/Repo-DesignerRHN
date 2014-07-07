@@ -4,7 +4,6 @@
  */
 package Controlador;
 
-import Entidades.Cargos;
 import Entidades.Empleados;
 import Entidades.Inforeportes;
 import Entidades.ParametrosInformes;
@@ -19,7 +18,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
@@ -29,7 +27,6 @@ import javax.faces.context.FacesContext;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.primefaces.component.calendar.Calendar;
 import org.primefaces.component.column.Column;
 import org.primefaces.component.inputtext.InputText;
 import org.primefaces.context.RequestContext;
@@ -66,7 +63,6 @@ public class ControlNReporteContabilidad implements Serializable {
     //
     private String proceso;
     private boolean permitirIndex;
-    private Calendar fechaDesdeParametroL, fechaHastaParametroL;
     private InputText empleadoDesdeParametroL, empleadoHastaParametroL;
     //
     private List<Empleados> listEmpleados;
@@ -94,6 +90,7 @@ public class ControlNReporteContabilidad implements Serializable {
     private BigInteger emplDesde, emplHasta;
     //
     private String infoRegistroProceso, infoRegistroEmpleadoDesde, infoRegistroEmpleadoHasta;
+    private String infoRegistro;
 
     public ControlNReporteContabilidad() {
         color = "black";
@@ -138,8 +135,10 @@ public class ControlNReporteContabilidad implements Serializable {
     public void iniciarPagina() {
         listaIR = null;
         getListaIR();
-        if (listaIR.size() > 0) {
-            actualInfoReporteTabla = listaIR.get(0);
+        if (listaIR != null) {
+            infoRegistro = "Cantidad de registros : " + listaIR.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
         }
     }
 
@@ -162,8 +161,6 @@ public class ControlNReporteContabilidad implements Serializable {
         if (tipoLista == 1) {
             indiceSeleccion = filtrarListInforeportesUsuario.indexOf(actualInfoReporteTabla);
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:reportesContabilidad");
         resaltoParametrosParaReporte(indiceSeleccion);
     }
 
@@ -176,8 +173,6 @@ public class ControlNReporteContabilidad implements Serializable {
         if (tipoLista == 1) {
             setActualInfoReporteTabla(filtrarListInforeportesUsuario.get(i));
         }
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:reportesContabilidad");
         resaltoParametrosParaReporte(i);
     }
 
@@ -195,29 +190,35 @@ public class ControlNReporteContabilidad implements Serializable {
     public void guardarCambios() {
         try {
             if (cambiosReporte == false) {
-                if (parametroModificacion != null) {
-                    if (parametroModificacion.getProceso().getSecuencia() == null) {
-                        parametroModificacion.setProceso(null);
+                if (parametroDeInforme != null) {
+                    if (parametroDeInforme.getProceso().getSecuencia() == null) {
+                        parametroDeInforme.setProceso(null);
                     }
-                    administrarNReporteContabilidad.modificarParametrosInformes(parametroModificacion);
+                    administrarNReporteContabilidad.modificarParametrosInformes(parametroDeInforme);
                 }
             }
             if (!listaInfoReportesModificados.isEmpty()) {
-                System.out.println("Entro a guardarCambiosInfoReportes");
-                System.out.println("listaInfoReportesModificados : " + listaInfoReportesModificados.size());
-                for (int i = 0; i < listaInfoReportesModificados.size(); i++) {
-                    System.out.println("Modificara InfoReporte : " + listaInfoReportesModificados.get(i).getSecuencia());
-                }
                 administrarNReporteContabilidad.guardarCambiosInfoReportes(listaInfoReportesModificados);
             }
             cambiosReporte = true;
             RequestContext context = RequestContext.getCurrentInstance();
+
+            getListaIR();
+            if (listaIR != null) {
+                infoRegistro = "Cantidad de registros : " + listaIR.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
+            context.update("form:informacionRegistro");
+            context.update("form:ACEPTAR");
             FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
             RequestContext.getCurrentInstance().update("form:growl");
-            context.update("form:ACEPTAR");
         } catch (Exception e) {
             System.out.println("Error en guardar Cambios Controlador : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
     }
 
@@ -233,7 +234,6 @@ public class ControlNReporteContabilidad implements Serializable {
                 proceso = parametroDeInforme.getProceso().getDescripcion();
             }
         }
-        System.out.println("Casilla : " + casilla);
     }
 
     public void editarCelda() {
@@ -263,8 +263,6 @@ public class ControlNReporteContabilidad implements Serializable {
             casilla = -1;
         }
         if (casillaInforReporte >= 1) {
-            System.out.println("actualinforeporte : " + actualInfoReporteTabla.getCodigo());
-            System.out.println("actualinforeporte : " + actualInfoReporteTabla.getNombre());
             if (casillaInforReporte == 1) {
                 context.update("formularioDialogos:infoReporteCodigoD");
                 context.execute("infoReporteCodigoD.show()");
@@ -392,30 +390,29 @@ public class ControlNReporteContabilidad implements Serializable {
         listaInfoReportesModificados.clear();
         cambiosReporte = true;
         getParametroDeInforme();
-        getListaIR();
         refrescarParametros();
-        if (listaIR.size() > 0) {
-            actualInfoReporteTabla = listaIR.get(0);
+        getListaIR();
+        if (listaIR != null) {
+            infoRegistro = "Cantidad de registros : " + listaIR.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
         }
         RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
         context.update("form:ACEPTAR");
         context.update("form:reportesContabilidad");
     }
 
     public void modificacionTipoReporte(int i) {
-        System.out.println("Modificacion Reporte A Generar");
         if (tipoLista == 0) {
             if (listaInfoReportesModificados.isEmpty()) {
-                System.out.println("Op..1");
                 listaInfoReportesModificados.add(listaIR.get(i));
             } else {
                 if ((!listaInfoReportesModificados.isEmpty()) && (!listaInfoReportesModificados.contains(listaIR.get(i)))) {
                     listaInfoReportesModificados.add(listaIR.get(i));
-                    System.out.println("Op..2");
                 } else {
                     int posicion = listaInfoReportesModificados.indexOf(listaIR.get(i));
                     listaInfoReportesModificados.set(posicion, listaIR.get(i));
-                    System.out.println("Op..3");
                 }
             }
         }
@@ -532,24 +529,93 @@ public class ControlNReporteContabilidad implements Serializable {
         int indiceUnicoElemento = -1;
         int coincidencias = 0;
         if (campoConfirmar.equalsIgnoreCase("PROCESO")) {
-            parametroDeInforme.getProceso().setDescripcion(proceso);
-            for (int i = 0; i < listProcesos.size(); i++) {
-                if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                parametroDeInforme.getProceso().setDescripcion(proceso);
+                for (int i = 0; i < listProcesos.size(); i++) {
+                    if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                parametroDeInforme.setProceso(listProcesos.get(indiceUnicoElemento));
+                if (coincidencias == 1) {
+                    parametroDeInforme.setProceso(listProcesos.get(indiceUnicoElemento));
+                    parametroModificacion = parametroDeInforme;
+                    listProcesos.clear();
+                    getListProcesos();
+                    cambiosReporte = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("form:ProcesoDialogo");
+                    context.execute("ProcesoDialogo.show()");
+                }
+            } else {
+                parametroDeInforme.setProceso(new Procesos());
                 parametroModificacion = parametroDeInforme;
                 listProcesos.clear();
                 getListProcesos();
                 cambiosReporte = false;
                 context.update("form:ACEPTAR");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("DESDE")) {
+            if (!valorConfirmar.isEmpty()) {
+                parametroDeInforme.setCodigoempleadodesde(emplDesde);
+                for (int i = 0; i < listEmpleados.size(); i++) {
+                    if (listEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    parametroDeInforme.setCodigoempleadodesde(listEmpleados.get(indiceUnicoElemento).getCodigoempleado());
+                    parametroModificacion = parametroDeInforme;
+                    listProcesos.clear();
+                    getListProcesos();
+                    cambiosReporte = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("form:EmpleadoDesdeDialogo");
+                    context.execute("EmpleadoDesdeDialogo.show()");
+                }
             } else {
-                permitirIndex = false;
-                context.update("form:ProcesoDialogo");
-                context.execute("ProcesoDialogo.show()");
+                parametroDeInforme.setCodigoempleadodesde(new BigInteger("0"));
+                parametroModificacion = parametroDeInforme;
+                listProcesos.clear();
+                getListProcesos();
+                cambiosReporte = false;
+                context.update("form:ACEPTAR");
+            }
+        }
+        if (campoConfirmar.equalsIgnoreCase("HASTA")) {
+            if (!valorConfirmar.isEmpty()) {
+                parametroDeInforme.setCodigoempleadohasta(emplHasta);
+                for (int i = 0; i < listEmpleados.size(); i++) {
+                    if (listEmpleados.get(i).getCodigoempleadoSTR().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    parametroDeInforme.setCodigoempleadohasta(listEmpleados.get(indiceUnicoElemento).getCodigoempleado());
+                    parametroModificacion = parametroDeInforme;
+                    listEmpleados.clear();
+                    getListEmpleados();
+                    cambiosReporte = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("form:EmpleadoHastaDialogo");
+                    context.execute("EmpleadoHastaDialogo.show()");
+                }
+            } else {
+                parametroDeInforme.setCodigoempleadohasta(new BigInteger("9999999999999999999999"));
+                parametroModificacion = parametroDeInforme;
+                listEmpleados.clear();
+                getListEmpleados();
+                cambiosReporte = false;
+                context.update("form:ACEPTAR");
             }
         }
     }
@@ -752,6 +818,15 @@ public class ControlNReporteContabilidad implements Serializable {
         }
     }
 
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de Registros: " + filtrarListInforeportesUsuario.size();
+        context.update("form:informacionRegistro");
+    }
+
     public void cancelarRequisitosReporte() {
         requisitosReporte = "";
     }
@@ -763,8 +838,8 @@ public class ControlNReporteContabilidad implements Serializable {
                 parametroDeInforme = administrarNReporteContabilidad.parametrosDeReporte();
             }
 
-            if (parametroDeInforme.getCargo() == null) {
-                parametroDeInforme.setCargo(new Cargos());
+            if (parametroDeInforme.getProceso()== null) {
+                parametroDeInforme.setProceso(new Procesos());
             }
             return parametroDeInforme;
         } catch (Exception e) {
@@ -953,6 +1028,13 @@ public class ControlNReporteContabilidad implements Serializable {
     }
 
     public Inforeportes getActualInfoReporteTabla() {
+        getListaIR();
+        if (listaIR != null) {
+            int tam = listaIR.size();
+            if (tam > 0) {
+                actualInfoReporteTabla = listaIR.get(0);
+            }
+        }
         return actualInfoReporteTabla;
     }
 
@@ -1033,5 +1115,15 @@ public class ControlNReporteContabilidad implements Serializable {
     public void setInfoRegistroEmpleadoHasta(String infoRegistroEmpleadoHasta) {
         this.infoRegistroEmpleadoHasta = infoRegistroEmpleadoHasta;
     }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+    
+    
 
 }

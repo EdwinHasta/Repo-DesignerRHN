@@ -68,7 +68,7 @@ public class AdministrarEscalafones implements AdministrarEscalafonesInterface {
     //--------------------------------------------------------------------------
     //MÉTODOS
     //--------------------------------------------------------------------------    
-    @Override
+    //@Override
     public List<Escalafones> listaEscalafones() {
         try {
             List<Escalafones> lista = persistenciaEscalafones.buscarEscalafones(em);

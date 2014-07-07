@@ -4,8 +4,10 @@
  */
 package InterfaceAdministrar;
 
+import Entidades.CentrosCostos;
 import Entidades.Comprobantes;
 import Entidades.CortesProcesos;
+import Entidades.Cuentas;
 import Entidades.DetallesFormulas;
 import Entidades.Empleados;
 import Entidades.Procesos;
@@ -87,4 +89,8 @@ public interface AdministrarEmplComprobantesInterface {
      * @param idSesion Identificador se la sesion.
      */
     public void obtenerConexion(String idSesion);
+
+    public List<Cuentas> lovCuentas();
+
+    public List<CentrosCostos> lovCentrosCostos();
 }

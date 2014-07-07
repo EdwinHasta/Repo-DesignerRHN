@@ -39,16 +39,19 @@ public class ControlEmpresa implements Serializable {
     AdministrarEmpresasInterface administrarEmpresa;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
+
     //
     private List<Empresas> listaEmpresas;
     private List<Empresas> filtrarListaEmpresas;
+    private Empresas empresaTablaSeleccionada;
     //
     private List<VigenciasMonedasBases> listaVigenciasMonedasBases;
     private List<VigenciasMonedasBases> filtrarListaVigenciasMonedasBases;
+    private VigenciasMonedasBases vigenciaTablaSeleccionada;
     //
     private List<Circulares> listaCirculares;
     private List<Circulares> filtrarListaCirculares;
+    private Circulares circularTablaSeleccionada;
     //Activo/Desactivo Crtl + F11
     private int bandera, banderaVigencia, banderaCircular;
     //Columnas Tabla 
@@ -134,6 +137,7 @@ public class ControlEmpresa implements Serializable {
     //
     private boolean activoBtnesAdd;
     //
+    private String infoRegistroEmpresa, infoRegistroMoneda, infoRegistroCentro;
 
     public ControlEmpresa() {
         activoBtnesAdd = true;
@@ -143,8 +147,8 @@ public class ControlEmpresa implements Serializable {
         paginaAnterior = "";
         //altos tablas
         altoTablaEmpresa = "112";
-        altoTablaVigencia = "110";
-        altoTablaCircular = "110";
+        altoTablaVigencia = "125";
+        altoTablaCircular = "130";
         //Permitir index
         permitirIndex = true;
         permitirIndexVigencia = true;
@@ -158,6 +162,7 @@ public class ControlEmpresa implements Serializable {
         empresaOrigenClonado = new Empresas();
         empresaDestinoClonado = new Empresas();
         //index tablas
+        index = -1;
         indexVigencia = -1;
         indexCircular = -1;
         indexClonadoOrigen = -1;
@@ -223,8 +228,8 @@ public class ControlEmpresa implements Serializable {
         banderaVigencia = 0;
         banderaCircular = 0;
     }
-    
-     @PostConstruct
+
+    @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
@@ -247,12 +252,6 @@ public class ControlEmpresa implements Serializable {
         listaCirculares = null;
         listaEmpresas = null;
         getListaEmpresas();
-        int tam = listaEmpresas.size();
-        if (tam >= 1) {
-            index = 0;
-            getListaCirculares();
-            getListaVigenciasMonedasBases();
-        }
     }
 
     public boolean validarFechaVigenciaMonedaBase(int i) {
@@ -401,17 +400,47 @@ public class ControlEmpresa implements Serializable {
             if (tipoLista == 1) {
                 aux = filtrarListaEmpresas.get(index);
             }
-            if (aux.getNombre().isEmpty() || aux.getNit() <= 0) {
+            if (aux.getNit() <= 0) {
+                retorno = false;
+            }
+            if (aux.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (aux.getNombre().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (aux.getCodigo() <= 0) {
                 retorno = false;
             }
         }
         if (i == 1) {
-            if (nuevoEmpresa.getNombre().isEmpty() || nuevoEmpresa.getNit() <= 0) {
+            if (nuevoEmpresa.getNit() <= 0) {
+                retorno = false;
+            }
+            if (nuevoEmpresa.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (nuevoEmpresa.getNombre().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (nuevoEmpresa.getCodigo() <= 0) {
                 retorno = false;
             }
         }
         if (i == 2) {
-            if (duplicarEmpresa.getNombre().isEmpty() || duplicarEmpresa.getNit() <= 0) {
+            if (duplicarEmpresa.getNit() <= 0) {
+                retorno = false;
+            }
+            if (duplicarEmpresa.getNombre() == null) {
+                retorno = false;
+            } else {
+                if (duplicarEmpresa.getNombre().isEmpty()) {
+                    retorno = false;
+                }
+            }
+            if (duplicarEmpresa.getCodigo() <= 0) {
                 retorno = false;
             }
         }
@@ -455,8 +484,7 @@ public class ControlEmpresa implements Serializable {
                 listaEmpresas.get(index).setCodigo(auxCodigoEmpresa);
                 listaEmpresas.get(index).setNombre(auxNombreEmpresa);
                 listaEmpresas.get(index).setNit(auxNitEmpresa);
-            }
-            if (tipoLista == 1) {
+            } else {
                 filtrarListaEmpresas.get(index).setCodigo(auxCodigoEmpresa);
                 filtrarListaEmpresas.get(index).setNombre(auxNombreEmpresa);
                 filtrarListaEmpresas.get(index).setNit(auxNitEmpresa);
@@ -479,12 +507,18 @@ public class ControlEmpresa implements Serializable {
         }
         if (tamDes >= 1 && tamDes <= 50) {
             if (tipoLista == 0) {
-                String textM = listaEmpresas.get(indice).getNombre().toUpperCase();
-                listaEmpresas.get(indice).setNombre(textM);
-                String textM1 = listaEmpresas.get(indice).getReglamento().toUpperCase();
-                listaEmpresas.get(indice).setReglamento(textM1);
-                String textM2 = listaEmpresas.get(indice).getManualadministrativo().toUpperCase();
-                listaEmpresas.get(indice).setManualadministrativo(textM2);
+                if (listaEmpresas.get(indice).getNombre() != null) {
+                    String textM = listaEmpresas.get(indice).getNombre().toUpperCase();
+                    listaEmpresas.get(indice).setNombre(textM);
+                }
+                if (listaEmpresas.get(indice).getReglamento() != null) {
+                    String textM1 = listaEmpresas.get(indice).getReglamento().toUpperCase();
+                    listaEmpresas.get(indice).setReglamento(textM1);
+                }
+                if (listaEmpresas.get(indice).getManualadministrativo() != null) {
+                    String textM2 = listaEmpresas.get(indice).getManualadministrativo().toUpperCase();
+                    listaEmpresas.get(indice).setManualadministrativo(textM2);
+                }
                 if (!listEmpresasCrear.contains(listaEmpresas.get(indice))) {
                     if (listEmpresasModificar.isEmpty()) {
                         listEmpresasModificar.add(listaEmpresas.get(indice));
@@ -495,14 +529,19 @@ public class ControlEmpresa implements Serializable {
                         guardado = false;
                     }
                 }
-            }
-            if (tipoLista == 1) {
-                String textM = filtrarListaEmpresas.get(indice).getNombre().toUpperCase();
-                filtrarListaEmpresas.get(indice).setNombre(textM);
-                String textM1 = filtrarListaEmpresas.get(indice).getReglamento().toUpperCase();
-                listaEmpresas.get(indice).setReglamento(textM1);
-                String textM2 = filtrarListaEmpresas.get(indice).getManualadministrativo().toUpperCase();
-                listaEmpresas.get(indice).setManualadministrativo(textM2);
+            } else {
+                if (filtrarListaEmpresas.get(indice).getNombre() != null) {
+                    String textM = filtrarListaEmpresas.get(indice).getNombre().toUpperCase();
+                    filtrarListaEmpresas.get(indice).setNombre(textM);
+                }
+                if (filtrarListaEmpresas.get(indice).getReglamento() != null) {
+                    String textM1 = filtrarListaEmpresas.get(indice).getReglamento().toUpperCase();
+                    filtrarListaEmpresas.get(indice).setReglamento(textM1);
+                }
+                if (filtrarListaEmpresas.get(indice).getManualadministrativo() != null) {
+                    String textM2 = filtrarListaEmpresas.get(indice).getManualadministrativo().toUpperCase();
+                    filtrarListaEmpresas.get(indice).setManualadministrativo(textM2);
+                }
                 if (!listEmpresasCrear.contains(filtrarListaEmpresas.get(indice))) {
                     if (listEmpresasModificar.isEmpty()) {
                         listEmpresasModificar.add(filtrarListaEmpresas.get(indice));
@@ -523,10 +562,9 @@ public class ControlEmpresa implements Serializable {
             context.update("form:datosEmpresa");
         } else {
             if (tipoLista == 0) {
-                listaEmpresas.get(index).setNombre(auxNombreEmpresa);
-            }
-            if (tipoLista == 1) {
-                filtrarListaEmpresas.get(index).setNombre(auxNombreEmpresa);
+                listaEmpresas.get(indice).setNombre(auxNombreEmpresa);
+            } else {
+                filtrarListaEmpresas.get(indice).setNombre(auxNombreEmpresa);
             }
             index = -1;
             secRegistro = null;
@@ -534,6 +572,7 @@ public class ControlEmpresa implements Serializable {
             context.update("form:datosEmpresa");
             context.execute("errorNombreEmpresa.show()");
         }
+
     }
 
     public void modificarEmpresa(int indice, String confirmarCambio, String valorConfirmar) {
@@ -542,32 +581,43 @@ public class ControlEmpresa implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CENTROCOSTO")) {
-            if (tipoLista == 0) {
-                listaEmpresas.get(indice).getCentrocosto().setNombre(centroCosto);
-            } else {
-                filtrarListaEmpresas.get(indice).getCentrocosto().setNombre(centroCosto);
-            }
-            for (int i = 0; i < lovCentrosCostos.size(); i++) {
-                if (lovCentrosCostos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listaEmpresas.get(indice).setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                    listaEmpresas.get(indice).getCentrocosto().setNombre(centroCosto);
                 } else {
-                    filtrarListaEmpresas.get(indice).setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                    filtrarListaEmpresas.get(indice).getCentrocosto().setNombre(centroCosto);
                 }
+                for (int i = 0; i < lovCentrosCostos.size(); i++) {
+                    if (lovCentrosCostos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listaEmpresas.get(indice).setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListaEmpresas.get(indice).setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                    }
+                    lovCentrosCostos.clear();
+                    getLovCentrosCostos();
+                    cambiosPagina = false;
+                    context.update("form:ACEPTAR");
+                } else {
+                    permitirIndex = false;
+                    context.update("form:CentroCostoDialogo");
+                    context.execute("CentroCostoDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 lovCentrosCostos.clear();
                 getLovCentrosCostos();
-                cambiosPagina = false;
-                context.update("form:ACEPTAR");
-            } else {
-                permitirIndex = false;
-                context.update("form:CentroCostoDialogo");
-                context.execute("CentroCostoDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listaEmpresas.get(indice).setCentrocosto(new CentrosCostos());
+                } else {
+                    filtrarListaEmpresas.get(indice).setCentrocosto(new CentrosCostos());
+                }
             }
         }
         if (coincidencias == 1) {
@@ -582,8 +632,7 @@ public class ControlEmpresa implements Serializable {
                         guardado = false;
                     }
                 }
-            }
-            if (tipoLista == 1) {
+            } else {
                 if (!listEmpresasCrear.contains(filtrarListaEmpresas.get(indice))) {
                     if (listEmpresasModificar.isEmpty()) {
                         listEmpresasModificar.add(filtrarListaEmpresas.get(indice));
@@ -612,8 +661,7 @@ public class ControlEmpresa implements Serializable {
                     guardadoVigencia = false;
                 }
             }
-        }
-        if (tipoListaVigencia == 1) {
+        } else {
             if (!listVigenciasMonedasBasesCrear.contains(filtrarListaVigenciasMonedasBases.get(indice))) {
                 if (listVigenciasMonedasBasesModificar.isEmpty()) {
                     listVigenciasMonedasBasesModificar.add(filtrarListaVigenciasMonedasBases.get(indice));
@@ -708,8 +756,7 @@ public class ControlEmpresa implements Serializable {
                         guardadoVigencia = false;
                     }
                 }
-            }
-            if (tipoListaVigencia == 1) {
+            } else {
                 if (!listVigenciasMonedasBasesCrear.contains(filtrarListaVigenciasMonedasBases.get(indice))) {
                     if (listVigenciasMonedasBasesModificar.isEmpty()) {
                         listVigenciasMonedasBasesModificar.add(filtrarListaVigenciasMonedasBases.get(indice));
@@ -732,8 +779,7 @@ public class ControlEmpresa implements Serializable {
             Circulares aux = new Circulares();
             if (tipoLista == 0) {
                 aux = listaCirculares.get(indexCircular);
-            }
-            if (tipoLista == 1) {
+            } else {
                 aux = filtrarListaCirculares.get(indexCircular);
             }
             if (aux.getFecha() == null) {
@@ -755,10 +801,14 @@ public class ControlEmpresa implements Serializable {
 
     public void modificarCirculares(int indice) {
         if (tipoListaCircular == 0) {
-            String textM = listCircularesCrear.get(indice).getExpedidopor().toUpperCase();
-            listCircularesCrear.get(indice).setExpedidopor(textM);
-            String textM1 = listCircularesCrear.get(indice).getTexto().toUpperCase();
-            listCircularesCrear.get(indice).setTexto(textM1);
+            if (listaCirculares.get(indice).getExpedidopor() != null) {
+                String textM = listaCirculares.get(indice).getExpedidopor().toUpperCase();
+                listaCirculares.get(indice).setExpedidopor(textM);
+            }
+            if (listaCirculares.get(indice).getExpedidopor() != null) {
+                String textM1 = listaCirculares.get(indice).getTexto().toUpperCase();
+                listaCirculares.get(indice).setTexto(textM1);
+            }
             if (!listCircularesCrear.contains(listaCirculares.get(indice))) {
                 if (listCircularesModificar.isEmpty()) {
                     listCircularesModificar.add(listaCirculares.get(indice));
@@ -769,12 +819,15 @@ public class ControlEmpresa implements Serializable {
                     guardadoCircular = false;
                 }
             }
-        }
-        if (tipoListaCircular == 1) {
-            String textM = filtrarListaCirculares.get(indice).getExpedidopor().toUpperCase();
-            filtrarListaCirculares.get(indice).setExpedidopor(textM);
-            String textM1 = filtrarListaCirculares.get(indice).getTexto().toUpperCase();
-            filtrarListaCirculares.get(indice).setTexto(textM1);
+        } else {
+            if (filtrarListaCirculares.get(indice).getExpedidopor() != null) {
+                String textM = filtrarListaCirculares.get(indice).getExpedidopor().toUpperCase();
+                filtrarListaCirculares.get(indice).setExpedidopor(textM);
+            }
+            if (filtrarListaCirculares.get(indice).getExpedidopor() != null) {
+                String textM1 = filtrarListaCirculares.get(indice).getTexto().toUpperCase();
+                filtrarListaCirculares.get(indice).setTexto(textM1);
+            }
             if (!listCircularesCrear.contains(filtrarListaCirculares.get(indice))) {
                 if (listCircularesModificar.isEmpty()) {
                     listCircularesModificar.add(filtrarListaCirculares.get(indice));
@@ -809,9 +862,11 @@ public class ControlEmpresa implements Serializable {
                     secRegistro = listaEmpresas.get(index).getSecuencia();
                     auxNombreEmpresa = listaEmpresas.get(index).getNombre();
                     auxNitEmpresa = listaEmpresas.get(index).getNit();
+                    if(listaEmpresas.get(index).getCentrocosto() == null){
+                        System.out.println("Centro costo nulo");
+                    }
                     centroCosto = listaEmpresas.get(index).getCentrocosto().getNombre();
-                }
-                if (tipoLista == 1) {
+                } else {
                     auxCodigoEmpresa = filtrarListaEmpresas.get(index).getCodigo();
                     secRegistro = filtrarListaEmpresas.get(index).getSecuencia();
                     auxNombreEmpresa = filtrarListaEmpresas.get(index).getNombre();
@@ -830,7 +885,7 @@ public class ControlEmpresa implements Serializable {
                 getListaCirculares();
                 context.update("form:datosCircular");
                 if (banderaVigencia == 1) {
-                    altoTablaVigencia = "110";
+                    altoTablaVigencia = "125";
                     vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                     vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -843,7 +898,7 @@ public class ControlEmpresa implements Serializable {
                     tipoListaVigencia = 0;
                 }
                 if (banderaCircular == 1) {
-                    altoTablaCircular = "110";
+                    altoTablaCircular = "130";
                     circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                     circularFecha.setFilterStyle("display: none; visibility: hidden;");
                     circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -873,8 +928,7 @@ public class ControlEmpresa implements Serializable {
                 moneda = listaVigenciasMonedasBases.get(indexVigencia).getMoneda().getNombre();
                 codigoMoneda = listaVigenciasMonedasBases.get(indexVigencia).getMoneda().getCodigo();
                 auxFechaVigencia = listaVigenciasMonedasBases.get(indexVigencia).getFecha();
-            }
-            if (tipoListaVigencia == 1) {
+            } else {
                 secRegistroVigencia = filtrarListaVigenciasMonedasBases.get(indexVigencia).getSecuencia();
                 moneda = filtrarListaVigenciasMonedasBases.get(indexVigencia).getMoneda().getNombre();
                 codigoMoneda = filtrarListaVigenciasMonedasBases.get(indexVigencia).getMoneda().getCodigo();
@@ -896,8 +950,7 @@ public class ControlEmpresa implements Serializable {
         if (tipoListaCircular == 0) {
             secRegistroCircular = listaCirculares.get(indexCircular).getSecuencia();
             auxFechaCircular = listaCirculares.get(indexCircular).getFecha();
-        }
-        if (tipoListaCircular == 1) {
+        } else {
             secRegistroCircular = filtrarListaCirculares.get(indexCircular).getSecuencia();
             auxFechaCircular = filtrarListaCirculares.get(indexCircular).getFecha();
         }
@@ -930,9 +983,6 @@ public class ControlEmpresa implements Serializable {
             if (guardadoCircular == false) {
                 guardarCambiosCircular();
             }
-            FacesMessage msg = new FacesMessage("Información", "Los datos se guardaron con Éxito.");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            RequestContext.getCurrentInstance().update("form:growl");
             cambiosPagina = true;
             RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:ACEPTAR");
@@ -945,88 +995,113 @@ public class ControlEmpresa implements Serializable {
     }
 
     public void guardarCambiosEmpresa() {
-
-        if (!listEmpresasBorrar.isEmpty()) {
-            for (int i = 0; i < listEmpresasBorrar.size(); i++) {
-                administrarEmpresa.borrarEmpresas(listEmpresasBorrar);
+        try {
+            if (!listEmpresasBorrar.isEmpty()) {
+                for (int i = 0; i < listEmpresasBorrar.size(); i++) {
+                    administrarEmpresa.borrarEmpresas(listEmpresasBorrar);
+                }
+                listEmpresasBorrar.clear();
             }
-            listEmpresasBorrar.clear();
-        }
-        if (!listEmpresasCrear.isEmpty()) {
-            for (int i = 0; i < listEmpresasCrear.size(); i++) {
-                administrarEmpresa.crearEmpresas(listEmpresasCrear);
+            if (!listEmpresasCrear.isEmpty()) {
+                for (int i = 0; i < listEmpresasCrear.size(); i++) {
+                    administrarEmpresa.crearEmpresas(listEmpresasCrear);
+                }
+                listEmpresasCrear.clear();
             }
-            listEmpresasCrear.clear();
+            if (!listEmpresasModificar.isEmpty()) {
+                administrarEmpresa.editarEmpresas(listEmpresasModificar);
+                listEmpresasModificar.clear();
+            }
+            listaEmpresas = null;
+            activoBtnesAdd = true;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:DETALLES");
+            context.update("form:EMPRESABANCO");
+            context.update("form:DIRECCIONES");
+            context.update("form:datosEmpresa");
+            guardado = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            index = -1;
+            secRegistro = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Empresa se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosEmpresa : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Empresa, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listEmpresasModificar.isEmpty()) {
-            administrarEmpresa.editarEmpresas(listEmpresasModificar);
-            listEmpresasModificar.clear();
-        }
-        listaEmpresas = null;
-        activoBtnesAdd = true;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:DETALLES");
-        context.update("form:EMPRESABANCO");
-        context.update("form:DIRECCIONES");
-        context.update("form:datosEmpresa");
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        index = -1;
-        secRegistro = null;
 
     }
 
     public void guardarCambiosVigencia() {
-        if (!listVigenciasMonedasBasesBorrar.isEmpty()) {
-            administrarEmpresa.borrarVigenciasMonedasBases(listVigenciasMonedasBasesBorrar);
-            listVigenciasMonedasBasesBorrar.clear();
+        try {
+            if (!listVigenciasMonedasBasesBorrar.isEmpty()) {
+                administrarEmpresa.borrarVigenciasMonedasBases(listVigenciasMonedasBasesBorrar);
+                listVigenciasMonedasBasesBorrar.clear();
+            }
+            if (!listVigenciasMonedasBasesCrear.isEmpty()) {
+                administrarEmpresa.crearVigenciasMonedasBases(listVigenciasMonedasBasesCrear);
+                listVigenciasMonedasBasesCrear.clear();
+            }
+            if (!listVigenciasMonedasBasesModificar.isEmpty()) {
+                administrarEmpresa.editarVigenciasMonedasBases(listVigenciasMonedasBasesModificar);
+                listVigenciasMonedasBasesModificar.clear();
+            }
+            listaVigenciasMonedasBases = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosVigenciaMonedaBase");
+            guardadoVigencia = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            indexVigencia = -1;
+            secRegistroVigencia = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Concepto Juridico se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosVigencia : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Concepto Juridico, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listVigenciasMonedasBasesCrear.isEmpty()) {
-            administrarEmpresa.crearVigenciasMonedasBases(listVigenciasMonedasBasesCrear);
-            listVigenciasMonedasBasesCrear.clear();
-        }
-        if (!listVigenciasMonedasBasesModificar.isEmpty()) {
-            administrarEmpresa.editarVigenciasMonedasBases(listVigenciasMonedasBasesModificar);
-            listVigenciasMonedasBasesModificar.clear();
-        }
-        listaVigenciasMonedasBases = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosVigenciaMonedaBase");
-        guardadoVigencia = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        indexVigencia = -1;
-        secRegistroVigencia = null;
     }
 
     public void guardarCambiosCircular() {
-        if (!listCircularesBorrar.isEmpty()) {
-            administrarEmpresa.borrarCirculares(listCircularesBorrar);
-            listCircularesBorrar.clear();
+        try {
+            if (!listCircularesBorrar.isEmpty()) {
+                administrarEmpresa.borrarCirculares(listCircularesBorrar);
+                listCircularesBorrar.clear();
+            }
+            if (!listCircularesCrear.isEmpty()) {
+                administrarEmpresa.crearCirculares(listCircularesCrear);
+                listCircularesCrear.clear();
+            }
+            if (!listCircularesModificar.isEmpty()) {
+                administrarEmpresa.editarCirculares(listCircularesModificar);
+                listCircularesModificar.clear();
+            }
+            listaCirculares = null;
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:datosCircular");
+            guardadoCircular = true;
+            RequestContext.getCurrentInstance().update("form:aceptar");
+            k = 0;
+            indexCircular = -1;
+            secRegistroCircular = null;
+            FacesMessage msg = new FacesMessage("Información", "Los datos de Circular se guardaron con Éxito.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosCircular : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado de Circular, intente nuevamente");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            RequestContext.getCurrentInstance().update("form:growl");
         }
-        if (!listCircularesCrear.isEmpty()) {
-            administrarEmpresa.crearCirculares(listCircularesCrear);
-            listCircularesCrear.clear();
-        }
-        if (!listCircularesModificar.isEmpty()) {
-            administrarEmpresa.editarCirculares(listCircularesModificar);
-            listCircularesModificar.clear();
-        }
-        listaCirculares = null;
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.update("form:datosCircular");
-        guardadoCircular = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
-        k = 0;
-        indexCircular = -1;
-        secRegistroCircular = null;
     }
 
-    //CANCELAR MODIFICACIONES
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
     public void cancelarModificacionGeneral() {
         if (guardado == false) {
             cancelarModificacionEmpresa();
@@ -1091,7 +1166,7 @@ public class ControlEmpresa implements Serializable {
 
     public void cancelarModificacionVigencia() {
         if (banderaVigencia == 1) {
-            altoTablaVigencia = "110";
+            altoTablaVigencia = "125";
             vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
             vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
             vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1118,7 +1193,7 @@ public class ControlEmpresa implements Serializable {
 
     public void cancelarModificacionCircular() {
         if (banderaCircular == 1) {
-            altoTablaCircular = "110";
+            altoTablaCircular = "130";
             circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
             circularFecha.setFilterStyle("display: none; visibility: hidden;");
             circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -1147,8 +1222,7 @@ public class ControlEmpresa implements Serializable {
         if (index >= 0) {
             if (tipoLista == 0) {
                 editarEmpresa = listaEmpresas.get(index);
-            }
-            if (tipoLista == 1) {
+            } else {
                 editarEmpresa = filtrarListaEmpresas.get(index);
             }
             if (cualCelda == 0) {
@@ -1194,8 +1268,7 @@ public class ControlEmpresa implements Serializable {
         if (indexVigencia >= 0) {
             if (tipoListaVigencia == 0) {
                 editarVigenciaMonedaBase = listaVigenciasMonedasBases.get(indexVigencia);
-            }
-            if (tipoListaVigencia == 1) {
+            } else {
                 editarVigenciaMonedaBase = listaVigenciasMonedasBases.get(indexVigencia);
             }
             if (cualCeldaVigencia == 0) {
@@ -1217,8 +1290,7 @@ public class ControlEmpresa implements Serializable {
         if (indexCircular >= 0) {
             if (tipoListaCircular == 0) {
                 editarCircular = listaCirculares.get(indexCircular);
-            }
-            if (tipoListaCircular == 1) {
+            } else {
                 editarCircular = listaCirculares.get(indexCircular);
             }
             if (cualCeldaCircular == 0) {
@@ -1350,7 +1422,7 @@ public class ControlEmpresa implements Serializable {
         if (respueta == true) {
             if (validarFechaVigenciaMonedaBase(1) == true) {
                 if (banderaVigencia == 1) {
-                    altoTablaVigencia = "110";
+                    altoTablaVigencia = "125";
                     vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                     vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1367,8 +1439,7 @@ public class ControlEmpresa implements Serializable {
                 nuevoVigenciaMonedaBase.setSecuencia(l);
                 if (tipoLista == 0) {
                     nuevoVigenciaMonedaBase.setEmpresa(listaEmpresas.get(indexAux));
-                }
-                if (tipoLista == 1) {
+                } else {
                     nuevoVigenciaMonedaBase.setEmpresa(filtrarListaEmpresas.get(indexAux));
                 }
                 if (listaVigenciasMonedasBases.size() == 0) {
@@ -1405,7 +1476,7 @@ public class ControlEmpresa implements Serializable {
         if (pte == true) {
             if (validarFechaCircular(1) == true) {
                 if (banderaCircular == 1) {
-                    altoTablaCircular = "110";
+                    altoTablaCircular = "130";
                     circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                     circularFecha.setFilterStyle("display: none; visibility: hidden;");
                     circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -1422,8 +1493,7 @@ public class ControlEmpresa implements Serializable {
                 nuevoCircular.setSecuencia(l);
                 if (tipoLista == 0) {
                     nuevoCircular.setEmpresa(listaEmpresas.get(indexAux));
-                }
-                if (tipoLista == 1) {
+                } else {
                     nuevoCircular.setEmpresa(filtrarListaEmpresas.get(indexAux));
                 }
                 if (listaCirculares.size() == 0) {
@@ -1454,9 +1524,6 @@ public class ControlEmpresa implements Serializable {
         }
     }
 
-    //LIMPIAR NUEVO REGISTRO
-    /**
-     */
     public void limpiarNuevaEmpresa() {
         nuevoEmpresa = new Empresas();
         nuevoEmpresa.setCentrocosto(new CentrosCostos());
@@ -1482,9 +1549,6 @@ public class ControlEmpresa implements Serializable {
         secRegistroCircular = null;
     }
 
-    //DUPLICAR VC
-    /**
-     */
     public void verificarRegistroDuplicar() {
         if (index >= 0) {
             duplicarEmpresaM();
@@ -1499,10 +1563,7 @@ public class ControlEmpresa implements Serializable {
 
     public void duplicarEmpresaM() {
         duplicarEmpresa = new Empresas();
-        k++;
-        l = BigInteger.valueOf(k);
         if (tipoLista == 0) {
-            duplicarEmpresa.setSecuencia(l);
             duplicarEmpresa.setCodigo(listaEmpresas.get(index).getCodigo());
             duplicarEmpresa.setNit(listaEmpresas.get(index).getNit());
             duplicarEmpresa.setNombre(listaEmpresas.get(index).getNombre());
@@ -1511,9 +1572,7 @@ public class ControlEmpresa implements Serializable {
             duplicarEmpresa.setLogo(listaEmpresas.get(index).getLogo());
             duplicarEmpresa.setCodigoalternativo(listaEmpresas.get(index).getCodigoalternativo());
             duplicarEmpresa.setCentrocosto(listaEmpresas.get(index).getCentrocosto());
-        }
-        if (tipoLista == 1) {
-            duplicarEmpresa.setSecuencia(l);
+        } else {
             duplicarEmpresa.setCodigo(filtrarListaEmpresas.get(index).getCodigo());
             duplicarEmpresa.setNit(filtrarListaEmpresas.get(index).getNit());
             duplicarEmpresa.setNombre(filtrarListaEmpresas.get(index).getNombre());
@@ -1537,15 +1596,10 @@ public class ControlEmpresa implements Serializable {
 
     public void duplicarVigenciaMonedaBaseM() {
         duplicarVigenciaMonedaBase = new VigenciasMonedasBases();
-        k++;
-        l = BigInteger.valueOf(k);
         if (tipoListaVigencia == 0) {
-            duplicarVigenciaMonedaBase.setSecuencia(l);
             duplicarVigenciaMonedaBase.setFecha(listaVigenciasMonedasBases.get(indexVigencia).getFecha());
             duplicarVigenciaMonedaBase.setMoneda(listaVigenciasMonedasBases.get(indexVigencia).getMoneda());
-        }
-        if (tipoListaVigencia == 1) {
-            duplicarVigenciaMonedaBase.setSecuencia(l);
+        } else {
             duplicarVigenciaMonedaBase.setFecha(filtrarListaVigenciasMonedasBases.get(indexVigencia).getFecha());
             duplicarVigenciaMonedaBase.setMoneda(filtrarListaVigenciasMonedasBases.get(indexVigencia).getMoneda());
         }
@@ -1559,15 +1613,11 @@ public class ControlEmpresa implements Serializable {
 
     public void duplicarCircularM() {
         duplicarCircular = new Circulares();
-        k++;
-        l = BigInteger.valueOf(k);
         if (tipoListaCircular == 0) {
-            duplicarCircular.setSecuencia(l);
             duplicarCircular.setFecha(listaCirculares.get(indexCircular).getFecha());
             duplicarCircular.setExpedidopor(listaCirculares.get(indexCircular).getExpedidopor());
             duplicarCircular.setTexto(listaCirculares.get(indexCircular).getTexto());
-        }
-        if (tipoListaCircular == 1) {
+        } else {
             duplicarCircular.setFecha(filtrarListaCirculares.get(indexCircular).getFecha());
             duplicarCircular.setExpedidopor(filtrarListaCirculares.get(indexCircular).getExpedidopor());
             duplicarCircular.setTexto(filtrarListaCirculares.get(indexCircular).getTexto());
@@ -1580,8 +1630,6 @@ public class ControlEmpresa implements Serializable {
 
     }
 
-    /**
-     */
     public void confirmarDuplicarEmpresa() {
         boolean respueta = validarCamposNulosEmpresa(2);
         if (respueta == true) {
@@ -1612,9 +1660,13 @@ public class ControlEmpresa implements Serializable {
                         filtrarListaEmpresas = null;
                         tipoLista = 0;
                     }
-
-                    String text = duplicarEmpresa.getNombre().toUpperCase();
-                    duplicarEmpresa.setNombre(text);
+                    k++;
+                    l = BigInteger.valueOf(k);
+                    duplicarEmpresa.setSecuencia(l);
+                    if (duplicarEmpresa.getNombre() != null) {
+                        String text = duplicarEmpresa.getNombre().toUpperCase();
+                        duplicarEmpresa.setNombre(text);
+                    }
                     listaEmpresas.add(duplicarEmpresa);
                     listEmpresasCrear.add(duplicarEmpresa);
                     cambiosPagina = false;
@@ -1645,7 +1697,7 @@ public class ControlEmpresa implements Serializable {
         if (respueta == true) {
             if (validarFechaVigenciaMonedaBase(2) == true) {
                 if (banderaVigencia == 1) {
-                    altoTablaVigencia = "110";
+                    altoTablaVigencia = "125";
                     vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                     vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                     vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1657,11 +1709,12 @@ public class ControlEmpresa implements Serializable {
                     filtrarListaVigenciasMonedasBases = null;
                     tipoListaVigencia = 0;
                 }
-
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarVigenciaMonedaBase.setSecuencia(l);
                 if (tipoLista == 0) {
                     duplicarVigenciaMonedaBase.setEmpresa(listaEmpresas.get(indexAux));
-                }
-                if (tipoLista == 1) {
+                } else {
                     duplicarVigenciaMonedaBase.setEmpresa(filtrarListaEmpresas.get(indexAux));
                 }
                 listaVigenciasMonedasBases.add(duplicarVigenciaMonedaBase);
@@ -1695,7 +1748,7 @@ public class ControlEmpresa implements Serializable {
         if (respueta == true) {
             if (validarFechaCircular(2) == true) {
                 if (banderaCircular == 1) {
-                    altoTablaCircular = "110";
+                    altoTablaCircular = "130";
                     circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                     circularFecha.setFilterStyle("display: none; visibility: hidden;");
                     circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -1709,10 +1762,12 @@ public class ControlEmpresa implements Serializable {
                 }
                 if (tipoLista == 0) {
                     duplicarCircular.setEmpresa(listaEmpresas.get(indexAux));
-                }
-                if (tipoLista == 1) {
+                } else {
                     duplicarCircular.setEmpresa(filtrarListaEmpresas.get(indexAux));
                 }
+                k++;
+                l = BigInteger.valueOf(k);
+                duplicarCircular.setSecuencia(l);
                 listaCirculares.add(duplicarCircular);
                 listCircularesCrear.add(duplicarCircular);
                 cambiosPagina = false;
@@ -1737,9 +1792,6 @@ public class ControlEmpresa implements Serializable {
         }
     }
 
-    //LIMPIAR DUPLICAR
-    /**
-     */
     public void limpiarDuplicarEmpresa() {
         duplicarEmpresa = new Empresas();
         duplicarEmpresa.setCentrocosto(new CentrosCostos());
@@ -1765,13 +1817,16 @@ public class ControlEmpresa implements Serializable {
         nombreTablaRastro = "";
     }
 
-    //BORRAR VC
-    /**
-     */
     public void verificarRegistroBorrar() {
         if (index >= 0) {
-            int tam = listaVigenciasMonedasBases.size();
-            int tam2 = listaCirculares.size();
+            int tam = 0;
+            int tam2 = 0;
+            if (listaVigenciasMonedasBases != null) {
+                tam = listaVigenciasMonedasBases.size();
+            }
+            if (listaCirculares != null) {
+                tam2 = listaCirculares.size();
+            }
             if (tam == 0 && tam2 == 0) {
                 borrarEmpresa();
             } else {
@@ -1801,8 +1856,7 @@ public class ControlEmpresa implements Serializable {
                     listEmpresasBorrar.add(listaEmpresas.get(index));
                 }
                 listaEmpresas.remove(index);
-            }
-            if (tipoLista == 1) {
+            } else {
                 if (!listEmpresasModificar.isEmpty() && listEmpresasModificar.contains(filtrarListaEmpresas.get(index))) {
                     int modIndex = listEmpresasModificar.indexOf(filtrarListaEmpresas.get(index));
                     listEmpresasModificar.remove(modIndex);
@@ -1849,8 +1903,7 @@ public class ControlEmpresa implements Serializable {
                     listVigenciasMonedasBasesBorrar.add(listaVigenciasMonedasBases.get(indexVigencia));
                 }
                 listaVigenciasMonedasBases.remove(indexVigencia);
-            }
-            if (tipoListaVigencia == 1) {
+            } else {
                 if (!listVigenciasMonedasBasesModificar.isEmpty() && listVigenciasMonedasBasesModificar.contains(filtrarListaVigenciasMonedasBases.get(indexVigencia))) {
                     int modIndex = listVigenciasMonedasBasesModificar.indexOf(filtrarListaVigenciasMonedasBases.get(indexVigencia));
                     listVigenciasMonedasBasesModificar.remove(modIndex);
@@ -1894,8 +1947,7 @@ public class ControlEmpresa implements Serializable {
                     listCircularesBorrar.add(listaCirculares.get(indexCircular));
                 }
                 listaCirculares.remove(indexCircular);
-            }
-            if (tipoListaCircular == 1) {
+            } else {
                 if (!listCircularesModificar.isEmpty() && listCircularesModificar.contains(filtrarListaCirculares.get(indexCircular))) {
                     int modIndex = listCircularesModificar.indexOf(filtrarListaCirculares.get(indexCircular));
                     listCircularesModificar.remove(modIndex);
@@ -1925,11 +1977,6 @@ public class ControlEmpresa implements Serializable {
         }
     }
 
-    //CTRL + F11 ACTIVAR/DESACTIVAR
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
         if (index >= 0) {
             if (bandera == 0) {
@@ -1983,7 +2030,7 @@ public class ControlEmpresa implements Serializable {
         }
         if (indexVigencia >= 0) {
             if (banderaVigencia == 0) {
-                altoTablaVigencia = "88";
+                altoTablaVigencia = "103";
                 vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                 vigenciaCodigo.setFilterStyle("width: 80px");
                 vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -1993,7 +2040,7 @@ public class ControlEmpresa implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosVigenciaMonedaBase");
                 banderaVigencia = 1;
             } else if (banderaVigencia == 1) {
-                altoTablaVigencia = "110";
+                altoTablaVigencia = "125";
                 vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
                 vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
                 vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -2008,7 +2055,7 @@ public class ControlEmpresa implements Serializable {
         }
         if (indexCircular >= 0) {
             if (banderaCircular == 0) {
-                altoTablaCircular = "88";
+                altoTablaCircular = "108";
                 circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                 circularFecha.setFilterStyle("width: 100px");
                 circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -2018,7 +2065,7 @@ public class ControlEmpresa implements Serializable {
                 RequestContext.getCurrentInstance().update("form:datosCircular");
                 banderaCircular = 1;
             } else if (banderaCircular == 1) {
-                altoTablaCircular = "110";
+                altoTablaCircular = "130";
                 circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
                 circularFecha.setFilterStyle("display: none; visibility: hidden;");
                 circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -2033,10 +2080,6 @@ public class ControlEmpresa implements Serializable {
         }
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (bandera == 1) {
             altoTablaEmpresa = "112";
@@ -2062,7 +2105,7 @@ public class ControlEmpresa implements Serializable {
             tipoLista = 0;
         }
         if (banderaVigencia == 1) {
-            altoTablaVigencia = "110";
+            altoTablaVigencia = "125";
             vigenciaCodigo = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaCodigo");
             vigenciaCodigo.setFilterStyle("display: none; visibility: hidden;");
             vigenciaFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosVigenciaMonedaBase:vigenciaFecha");
@@ -2075,7 +2118,7 @@ public class ControlEmpresa implements Serializable {
             tipoListaVigencia = 0;
         }
         if (banderaCircular == 1) {
-            altoTablaCircular = "110";
+            altoTablaCircular = "130";
             circularFecha = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularFecha");
             circularFecha.setFilterStyle("display: none; visibility: hidden;");
             circularExpedido = (Column) FacesContext.getCurrentInstance().getViewRoot().findComponent("form:datosCircular:circularExpedido");
@@ -2147,7 +2190,7 @@ public class ControlEmpresa implements Serializable {
         RequestContext context = RequestContext.getCurrentInstance();
         if (tabla == 0) {
             if (LND == 0) {
-                indexVigencia = indice;
+                index = indice;
                 tipoActualizacion = 0;
             } else if (LND == 1) {
                 tipoActualizacion = 1;
@@ -2161,7 +2204,7 @@ public class ControlEmpresa implements Serializable {
         }
         if (tabla == 1) {
             if (LND == 0) {
-                indexCircular = indice;
+                indexVigencia = indice;
                 tipoActualizacion = 0;
             } else if (LND == 1) {
                 tipoActualizacion = 1;
@@ -2288,38 +2331,51 @@ public class ControlEmpresa implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("CENTROCOSTO")) {
-            if (tipoNuevo == 1) {
-                nuevoEmpresa.getCentrocosto().setNombre(centroCosto);
-            } else if (tipoNuevo == 2) {
-                duplicarEmpresa.getCentrocosto().setNombre(centroCosto);
-            }
-            for (int i = 0; i < lovCentrosCostos.size(); i++) {
-                if (lovCentrosCostos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoEmpresa.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevoEmpresaCentroCosto");
+                    nuevoEmpresa.getCentrocosto().setNombre(centroCosto);
                 } else if (tipoNuevo == 2) {
-                    duplicarEmpresa.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicarEmpresaCentroCosto");
+                    duplicarEmpresa.getCentrocosto().setNombre(centroCosto);
                 }
+                for (int i = 0; i < lovCentrosCostos.size(); i++) {
+                    if (lovCentrosCostos.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoEmpresa.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevoEmpresaCentroCosto");
+                    } else if (tipoNuevo == 2) {
+                        duplicarEmpresa.setCentrocosto(lovCentrosCostos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicarEmpresaCentroCosto");
+                    }
+                    lovCentrosCostos.clear();
+                    getLovCentrosCostos();
+                } else {
+                    context.update("form:CentroCostoDialogo");
+                    context.execute("CentroCostoDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevoEmpresaCentroCosto");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicarEmpresaCentroCosto");
+                    }
+                }
+            } else {
                 lovCentrosCostos.clear();
                 getLovCentrosCostos();
-            } else {
-                context.update("form:CentroCostoDialogo");
-                context.execute("CentroCostoDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevoEmpresa.setCentrocosto(new CentrosCostos());
                     context.update("formularioDialogos:nuevoEmpresaCentroCosto");
                 } else if (tipoNuevo == 2) {
+                    duplicarEmpresa.setCentrocosto(new CentrosCostos());
                     context.update("formularioDialogos:duplicarEmpresaCentroCosto");
                 }
             }
         }
+
     }
 
     public void actualizarMoneda() {
@@ -2372,6 +2428,7 @@ public class ControlEmpresa implements Serializable {
         context.update("form:MonedaDialogo");
         context.update("form:lovMoneda");
         context.update("form:aceptarM");
+        context.reset("form:lovMoneda:globalFilter");
         context.execute("MonedaDialogo.hide()");
     }
 
@@ -2433,6 +2490,7 @@ public class ControlEmpresa implements Serializable {
         context.update("form:CentroCostoDialogo");
         context.update("form:lovCentroCosto");
         context.update("form:aceptarCC");
+        context.reset("form:lovCentroCosto:globalFilter");
         context.execute("CentroCostoDialogo.hide()");
     }
 
@@ -2446,9 +2504,6 @@ public class ControlEmpresa implements Serializable {
         permitirIndex = true;
     }
 
-    /**
-     * Metodo que activa el boton aceptar de la pantalla y dialogos
-     */
     public void activarAceptar() {
         aceptar = false;
     }
@@ -2470,11 +2525,6 @@ public class ControlEmpresa implements Serializable {
         return nombreTabla;
     }
 
-    /**
-     * Metodo que exporta datos a PDF
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void validarExportPDF() throws IOException {
         if (index >= 0) {
             exportPDF_E();
@@ -2523,11 +2573,6 @@ public class ControlEmpresa implements Serializable {
         secRegistroCircular = null;
     }
 
-    /**
-     * Metodo que exporta datos a XLS
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void validarExportXLS() throws IOException {
         if (index >= 0) {
             exportXLS_E();
@@ -2574,11 +2619,7 @@ public class ControlEmpresa implements Serializable {
         indexCircular = -1;
         secRegistroCircular = null;
     }
-    //EVENTO FILTRAR
 
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
     public void eventoFiltrar() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -2599,9 +2640,18 @@ public class ControlEmpresa implements Serializable {
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
     public void verificarRastro() {
-        int tam = listaEmpresas.size();
-        int tam1 = listaVigenciasMonedasBases.size();
-        int tam2 = listaCirculares.size();
+        int tam = 0;
+        if (listaEmpresas != null) {
+            tam = listaEmpresas.size();
+        }
+        int tam1 = 0;
+        if (listaVigenciasMonedasBases != null) {
+            tam1 = listaVigenciasMonedasBases.size();
+        }
+        int tam2 = 0;
+        if (listaCirculares != null) {
+            tam2 = listaCirculares.size();
+        }
         if (tam == 0 || tam1 == 0 || tam2 == 0) {
             RequestContext context = RequestContext.getCurrentInstance();
             context.execute("verificarRastrosTablas.show()");
@@ -2796,6 +2846,7 @@ public class ControlEmpresa implements Serializable {
         context.update("form:DescripcionBaseClonado");
         context.update("form:EmpresaDialogo");
         context.update("form:lovEmpresa");
+        context.update("form:lovEmpresa:globalFilter");
         context.update("form:aceptarEmp");
         context.execute("EmpresaDialogo.hide()");
     }
@@ -2809,6 +2860,7 @@ public class ControlEmpresa implements Serializable {
         context.update("form:DescripcionBaseClonado");
         context.update("form:EmpresaDialogo");
         context.update("form:lovEmpresa");
+        context.update("form:lovEmpresa:globalFilter");
         context.update("form:aceptarEmp");
         context.execute("EmpresaDialogo.hide()");
     }
@@ -2877,42 +2929,54 @@ public class ControlEmpresa implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoAutoCompletar == 0) {
-            short num = Short.parseShort(valorConfirmar);
-            for (int i = 0; i < lovEmpresas.size(); i++) {
-                if (lovEmpresas.get(i).getCodigo() == num) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                short num = Short.parseShort(valorConfirmar);
+                for (int i = 0; i < lovEmpresas.size(); i++) {
+                    if (lovEmpresas.get(i).getCodigo() == num) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                empresaOrigenClonado = lovEmpresas.get(indiceUnicoElemento);
-                lovEmpresas.clear();
-                getLovEmpresas();
+                if (coincidencias == 1) {
+                    empresaOrigenClonado = lovEmpresas.get(indiceUnicoElemento);
+                    lovEmpresas.clear();
+                    getLovEmpresas();
+                } else {
+                    empresaOrigenClonado.setCodigo(auxClonadoCodigoOrigen);
+                    empresaOrigenClonado.setNombre(auxClonadoNombreOrigen);
+                    context.update("form:CodigoNuevoClonado");
+                    context.update("form:DescripcionNuevoClonado");
+                    dispararDialogoEmpresaOrigenClonado();
+                }
             } else {
-                empresaOrigenClonado.setCodigo(auxClonadoCodigoOrigen);
-                empresaOrigenClonado.setNombre(auxClonadoNombreOrigen);
+                empresaOrigenClonado = new Empresas();
                 context.update("form:CodigoNuevoClonado");
                 context.update("form:DescripcionNuevoClonado");
-                dispararDialogoEmpresaOrigenClonado();
             }
         }
         if (tipoAutoCompletar == 1) {
-            for (int i = 0; i < lovEmpresas.size(); i++) {
-                if (lovEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                for (int i = 0; i < lovEmpresas.size(); i++) {
+                    if (lovEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                empresaOrigenClonado = lovEmpresas.get(indiceUnicoElemento);
-                lovEmpresas.clear();
-                getLovEmpresas();
+                if (coincidencias == 1) {
+                    empresaOrigenClonado = lovEmpresas.get(indiceUnicoElemento);
+                    lovEmpresas.clear();
+                    getLovEmpresas();
+                } else {
+                    empresaOrigenClonado.setCodigo(auxClonadoCodigoOrigen);
+                    empresaOrigenClonado.setNombre(auxClonadoNombreOrigen);
+                    context.update("form:CodigoNuevoClonado");
+                    context.update("form:DescripcionNuevoClonado");
+                    dispararDialogoEmpresaOrigenClonado();
+                }
             } else {
-                empresaOrigenClonado.setCodigo(auxClonadoCodigoOrigen);
-                empresaOrigenClonado.setNombre(auxClonadoNombreOrigen);
+                empresaOrigenClonado = new Empresas();
                 context.update("form:CodigoNuevoClonado");
                 context.update("form:DescripcionNuevoClonado");
-                dispararDialogoEmpresaOrigenClonado();
             }
         }
     }
@@ -2922,42 +2986,54 @@ public class ControlEmpresa implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (tipoAutoCompletar == 0) {
-            short num = Short.parseShort(valorConfirmar);
-            for (int i = 0; i < lovEmpresas.size(); i++) {
-                if (lovEmpresas.get(i).getCodigo() == num) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                short num = Short.parseShort(valorConfirmar);
+                for (int i = 0; i < lovEmpresas.size(); i++) {
+                    if (lovEmpresas.get(i).getCodigo() == num) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                empresaOrigenClonado = lovEmpresas.get(indiceUnicoElemento);
-                lovEmpresas.clear();
-                getLovEmpresas();
+                if (coincidencias == 1) {
+                    empresaDestinoClonado = lovEmpresas.get(indiceUnicoElemento);
+                    lovEmpresas.clear();
+                    getLovEmpresas();
+                } else {
+                    empresaDestinoClonado.setCodigo(auxClonadoCodigoDestino);
+                    empresaDestinoClonado.setNombre(auxClonadoNombreDestino);
+                    context.update("form:CodigoBaseClonado");
+                    context.update("form:DescripcionBaseClonado");
+                    dispararDialogoEmpresaDestinoClonado();
+                }
             } else {
-                empresaDestinoClonado.setCodigo(auxClonadoCodigoDestino);
-                empresaDestinoClonado.setNombre(auxClonadoNombreDestino);
-                context.update("form:CodigoNuevoClonado");
-                context.update("form:DescripcionNuevoClonado");
-                dispararDialogoEmpresaDestinoClonado();
+                empresaDestinoClonado = new Empresas();
+                context.update("form:CodigoBaseClonado");
+                context.update("form:DescripcionBaseClonado");
             }
         }
         if (tipoAutoCompletar == 1) {
-            for (int i = 0; i < lovEmpresas.size(); i++) {
-                if (lovEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
+            if (!valorConfirmar.isEmpty()) {
+                for (int i = 0; i < lovEmpresas.size(); i++) {
+                    if (lovEmpresas.get(i).getNombre().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
                 }
-            }
-            if (coincidencias == 1) {
-                empresaOrigenClonado = lovEmpresas.get(indiceUnicoElemento);
-                lovEmpresas.clear();
-                getLovEmpresas();
+                if (coincidencias == 1) {
+                    empresaDestinoClonado = lovEmpresas.get(indiceUnicoElemento);
+                    lovEmpresas.clear();
+                    getLovEmpresas();
+                } else {
+                    empresaDestinoClonado.setCodigo(auxClonadoCodigoDestino);
+                    empresaDestinoClonado.setNombre(auxClonadoNombreDestino);
+                    context.update("form:CodigoBaseClonado");
+                    context.update("form:DescripcionBaseClonado");
+                    dispararDialogoEmpresaDestinoClonado();
+                }
             } else {
-                empresaDestinoClonado.setCodigo(auxClonadoCodigoDestino);
-                empresaDestinoClonado.setNombre(auxClonadoNombreDestino);
-                context.update("form:CodigoNuevoClonado");
-                context.update("form:DescripcionNuevoClonado");
-                dispararDialogoEmpresaDestinoClonado();
+                empresaDestinoClonado = new Empresas();
+                context.update("form:CodigoBaseClonado");
+                context.update("form:DescripcionBaseClonado");
             }
         }
     }
@@ -2966,11 +3042,13 @@ public class ControlEmpresa implements Serializable {
     public List<Empresas> getListaEmpresas() {
         try {
             if (listaEmpresas == null) {
-                listaEmpresas = new ArrayList<Empresas>();
                 listaEmpresas = administrarEmpresa.listaEmpresas();
-                for (int i = 0; i < listaEmpresas.size(); i++) {
-                    if (listaEmpresas.get(i).getCentrocosto() == null) {
-                        listaEmpresas.get(i).setCentrocosto(new CentrosCostos());
+                if (listaEmpresas != null) {
+                    for (int i = 0; i < listaEmpresas.size(); i++) {
+                        if (listaEmpresas.get(i).getCentrocosto() == null) {
+                            System.out.println("Cambio Centro Costo");
+                            listaEmpresas.get(i).setCentrocosto(new CentrosCostos());
+                        }
                     }
                 }
             }
@@ -3042,18 +3120,17 @@ public class ControlEmpresa implements Serializable {
     public List<VigenciasMonedasBases> getListaVigenciasMonedasBases() {
         if (listaVigenciasMonedasBases == null) {
             listaVigenciasMonedasBases = new ArrayList<VigenciasMonedasBases>();
-            if (index == -1) {
-                index = indexAux;
-            }
-            if (tipoLista == 0) {
-                listaVigenciasMonedasBases = administrarEmpresa.listaVigenciasMonedasBasesParaEmpresa(listaEmpresas.get(index).getSecuencia());
-            }
-            if (tipoLista == 1) {
-                listaVigenciasMonedasBases = administrarEmpresa.listaVigenciasMonedasBasesParaEmpresa(filtrarListaEmpresas.get(index).getSecuencia());
-            }
-            for (int i = 0; i < listaVigenciasMonedasBases.size(); i++) {
-                if (listaVigenciasMonedasBases.get(i).getMoneda() == null) {
-                    listaVigenciasMonedasBases.get(i).setMoneda(new Monedas());
+            if (index >= 0) {
+                if (tipoLista == 0) {
+                    listaVigenciasMonedasBases = administrarEmpresa.listaVigenciasMonedasBasesParaEmpresa(listaEmpresas.get(index).getSecuencia());
+                }
+                if (tipoLista == 1) {
+                    listaVigenciasMonedasBases = administrarEmpresa.listaVigenciasMonedasBasesParaEmpresa(filtrarListaEmpresas.get(index).getSecuencia());
+                }
+                for (int i = 0; i < listaVigenciasMonedasBases.size(); i++) {
+                    if (listaVigenciasMonedasBases.get(i).getMoneda() == null) {
+                        listaVigenciasMonedasBases.get(i).setMoneda(new Monedas());
+                    }
                 }
             }
         }
@@ -3290,14 +3367,13 @@ public class ControlEmpresa implements Serializable {
         try {
             if (listaCirculares == null) {
                 listaCirculares = new ArrayList<Circulares>();
-                if (index == -1) {
-                    index = indexAux;
-                }
-                if (tipoLista == 0) {
-                    listaCirculares = administrarEmpresa.listaCircularesParaEmpresa(listaEmpresas.get(index).getSecuencia());
-                }
-                if (tipoLista == 1) {
-                    listaCirculares = administrarEmpresa.listaCircularesParaEmpresa(filtrarListaEmpresas.get(index).getSecuencia());
+                if (index >= 0) {
+                    if (tipoLista == 0) {
+                        listaCirculares = administrarEmpresa.listaCircularesParaEmpresa(listaEmpresas.get(index).getSecuencia());
+                    }
+                    if (tipoLista == 1) {
+                        listaCirculares = administrarEmpresa.listaCircularesParaEmpresa(filtrarListaEmpresas.get(index).getSecuencia());
+                    }
                 }
 
             }
@@ -3473,6 +3549,93 @@ public class ControlEmpresa implements Serializable {
 
     public void setActivoBtnesAdd(boolean activoBtnesAdd) {
         this.activoBtnesAdd = activoBtnesAdd;
+    }
+
+    public Empresas getEmpresaTablaSeleccionada() {
+        getListaEmpresas();
+        if (listaEmpresas != null) {
+            int tam = listaEmpresas.size();
+            if (tam > 0) {
+                empresaTablaSeleccionada = listaEmpresas.get(0);
+            }
+        }
+        return empresaTablaSeleccionada;
+    }
+
+    public void setEmpresaTablaSeleccionada(Empresas empresaTablaSeleccionada) {
+        this.empresaTablaSeleccionada = empresaTablaSeleccionada;
+    }
+
+    public VigenciasMonedasBases getVigenciaTablaSeleccionada() {
+        getListaVigenciasMonedasBases();
+        if (listaVigenciasMonedasBases != null) {
+            int tam = listaVigenciasMonedasBases.size();
+            if (tam > 0) {
+                vigenciaTablaSeleccionada = listaVigenciasMonedasBases.get(0);
+            }
+        }
+        return vigenciaTablaSeleccionada;
+    }
+
+    public void setVigenciaTablaSeleccionada(VigenciasMonedasBases vigenciaTablaSeleccionada) {
+        this.vigenciaTablaSeleccionada = vigenciaTablaSeleccionada;
+    }
+
+    public Circulares getCircularTablaSeleccionada() {
+        getListaCirculares();
+        if (listaCirculares != null) {
+            int tam = listaCirculares.size();
+            if (tam > 0) {
+                circularTablaSeleccionada = listaCirculares.get(0);
+            }
+        }
+        return circularTablaSeleccionada;
+    }
+
+    public void setCircularTablaSeleccionada(Circulares circularTablaSeleccionada) {
+        this.circularTablaSeleccionada = circularTablaSeleccionada;
+    }
+
+    public String getInfoRegistroEmpresa() {
+        getLovEmpresas();
+        if (lovEmpresas != null) {
+            infoRegistroEmpresa = "Cantidad de registros : " + lovEmpresas.size();
+        } else {
+            infoRegistroEmpresa = "Cantidad de registros : 0";
+        }
+        return infoRegistroEmpresa;
+    }
+
+    public void setInfoRegistroEmpresa(String infoRegistroEmpresa) {
+        this.infoRegistroEmpresa = infoRegistroEmpresa;
+    }
+
+    public String getInfoRegistroMoneda() {
+        getLovMonedas();
+        if (lovMonedas != null) {
+            infoRegistroMoneda = "Cantidad de registros : " + lovMonedas.size();
+        } else {
+            infoRegistroMoneda = "Cantidad de registros : 0";
+        }
+        return infoRegistroMoneda;
+    }
+
+    public void setInfoRegistroMoneda(String infoRegistroMoneda) {
+        this.infoRegistroMoneda = infoRegistroMoneda;
+    }
+
+    public String getInfoRegistroCentro() {
+        getLovCentrosCostos();
+        if (lovCentrosCostos != null) {
+            infoRegistroCentro = "Cantidad de registros : " + lovCentrosCostos.size();
+        } else {
+            infoRegistroCentro = "Cantidad de registros : 0";
+        }
+        return infoRegistroCentro;
+    }
+
+    public void setInfoRegistroCentro(String infoRegistroCentro) {
+        this.infoRegistroCentro = infoRegistroCentro;
     }
 
 }

@@ -34,7 +34,7 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
         EntityTransaction tx = em.getTransaction();
         try {
             tx.begin();
-            em.merge(empresas);
+            em.persist(empresas);
             tx.commit();
         } catch (Exception e) {
             System.out.println("Error PersistenciaVigenciasCargos.crear: " + e);

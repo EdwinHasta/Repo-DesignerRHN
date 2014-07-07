@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -152,10 +153,21 @@ public class ControlEmplIbcs implements Serializable {
         context.update("form:datosEmplAcumulados");
     }
 
+    
+    public void posicionIBCS() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Map<String, String> map = context.getExternalContext().getRequestParameterMap();
+        String name = map.get("n"); // name attribute of node
+        String type = map.get("t"); // type attribute of node
+        int indice = Integer.parseInt(type);
+        int columna = Integer.parseInt(name);
+        cambiarIndice(indice, columna);
+    }
+    
     public void cambiarIndice(int indice, int celda) {
+        System.out.println("Indice : "+indice+" // Celda : "+celda);
         index = indice;
         cualCelda = celda;
-//        secRegistro = listIbcsPorEmpleado.get(index).getSecuencia();
 
     }
 

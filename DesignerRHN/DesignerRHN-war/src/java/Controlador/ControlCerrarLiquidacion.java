@@ -6,7 +6,10 @@ package Controlador;
  */
 import Entidades.Parametros;
 import Entidades.ParametrosEstructuras;
+import Exportar.ExportarPDF;
+import Exportar.ExportarXLS;
 import InterfaceAdministrar.AdministrarCerrarLiquidacionInterface;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -17,6 +20,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.component.column.Column;
+import org.primefaces.component.datatable.DataTable;
+import org.primefaces.component.export.Exporter;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -29,37 +35,55 @@ public class ControlCerrarLiquidacion implements Serializable {
 
     @EJB
     AdministrarCerrarLiquidacionInterface administrarCerrarLiquidacion;
-    
+
     private Integer totalEmpleadosParaLiquidar;
     private boolean permisoParaLiquidar;
     private String usuarioBD;
     private ParametrosEstructuras parametroEstructura;
     private List<Parametros> listaParametros;
     private List<Parametros> filtradoListaParametros;
+    private Parametros empleadoTablaSeleccionado;
     private String opcionLiquidacion;
     private SimpleDateFormat formatoFecha;
+    //
+    private String altoTabla;
+    //
+    private Column codigoEmpleado, nombreEmpleado;
+    private int bandera, tipoLista;
+    //
+    private String infoRegistro;
 
     public ControlCerrarLiquidacion() {
+        tipoLista = 0;
+        bandera = 0;
+        altoTabla = "160";
         totalEmpleadosParaLiquidar = 0;
         formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
     }
-    
+
     @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarCerrarLiquidacion.obtenerConexion(ses.getId());
+            listaParametros = null;
+            getListaParametros();
+            if (listaParametros != null) {
+                infoRegistro = "Cantidad de registros : " + listaParametros.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
         } catch (Exception e) {
-            System.out.println("Error postconstruct "+ this.getClass().getName() +": " + e);
+            System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
     }
 
-    public void tipoLiquidacion(String tipoLiquidacion){
+    public void tipoLiquidacion(String tipoLiquidacion) {
         opcionLiquidacion = tipoLiquidacion;
     }
-    
+
     public void confirmarCierreLiquidacion() {
         Integer conteo = administrarCerrarLiquidacion.consultarConteoProcesoSN(parametroEstructura.getProceso().getSecuencia());
         if (conteo == totalEmpleadosParaLiquidar) {
@@ -101,10 +125,62 @@ public class ControlCerrarLiquidacion implements Serializable {
         RequestContext.getCurrentInstance().update("form:growl");
     }
 
-    public void salir(){
+    public void exportPDF() throws IOException {
+        FacesContext c = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosEmpleadosParametrosExportar");
+        FacesContext context = c;
+        Exporter exporter = new ExportarPDF();
+        exporter.export(context, tabla, "EmpleadosLiquidacion_PDF", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
+
+    public void exportXLS() throws IOException {
+        FacesContext c = FacesContext.getCurrentInstance();
+        DataTable tabla = (DataTable) c.getViewRoot().findComponent("formExportar:datosEmpleadosParametrosExportar");
+        FacesContext context = c;
+        Exporter exporter = new ExportarXLS();
+        exporter.export(context, tabla, "EmpleadosLiqudacion_XLS", false, false, "UTF-8", null, null);
+        context.responseComplete();
+    }
+    
+    public void salir() {
         parametroEstructura = null;
         listaParametros = null;
     }
+
+    public void eventoFiltrar() {
+        if (tipoLista == 0) {
+            tipoLista = 1;
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        infoRegistro = "Cantidad de Registros: " + filtradoListaParametros.size();
+
+        context.update("form:informacionRegistro");
+    }
+
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
+        if (bandera == 0) {
+            codigoEmpleado = (Column) c.getViewRoot().findComponent("form:datosEmpleadosParametros:codigoEmpleado");
+            codigoEmpleado.setFilterStyle("width: 60px");
+            nombreEmpleado = (Column) c.getViewRoot().findComponent("form:datosEmpleadosParametros:nombreEmpleado");
+            nombreEmpleado.setFilterStyle("width: 200px");
+            altoTabla = "138";
+            RequestContext.getCurrentInstance().update("form:datosEmpleadosParametros");
+            bandera = 1;
+        } else if (bandera == 1) {
+            codigoEmpleado = (Column) c.getViewRoot().findComponent("form:datosEmpleadosParametros:codigoEmpleado");
+            codigoEmpleado.setFilterStyle("display: none; visibility: hidden;");
+            nombreEmpleado = (Column) c.getViewRoot().findComponent("form:datosEmpleadosParametros:nombreEmpleado");
+            nombreEmpleado.setFilterStyle("display: none; visibility: hidden;");
+            altoTabla = "160";
+            RequestContext.getCurrentInstance().update("form:datosEmpleadosParametros");
+            bandera = 0;
+            tipoLista = 0;
+            filtradoListaParametros = null;
+        }
+    }
+
     //GETTER AND SETTER
     public Integer getTotalEmpleadosParaLiquidar() {
         totalEmpleadosParaLiquidar = administrarCerrarLiquidacion.contarEmpleadosParaLiquidar();
@@ -162,4 +238,36 @@ public class ControlCerrarLiquidacion implements Serializable {
     public void setFiltradoListaParametros(List<Parametros> filtradoListaParametros) {
         this.filtradoListaParametros = filtradoListaParametros;
     }
+
+    public String getAltoTabla() {
+        return altoTabla;
+    }
+
+    public void setAltoTabla(String altoTabla) {
+        this.altoTabla = altoTabla;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
+    }
+
+    public Parametros getEmpleadoTablaSeleccionado() {
+        getListaParametros();
+        if (listaParametros != null) {
+            int tam = listaParametros.size();
+            if (tam > 0) {
+                empleadoTablaSeleccionado = listaParametros.get(0);
+            }
+        }
+        return empleadoTablaSeleccionado;
+    }
+
+    public void setEmpleadoTablaSeleccionado(Parametros empleadoTablaSeleccionado) {
+        this.empleadoTablaSeleccionado = empleadoTablaSeleccionado;
+    }
+
 }

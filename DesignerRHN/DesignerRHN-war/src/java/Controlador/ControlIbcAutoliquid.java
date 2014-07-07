@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package Controlador;
 
 import Entidades.Empleados;
@@ -22,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -46,6 +43,7 @@ public class ControlIbcAutoliquid implements Serializable {
     //
     private List<IbcsAutoliquidaciones> listIbcsAutoliquidaciones;
     private List<IbcsAutoliquidaciones> filtrarListIbcsAutoliquidaciones;
+    private IbcsAutoliquidaciones ibcsTablaSeleccionada;
     //
     private List<TiposEntidades> listTiposEntidades;
     private List<TiposEntidades> filtrarListTiposEntidades;
@@ -58,7 +56,6 @@ public class ControlIbcAutoliquid implements Serializable {
     //
     private int tipoActualizacion;
     private int bandera, banderaTE;
-    private TiposEntidades backUpTipoEntidadActual;
     //Columnas Tabla VL
     private Column ibcFechaInicial, ibcFechaFinal, ibcEstado, ibcProceso, ibcValor, ibcFechaPago;
     private Column codigoTipoEntidad, nombreTipoEntidad;
@@ -66,7 +63,7 @@ public class ControlIbcAutoliquid implements Serializable {
     private boolean aceptar;
     private int index;
     private List<IbcsAutoliquidaciones> listIbcsAutoliquidacionesModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     public IbcsAutoliquidaciones nuevoIBC;
     private List<IbcsAutoliquidaciones> listIbcsAutoliquidacionesCrear;
     private BigInteger l;
@@ -74,9 +71,8 @@ public class ControlIbcAutoliquid implements Serializable {
     private List<IbcsAutoliquidaciones> listIbcsAutoliquidacionesBorrar;
     private IbcsAutoliquidaciones editarIBC;
     private int cualCelda, tipoLista, tipoListaTE;
-    private boolean cambioEditor, aceptarEditar;
     private IbcsAutoliquidaciones duplicarIBC;
-    private boolean permitirIndex, permitirIndexTS;
+    private boolean permitirIndex;
     //Variables Autompletar
     //private String motivoCambioSueldo, tiposEntidades, tiposSueldos, terceros;
     //Indices VigenciaProrrateo / VigenciaProrrateoProyecto
@@ -90,7 +86,6 @@ public class ControlIbcAutoliquid implements Serializable {
     private String msnConfirmarRastro, msnConfirmarRastroHistorico;
     private BigInteger backUp;
     private String nombreTablaRastro;
-    private int indexAux;
     private String proceso;
     private Empleados empleado;
     private Date fechaParametro;
@@ -99,6 +94,8 @@ public class ControlIbcAutoliquid implements Serializable {
     private String altoTabla;
     private String altoTablaTipoE;
     private int posicionTipoEntidad;
+    //
+    private String infoRegistroProceso;
 
     public ControlIbcAutoliquid() {
         posicionTipoEntidad = -1;
@@ -106,9 +103,7 @@ public class ControlIbcAutoliquid implements Serializable {
         altoTablaTipoE = "95";
         empleado = new Empleados();
         registroActual = 0;
-        indexAux = 0;
         listProcesos = null;
-        backUpTipoEntidadActual = new TiposEntidades();
         tipoEntidadActual = new TiposEntidades();
         listTiposEntidades = null;
         nombreTablaRastro = "";
@@ -131,8 +126,6 @@ public class ControlIbcAutoliquid implements Serializable {
         listIbcsAutoliquidacionesModificar = new ArrayList<IbcsAutoliquidaciones>();
         //editar
         editarIBC = new IbcsAutoliquidaciones();
-        cambioEditor = false;
-        aceptarEditar = true;
         cualCelda = -1;
         tipoLista = 0;
         tipoListaTE = 0;
@@ -145,7 +138,6 @@ public class ControlIbcAutoliquid implements Serializable {
         bandera = 0;
         banderaTE = 0;
         permitirIndex = true;
-        permitirIndexTS = true;
 
         nombreTabla = ":formExportarIBCS:datosIBCSExportar";
         nombreXML = "IBCSAutoliquidacionXML";
@@ -154,7 +146,6 @@ public class ControlIbcAutoliquid implements Serializable {
         cambiosIBC = false;
     }
 
-    
     @PostConstruct
     public void inicializarAdministrador() {
         try {
@@ -167,14 +158,17 @@ public class ControlIbcAutoliquid implements Serializable {
             System.out.println("Causa: " + e.getCause());
         }
     }
-    
+
     public void obtenerTipoEntidad(BigInteger empl) {
-        listIbcsAutoliquidaciones = null;
-        listTiposEntidades = null;
-        empleado = administrarIBCAuto.empleadoActual(empl);
-        tipoEntidadActual = getTipoEntidadActual();
-        getListIbcsAutoliquidaciones();
-        System.out.println("empleado : " + empleado.getPersona().getNombreCompleto());
+        try {
+            listIbcsAutoliquidaciones = null;
+            listTiposEntidades = null;
+            empleado = administrarIBCAuto.empleadoActual(empl);
+            tipoEntidadActual = getTipoEntidadActual();
+            getListIbcsAutoliquidaciones();
+        } catch (Exception e) {
+            System.out.println("Error obtenerTipoEntidad : " + e.toString());
+        }
     }
 
     public void obtenerDetallesIBCS() {
@@ -212,7 +206,6 @@ public class ControlIbcAutoliquid implements Serializable {
                 secRegistroTipoEntidad = filtrarListTiposEntidades.get(posicion).getSecuencia();
             }
             posicionTipoEntidad = posicion;
-            System.out.println("posicionTipoEntidad : " + posicionTipoEntidad);
             listIbcsAutoliquidaciones = null;
             getListIbcsAutoliquidaciones();
             RequestContext context = RequestContext.getCurrentInstance();
@@ -220,15 +213,8 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    /**
-     * Modifica los elementos de la tabla VigenciaLocalizacion que no usan
-     * autocomplete
-     *
-     * @param indice Fila donde se efectu el cambio
-     */
     public void modificarIBCS(int indice) {
         if (tipoLista == 0) {
-
             listIbcsAutoliquidaciones.get(indice).setValor(auxValor);
             if (!listIbcsAutoliquidacionesCrear.contains(listIbcsAutoliquidaciones.get(indice))) {
                 if (listIbcsAutoliquidacionesModificar.isEmpty()) {
@@ -238,6 +224,7 @@ public class ControlIbcAutoliquid implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -252,6 +239,7 @@ public class ControlIbcAutoliquid implements Serializable {
                 }
                 if (guardado == true) {
                     guardado = false;
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
             }
             index = -1;
@@ -265,7 +253,6 @@ public class ControlIbcAutoliquid implements Serializable {
         fechaParametro.setYear(0);
         fechaParametro.setMonth(1);
         fechaParametro.setDate(1);
-        System.err.println("fechaparametro : " + fechaParametro);
         boolean retorno = true;
         if (i == 0) {
             IbcsAutoliquidaciones auxiliar = null;
@@ -373,30 +360,41 @@ public class ControlIbcAutoliquid implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
-            if (tipoLista == 0) {
-                listIbcsAutoliquidaciones.get(indice).getProceso().setDescripcion(proceso);
-            } else {
-                filtrarListIbcsAutoliquidaciones.get(indice).getProceso().setDescripcion(proceso);
-            }
-            for (int i = 0; i < listProcesos.size(); i++) {
-                if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoLista == 0) {
-                    listIbcsAutoliquidaciones.get(indice).setProceso(listProcesos.get(indiceUnicoElemento));
+                    listIbcsAutoliquidaciones.get(indice).getProceso().setDescripcion(proceso);
                 } else {
-                    filtrarListIbcsAutoliquidaciones.get(indice).setProceso(listProcesos.get(indiceUnicoElemento));
+                    filtrarListIbcsAutoliquidaciones.get(indice).getProceso().setDescripcion(proceso);
                 }
+                for (int i = 0; i < listProcesos.size(); i++) {
+                    if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoLista == 0) {
+                        listIbcsAutoliquidaciones.get(indice).setProceso(listProcesos.get(indiceUnicoElemento));
+                    } else {
+                        filtrarListIbcsAutoliquidaciones.get(indice).setProceso(listProcesos.get(indiceUnicoElemento));
+                    }
+                    listProcesos.clear();
+                    getListProcesos();
+                } else {
+                    permitirIndex = false;
+                    context.update("form:ProcesosDialogo");
+                    context.execute("ProcesosDialogo.show()");
+                    tipoActualizacion = 0;
+                }
+            } else {
+                coincidencias = 1;
                 listProcesos.clear();
                 getListProcesos();
-            } else {
-                permitirIndex = false;
-                context.update("form:ProcesosDialogo");
-                context.execute("ProcesosDialogo.show()");
-                tipoActualizacion = 0;
+                if (tipoLista == 0) {
+                    listIbcsAutoliquidaciones.get(indice).setProceso(new Procesos());
+                } else {
+                    filtrarListIbcsAutoliquidaciones.get(indice).setProceso(new Procesos());
+                }
             }
         }
         if (coincidencias == 1) {
@@ -409,6 +407,7 @@ public class ControlIbcAutoliquid implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -422,6 +421,7 @@ public class ControlIbcAutoliquid implements Serializable {
                     }
                     if (guardado == true) {
                         guardado = false;
+                        RequestContext.getCurrentInstance().update("form:ACEPTAR");
                     }
                 }
                 index = -1;
@@ -432,90 +432,76 @@ public class ControlIbcAutoliquid implements Serializable {
         context.update("form:datosIBCS");
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    /**
-     * Modifica los elementos de la tabla VigenciaProrrateo que no usan
-     * autocomplete
-     *
-     * @param indice Fila donde se efectu el cambio
-     */
-    //Ubicacion Celda.
-    /**
-     * Metodo que obtiene la posicion dentro de la tabla VigenciasLocalizaciones
-     *
-     * @param indice Fila de la tabla
-     * @param celda Columna de la tabla
-     */
     public void cambiarIndice(int indice, int celda) {
-        cualCelda = celda;
-        index = indice;
-        indexAux = indice;
-        posicionTipoEntidad = -1;
-        secRegistroTipoEntidad = null;
-        if (tipoLista == 0) {
-            secRegistroIBC = listIbcsAutoliquidaciones.get(index).getSecuencia();
-            fechaFin = listIbcsAutoliquidaciones.get(index).getFechafinal();
-            fechaIni = listIbcsAutoliquidaciones.get(index).getFechainicial();
-            auxValor = listIbcsAutoliquidaciones.get(index).getValor();
-            if (cualCelda == 3) {
-                proceso = listIbcsAutoliquidaciones.get(index).getProceso().getDescripcion();
+        if (permitirIndex == true) {
+            cualCelda = celda;
+            index = indice;
+            posicionTipoEntidad = -1;
+            secRegistroTipoEntidad = null;
+            if (tipoLista == 0) {
+                secRegistroIBC = listIbcsAutoliquidaciones.get(index).getSecuencia();
+                fechaFin = listIbcsAutoliquidaciones.get(index).getFechafinal();
+                fechaIni = listIbcsAutoliquidaciones.get(index).getFechainicial();
+                auxValor = listIbcsAutoliquidaciones.get(index).getValor();
+                if (cualCelda == 3) {
+                    proceso = listIbcsAutoliquidaciones.get(index).getProceso().getDescripcion();
+                }
             }
-        }
-        if (tipoLista == 1) {
-            secRegistroIBC = filtrarListIbcsAutoliquidaciones.get(index).getSecuencia();
-            fechaFin = filtrarListIbcsAutoliquidaciones.get(index).getFechafinal();
-            fechaIni = filtrarListIbcsAutoliquidaciones.get(index).getFechainicial();
-            auxValor = filtrarListIbcsAutoliquidaciones.get(index).getValor();
-            if (cualCelda == 3) {
-                proceso = filtrarListIbcsAutoliquidaciones.get(index).getProceso().getDescripcion();
+            if (tipoLista == 1) {
+                secRegistroIBC = filtrarListIbcsAutoliquidaciones.get(index).getSecuencia();
+                fechaFin = filtrarListIbcsAutoliquidaciones.get(index).getFechafinal();
+                fechaIni = filtrarListIbcsAutoliquidaciones.get(index).getFechainicial();
+                auxValor = filtrarListIbcsAutoliquidaciones.get(index).getValor();
+                if (cualCelda == 3) {
+                    proceso = filtrarListIbcsAutoliquidaciones.get(index).getProceso().getDescripcion();
+                }
             }
         }
     }
 
-    //GUARDAR
-    /**
-     * Metodo de guardado general para la pagina
-     */
     public void guardadoGeneral() {
         if (cambiosIBC == true) {
             guardarCambiosIBCS();
         }
-        guardado = true;
-        RequestContext.getCurrentInstance().update("form:aceptar");
     }
 
-    /**
-     * Metodo que guarda los cambios efectuados en la pagina
-     * VigenciasLocalizaciones
-     */
     public void guardarCambiosIBCS() {
-        if (guardado == false) {
-            if (!listIbcsAutoliquidacionesBorrar.isEmpty()) {
-                administrarIBCAuto.borrarIbcsAutoliquidaciones(listIbcsAutoliquidacionesBorrar);
-                listIbcsAutoliquidacionesBorrar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listIbcsAutoliquidacionesBorrar.isEmpty()) {
+                    administrarIBCAuto.borrarIbcsAutoliquidaciones(listIbcsAutoliquidacionesBorrar);
+                    listIbcsAutoliquidacionesBorrar.clear();
+                }
+                if (!listIbcsAutoliquidacionesCrear.isEmpty()) {
+                    administrarIBCAuto.crearIbcsAutoliquidaciones(listIbcsAutoliquidacionesCrear);
+                    listIbcsAutoliquidacionesCrear.clear();
+                }
+                if (!listIbcsAutoliquidacionesModificar.isEmpty()) {
+                    administrarIBCAuto.modificarIbcsAutoliquidaciones(listIbcsAutoliquidacionesModificar);
+                    listIbcsAutoliquidacionesModificar.clear();
+                }
+                listIbcsAutoliquidaciones = null;
+                context.update("form:datosIBCS");
+                index = -1;
+                secRegistroIBC = null;
+                cambiosIBC = false;
+                k = 0;
+                guardado = true;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listIbcsAutoliquidacionesCrear.isEmpty()) {
-                administrarIBCAuto.crearIbcsAutoliquidaciones(listIbcsAutoliquidacionesCrear);
-                listIbcsAutoliquidacionesCrear.clear();
-            }
-            if (!listIbcsAutoliquidacionesModificar.isEmpty()) {
-                administrarIBCAuto.modificarIbcsAutoliquidaciones(listIbcsAutoliquidacionesModificar);
-                listIbcsAutoliquidacionesModificar.clear();
-            }
-            listIbcsAutoliquidaciones = null;
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.update("form:datosIBCS");
-            k = 0;
+        } catch (Exception e) {
+            System.out.println("Error guardarCambiosIBCS : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Se ha presentado un error en el guardado, intente nuevamente.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            context.update("form:growl");
         }
-        index = -1;
-        secRegistroIBC = null;
-        cambiosIBC = false;
     }
     //CANCELAR MODIFICACIONES
 
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
     public void cancelarModificacion() {
         if (bandera == 1) {
             altoTabla = "170";
@@ -553,11 +539,11 @@ public class ControlIbcAutoliquid implements Serializable {
         index = -1;
         posicionTipoEntidad = -1;
         secRegistroTipoEntidad = null;
-        indexAux = -1;
         secRegistroIBC = null;
         k = 0;
         listIbcsAutoliquidaciones = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
         cambiosIBC = false;
         getListIbcsAutoliquidaciones();
         RequestContext context = RequestContext.getCurrentInstance();
@@ -565,10 +551,6 @@ public class ControlIbcAutoliquid implements Serializable {
     }
 
     //MOSTRAR DATOS CELDA
-    /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o
-     * la lista filtrada y a la columna
-     */
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -628,10 +610,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    //CREAR VL
-    /**
-     * Metodo que se encarga de agregar un nueva VigenciasLocalizaciones
-     */
     public void agregarNuevoIBCS() {
         if (nuevoIBC.getFechainicial() != null && nuevoIBC.getValor() != null) {
             if (validarFechasRegistro(1) == true) {
@@ -670,7 +648,7 @@ public class ControlIbcAutoliquid implements Serializable {
                 context.update("form:datosIBCS");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 context.execute("NuevoRegistroIBCS.hide()");
                 cambiosIBC = true;
@@ -686,10 +664,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    //LIMPIAR NUEVO REGISTRO
-    /**
-     * Metodo que limpia las casillas de la nueva vigencia
-     */
     public void limpiarNuevoIBCS() {
         nuevoIBC = new IbcsAutoliquidaciones();
         nuevoIBC.setProceso(new Procesos());
@@ -698,15 +672,6 @@ public class ControlIbcAutoliquid implements Serializable {
         secRegistroIBC = null;
     }
 
-    ////////--- //// ---////
-    //DUPLICAR VL
-    /**
-     * Metodo que verifica que proceso de duplicar se genera con respecto a la
-     * posicion en la pagina que se tiene
-     */
-    /**
-     * Duplica una nueva vigencia localizacion
-     */
     public void duplicarIBCS() {
         if (index >= 0) {
             duplicarIBC = new IbcsAutoliquidaciones();
@@ -741,10 +706,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    /**
-     * Metodo que confirma el duplicado y actualiza los datos de la tabla
-     * VigenciasLocalizaciones
-     */
     public void confirmarDuplicar() {
         if (duplicarIBC.getFechainicial() != null && duplicarIBC.getValor() != null) {
             if (validarFechasRegistro(2) == true) {
@@ -778,7 +739,7 @@ public class ControlIbcAutoliquid implements Serializable {
                 context.update("form:datosIBCS");
                 if (guardado == true) {
                     guardado = false;
-                    RequestContext.getCurrentInstance().update("form:aceptar");
+                    RequestContext.getCurrentInstance().update("form:ACEPTAR");
                 }
                 context.execute("DuplicarRegistroIBCS.hide()");
                 cambiosIBC = true;
@@ -801,11 +762,6 @@ public class ControlIbcAutoliquid implements Serializable {
         secRegistroIBC = null;
     }
 
-    ///////////////////////////////////////////////////////////////
-    /**
-     * Valida que registro se elimina de que tabla con respecto a la posicion en
-     * la pagina
-     */
     public void borrarIBCS() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -843,15 +799,11 @@ public class ControlIbcAutoliquid implements Serializable {
             cambiosIBC = true;
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
         }
     }
 
-    //CTRL + F11 ACTIVAR/DESACTIVAR
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el toolbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
         if (posicionTipoEntidad >= 0) {
             filtradoTipoEntidad();
@@ -861,9 +813,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    /**
-     * Metodo que acciona el filtrado de la tabla vigencia localizacion
-     */
     public void filtradoIBCS() {
         if (bandera == 0) {
             altoTabla = "148";
@@ -924,10 +873,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (banderaTE == 1) {
             altoTablaTipoE = "95";
@@ -972,18 +917,9 @@ public class ControlIbcAutoliquid implements Serializable {
         k = 0;
         listIbcsAutoliquidaciones = null;
         guardado = true;
+        RequestContext.getCurrentInstance().update("form:ACEPTAR");
     }
-    //ASIGNAR INDEX PARA DIALOGOS COMUNES (LDN = LISTA - NUEVO - DUPLICADO) (list = ESTRUCTURAS - MOTIVOSLOCALIZACIONES - PROYECTOS)
 
-    /**
-     * Metodo que ejecuta los dialogos de estructuras, motivos localizaciones,
-     * proyectos
-     *
-     * @param indice Fila de la tabla
-     * @param dlg Dialogo
-     * @param LND Tipo actualizacion = LISTA - NUEVO - DUPLICADO
-     *
-     */
     public void asignarIndex(Integer indice, int dlg, int LND) {
         RequestContext context = RequestContext.getCurrentInstance();
         if (LND == 0) {
@@ -1000,11 +936,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    //LISTA DE VALORES DINAMICA
-    /**
-     * Metodo que activa la lista de valores de todas las tablas con respecto al
-     * index activo y la columna activa
-     */
     public void listaValoresBoton() {
         RequestContext context = RequestContext.getCurrentInstance();
         if (index >= 0) {
@@ -1016,13 +947,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    /**
-     * Valida un proceso de nuevo registro dentro de la pagina con respecto a la
-     * posicion en la pagina
-     */
-    /**
-     * Metodo que activa el boton aceptar de la pagina y los dialogos
-     */
     public void valoresBackupAutocompletar(int tipoNuevo, String Campo) {
         if (Campo.equals("PROCESO")) {
             if (tipoNuevo == 1) {
@@ -1038,34 +962,46 @@ public class ControlIbcAutoliquid implements Serializable {
         int indiceUnicoElemento = 0;
         RequestContext context = RequestContext.getCurrentInstance();
         if (confirmarCambio.equalsIgnoreCase("PROCESO")) {
-            if (tipoNuevo == 1) {
-                nuevoIBC.getProceso().setDescripcion(proceso);
-            } else if (tipoNuevo == 2) {
-                duplicarIBC.getProceso().setDescripcion(proceso);
-            }
-            for (int i = 0; i < listProcesos.size(); i++) {
-                if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
-                    indiceUnicoElemento = i;
-                    coincidencias++;
-                }
-            }
-            if (coincidencias == 1) {
+            if (!valorConfirmar.isEmpty()) {
                 if (tipoNuevo == 1) {
-                    nuevoIBC.setProceso(listProcesos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:nuevaProcesoIBCS");
+                    nuevoIBC.getProceso().setDescripcion(proceso);
                 } else if (tipoNuevo == 2) {
-                    duplicarIBC.setProceso(listProcesos.get(indiceUnicoElemento));
-                    context.update("formularioDialogos:duplicaProcesoIBCS");
+                    duplicarIBC.getProceso().setDescripcion(proceso);
                 }
+                for (int i = 0; i < listProcesos.size(); i++) {
+                    if (listProcesos.get(i).getDescripcion().startsWith(valorConfirmar.toUpperCase())) {
+                        indiceUnicoElemento = i;
+                        coincidencias++;
+                    }
+                }
+                if (coincidencias == 1) {
+                    if (tipoNuevo == 1) {
+                        nuevoIBC.setProceso(listProcesos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:nuevaProcesoIBCS");
+                    } else if (tipoNuevo == 2) {
+                        duplicarIBC.setProceso(listProcesos.get(indiceUnicoElemento));
+                        context.update("formularioDialogos:duplicaProcesoIBCS");
+                    }
+                    listProcesos.clear();
+                    getListProcesos();
+                } else {
+                    context.update("form:ProcesosDialogo");
+                    context.execute("ProcesosDialogo.show()");
+                    tipoActualizacion = tipoNuevo;
+                    if (tipoNuevo == 1) {
+                        context.update("formularioDialogos:nuevaProcesoIBCS");
+                    } else if (tipoNuevo == 2) {
+                        context.update("formularioDialogos:duplicaProcesoIBCS");
+                    }
+                }
+            } else {
                 listProcesos.clear();
                 getListProcesos();
-            } else {
-                context.update("form:ProcesosDialogo");
-                context.execute("ProcesosDialogo.show()");
-                tipoActualizacion = tipoNuevo;
                 if (tipoNuevo == 1) {
+                    nuevoIBC.setProceso(new Procesos());
                     context.update("formularioDialogos:nuevaProcesoIBCS");
                 } else if (tipoNuevo == 2) {
+                    duplicarIBC.setProceso(new Procesos());
                     context.update("formularioDialogos:duplicaProcesoIBCS");
                 }
             }
@@ -1100,7 +1036,9 @@ public class ControlIbcAutoliquid implements Serializable {
             }
             if (guardado == true) {
                 guardado = false;
+                RequestContext.getCurrentInstance().update("form:ACEPTAR");
             }
+            cambiosIBC = true;
             permitirIndex = true;
             context.update("form:datosIBCS");
         } else if (tipoActualizacion == 1) {
@@ -1110,13 +1048,17 @@ public class ControlIbcAutoliquid implements Serializable {
             duplicarIBC.setProceso(procesoSeleccionado);
             context.update("formularioDialogos:duplicaProcesoIBCS");
         }
-        cambiosIBC = true;
         filtrarListProcesos = null;
         procesoSeleccionado = null;
         aceptar = true;
         index = -1;
         secRegistroIBC = null;
         tipoActualizacion = -1;
+        context.update("form:ProcesosDialogo");
+        context.update("form:lovProcesos");
+        context.update("form:aceptarP");
+        context.reset("form:lovProcesos:globalFilter");
+        context.execute("ProcesosDialogo.hide()");
     }
 
     public void cancelarCambioProceso() {
@@ -1147,11 +1089,6 @@ public class ControlIbcAutoliquid implements Serializable {
         obtenerDetallesIBCS();
     }
 
-    /**
-     * Selecciona la tabla a exportar XML con respecto al index activo
-     *
-     * @return Nombre del dialogo a exportar en XML
-     */
     public String exportXML() {
         if (index >= 0) {
             nombreTabla = ":formExportarIBCS:datosIBCSExportar";
@@ -1164,11 +1101,6 @@ public class ControlIbcAutoliquid implements Serializable {
         return nombreTabla;
     }
 
-    /**
-     * Valida la tabla a exportar en PDF con respecto al index activo
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void validarExportPDF() throws IOException {
         if (index >= 0) {
             exportPDF_IBC();
@@ -1178,11 +1110,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    /**
-     * Metodo que exporta datos a PDF Vigencia Localizacion
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportPDF_IBC() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarIBCS:datosIBCSExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1192,6 +1119,7 @@ public class ControlIbcAutoliquid implements Serializable {
         index = -1;
         secRegistroIBC = null;
     }
+
     public void exportPDF_TE() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarTipoEntidad:datosTipoEntidadExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1202,11 +1130,6 @@ public class ControlIbcAutoliquid implements Serializable {
         secRegistroTipoEntidad = null;
     }
 
-    /**
-     * Verifica que tabla exportar XLS con respecto al index activo
-     *
-     * @throws IOException
-     */
     public void verificarExportXLS() throws IOException {
         if (index >= 0) {
             exportXLS_IBC();
@@ -1216,11 +1139,6 @@ public class ControlIbcAutoliquid implements Serializable {
         }
     }
 
-    /**
-     * Metodo que exporta datos a XLS Vigencia Sueldos
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportXLS_IBC() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarIBCS:datosIBCSExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1230,6 +1148,7 @@ public class ControlIbcAutoliquid implements Serializable {
         index = -1;
         secRegistroIBC = null;
     }
+
     public void exportXLS_TE() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportarTipoEntidad:datosTipoEntidadExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -1240,10 +1159,6 @@ public class ControlIbcAutoliquid implements Serializable {
         secRegistroTipoEntidad = null;
     }
 
-    //EVENTO FILTRAR
-    /**
-     * Evento que cambia la lista real a la filtrada
-     */
     public void eventoFiltrar() {
         if (posicionTipoEntidad >= 0) {
             if (tipoListaTE == 0) {
@@ -1354,7 +1269,9 @@ public class ControlIbcAutoliquid implements Serializable {
     public List<IbcsAutoliquidaciones> getListIbcsAutoliquidaciones() {
         try {
             if (listIbcsAutoliquidaciones == null) {
-                listIbcsAutoliquidaciones = administrarIBCAuto.listIBCSAutoliquidaciones(tipoEntidadActual.getSecuencia(), empleado.getSecuencia());
+                if (tipoEntidadActual.getSecuencia() != null && empleado.getSecuencia() != null) {
+                    listIbcsAutoliquidaciones = administrarIBCAuto.listIBCSAutoliquidaciones(tipoEntidadActual.getSecuencia(), empleado.getSecuencia());
+                }
             }
             return listIbcsAutoliquidaciones;
         } catch (Exception e) {
@@ -1413,9 +1330,7 @@ public class ControlIbcAutoliquid implements Serializable {
 
     public List<Procesos> getListProcesos() {
         try {
-            if (listProcesos == null) {
-                listProcesos = administrarIBCAuto.listProcesos();
-            }
+            listProcesos = administrarIBCAuto.listProcesos();
             return listProcesos;
         } catch (Exception e) {
             System.out.println("Error getListProcesos : " + e.toString());
@@ -1586,6 +1501,43 @@ public class ControlIbcAutoliquid implements Serializable {
 
     public void setAltoTablaTipoE(String altoTablaTipoE) {
         this.altoTablaTipoE = altoTablaTipoE;
+    }
+
+    public IbcsAutoliquidaciones getIbcsTablaSeleccionada() {
+        getListIbcsAutoliquidaciones();
+        if (listIbcsAutoliquidaciones != null) {
+            int tam = listIbcsAutoliquidaciones.size();
+            if (tam > 0) {
+                ibcsTablaSeleccionada = listIbcsAutoliquidaciones.get(0);
+            }
+        }
+        return ibcsTablaSeleccionada;
+    }
+
+    public void setIbcsTablaSeleccionada(IbcsAutoliquidaciones ibcsTablaSeleccionada) {
+        this.ibcsTablaSeleccionada = ibcsTablaSeleccionada;
+    }
+
+    public boolean isGuardado() {
+        return guardado;
+    }
+
+    public void setGuardado(boolean guardado) {
+        this.guardado = guardado;
+    }
+
+    public String getInfoRegistroProceso() {
+        getListProcesos();
+        if (listProcesos != null) {
+            infoRegistroProceso = "Cantidad de registros : " + listProcesos.size();
+        } else {
+            infoRegistroProceso = "Cantidad de registros : 0";
+        }
+        return infoRegistroProceso;
+    }
+
+    public void setInfoRegistroProceso(String infoRegistroProceso) {
+        this.infoRegistroProceso = infoRegistroProceso;
     }
 
 }
