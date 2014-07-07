@@ -100,6 +100,9 @@ public class ControlDeportes implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarDeportes.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLDEPORTES eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -690,7 +693,7 @@ public class ControlDeportes implements Serializable {
 
             listDeportes.add(nuevoDeporte);
             nuevoDeporte = new Deportes();
- infoRegistro = "Cantidad de registros: " + listDeportes.size();
+            infoRegistro = "Cantidad de registros: " + listDeportes.size();
             context.update("form:informacionRegistro");
             context.update("form:datosDeporte");
             if (guardado == true) {
@@ -809,7 +812,8 @@ public class ControlDeportes implements Serializable {
                 filtrarDeportes = null;
                 tipoLista = 0;
             }
-            duplicarDeporte = new Deportes(); infoRegistro = "Cantidad de registros: " + listDeportes.size();
+            duplicarDeporte = new Deportes();
+            infoRegistro = "Cantidad de registros: " + listDeportes.size();
             context.update("form:informacionRegistro");
             RequestContext.getCurrentInstance().execute("duplicarRegistroDeporte.hide()");
 

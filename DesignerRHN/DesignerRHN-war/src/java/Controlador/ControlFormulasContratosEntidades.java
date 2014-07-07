@@ -90,6 +90,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         listaTiposEntidades = null;
         filtradoTiposEntidades = null;
         guardado = true;
+        aceptar = true;
         tamano = 270;
         secuenciaFormulasContratos = BigInteger.valueOf(10510720);
         //secuenciaFormulaSeleccionada = BigInteger.valueOf(4613967);
@@ -121,6 +122,9 @@ public class ControlFormulasContratosEntidades implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarFormulasContratosEntidades.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlFormulasContratosEntidades eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -219,6 +223,7 @@ public class ControlFormulasContratosEntidades implements Serializable {
         context.update("form:datosFormulasContratosEntidades");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO

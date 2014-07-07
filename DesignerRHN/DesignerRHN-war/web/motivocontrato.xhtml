@@ -221,43 +221,43 @@
 
 
 
-                    <p:dialog id="nuevoRegistroMotivoContratos" header="Nuevo Registro" widgetVar="nuevoRegistroMotivoContratos" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroMotivoContratos" header="Nuevo Registro" widgetVar="nuevoRegistroMotivoContratos" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="310" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nuevo Motivo Contrato" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevoMotivoContrato" style="border: none;">
 
                             <strong><h:outputText value="*Código: "  style="left: 10px; position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="nuevoCodigo" value="#{controlMotivosContratos.nuevoMotivoContrato.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <p:inputText id="nuevoCodigo" value="#{controlMotivosContratos.nuevoMotivoContrato.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción: "  style="left: 10px; position: absolute; top: 90px;" /></strong>
-                            <p:inputText  id="nuevoNombre" value="#{controlMotivosContratos.nuevoMotivoContrato.nombre}" style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText  id="nuevoNombre" value="#{controlMotivosContratos.nuevoMotivoContrato.nombre}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="nuevoNombre" value="Descripción" />
 
                             <p:commandButton id="limpiar" value="Limpiar" icon="ui-icon-trash" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlMotivosContratos.limpiarNuevoMotivoContratos()}" update="nuevoMotivoContrato" process="@this"/>
-                            <p:commandButton id="agregarTE" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlMotivosContratos.agregarNuevoMotivoContrato()}" process="@this" />
-                            <p:commandButton id="cancelarTE" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 205px; top: 120px;"  update="nuevoMotivoContrato" onclick="nuevoRegistroMotivoContratos.hide();"  actionListener="#{controlMotivosContratos.limpiarNuevoMotivoContratos()}"  process="@this"/>
+                            <p:commandButton id="agregarTE" value="Agregar" icon="ui-icon-circle-check" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlMotivosContratos.agregarNuevoMotivoContrato()}" process="@this" />
+                            <p:commandButton id="cancelarTE" value="Cancelar" icon="ui-icon-circle-close" style=" position: absolute; left: 210px; top: 120px;"  update="nuevoMotivoContrato" onclick="nuevoRegistroMotivoContratos.hide();"  actionListener="#{controlMotivosContratos.limpiarNuevoMotivoContratos()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroMotivosContratos" header="duplicar Registro" widgetVar="duplicarRegistroMotivosContratos" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroMotivosContratos" header="duplicar Registro" widgetVar="duplicarRegistroMotivosContratos" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="310" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Motivo Contrato " style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarMotivosCambiosCargos" style="border: none;">
-                            <strong><h:outputText value="*código:"  style=" position: absolute; top: 60px;" /></strong>
-                            <p:inputText id="duplicarCodigo" value="#{controlMotivosContratos.duplicarMotivoContrato.codigo}" style=" width: 135px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
+                            <strong><h:outputText value="*Código:"  style=" position: absolute; top: 60px;" /></strong>
+                            <p:inputText id="duplicarCodigo" value="#{controlMotivosContratos.duplicarMotivoContrato.codigo}" style=" width: 140px; position: absolute; left: 150px; top: 55px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarCodigo" value="Código" />
 
                             <strong><h:outputText value="*Descripción:"  style=" position: absolute; top: 90px;" /></strong>
-                            <p:inputText id="duplicarNombre" value="#{controlMotivosContratos.duplicarMotivoContrato.nombre}"  style=" width: 135px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
+                            <p:inputText id="duplicarNombre" value="#{controlMotivosContratos.duplicarMotivoContrato.nombre}"  style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Descripción" />

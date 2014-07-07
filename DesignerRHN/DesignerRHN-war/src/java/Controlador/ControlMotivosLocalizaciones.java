@@ -99,6 +99,9 @@ public class ControlMotivosLocalizaciones implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarMotivosLocalizaciones.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlMotiviosCambiosCargos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -197,6 +200,7 @@ public class ControlMotivosLocalizaciones implements Serializable {
         context.update("form:informacionRegistro");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO

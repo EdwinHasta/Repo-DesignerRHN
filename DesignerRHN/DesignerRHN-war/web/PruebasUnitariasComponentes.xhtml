@@ -15,6 +15,9 @@
 
                     <p:panel  id="PanelTotal" header="Unidades" style="position: absolute; width: 874px; height: 510px; text-align: left">
 
+                        <p:commandButton value="Actualizar Concepto" actionListener="#{controlActualizarConceptos.recibirEmpresa(controlUnidad.secuenciaPruebaConceptoEmpresa)}" style="position: absolute; top: 470px " process="@this" action="adelante" />
+                        <p:commandButton value="Errores Liquidacion" actionListener="#{controlErroresLiquidacion.recibirEmpleado(controlUnidad.secuenciaEmpleado)}" style="position: absolute; left: 200px ;top: 470px " process="@this" action="adelanteError" />
+
                         <p:toolbar style=" position: absolute; top: 40px; left: 20px; height: 24px">   
                             <p:toolbarGroup align="left"> 
 
@@ -134,7 +137,7 @@
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>
-                            
+
                             <h:outputText id="informacionRegistro" value="#{controlUnidad.infoRegistro}" style="position: absolute; left: 15px; top: 340px; font-weight: bold"/>
 
                         </fieldset>

@@ -110,6 +110,9 @@ public class ControlDepartamentos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarDepartamentos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlDepartamentos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -388,7 +391,7 @@ public class ControlDepartamentos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
-                    } else if (listDepartamentos.get(indice).getNombre()==null) {
+                    } else if (listDepartamentos.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -447,7 +450,7 @@ public class ControlDepartamentos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
-                    } else if (listDepartamentos.get(indice).getNombre()==null) {
+                    } else if (listDepartamentos.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         listDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -508,7 +511,7 @@ public class ControlDepartamentos implements Serializable {
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
                     }
-                    if (filtrarDepartamentos.get(indice).getNombre()==null) {
+                    if (filtrarDepartamentos.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
@@ -568,7 +571,7 @@ public class ControlDepartamentos implements Serializable {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);
-                    } else if (filtrarDepartamentos.get(indice).getNombre()==null) {
+                    } else if (filtrarDepartamentos.get(indice).getNombre() == null) {
                         mensajeValidacion = "NO PUEDEN HABER CAMPOS VACIOS";
                         banderita1 = false;
                         filtrarDepartamentos.get(indice).setNombre(backupDescripcion);

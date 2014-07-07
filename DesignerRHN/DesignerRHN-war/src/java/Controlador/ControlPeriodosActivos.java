@@ -92,6 +92,7 @@ public class ControlPeriodosActivos implements Serializable {
         tamano = 260;
         buscarCentrocosto = false;
         mostrartodos = true;
+        empresaSeleccionada = null;
     }
 
     @PostConstruct
@@ -105,6 +106,19 @@ public class ControlPeriodosActivos implements Serializable {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
         }
+    }
+    private BigInteger secuenciaEmpresa;
+
+    public void recibirEmpresa(BigInteger secEmpresa) {
+        empresaSeleccionada = null;
+        if (secEmpresa.equals(new BigInteger("0"))) {
+            secuenciaEmpresa = null;
+        } else {
+            secuenciaEmpresa = secEmpresa;
+        }
+        System.out.println("ControlPeriodosActivos recibirEmpresa secuenciaEmpresa : " + secuenciaEmpresa);
+        getEmpresaSeleccionada();
+        getListEmpresa();
     }
 
     public void eventoFiltrar() {
@@ -687,16 +701,23 @@ public class ControlPeriodosActivos implements Serializable {
     }
 
     public Empresas getEmpresaSeleccionada() {
-        try {
+        // try {
+        if (secuenciaEmpresa == null) {
             if (empresaSeleccionada == null) {
-                getListaEmpresas();
-                return empresaSeleccionada;
+                empresaSeleccionada = administrarEmpresas.consultarEmpresaSecuencia(secuenciaEmpresa);
             }
-        } catch (Exception e) {
-            System.out.println("ERROR CONTROLBETACENTROSCOSTOS.getEmpresaSeleccionada ERROR " + e);
-        } finally {
-            return empresaSeleccionada;
+        } else {
+            if (empresaSeleccionada == null) {
+                getListEmpresa();
+            }
         }
+        System.out.println("EMPRESA SELECCIONADA : " + empresaSeleccionada.getNombre());
+        return empresaSeleccionada;
+        /*} catch (Exception e) {
+         System.out.println("ERROR CONTROLBETACENTROSCOSTOS.getEmpresaSeleccionada ERROR " + e);
+         } finally {
+         return empresaSeleccionada;
+         }*/
     }
 
     public void setEmpresaSeleccionada(Empresas empresaSeleccionada) {
@@ -706,8 +727,11 @@ public class ControlPeriodosActivos implements Serializable {
 
     public List<Empresas> getListEmpresasPorEmpresaBoton() {
         try {
-            if (listEmpresaPorBoton == null) {
-                listEmpresaPorBoton = administrarEmpresas.listasEmpresasPorSecuenciaEmpresa(empresaSeleccionada.getSecuencia());
+            if (empresaSeleccionada == null) {
+                getEmpresaSeleccionada();
+                if (listEmpresaPorBoton == null) {
+                    listEmpresaPorBoton = administrarEmpresas.listasEmpresasPorSecuenciaEmpresa(secuenciaEmpresa);
+                }
             }
             return listEmpresaPorBoton;
         } catch (Exception e) {
@@ -717,16 +741,21 @@ public class ControlPeriodosActivos implements Serializable {
     }
 
     public List<Empresas> getListEmpresa() {
-        try {
-            if (empresaSeleccionada == null) {
-                getEmpresaSeleccionada();
-                if (listEmpresa == null) {
-                    listEmpresa = administrarEmpresas.listasEmpresasPorSecuenciaEmpresa(empresaSeleccionada.getSecuencia());
-                } else {
-                    System.out.println(".-.");
-                }
-            } else if (listEmpresa == null) {
-                listEmpresa = administrarEmpresas.listasEmpresasPorSecuenciaEmpresa(empresaSeleccionada.getSecuencia());
+        // try {
+        if (secuenciaEmpresa == null) {
+            if (listEmpresa == null) {
+                listEmpresa = administrarEmpresas.listasEmpresasPorSecuenciaEmpresa(secuenciaEmpresa);
+                System.out.println("ControlPeriodosActivos Secuencia = null getListEmpresa listEmpresas : " + listEmpresa.size());
+                empresaSeleccionada = listEmpresa.get(0);
+            } else {
+                System.out.println(".-.");
+            }
+        } else {
+            if (listEmpresa == null) {
+                listEmpresa = administrarEmpresas.listasEmpresasPorSecuenciaEmpresa(secuenciaEmpresa);
+                System.out.println("ControlPeriodosActivos Seecuencia !=null getListEmpresa() Tamaño lista Empresa :" + listEmpresa.size());
+                empresaSeleccionada = listEmpresa.get(0);
+                System.out.println("ControlPeriodosActivos Seecuencia !=null getListEmpresa() Empresa Seleccionada  :" + empresaSeleccionada.getNombre());
             }
 
             RequestContext context = RequestContext.getCurrentInstance();
@@ -737,11 +766,12 @@ public class ControlPeriodosActivos implements Serializable {
             }
             context.update("form:informacionRegistro");
 
-            return listEmpresa;
-        } catch (Exception e) {
-            System.out.println(" BETA  BETA ControlCentrosCosto: Error al recibir los Empresas de la empresa seleccionada /n" + e.getMessage());
-            return null;
         }
+        return listEmpresa;
+        // } catch (Exception e) {
+        //     System.out.println(" BETA  BETA ControlCentrosCosto: Error al recibir los Empresas de la empresa seleccionada /n" + e.getMessage());
+        //     return null;
+        // }
     }
 
     public void setListEmpresa(List<Empresas> listEmpresa) {

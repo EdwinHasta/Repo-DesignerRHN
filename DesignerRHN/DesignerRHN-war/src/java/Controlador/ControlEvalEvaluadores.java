@@ -96,6 +96,9 @@ public class ControlEvalEvaluadores implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarEvalEvaluadores.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlEvalEvaluadores eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -223,9 +226,9 @@ public class ControlEvalEvaluadores implements Serializable {
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:codigo");
-            codigo.setFilterStyle("width: 370px");
+            codigo.setFilterStyle("width: 200px");
             descripcion = (Column) c.getViewRoot().findComponent("form:datosEvalEvaluadores:descripcion");
-            descripcion.setFilterStyle("width: 400px");
+            descripcion.setFilterStyle("width: 200px");
             RequestContext.getCurrentInstance().update("form:datosEvalEvaluadores");
             System.out.println("Activar");
             bandera = 1;

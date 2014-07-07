@@ -99,6 +99,9 @@ public class ControlTiposCertificados implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposCertificados.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposCertificados eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -549,15 +552,16 @@ public class ControlTiposCertificados implements Serializable {
      }
 
      */
-     public void revisarDialogoGuardar() {
+    public void revisarDialogoGuardar() {
 
-     if (!borrarTiposCertificados.isEmpty() || !crearTiposCertificados.isEmpty() || !modificarTiposCertificados.isEmpty()) {
-     RequestContext context = RequestContext.getCurrentInstance();
-     context.update("form:confirmarGuardar");
-     context.execute("confirmarGuardar.show()");
-     }
+        if (!borrarTiposCertificados.isEmpty() || !crearTiposCertificados.isEmpty() || !modificarTiposCertificados.isEmpty()) {
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.update("form:confirmarGuardar");
+            context.execute("confirmarGuardar.show()");
+        }
 
-     }
+    }
+
     public void guardarTiposCertificados() {
         RequestContext context = RequestContext.getCurrentInstance();
 

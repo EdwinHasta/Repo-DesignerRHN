@@ -121,7 +121,7 @@
                                     </p:cellEditor>
 
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooClaseCategoria" value="#{msg['claseCategoria']}"/>
+                                        <p:commandButton style="width: 100%; height: 16px; border: none; color: blue" id="fooClaseCategoria" actionListener="#{controlClasesCategorias.recibirAtras('atrasCategoriaESCAClaseCategoria')}" action="categoriaESCAClaseCategoria" value="#{msg['claseCategoria']}"/>
                                     </f:facet>
                                 </p:column> 
 
@@ -433,8 +433,8 @@
                         <p:inputTextarea value="#{controlCategoriaEsca.editarCategoria.clasecategoria.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarClaseD" value="#{msg['atras']}" onclick="editarClaseD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
-                    
-                     <p:dialog id="editarTipoD" header="#{msg['tipoE']}" widgetVar="editarTipoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
+
+                    <p:dialog id="editarTipoD" header="#{msg['tipoE']}" widgetVar="editarTipoD" resizable="false" draggable="false" modal="true" height="93" width="240" style="font-size: 12px">  
                         <p:inputTextarea value="#{controlCategoriaEsca.editarCategoria.tiposueldo.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                         <p:commandButton id="cancelarTipoD" value="#{msg['atras']}" onclick="editarTipoD.hide();" style="position: absolute; top: 60px; left: 148px; font-size: 11px" process="@this"/>
                     </p:dialog>
@@ -454,7 +454,7 @@
                             <f:facet name="header"><h:outputText value="#{msg['codigoX']}"/> </f:facet> 
                             <h:outputText value="#{info.codigo}" />
                         </p:column> 
-                        
+
                         <p:column headerText="#{msg['descripcionXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['descripcionX']}"/> </f:facet> 
                             <h:outputText value="#{info.descripcion}" />
@@ -464,7 +464,7 @@
                             <f:facet name="header"><h:outputText value="#{msg['claseCategoriaX']}"/> </f:facet> 
                             <h:outputText value="#{info.clasecategoria.descripcion}" />
                         </p:column>  
-                        
+
                         <p:column headerText="#{msg['tipoSueldoXX']}">                                  
                             <f:facet name="header"><h:outputText value="#{msg['tipoSueldoX']}"/> </f:facet> 
                             <h:outputText value="#{info.tiposueldo.descripcion}" />
@@ -474,7 +474,7 @@
                             <f:facet name="header"><h:outputText value="#{msg['conceptoX']}"/> </f:facet> 
                             <h:outputText value="#{info.concepto.descripcion}" />
                         </p:column> 
-                        
+
                     </p:dataTable>
                 </h:form>
             </ui:define>

@@ -97,6 +97,9 @@ public class ControlSubCategorias implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarSubCategorias.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlSubCategorias eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -187,6 +190,7 @@ public class ControlSubCategorias implements Serializable {
         context.update("form:datosSubCategoria");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
@@ -444,7 +448,7 @@ public class ControlSubCategorias implements Serializable {
                         pass++;
                     }
 
-                    if (pass==2) {
+                    if (pass == 2) {
                         if (guardado == true) {
                             guardado = false;
                         }

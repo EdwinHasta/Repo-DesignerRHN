@@ -95,6 +95,9 @@ public class ControlPryClientes implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarPryClientes.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlPryClientes eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -170,7 +173,8 @@ public class ControlPryClientes implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
@@ -208,7 +212,8 @@ public class ControlPryClientes implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
@@ -246,7 +251,8 @@ public class ControlPryClientes implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
@@ -614,7 +620,8 @@ public class ControlPryClientes implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 1) {
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
@@ -736,7 +743,8 @@ public class ControlPryClientes implements Serializable {
                 guardado = false;
             }
             context.update("form:ACEPTAR");
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 nombre = (Column) c.getViewRoot().findComponent("form:datosPryCliente:nombre");
                 nombre.setFilterStyle("display: none; visibility: hidden;");

@@ -16,7 +16,7 @@
                         <fieldset style="position: absolute;top: 80px;left: 10px;height: 350px;width: 830px; border-radius: 10px; text-align: left">
                             <legend style="font-size: 14px; color: blue"><strong>Tipo de Documento</strong></legend>
 
-                            <p:dataTable id="datosTiposDocumentos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 830px ; border: 1px;"                           
+                            <p:dataTable id="datosTiposDocumentos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
                                          value="#{controlTiposDocumentos.listTiposDocumentos}" 
                                          scrollable="true"
                                          scrollHeight="#{controlTiposDocumentos.tamano}"
@@ -230,7 +230,7 @@
                             <p:inputText  id="nuevoNombre" maxlength="30" value="#{controlTiposDocumentos.nuevoTiposDocumentos.nombrelargo}" style=" width: 140px; position: absolute; left: 150px; top: 85px;text-transform: uppercase">
                                 <p:ajax event="change" update="@this"/>
                             </p:inputText>
-                            <p:watermark for="nuevoNombre" value="Nombre" />
+                            <p:watermark for="nuevoNombre" value="Descripcion" />
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposDocumentos.limpiarNuevoTiposDocumentos()}" update="nuevaTipoempresa" process="@this"/>
                             <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlTiposDocumentos.agregarNuevoTiposDocumentos()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroTiposDocumentos.hide();"  actionListener="#{controlTiposDocumentos.limpiarNuevoTiposDocumentos()}"  process="@this"/>

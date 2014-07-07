@@ -1113,22 +1113,6 @@
     <navigation-rule>
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>ReporteBienestar</from-outcome>
-            <to-view-id>/NReporteBienestar.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/NReporteBienestar.xhtml</from-view-id>
-        <navigation-case>
-            <from-outcome>nomina</from-outcome>
-            <to-view-id>/NominaF.xhtml</to-view-id>
-            <redirect />
-        </navigation-case>
-    </navigation-rule>
-    <navigation-rule>
-        <from-view-id>/NominaF.xhtml</from-view-id>
-        <navigation-case>
             <from-outcome>ReporteBanco</from-outcome>
             <to-view-id>/ReportesBancos.xhtml</to-view-id>
             <redirect />
@@ -2238,12 +2222,12 @@
         <from-view-id>/IbcAutoliquid.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplibcs</from-outcome>
-            <to-view-id>/emplibcs.xhtml</to-view-id>
+            <to-view-id>/emplibc.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/emplibcs.xhtml</from-view-id>
+        <from-view-id>/emplibc.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>ibcAuto</from-outcome>
             <to-view-id>/IbcAutoliquid.xhtml</to-view-id>
@@ -2430,12 +2414,12 @@
         <from-view-id>/NominaF.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>emplIbcs</from-outcome>
-            <to-view-id>/emplibcs.xhtml</to-view-id>
+            <to-view-id>/emplibc.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/emplibcs.xhtml</from-view-id>
+        <from-view-id>/emplibc.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>atrasEmplIbcs</from-outcome>
             <to-view-id>/NominaF.xhtml</to-view-id>
@@ -3299,6 +3283,263 @@
         <navigation-case>
             <from-outcome>unidad</from-outcome>
             <to-view-id>/unidad.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/PruebasUnitariasComponentes.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>adelante</from-outcome>
+            <to-view-id>/actualizarconcepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/PruebasUnitariasComponentes.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>adelanteError</from-outcome>
+            <to-view-id>/errorliquidacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/acercade.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasAcercaDe</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/atextrarecargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>adelanteAtExtraRecargoTipoDia</from-outcome>
+            <to-view-id>/attipodia.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/attipodia.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasAtExtraRecargoTipoDia</from-outcome>
+            <to-view-id>/atextrarecargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/bienestar.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasNominaFBienestar</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>bienestar</from-outcome>
+            <to-view-id>/bienestar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/NReporteBienestar.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasReporteBienestar</from-outcome>
+            <to-view-id>/bienestar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/bienestar.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reporteBienestar</from-outcome>
+            <to-view-id>/NReporteBienestar.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/categoriaesca.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>categoriaESCAClaseCategoria</from-outcome>
+            <to-view-id>/clasecategoria.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/clasecategoria.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasCategoriaESCAClaseCategoria</from-outcome>
+            <to-view-id>/categoriaesca.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaTipoTrabajador.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>clasepension</from-outcome>
+            <to-view-id>/clasepension.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/clasepension.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasEmplVigenciaTipoTrabajadorClasePension</from-outcome>
+            <to-view-id>/EmplVigenciaTipoTrabajador.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/Concepto.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>conceptosoporte</from-outcome>
+            <to-view-id>/conceptosoporte.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/conceptosoporte.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasconceptosporte</from-outcome>
+            <to-view-id>/Concepto.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/Parametro.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>controlperiodoactivo</from-outcome>
+            <to-view-id>/controlperiodoactivo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/controlperiodoactivo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascontrolperiodoactivo</from-outcome>
+            <to-view-id>/Parametro.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/Ciudades.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>departamento</from-outcome>
+            <to-view-id>/departamento.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/departamento.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasdepartamento</from-outcome>
+            <to-view-id>/Ciudades.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/vigenciadeporte.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>deporte</from-outcome>
+            <to-view-id>/deporte.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/deporte.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasdeporte</from-outcome>
+            <to-view-id>/vigenciadeporte.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/NominaF.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>emplvigsaludocupacional</from-outcome>
+            <to-view-id>/emplvigsaludocupacional.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/emplvigsaludocupacional.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasemplvigsaludocupacional</from-outcome>
+            <to-view-id>/NominaF.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    <navigation-rule>
+        <from-view-id>/empresa.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>empresabanco</from-outcome>
+            <to-view-id>/empresabanco.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/empresabanco.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasempresabanco</from-outcome>
+            <to-view-id>/empresa.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>cargo</from-outcome>
+            <to-view-id>/enfoque.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/enfoque.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrascargo</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/Barra.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>errorliquidacion</from-outcome>
+            <to-view-id>/errorliquidacion.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/errorliquidacion.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atraserrorliquidacion</from-outcome>
+            <to-view-id>/Barra.xhtml</to-view-id>
             <redirect />
         </navigation-case>
     </navigation-rule>

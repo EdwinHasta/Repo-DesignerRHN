@@ -218,7 +218,7 @@
 
 
 
-                    <p:dialog id="nuevoRegistroTiposIndices" header="Nuevo Registro" widgetVar="nuevoRegistroTiposIndices" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="nuevoRegistroTiposIndices" header="Nuevo Registro" widgetVar="nuevoRegistroTiposIndices" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacion" value="Nuevo Tipo Indice" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="nuevaTipoempresa" style="border: none;">
@@ -236,14 +236,14 @@
                             <p:watermark for="nuevoNombre" value="Nombre" />
 
                             <p:commandButton id="limpiar" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposIndices.limpiarNuevoTiposIndices()}" update="nuevaTipoempresa" process="@this"/>
-                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlTiposIndices.agregarNuevoTiposIndices()}" process="@this" />
+                            <p:commandButton id="agregarTE" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlTiposIndices.agregarNuevoTiposIndices()}" process="@this" />
                             <p:commandButton id="cancelarTE" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="nuevaTipoempresa" onclick="nuevoRegistroTiposIndices.hide();"  actionListener="#{controlTiposIndices.limpiarNuevoTiposIndices()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>
 
 
 
-                    <p:dialog id="duplicarRegistroTiposIndices" header="duplicar Registro" widgetVar="duplicarRegistroTiposIndices" closable="false" resizable="false"  draggable="false" modal="true" height="160" width="310" style=" padding: 0px">  
+                    <p:dialog id="duplicarRegistroTiposIndices" header="duplicar Registro" widgetVar="duplicarRegistroTiposIndices" closable="false" resizable="false"  draggable="false" modal="true" height="150" width="320" style=" padding: 0px">  
                         <center><strong><h:outputText id="informacionDuplicar" value="Duplicar Tipo Indice" style="font-size: 14px; color: blue; position: relative; top: 10px" /></strong></center> 
 
                         <p:panel id="duplicarTE" style="border: none;">
@@ -259,7 +259,7 @@
                             </p:inputText>
                             <p:watermark for="duplicarNombre" value="Nombre" />
                             <p:commandButton id="limpiarD" icon="ui-icon-trash" value="Limpiar" style=" position: absolute; left: 10px; top: 120px;"  actionListener="#{controlTiposIndices.limpiarDuplicarTiposIndices() }" update="duplicarTE"  process="@this"/>
-                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 110px; top: 120px;" actionListener="#{controlTiposIndices.confirmarDuplicar()}"  process="@this" />
+                            <p:commandButton id="duplicarVFP" icon="ui-icon-circle-check" value="Agregar" style=" position: absolute; left: 120px; top: 120px;" actionListener="#{controlTiposIndices.confirmarDuplicar()}"  process="@this" />
                             <p:commandButton id="cancelarDuplicarVFP" icon="ui-icon-circle-close" value="Cancelar" style=" position: absolute; left: 210px; top: 120px;"  update="duplicarTE" onclick="duplicarRegistroTiposIndices.hide();" actionListener="#{controlTiposIndices.limpiarDuplicarTiposIndices()}"  process="@this"/>
                         </p:panel>
                     </p:dialog>

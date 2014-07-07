@@ -97,6 +97,9 @@ public class ControlJornadas implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarJornadas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlJornadas eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -181,6 +184,7 @@ public class ControlJornadas implements Serializable {
         context.update("form:datosJornadas");
         context.update("form:ACEPTAR");
     }
+
     public void salir() {
         FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
@@ -654,7 +658,7 @@ public class ControlJornadas implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoJornadas.getCodigo() == a) {
-            mensajeValidacion = " *Debe Tener Un Codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoJornadas.getCodigo());
@@ -675,7 +679,7 @@ public class ControlJornadas implements Serializable {
             }
         }
         if (nuevoJornadas.getDescripcion() == null || nuevoJornadas.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + " *Debe Tener una Descripción \n";
+            mensajeValidacion = mensajeValidacion + " *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -776,7 +780,7 @@ public class ControlJornadas implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarJornadas.getDescripcion());
 
         if (duplicarJornadas.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listJornadas.size(); x++) {
@@ -794,7 +798,7 @@ public class ControlJornadas implements Serializable {
             }
         }
         if (duplicarJornadas.getDescripcion() == null || duplicarJornadas.getDescripcion().isEmpty()) {
-            mensajeValidacion = mensajeValidacion + "   * una Descripción \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripción \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

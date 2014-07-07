@@ -91,7 +91,9 @@ public class ControlTiposDescansos implements Serializable {
             System.out.println("\n ENTRE A ControlTiposDescansos.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }  RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposDescansos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposDescansos eventoFiltrar ERROR===" + e.getMessage());
         }

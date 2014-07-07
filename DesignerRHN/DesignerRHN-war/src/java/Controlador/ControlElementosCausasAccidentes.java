@@ -102,6 +102,9 @@ public class ControlElementosCausasAccidentes implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarElementosCausasAccidentes.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR EVENTO FILTRAR ERROR===" + e.getMessage());
         }
@@ -655,7 +658,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
         mensajeValidacion = " ";
         RequestContext context = RequestContext.getCurrentInstance();
         if (nuevoElementoCausaAccidente.getCodigo() == a) {
-            mensajeValidacion = " *Debe tener un codigo \n";
+            mensajeValidacion = " *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             System.out.println("codigo en Motivo Cambio Cargo: " + nuevoElementoCausaAccidente.getCodigo());
@@ -676,7 +679,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
             }
         }
         if (nuevoElementoCausaAccidente.getDescripcion() == (null)) {
-            mensajeValidacion = mensajeValidacion + " *Debe tener una nombre \n";
+            mensajeValidacion = mensajeValidacion + " *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {
@@ -776,7 +779,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
         System.err.println("ConfirmarDuplicar Descripcion " + duplicarElementoCausaAccidente.getDescripcion());
 
         if (duplicarElementoCausaAccidente.getCodigo() == a) {
-            mensajeValidacion = mensajeValidacion + "   * Codigo \n";
+            mensajeValidacion = mensajeValidacion + "   *Codigo \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
         } else {
             for (int x = 0; x < listElementosCausasAccidentes.size(); x++) {
@@ -794,7 +797,7 @@ public class ControlElementosCausasAccidentes implements Serializable {
             }
         }
         if (duplicarElementoCausaAccidente.getDescripcion() == null) {
-            mensajeValidacion = mensajeValidacion + "   * Un Nombre \n";
+            mensajeValidacion = mensajeValidacion + "   *Descripcion \n";
             System.out.println("Mensaje validacion : " + mensajeValidacion);
 
         } else {

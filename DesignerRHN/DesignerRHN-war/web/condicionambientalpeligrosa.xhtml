@@ -18,10 +18,14 @@
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['condicion']}</strong></legend>
 
                             <p:dataTable id="datosSoCondicionesAmbientalesP" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
-                                         value="#{controlSoCondicionesAmbientalesP.listSoCondicionesAmbientalesP}"  scrollHeight="#{controlSoCondicionesAmbientalesP.tamano}"
-                                         filteredValue="#{controlSoCondicionesAmbientalesP.filtrarSoCondicionesAmbientalesP}" emptyMessage="No se encontrarón resultados para la búsqueda"
-                                         selection="#{controlSoCondicionesAmbientalesP.soCondicionAmbientalPSeleccionado}" selectionMode="single"
-                                         editable="true" editMode="cell" scrollable="true" liveScroll="true" scrollRows="50"  scrollWidth="830"
+                                         value="#{controlSoCondicionesAmbientalesP.listSoCondicionesAmbientalesP}"
+                                         scrollHeight="#{controlSoCondicionesAmbientalesP.tamano}"
+                                         filteredValue="#{controlSoCondicionesAmbientalesP.filtrarSoCondicionesAmbientalesP}"
+                                         emptyMessage="No se encontrarón resultados para la búsqueda"
+                                         selection="#{controlSoCondicionesAmbientalesP.soCondicionAmbientalPSeleccionado}"
+                                         selectionMode="single"
+                                         editable="true" editMode="cell" scrollable="true" liveScroll="true"
+                                         scrollRows="50"  scrollWidth="830"
                                          >
                                 <p:ajax event="filter" listener="#{controlSoCondicionesAmbientalesP.eventoFiltrar()}"/>
 

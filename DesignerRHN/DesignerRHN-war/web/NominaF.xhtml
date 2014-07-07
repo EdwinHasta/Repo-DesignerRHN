@@ -324,7 +324,7 @@
                                         <!-- Panel Salud Ocupacional-->
 
                                         <fieldset style="height: 35px; width: 70px; display: block; position: absolute; border-radius: 5px; top: 423px; left: 212px;">
-                                            <p:commandButton id="SaludOcupacional" value="" style="position: absolute; background-image: url(Imagenes/Iconos/saludOcupacional2.png); width: 75px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px; border: outset; border-width: 2px;" />
+                                            <p:commandButton id="SaludOcupacional" value="" style="position: absolute; background-image: url(Imagenes/Iconos/saludOcupacional2.png); width: 75px; height: 40px; top: 2px; background-repeat: no-repeat; background-size: 100% 100%; left: 5px; border: outset; border-width: 2px;" action="emplvigsaludocupacional" />
                                             <p:tooltip  for="SaludOcupacional" >
                                                 #{msg['saludocupacional1']}<br/>#{msg['saludocupacional2']}
                                             </p:tooltip>
@@ -605,7 +605,7 @@
 
                                     <p:commandButton id="btnEvaluacionSeleccion" value=" " style="position: absolute; width: 100px; height: 100px; left: 80px; top: 281px; background-image: url(Imagenes/GereEvalSeleccion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <p:commandButton id="btnCapacitacion" value=" " style="position: absolute; width: 100px; height: 100px; left: 265px; top: 281px; background-image: url(Imagenes/GereCapacitacion.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
-                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 281px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%;" actionListener="#{controlNReporteBienestar.iniciarPagina()}" action="ReporteBienestar"/>
+                                    <p:commandButton id="btnBienestar" value=" " style="position: absolute; width: 100px; height: 100px; left: 450px; top: 281px; background-image: url(Imagenes/GereBienestar.gif); background-repeat: no-repeat; background-size: 100% 100%;" action="bienestar" />
                                     <p:commandButton id="btnProyecciones" value=" " style="position: absolute; width: 100px; height: 100px; left: 630px; top: 281px; background-image: url(Imagenes/GereProyeccion1.gif); background-repeat: no-repeat; background-size: 100% 100%; "/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 54px; top:383px; text-align:center" value="#{msg['evaluacionseleccion']}"/>
                                     <h:outputText style="width:150px; height:12px ;position:absolute ;color: blue;  font-weight: bold; left: 240px; top:383px; text-align:center" value="#{msg['capacitacion']}"/>

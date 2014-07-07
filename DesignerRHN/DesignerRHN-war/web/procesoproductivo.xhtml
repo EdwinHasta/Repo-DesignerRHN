@@ -18,9 +18,16 @@
                             <legend style="font-size: 14px; color: blue"><strong>#{msg['titulo']}</strong></legend>
 
                             <p:dataTable id="datosProcesosProductivos" var="info" rowKey="#{info.secuencia}"  rowIndexVar="indice" style="width: 810px ; border: 1px;"                           
-                                         value="#{controlProcesosProductivos.listProcesosProductivos}" scrollable="true" scrollHeight="#{controlProcesosProductivos.tamano}"  scrollWidth="830"
-                                         filteredValue="#{controlProcesosProductivos.filtrarProcesosProductivos}" emptyMessage="#{msg['lovvacio']}"
-                                         editable="true" editMode="cell" selection="#{controlProcesosProductivos.procesoProductivoSeleccionado}" selectionMode="single"
+                                         value="#{controlProcesosProductivos.listProcesosProductivos}"
+                                         scrollable="true" 
+                                         scrollHeight="#{controlProcesosProductivos.tamano}"
+                                         scrollWidth="830"
+                                         filteredValue="#{controlProcesosProductivos.filtrarProcesosProductivos}"
+                                         emptyMessage="#{msg['lovvacio']}"
+                                         editable="true"
+                                         editMode="cell"
+                                         selection="#{controlProcesosProductivos.procesoProductivoSeleccionado}"
+                                         selectionMode="single"
                                          >
                                 <p:ajax event="filter" listener="#{controlProcesosProductivos.eventoFiltrar()}"/>
 

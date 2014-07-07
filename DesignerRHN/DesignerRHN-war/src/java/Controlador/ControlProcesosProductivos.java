@@ -113,6 +113,9 @@ public class ControlProcesosProductivos implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarProcesosProductivos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlProcesosProductivos eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -195,7 +198,8 @@ public class ControlProcesosProductivos implements Serializable {
         }
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");
@@ -231,7 +235,8 @@ public class ControlProcesosProductivos implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosProcesosProductivos:codigo");

@@ -98,7 +98,9 @@ public class ControlTiposIndices implements Serializable {
             System.out.println("\n ENTRE A ControlTiposIndices.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposIndices.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposIndices eventoFiltrar ERROR===" + e.getMessage());
         }

@@ -107,7 +107,9 @@ public class ControlTiposReemplazos implements Serializable {
             System.out.println("\n ENTRE A CONTROLTIPOSREEMPLAZOS.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposReemplazos.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR CONTROLTIPOSREEMPLAZOS eventoFiltrar ERROR===" + e.getMessage());
         }

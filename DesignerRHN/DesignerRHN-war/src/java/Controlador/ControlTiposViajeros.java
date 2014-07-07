@@ -98,7 +98,9 @@ public class ControlTiposViajeros implements Serializable {
             System.out.println("\n ENTRE A ControlTiposViajeros.eventoFiltrar \n");
             if (tipoLista == 0) {
                 tipoLista = 1;
-            }
+            }RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarTiposViajeros.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlTiposViajeros eventoFiltrar ERROR===" + e.getMessage());
         }

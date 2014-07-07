@@ -70,46 +70,46 @@
                         <p:toolbar style=" position: absolute; top: 35px; left: 11px; height: 23px">  
                             <p:toolbarGroup align="left"> 
 
-                                <p:commandButton id="guardarRapido" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "/>
+                                <p:commandButton id="guardarRapido" disabled="true" value="" style="background-image: url(Imagenes/guardar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px; "/>
                                 <p:tooltip style="" for="guardarRapido" value="Guardado Rapido" />
-                                <p:commandButton id="editar" value="" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:commandButton id="editar" value="" disabled="true" style="background-image: url(Imagenes/editar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
                                 <p:tooltip style="" for="editar" value="Editar" />
 
                                 <p:separator style="position: relative; top: -11px;"/>
 
-                                <p:commandButton id="listaValores" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:commandButton id="listaValores" disabled="true" value="" style="background-image: url(Imagenes/lupa.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
                                 <p:tooltip style="" for="listaValores" value="Lista de Valores" />
 
-                                <p:commandButton id="filtrar" value="" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:commandButton id="filtrar" value="" disabled="true" style="background-image: url(Imagenes/embudo.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
                                 <p:tooltip style="" for="filtrar" value="Filtrar" />
 
                                 <p:separator style="position: relative; top: -11px;"/>
 
-                                <p:commandButton id="exportarXLS" value="" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:commandButton id="exportarXLS" value="" disabled="true" style="background-image: url(Imagenes/excel.png); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
                                 <p:tooltip style="" for="exportarXLS" value="Exportar XLS" />
 
-                                <p:commandButton id="exportarXML" value="" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:commandButton id="exportarXML" value="" disabled="true" style="background-image: url(Imagenes/XML.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
                                 <p:tooltip style="" for="exportarXML" value="Exportar XML" />
 
-                                <p:commandButton id="exportarPDF" value="" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
+                                <p:commandButton id="exportarPDF" value="" disabled="true" style="background-image: url(Imagenes/pdf.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>
                                 <p:tooltip style="" for="exportarPDF" value="Exportar PDF" />
 
                                 <p:separator style="position: relative; top: -11px;"/> 
-                                <p:commandButton id="insertar" value="" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/> 
+                                <p:commandButton id="insertar" value="" disabled="true" style="background-image: url(Imagenes/nuevoRegistro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/> 
                                 <p:tooltip style="" for="insertar" value="Nuevo" />
 
-                                <p:commandButton id="eliminar" value="" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
+                                <p:commandButton id="eliminar" value="" disabled="true" style="background-image: url(Imagenes/delete.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
                                 <p:tooltip style="" for="eliminar" value="Eliminar" />
 
-                                <p:commandButton id="duplicar" value="" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
+                                <p:commandButton id="duplicar" value="" disabled="true" style="background-image: url(Imagenes/duplicar.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
                                 <p:tooltip style="" for="duplicar" value="Duplicar" />
 
                                 <p:separator style="position: relative; top: -11px;"/> 
-                                <p:commandButton id="rastro" value="" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
+                                <p:commandButton id="rastro" value="" disabled="true" style="background-image: url(Imagenes/rastro.jpg); background-size: 100% 100%; background-repeat: no-repeat; width: 25px; height: 25px "/>  
                                 <p:tooltip style="" for="rastro" value="Rastro"/>
                             </p:toolbarGroup>  
                         </p:toolbar> 
-                        <p:commandButton style="position: absolute; left: 780px; top: 420px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="ACEPTAR" onclick="confirmarGuardar.show();" process="@this" />
+                        <p:commandButton style="position: absolute; left: 780px; top: 420px;  font-family: Arial, Helvetica, sans-serif;" icon="ui-icon-check" id="ACEPTAR" value="ACEPTAR" action="atrasAcercaDe" process="@this" />
                     </p:panel>
 
                     <p:hotkey bind="alt+p" actionListener="#{controlAcercaDe.lovEmpresas()}"/> 
@@ -150,7 +150,7 @@
                         </p:commandButton>
                     </p:dialog>
                 </h:form>
-            </ui:define>
+                            </ui:define>
         </ui:composition>
     </h:body>
 </html>

@@ -89,6 +89,8 @@ public class ControlUnidad implements Serializable {
     public String buscarNombre;
     public boolean buscador;
     public String paginaAnterior;
+    private BigInteger secuenciaPruebaConceptoEmpresa;
+    private BigInteger secuenciaEmpleado;
 
     public ControlUnidad() {
         permitirIndex = true;
@@ -111,6 +113,10 @@ public class ControlUnidad implements Serializable {
         altoTabla = "270";
         guardado = true;
         buscador = false;
+        //     secuenciaPruebaConceptoEmpresa = new BigInteger("11197246");
+        //secuenciaEmpleado = new BigInteger("11280578");
+        secuenciaEmpleado = null;
+        secuenciaPruebaConceptoEmpresa = null;
     }
 
     @PostConstruct
@@ -579,7 +585,9 @@ public class ControlUnidad implements Serializable {
         context.update("form:informacionRegistro");
     }
 
-    
+    public void recibirPaginaEntrante(String pagina) {
+        paginaAnterior = pagina;
+    }
 
     public void valoresBackupAutocompletar(int tipoNuevo) {
         if (tipoNuevo == 1) {
@@ -1070,6 +1078,22 @@ public class ControlUnidad implements Serializable {
 
     public void setSecRegistro(BigInteger secRegistro) {
         this.secRegistro = secRegistro;
+    }
+
+    public BigInteger getSecuenciaPruebaConceptoEmpresa() {
+        return secuenciaPruebaConceptoEmpresa;
+    }
+
+    public void setSecuenciaPruebaConceptoEmpresa(BigInteger secuenciaPruebaConceptoEmpresa) {
+        this.secuenciaPruebaConceptoEmpresa = secuenciaPruebaConceptoEmpresa;
+    }
+
+    public BigInteger getSecuenciaEmpleado() {
+        return secuenciaEmpleado;
+    }
+
+    public void setSecuenciaEmpleado(BigInteger secuenciaEmpleado) {
+        this.secuenciaEmpleado = secuenciaEmpleado;
     }
 
 }

@@ -20,7 +20,7 @@
                     <p:panel  id="PanelTotal" header="#{msg['titulo']}" style="position: absolute; width: 874px; height: 550px;  text-align: left" >  
 
                         <p:commandButton style="position: absolute; left: 20px; top: 520px;" id="DETALLES" value="#{msg['detalle']}" disabled="#{controlEmpresa.activoBtnesAdd}"  actionListener="#{controlDetalleEmpresa.inicializarPagina(controlEmpresa.secRegistro, 'empresa')}" action="detalle" process="@this" />
-                        <p:commandButton style="position: absolute; left: 160px; top: 520px;" id="EMPRESABANCO" value="#{msg['empresaBanco']}" disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 160px; top: 520px;" id="EMPRESABANCO" value="#{msg['empresaBanco']}" disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" action="empresabanco"/>
                         <p:commandButton style="position: absolute; left: 305px; top: 520px;" id="DIRECCIONES" value="#{msg['direccion']}"  disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" />
                         <p:commandButton style="position: absolute; left: 683px; top: 520px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlEmpresa.cambiosPagina}" process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 520px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmpresa.salir()}" action="#{controlEmpresa.valorPaginaAnterior()}" process="@this" />

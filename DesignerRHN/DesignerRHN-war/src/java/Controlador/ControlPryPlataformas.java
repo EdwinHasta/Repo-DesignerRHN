@@ -97,6 +97,9 @@ public class ControlPryPlataformas implements Serializable {
             if (tipoLista == 0) {
                 tipoLista = 1;
             }
+            RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros: " + filtrarPryPlataformas.size();
+            context.update("form:informacionRegistro");
         } catch (Exception e) {
             System.out.println("ERROR ControlPryPlataformas eventoFiltrar ERROR===" + e.getMessage());
         }
@@ -153,7 +156,8 @@ public class ControlPryPlataformas implements Serializable {
     public void listaValoresBoton() {
     }
 
-    public void cancelarModificacion() {FacesContext c = FacesContext.getCurrentInstance();
+    public void cancelarModificacion() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
@@ -189,7 +193,8 @@ public class ControlPryPlataformas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void salir() {FacesContext c = FacesContext.getCurrentInstance();
+    public void salir() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 1) {
             //CERRAR FILTRADO
             codigo = (Column) c.getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
@@ -225,7 +230,8 @@ public class ControlPryPlataformas implements Serializable {
         context.update("form:ACEPTAR");
     }
 
-    public void activarCtrlF11() {FacesContext c = FacesContext.getCurrentInstance();
+    public void activarCtrlF11() {
+        FacesContext c = FacesContext.getCurrentInstance();
         if (bandera == 0) {
             tamano = 246;
             codigo = (Column) c.getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
@@ -657,7 +663,8 @@ public class ControlPryPlataformas implements Serializable {
         System.out.println("contador " + contador);
 
         if (contador == 2) {
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 System.out.println("Desactivar");
                 codigo = (Column) c.getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
@@ -793,7 +800,8 @@ public class ControlPryPlataformas implements Serializable {
             infoRegistro = "Cantidad de registros: " + listPryPlataformas.size();
             context.update("form:informacionRegistro");
 
-            if (bandera == 1) {FacesContext c = FacesContext.getCurrentInstance();
+            if (bandera == 1) {
+                FacesContext c = FacesContext.getCurrentInstance();
                 //CERRAR FILTRADO
                 codigo = (Column) c.getViewRoot().findComponent("form:datosPrtPlataforma:codigo");
                 codigo.setFilterStyle("display: none; visibility: hidden;");

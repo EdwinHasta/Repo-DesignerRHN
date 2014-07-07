@@ -563,16 +563,16 @@
                             <strong><h:outputText value="#{msg['iausencia']}" style=" position: absolute; top: 285px" /></strong>
                             <div id="posicionFechaInicialNuevoReg" style=" position: absolute; top: 280px; left: 200px">
                                 <lnk:calendar id="nuevaFecha" value="#{controlAusentismos.nuevoAusentismo.fecha}" >
-                                    <p:ajax event="dateSelect" update="nuevaFecha" process="@this"/>
+                                    <p:ajax event="dateSelect"  update="nuevaFecha" process="@this"/>
                                     <p:ajax event="change" update="nuevaFecha" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
                             <strong><h:outputText value="#{msg['fausencia']}" style=" position: absolute; top: 325px" /></strong>
-                            <div id="posicionFechaFinalNuevoReg" style=" position: absolute; top: 280px; left: 200px">
+                            <div id="posicionFechaFinalNuevoReg" style=" position: absolute; top: 320px; left: 200px">
                                 <lnk:calendar id="nuevaFechaFinaus" value="#{controlAusentismos.nuevoAusentismo.fechafinaus}" >
-                                    <p:ajax event="dateSelect" update="nuevaFechaFinaus" process="@this"/>
-                                    <p:ajax event="change" update="nuevaFechaFinaus" process="@this"/>
+                                    <p:ajax event="dateSelect"  update="nuevaFechaFinaus" process="@this"/>
+                                    <p:ajax event="change"  update="nuevaFechaFinaus" process="@this"/>
                                 </lnk:calendar>
                             </div>
 
@@ -586,8 +586,8 @@
                             <strong><h:outputText value="#{msg['ipago']}" style=" position: absolute; top: 105px; left: 460px"  /></strong>
                             <p:calendar  id="nuevaFechaInipago" style=" position: absolute; top: 105px; left: 560px;" value="#{controlAusentismos.nuevoAusentismo.fechainipago}"  styleClass="ui-datepicker, myClass2"  
                                          navigator="true" showButtonPanel="true" pattern="dd/MM/yyyy">
-                                <p:ajax event="dateSelect" update="nuevaFechaInipago"/>
-                                <p:ajax event="change" update="nuevaFechaInipago"/>
+                                <p:ajax event="dateSelect"  update="nuevaFechaInipago"/>
+                                <p:ajax event="change"  update="nuevaFechaInipago"/>
                             </p:calendar>
 
                             <strong><h:outputText value="#{msg['fpago']}" style=" position: absolute; top: 145px; left:460px" /></strong>
@@ -621,58 +621,7 @@
                             </p:inputText>
                             <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 691px; top: 265px;  " id="btnNuevaForma" actionListener="#{controlAusentismos.asignarIndex(indice, 6, 1)}" icon="ui-icon-search" process="@this" />
 
-                            <!-- MODULO DE SALUD OCUPACIONAL -->
-                            <p:panel id="panel" header="#{msg['modulo']}" toggleable="true" style="position: absolute; top: 300px; width: 700px" toggleSpeed="700" closeSpeed="500" widgetVar="panel">  
-                                <strong><h:outputText value="#{msg['accident']}" style=" position: absolute; top: 65px" /></strong>
-                                <p:inputText id="nuevoAccidente" value="#{controlAusentismos.nuevoAusentismo.accidente.descripcioncaso}" style=" width: 122px; position: absolute; left: 170px; top: 65px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'AD')}" />
-                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('AD', controlAusentismos.nuevoAusentismo.accidente.descripcioncaso, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 7, 1)}" />
-                                </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 65px;  " id="btnNuevoAccidente" actionListener="#{controlAusentismos.asignarIndex(indice, 7, 1)}" icon="ui-icon-search" process="@this" />
-
-                                <strong><h:outputText value="#{msg['enf']}" style=" position: absolute; top: 105px" /></strong>
-                                <p:inputText id="nuevaEnfermedad" value="#{controlAusentismos.nuevoAusentismo.enfermedad.categoria.descripcion}" style=" width: 122px; position: absolute; left: 170px; top: 105px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'ENFERMEDAD')}" />
-                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('ENFERMEDAD', controlAusentismos.nuevoAusentismo.enfermedad.categoria.descripcion, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" />
-                                </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 105px;  " id="btnNuevaEnfermedad" actionListener="#{controlAusentismos.asignarIndex(indice, 9, 1)}" icon="ui-icon-search" process="@this" />
-
-                                <strong><h:outputText value="#{msg['numero']}" style=" position: absolute; top: 145px" /></strong>
-                                <p:inputText id="nuevoNumero" value="#{controlAusentismos.nuevoAusentismo.dias}" style=" width: 122px; position: absolute; left: 170px; top: 145px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="@this"/>
-                                </p:inputText>
-
-                                <strong><h:outputText value="#{msg['cdiagnostico']}" style=" position: absolute; top: 185px" /></strong>
-                                <p:inputText id="nuevoDiagnostico" value="#{controlAusentismos.nuevoAusentismo.diagnosticocategoria.codigo}" style=" width: 122px; position: absolute; left: 170px; top: 185px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'DIAGNOSTICO')}" />
-                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('DIAGNOSTICO', controlAusentismos.nuevoAusentismo.diagnosticocategoria.codigo, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" />
-                                </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 302px; top: 185px;  " id="btnNuevoDiagnostico" actionListener="#{controlAusentismos.asignarIndex(indice, 11, 1)}" icon="ui-icon-search" process="@this" />
-
-                                <strong><h:outputText value="#{msg['prorroga']}" style=" position: absolute; top: 65px; left: 435px" /></strong>
-                                <p:inputText id="nuevaProrroga" value="#{controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo}" style=" width: 122px; position: absolute; left: 550px; top: 65px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'PRORROGA')}" />
-                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('PRORROGA', controlAusentismos.nuevoAusentismo.prorroga.prorrogaAusentismo, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 10, 1)}" />
-                                </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 65px;  " id="btnNuevaProrroga" actionListener="#{controlAusentismos.asignarIndex(indice, 10, 1)}" icon="ui-icon-search" process="@this" />
-
-                                <strong><h:outputText value="#{msg['tercero']}" style=" position: absolute; top: 105px;left:435px" /></strong>
-                                <p:inputText id="nuevoTercero" value="#{controlAusentismos.nuevoAusentismo.tercero.nombre}" style=" width: 122px; position: absolute; left: 550px; top: 105px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="click" listener="#{controlAusentismos.valoresBackupAutocompletar(1, 'TERCERO')}" />
-                                    <p:ajax event="change" listener="#{controlAusentismos.autocompletarNuevoyDuplicado('TERCERO', controlAusentismos.nuevoAusentismo.tercero.nombre, 1)}" />
-                                    <p:ajax event="dblclick" listener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" />
-                                </p:inputText>
-                                <p:commandButton style="width: 23px; height: 25px; position: absolute; left: 681px; top: 105px;  " id="btnNuevoTercero" actionListener="#{controlAusentismos.asignarIndex(indice, 8, 1)}" icon="ui-icon-search" process="@this" />
-
-                                <strong><h:outputText value="#{msg['observaciones']}" style=" position: absolute; top: 145px;left:435px" /></strong>
-                                <p:inputText id="nuevaObservacion" value="#{controlAusentismos.nuevoAusentismo.observaciones}" style=" width: 122px; position: absolute; left: 550px; top: 145px; text-transform: uppercase" onclick="select();">
-                                    <p:ajax event="change" update="@this"/>
-                                </p:inputText>
-                            </p:panel>  
+                           
 
                             <p:commandButton id="limpiar" value="#{msg['limpiar']}" style=" position: absolute; left: 50px; top: 550px;" actionListener="#{controlAusentismos.limpiarNuevoAusentismo()}" update="nuevoAusentismo" process="@this"/>
                             <p:commandButton id="agregarNA" value="#{msg['agregar']}" style=" position: absolute; left: 550px; top: 550px;"  actionListener="#{controlAusentismos.agregarNuevoAusentismo()}" process="@this"/>
