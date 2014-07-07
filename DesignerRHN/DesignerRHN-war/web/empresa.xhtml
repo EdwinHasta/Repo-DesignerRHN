@@ -21,7 +21,7 @@
 
                         <p:commandButton style="position: absolute; left: 20px; top: 520px;" id="DETALLES" value="#{msg['detalle']}" disabled="#{controlEmpresa.activoBtnesAdd}"  actionListener="#{controlDetalleEmpresa.inicializarPagina(controlEmpresa.secRegistro, 'empresa')}" action="detalle" process="@this" />
                         <p:commandButton style="position: absolute; left: 160px; top: 520px;" id="EMPRESABANCO" value="#{msg['empresaBanco']}" disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" action="empresabanco"/>
-                        <p:commandButton style="position: absolute; left: 305px; top: 520px;" id="DIRECCIONES" value="#{msg['direccion']}"  disabled="#{controlEmpresa.activoBtnesAdd}" process="@this" />
+                        <p:commandButton style="position: absolute; left: 305px; top: 520px;" id="DIRECCIONES" value="#{msg['direccion']}"  disabled="#{controlEmpresa.activoBtnesAdd}" action="firmareporte" process="@this" />
                         <p:commandButton style="position: absolute; left: 683px; top: 520px;" id="ACEPTAR" value="#{msg['aceptar']}" icon="ui-icon-check" onclick="confirmarGuardarSalida.show();" disabled="#{controlEmpresa.cambiosPagina}" process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 520px;" id="ATRAS" value="#{msg['cancelar']}" icon="ui-icon-closethick" actionListener="#{controlEmpresa.salir()}" action="#{controlEmpresa.valorPaginaAnterior()}" process="@this" />
 
@@ -253,7 +253,7 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooCodigoMoneda"  value=" " />
+                                        <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooCodigoMoneda" action="moneda" value=" " />
                                     </f:facet>
                                 </p:column>
 
@@ -272,7 +272,7 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooNombreMoneda"  value=" " />
+                                        <p:commandButton style="width: 290px; margin: -14px; height: 26px; border: none; color: blue" id="fooNombreMoneda" action="moneda"  value=" " />
                                     </f:facet>
                                 </p:column>
 
