@@ -129,7 +129,9 @@ public class CentrosCostos implements Serializable {
 
     public String getNombre() {
         if (nombre != null) {
-            return nombre.toUpperCase();
+            nombre = nombre.toUpperCase();
+        } else {
+            nombre = "";
         }
         return nombre;
     }

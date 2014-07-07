@@ -115,7 +115,6 @@ public class AdministrarNReportesNomina implements AdministrarNReportesNominaInt
     public List<Inforeportes> listInforeportesUsuario() {
         try {
             listInforeportes = persistenciaInforeportes.buscarInforeportesUsuarioNomina(em);
-            System.out.println("Tamaño: " + listInforeportes.size());
             return listInforeportes;
         } catch (Exception e) {
             System.out.println("Error listInforeportesUsuario " + e);

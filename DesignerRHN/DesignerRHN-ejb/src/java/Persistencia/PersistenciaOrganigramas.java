@@ -30,7 +30,6 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
      */
 //    @PersistenceContext(unitName = "DesignerRHN-ejbPU")
 //    private EntityManager em;
-
     @Override
     public void crear(EntityManager em, Organigramas organigramas) {
         em.clear();
@@ -90,9 +89,16 @@ public class PersistenciaOrganigramas implements PersistenciaOrganigramasInterfa
 
     @Override
     public List<Organigramas> buscarOrganigramas(EntityManager em) {
-        javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Organigramas.class));
-        return em.createQuery(cq).getResultList();
+        try {
+            em.clear();
+            Query query = em.createQuery("SELECT o FROM Organigramas o");
+            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            List<Organigramas> lista = query.getResultList();
+            return lista;
+        } catch (Exception e) {
+            System.out.println("Error buscarOrganigramas PersistenciaOrganigramas : " + e.toString());
+            return null;
+        }
     }
 
     @Override
