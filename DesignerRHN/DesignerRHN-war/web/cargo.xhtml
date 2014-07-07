@@ -123,7 +123,7 @@
                                             <p:inputText value="#{info.sueldominimo}" onclick="select();" id="editarSueldoMinimoCargo" style="border-radius: 0px; width: 99.5%;text-transform: uppercase"> 
                                                 <p:ajax event="change" listener="#{controlCargo.modificarCargo(indice)}" update="editarSueldoMinimoCargo" process="@this"/>
                                                 <p:ajax event="select" listener="#{controlCargo.cambiarIndice(indice, 4)}" process="@this"/>
-¿                                            </p:inputText>
+                                                ¿                                            </p:inputText>
                                         </f:facet>  
                                     </p:cellEditor>
                                     <f:facet name="footer">
@@ -398,7 +398,7 @@
                                         </f:facet>   
                                     </p:cellEditor>
                                     <f:facet name="footer">
-                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooEvalCompetencias"  value=" "/>
+                                        <p:commandButton style="width: 130px; margin: -14px; height: 26px; border: none; color: blue" id="fooEvalCompetencias"  value=" "  action="evalcompetencia" />
                                     </f:facet>
                                 </p:column>
                             </p:dataTable>  
@@ -621,9 +621,9 @@
                                 <h:outputText value="#{buscarCargo.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroCargo" value="#{controlCargo.infoRegistroCargo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarBC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="BuscarCargoDialogo.hide(), lovBuscarCargo.clearFilters();"  actionListener="#{controlCargo.actualizarCargo()}" update="lovBuscarCargo, aceptarBC, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovBuscarCargo:globalFilter"/>
                         </p:commandButton>
@@ -660,9 +660,9 @@
                                 </h:outputText>
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroGrupoSalarial" value="#{controlCargo.infoRegistroGrupoSalarial}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarGS" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoSalarialDialogo.hide(), lovGrupoSalarial.clearFilters();" actionListener="#{controlCargo.actualizarGrupoSalarial()}" update="lovGrupoSalarial, aceptarGS, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovGrupoSalarial:globalFilter"/>
                         </p:commandButton>
@@ -697,7 +697,7 @@
                             </p:column>
                         </p:dataTable>
                         <h:outputText id="infoRegistroGrupoViatico" value="#{controlCargo.infoRegistroGrupoViatico}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarGV" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="GrupoViaticoDialogo.hide(), lovGrupoViatico.clearFilters();"  actionListener="#{controlCargo.actualizarGrupoViatico()}" update="lovGrupoViatico, aceptarGV, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovGrupoViatico:globalFilter"/>
                         </p:commandButton>
@@ -731,9 +731,9 @@
                                 <h:outputText value="#{procesoProductivo.codigo}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroProcesoProductivo" value="#{controlCargo.infoRegistroProcesoProductivo}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarPP" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="ProcesoProductivoDialogo.hide(), lovProcesoProductivo.clearFilters();"  actionListener="#{controlCargo.actualizarProcesoProductivo()}" update="lovProcesoProductivo, aceptarPP, datosCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovProcesoProductivo:globalFilter"/>
                         </p:commandButton>
@@ -766,9 +766,9 @@
                                 <h:outputText value="#{tipoEmpresa.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroTipoEmpresa" value="#{controlCargo.infoRegistroTipoEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarTE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="TipoEmpresaDialogo.hide(), lovTipoEmpresa.clearFilters();" actionListener="#{controlCargo.actualizarTipoEmpresa()}" update="lovTipoEmpresa, aceptarTE, datosSueldoMercado" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovTipoEmpresa:globalFilter"/>
                         </p:commandButton>
@@ -801,9 +801,9 @@
                                 <h:outputText value="#{evalCompetencia.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroEval" value="#{controlCargo.infoRegistroEval}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarEC" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EvalCompetenciaDialogo.hide(), lovEvalCompetencia.clearFilters();" actionListener="#{controlCargo.actualizarEvalCompetencia()}" update="lovEvalCompetencia, aceptarEC, datosCompetenciaCargo" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEvalCompetencia:globalFilter"/>
                         </p:commandButton>
@@ -836,9 +836,9 @@
                                 <h:outputText value="#{enfoque.descripcion}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroEnfoque" value="#{controlCargo.infoRegistroEnfoque}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarE" style="position: relative; left: 230px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" onclick="EnfoqueDialogo.hide(), lovEnfoque.clearFilters();" actionListener="#{controlCargo.actualizarEnfoque()}" update="lovEnfoque, aceptarE, datosTipoDetalle" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEnfoque:globalFilter"/>
                         </p:commandButton>
@@ -872,9 +872,9 @@
                                 <h:outputText  value="#{empresa.nombre}" />
                             </p:column>
                         </p:dataTable>
-                        
+
                         <h:outputText id="infoRegistroEmpresa" value="#{controlCargo.infoRegistroEmpresa}" style="position: absolute; left: 20px; top: 355px; font-weight: bold"/>
-                        
+
                         <p:commandButton id="aceptarEM" style="position: relative; left: 150px" value="#{msg['aceptar']}" disabled="#{controlCargo.aceptar}" actionListener="#{controlCargo.actualizarEmpresa()}" update="aceptarEM" process="@this" icon="ui-icon-check">
                             <p:resetInput target=":form:lovEmpresas:globalFilter"/>
                         </p:commandButton>
@@ -1310,7 +1310,7 @@
 
                     <!-- editar celdas competencia cargo -->
 
-                   <p:dialog id="editarDescripcionCompetenciaCargoD" header="#{msg['editarDescripcionCompetenciaCargoD']}" widgetVar="editarDescripcionCompetenciaCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
+                    <p:dialog id="editarDescripcionCompetenciaCargoD" header="#{msg['editarDescripcionCompetenciaCargoD']}" widgetVar="editarDescripcionCompetenciaCargoD" resizable="false" draggable="false" modal="true" height="55" width="240" >  
                         <p:inputTextarea value="#{controlCargo.editarCompetenciaCargo.evalcompetencia.descripcion}" style="overflow: auto; width: 200px; height: 40px" readonly="true"/>
                     </p:dialog>
 

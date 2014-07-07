@@ -3522,4 +3522,47 @@
     </navigation-rule>
     
     
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/cargo.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>evalcompetencia</from-outcome>
+            <to-view-id>/evalcompetencia.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/evalcompetencia.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasevalcompetencia</from-outcome>
+            <to-view-id>/cargo.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>/EmplVigenciaEvento.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>evento</from-outcome>
+            <to-view-id>/evento.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/evento.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>atrasevento</from-outcome>
+            <to-view-id>/EmplVigenciaEvento.xhtml</to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+    
+    
 </faces-config>
