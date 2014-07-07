@@ -53,7 +53,7 @@ public class ControlVigenciasUbicaciones implements Serializable {
     private int index;
     //modificar
     private List<VigenciasUbicaciones> listVUModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     //crear VC
     public VigenciasUbicaciones nuevaVigencia;
     private List<VigenciasUbicaciones> listVUCrear;

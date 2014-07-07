@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -35,19 +36,22 @@ public class ControlEscalafon implements Serializable {
     AdministrarEscalafonesInterface administrarEscalafones;
     @EJB
     AdministrarRastrosInterface administrarRastros;
-    
-    
+
     //
     private List<Escalafones> listaEscalafones;
     private List<Escalafones> filtrarListaEscalafones;
+    private Escalafones escalafonTablaSeleccionado;
     //
     private List<Categorias> lovCategorias;
     private Categorias categoriaSelecionada;
     private List<Categorias> filtrarLovCategorias;
+    private String infoRegistroCategoria;
     //
     private List<SubCategorias> lovSubCategorias;
     private SubCategorias subCategoriaSelecionada;
     private List<SubCategorias> filtrarLovSubCategorias;
+    private String infoRegistroSubCategoria;
+
     private int tipoActualizacion;
     //Activo/Desactivo Crtl + F11
     private int bandera;
@@ -57,7 +61,7 @@ public class ControlEscalafon implements Serializable {
     private int index;
     //modificar
     private List<Escalafones> listaEscalafonesModificar;
-    private boolean guardado, guardarOk;
+    private boolean guardado;
     //crear VC
     public Escalafones nuevaEscalafon;
     private List<Escalafones> listaEscalafonesCrear;
@@ -68,7 +72,6 @@ public class ControlEscalafon implements Serializable {
     //editar celda
     private Escalafones editarEscalafon;
     private int cualCelda, tipoLista;
-    private boolean cambioEditor, aceptarEditar;
     //duplicar
     private Escalafones duplicarEscalafon;
     private String categoria, subCategoria;
@@ -80,11 +83,12 @@ public class ControlEscalafon implements Serializable {
     private boolean cambiosPagina;
     //
     private String algoTabla;
+    //
+    private String infoRegistro;
 
     public ControlEscalafon() {
         algoTabla = "200";
         cambiosPagina = true;
-        listaEscalafones = null;
         lovCategorias = null;
         lovSubCategorias = null;
         aceptar = true;
@@ -93,8 +97,6 @@ public class ControlEscalafon implements Serializable {
         k = 0;
         listaEscalafonesModificar = new ArrayList<Escalafones>();
         editarEscalafon = new Escalafones();
-        cambioEditor = false;
-        aceptarEditar = true;
         cualCelda = -1;
         tipoLista = 0;
         guardado = true;
@@ -105,13 +107,22 @@ public class ControlEscalafon implements Serializable {
         permitirIndex = true;
         backUpSecRegistro = null;
     }
-    
+
+    @PostConstruct
     public void inicializarAdministrador() {
         try {
             FacesContext x = FacesContext.getCurrentInstance();
             HttpSession ses = (HttpSession) x.getExternalContext().getSession(false);
             administrarEscalafones.obtenerConexion(ses.getId());
             administrarRastros.obtenerConexion(ses.getId());
+
+            listaEscalafones = null;
+            getListaEscalafones();
+            if (listaEscalafones != null) {
+                infoRegistro = "Cantidad de registros : " + listaEscalafones.size();
+            } else {
+                infoRegistro = "Cantidad de registros : 0";
+            }
         } catch (Exception e) {
             System.out.println("Error postconstruct " + this.getClass().getName() + ": " + e);
             System.out.println("Causa: " + e.getCause());
@@ -119,14 +130,24 @@ public class ControlEscalafon implements Serializable {
     }
 
     public void modificarEscalafon(int indice) {
+        RequestContext context = RequestContext.getCurrentInstance();
+        boolean validarCodigo = true;
+        String auxCod;
         if (tipoLista == 0) {
-            if (listaEscalafones.get(indice).getCodigo().isEmpty()) {
-                listaEscalafones.get(indice).setCodigo(auxCodigo);
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorRegNew.show()");
-            } else {
+            auxCod = listaEscalafones.get(indice).getCodigo();
+        } else {
+            auxCod = filtrarListaEscalafones.get(indice).getCodigo();
+        }
+        if (auxCod == null) {
+            validarCodigo = false;
+        } else {
+            if (auxCod.isEmpty()) {
+                validarCodigo = false;
+            }
+        }
+        if (validarCodigo == true) {
+            if (tipoLista == 0) {
                 cambiosPagina = false;
-                RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
                 if (!listaEscalafonesCrear.contains(listaEscalafones.get(indice))) {
                     if (listaEscalafonesModificar.isEmpty()) {
@@ -138,17 +159,10 @@ public class ControlEscalafon implements Serializable {
                         guardado = false;
                     }
                 }
-            }
-            index = -1;
-            secRegistro = null;
-        } else {
-            if (filtrarListaEscalafones.get(indice).getCodigo().isEmpty()) {
-                filtrarListaEscalafones.get(indice).setCodigo(auxCodigo);
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.execute("errorRegNew.show()");
+                index = -1;
+                secRegistro = null;
             } else {
                 cambiosPagina = false;
-                RequestContext context = RequestContext.getCurrentInstance();
                 context.update("form:ACEPTAR");
                 if (!listaEscalafonesCrear.contains(filtrarListaEscalafones.get(indice))) {
                     if (listaEscalafonesModificar.isEmpty()) {
@@ -160,10 +174,18 @@ public class ControlEscalafon implements Serializable {
                         guardado = false;
                     }
                 }
+                index = -1;
+                secRegistro = null;
             }
-            index = -1;
-            secRegistro = null;
+        } else {
+            if (tipoLista == 0) {
+                listaEscalafones.get(indice).setCodigo(auxCodigo);
+            } else {
+                filtrarListaEscalafones.get(indice).setCodigo(auxCodigo);
+            }
+            context.execute("errorRegNew.show()");
         }
+        context.update("form:datosEscalafon");
     }
 
     public void modificarEscalafon(int indice, String confirmarCambio, String valorConfirmar) {
@@ -350,14 +372,6 @@ public class ControlEscalafon implements Serializable {
         }
     }
 
-    //Ubicacion Celda.
-    /**
-     * Metodo que obtiene la posicion dentro de la tabla
-     * VigenciasReformasLaborales
-     *
-     * @param indice Fila de la tabla
-     * @param celda Columna de la tabla
-     */
     public void cambiarIndice(int indice, int celda) {
         if (permitirIndex == true) {
             index = indice;
@@ -371,8 +385,7 @@ public class ControlEscalafon implements Serializable {
                 if (cualCelda == 2) {
                     subCategoria = listaEscalafones.get(index).getSubcategoria().getDescripcion();
                 }
-            }
-            if (tipoLista == 1) {
+            } else {
                 auxCodigo = filtrarListaEscalafones.get(index).getCodigo();
                 secRegistro = filtrarListaEscalafones.get(index).getSecuencia();
                 if (cualCelda == 1) {
@@ -396,44 +409,49 @@ public class ControlEscalafon implements Serializable {
         salir();
     }
 
-    /**
-     * Metodo que guarda los cambios efectuados en la pagina
-     */
     public void guardarCambios() {
-        if (guardado == false) {
-            if (!listaEscalafonesBorrar.isEmpty()) {
-                administrarEscalafones.borrarEscalafones(listaEscalafonesBorrar);
-                listaEscalafonesBorrar.clear();
+        RequestContext context = RequestContext.getCurrentInstance();
+        try {
+            if (guardado == false) {
+                if (!listaEscalafonesBorrar.isEmpty()) {
+                    administrarEscalafones.borrarEscalafones(listaEscalafonesBorrar);
+                    listaEscalafonesBorrar.clear();
+                }
+                if (!listaEscalafonesCrear.isEmpty()) {
+                    administrarEscalafones.crearEscalafones(listaEscalafonesCrear);
+                    listaEscalafonesCrear.clear();
+                }
+                if (!listaEscalafonesModificar.isEmpty()) {
+                    administrarEscalafones.editarEscalafones(listaEscalafonesModificar);
+                    listaEscalafonesModificar.clear();
+                }
+                cambiosPagina = true;
+                listaEscalafones = null;
+                getListaEscalafones();
+                if (listaEscalafones != null) {
+                    infoRegistro = "Cantidad de registros : " + listaEscalafones.size();
+                } else {
+                    infoRegistro = "Cantidad de registros : 0";
+                }
+                context.update("form:informacionRegistro");
+                context.update("form:ACEPTAR");
+                context.update("form:datosEscalafon");
+                guardado = true;
+                k = 0;
+                index = -1;
+                secRegistro = null;
+                FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+                FacesContext.getCurrentInstance().addMessage(null, msg);
+                context.update("form:growl");
             }
-            if (!listaEscalafonesCrear.isEmpty()) {
-                administrarEscalafones.crearEscalafones(listaEscalafonesCrear);
-                listaEscalafonesCrear.clear();
-            }
-            if (!listaEscalafonesModificar.isEmpty()) {
-                administrarEscalafones.editarEscalafones(listaEscalafonesModificar);
-                listaEscalafonesModificar.clear();
-            }
-            cambiosPagina = true;
-            listaEscalafones = null;
-            getListaEscalafones();
-            FacesMessage msg = new FacesMessage("Información", "Se gurdarón los datos con éxito");
+        } catch (Exception e) {
+            System.out.println("Error guardarCambios : " + e.toString());
+            FacesMessage msg = new FacesMessage("Información", "Ha ocurrido un error en el guardado, intente nuevamente.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            RequestContext context = RequestContext.getCurrentInstance();
             context.update("form:growl");
-            context.update("form:ACEPTAR");
-            context.update("form:datosEscalafon");
-            guardado = true;
-            RequestContext.getCurrentInstance().update("form:aceptar");
-            k = 0;
         }
-        index = -1;
-        secRegistro = null;
     }
-    //CANCELAR MODIFICACIONES
 
-    /**
-     * Cancela las modificaciones realizas en la pagina
-     */
     public void cancelarModificacion() {
         if (bandera == 1) {
             //CERRAR FILTRADO
@@ -456,18 +474,20 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
         k = 0;
         listaEscalafones = null;
+        getListaEscalafones();
+        if (listaEscalafones != null) {
+            infoRegistro = "Cantidad de registros : " + listaEscalafones.size();
+        } else {
+            infoRegistro = "Cantidad de registros : 0";
+        }
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
         guardado = true;
         cambiosPagina = true;
-        RequestContext context = RequestContext.getCurrentInstance();
         context.update("form:ACEPTAR");
         context.update("form:datosEscalafon");
     }
 
-    //MOSTRAR DATOS CELDA
-    /**
-     * Metodo que muestra los dialogos de editar con respecto a la lista real o
-     * la lista filtrada y a la columna
-     */
     public void editarCelda() {
         if (index >= 0) {
             if (tipoLista == 0) {
@@ -495,12 +515,22 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
     }
 
-    //CREAR VU
-    /**
-     * Metodo que se encarga de agregar un nueva VigenciaReformaLaboral
-     */
     public void agregarNuevaEscalafon() {
-        if ((!nuevaEscalafon.getCodigo().isEmpty()) && nuevaEscalafon.getSubcategoria().getSecuencia() != null && nuevaEscalafon.getCategoria().getSecuencia() != null) {
+        boolean validarDatos = true;
+        if (nuevaEscalafon.getCategoria().getSecuencia() == null) {
+            validarDatos = false;
+        }
+        if (nuevaEscalafon.getSubcategoria().getSecuencia() == null) {
+            validarDatos = false;
+        }
+        if (nuevaEscalafon.getCodigo() == null) {
+            validarDatos = false;
+        } else {
+            if (nuevaEscalafon.getCodigo().isEmpty()) {
+                validarDatos = false;
+            }
+        }
+        if (validarDatos == true) {
             if (bandera == 1) {
                 //CERRAR FILTRADO
                 algoTabla = "200";
@@ -525,6 +555,8 @@ public class ControlEscalafon implements Serializable {
             nuevaEscalafon.setSubcategoria(new SubCategorias());
             nuevaEscalafon.setCategoria(new Categorias());
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listaEscalafones.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             context.update("form:datosEscalafon");
             context.execute("NuevoRegistroEscalafon.hide()");
@@ -540,11 +572,7 @@ public class ControlEscalafon implements Serializable {
             context.execute("errorRegNew.show()");
         }
     }
-//LIMPIAR NUEVO REGISTRO
 
-    /**
-     * Metodo que limpia las casillas de la nueva vigencia
-     */
     public void limpiarNuevaEscalafon() {
         nuevaEscalafon = new Escalafones();
         nuevaEscalafon.setSubcategoria(new SubCategorias());
@@ -552,25 +580,17 @@ public class ControlEscalafon implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    //DUPLICAR VC
 
-    /**
-     * Metodo que duplica una vigencia especifica dado por la posicion de la
-     * fila
-     */
     public void duplicarEscalafonM() {
         if (index >= 0) {
             duplicarEscalafon = new Escalafones();
-            k++;
-            l = BigInteger.valueOf(k);
+
             if (tipoLista == 0) {
-                duplicarEscalafon.setSecuencia(l);
                 duplicarEscalafon.setCategoria(listaEscalafones.get(index).getCategoria());
                 duplicarEscalafon.setCodigo(listaEscalafones.get(index).getCodigo());
                 duplicarEscalafon.setSubcategoria(listaEscalafones.get(index).getSubcategoria());
             }
             if (tipoLista == 1) {
-                duplicarEscalafon.setSecuencia(l);
                 duplicarEscalafon.setCategoria(filtrarListaEscalafones.get(index).getCategoria());
                 duplicarEscalafon.setCodigo(filtrarListaEscalafones.get(index).getCodigo());
                 duplicarEscalafon.setSubcategoria(filtrarListaEscalafones.get(index).getSubcategoria());
@@ -583,16 +603,31 @@ public class ControlEscalafon implements Serializable {
         }
     }
 
-    /**
-     * Metodo que confirma el duplicado y actualiza los datos de la tabla
-     * VigenciasReformasLaborales
-     */
     public void confirmarDuplicar() {
-        if ((!duplicarEscalafon.getCodigo().isEmpty()) && duplicarEscalafon.getSubcategoria().getSecuencia() != null && duplicarEscalafon.getCategoria().getSecuencia() != null) {
+        boolean validarDatos = true;
+        if (duplicarEscalafon.getCategoria().getSecuencia() == null) {
+            validarDatos = false;
+        }
+        if (duplicarEscalafon.getSubcategoria().getSecuencia() == null) {
+            validarDatos = false;
+        }
+        if (duplicarEscalafon.getCodigo() == null) {
+            validarDatos = false;
+        } else {
+            if (duplicarEscalafon.getCodigo().isEmpty()) {
+                validarDatos = false;
+            }
+        }
+        if (validarDatos == true) {
+            k++;
+            l = BigInteger.valueOf(k);
+            duplicarEscalafon.setSecuencia(l);
             cambiosPagina = false;
             listaEscalafones.add(duplicarEscalafon);
             listaEscalafonesCrear.add(duplicarEscalafon);
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listaEscalafones.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             context.update("form:datosEscalafon");
             context.execute("DuplicarRegistroEscalafon.hide()");
@@ -625,11 +660,7 @@ public class ControlEscalafon implements Serializable {
             context.execute("errorRegNew.show()");
         }
     }
-    //LIMPIAR DUPLICAR
 
-    /**
-     * Metodo que limpia los datos de un duplicar Vigencia
-     */
     public void limpiarduplicarEscalafon() {
         index = -1;
         secRegistro = null;
@@ -638,10 +669,6 @@ public class ControlEscalafon implements Serializable {
         duplicarEscalafon.setCategoria(new Categorias());
     }
 
-    //BORRAR VC
-    /**
-     * Metodo que borra las vigencias seleccionadas
-     */
     public void borrarEscalafon() {
         if (index >= 0) {
             cambiosPagina = false;
@@ -674,6 +701,8 @@ public class ControlEscalafon implements Serializable {
                 filtrarListaEscalafones.remove(index);
             }
             RequestContext context = RequestContext.getCurrentInstance();
+            infoRegistro = "Cantidad de registros : " + listaEscalafones.size();
+            context.update("form:informacionRegistro");
             context.update("form:ACEPTAR");
             context.update("form:datosEscalafon");
             index = -1;
@@ -684,12 +713,7 @@ public class ControlEscalafon implements Serializable {
             }
         }
     }
-    //CTRL + F11 ACTIVAR/DESACTIVAR
 
-    /**
-     * Metodo que activa el filtrado por medio de la opcion en el tollbar o por
-     * medio de la tecla Crtl+F11
-     */
     public void activarCtrlF11() {
         if (bandera == 0) {
             algoTabla = "178";
@@ -717,10 +741,6 @@ public class ControlEscalafon implements Serializable {
         }
     }
 
-    //SALIR
-    /**
-     * Metodo que cierra la sesion y limpia los datos en la pagina
-     */
     public void salir() {
         if (bandera == 1) {
             //CERRAR FILTRADO
@@ -819,6 +839,7 @@ public class ControlEscalafon implements Serializable {
         context.update("form:CategoriaDialogo");
         context.update("form:lovCategoria");
         context.update("form:aceptarCat");
+        context.reset("form:lovCategoria:globalFilter");
         context.execute("CategoriaDialogo.hide()");
     }
 
@@ -881,6 +902,7 @@ public class ControlEscalafon implements Serializable {
         context.update("form:SubCategoriaDialogo");
         context.update("form:lovSubCategoria");
         context.update("form:aceptarSCat");
+        context.reset("form:lovSubCategoria:globalFilter");
         context.execute("SubCategoriaDialogo.hide()");
     }
 
@@ -913,13 +935,7 @@ public class ControlEscalafon implements Serializable {
     public void activarAceptar() {
         aceptar = false;
     }
-    //EXPORTAR
 
-    /**
-     * Metodo que exporta datos a PDF
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportPDF() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosEscalafonExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -930,11 +946,6 @@ public class ControlEscalafon implements Serializable {
         secRegistro = null;
     }
 
-    /**
-     * Metodo que exporta datos a XLS
-     *
-     * @throws IOException Excepcion de In-Out de datos
-     */
     public void exportXLS() throws IOException {
         DataTable tabla = (DataTable) FacesContext.getCurrentInstance().getViewRoot().findComponent("formExportar:datosEscalafonExportar");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -944,15 +955,14 @@ public class ControlEscalafon implements Serializable {
         index = -1;
         secRegistro = null;
     }
-    //EVENTO FILTRAR
 
-    /**
-     * Evento que cambia la lista reala a la filtrada
-     */
     public void eventoFiltrar() {
         if (tipoLista == 0) {
             tipoLista = 1;
         }
+        infoRegistro = "Cantidad de registros : " + filtrarListaEscalafones.size();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.update("form:informacionRegistro");
     }
     //RASTRO - COMPROBAR SI LA TABLA TIENE RASTRO ACTIVO
 
@@ -992,12 +1002,11 @@ public class ControlEscalafon implements Serializable {
     public List<Escalafones> getListaEscalafones() {
         try {
             if (listaEscalafones == null) {
-                return listaEscalafones = administrarEscalafones.listaEscalafones();
-            } else {
-                return listaEscalafones;
+                listaEscalafones = administrarEscalafones.listaEscalafones();
             }
+            return listaEscalafones;
         } catch (Exception e) {
-            System.out.println("Error...!! getListaEscalafones ");
+            System.out.println("Error...!! getListaEscalafones : " + e.toString());
             return null;
         }
     }
@@ -1027,10 +1036,7 @@ public class ControlEscalafon implements Serializable {
     }
 
     public List<SubCategorias> getLovSubCategorias() {
-        if (lovSubCategorias == null) {
-            lovSubCategorias = new ArrayList<SubCategorias>();
-            lovSubCategorias = administrarEscalafones.lovSubCategorias();
-        }
+        lovSubCategorias = administrarEscalafones.lovSubCategorias();
         return lovSubCategorias;
     }
 
@@ -1079,10 +1085,7 @@ public class ControlEscalafon implements Serializable {
     }
 
     public List<Categorias> getLovCategorias() {
-        if (lovCategorias == null) {
-            lovCategorias = new ArrayList<Categorias>();
-            lovCategorias = administrarEscalafones.lovCategorias();
-        }
+        lovCategorias = administrarEscalafones.lovCategorias();
         return lovCategorias;
     }
 
@@ -1152,6 +1155,57 @@ public class ControlEscalafon implements Serializable {
 
     public void setAlgoTabla(String algoTabla) {
         this.algoTabla = algoTabla;
+    }
+
+    public Escalafones getEscalafonTablaSeleccionado() {
+        getListaEscalafones();
+        if (listaEscalafones != null) {
+            int tam = listaEscalafones.size();
+            if (tam > 0) {
+                escalafonTablaSeleccionado = listaEscalafones.get(0);
+            }
+        }
+        return escalafonTablaSeleccionado;
+    }
+
+    public void setEscalafonTablaSeleccionado(Escalafones escalafonTablaSeleccionado) {
+        this.escalafonTablaSeleccionado = escalafonTablaSeleccionado;
+    }
+
+    public String getInfoRegistroCategoria() {
+        getLovCategorias();
+        if (lovCategorias != null) {
+            infoRegistroCategoria = "Cantidad de registros : " + lovCategorias.size();
+        } else {
+            infoRegistroCategoria = "Cantidad de registros : 0";
+        }
+        return infoRegistroCategoria;
+    }
+
+    public void setInfoRegistroCategoria(String infoRegistroCategoria) {
+        this.infoRegistroCategoria = infoRegistroCategoria;
+    }
+
+    public String getInfoRegistroSubCategoria() {
+        getLovSubCategorias();
+        if (lovSubCategorias != null) {
+            infoRegistroSubCategoria = "Cantidad de registros : " + lovSubCategorias.size();
+        } else {
+            infoRegistroSubCategoria = "Cantidad de registros : 0";
+        }
+        return infoRegistroSubCategoria;
+    }
+
+    public void setInfoRegistroSubCategoria(String infoRegistroSubCategoria) {
+        this.infoRegistroSubCategoria = infoRegistroSubCategoria;
+    }
+
+    public String getInfoRegistro() {
+        return infoRegistro;
+    }
+
+    public void setInfoRegistro(String infoRegistro) {
+        this.infoRegistro = infoRegistro;
     }
 
 }
