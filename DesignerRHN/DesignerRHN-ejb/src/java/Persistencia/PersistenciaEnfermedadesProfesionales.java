@@ -93,14 +93,16 @@ public class PersistenciaEnfermedadesProfesionales implements PersistenciaEnferm
     @Override
     public List<EnfermeadadesProfesionales> buscarEPPorEmpleado(EntityManager em, BigInteger secEmpleado) {
         try {
-            Query query = em.createQuery("SELECT ep.fechanotificacion,d.descripcion,d.codigo FROM EnfermeadadesProfesionales ep, Diagnosticoscategorias d WHERE ep.empleado.secuencia = :secuenciaEmpl ORDER BY ep.fechanotificacion DESC");
-            query.setParameter("secuenciaEmpl", secEmpleado);
-            query.setHint("javax.persistence.cache.storeMode", "REFRESH");
+            String sqlQuery = ("SELECT ep.fechanotificacion,d.descripcion ,d.codigo FROM EnfermeadadesProfesionales ep, Diagnosticoscategorias d, Empleados e WHERE ep.empleado=e.secuencia AND e.secuencia = ? ORDER BY ep.fechanotificacion DESC");
+            Query query = em.createNativeQuery(sqlQuery);
+            query.setParameter(1, secEmpleado);
             List<EnfermeadadesProfesionales> enfermedadesProfesionales = query.getResultList();
             return enfermedadesProfesionales;
         } catch (Exception e) {
-            System.out.println("Error en PersistenciaEnfermedadesProfesionales Por Empleados ERROR" + e);
+            System.out.println("Error: (buscarEPPorEmpleado)" + e);
             return null;
         }
+        
+        
     }
 }

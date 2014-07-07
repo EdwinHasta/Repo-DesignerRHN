@@ -3,12 +3,14 @@
  */
 package Administrar;
 
+import Entidades.ClavesSap;
 import Entidades.Conceptos;
 import Entidades.Empresas;
 import Entidades.Terceros;
 import Entidades.Unidades;
 import InterfaceAdministrar.AdministrarConceptosInterface;
 import InterfaceAdministrar.AdministrarSesionesInterface;
+import InterfacePersistencia.PersistenciaClavesSapInterface;
 import InterfacePersistencia.PersistenciaConceptosInterface;
 import InterfacePersistencia.PersistenciaEmpresasInterface;
 import InterfacePersistencia.PersistenciaTercerosInterface;
@@ -39,6 +41,13 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
      */
     @EJB
     PersistenciaConceptosInterface persistenciaConceptos;
+        /**
+     * Enterprise JavaBeans.<br>
+     * Atributo que representa la comunicación con la persistencia
+     * 'persistenciaConceptos'.
+     */
+    @EJB
+    PersistenciaClavesSapInterface persistenciaClavesSap;
     /**
      * Enterprise JavaBeans.<br>
      * Atributo que representa la comunicación con la persistencia
@@ -96,6 +105,10 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     @Override
     public List<Empresas> consultarEmpresas() {
         return persistenciaEmpresas.consultarEmpresas(em);
+    }
+    
+    public List<Empresas> consultarEmpresaPorSecuencia(BigInteger secEmpresa) {
+        return persistenciaEmpresas.buscarEmpresasLista(em, secEmpresa);
     }
 
     @Override
@@ -164,5 +177,11 @@ public class AdministrarConceptos implements AdministrarConceptosInterface {
     @Override
     public void clonarConcepto(BigInteger secConceptoOrigen, BigInteger codigoConceptoNuevo, String descripcionConceptoNuevo) {
         persistenciaConceptos.clonarConcepto(em, secConceptoOrigen, codigoConceptoNuevo, descripcionConceptoNuevo);
+    }
+    
+    @Override
+    public List<ClavesSap> consultarLOVClavesSap(){
+    List<ClavesSap> listaClavesSap = persistenciaClavesSap.consultarClavesSap(em);
+    return listaClavesSap;
     }
 }

@@ -4,9 +4,7 @@
 package Persistencia;
 
 import Entidades.Empresas;
-import InterfacePersistencia.PersistenciaEmpresasInterface;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -97,8 +95,13 @@ public class PersistenciaEmpresas implements PersistenciaEmpresasInterface {
 
     public List<Empresas> buscarEmpresasLista(EntityManager em, BigInteger secuencia) {
         try {
-            Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia = :secuencia");
-            query.setParameter("secuencia", secuencia);
+
+            //Query query = em.createQuery("SELECT c FROM Conceptos c WHERE c.empresa.secuencia  = NVL(:secEmpresa, c.empresa.secuencia) ORDER BY c.codigo ASC");
+            //Query query = em.createQuery("SELECT e FROM Empresas e WHERE e.secuencia  NVL(:secuencia, e)");
+            //query.setParameter("secuencia", secuencia);
+            String sqlQuery = "SELECT * FROM Empresas e WHERE e.secuencia = NVL( ?, e.secuencia)";
+            Query query = em.createNativeQuery(sqlQuery, Empresas.class);
+            query.setParameter(1, secuencia);
             query.setHint("javax.persistence.cache.storeMode", "REFRESH");
             List<Empresas> empresas = query.getResultList();
             return empresas;
