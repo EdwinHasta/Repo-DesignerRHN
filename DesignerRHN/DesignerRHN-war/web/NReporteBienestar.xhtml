@@ -22,12 +22,6 @@
 
                         <p:commandButton style="position: absolute; left: 683px; top: 480px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteBienestar.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteBienestar.cambiosReporte}" process="@this" />
                         <p:commandButton style="position: absolute; left: 775px; top: 480px; " icon="ui-icon-closethick" id="ATRAS" value="#{msg['cancelar']}" action="nomina" actionListener="#{controlNReporteBienestar.salir()}" process="@this" />
-
-
-                        <p:commandButton style="position: absolute; left: 785px; top: 480px; " icon="ui-icon-arrowreturnthick-1-w" id="ATRAS" value="#{msg['atras']}" action="atrasReporteBienestar" actionListener="#{controlNReporteBienestar.salir()}" process="@this" />
-                        <p:commandButton style="position: absolute; left: 690px; top: 480px; " icon="ui-icon-check" id="ACEPTAR" value="#{msg['aceptar']}"  actionListener="#{controlNReporteBienestar.dispararDialogoGuardarCambios()}" disabled="#{controlNReporteBienestar.cambiosReporte}" process="@this" />
-                        
-
                         <p:commandButton style="position: absolute; left: 10px; top: 480px; " id="ENVIOCORREO" value="#{msg['envio']}" process="@this" oncomplete="EnvioCorreoDialogo.show()" actionListener="#{controlNReporteBienestar.defaultPropiedadesParametrosReporte()}"/>
 
 
